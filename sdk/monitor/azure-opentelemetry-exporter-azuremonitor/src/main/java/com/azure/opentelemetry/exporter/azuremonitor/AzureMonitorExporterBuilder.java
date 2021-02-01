@@ -219,7 +219,7 @@ public final class AzureMonitorExporterBuilder {
         // instrumentationKey is extracted from connectionString, so, if instrumentationKey is null
         // then the error message should read "connectionString cannot be null".
         Objects.requireNonNull(instrumentationKey, "'connectionString' cannot be null");
-        return new AzureMonitorExporter(buildClient(), instrumentationKey);
+        return new AzureMonitorExporter(buildAsyncClient(), instrumentationKey);
     }
 
 }

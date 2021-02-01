@@ -70,7 +70,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         SQL_DB_SYSTEMS = Collections.unmodifiableSet(dbSystems);
     }
 
-    private final MonitorExporterClient client;
+    private final MonitorExporterAsyncClient client;
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporter.class);
     private final String instrumentationKey;
     private final String telemetryItemNamePrefix;
@@ -82,7 +82,7 @@ public final class AzureMonitorExporter implements SpanExporter {
      * @param client The client used to send data to Azure Monitor.
      * @param instrumentationKey The instrumentation key of Application Insights resource.
      */
-    AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey) {
+    AzureMonitorExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
         String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");
@@ -101,7 +101,7 @@ public final class AzureMonitorExporter implements SpanExporter {
                 logger.verbose("exporting span: {}", span);
                 export(span, telemetryItems);
             }
-            client.export(telemetryItems);
+            client.export(telemetryItems).subscribe();
             return CompletableResultCode.ofSuccess();
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
@@ -349,6 +349,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         addLinks(requestData.getProperties(), span.getLinks());
         Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
 
+        requestData.setResponseCode("200");
         if (httpStatusCode != null) {
             requestData.setResponseCode(Long.toString(httpStatusCode));
         }
@@ -406,6 +407,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         }
 
         Double samplingPercentage = removeAiSamplingPercentage(attributes);
+        samplingPercentage = samplingPercentage == null ? 100.0 : samplingPercentage;
 
         // for now, only add extra attributes for custom telemetry
         if (stdComponent == null) {

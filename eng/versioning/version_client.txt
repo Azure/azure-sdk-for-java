@@ -206,6 +206,7 @@ com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-bet
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 unreleased_com.azure:azure-core;1.13.0-beta.1
 unreleased_com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.7
+unreleased_com.azure:azure-messaging-eventhubs;5.5.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
