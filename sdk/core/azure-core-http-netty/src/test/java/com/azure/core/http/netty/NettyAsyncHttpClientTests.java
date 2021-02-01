@@ -58,6 +58,9 @@ public class NettyAsyncHttpClientTests {
     private static final String HTTP_HEADERS_PATH = "/httpHeaders";
     private static final String IO_EXCEPTION_PATH = "/ioException";
 
+    static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
+    static final String EXPECTED_HEADER = "userAgent";
+
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
 
@@ -78,6 +81,8 @@ public class NettyAsyncHttpClientTests {
         server.stubFor(get(ERROR_BODY_PATH).willReturn(aResponse().withBody("error").withStatus(500)));
         server.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(post(HTTP_HEADERS_PATH).willReturn(aResponse()
+            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+        server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
         server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
             .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
@@ -330,6 +335,16 @@ public class NettyAsyncHttpClientTests {
 
         StepVerifier.create(client.send(request))
             .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void validateRequestHasOneUserAgentHeader() {
+        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, NO_DOUBLE_UA_PATH),
+            new HttpHeaders().set("User-Agent", EXPECTED_HEADER), Flux.empty())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 

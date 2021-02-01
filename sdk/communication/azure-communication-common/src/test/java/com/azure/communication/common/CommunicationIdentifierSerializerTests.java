@@ -7,6 +7,7 @@ package com.azure.communication.common;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,10 @@ public class CommunicationIdentifierSerializerTests {
                 .setCloudEnvironmentModel(CommunicationCloudEnvironmentModel.PUBLIC), // Missing MicrosoftTeamsUserId
             new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.MICROSOFT_TEAMS_USER)
                 .setId(someId)
-                .setMicrosoftTeamsUserId(teamsUserId) // Missing Cloud
+                .setMicrosoftTeamsUserId(teamsUserId), // Missing Cloud
+            new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.MICROSOFT_TEAMS_USER)
+                .setCloudEnvironmentModel(CommunicationCloudEnvironmentModel.PUBLIC)
+                .setMicrosoftTeamsUserId(teamsUserId) // Missing id
         };
 
         Arrays.stream(modelsWithMissingMandatoryProperty).forEach(identifierModel -> {
@@ -83,13 +87,17 @@ public class CommunicationIdentifierSerializerTests {
     }
 
     @Test
-    public void deserializeFutureType() {
-        final String futureType = "NewKind";
-        CommunicationIdentifier unknownIdentifier = CommunicationIdentifierSerializer.deserialize(
-            new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.fromString(futureType))
-                .setId(someId));
-        assertEquals(UnknownIdentifier.class, unknownIdentifier.getClass());
-        assertEquals(someId, ((UnknownIdentifier) unknownIdentifier).getId());
+    public void serializeFutureTypeShouldThrow() {
+        assertThrows(IllegalArgumentException.class,
+            () -> {
+                CommunicationIdentifierSerializer.serialize(
+                    new CommunicationIdentifier() {
+                        @Override
+                        public String getId() {
+                            return someId;
+                        }
+                    });
+            });
     }
 
     @Test

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
+import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,18 +19,34 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderAsyncClient}.
  */
 public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
+    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+    // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+    // 3. "queueName" will be the name of the Service Bus queue instance you created
+    //    inside the Service Bus namespace.
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
+    ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+        .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+        .sender()
+        .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+        .buildAsyncClient();
+
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
      */
+    @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
-        // The required parameter is a way to authenticate with Service Bus using credentials.
-        // The connectionString provides a way to authenticate with Service Bus.
+        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .sender()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName)
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
 
@@ -57,15 +74,16 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      */
+    @Test
     public void sendBatch() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
-        // The required parameter is a way to authenticate with Service Bus using credentials.
-        // The connectionString provides a way to authenticate with Service Bus.
+        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .sender()
-            .queueName("<QUEUE OR TOPIC NAME>")
+            .queueName(queueName)
             .buildAsyncClient();
 
         // Creating a batch without options set, will allow for automatic routing of events to any partition.
@@ -82,14 +100,11 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         sender.close();
     }
 
-
     /**
      * Code snippet demonstrating how to create a size-limited {@link ServiceBusMessageBatch} and send it.
      */
+    @Test
     public void batchSizeLimited() {
-        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .sender()
-            .buildAsyncClient();
 
         ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("92".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");

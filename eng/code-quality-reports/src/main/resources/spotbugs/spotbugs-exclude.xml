@@ -2489,4 +2489,10 @@
     </Or>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
+
+  <!-- Machine generated classes for MAA service generate spotBugs errors -->
+  <Match>
+    <Class name="~com.azure.security.attestation.models\.[\w]+"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
 </FindBugsFilter>

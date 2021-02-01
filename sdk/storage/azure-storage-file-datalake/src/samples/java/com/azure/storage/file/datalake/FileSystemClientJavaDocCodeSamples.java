@@ -452,4 +452,29 @@ public class FileSystemClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemClient#rename(String)}
+//     */
+//    public void renameContainer() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
+//        DataLakeFileSystemClient fileSystemClient = client.rename("newFileSystemName");
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemClient#renameWithResponse(FileSystemRenameOptions, Duration, Context)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        Context context = new Context("Key", "Value");
+//
+//        DataLakeFileSystemClient fileSystemClient = client.renameWithResponse(
+//            new FileSystemRenameOptions("newFileSystemName")
+//                .setRequestConditions(requestConditions),
+//            Duration.ofSeconds(1),
+//            context).getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context
+//    }
+
 }
