@@ -84,14 +84,14 @@ Sync client that works for every Java developer:
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
-    .credential(new AzureKeyCredential("your event grid access key"))
+    .credential(new AzureKeyCredential("<your event grid access key>"))
     .buildClient();
 ```
 or async client if your technology stack has reactive programming such as project reactor:
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
-    .credential(new AzureKeyCredential("your event grid access key"))
+    .credential(new AzureKeyCredential("<your event grid access key>"))
     .buildAsyncClient();
 ```
 
