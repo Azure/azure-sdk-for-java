@@ -64,7 +64,7 @@ public final class SearchIndexingPublisher<T> {
     private final Consumer<OnActionErrorOptions<T>> onActionErrorConsumer;
 
     private final Function<T, String> documentKeyRetriever;
-    private final Function<Integer, Integer> scaleDownFunction;
+    private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
 
     private final Object actionsMutex = new Object();
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
@@ -95,8 +95,6 @@ public final class SearchIndexingPublisher<T> {
         this.onActionSentConsumer = options.getOnActionSent();
         this.onActionSucceededConsumer = options.getOnActionSucceeded();
         this.onActionErrorConsumer = options.getOnActionError();
-
-        this.scaleDownFunction = options.getPayloadTooLargeScaleDown();
     }
 
     public synchronized Collection<IndexAction<?>> getActions() {
@@ -180,13 +178,7 @@ public final class SearchIndexingPublisher<T> {
         }
 
         List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = batchActions.stream()
-            .map(action -> {
-                if (onActionSentConsumer != null) {
-                    onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction()));
-                }
-
-                return IndexActionConverter.map(action.getAction(), serializer);
-            })
+            .map(action -> IndexActionConverter.map(action.getAction(), serializer))
             .collect(Collectors.toList());
 
         return sendBatch(convertedActions, batchActions, context)
@@ -207,12 +199,17 @@ public final class SearchIndexingPublisher<T> {
         List<com.azure.search.documents.implementation.models.IndexAction> actions,
         List<TryTrackingIndexAction<T>> batchActions,
         Context context) {
+        if (onActionSentConsumer != null) {
+            batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
+        }
+
         Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
             context, logger);
 
         if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
             batchCall = batchCall.delaySubscription(currentRetryDelay);
         }
+
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
             response.getValue().getResults(), actions.size(), false))
             .onErrorResume(IndexBatchException.class, exception -> Mono.just(
@@ -226,8 +223,18 @@ public final class SearchIndexingPublisher<T> {
                 int statusCode = exception.getResponse().getStatusCode();
                 if (statusCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE) {
                     logger.verbose("Scaling down batch size due to 413 (Payload too large) response.");
-                    int previousBatchSize = batchActionCount;
+
+                    /*
+                     * Pass both the sent batch size and the configured batch size. This covers that case where the
+                     * sent batch size was smaller than the configured batch size and a 413 was trigger.
+                     *
+                     * For example, by default the configured batch size defaults to 512 but a batch of 200 may be sent
+                     * and trigger 413, if we only halved 512 we'd send the same batch again and 413 a second time.
+                     * Instead in this scenario we should halve 200 to 100.
+                     */
+                    int previousBatchSize = Math.min(batchActionCount, actions.size());
                     this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
+
                     logger.verbose("Scaled down from {} to {}.", previousBatchSize, batchActionCount);
 
                     int actionCount = actions.size();

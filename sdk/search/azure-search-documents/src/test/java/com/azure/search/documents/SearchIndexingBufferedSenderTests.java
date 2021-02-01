@@ -426,7 +426,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(10, addedCount.get());
         assertEquals(10, successCount.get());
         assertEquals(0, errorCount.get());
-        assertEquals(10, sentCount.get());
+        assertEquals(20, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -611,7 +611,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(2, addedCount.get());
         assertEquals(2, errorCount.get());
         assertEquals(0, successCount.get());
-        assertEquals(2, sentCount.get());
+        assertEquals(4, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -651,7 +651,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(2, addedCount.get());
         assertEquals(1, errorCount.get());
         assertEquals(1, successCount.get());
-        assertEquals(2, sentCount.get());
+        assertEquals(4, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
