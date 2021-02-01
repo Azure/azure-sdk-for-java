@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -27,18 +26,14 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.models.EncryptionModelBridgeInternal.createEncryptionItemResponse;
 
 
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
@@ -48,149 +43,30 @@ public class EncryptionCosmosAsyncContainer {
     private final Encryptor encryptor;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactoryCore();
     private final CosmosAsyncContainer container;
+    private EncryptionProcessor encryptionProcessor;
+    private EncryptionAsyncCosmosClient encryptionAsyncCosmosClient;
 
-    EncryptionCosmosAsyncContainer(String id, CosmosAsyncDatabase database, Encryptor encryptor) {
-        this.container = BridgeInternal.createCosmosAsyncContainer(id, database);
-        this.encryptor = encryptor;
+
+    EncryptionCosmosAsyncContainer(CosmosAsyncContainer container,
+                                   EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
+        this.container = container;
+        this.encryptionAsyncCosmosClient = encryptionAsyncCosmosClient;
+        this.encryptionProcessor = new EncryptionProcessor(this.container, encryptionAsyncCosmosClient);
         this.encryptionScheduler = Schedulers.parallel();
+        encryptor = null;
     }
 
-    private Mono<CosmosItemResponse<byte[]>> createItemHelper(
-        byte[] streamPayload,
-        PartitionKey partitionKey,
-        CosmosItemRequestOptions requestOptions,
-        boolean decryptResponse) {
-
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null ||
-            encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return this.container.createItem(
-                streamPayload,
-                partitionKey,
-                requestOptions);
-        }
-
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(
-            streamPayload,
-            this.encryptor,
-            encryptionItemRequestOptions.getEncryptionOptions());
-
-        return encryptedPayloadMono.flatMap(
-            encryptedPayload ->
-                this.container.createItem(
-                    encryptedPayload,
-                    partitionKey,
-                    requestOptions)
-                              .publishOn(encryptionScheduler)
-        ).flatMap(
-            rsp -> {
-                if (decryptResponse) {
-                    return setByteArrayContent(rsp,
-                        EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
-                }
-
-                return Mono.just(rsp);
-            }
-        );
-    }
-
-    private Mono<CosmosItemResponse<byte[]>> upsertItemHelper(
-        byte[] streamPayload,
-        PartitionKey partitionKey,
-        CosmosItemRequestOptions requestOptions,
-        boolean decryptResponse) {
-
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null ||
-            encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return this.container.upsertItem(
-                streamPayload,
-                partitionKey,
-                requestOptions);
-        }
-
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(
-            streamPayload,
-            this.encryptor,
-            encryptionItemRequestOptions.getEncryptionOptions());
-
-        return encryptedPayloadMono.flatMap(
-            encryptedPayload ->
-                this.container.upsertItem(
-                    encryptedPayload,
-                    partitionKey,
-                    requestOptions)
-                              .publishOn(encryptionScheduler)
-        ).flatMap(
-            rsp -> {
-                if (decryptResponse) {
-                    return setByteArrayContent(rsp,
-                        EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
-                }
-
-                return Mono.just(rsp);
-            }
-        );
-    }
-
-    private Mono<CosmosItemResponse<byte[]>> replaceItemHelper(
-        byte[] streamPayload,
-        String itemId,
-        PartitionKey partitionKey,
-        CosmosItemRequestOptions requestOptions,
-        boolean decryptResponse) {
-
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null ||
-            encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return this.container.replaceItem(
-                streamPayload,
-                itemId,
-                partitionKey,
-                requestOptions);
-        }
-
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(
-            streamPayload,
-            this.encryptor,
-            encryptionItemRequestOptions.getEncryptionOptions());
-
-        return encryptedPayloadMono.flatMap(
-            encryptedPayload ->
-                this.container.replaceItem(
-                    encryptedPayload,
-                    itemId,
-                    partitionKey,
-                    requestOptions)
-                              .publishOn(encryptionScheduler)
-        ).flatMap(
-            rsp -> {
-                if (decryptResponse) {
-                    return setByteArrayContent(rsp,
-                        EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
-                }
-
-                return Mono.just(rsp);
-            }
-        );
+    public EncryptionProcessor getEncryptionProcessor() {
+        return this.encryptionProcessor;
     }
 
     /**
      * create item and encrypts the requested fields
      *
-     * @param item the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey the partition key.
+     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey   the partition key.
      * @param requestOptions request option
-     * @param <T> serialization class type
+     * @param <T>            serialization class type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -201,58 +77,21 @@ public class EncryptionCosmosAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null || encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return container.createItem(item, partitionKey, requestOptions);
-        }
-
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
 
-        EncryptableItem encryptableItem = Utils.as(item, EncryptableItem.class);
-        if (encryptableItem != null) {
-            byte[] streamPayload = encryptableItem.toStream(this.getItemDeserializer());
-
-            Mono<CosmosItemResponse<byte[]>> rspMono = this.createItemHelper(streamPayload,
-                partitionKey,
-                requestOptions,
-                false);
-
-
-            return rspMono.map(
-                rsp -> {
-                    encryptableItem.setDecryptableItem(
-                        // EncryptionProcessor.BaseSerializer.FromStream<JObject>(responseMessage.Content),
-                        getItemDeserializer().parseFrom(ObjectNode.class,
-                            EncryptionModelBridgeInternal.getByteArrayContent(rsp)),
-                        this.encryptor,
-                        this.getItemDeserializer()
-                    );
-
-                    return createEncryptionItemResponse(rsp, (T) encryptableItem);
-                }
-            ).subscribeOn(encryptionScheduler);
-
-        } else {
-            byte[] streamPayload = cosmosSerializerToStream(item);
-            Mono<CosmosItemResponse<byte[]>> response = createItemHelper(
-                streamPayload,
-                partitionKey,
-                requestOptions,
-                true
-            );
-
-            return response
-                .publishOn(encryptionScheduler)
-                .map(
-                    rsp -> {
-                        return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
-                    }
-                );
-        }
+        byte[] streamPayload = cosmosSerializerToStream(item);
+        CosmosItemRequestOptions finalRequestOptions = requestOptions;
+        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.createItem(
+            encryptedPayload,
+            partitionKey,
+            finalRequestOptions)
+            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
+                setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
+                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
+            }));
     }
 
 
@@ -262,9 +101,9 @@ public class EncryptionCosmosAsyncContainer {
      * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
      * single Cosmos item response with the deleted item.
      *
-     * @param itemId id of the item.
+     * @param itemId       id of the item.
      * @param partitionKey partitionKey of the item.
-     * @param options the request options.
+     * @param options      the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
@@ -274,14 +113,13 @@ public class EncryptionCosmosAsyncContainer {
         return container.deleteItem(itemId, partitionKey, options);
     }
 
-
     /**
      * upserts item and encrypts the requested fields
      *
-     * @param item the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey the partition key.
+     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey   the partition key.
      * @param requestOptions request option
-     * @param <T> serialization class type
+     * @param <T>            serialization class type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
@@ -292,70 +130,31 @@ public class EncryptionCosmosAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null || encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return container.upsertItem(item, partitionKey, requestOptions);
-        }
-
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
-        EncryptableItem encryptableItem = Utils.as(item, EncryptableItem.class);
-        if (encryptableItem != null) {
 
-            // TODO: serialize or deserialize?
-            //                     using (Stream streamPayload = encryptableItem.ToStream(this.CosmosSerializer))
-            byte[] streamPayload = encryptableItem.toStream(this.getItemDeserializer());
-
-            Mono<CosmosItemResponse<byte[]>> rspMono = this.upsertItemHelper(streamPayload,
-                partitionKey,
-                requestOptions,
-                false);
-
-
-            return rspMono.map(
-                rsp -> {
-                    encryptableItem.setDecryptableItem(
-                        //EncryptionProcessor.BaseSerializer.FromStream<JObject>(responseMessage.Content),
-                        getItemDeserializer().parseFrom(ObjectNode.class,
-                            EncryptionModelBridgeInternal.getByteArrayContent(rsp)),
-                        this.encryptor,
-                        this.getItemDeserializer()
-                    );
-
-                    return createEncryptionItemResponse(rsp, (T) encryptableItem);
-                }
-            ).subscribeOn(encryptionScheduler);
-
-        } else {
-            byte[] streamPayload = cosmosSerializerToStream(item);
-            Mono<CosmosItemResponse<byte[]>> response = upsertItemHelper(
-                streamPayload,
-                partitionKey,
-                requestOptions,
-                true
-            );
-
-            return response
-                .publishOn(encryptionScheduler)
-                .map(
-                    rsp -> {
-                        return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
-                    }
-                );
-        }
+        byte[] streamPayload = cosmosSerializerToStream(item);
+        CosmosItemRequestOptions finalRequestOptions = requestOptions;
+        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.upsertItem(
+            encryptedPayload,
+            partitionKey,
+            finalRequestOptions)
+            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
+                setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
+                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
+            }));
     }
 
     /**
      * replaces item and encrypts the requested fields
      *
-     * @param item the Cosmos item represented as a POJO or Cosmos item object.
-     * @param itemId the item id.
-     * @param partitionKey the partition key.
+     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
+     * @param itemId         the item id.
+     * @param partitionKey   the partition key.
      * @param requestOptions request option
-     * @param <T> serialization class type
+     * @param <T>            serialization class type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
@@ -367,98 +166,32 @@ public class EncryptionCosmosAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
-            EncryptionItemRequestOptions.class);
-
-        if (encryptionItemRequestOptions == null || encryptionItemRequestOptions.getEncryptionOptions() == null) {
-            return container.replaceItem(item, itemId, partitionKey, requestOptions);
-        }
-
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
 
-        EncryptableItem encryptableItem = Utils.as(item, EncryptableItem.class);
-        if (encryptableItem != null) {
-
-            // using (Stream streamPayload = encryptableItem.ToStream(this.CosmosSerializer))
-            byte[] streamPayload = encryptableItem.toStream(this.getItemDeserializer());
-
-            Mono<CosmosItemResponse<byte[]>> rspMono = this.replaceItemHelper(streamPayload,
-                itemId,
-                partitionKey,
-                requestOptions,
-                false);
-
-
-            return rspMono.map(
-                rsp -> {
-                    encryptableItem.setDecryptableItem(
-                        //EncryptionProcessor.BaseSerializer.FromStream<JObject>(responseMessage.Content),
-                        getItemDeserializer().parseFrom(ObjectNode.class,
-                            EncryptionModelBridgeInternal.getByteArrayContent(rsp)),
-                        this.encryptor,
-                        this.getItemDeserializer()
-                    );
-
-                    return createEncryptionItemResponse(rsp, (T) encryptableItem);
-                }
-            ).subscribeOn(encryptionScheduler);
-
-        } else {
-            byte[] streamPayload = cosmosSerializerToStream(item);
-            Mono<CosmosItemResponse<byte[]>> response = replaceItemHelper(
-                streamPayload,
-                itemId,
-                partitionKey,
-                requestOptions,
-                true
-            );
-
-            return response
-                .publishOn(encryptionScheduler)
-                .map(
-                    rsp -> {
-                        return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
-                    }
-                );
-        }
-    }
-
-    private Mono<CosmosItemResponse<byte[]>> readItemHelper(
-        String id,
-        PartitionKey partitionKey,
-        CosmosItemRequestOptions requestOptions,
-        boolean decryptResponse) {
-        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.container.readItem(
-            id,
+        byte[] streamPayload = cosmosSerializerToStream(item);
+        CosmosItemRequestOptions finalRequestOptions = requestOptions;
+        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.replaceItem(
+            encryptedPayload,
+            itemId,
             partitionKey,
-            requestOptions, byte[].class);
-
-
-        return responseMessageMono
-            .publishOn(encryptionScheduler)
-            .flatMap(
-                rsp -> {
-                    if (decryptResponse) {
-                        return setByteArrayContent(rsp,
-                            EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                                this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
-                    }
-
-                    return Mono.just(rsp);
-                }
-            );
+            finalRequestOptions)
+            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
+                setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
+                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
+            }));
     }
 
     /**
      * Reads item and decrypt the encrypted fields
      *
-     * @param id item id
-     * @param partitionKey the partition key.
+     * @param id             item id
+     * @param partitionKey   the partition key.
      * @param requestOptions request options
-     * @param classType deserialization class type
-     * @param <T> type
+     * @param classType      deserialization class type
+     * @param <T>            type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
@@ -466,42 +199,17 @@ public class EncryptionCosmosAsyncContainer {
                                                     CosmosItemRequestOptions requestOptions,
                                                     Class<T> classType) {
 
-        if (DecryptableItem.class == classType) {
 
-            Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(
-                id,
-                partitionKey,
-                requestOptions,
-                false);
-
-            return responseMessageMono.map(
-                responseMessage -> {
-
-                    DecryptableItemCore decryptableItem = new DecryptableItemCore(
-                        this.getItemDeserializer().parseFrom(ObjectNode.class, responseMessage.getItem()),
-                        // TODO EncryptionProcessor.BaseSerializer.FromStream<JObject>(responseMessage.Content),
-                        this.encryptor,
-                        this.getItemDeserializer());
-
-                    return createEncryptionItemResponse(
-                        responseMessage,
-                        (T) decryptableItem);
-
-                }
-            );
-        }
-
-        // else
-        // stream? TODO: is this meaningful for java?
-        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(
+        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.container.readItem(
             id,
             partitionKey,
-            requestOptions,
-            true);
+            requestOptions, byte[].class);
 
-
-        return responseMessageMono.map(
-            responseMessage -> this.responseFactory.createItemResponse(responseMessage, classType)
+        return responseMessageMono.publishOn(encryptionScheduler).map(
+            responseMessage -> {
+                setByteArrayContent(responseMessage, this.encryptionProcessor.decrypt(responseMessage.getItem()));
+                return this.responseFactory.createItemResponse(responseMessage, classType);
+            }
         );
     }
 
@@ -511,9 +219,9 @@ public class EncryptionCosmosAsyncContainer {
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter.
-     * @param query the query.
-     * @param options the query request options.
+     * @param <T>       the type parameter.
+     * @param query     the query.
+     * @param options   the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
@@ -554,9 +262,8 @@ public class EncryptionCosmosAsyncContainer {
             return Mono.empty();
         }
 
-        return EncryptionProcessor.decrypt(
-            input,
-            this.encryptor).map(pair -> pair.getLeft());
+        return this.encryptionProcessor.decrypt(
+            input);
     }
 
     private Mono<CosmosItemResponse<byte[]>> setByteArrayContent(CosmosItemResponse<byte[]> rsp,
@@ -576,41 +283,21 @@ public class EncryptionCosmosAsyncContainer {
                 .flatMap(
                     page -> {
                         List<byte[]> byteArrayList = page.getResults().stream()
-                                                         .map(node -> cosmosSerializerToStream(node))
-                                                         .collect(Collectors.toList());
+                            .map(node -> cosmosSerializerToStream(node))
+                            .collect(Collectors.toList());
 
-                        if (classType == DecryptableItem.class) {
-                            List<T> itemList = new ArrayList<>(byteArrayList.size());
-
-                            for (byte[] bytes : byteArrayList) {
-                                // TODO: there is room for further optimizing this
-                                DecryptableItemCore decryptableItem =
-                                    new DecryptableItemCore(getItemDeserializer().parseFrom(JsonNode.class, bytes),
-                                        encryptor, this.getItemDeserializer());
-                                itemList.add((T) decryptableItem);
-                            }
-
-                            return Mono.just(ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
+                        List<Mono<byte[]>> byteArrayMonoList =
+                            byteArrayList.stream().map(bytes -> decryptResponse(bytes)).collect(Collectors.toList());
+                        return Flux.concat(byteArrayMonoList).map(
+                            item -> getItemDeserializer().parseFrom(classType, item)
+                        ).collectList().map(itemList ->
+                            ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                                 page.getResponseHeaders(),
                                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)));
-                        } else {
-                            List<Mono<byte[]>> byteArrayMonoList =
-                                byteArrayList.stream().map(bytes -> decryptResponse(bytes)).collect(Collectors.toList());
-                            return Flux.concat(byteArrayMonoList).map(
-                                item -> {
-                                    return getItemDeserializer().parseFrom(classType, item);
-                                }
-                            ).collectList().map(itemList ->
-                                ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
-                                    page.getResponseHeaders(),
-                                    BridgeInternal.queryMetricsFromFeedResponse(page),
-                                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
-                            );
-                        }
+                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
+                        );
                     }
                 )
         );
     }
 }
-

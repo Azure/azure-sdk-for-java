@@ -16,68 +16,71 @@ import reactor.core.publisher.Mono;
  * CosmosClient with Encryption support.
  */
 public class EncryptionAsyncCosmosClient {
-    private final EncryptionCosmosAsyncContainer encryptionCosmosContainer;
+    private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
 
-    public EncryptionAsyncCosmosClient(EncryptionCosmosAsyncContainer encryptionCosmosContainer,
-                                       EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        if (encryptionCosmosContainer == null) {
+    EncryptionAsyncCosmosClient(CosmosAsyncClient cosmosAsyncClient,
+                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+        if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
         }
         if (encryptionKeyStoreProvider == null) {
             throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
         }
-
-        this.encryptionCosmosContainer = encryptionCosmosContainer;
+        this.cosmosAsyncClient = cosmosAsyncClient;
         this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
         this.clientEncryptionKeyPropertiesCacheByKeyId = new AsyncCache<>();
         this.clientEncryptionPolicyCacheByContainerId = new AsyncCache<>();
     }
 
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
+    EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
         return encryptionKeyStoreProvider;
     }
 
-    public Mono<ClientEncryptionPolicy> getClientEncryptionPolicyAsync(
-        EncryptionCosmosAsyncContainer encryptionCosmosContainer,
+    Mono<ClientEncryptionPolicy> getClientEncryptionPolicyAsync(
+        CosmosAsyncContainer container,
         boolean shouldForceRefresh) {
         // container Id is unique within a Database.
-        String cacheKey = encryptionCosmosContainer.getContainer().getDatabase().getId() + "/" + encryptionCosmosContainer.getContainer().getId();
+        String cacheKey =
+            container.getDatabase().getId() + "/" + container.getId();
 
         // cache it against Database and Container ID key.
         if (!shouldForceRefresh) {
             return this.clientEncryptionPolicyCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> encryptionCosmosContainer.getContainer().read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()));
+                () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()));
         } else {
             return this.clientEncryptionPolicyCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> encryptionCosmosContainer.getContainer().read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()))
+                () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()))
                 .flatMap(clientEncryptionPolicy -> this.clientEncryptionPolicyCacheByContainerId.getAsync(
                     cacheKey,
                     clientEncryptionPolicy,
-                    () -> encryptionCosmosContainer.getContainer().read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy())));
+                    () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy())));
         }
     }
 
-    public Mono<CosmosClientEncryptionKeyProperties> getClientEncryptionPropertiesAsync(
+    Mono<CosmosClientEncryptionKeyProperties> getClientEncryptionPropertiesAsync(
         String clientEncryptionKeyId,
-        EncryptionCosmosAsyncContainer encryptionCosmosContainer,
+        CosmosAsyncContainer cosmosAsyncContainer,
         boolean shouldForceRefresh) {
         /// Client Encryption key Id is unique within a Database.
-        String cacheKey = encryptionCosmosContainer.getContainer().getDatabase().getId() + "/" + clientEncryptionKeyId;
+        String cacheKey = cosmosAsyncContainer.getDatabase().getId() + "/" + clientEncryptionKeyId;
         if (!shouldForceRefresh) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
-                this.fetchClientEncryptionKeyPropertiesAsync(encryptionCosmosContainer.getContainer(), clientEncryptionKeyId));
+                this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
+                    clientEncryptionKeyId));
         } else {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
-                this.fetchClientEncryptionKeyPropertiesAsync(encryptionCosmosContainer.getContainer(), clientEncryptionKeyId)
+                this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
+                    clientEncryptionKeyId)
             ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, () ->
-                this.fetchClientEncryptionKeyPropertiesAsync(encryptionCosmosContainer.getContainer(), clientEncryptionKeyId)));
+                this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
+                    clientEncryptionKeyId)));
         }
     }
 
@@ -94,7 +97,38 @@ public class EncryptionAsyncCosmosClient {
             "Please make sure you have created the Client Encryption Keys", throwable)));
     }
 
-    public EncryptionCosmosAsyncContainer getEncryptionAsyncCosmosClient() {
-        return this.encryptionCosmosContainer;
+    public CosmosAsyncClient getCosmosAsyncClient() {
+        return cosmosAsyncClient;
     }
+
+    /**
+     * Get Cosmos Client with Encryption support for performing operations using client-side encryption.
+     * @param cosmosAsyncClient Regular Cosmos Client.
+     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master keys.
+     * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
+     */
+    public static EncryptionAsyncCosmosClient buildEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+                                                               EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+        if (cosmosAsyncClient == null) {
+            throw new IllegalArgumentException("cosmosClient is null");
+        }
+        if (encryptionKeyStoreProvider == null) {
+            throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
+        }
+
+         return new EncryptionAsyncCosmosClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+    }
+
+    /**
+     * Gets a Container with Encryption capabilities
+     *
+     * @param container original container
+     * @param encryptionAsyncCosmosClient encryption client to be used, which can be created using{@link #buildEncryptionAsyncClient(CosmosAsyncClient, EncryptionKeyStoreProvider)}
+     * @return container with encryption capabilities
+     */
+    public static EncryptionCosmosAsyncContainer buildCosmosAsyncContainer(CosmosAsyncContainer container, EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
+        return new EncryptionCosmosAsyncContainer(container, encryptionAsyncCosmosClient);
+    }
+
+
 }

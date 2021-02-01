@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
@@ -11,12 +12,11 @@ import java.nio.ByteBuffer;
 
 public class EncryptionUtils {
     public static byte[] serializeJsonToByteArray(ObjectMapper objectMapper, Object object) {
-        return toByteArray(com.azure.cosmos.implementation.Utils.serializeJsonToByteBuffer(objectMapper, object));
+        return toByteArray(Utils.serializeJsonToByteBuffer(objectMapper, object));
     }
 
     public static byte[] toByteArray(ByteBuffer buf) {
-        buf.position(0);
-        byte[] arr = new byte[buf.remaining()];
+        byte[] arr = new byte[buf.limit()];
         buf.get(arr);
         return arr;
     }

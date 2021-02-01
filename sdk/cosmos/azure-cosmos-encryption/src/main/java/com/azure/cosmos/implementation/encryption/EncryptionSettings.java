@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.encryption.CosmosEncryptionType;
+import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -68,14 +69,15 @@ public final class EncryptionSettings {
     private Mono<CachedEncryptionSettings> fetchCachedEncryptionSettingsAsync(String propertyName,
                                                                               EncryptionProcessor encryptionProcessor) {
         Mono<ClientEncryptionPolicy> encryptionPolicyMono =
-            encryptionProcessor.getEncryptionCosmosClient().getClientEncryptionPolicyAsync(encryptionProcessor.getEncryptionCosmosContainer(), false);
+            EncryptionBridgeInternal.getClientEncryptionPolicyAsync(encryptionProcessor.getEncryptionCosmosClient(),
+                encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
         return encryptionPolicyMono.flatMap(clientEncryptionPolicy -> {
             if (clientEncryptionPolicy != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
                     if (propertyToEncrypt.path.substring(1).equals(propertyName)) {
                         Mono<CosmosClientEncryptionKeyProperties> keyPropertiesMono =
-                            encryptionProcessor.getEncryptionCosmosClient().getClientEncryptionPropertiesAsync(propertyToEncrypt.clientEncryptionKeyId, encryptionProcessor.getEncryptionCosmosContainer(), forceRefreshClientEncryptionKey.get());
+                            EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(), propertyToEncrypt.clientEncryptionKeyId, encryptionProcessor.getCosmosAsyncContainer(), forceRefreshClientEncryptionKey.get());
                         keyPropertiesMono.flatMap(keyProperties -> {
                             ProtectedDataEncryptionKey protectedDataEncryptionKey;
                             try {
@@ -189,7 +191,7 @@ public final class EncryptionSettings {
     }
 
     void setEncryptionSettingForProperty(String propertyName, EncryptionSettings encryptionSettings,
-                                                 Instant expiryUtc) {
+                                         Instant expiryUtc) {
         CachedEncryptionSettings cachedEncryptionSettings = new CachedEncryptionSettings(encryptionSettings, expiryUtc);
         this.EncryptionSettingCacheByPropertyName.set(propertyName, cachedEncryptionSettings);
     }
