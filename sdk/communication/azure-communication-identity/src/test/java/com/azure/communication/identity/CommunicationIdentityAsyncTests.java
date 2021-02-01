@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,8 +106,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithToken");
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
         Mono<CommunicationUserIdentifierWithTokenResult> createUserWithToken = asyncClient.createUserWithToken(scopes);
@@ -126,8 +124,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithTokenWithResponse");
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifierWithTokenResult>> createUserWithToken = 
@@ -239,8 +236,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap((AccessToken communicationUserToken) -> {
                             return asyncClient.revokeTokens(communicationUser);
@@ -260,8 +256,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap((AccessToken communicationUserToken) -> {
                             return asyncClient.revokeTokensWithResponse(communicationUser);
@@ -311,8 +306,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -335,8 +329,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -355,8 +348,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "issueTokenWithNullUser");
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
         StepVerifier.create(
@@ -382,8 +374,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "issueTokenWithResponseWithNullUser");
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
         StepVerifier.create(
@@ -472,8 +463,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap(communicationUserToken -> {
                             return asyncClient.revokeTokens(communicationUser);
@@ -493,8 +483,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap(communicationUserToken -> {
                             return asyncClient.revokeTokensWithResponse(communicationUser);
@@ -517,8 +506,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueToken(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -541,8 +529,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = 
-                        new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.issueTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {

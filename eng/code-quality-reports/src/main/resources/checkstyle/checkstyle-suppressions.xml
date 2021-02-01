@@ -573,4 +573,11 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks in azure-core-experimental -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
+
+  <!-- Suppress checks on AutoRest generated Attestation service code -->
+  <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
+            files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
+  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+            files="com.azure.security.attestation.models.*\.java"/>
+
 </suppressions>
