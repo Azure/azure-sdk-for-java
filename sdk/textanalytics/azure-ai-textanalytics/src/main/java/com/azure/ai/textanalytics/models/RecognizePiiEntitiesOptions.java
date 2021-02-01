@@ -6,10 +6,10 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link RecognizePiiEntityOptions} model.
+ * The {@link RecognizePiiEntitiesOptions} model.
  */
 @Fluent
-public final class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions {
+public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
     private PiiEntityDomainType domainFilter;
 
     /**
@@ -18,10 +18,10 @@ public final class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizePiiEntityOptions} object itself.
+     * @return The {@link RecognizePiiEntitiesOptions} object itself.
      */
     @Override
-    public RecognizePiiEntityOptions setModelVersion(String modelVersion) {
+    public RecognizePiiEntitiesOptions setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
@@ -32,10 +32,10 @@ public final class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link RecognizePiiEntityOptions} object itself.
+     * @return the {@link RecognizePiiEntitiesOptions} object itself.
      */
     @Override
-    public RecognizePiiEntityOptions setIncludeStatistics(boolean includeStatistics) {
+    public RecognizePiiEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
         return this;
     }
@@ -58,9 +58,9 @@ public final class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions
      *
      * @param domainFilter It filters the response entities to ones only included in the specified domain.
      *
-     * @return The RecognizePiiEntityOptions object itself.
+     * @return The {@link RecognizePiiEntitiesOptions} object itself.
      */
-    public RecognizePiiEntityOptions setDomainFilter(PiiEntityDomainType domainFilter) {
+    public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomainType domainFilter) {
         this.domainFilter = domainFilter;
         return this;
     }

@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.HealthcareTaskResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsErrorInformationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsOperationResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
@@ -16,8 +15,6 @@ import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -28,6 +25,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -301,17 +299,9 @@ class AnalyzeHealthcareAsyncClient {
             case FAILED:
                 final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
                     null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrorInformationList(exception,
-                    analyzeOperationResultResponse.getValue().getErrors().stream()
-                        .map(error -> {
-                            final TextAnalyticsErrorInformation textAnalyticsErrorInformation =
-                                new TextAnalyticsErrorInformation();
-                            TextAnalyticsErrorInformationPropertiesHelper.setErrorCode(textAnalyticsErrorInformation,
-                                TextAnalyticsErrorCode.fromString(error.getCode().toString()));
-                            TextAnalyticsErrorInformationPropertiesHelper.setMessage(textAnalyticsErrorInformation,
-                                error.getMessage());
-                            return textAnalyticsErrorInformation;
-                        }).collect(Collectors.toList()));
+                TextAnalyticsExceptionPropertiesHelper.setErrors(exception,
+                    IterableStream.of(analyzeOperationResultResponse.getValue().getErrors().stream()
+                                          .map(Utility::toTextAnalyticsError).collect(Collectors.toList())));
                 throw logger.logExceptionAsError(exception);
             case CANCELLED:
                 logger.info("LongRunningOperation-Cancelled");

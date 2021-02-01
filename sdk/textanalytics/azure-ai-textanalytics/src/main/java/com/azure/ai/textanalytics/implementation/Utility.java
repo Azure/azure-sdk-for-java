@@ -552,4 +552,19 @@ public final class Utility {
             throw new RuntimeException(String.format("job state, %s is not supported.", jobState));
         }
     }
+
+    // TODO: Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
+    public static Map<String, Integer> parseTarget(String targetReference) {
+        // action could be failed and the target reference is "#/tasks/keyPhraseExtractionTasks/0";
+        if (!CoreUtils.isNullOrEmpty(targetReference)) {
+            final String[] segments = targetReference.split("/");
+            if (segments.length == 4) {
+                final Map<String, Integer> targetMap = new HashMap<>();
+                targetMap.put(segments[2], Integer.valueOf(segments[3]));
+                return targetMap;
+            }
+        }
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse target reference from: " + targetReference));
+    }
 }
