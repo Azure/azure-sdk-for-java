@@ -150,7 +150,7 @@ public final class CloudEvent {
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setData(Object data) {
+    CloudEvent setData(Object data) {
         if (data instanceof byte[]) {
             byte[] encoded = Base64.getEncoder().encode((byte[]) data);
             this.cloudEvent.setDataBase64(encoded);
@@ -168,7 +168,7 @@ public final class CloudEvent {
      *                        {@code "application/xml"}.
      * @return the cloud event itself.
      */
-    public CloudEvent setData(Object data, String dataContentType) {
+    CloudEvent setData(Object data, String dataContentType) {
         this.setData(data);
         this.cloudEvent.setDatacontenttype(dataContentType);
         return this;
