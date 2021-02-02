@@ -25,6 +25,8 @@ import java.util.function.Function;
 public final class SearchIndexingBufferedSenderOptions<T> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
+
+    // Retaining this commented out code as it may be added back in a future release.
 //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
 //        if (oldBatchCount == 1) {
 //            return 1;
@@ -32,6 +34,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 //            return Math.max(1, oldBatchCount / 2);
 //        }
 //    };
+
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
@@ -154,6 +157,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
         return initialBatchActionCount;
     }
 
+    // Retaining this commented out code as it may be added back in a future release.
 //    /**
 //     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
 //     * by the service.
@@ -170,6 +174,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 //        return this;
 //    }
 
+    // Retaining this commented out code as it may be added back in a future release.
 //    /**
 //     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
 //     * by the service.

@@ -575,6 +575,7 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 
   <!-- Suppress non-conforming service builder and service clients -->
+  <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
             lines="137,154"/>
