@@ -64,7 +64,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
-  $docsReadMeName = $pkgId -replace "azure-" , ""
+  $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
   $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
