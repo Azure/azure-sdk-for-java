@@ -11,11 +11,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.test.StepVerifier;
 
-import com.azure.communication.administration.CommunicationIdentityClient;
-import com.azure.communication.administration.CommunicationUserToken;
+import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
@@ -57,8 +58,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         firstThreadMember = communicationClient.createUser();
         secondThreadMember = communicationClient.createUser();
 
-        List<String> scopes = new ArrayList<String>(Arrays.asList("chat"));
-        CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();

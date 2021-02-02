@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 // This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
 // This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
@@ -114,12 +113,14 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public String getValue(String name) {
-        return nettyHeaders.get(name);
+        final HttpHeader header = get(name);
+        return (header == null) ? null : header.getValue();
     }
 
     @Override
     public String[] getValues(String name) {
-        return nettyHeaders.getAll(name).toArray(new String[] { });
+        final HttpHeader header = get(name);
+        return (header == null) ? null : header.getValues();
     }
 
     @Override
@@ -160,9 +161,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
                     // To alleviate some concerns with performance, we internally cache the joined string in the
                     // innerJoinMap, so multiple requests to this get method will not incur the cost of string
                     // concatenation.
-                    return innerJoinMap.computeIfAbsent((String) key, _key -> {
-                        return String.join(",", nettyHeaders.getAll(_key));
-                    });
+                    return innerJoinMap.computeIfAbsent((String) key, _key ->
+                        String.join(",", nettyHeaders.getAll(_key)));
                 }
 
                 @Override
@@ -211,8 +211,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Stream<HttpHeader> stream() {
-        return StreamSupport.stream(nettyHeaders.spliterator(), false)
-                   .map(e -> new NettyHttpHeader(this, e.getKey(), e.getValue()));
+        return nettyHeaders.names().stream()
+            .map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
     }
 
     static class NettyHttpHeader extends HttpHeader {
