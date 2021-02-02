@@ -336,14 +336,20 @@ class ReactorConnectionTest {
             .thenReturn(handler);
         when(provider.createSessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, timeout)).thenReturn(sessionHandler);
 
+        when(reactor.connectionToHost(HOSTNAME, handler.getProtocolPort(), handler)).thenReturn(connectionProtonJ);
+
         // Act and Assert
-        ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
+        final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
             provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
 
         try {
             StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
-                .verifyError(TimeoutException.class);
+                .expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof TimeoutException
+                        || error.getCause() instanceof TimeoutException);
+                })
+                .verify();
         } finally {
             connectionBad.dispose();
         }
@@ -373,8 +379,16 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.getClaimsBasedSecurityNode())
             .expectErrorSatisfies(e -> {
-                Assertions.assertTrue(e instanceof AmqpException);
-                AmqpException amqpException = (AmqpException) e;
+                final AmqpException amqpException;
+                if (e instanceof AmqpException) {
+                    amqpException = (AmqpException) e;
+                } else if (e.getCause() instanceof AmqpException) {
+                    amqpException = (AmqpException) e.getCause();
+                } else {
+                    amqpException = null;
+                    Assertions.fail("Exception was not the correct type: " + e);
+                }
+
                 Assertions.assertEquals(condition, amqpException.getErrorCondition());
             })
             .verify();
