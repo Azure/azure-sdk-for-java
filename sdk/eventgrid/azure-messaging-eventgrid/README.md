@@ -280,39 +280,41 @@ You can't send a System Event to a System Topic by using this SDK.
 Receiving and consuming system events is the same as other events. For convenience, we have pre-defined a set of classes
 that represent the data part of the system events. These classes are under package `com.azure.messaging.eventgrid.systemevents`.
 You can use this SDK's convenience APIs to deal with System Events and their data:
-- deserialize the System Event data to a specific class type for an event type;
-```java
-    Object systemEventData = event.asSystemEventData();
-    if (systemEventData != null) {
-        // https://docs.microsoft.com/azure/event-grid/event-schema-blob-storage has the possible event types for blob sotrage.
-        // Each system event's type is mapped to a class under package com.azure.messaging.eventgrid.systemevents.
-        if (systemEventData instanceof StorageBlobCreatedEventData) {
-            StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
-            // do something ...
-        } else if (systemEventData instanceof StorageBlobDeletedEventData) {
-            StorageBlobDeletedEventData blobDeletedData = (StorageBlobDeletedEventData) systemEventData;
-            // do something ...
-        } else if (systemEventData instanceof StorageBlobRenamedEventData) {
-            StorageBlobRenamedEventData blobRenamedData = (StorageBlobRenamedEventData) systemEventData;
-            // do something ...
-        }
-    }
-```
-- tell whether an event is a System Event;
-```java
-    boolean isSystemEvent = event.isSystemEvent();
-```
 - look up the System Event data class that a System Event can be deserialized to;
 ```java
     Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 ```
-- deserialize the system event data to a class instance like any other domain classes.
+- deserialize the system event data to a class instance like any other model classes;
 ```java
     // Deserialize the event data to an instance of a specific System Event data class type
     BinaryData data = event.getData();
     if (data != null) {
         StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
         System.out.println(blobCreatedData.getUrl());
+    }
+```
+- deal with multiple event types.
+```java
+    List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridJsonString);
+    for (EventGridEvent eventGridEvent : eventGridEvents) {
+        BinaryData data = eventGridEvent.getData();
+        switch (eventGridEvent.getEventType()) {
+            case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_DELETED:
+                AppConfigurationKeyValueDeletedEventData keyValueDeletedEventData =
+                    data.toObject(TypeReference.createInstance(AppConfigurationKeyValueDeletedEventData.class));
+                System.out.println("Processing the AppConfigurationKeyValueDeletedEventData...");
+                System.out.printf("The key is: %s%n", keyValueDeletedEventData.getKey());
+                break;
+            case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
+                AppConfigurationKeyValueModifiedEventData keyValueModifiedEventData =
+                    data.toObject(TypeReference.createInstance(AppConfigurationKeyValueModifiedEventData.class));
+                System.out.println("Processing the AppConfigurationKeyValueModifiedEventData...");
+                System.out.printf("The key is: %s%n", keyValueModifiedEventData.getKey());
+                break;
+            default:
+                System.out.printf("%s isn't an AppConfiguration event data%n", eventGridEvent.getEventType());
+                break;
+        }
     }
 ```
 

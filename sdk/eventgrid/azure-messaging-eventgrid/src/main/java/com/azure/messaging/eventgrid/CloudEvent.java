@@ -108,21 +108,11 @@ public final class CloudEvent {
     }
 
     /**
-     * Gets whether this event is a system event.
-     * @see SystemEventNames
-     * @return {@code true} if the even is a system event, or {@code false} otherwise.
-     */
-    public boolean isSystemEvent() {
-        String eventType = this.getType();
-        return SystemEventNames.getSystemEventMappings().containsKey(eventType);
-    }
-
-    /**
      * Convert the event's data into the system event data if the event is a system event.
      * @see SystemEventNames
      * @return The system event if the event is a system event, or {@code null} if it's not.
      */
-    public Object asSystemEventData() {
+    Object asSystemEventData() {
         if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
             return null;
         }

@@ -84,19 +84,17 @@ public class ReadmeSamples {
     public void deserializeEventGridEvent() {
         List<EventGridEvent> events = EventGridEvent.fromString(jsonData);
         for (EventGridEvent event : events) {
-            if (event.isSystemEvent()) {
-                Object systemEventData = event.asSystemEventData();
-                if (systemEventData instanceof SubscriptionValidationEventData) {
-                    SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
-                    System.out.println(validationData.getValidationCode());
-                }
+            if (event.getEventType().equals(SystemEventNames.EVENT_GRID_SUBSCRIPTION_VALIDATION)) {
+                SubscriptionValidationEventData validationData = event.getData()
+                    .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
+                System.out.println(validationData.getValidationCode());
             }
             else {
                 // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
                 // or BinaryData.toBytes(). This sample uses toString.
                 BinaryData binaryData = event.getData();
                 if (binaryData != null) {
-                    System.out.println(binaryData.toString()); // "Example Data"
+                    System.out.println(binaryData.toString());
                 }
             }
         }
@@ -105,12 +103,10 @@ public class ReadmeSamples {
     public void deserializeCloudEvent() {
         List<CloudEvent> events = CloudEvent.fromString(jsonData);
         for (CloudEvent event : events) {
-            if (event.isSystemEvent()) {
-                Object systemEventData = event.asSystemEventData();
-                if (systemEventData instanceof SubscriptionValidationEventData) {
-                    SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
-                    System.out.println(validationData.getValidationCode());
-                }
+            if (event.getType().equals(SystemEventNames.EVENT_GRID_SUBSCRIPTION_VALIDATION)) {
+                SubscriptionValidationEventData validationData = event.getData()
+                    .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
+                System.out.println(validationData.getValidationCode());
             }
             else {
                 // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
@@ -143,9 +139,6 @@ public class ReadmeSamples {
         List<EventGridEvent> events = EventGridEvent.fromString(eventGridEventJsonData);
         EventGridEvent event = events.get(0);
 
-        // Tell if an event is a System Event
-        boolean isSystemEvent = event.isSystemEvent();
-
         // Look up the System Event data class
         Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 
@@ -154,22 +147,6 @@ public class ReadmeSamples {
         if (data != null) {
             StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
             System.out.println(blobCreatedData.getUrl());
-        }
-
-        // A more convenient way to deserialize the System Event data
-        Object systemEventData = event.asSystemEventData();
-        if (systemEventData != null) {
-            if (systemEventData instanceof StorageBlobCreatedEventData) {
-                StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
-                // do something ...
-            } else if (systemEventData instanceof StorageBlobDeletedEventData) {
-                StorageBlobDeletedEventData blobDeletedData = (StorageBlobDeletedEventData) systemEventData;
-                // do something ...
-            } else if (systemEventData instanceof StorageBlobRenamedEventData) {
-                StorageBlobRenamedEventData blobRenamedData = (StorageBlobRenamedEventData) systemEventData;
-                // do something ...
-            }
-
         }
     }
 }
