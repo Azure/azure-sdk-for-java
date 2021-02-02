@@ -37,10 +37,10 @@ public class AzureMonitorExporterTestBase extends TestBase {
 
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(interceptorManager.getRecordPolicy(), validator).build();
+            .policies(validator).build();
 
         AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
+            .connectionString("InstrumentationKey=key;IngestionEndpoint=https://testendpoint.azure.com/")
             .pipeline(httpPipeline)
             .buildExporter();
         OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));

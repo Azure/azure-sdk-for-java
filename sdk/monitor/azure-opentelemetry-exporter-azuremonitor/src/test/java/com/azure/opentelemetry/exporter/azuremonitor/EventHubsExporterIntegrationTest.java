@@ -7,7 +7,12 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
@@ -25,15 +30,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBase {
 
     private static final String CONNECTION_STRING = "{connection-string}";
+    private static final String STORAGE_CONNECTION_STRING = "{storage-connection-string}";
 
     @Test
     public void producerTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(2);
+        String spanName = "event-hubs-producer-testing";
         Tracer tracer = configureAzureMonitorExporter((context, next) -> {
             Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             asyncString.subscribe(value -> {
-                if (value.contains("event-hubs-producer-testing")) {
+                if (value.contains(spanName)) {
                     exporterCountDown.countDown();
                 }
                 if (value.contains("EventHubs.send")) {
@@ -45,7 +52,7 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .buildAsyncProducerClient();
-        Span span = tracer.spanBuilder("event-hubs-producer-testing").startSpan();
+        Span span = tracer.spanBuilder(spanName).startSpan();
         final Scope scope = span.makeCurrent();
         try {
             producer.createBatch()
@@ -60,10 +67,9 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
         assertTrue(exporterCountDown.await(5, TimeUnit.SECONDS));
     }
 
-
     @Test
     public void processorTest() throws InterruptedException {
-        CountDownLatch exporterCountDown = new CountDownLatch(2);
+        CountDownLatch exporterCountDown = new CountDownLatch(3);
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .buildAsyncProducerClient();
@@ -72,10 +78,16 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
             Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             asyncString.subscribe(value -> {
+                // user span
                 if (value.contains("event-hubs-consumer-testing")) {
                     exporterCountDown.countDown();
                 }
+                // process span
                 if (value.contains("EventHubs.process")) {
+                    exporterCountDown.countDown();
+                }
+                // Storage call
+                if (value.contains("AzureBlobStorageBlobs.setMetadata")) {
                     exporterCountDown.countDown();
                 }
             });
@@ -84,6 +96,10 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
 
         CountDownLatch partitionOwned = new CountDownLatch(1);
         CountDownLatch eventCountDown = new CountDownLatch(1);
+        BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
+            .connectionString(STORAGE_CONNECTION_STRING)
+            .containerName("{container-name}")
+            .buildAsyncClient();
         EventProcessorClient processorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .connectionString(CONNECTION_STRING)
@@ -92,10 +108,13 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
                     partitionOwned.countDown();
                 }
             })
-            .processEvent(event -> eventCountDown.countDown())
+            .processEvent(event -> {
+                event.updateCheckpoint();
+                eventCountDown.countDown();
+            })
             .processError(error -> { })
             .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
             .buildEventProcessorClient();
 
         Span span = tracer.spanBuilder("event-hubs-consumer-testing").startSpan();
