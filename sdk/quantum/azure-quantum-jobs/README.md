@@ -107,7 +107,7 @@ String containerUri = storageClient.sasUri(
 
 ### Upload Input Data
 
-Using the SAS URI, upload the json input data to the blob client. You can see an example problem file [here](src/test/resources/problem.json).
+Using the SAS URI, upload the json input data to the blob client.
 This contains the parameters to be used with [Quantum Inspired Optimizations](https://docs.microsoft.com/azure/quantum/optimization-overview-introduction)
 
 <!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L80-L92 -->
@@ -192,7 +192,7 @@ additional questions or comments.
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/quantum/azure-quantum-jobs/src
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
-[token-credential]: https://docs.microsoft.com/en-us/dotnet/api/azure.core.tokencredential?view=azure-dotnet
+[token-credential]: https://docs.microsoft.com/dotnet/api/azure.core.tokencredential?view=azure-dotnet
 [resource-groups]: https://docs.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal
 [workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [location]: https://azure.microsoft.com/global-infrastructure/services/?products=quantum
@@ -204,9 +204,9 @@ additional questions or comments.
 [style-guide-cloud]: https://aka.ms/azsdk/cloud-style-guide
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
-[azure_quantum]: https://azure.microsoft.com/en-us/services/quantum/
-[azure_quantum_workspaces]: https://docs.microsoft.com/en-gb/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
-[azure_storage]: https://azure.microsoft.com/en-us/free/storage/
+[azure_quantum]: https://azure.microsoft.com/services/quantum/
+[azure_quantum_workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
+[azure_storage]: https://azure.microsoft.com/free/storage/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_contact]: mailto:opencode@microsoft.com
