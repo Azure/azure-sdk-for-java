@@ -100,7 +100,7 @@ public class GetTestRunner {
             successCount.get(),
             errorCount.get(),
             runEndTime.minusMillis(runStartTime).toEpochMilli());
-        _executorService.shutdown();
+        _executorService.shutdownNow();
     }
 
     private void runOperation(final Key key, final Map<Key, ObjectNode> testData,
