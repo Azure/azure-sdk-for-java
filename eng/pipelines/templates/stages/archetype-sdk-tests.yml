@@ -1,4 +1,7 @@
 parameters:
+- name: TestName
+  type: string
+  default: 'LiveTest'
 - name: AdditionalPlatforms
   type: object
   default: {}
@@ -47,6 +50,16 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+- name: TestStepMavenInputs
+  type: object
+  default:
+    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '$(JavaTestVersion)'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'verify'
 - name: CloudConfig
   type: object
   default:
@@ -86,7 +99,7 @@ stages:
   # - ${{ if or(contains(parameters.Clouds, cloud.key), contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
   - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), eq(cloud.key, 'Canary'))) }}:
     - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-      - stage: ${{ cloud.key }}
+      - stage: ${{ cloud.key }}_${{ parameters.TestName }}
         dependsOn: []
         jobs:
         - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
@@ -105,6 +118,7 @@ stages:
               Location: ${{ parameters.Location }}
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
