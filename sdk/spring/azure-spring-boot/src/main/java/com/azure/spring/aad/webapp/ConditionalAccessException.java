@@ -4,10 +4,15 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
+import net.minidev.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * An exception handle Conditional Access in On-Behalf-Of flow.
@@ -40,13 +45,13 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <p>
  * step 5: {@link AADOAuth2OboAuthorizedClientRepository}get the claims field create a response by {@link
- * #claimsToHttpBody(String)}.
+ * #parametersToHttpHeader(Map)}.
  *
  * <p>
  * step 6: {@link AADWebAppConfiguration#conditionalAccessExceptionFilterFunction()} receives the response and convert
- * it into {@link ConditionalAccessException}.  {@link AADWebAppConfiguration.ConditionalAccessExceptionAdvice} can
- * catch this exception and put the claims field into session. then clear the authorization information and redirect. At
- * last {@link AADOAuth2AuthorizationRequestResolver} intercepts authorization-url, put claims into {@link
+ * it into {@link ConditionalAccessException}. {@link ConditionalAccessException} can catch this exception and put the
+ * claims field into session. then clear the authorization information and redirect. At last {@link
+ * AADOAuth2AuthorizationRequestResolver} intercepts authorization-url, put claims into {@link
  * OAuth2AuthorizationRequest} to reauthorize.
  */
 public final class ConditionalAccessException extends RuntimeException {
@@ -60,19 +65,43 @@ public final class ConditionalAccessException extends RuntimeException {
         return claims;
     }
 
-    public static ConditionalAccessException fromHttpBody(String httpBody) {
-        return new ConditionalAccessException(httpBodyToClaims(httpBody));
+    public static ConditionalAccessException fromHttpHeader(String httpHeader) {
+        return new ConditionalAccessException(
+            (String) httpHeaderToParameters(httpHeader).get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
     }
 
-    public static String httpBodyToClaims(String httpBody) {
-        return httpBody.split(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)[1];
+    /**
+     * Convert httpHeader to map structure.
+     *
+     * @param httpHeader httpHeader
+     * @return Map Object
+     */
+    public static Map<String, Object> httpHeaderToParameters(String httpHeader) {
+        // TODO I'm looking for a better way to achieve it.
+        String[] parameters = Optional.of(httpHeader)
+                                      .map(str -> str.substring(Constants.BEARER_PREFIX.length()))
+                                      .map(str -> str.replaceAll("[\"{}]", ""))
+                                      .map(str -> str.split(","))
+                                      .orElse(null);
+        return Arrays.asList(parameters)
+                     .stream()
+                     .map(elem -> elem.split(":"))
+                     .collect(Collectors.toMap(e -> e[0], e -> e[1]));
     }
 
-    public static String claimsToHttpBody(String claims) {
-        return Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS + claims + Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS;
+    /**
+     * Convert parameters to JsonString structure.
+     *
+     * @param parameters returned by webApi.
+     * @return String Object
+     */
+    public static String parametersToHttpHeader(Map<String, Object> parameters) {
+        return Constants.BEARER_PREFIX + JSONObject.toJSONString(parameters);
     }
 
-    public static boolean isConditionAccessException(String httpBody) {
-        return httpBody.startsWith(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+    public static boolean isConditionAccessException(String httpHeader) {
+        return httpHeader.startsWith(Constants.BEARER_PREFIX)
+            && ConditionalAccessException.httpHeaderToParameters(httpHeader)
+                                         .get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS) != null;
     }
 }

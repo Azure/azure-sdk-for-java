@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
@@ -36,7 +37,8 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.authorizeRequests()
+        http.addFilterBefore(new ExceptionHandlerFilter(), WebAsyncManagerIntegrationFilter.class)
+            .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
             .oauth2Login()

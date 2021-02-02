@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.webapp.ConditionalAccessException;
+import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
@@ -26,15 +27,14 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -100,30 +100,26 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             return (T) oAuth2AuthorizedClient;
         } catch (ExecutionException exception) {
             // Handle conditional access policy for obo flow.
-            String claims = Optional.of(exception)
-                                    .map(Throwable::getCause)
-                                    .filter(e -> e instanceof MsalInteractionRequiredException)
-                                    .map(e -> (MsalInteractionRequiredException) e)
-                                    .map(MsalInteractionRequiredException::claims)
-                                    .orElse(null);
-
-            if (claims != null) {
-                ServletRequestAttributes attr =
-                    (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-                HttpServletResponse response = attr.getResponse();
-                Assert.notNull(response,"HttpServletResponse should not be null.");
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                try {
-                    ServletOutputStream outputStream = response.getOutputStream();
-                    String result = ConditionalAccessException.claimsToHttpBody(claims);
-                    outputStream.write(result.getBytes(StandardCharsets.UTF_8));
-                    outputStream.flush();
-                } catch (IOException e) {
-                    LOGGER.error("An exception occurred while operating the responseOutputStream.", e);
-                }
-            }
+            // A user interaction is required, but we are in a web API, and therefore, we need to report back to the
+            // client through a 'WWW-Authenticate' header https://tools.ietf.org/html/rfc6750#section-3.1
+            Optional.of(exception)
+                    .map(Throwable::getCause)
+                    .filter(e -> e instanceof MsalInteractionRequiredException)
+                    .map(e -> (MsalInteractionRequiredException) e)
+                    .map(MsalInteractionRequiredException::claims)
+                    .ifPresent(claims -> {
+                        Map<String, Object> parameters = new HashMap<>();
+                        ServletRequestAttributes attr =
+                            (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                        HttpServletResponse response = attr.getResponse();
+                        Assert.notNull(response, "HttpServletResponse should not be null.");
+                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
+                        response.addHeader("WWWAuthenticate",
+                            ConditionalAccessException.parametersToHttpHeader(parameters));
+                    });
             LOGGER.error("Failed to load authorized client.", exception);
-        }catch (InterruptedException | ParseException exception) {
+        } catch (InterruptedException | ParseException exception) {
             LOGGER.error("Failed to load authorized client.", exception);
         }
         return null;

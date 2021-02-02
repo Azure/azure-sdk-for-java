@@ -52,9 +52,9 @@ public class CallOboServerController {
                 .bodyToMono(String.class)
                 .block();
             LOGGER.info("Response from obo: {}", body);
-            return "obo response " + (null != body ? "success." : "failed.");
+            return "Obo response " + (null != body ? "success." : "failed.");
         } else {
-            return "obo response failed.";
+            return "Obo response failed.";
         }
     }
 }

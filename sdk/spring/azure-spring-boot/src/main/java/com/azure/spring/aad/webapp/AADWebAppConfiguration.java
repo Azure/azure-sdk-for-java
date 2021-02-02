@@ -6,7 +6,6 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -29,14 +27,9 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -135,29 +128,6 @@ public class AADWebAppConfiguration {
         return result;
     }
 
-    /**
-     * Handle conditional access error in obo flow.
-     */
-    @ControllerAdvice
-    public static class ConditionalAccessExceptionAdvice {
-        @ExceptionHandler(ConditionalAccessException.class)
-        public void handleConditionalAccessException(HttpServletRequest request,
-                                                     HttpServletResponse response, Exception exception) {
-            Optional.of(exception)
-                    .map(e -> (ConditionalAccessException) e)
-                    .ifPresent(aadConditionalAccessException -> {
-                        response.setStatus(302);
-                        SecurityContextHolder.clearContext();
-                        request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
-                            aadConditionalAccessException.getClaims());
-                        try {
-                            response.sendRedirect(request.getRequestURL().toString());
-                        } catch (IOException e) {
-                            LOGGER.error("An exception occurred while redirecting url.", e);
-                        }
-                    });
-        }
-    }
 
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
@@ -237,14 +207,13 @@ public class AADWebAppConfiguration {
 
     public static ExchangeFilterFunction conditionalAccessExceptionFilterFunction() {
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-                if (clientResponse.statusCode().is4xxClientError()) {
-                    return clientResponse.bodyToMono(String.class)
-                                         .flatMap(httpBody -> {
-                                             if (ConditionalAccessException.isConditionAccessException(httpBody)) {
-                                                 return Mono.error(ConditionalAccessException.fromHttpBody(httpBody));
-                                             }
-                                             return Mono.just(clientResponse);
-                                         });
+                if (clientResponse.statusCode().is4xxClientError()
+                    && clientResponse.headers().header("WWWAuthenticate").get(0) != null) {
+                    String httpHeader = clientResponse.headers().header("WWWAuthenticate").get(0);
+                    if (ConditionalAccessException.isConditionAccessException(httpHeader)) {
+                        return Mono.error(ConditionalAccessException.fromHttpHeader(httpHeader));
+                    }
+                    return Mono.just(clientResponse);
                 }
                 return Mono.just(clientResponse);
             }
