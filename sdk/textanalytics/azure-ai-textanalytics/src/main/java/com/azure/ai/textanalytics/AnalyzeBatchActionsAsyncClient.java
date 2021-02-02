@@ -371,7 +371,7 @@ class AnalyzeBatchActionsAsyncClient {
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {
             batchStatistics = new TextDocumentBatchStatistics(
-                requestStatistics.getDocumentsCount(), requestStatistics.getErrofinal List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(neousDocumentsCount(),
+                requestStatistics.getDocumentsCount(), requestStatistics.getErroneousDocumentsCount(),
                 requestStatistics.getValidDocumentsCount(), requestStatistics.getTransactionsCount()
             );
         }
