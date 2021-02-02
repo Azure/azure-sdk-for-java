@@ -78,6 +78,18 @@ private object CosmosRowConverter
         objectNode
     }
 
+    private def convertToStringKeyMap(input : Any): Map[String, _] = {
+      try {
+        input.asInstanceOf[Map[String, _]]
+      }
+      catch {
+        case _: ClassCastException =>
+          throw new Exception(
+            s"Cannot cast $input into a Json value. MapTypes must have "
+              + s"keys of StringType for conversion Json")
+      }
+    }
+
     // scalastyle:off
     private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
@@ -100,12 +112,20 @@ private object CosmosRowConverter
             case _: StructType => rowTypeRouterToJsonArray(rowData)
             case mapType: MapType =>
                 mapType.keyType match {
-                    case StringType if rowData.isInstanceOf[Map[String, _]] =>
-                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[Map[String, _]])
+                    case StringType if rowData.isInstanceOf[Map[_, _]] =>
+                        val stringKeyMap = convertToStringKeyMap(rowData)
+                        convertSparkMapToObjectNode(
+                          mapType.valueType,
+                          mapType.valueContainsNull,
+                          stringKeyMap)
                     case StringType if rowData.isInstanceOf[UnsafeMapData] =>
-                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[UnsafeMapData])
+                        convertSparkMapToObjectNode(
+                          mapType.valueType,
+                          mapType.valueContainsNull,
+                          rowData.asInstanceOf[UnsafeMapData])
                     case _ =>
-                        throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes must have keys of StringType for conversion Json")
+                        throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes "
+                          + s"must have keys of StringType for conversion Json")
                 }
             case _ =>
                 throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
@@ -224,6 +244,7 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
+                    case None => null
                 }
             case _ => Timestamp.valueOf(value.asText())
         }
@@ -235,6 +256,7 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Date.valueOf(odt.toLocalDate)
+                    case None => null
                 }
             case _ => Date.valueOf(value.asText())
         }
