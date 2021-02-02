@@ -53,7 +53,6 @@ public class PkRangesThroughputRequestControllerTests {
     private static RxPartitionKeyRangeCache pkRangeCache;
     private static List<PartitionKeyRange> pkRanges;
     private static URI readLocation;
-    private static URI writeLocation;
 
     private PkRangesThroughputRequestController requestController;
 
@@ -63,10 +62,8 @@ public class PkRangesThroughputRequestControllerTests {
         scheduledThroughput = 2.0;
         randomPkRange = new PartitionKeyRange(UUID.randomUUID().toString(), "randomMin", "randomMax");
 
-        writeLocation = new URI("https://write-localtion1.documents.azure.com");
         readLocation = new URI("https://read-localtion1.documents.azure.com");
         globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new UnmodifiableList<>(Collections.singletonList(writeLocation))).when(globalEndpointManager).getWriteEndpoints();
         Mockito.doReturn(new UnmodifiableList<>(Collections.singletonList(readLocation))).when(globalEndpointManager).getReadEndpoints();
 
         PartitionKeyRange pkRange1 = new PartitionKeyRange(UUID.randomUUID().toString(), "AA", "BB");
@@ -98,7 +95,6 @@ public class PkRangesThroughputRequestControllerTests {
             ReflectionUtils.getRequestThrottlerMap(requestController);
 
         Set<URI> locations = new HashSet<>();
-        locations.add(writeLocation);
         locations.add(readLocation);
 
         assertThat(requestThrottlerMap).size().isEqualTo(locations.size());
@@ -135,12 +131,12 @@ public class PkRangesThroughputRequestControllerTests {
             ReflectionUtils.getRequestThrottlerMap(requestController);
 
         PartitionKeyRange pkRange = pkRanges.get(0);
-        ConcurrentHashMap<String,ThroughputRequestThrottler> requestThrottlerByPkRangeId = requestThrottlerByRegion.get(writeLocation);
+        ConcurrentHashMap<String,ThroughputRequestThrottler> requestThrottlerByPkRangeId = requestThrottlerByRegion.get(readLocation);
         ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerByPkRangeId.get(pkRange.getId()));
         requestThrottlerByPkRangeId.put(pkRange.getId(), writeLocationThrottlerSpy);
 
         // First request: Can find the matching region request throttler in request controller
-        RxDocumentServiceRequest request1Mock = this.createMockRequest(pkRange, writeLocation);
+        RxDocumentServiceRequest request1Mock = this.createMockRequest(pkRange, readLocation);
 
         TestPublisher<StoreResponse> request1MonoPublisher = TestPublisher.create();
         Mono<StoreResponse> request1Mono = request1MonoPublisher.mono();
@@ -164,7 +160,7 @@ public class PkRangesThroughputRequestControllerTests {
             .expectNext(storeResponse2Mock)
             .verifyComplete();
 
-        assertThat(requestThrottlerByRegion).size().isEqualTo(3);
+        assertThat(requestThrottlerByRegion).size().isEqualTo(2);
     }
 
     @Test(groups = "unit")

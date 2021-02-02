@@ -33,7 +33,6 @@ public class GlobalThroughputRequestControllerTests {
     private static double scheduledThroughput;
     private static GlobalEndpointManager globalEndpointManager;
     private static URI readLocation;
-    private static URI writeLocation;
 
     private GlobalThroughputRequestController requestController;
 
@@ -41,10 +40,9 @@ public class GlobalThroughputRequestControllerTests {
     public static void beforeClass_GlobalThroughputRequestControllerTests() throws URISyntaxException {
         scheduledThroughput = 2.0;
 
-        writeLocation = new URI("https://write-localtion1.documents.azure.com");
         readLocation = new URI("https://read-localtion1.documents.azure.com");
+
         globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new UnmodifiableList<>(Collections.singletonList(writeLocation))).when(globalEndpointManager).getWriteEndpoints();
         Mockito.doReturn(new UnmodifiableList<>(Collections.singletonList(readLocation))).when(globalEndpointManager).getReadEndpoints();
     }
 
@@ -59,7 +57,6 @@ public class GlobalThroughputRequestControllerTests {
         requestController.init().subscribe();
 
         Set<URI> locations = new HashSet<>();
-        locations.add(writeLocation);
         locations.add(readLocation);
 
         ConcurrentHashMap<URI, ThroughputRequestThrottler> requestThrottlerMapByRegion = ReflectionUtils.getRequestThrottlerMap(requestController);
@@ -78,12 +75,12 @@ public class GlobalThroughputRequestControllerTests {
         requestController.init().subscribe();
 
         ConcurrentHashMap<URI, ThroughputRequestThrottler> requestThrottlerMapByRegion = ReflectionUtils.getRequestThrottlerMap(requestController);
-        ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerMapByRegion.get(writeLocation));
-        requestThrottlerMapByRegion.put(writeLocation, writeLocationThrottlerSpy);
+        ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerMapByRegion.get(readLocation));
+        requestThrottlerMapByRegion.put(readLocation, writeLocationThrottlerSpy);
 
         // First request: Can find the matching region request throttler in request controller
         RxDocumentServiceRequest request1Mock = Mockito.mock(RxDocumentServiceRequest.class);
-        Mockito.doReturn(writeLocation).when(globalEndpointManager).resolveServiceEndpoint(request1Mock);
+        Mockito.doReturn(readLocation).when(globalEndpointManager).resolveServiceEndpoint(request1Mock);
 
         TestPublisher<StoreResponse> request1MonoPublisher = TestPublisher.create();
         Mono<StoreResponse> request1Mono = request1MonoPublisher.mono();
@@ -108,7 +105,7 @@ public class GlobalThroughputRequestControllerTests {
             .expectNext(storeResponse2Mock)
             .verifyComplete();
 
-        assertThat(requestThrottlerMapByRegion).size().isEqualTo(3);
+        assertThat(requestThrottlerMapByRegion).size().isEqualTo(2);
     }
 
     @Test(groups = "unit")
