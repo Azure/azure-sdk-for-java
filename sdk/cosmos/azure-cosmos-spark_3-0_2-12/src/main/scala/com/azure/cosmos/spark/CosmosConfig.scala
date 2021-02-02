@@ -18,7 +18,7 @@ import scala.collection.JavaConverters._
 //case class ClientConfig()
 //case class CosmosBatchWriteConfig()
 
-case class CosmosAccountConfig(endpoint: String, key: String)
+case class CosmosAccountConfig(endpoint: String, key: String, consistency: Option[String])
 
 object CosmosConfig {
 
@@ -55,15 +55,21 @@ object CosmosAccountConfig {
     parseFromStringFunction = accountEndpointUri => accountEndpointUri,
     helpMessage = "Cosmos DB Account Key")
 
+  val CosmosConsistency = CosmosConfigEntry[String](key = "spark.cosmos.accountConsistency",
+    mandatory = false,
+    parseFromStringFunction = consistency => consistency,
+    helpMessage = "Consistency to be used on the client operations")
+
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
+    val consistency = CosmosConfigEntry.parse(cfg, CosmosConsistency)
 
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
     assert(key.isDefined)
 
-    CosmosAccountConfig(endpointOpt.get, key.get)
+    CosmosAccountConfig(endpointOpt.get, key.get, consistency)
   }
 }
 

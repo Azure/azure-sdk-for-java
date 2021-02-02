@@ -8,13 +8,15 @@ class CosmosConfigSpec extends UnitSpec {
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
-      "spark.cosmos.accountKey" -> "xyz"
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.accountConsistency" -> "Strong"
     )
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual "https://localhsot:8081"
     endpointConfig.key shouldEqual "xyz"
+    endpointConfig.consistency.get shouldEqual "Strong"
   }
 
   it should "validate account endpoint" in {
