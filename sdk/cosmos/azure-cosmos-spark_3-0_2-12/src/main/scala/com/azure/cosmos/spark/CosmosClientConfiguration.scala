@@ -30,10 +30,10 @@ private object CosmosClientConfiguration {
     private def parseStringAsConsistencyLevel(stringValue: String): Option[ConsistencyLevel] = {
         try {
             val result = BridgeInternal.fromServiceSerializedFormat(stringValue)
-            Some(result)
+            Option(result)
         }
         catch {
-            case e: IllegalArgumentException =>
+            case _: IllegalArgumentException =>
                 // ignore the exception and return the default
                 None
         }
