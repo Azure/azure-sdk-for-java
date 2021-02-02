@@ -27,21 +27,9 @@ public class AzureMonitorExporterTestBase extends TestBase {
     }
 
     Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
-
-        HttpClient httpClient;
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            httpClient = HttpClient.createDefault();
-        } else {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(validator).build();
-
         AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString("InstrumentationKey=key;IngestionEndpoint=https://testendpoint.azure.com/")
-            .pipeline(httpPipeline)
+            .connectionString(System.getenv("AZURE_MONITOR_CONNECTION_STRING"))
+            .addPolicy(validator)
             .buildExporter();
         OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
         return OpenTelemetrySdk.get().getTracer("Sample");

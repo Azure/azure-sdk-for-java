@@ -9,8 +9,6 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.opentelemetry.api.trace.Span;
@@ -29,8 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBase {
 
-    private static final String CONNECTION_STRING = "{connection-string}";
-    private static final String STORAGE_CONNECTION_STRING = "{storage-connection-string}";
+    private static final String CONNECTION_STRING = System.getenv("EVENT_HUB_CONNECTION_STRING");
+    private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
+    private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
     @Test
     public void producerTest() throws InterruptedException {
@@ -57,7 +56,7 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
         try {
             producer.createBatch()
                 .flatMap(batch -> {
-                    batch.tryAdd(new EventData("test event "));
+                    batch.tryAdd(new EventData("test event"));
                     return producer.send(batch);
                 }).subscribe();
         } finally {
@@ -98,7 +97,7 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBa
         CountDownLatch eventCountDown = new CountDownLatch(1);
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
-            .containerName("{container-name}")
+            .containerName(CONTAINER_NAME)
             .buildAsyncClient();
         EventProcessorClient processorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)

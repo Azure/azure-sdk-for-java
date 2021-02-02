@@ -55,7 +55,7 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorExporte
 
     private ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
         ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString("{endpoint}")
+            .connectionString(System.getenv("APP_CONFIG_CONNECTION_STRING"))
             .addPolicy((context, next) -> {
                 Optional<Object> data = context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
                 if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
@@ -63,7 +63,6 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorExporte
                 }
                 return next.process();
             })
-            .addPolicy(interceptorManager.getRecordPolicy())
             .buildClient();
         return client;
     }
