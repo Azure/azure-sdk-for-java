@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.mixedreality.authentication.MixedRealityStsServiceVersion;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 
@@ -23,6 +24,7 @@ public class RemoteRenderingClientBuilder {
     private MixedRealityRemoteRenderingImplBuilder builder;
     private UUID accountId;
     private MixedRealityStsClientBuilder stsBuilder;
+    private RemoteRenderingServiceVersion apiVersion;
 
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
@@ -89,13 +91,17 @@ public class RemoteRenderingClientBuilder {
     }
 
     /**
-     * Sets server parameter.
+     * Sets the Remote Rendering service endpoint.
+     * <p>
+     * For converting assets, it is preferable to pick a region close to the storage containing the assets.
+     * For rendering, it is strongly recommended that you pick the closest region to the devices using the service. 
+     * The time taken to communicate with the server impacts the quality of the experience.
      *
-     * @param host the host value.
+     * @param endpoint the host value.
      * @return the RemoteRenderingClientBuilder.
      */
-    public RemoteRenderingClientBuilder host(String host) {
-        builder.host(host);
+    public RemoteRenderingClientBuilder endpoint(String endpoint) {
+        builder.host(endpoint);
         return this;
     }
 
@@ -173,6 +179,21 @@ public class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         builder.addPolicy(customPolicy);
+        return this;
+    }
+
+    /**
+     * Sets the {@link RemoteRenderingServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link RemoteRenderingServiceVersion} of the service to be used when making requests.
+     * @return The RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder serviceVersion(RemoteRenderingServiceVersion version) {
+        this.apiVersion = version;
         return this;
     }
 }
