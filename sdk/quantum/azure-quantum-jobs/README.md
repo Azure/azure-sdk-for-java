@@ -72,7 +72,7 @@ JobsClient jobsClient = new QuantumClientBuilder()
     .workspaceName("{workspaceName}")
     .buildJobsClient();
 
-    StorageClient storageClient = new QuantumClientBuilder()
+StorageClient storageClient = new QuantumClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .host("{endpoint}")
     .subscriptionId("{subscriptionId}")
@@ -101,8 +101,8 @@ if (!containerClient.exists()) {
 
 // Get connection string to the container
 String containerUri = storageClient.sasUri(
-        new BlobDetails().setContainerName(containerName)
-    ).getSasUri();
+    new BlobDetails().setContainerName(containerName)
+).getSasUri();
 ```
 
 ### Upload Input Data
