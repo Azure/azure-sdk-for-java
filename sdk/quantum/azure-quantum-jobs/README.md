@@ -62,7 +62,7 @@ Create an instance of the client of your choice by passing the following values 
 - [Credential][credentials] - used to authenticate
 
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L36-L51 -->
+<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L37-L51 -->
 ```java
 JobsClient jobsClient = new QuantumClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
