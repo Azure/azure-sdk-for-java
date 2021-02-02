@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.CompletionHandler;
 import java.util.Collections;
 import java.util.Map;
@@ -62,7 +63,29 @@ public final class FluxUtil {
 
     private static void accept(ByteArrayOutputStream byteOutputStream, ByteBuffer byteBuffer) {
         try {
-            byteOutputStream.write(byteBufferToArray(byteBuffer));
+            /*
+             * Given that ByteArrayOutputStream will need to buffer the written byte array, first check that the
+             * ByteBuffer uses a backing array and write that directly. Otherwise, use the more expensive operation
+             * that will result in a double copy.
+             *
+             * We could also investigate using our own custom type which has an accessible backing array that we can
+             * check for containing enough space to write into it directly.
+             */
+            if (byteBuffer.hasArray()) {
+                int offset = byteBuffer.position();
+                int remaining = byteBuffer.remaining();
+
+                if (remaining == 0) {
+                    return;
+                }
+
+                byteOutputStream.write(byteBuffer.array(), offset, remaining);
+
+                // Given that we accessed the backing array directly we need to move the position ourselves.
+                byteBuffer.position(offset + remaining);
+            } else {
+                byteOutputStream.write(byteBufferToArray(byteBuffer));
+            }
         } catch (IOException e) {
             throw new RuntimeException("Error occurred writing ByteBuffer to ByteArrayOutputStream.", e);
         }
