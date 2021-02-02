@@ -205,7 +205,7 @@ additional questions or comments.
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [azure_quantum]: https://azure.microsoft.com/services/quantum/
-[azure_quantum_workspaces]: https://docs.microsoft.com/en-gb/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
+[azure_quantum_workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [azure_storage]: https://azure.microsoft.com/free/storage/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc]: https://opensource.microsoft.com/codeofconduct/
