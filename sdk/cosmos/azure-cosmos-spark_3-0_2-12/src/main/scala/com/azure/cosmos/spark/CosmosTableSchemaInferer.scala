@@ -60,7 +60,10 @@ private object CosmosTableSchemaInferer
 
             val queryOptions = new CosmosQueryRequestOptions()
             queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
-            val queryText = s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
+            val queryText = cosmosReadConfig.inferSchemaQuery match {
+                case None => s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
+                case _ => cosmosReadConfig.inferSchemaQuery.get
+            }
 
             val queryObservable =
                 sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
