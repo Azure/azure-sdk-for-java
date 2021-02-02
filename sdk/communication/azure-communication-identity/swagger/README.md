@@ -19,14 +19,11 @@ npm install -g autorest
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
+autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ```
 
-### Tag: identity
-
-These settings apply only when `--tag=identity` is specified on the command line.
-
-``` yaml $(tag) == 'identity'
+### Code generation settings
+``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5b19c6e69cd2bb9dbe4e5c1237b2c5a175d90ca5/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
 add-context-parameter: true
 custom-types: CommunicationIdentityTokenScope, CommunicationTokenScope
