@@ -38,9 +38,10 @@ public final class PagedConverter {
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
             Function<? super T, ? extends Publisher<? extends S>> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            // retrieve single page
             Flux<PagedResponse<T>> flux = (continuationToken == null)
-                    ? pagedFlux.byPage()
-                    : pagedFlux.byPage(continuationToken);
+                    ? pagedFlux.byPage().take(1)
+                    : pagedFlux.byPage(continuationToken).take(1);
             return flux.concatMap(PagedConverter.flatMapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
@@ -60,6 +61,7 @@ public final class PagedConverter {
         // one possible issue is that when inner PagedFlux ends, that PagedResponse will have continuationToken == null
 
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            // here retrieve all pages, as the continuationToken in mergePagedFluxPagedResponse would confuse this outer paging
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                 ? pagedFlux.byPage()
                 : pagedFlux.byPage(continuationToken);

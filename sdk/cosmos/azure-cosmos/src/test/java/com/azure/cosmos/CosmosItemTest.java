@@ -67,7 +67,6 @@ public class CosmosItemTest extends TestSuiteBase {
         properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
-
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)

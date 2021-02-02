@@ -45,8 +45,8 @@ import java.util.stream.Collector;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -668,20 +668,23 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
         }
 
-        return withRetry(
-            getSendLink().flatMap(link -> {
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    final TransactionalState deliveryState = new TransactionalState();
-                    deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    return messages.size() == 1
-                        ? link.send(messages.get(0), deliveryState)
-                        : link.send(messages, deliveryState);
-                } else {
-                    return messages.size() == 1
-                        ? link.send(messages.get(0))
-                        : link.send(messages);
-                }
-            }), retryOptions.getTryTimeout(), retryPolicy)
+        final Mono<Void> sendMessage = getSendLink().flatMap(link -> {
+            if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                final TransactionalState deliveryState = new TransactionalState();
+                deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                return messages.size() == 1
+                    ? link.send(messages.get(0), deliveryState)
+                    : link.send(messages, deliveryState);
+            } else {
+                return messages.size() == 1
+                    ? link.send(messages.get(0))
+                    : link.send(messages);
+            }
+        });
+
+        return withRetry(sendMessage, retryOptions,
+            String.format("entityPath[%s], partitionId[%s]: Sending messages timed out.", entityName,
+                batch.getCount()))
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);

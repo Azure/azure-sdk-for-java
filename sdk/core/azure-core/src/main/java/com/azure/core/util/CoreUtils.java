@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.http.policy.AzureTelemetryPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -328,6 +329,29 @@ public final class CoreUtils {
                 : previousTelemetryValue + ";" + telemetryValue;
 
             return context.addData(AzureTelemetryPolicy.CONTEXT_TELEMETRY_KEY, newTelemetryValue);
+        }
+    }
+
+    /**
+     * Retrieves the application ID from either a {@link ClientOptions} or {@link HttpLogOptions}.
+     * <p>
+     * This method first checks {@code clientOptions} for having an application ID then {@code logOptions}, finally
+     * returning null if neither are set.
+     * <p>
+     * {@code clientOptions} is checked first as {@code logOptions} application ID is deprecated.
+     *
+     * @param clientOptions The {@link ClientOptions}.
+     * @param logOptions The {@link HttpLogOptions}.
+     * @return The application ID from either {@code clientOptions} or {@code logOptions}, if neither are set null.
+     */
+    @SuppressWarnings("deprecation")
+    public static String getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions) {
+        if (clientOptions != null && !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
+            return clientOptions.getApplicationId();
+        } else if (logOptions != null && !CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
+            return logOptions.getApplicationId();
+        } else {
+            return null;
         }
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -336,6 +337,34 @@ public class CosmosContainer {
      */
     public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
+    }
+
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * The next page can be retrieved by calling queryChangeFeed again with a new instance of
+     * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
+     * {@link FeedResponse} instance.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one feed response page
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedIterable<T> queryChangeFeed(
+        CosmosChangeFeedRequestOptions options,
+        Class<T> classType) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        options.setMaxPrefetchPageCount(1);
+
+        return getCosmosPagedIterable(
+            this.asyncContainer
+                .queryChangeFeed(options, classType));
     }
 
     /**
