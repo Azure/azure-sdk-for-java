@@ -4,6 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -11,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,6 +21,8 @@ import java.util.Optional;
  */
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
+    @Autowired
+    OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -25,17 +30,17 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            String claims = Optional.of(exception)
-                                    .map(Throwable::getCause)
-                                    .filter(e -> e instanceof ConditionalAccessException)
-                                    .map(e -> (ConditionalAccessException) e)
-                                    .map(ConditionalAccessException::getClaims)
-                                    .orElse(null);
-            if (claims != null) {
+            Map<String, Object> parameters = Optional.of(exception)
+                                                     .map(Throwable::getCause)
+                                                     .filter(e -> e instanceof ConditionalAccessException)
+                                                     .map(e -> (ConditionalAccessException) e)
+                                                     .map(ConditionalAccessException::getParameters)
+                                                     .orElse(null);
+            if (parameters != null && parameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS) != null) {
                 request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
-                    claims);
+                    parameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
                 response.setStatus(302);
-                response.sendRedirect(Constants.DEFAULT_AUTHORITY_ENDPOINT_URL);
+                response.sendRedirect(parameters.get(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI).toString());
                 return;
             }
             throw exception;

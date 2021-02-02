@@ -115,6 +115,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                         Assert.notNull(response, "HttpServletResponse should not be null.");
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                         parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
+                        parameters.put(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI, "/oauth2/authorization/azure");
                         response.addHeader("WWWAuthenticate",
                             ConditionalAccessException.parametersToHttpHeader(parameters));
                     });

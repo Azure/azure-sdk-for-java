@@ -4,7 +4,6 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
-import net.minidev.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
@@ -55,19 +54,18 @@ import java.util.stream.Collectors;
  * OAuth2AuthorizationRequest} to reauthorize.
  */
 public final class ConditionalAccessException extends RuntimeException {
-    private final String claims;
+    private final Map<String, Object> parameters;
 
-    protected ConditionalAccessException(String claims) {
-        this.claims = claims;
+    protected ConditionalAccessException(Map<String, Object> parameters) {
+        this.parameters = parameters;
     }
 
-    public String getClaims() {
-        return claims;
+    public Map<String, Object> getParameters() {
+        return parameters;
     }
 
     public static ConditionalAccessException fromHttpHeader(String httpHeader) {
-        return new ConditionalAccessException(
-            (String) httpHeaderToParameters(httpHeader).get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
+        return new ConditionalAccessException(ConditionalAccessException.httpHeaderToParameters(httpHeader));
     }
 
     /**
@@ -77,15 +75,13 @@ public final class ConditionalAccessException extends RuntimeException {
      * @return Map Object
      */
     public static Map<String, Object> httpHeaderToParameters(String httpHeader) {
-        // TODO I'm looking for a better way to achieve it.
         String[] parameters = Optional.of(httpHeader)
-                                      .map(str -> str.substring(Constants.BEARER_PREFIX.length()))
-                                      .map(str -> str.replaceAll("[\"{}]", ""))
-                                      .map(str -> str.split(","))
+                                      .map(str -> str.substring(Constants.BEARER_PREFIX.length() + 1,str.length() - 1))
+                                      .map(str -> str.split(", "))
                                       .orElse(null);
         return Arrays.asList(parameters)
                      .stream()
-                     .map(elem -> elem.split(":"))
+                     .map(elem -> elem.split("="))
                      .collect(Collectors.toMap(e -> e[0], e -> e[1]));
     }
 
@@ -96,7 +92,7 @@ public final class ConditionalAccessException extends RuntimeException {
      * @return String Object
      */
     public static String parametersToHttpHeader(Map<String, Object> parameters) {
-        return Constants.BEARER_PREFIX + JSONObject.toJSONString(parameters);
+        return Constants.BEARER_PREFIX + parameters.toString();
     }
 
     public static boolean isConditionAccessException(String httpHeader) {
