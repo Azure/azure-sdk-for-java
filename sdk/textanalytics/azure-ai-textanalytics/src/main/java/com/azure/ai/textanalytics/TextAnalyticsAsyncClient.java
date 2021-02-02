@@ -1053,7 +1053,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
      * {@link String document} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
@@ -1064,7 +1064,9 @@ public final class TextAnalyticsAsyncClient {
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param actions A {@link TextAnalyticsActions actions} that contains all actions to be analyzed.
+     * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
+     * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
+     * inputs.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
@@ -1091,7 +1093,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
      * {@link TextDocumentInput document} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
@@ -1100,7 +1102,9 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param actions A {@link TextAnalyticsActions actions} that contains all actions to be analyzed.
+     * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
+     * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
+     * inputs.
      * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
      * analyzing a collection of tasks.
      *

@@ -338,11 +338,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    // TODO: Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
-//    @Test
-//    abstract void analyzeBatchActionsPartialCompleted(HttpClient httpClient,
-//        TextAnalyticsServiceVersion serviceVersion);
-
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {

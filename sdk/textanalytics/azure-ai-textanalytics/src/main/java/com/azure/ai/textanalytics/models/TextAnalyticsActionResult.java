@@ -40,9 +40,9 @@ public class TextAnalyticsActionResult {
     }
 
     /**
-     * Gets the completed time of an entities recognition action.
+     * Gets the time when the action was completed.
      *
-     * @return the completed time of an entities recognition action.
+     * @return the time when the action was completed.
      */
     public OffsetDateTime getCompletedAt() {
         return completedAt;

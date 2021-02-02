@@ -226,7 +226,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for analyzing actions in a batch of documents.
+     * Code snippet for executing actions in a batch of documents.
      */
     public void analyzeBatchActions() {
         List<TextDocumentInput> documents = Arrays.asList(
@@ -249,6 +249,7 @@ public class ReadmeSamples {
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+            System.out.println("Key phrases extraction action results:");
             analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
@@ -260,6 +261,7 @@ public class ReadmeSamples {
                     }
                 }
             });
+            System.out.println("PII entities recognition action results:");
             analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {

@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to asynchronously analyze actions in a batch of documents, such as key phrases extraction,
+ * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
  * PII entities recognition actions.
  */
 public class AnalyzeBatchActionsAsync {
@@ -61,7 +62,7 @@ public class AnalyzeBatchActionsAsync {
             new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeBatchActionsOperationDetail operationResult = result.getValue();
-                System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
+                System.out.printf("Action display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
                     operationResult.getDisplayName(), operationResult.getActionsSucceeded(),
                     operationResult.getActionsInProgress(), operationResult.getActionsFailed(), operationResult.getActionsInTotal());
                 return result.getFinalResult();
@@ -71,6 +72,7 @@ public class AnalyzeBatchActionsAsync {
                     page -> {
                         System.out.printf("Response code: %d, Continuation Token: %s.%n", page.getStatusCode(), page.getContinuationToken());
                         page.getElements().forEach(analyzeBatchActionsResult -> {
+                            System.out.println("Entities recognition action results:");
                             IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults =
                                 analyzeBatchActionsResult.getRecognizeEntitiesActionResults();
                             if (recognizeEntitiesActionResults != null) {
@@ -91,9 +93,14 @@ public class AnalyzeBatchActionsAsync {
                                                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                                             }
                                         }
+                                    } else {
+                                        TextAnalyticsError actionError = actionResult.getError();
+                                        // Erroneous action
+                                        System.out.printf("Cannot execute Entities Recognition action. Error: %s%n", actionError.getMessage());
                                     }
                                 });
                             }
+                            System.out.println("Key phrases extraction action results:");
                             IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults =
                                 analyzeBatchActionsResult.getExtractKeyPhrasesActionResults();
                             if (extractKeyPhrasesActionResults != null) {
@@ -112,6 +119,10 @@ public class AnalyzeBatchActionsAsync {
                                                 documentResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                                             }
                                         }
+                                    } else {
+                                        TextAnalyticsError actionError = actionResult.getError();
+                                        // Erroneous action
+                                        System.out.printf("Cannot execute Key Phrases Extraction action. Error: %s%n", actionError.getMessage());
                                     }
                                 });
                             }

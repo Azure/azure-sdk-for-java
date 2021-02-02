@@ -1653,31 +1653,4 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             assertEquals(errorMessage, exception.getMessage());
         });
     }
-
-    // TODO: Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void analyzeBatchActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsClient(httpClient, serviceVersion);
-//
-//        analyzeBatchActionsPartialCompletedRunner(
-//            (documents, tasks) -> {
-//                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-//                    client.beginAnalyzeBatchActions(documents, tasks,
-//                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
-//                syncPoller.waitForCompletion();
-//                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
-//
-//                validateAnalyzeBatchActionsResultList(false,
-//                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-//                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-//                            getRecognizeEntitiesResultCollection(), TIME_NOW, false))),
-//                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-//                            getRecognizePiiEntitiesResultCollection(), TIME_NOW, false))),
-//                        IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-//                            getExtractKeyPhrasesResultCollection(), TIME_NOW, false))))),
-//                    result.stream().collect(Collectors.toList()));
-//            }
-//        );
-//    }
 }

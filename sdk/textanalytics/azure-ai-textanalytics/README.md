@@ -9,7 +9,7 @@ and includes six main functions:
 - Personally Identifiable Information Entity Recognition 
 - Linked Entity Recognition
 - Healthcare Recognition <sup>beta</sup>
-- Analyze Multiple Actions <sup>beta</sup>
+- Support Multiple Actions Per Document <sup>beta</sup>
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 

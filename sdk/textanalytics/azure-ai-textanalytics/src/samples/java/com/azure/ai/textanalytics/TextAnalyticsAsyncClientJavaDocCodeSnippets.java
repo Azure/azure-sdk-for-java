@@ -816,7 +816,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(healthcareTaskResultPagedFlux -> {
                 healthcareTaskResultPagedFlux.subscribe(
                     healthcareTaskResult -> {
-                        System.out.printf("Job display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
+                        System.out.printf("Action display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
                             healthcareTaskResult.getJobId());
 
                         RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection =
@@ -924,6 +924,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 analyzeBatchActionsResultPagedFlux -> analyzeBatchActionsResultPagedFlux.subscribe(
                     analyzeBatchActionsResult -> {
+                        System.out.println("Entities recognition action results:");
                         analyzeBatchActionsResult.getRecognizeEntitiesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
@@ -936,6 +937,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                                 entity.getConfidenceScore())));
                                 }
                             });
+                        System.out.println("Key phrases extraction action results:");
                         analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {

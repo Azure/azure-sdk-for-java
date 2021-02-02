@@ -18,18 +18,18 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
 
     /**
-     * Get the custom name for the analyze actions.
+     * Get the custom name for the actions.
      *
-     * @return the name of analyze actions.
+     * @return the custom name for the actions.
      */
     public String getDisplayName() {
         return displayName;
     }
 
     /**
-     * Set the custom name for the analyze actions.
+     * Set the custom name for the actions.
      *
-     * @param displayName the display name of analyze actions.
+     * @param displayName the custom name for the actions.
      *
      * @return the {@link TextAnalyticsActions} object itself.
      */
@@ -39,18 +39,18 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Get the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     * Get the list of {@link RecognizeEntitiesOptions} to be executed.
      *
-     * @return the categorizedEntitiesRecognitionTasks value.
+     * @return the list of {@link RecognizeEntitiesOptions} to be executed.
      */
     public Iterable<RecognizeEntitiesOptions> getRecognizeEntitiesOptions() {
         return this.recognizeEntitiesOptions;
     }
 
     /**
-     * Set the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     * Set the list of {@link RecognizeEntitiesOptions} to be executed.
      *
-     * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be executed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */
@@ -60,18 +60,18 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Get the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     * Get the list of {@link RecognizePiiEntitiesOptions} to be executed.
      *
-     * @return the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     * @return the list of {@link RecognizePiiEntitiesOptions} to be executed.
      */
     public Iterable<RecognizePiiEntitiesOptions> getRecognizePiiEntitiesOptions() {
         return this.recognizePiiEntitiesOptions;
     }
 
     /**
-     * Set the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     * Set the list of {@link RecognizePiiEntitiesOptions} to be executed.
      *
-     * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be executed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */
@@ -81,18 +81,18 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Get the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     * Get the list of {@link ExtractKeyPhrasesOptions} to be executed.
      *
-     * @return the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     * @return the list of {@link ExtractKeyPhrasesOptions} to be executed.
      */
     public Iterable<ExtractKeyPhrasesOptions> getExtractKeyPhrasesOptions() {
         return this.extractKeyPhrasesOptions;
     }
 
     /**
-     * Set the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     * Set the list of {@link ExtractKeyPhrasesOptions} to be executed.
      *
-     * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be executed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */

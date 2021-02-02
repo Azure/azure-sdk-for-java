@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -29,7 +30,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to analyze a batch of tasks.
+ * Sample demonstrates how to synchronously execute actions in a batch of documents, such as key phrases extraction,
+ * PII entities recognition actions.
  */
 public class AnalyzeBatchActions {
 
@@ -70,7 +72,7 @@ public class AnalyzeBatchActions {
         // Task operation statistics
         while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
             final AnalyzeBatchActionsOperationDetail operationResult = syncPoller.poll().getValue();
-            System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
+            System.out.printf("Action display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
                 operationResult.getDisplayName(), operationResult.getActionsSucceeded(),
                 operationResult.getActionsInProgress(), operationResult.getActionsFailed(),
                 operationResult.getActionsInTotal());
@@ -82,6 +84,7 @@ public class AnalyzeBatchActions {
         for (PagedResponse<AnalyzeBatchActionsResult> page : pagedResults) {
             System.out.printf("Response code: %d, Continuation Token: %s.%n", page.getStatusCode(), page.getContinuationToken());
             page.getElements().forEach(analyzeBatchActionsResult -> {
+                System.out.println("Entities recognition action results:");
                 IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults =
                     analyzeBatchActionsResult.getRecognizeEntitiesActionResults();
                 if (recognizeEntitiesActionResults != null) {
@@ -102,9 +105,14 @@ public class AnalyzeBatchActions {
                                         entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                                 }
                             }
+                        } else {
+                            TextAnalyticsError actionError = actionResult.getError();
+                            // Erroneous action
+                            System.out.printf("Cannot execute Entities Recognition action. Error: %s%n", actionError.getMessage());
                         }
                     });
                 }
+                System.out.println("Key phrases extraction action results:");
                 IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults =
                     analyzeBatchActionsResult.getExtractKeyPhrasesActionResults();
                 if (extractKeyPhrasesActionResults != null) {
@@ -124,6 +132,10 @@ public class AnalyzeBatchActions {
                                         .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                                 }
                             }
+                        } else {
+                            TextAnalyticsError actionError = actionResult.getError();
+                            // Erroneous action
+                            System.out.printf("Cannot execute Key Phrases Extraction action. Error: %s%n", actionError.getMessage());
                         }
                     });
                 }

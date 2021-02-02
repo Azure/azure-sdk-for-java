@@ -846,7 +846,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         PagedIterable<HealthcareTaskResult> healthcareResultIterable = syncPoller.getFinalResult();
 
         healthcareResultIterable.forEach(healthcareTaskResult -> {
-            System.out.printf("Job display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
+            System.out.printf("Action display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
                 healthcareTaskResult.getJobId());
             RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection =
                 healthcareTaskResult.getResult();
@@ -917,6 +917,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         syncPoller.waitForCompletion();
         PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
         result.forEach(analyzeBatchActionsResult -> {
+            System.out.println("Entities recognition action results:");
             analyzeBatchActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
@@ -929,6 +930,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                                     entity.getConfidenceScore())));
                     }
                 });
+            System.out.println("Key phrases extraction action results:");
             analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
@@ -963,6 +965,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         syncPoller.waitForCompletion();
         PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
         result.forEach(analyzeBatchActionsResult -> {
+            System.out.println("Entities recognition action results:");
             analyzeBatchActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
@@ -975,6 +978,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                                     entity.getConfidenceScore())));
                     }
                 });
+            System.out.println("Key phrases extraction action results:");
             analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {

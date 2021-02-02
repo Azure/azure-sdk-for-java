@@ -61,8 +61,8 @@ import java.util.stream.StreamSupport;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
+import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
@@ -86,6 +86,12 @@ class AnalyzeBatchActionsAsyncClient {
             if (options == null) {
                 options = new AnalyzeBatchActionsOptions();
             }
+            final Context finalContext;
+            if (context == null) {
+                finalContext = Context.NONE;
+            } else {
+                finalContext = context;
+            }
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -98,7 +104,7 @@ class AnalyzeBatchActionsAsyncClient {
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                        finalContext.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
                             final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
                                 new AnalyzeBatchActionsOperationDetail();
@@ -107,11 +113,11 @@ class AnalyzeBatchActionsAsyncClient {
                             return textAnalyticsOperationResult;
                         })),
                 pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId,
-                    finalIncludeStatistics, null, null, context)),
+                    finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperation(resultId -> Mono.just(getAnalyzeOperationFluxPage(
-                    resultId, null, null, finalIncludeStatistics, context)))
+                    resultId, null, null, finalIncludeStatistics, finalContext)))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -126,6 +132,12 @@ class AnalyzeBatchActionsAsyncClient {
             if (options == null) {
                 options = new AnalyzeBatchActionsOptions();
             }
+            final Context finalContext;
+            if (context == null) {
+                finalContext = Context.NONE;
+            } else {
+                finalContext = context;
+            }
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -138,7 +150,7 @@ class AnalyzeBatchActionsAsyncClient {
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                        finalContext.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
                             final AnalyzeBatchActionsOperationDetail operationDetail =
                                 new AnalyzeBatchActionsOperationDetail();
@@ -147,11 +159,11 @@ class AnalyzeBatchActionsAsyncClient {
                             return operationDetail;
                         })),
                 pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId,
-                    finalIncludeStatistics, null, null, context)),
+                    finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    operationId, null, null, finalIncludeStatistics, context))))
+                    operationId, null, null, finalIncludeStatistics, finalContext))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -395,9 +407,6 @@ class AnalyzeBatchActionsAsyncClient {
         LongRunningOperationStatus status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         if (analyzeJobStateResponse.getValue() != null && analyzeJobStateResponse.getValue().getStatus() != null) {
             switch (analyzeJobStateResponse.getValue().getStatus()) {
-                case CANCELLING:
-                    status = LongRunningOperationStatus.fromString("CANCELLING", false);
-                    break;
                 case NOT_STARTED:
                 case RUNNING:
                     status = LongRunningOperationStatus.IN_PROGRESS;
@@ -405,17 +414,8 @@ class AnalyzeBatchActionsAsyncClient {
                 case SUCCEEDED:
                     status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                     break;
-                case REJECTED:
-                    status = LongRunningOperationStatus.fromString("REJECTED", true);
-                    break;
                 case CANCELLED:
                     status = LongRunningOperationStatus.USER_CANCELLED;
-                    break;
-                case FAILED:
-                    status = LongRunningOperationStatus.fromString("FAILED", true);
-                    break;
-                case PARTIALLY_COMPLETED:
-                    status = LongRunningOperationStatus.fromString("PARTIALLY_COMPLETED", true);
                     break;
                 default:
                     status = LongRunningOperationStatus.fromString(

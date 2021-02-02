@@ -45,7 +45,7 @@ public final class AnalyzeBatchActionsResult {
     }
 
     /**
-     * Get the analyze actions operation statistics for analyzing multiple actions.
+     * Get the execute actions operation statistics for analyzing multiple actions.
      *
      * @return {@link TextDocumentBatchStatistics}.
      */

@@ -1717,33 +1717,4 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());
     }
-
-    // TODO: Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void analyzeBatchActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-//        analyzeBatchActionsPartialCompletedRunner(
-//            (documents, tasks) -> {
-//                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
-//                    client.beginAnalyzeBatchActions(documents, tasks,
-//                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-//                syncPoller.waitForCompletion();
-//                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
-//                StepVerifier.create(result)
-//                    .assertNext(analyzeBatchActionsResult -> {
-//                        validateAnalyzeBatchActionsResultList(false,
-//                            asList(getExpectedAnalyzeBatchActionsResult(
-//                                IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-//                                    getRecognizeEntitiesResultCollection(), TIME_NOW, false))),
-//                                IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-//                                    getRecognizePiiEntitiesResultCollection(), TIME_NOW, false))),
-//                                IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-//                                    getExtractKeyPhrasesResultCollection(), TIME_NOW, false))))),
-//                            result.toStream().collect(Collectors.toList()));
-//                    });
-//
-//            }
-//        );
-//    }
 }
