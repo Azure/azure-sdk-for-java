@@ -1,96 +1,96 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails61832a5e5c3a?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails90464d08c650?restype=share",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "88570588-b41a-4154-af4a-4b9ff43bad76"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9435aaa2-73e0-48b3-b5fb-d7304a6db849"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D83FBEBA54FB9E",
-      "Last-Modified" : "Thu, 13 Aug 2020 19:26:07 GMT",
+      "ETag" : "0x8D8A069AEC2BE24",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:51:43 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f55cd6ce-e01a-0085-54a7-71f71f000000",
-      "Date" : "Thu, 13 Aug 2020 19:26:06 GMT",
-      "x-ms-client-request-id" : "88570588-b41a-4154-af4a-4b9ff43bad76"
+      "x-ms-request-id" : "c8d02e89-f01a-0015-7c52-d28631000000",
+      "Date" : "Mon, 14 Dec 2020 19:51:43 GMT",
+      "x-ms-client-request-id" : "9435aaa2-73e0-48b3-b5fb-d7304a6db849"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails61832a5e5c3a/filename",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails90464d08c650/filename",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "997815cd-48b1-4577-93ab-94bc1610ef6e"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7a292be5-9dad-4409-9d5f-09e9b20e1d12"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
-      "x-ms-file-permission-key" : "4010187179898695473*11459378189709739967",
+      "x-ms-version" : "2020-06-12",
+      "x-ms-file-permission-key" : "5144323600546320195*17277118026500876237",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2020-08-13T19:26:07.6279446Z",
-      "Last-Modified" : "Thu, 13 Aug 2020 19:26:07 GMT",
+      "x-ms-file-creation-time" : "2020-12-14T19:51:43.8285710Z",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:51:43 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 13 Aug 2020 19:26:06 GMT",
-      "ETag" : "0x8D83FBEBA628296",
+      "Date" : "Mon, 14 Dec 2020 19:51:43 GMT",
+      "ETag" : "0x8D8A069AED75F8E",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2020-08-13T19:26:07.6279446Z",
+      "x-ms-file-change-time" : "2020-12-14T19:51:43.8285710Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "f55cd6d3-e01a-0085-58a7-71f71f000000",
-      "x-ms-client-request-id" : "997815cd-48b1-4577-93ab-94bc1610ef6e",
-      "x-ms-file-last-write-time" : "2020-08-13T19:26:07.6279446Z"
+      "x-ms-request-id" : "c8d02e8d-f01a-0015-7f52-d28631000000",
+      "x-ms-client-request-id" : "7a292be5-9dad-4409-9d5f-09e9b20e1d12",
+      "x-ms-file-last-write-time" : "2020-12-14T19:51:43.8285710Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails61832a5e5c3a/filename?comp=range&sv=2020-04-08&spr=https%2Chttp&st=2020-08-12T19%3A26%3A08Z&se=2020-08-14T19%3A26%3A08Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails90464d08c650/filename?comp=range&sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T19%3A51%3A43Z&se=2020-12-15T19%3A51%3A43Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "86324be6-ada1-4391-b9cd-75092920bf83",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "79b4b3c4-cdc7-4423-bc12-7b7453f2e68a",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "AuthorizationPermissionMismatch",
       "retry-after" : "0",
       "Content-Length" : "279",
       "StatusCode" : "403",
-      "x-ms-request-id" : "f55cd6d9-e01a-0085-5ea7-71f71f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:f55cd6d9-e01a-0085-5ea7-71f71f000000\nTime:2020-08-13T19:26:07.7154170Z</Message></Error>",
-      "Date" : "Thu, 13 Aug 2020 19:26:06 GMT",
-      "x-ms-client-request-id" : "86324be6-ada1-4391-b9cd-75092920bf83",
+      "x-ms-request-id" : "c8d02e8e-f01a-0015-8052-d28631000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:c8d02e8e-f01a-0015-8052-d28631000000\nTime:2020-12-14T19:51:43.9215283Z</Message></Error>",
+      "Date" : "Mon, 14 Dec 2020 19:51:43 GMT",
+      "x-ms-client-request-id" : "79b4b3c4-cdc7-4423-bc12-7b7453f2e68a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails61832a5e5c3a/filename?sv=2020-04-08&spr=https%2Chttp&st=2020-08-12T19%3A26%3A08Z&se=2020-08-14T19%3A26%3A08Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsfilesasnetworktestuploadfails90464d08c650/filename?sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T19%3A51%3A43Z&se=2020-12-15T19%3A51%3A43Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c1748470-f679-40dc-a461-dc6a9e1dd81c"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6e549072-3d2f-4307-a009-35d595246c08"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "f55cd6e4-e01a-0085-69a7-71f71f000000",
-      "Date" : "Thu, 13 Aug 2020 19:26:06 GMT",
-      "x-ms-client-request-id" : "c1748470-f679-40dc-a461-dc6a9e1dd81c"
+      "x-ms-request-id" : "c8d02e94-f01a-0015-0552-d28631000000",
+      "Date" : "Mon, 14 Dec 2020 19:51:43 GMT",
+      "x-ms-client-request-id" : "6e549072-3d2f-4307-a009-35d595246c08"
     },
     "Exception" : null
   } ],
-  "variables" : [ "filesastestsfilesasnetworktestuploadfails61832a5e5c3a", "2020-08-13T19:26:08.850160900Z", "2020-08-13T19:26:08.850160900Z" ]
+  "variables" : [ "filesastestsfilesasnetworktestuploadfails90464d08c650", "2020-12-14T19:51:43.876719700Z", "2020-12-14T19:51:43.876719700Z" ]
 }
