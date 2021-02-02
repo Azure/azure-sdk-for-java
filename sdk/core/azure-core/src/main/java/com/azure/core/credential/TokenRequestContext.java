@@ -13,6 +13,7 @@ import java.util.Objects;
  */
 public class TokenRequestContext {
     private final List<String> scopes;
+    private String claims;
 
     /**
      * Creates a token request instance.
@@ -49,5 +50,23 @@ public class TokenRequestContext {
     public TokenRequestContext addScopes(String... scopes) {
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
+    }
+
+    /**
+     * Set the additional claims to be included in the token.
+     * @param claims the additional claims to be included in the token.
+     * @return the updated TokenRequestContext itself
+     */
+    public TokenRequestContext setClaims(String claims) {
+        this.claims = claims;
+        return this;
+    }
+
+    /**
+     * Get the additional claims to be included in the token.
+     * @return the additional claims to be included in the token.
+     */
+    public String getClaims() {
+        return this.claims;
     }
 }
