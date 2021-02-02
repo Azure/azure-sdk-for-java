@@ -336,7 +336,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeBatchActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // TODO: Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
 //    @Test

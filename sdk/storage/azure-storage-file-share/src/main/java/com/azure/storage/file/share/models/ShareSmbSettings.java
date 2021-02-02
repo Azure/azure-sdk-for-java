@@ -11,7 +11,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * Settings for SMB protocol.
  */
-@JacksonXmlRootElement(localName = "ShareSmbSettings")
+@JacksonXmlRootElement(localName = "SMB")
 @Fluent
 public final class ShareSmbSettings {
     /*

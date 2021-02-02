@@ -69,5 +69,4 @@ public interface DigitalTwins {
      * @return the observable for the request
      */
     Observable<CheckNameResult> checkNameAvailabilityAsync(String location, String name);
-
 }

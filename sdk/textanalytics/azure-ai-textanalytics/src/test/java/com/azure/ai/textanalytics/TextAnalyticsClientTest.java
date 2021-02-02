@@ -1642,7 +1642,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeBatchActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,

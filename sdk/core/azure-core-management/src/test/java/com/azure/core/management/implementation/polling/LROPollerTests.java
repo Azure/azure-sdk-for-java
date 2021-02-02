@@ -563,6 +563,116 @@ public class LROPollerTests {
     }
 
     @Test
+    public void lroMalformedAaoUrl() {
+        ServerConfigure serverConfigure = new ServerConfigure();
+        serverConfigure.pollingCountTillSuccess = 3;
+
+        final String resourceEndpoint = "/resource/1";
+        final String operationEndpoint = "/operations/1";
+        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            private final int[] getCallCount = new int[1];
+
+            @Override
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
+
+                if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(500)
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    // accept response
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .headers(new HttpHeaders(
+                            new HttpHeader("Azure-AsyncOperation", request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.GET)) {
+                    if (request.getUrl().endsWith(operationEndpoint)) {
+                        getCallCount[0]++;
+                        if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
+                            if (getCallCount[0] == 1) {
+                                return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                    .body("{\"status\": \"InProgress\"}")
+                                    .build();
+                            } else {
+                                return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                    .body("{\"status\": \"InProgress\"}")
+                                    .headers(new HttpHeaders(
+                                        new HttpHeader("Azure-AsyncOperation", "/invalid_url")))
+                                    .build();
+                            }
+                        } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                            return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                .body("{\"status\": \"Succeeded\"}")
+                                .build();
+                        }
+                    } else if (request.getUrl().endsWith(resourceEndpoint) && getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                        // final resource
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .body(toJson(new FooWithProvisioningState("Succeeded", UUID.randomUUID().toString())))
+                            .build();
+                    } else {
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .status(400)
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
+                    }
+                }
+                return response;
+            }
+
+            @Override
+            public String getName() {
+                return "LroService";
+            }
+        };
+
+        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint, operationEndpoint);
+        lroServer.start();
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port()),
+                SERIALIZER);
+
+            PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                new HttpPipelineBuilder().build(),
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                POLLING_DURATION,
+                newLroInitFunction(client));
+
+            StepVerifier.create(lroFlux)
+                .expectSubscription()
+                .expectNextMatches(response -> {
+                    PollResult<FooWithProvisioningState> pollResult = response.getValue();
+                    return response.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+                        && pollResult != null
+                        && pollResult.getValue() != null;
+                })
+                .expectNextMatches(response -> {
+                    PollResult<FooWithProvisioningState> pollResult = response.getValue();
+                    return response.getStatus() == LongRunningOperationStatus.FAILED
+                        && pollResult != null
+                        && pollResult.getError() != null;
+                })
+                .verifyComplete();
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
     public void lroTimeout() {
         final Duration timeoutDuration = Duration.ofMillis(1000);   // use a large timeout for manual verification
 
