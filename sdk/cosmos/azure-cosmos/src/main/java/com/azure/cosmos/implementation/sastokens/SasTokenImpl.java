@@ -68,6 +68,7 @@ import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope
  */
 public class SasTokenImpl implements SasTokenProperties {
     private static final String AUTH_PREFIX = "type=sas&ver=1.0&sig=";
+    private static final String SAS_TOKEN_SEPARATOR = ";";
 
     String user;
     String userTag;
@@ -221,7 +222,7 @@ public class SasTokenImpl implements SasTokenProperties {
 
             StringBuilder token = new StringBuilder(AUTH_PREFIX)
                 .append(authorizationToken)
-                .append(",")
+                .append(SAS_TOKEN_SEPARATOR)
                 .append(payload);
 
             return token.toString();
