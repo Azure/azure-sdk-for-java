@@ -16,67 +16,35 @@ import com.azure.autorest.customization.PropertyCustomization;
 public class QueueStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization) {
+        // Update unexpected response exception type.
         PackageCustomization impl = customization.getPackage("com.azure.storage.queue.implementation");
 
         ClassCustomization queuesImpl = impl.getClass("QueuesImpl");
-        MethodCustomization create = queuesImpl.getMethod("create");
-        create.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        create.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization delete = queuesImpl.getMethod("delete");
-        delete.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        delete.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization getProperties = queuesImpl.getMethod("getProperties");
-        getProperties.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        getProperties.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization setMetadata = queuesImpl.getMethod("setMetadata");
-        setMetadata.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        setMetadata.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization getAccessPolicy = queuesImpl.getMethod("getAccessPolicy");
-        getAccessPolicy.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        getAccessPolicy.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization setAccessPolicy = queuesImpl.getMethod("setAccessPolicy");
-        setAccessPolicy.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        setAccessPolicy.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("create"));
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("delete"));
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("getProperties"));
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("setMetadata"));
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("getAccessPolicy"));
+        modifyUnexpectedResponseExceptionType(queuesImpl.getMethod("setAccessPolicy"));
 
         ClassCustomization messageIdsImpl = impl.getClass("MessageIdsImpl");
-        MethodCustomization update = messageIdsImpl.getMethod("update");
-        update.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        update.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization delete1 = messageIdsImpl.getMethod("delete");
-        delete1.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        delete1.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        modifyUnexpectedResponseExceptionType(messageIdsImpl.getMethod("update"));
+        modifyUnexpectedResponseExceptionType(messageIdsImpl.getMethod("delete"));
 
         ClassCustomization messagesImpl = impl.getClass("MessagesImpl");
-        MethodCustomization dequeue = messagesImpl.getMethod("dequeue");
-        dequeue.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        dequeue.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization clear = messagesImpl.getMethod("clear");
-        clear.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        clear.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization enqueue = messagesImpl.getMethod("enqueue");
-        enqueue.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        enqueue.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization peek = messagesImpl.getMethod("peek");
-        peek.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        peek.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        modifyUnexpectedResponseExceptionType(messagesImpl.getMethod("dequeue"));
+        modifyUnexpectedResponseExceptionType(messagesImpl.getMethod("clear"));
+        modifyUnexpectedResponseExceptionType(messagesImpl.getMethod("enqueue"));
+        modifyUnexpectedResponseExceptionType(messagesImpl.getMethod("peek"));
 
         ClassCustomization servicesImpl = impl.getClass("ServicesImpl");
-        MethodCustomization setProperties1 = servicesImpl.getMethod("setProperties");
-        setProperties1.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        setProperties1.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization getProperties1 = servicesImpl.getMethod("getProperties");
-        getProperties1.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        getProperties1.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization getStatistics = servicesImpl.getMethod("getStatistics");
-        getStatistics.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        getStatistics.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization listQueuesSegment = servicesImpl.getMethod("listQueuesSegment");
-        listQueuesSegment.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        listQueuesSegment.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
-        MethodCustomization listQueuesSegmentNext = servicesImpl.getMethod("listQueuesSegmentNext");
-        listQueuesSegmentNext.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        listQueuesSegmentNext.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("setProperties"));
+        modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("getProperties"));
+        modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("getStatistics"));
+        modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("listQueuesSegment"));
+        modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("listQueuesSegmentNext"));
 
+        // Update incorrect JsonProperty of Metrics
         PackageCustomization models = customization.getPackage("com.azure.storage.queue.models");
         ClassCustomization queueServiceProperties = models.getClass("QueueServiceProperties");
         PropertyCustomization hourMetrics = queueServiceProperties.getProperty("hourMetrics");
@@ -85,5 +53,10 @@ public class QueueStorageCustomization extends Customization {
         PropertyCustomization minuteMetrics = queueServiceProperties.getProperty("minuteMetrics");
         minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
         minuteMetrics.addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+    }
+
+    private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
+        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
+        method.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
     }
 }
