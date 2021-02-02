@@ -51,13 +51,15 @@ public final class BlobBatchAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobBatchAsyncClient.class);
 
     private final AzureBlobStorageImpl client;
+    private final boolean containerScoped;
 
-    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, BlobServiceVersion version) {
+    BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
         this.client = new AzureBlobStorageBuilder()
-            .url(accountUrl)
+            .url(clientUrl)
             .pipeline(pipeline)
             .version(version.getVersion())
             .build();
+        this.containerScoped = containerScoped;
     }
 
     /**
@@ -121,12 +123,18 @@ public final class BlobBatchAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
         return batch.prepareBlobBatchSubmission()
-            .flatMap(batchOperationInfo -> client.services()
-                .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
-                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
-                    context == null ? Context.NONE.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
-                    : context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .flatMap(batchOperationInfo -> containerScoped
+                ? client.containers().submitBatchWithRestResponseAsync(null,
+                Flux.fromIterable(batchOperationInfo.getBody()),
+                batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .flatMap(response ->
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger))
+                : client.services().submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
+                batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }

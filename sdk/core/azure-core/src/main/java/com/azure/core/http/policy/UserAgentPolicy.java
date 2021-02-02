@@ -118,7 +118,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
             userAgentValue = userAgent;
         }
 
-        context.getHttpRequest().getHeaders().put(USER_AGENT, userAgentValue);
+        context.getHttpRequest().getHeaders().set(USER_AGENT, userAgentValue);
         return next.process();
     }
 }
