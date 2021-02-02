@@ -1218,6 +1218,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             InternalObjectNode internalObjectNode;
             if (objectDoc instanceof InternalObjectNode) {
                 internalObjectNode = (InternalObjectNode) objectDoc;
+            } else if (objectDoc instanceof ObjectNode) {
+                internalObjectNode = new InternalObjectNode((ObjectNode)objectDoc);
             } else if (contentAsByteBuffer != null) {
                 contentAsByteBuffer.rewind();
                 internalObjectNode = new InternalObjectNode(contentAsByteBuffer);

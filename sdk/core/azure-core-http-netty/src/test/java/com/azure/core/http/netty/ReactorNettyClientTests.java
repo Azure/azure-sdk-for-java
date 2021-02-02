@@ -53,6 +53,9 @@ public class ReactorNettyClientTests {
     private static final String SHORT_BODY_PATH = "/short";
     private static final String LONG_BODY_PATH = "/long";
 
+    static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
+    static final String EXPECTED_HEADER = "userAgent";
+
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
 
@@ -73,6 +76,8 @@ public class ReactorNettyClientTests {
         server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(post("/httpHeaders").willReturn(aResponse()
+            .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
+        server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
             .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
@@ -370,6 +375,16 @@ public class ReactorNettyClientTests {
 
         StepVerifier.create(client.send(request))
             .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void validateRequestHasOneUserAgentHeader() {
+        HttpClient httpClient = new ReactorNettyClientProvider().createInstance();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, NO_DOUBLE_UA_PATH),
+            new HttpHeaders().set("User-Agent", EXPECTED_HEADER), Flux.empty())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
