@@ -37,8 +37,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.addFilterBefore(new ExceptionHandlerFilter(), WebAsyncManagerIntegrationFilter.class)
-            .authorizeRequests()
+        http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
             .oauth2Login()
@@ -54,7 +53,8 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
                 .and()
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
-                .and();
+                .and()
+            .addFilterBefore(new ExceptionHandlerFilter(), WebAsyncManagerIntegrationFilter.class);
         // @formatter:off
     }
 
