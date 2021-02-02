@@ -23,7 +23,7 @@ stages:
                 groupId: com.azure
                 safeName: azuretables
             ServiceDirectory: tables
-            Timeout: 60
+            TimeoutInMinutes: 60
             MaxParallel: 14
             EnvVars:
               AZURE_TEST_MODE: LIVE
