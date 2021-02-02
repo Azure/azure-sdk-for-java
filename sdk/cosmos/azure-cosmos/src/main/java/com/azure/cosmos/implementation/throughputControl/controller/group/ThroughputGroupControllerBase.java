@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -143,8 +142,8 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return requestController.init();
     }
 
-    public boolean isUseByDefault() {
-        return this.group.isUseByDefault();
+    public boolean isDefault() {
+        return this.group.isDefault();
     }
 
     public void onContainerMaxThroughputRefresh(int maxContainerThroughput) {
@@ -235,6 +234,6 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     @Override
     public boolean canHandleRequest(RxDocumentServiceRequest request) {
-        return this.isUseByDefault() || StringUtils.equals(this.group.getGroupName(), request.getThroughputControlGroupName());
+        return this.isDefault() || StringUtils.equals(this.group.getGroupName(), request.getThroughputControlGroupName());
     }
 }

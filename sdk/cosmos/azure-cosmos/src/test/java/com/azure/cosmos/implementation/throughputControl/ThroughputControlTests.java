@@ -17,8 +17,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,17 +33,9 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void readItem() throws Exception {
-        ThroughputControlGroup group1 = container.createThroughputControlGroup("group-1", 5);
-        group1.setUseByDefault();
+        container.enableThroughputLocalControlGroup("group-1", 5, true);
+        ThroughputControlGroup group2 = container.enableThroughputLocalControlGroup("group-2", 0.9);
 
-        ThroughputControlGroup group2 = container.createThroughputControlGroup("group-2", 0.9);
-
-        Set<ThroughputControlGroup> groups = new HashSet<>();
-        groups.add(group1);
-        groups.add(group2);
-
-
-        this.client.enableThroughputControl(groups);
         TestItem docDefinition = getDocumentDefinition();
         container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
 
@@ -73,6 +63,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         // Test read operation which will use an undefined control group, it will fall back to default group
         // but since the throughput usage has been reset, this request will not be throttled
+
         requestOptions.setThroughputControlGroupName("Undefined");
         CosmosItemResponse<TestItem> readItemResponse3 = container.readItem(docDefinition.getId(),
             new PartitionKey(docDefinition.getMypk()),

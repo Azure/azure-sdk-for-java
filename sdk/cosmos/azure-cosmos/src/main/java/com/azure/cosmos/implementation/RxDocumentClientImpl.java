@@ -81,7 +81,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -170,7 +169,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
     private final DiagnosticsClientConfig diagnosticsClientConfig;
+
     private final AtomicBoolean throughputControlEnabled;
+    private ThroughputControlStore throughputControlStore;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -3766,25 +3767,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public void enableThroughputControl(Set<ThroughputControlGroup> groups) {
-        checkNotNull(groups, "Throughput control groups can not be null");
+    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+        checkNotNull(group, "Throughput control group can not be null");
 
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
-            ThroughputControlStore throughputControlStore =
+            this.throughputControlStore =
                 new ThroughputControlStore(
                     this.collectionCache,
                     this.connectionPolicy.getConnectionMode(),
                     this.globalEndpointManager,
-                    groups,
                     this.partitionKeyRangeCache);
 
-            //Non-blocking
-            throughputControlStore.init().subscribeOn(Schedulers.parallel()).subscribe();
-
             this.storeModel.enableThroughputControl(throughputControlStore);
-        } else {
-            throw new IllegalArgumentException("Throughput control already enabled");
         }
+
+        this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

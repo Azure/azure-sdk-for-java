@@ -14,34 +14,21 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroup {
-
-    private final static boolean DEFAULT_USE_BY_DEFAULT = false;
-    private final static ThroughputControlMode DEFAULT_CONTROL_MODE = ThroughputControlMode.LOCAL;
-
+    private final ThroughputControlMode controlMode;
     private final String groupName;
     private final String id;
+    private final boolean isDefault;
     private final CosmosAsyncContainer targetContainer;
+    private final Integer targetThroughput;
+    private final Double targetThroughputThreshold;
 
-    private ThroughputControlMode controlMode;
-    private Integer targetThroughput;
-    private Double targetThroughputThreshold;
-    private boolean useByDefault;
-
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup(String groupName, CosmosAsyncContainer targetContainer, int targetThroughput) {
-        this(groupName, targetContainer, targetThroughput, null);
-    }
-
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup(String groupName, CosmosAsyncContainer targetContainer, double targetThroughputThreshold) {
-        this(groupName, targetContainer, null, targetThroughputThreshold);
-    }
-
-    private ThroughputControlGroup(
+    ThroughputControlGroup(
         String groupName,
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
-        Double targetThroughputThreshold) {
+        Double targetThroughputThreshold,
+        ThroughputControlMode controlMode,
+        boolean isDefault) {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
         checkNotNull(targetContainer, "Target container can not be null");
@@ -54,36 +41,10 @@ public class ThroughputControlGroup {
         this.targetContainer = targetContainer;
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
-        this.controlMode = DEFAULT_CONTROL_MODE;
-        this.useByDefault = DEFAULT_USE_BY_DEFAULT;
+        this.controlMode = controlMode;
+        this.isDefault = isDefault;
 
         this.id = this.getId();
-    }
-
-    /**
-     * Get throughput group control mode.
-     *
-     * By default, it will be local control mode.
-     *
-     * @return the {@link ThroughputControlMode}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlMode getControlMode() {
-        return this.controlMode;
-    }
-
-    /**
-     * Set throughput group control mode.
-     *
-     * By default it will be local control mode.
-     *
-     * @return the {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup setControlMode(ThroughputControlMode controlMode) {
-        checkNotNull(controlMode, "Throughput control mode cannot be null");
-        this.controlMode = controlMode;
-        return this;
     }
 
     /**
@@ -140,19 +101,12 @@ public class ThroughputControlGroup {
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public boolean isUseByDefault() {
-        return this.useByDefault;
+    public boolean isDefault() {
+        return this.isDefault;
     }
 
-    /**
-     * Set the throughput control group to be used by default.
-     *
-     * @return the {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup setUseByDefault() {
-        this.useByDefault = Boolean.TRUE;
-        return this;
+    ThroughputControlMode getControlMode() {
+        return this.controlMode;
     }
 
     private String getId() {

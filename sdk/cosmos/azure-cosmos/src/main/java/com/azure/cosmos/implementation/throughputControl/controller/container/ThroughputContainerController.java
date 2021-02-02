@@ -30,12 +30,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -87,6 +87,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.globalEndpointManager = globalEndpointManager;
         this.groupControllers = new ConcurrentHashMap<>();
         this.groups = groups;
+
         this.maxContainerThroughput = new AtomicReference<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
@@ -196,7 +197,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private void setDefaultGroupController() {
         List<ThroughputGroupControllerBase> defaultGroupControllers =
-            this.groupControllers.values().stream().filter(ThroughputGroupControllerBase::isUseByDefault).collect(Collectors.toList());
+            this.groupControllers.values().stream().filter(ThroughputGroupControllerBase::isDefault).collect(Collectors.toList());
 
         if (defaultGroupControllers.size() > 1) {
             // We should never reach here since we do config validation to make sure only one default group configured
@@ -238,8 +239,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                     return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
                 }
                 else {
-                    // If customer used a group not defined, we will fall back to the default group controller
-                    return Mono.justOrEmpty(this.groupControllers.get(request1.getThroughputControlGroupName()))
+                    return this.getOrCreateThroughputGroupController(request.getThroughputControlGroupName())
                         .defaultIfEmpty(this.defaultGroupController)
                         .map(Utils.ValueHolder::new);
                 }
@@ -251,6 +251,33 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
                 return originalRequestMono;
             });
+    }
+
+    // TODO: a better way to handle throughput control group enabled after the container initialization
+    private Mono<ThroughputGroupControllerBase> getOrCreateThroughputGroupController(String groupName){
+
+        if (StringUtils.isEmpty(groupName)) {
+            return Mono.empty();
+        }
+
+        if (this.groupControllers.containsKey(groupName)) {
+            return Mono.just(this.groupControllers.get(groupName));
+        }
+
+        Optional<ThroughputControlGroup> group = this.groups.stream().filter(groupConfig -> StringUtils.equals(groupName, groupConfig.getGroupName())).findFirst();
+        if (group.isEmpty()) {
+            return Mono.empty();
+        }
+
+        return this.groupControllers.computeIfAbsent(group.get().getGroupName(), key -> {
+            return ThroughputGroupControllerFactory.createController(
+                this.connectionMode,
+                this.globalEndpointManager,
+                group.get(),
+                this.maxContainerThroughput.get(),
+                this.partitionKeyRangeCache,
+                this.targetContainerRid);
+        }).init();
     }
 
     public String getTargetContainerRid() {

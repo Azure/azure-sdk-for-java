@@ -23,7 +23,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -31,11 +30,9 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Set;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -470,20 +467,13 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     /**
-     * Enable throughput control by providing the throughput control groups.
-     * Each cosmos client can only enable throughput control once.
+     * Enable throughput control group.
      *
-     * @param groupSet The throughput control group configuration set.
+     * @param group Throughput control group going to be enabled.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputControl(Set<ThroughputControlGroup> groupSet) {
-        checkNotNull(groupSet, "Throughput control group set cannot be null");
-
-        if (groupSet.stream().filter(group -> group.isUseByDefault()).count() > 1) {
-            throw new IllegalArgumentException("Only at most one group can be set as default");
-        }
-
-        this.asyncDocumentClient.enableThroughputControl(groupSet);
+    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+        checkNotNull(group, "Throughput control group cannot be null");
+        this.asyncDocumentClient.enableThroughputControlGroup(group);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

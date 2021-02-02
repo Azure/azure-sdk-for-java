@@ -1410,21 +1410,63 @@ public class CosmosAsyncContainer {
      *
      * @param groupName The throughput control group name.
      * @param targetThroughput The target throughput for the control group.
+     *
      * @return A {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup createThroughputControlGroup(String groupName, int targetThroughput) {
-        return new ThroughputControlGroup(groupName, this, targetThroughput);
+    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
+        return this.enableThroughputLocalControlGroup(groupName, targetThroughput, false);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
+        return this.enableThroughputControlGroup(groupName, targetThroughput, null, ThroughputControlMode.LOCAL, isDefault);
     }
 
     /**
      *
      * @param groupName The throughput control group name.
      * @param targetThroughputThreshold The target throughput threshold for the control group.
+     *
      * @return A {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup createThroughputControlGroup(String groupName, double targetThroughputThreshold) {
-        return new ThroughputControlGroup(groupName, this, targetThroughputThreshold);
+    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
+        return this.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, false);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
+        return this.enableThroughputControlGroup(groupName, null, targetThroughputThreshold, ThroughputControlMode.LOCAL, isDefault);
+    }
+
+    private ThroughputControlGroup enableThroughputControlGroup(
+        String groupName,
+        Integer targetThroughput,
+        Double targetThroughputThreshold,
+        ThroughputControlMode controlMode,
+        boolean isDefault) {
+
+        ThroughputControlGroup throughputControlGroup = new ThroughputControlGroup(
+            groupName, this, targetThroughput, targetThroughputThreshold, controlMode, isDefault);
+        this.database.getClient().enableThroughputControlGroup(throughputControlGroup);
+
+        return throughputControlGroup;
     }
 }

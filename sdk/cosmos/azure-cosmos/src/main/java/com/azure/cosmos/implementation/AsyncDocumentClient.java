@@ -1506,9 +1506,9 @@ public interface AsyncDocumentClient {
     ItemDeserializer getItemDeserializer();
 
     /**
-     * Enable throughput control.
+     * Enable throughput control group.
      *
-     * @param groups the throughput control group set.
+     * @param group the throughput control group.
      */
-    void enableThroughputControl(Set<ThroughputControlGroup> groups);
+    void enableThroughputControlGroup(ThroughputControlGroup group);
 }

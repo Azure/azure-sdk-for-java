@@ -92,69 +92,47 @@ public class ThroughputControlStore {
         RxClientCollectionCache collectionCache,
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
-        Set<ThroughputControlGroup> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
         checkNotNull(collectionCache,"RxClientCollectionCache can not be null");
         checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
-        checkNotNull(groups, "Throughput budget group configs can not be null");
         checkNotNull(partitionKeyRangeCache, "PartitionKeyRangeCache can not be null");
 
         this.collectionCache = collectionCache;
         this.connectionMode = connectionMode;
         this.containerControllerCache = new AsyncCache<>();
-
         this.globalEndpointManager = globalEndpointManager;
-
         this.groupMapByContainer = new ConcurrentHashMap<>();
-
-        // Group throughput control by container self link.
-        groups.forEach(group -> {
-            String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
-
-            if (!this.groupMapByContainer.containsKey(collectionLink)) {
-                this.groupMapByContainer.put(collectionLink, new HashSet<>());
-            }
-            this.groupMapByContainer.get(collectionLink).add(group);
-        });
-
         this.partitionKeyRangeCache = partitionKeyRangeCache;
     }
 
-    public Mono<Void> init() {
-        return Flux.fromIterable(Collections.list(this.groupMapByContainer.keys()))
-            .flatMap(containerLink -> this.resolveContainerController(containerLink)).then();
-    }
+    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+        checkNotNull(group, "Throughput control group cannot be null");
 
-    private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {
-        checkArgument(StringUtils.isNotEmpty(collectionLink), "Collection link can not be null or empty");
+        String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
+        this.groupMapByContainer.compute(collectionLink, (key, groupSet) -> {
+            if (groupSet == null) {
+                groupSet = new HashSet<>();
+            }
 
-        return this.containerControllerCache.getAsync(
-            collectionLink,
-            null,
-            () -> this.createAndInitContainerController(collectionLink)
-        );
-    }
+            if (group.isDefault()) {
+                if (groupSet.stream().anyMatch(ThroughputControlGroup::isDefault)) {
+                    throw new IllegalArgumentException("A default group already exists");
+                }
+            }
 
-    private Mono<IThroughputContainerController> createAndInitContainerController(String containerLink) {
-        checkArgument(StringUtils.isNotEmpty(containerLink), "Container link should not be null or empty");
+            if (!groupSet.add(group)) {
+                logger.warn("Can not add duplicate group");
+            }
 
-        if (this.groupMapByContainer.containsKey(containerLink)) {
-            return Mono.just(this.groupMapByContainer.get(containerLink))
-                .flatMap(groups -> {
-                    ThroughputContainerController containerController =
-                        new ThroughputContainerController(
-                            this.connectionMode,
-                            this.globalEndpointManager,
-                            groups,
-                            this.partitionKeyRangeCache);
+            if (groupSet.size() == 1) {
+                // This is the first enabled group for the target container
+                // Clean the current cache in case we have built EmptyThroughputContainerController.
+                this.containerControllerCache.remove(collectionLink);
+            }
 
-                    return containerController.init();
-                });
-        } else {
-            return Mono.just(new EmptyThroughputContainerController())
-                .flatMap(EmptyThroughputContainerController::init);
-        }
+            return groupSet;
+        });
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
@@ -204,6 +182,37 @@ public class ThroughputControlStore {
                     return originalRequestMono;
                 }
             });
+    }
+
+    private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {
+        checkArgument(StringUtils.isNotEmpty(collectionLink), "Collection link can not be null or empty");
+
+        return this.containerControllerCache.getAsync(
+            collectionLink,
+            null,
+            () -> this.createAndInitContainerController(collectionLink)
+        );
+    }
+
+    private Mono<IThroughputContainerController> createAndInitContainerController(String containerLink) {
+        checkArgument(StringUtils.isNotEmpty(containerLink), "Container link should not be null or empty");
+
+        if (this.groupMapByContainer.containsKey(containerLink)) {
+            return Mono.just(this.groupMapByContainer.get(containerLink))
+                .flatMap(groups -> {
+                    ThroughputContainerController containerController =
+                        new ThroughputContainerController(
+                            this.connectionMode,
+                            this.globalEndpointManager,
+                            groups,
+                            this.partitionKeyRangeCache);
+
+                    return containerController.init();
+                });
+        } else {
+            return Mono.just(new EmptyThroughputContainerController())
+                .flatMap(EmptyThroughputContainerController::init);
+        }
     }
 
     private Mono<Boolean> shouldRefreshContainerController(String containerLink, RxDocumentServiceRequest request) {
