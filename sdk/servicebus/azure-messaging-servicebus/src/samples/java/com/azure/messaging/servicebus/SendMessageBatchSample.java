@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +15,24 @@ import java.util.List;
  * sender.
  */
 public class SendMessageBatchSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
+
     /**
      * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
+        SendMessageBatchSample sample = new SendMessageBatchSample();
+        sample.run();
+    }
+
+    /**
+     * This method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
+     */
+    @Test
+    public void run() {
         List<ServiceBusMessage> testMessages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromString("Green")),
             new ServiceBusMessage(BinaryData.fromString("Red")),
@@ -30,14 +43,16 @@ public class SendMessageBatchSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}";
+        // The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "topicName" will be the name of the Service Bus topic instance you created in the Service Bus namespace.
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
-            .topicName("<< TOPIC NAME >>")
+            .topicName(topicName)
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
