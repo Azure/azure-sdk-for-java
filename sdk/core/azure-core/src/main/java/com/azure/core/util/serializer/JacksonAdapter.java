@@ -88,7 +88,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .build();
 
         this.headerMapper = initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .build();
 
         this.xmlMapper = initializeMapperBuilder(XmlMapper.builder())
