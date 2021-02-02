@@ -73,9 +73,10 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
         container.createItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
       } catch {
         case e: CosmosException if Exceptions.isResourceExistsException(e) => {
+          // TODO: what should we do on unique index violation? should we ignore or throw?
           // DONE
         }
-        case e: CosmosException => {
+        case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
           createWithRetry(partitionKeyValue, objectNode, remainingAttempts - 1, exceptionToThrow)
         }
       }
@@ -92,7 +93,8 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
       try {
         container.upsertItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
       } catch {
-        case e: CosmosException => upsertWithRetry(partitionKeyValue, objectNode, remainingAttempts - 1, Option.apply(e))
+        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+          upsertWithRetry(partitionKeyValue, objectNode, remainingAttempts - 1, Option.apply(e))
         case e: Exception => throw e // unexpected failure
       }
     }

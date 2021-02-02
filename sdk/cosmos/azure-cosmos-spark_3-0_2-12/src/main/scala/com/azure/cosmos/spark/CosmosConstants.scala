@@ -9,5 +9,8 @@ private object CosmosConstants {
 
   object StatusCodes {
     val ConflictStatusCode = 409
+    val ServerError = 503
+    val Gone = 410
+    val Timeout = 408
   }
 }

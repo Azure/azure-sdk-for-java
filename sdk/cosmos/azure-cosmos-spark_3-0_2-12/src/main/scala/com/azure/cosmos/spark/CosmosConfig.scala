@@ -81,7 +81,13 @@ object CosmosWriteConfig {
   val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
     defaultValue = Option.apply(3),
-    parseFromStringFunction = maxRetryAttempt => maxRetryAttempt.toInt,
+    parseFromStringFunction = maxRetryAttempt => {
+      val cnt = maxRetryAttempt.toInt
+      if (cnt < 0) {
+        throw new RuntimeException(s"expected a non-negative number")
+      }
+      cnt
+    },
     helpMessage = "Cosmos DB Write Max Retry Attempts on failure")
 
   def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
