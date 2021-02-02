@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JobsAsyncClientTests extends QuantumClientTestBase {
+public class JobsAsyncClientTest extends QuantumClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private JobsAsyncClient client;
 
