@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import com.azure.core.tracing.opentelemetry.OpenTelemetryTracer;
 import com.azure.core.util.Context;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HttpTraceUtilTest {
 
-    private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private Context tracingContext;
     private Span parentSpan;
@@ -30,7 +28,6 @@ public class HttpTraceUtilTest {
 
     @BeforeEach
     public void setUp() {
-        openTelemetryTracer = new OpenTelemetryTracer();
         // Get the global singleton Tracer object.
         tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
         // Start user parent span.

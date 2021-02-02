@@ -18,6 +18,7 @@ import com.azure.core.util.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -70,7 +71,7 @@ public class OpenTelemetryHttpPolicyTests {
         Span expectedSpan = tracer
             .spanBuilder("/anything")
             .setParent(io.opentelemetry.context.Context.current().with(parentSpan))
-            .setSpanKind(Span.Kind.CLIENT)
+            .setSpanKind(SpanKind.CLIENT)
             .startSpan();
 
         // Act
@@ -99,8 +100,8 @@ public class OpenTelemetryHttpPolicyTests {
     }
 
     private static void verifySpanContextAttributes(SpanContext expectedSpanContext, SpanContext actualSpanContext) {
-        assertEquals(expectedSpanContext.getTraceIdAsHexString(), actualSpanContext.getTraceIdAsHexString());
-        assertNotEquals(expectedSpanContext.getSpanIdAsHexString(), actualSpanContext.getSpanIdAsHexString());
+        assertEquals(expectedSpanContext.getTraceId(), actualSpanContext.getTraceId());
+        assertNotEquals(expectedSpanContext.getSpanId(), actualSpanContext.getSpanId());
         assertEquals(expectedSpanContext.getTraceFlags(), actualSpanContext.getTraceFlags());
         assertEquals(expectedSpanContext.getTraceState(), actualSpanContext.getTraceState());
         assertEquals(expectedSpanContext.isValid(), actualSpanContext.isValid());

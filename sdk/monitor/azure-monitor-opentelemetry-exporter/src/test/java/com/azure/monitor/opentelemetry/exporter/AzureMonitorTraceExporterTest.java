@@ -4,13 +4,12 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
-import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationLibraryInfo;
 import io.opentelemetry.sdk.resources.Resource;
@@ -48,6 +47,12 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
     }
 
     static class RequestSpanData implements SpanData {
+
+        @Override
+        public SpanContext getSpanContext() {
+            return SpanContext.create(TRACE_ID, SPAN_ID, TraceFlags.getDefault(), TRACE_STATE);
+        }
+
         @Override
         public String getTraceId() {
             return TRACE_ID;
@@ -56,16 +61,6 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
         @Override
         public String getSpanId() {
             return SPAN_ID;
-        }
-
-        @Override
-        public boolean isSampled() {
-            return false;
-        }
-
-        @Override
-        public TraceState getTraceState() {
-            return TRACE_STATE;
         }
 
         @Override
@@ -94,8 +89,8 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
         }
 
         @Override
-        public Span.Kind getKind() {
-            return Span.Kind.INTERNAL;
+        public SpanKind getKind() {
+            return SpanKind.INTERNAL;
         }
 
         @Override
@@ -106,9 +101,9 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
         @Override
         public Attributes getAttributes() {
             return Attributes.builder()
-                .put(SemanticAttributes.HTTP_STATUS_CODE.getKey(), 200L)
-                .put(SemanticAttributes.HTTP_URL.getKey(), "http://localhost")
-                .put(SemanticAttributes.HTTP_METHOD.getKey(), "GET")
+                .put("http.status_code", 200L)
+                .put("http.url", "http://localhost")
+                .put("http.method", "GET")
                 .put("ai.sampling.percentage", 100.0)
                 .build();
         }

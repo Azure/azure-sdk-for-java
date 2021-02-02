@@ -16,15 +16,13 @@ import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import static io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MESSAGING_DESTINATION;
-import static io.opentelemetry.semconv.trace.attributes.SemanticAttributes.PEER_SERVICE;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
@@ -38,6 +36,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
+    static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
+    static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
@@ -79,7 +79,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 if (spanBuilder == null) {
                     return Context.NONE;
                 }
-                span = spanBuilder.setSpanKind(Span.Kind.CLIENT).startSpan();
+                span = spanBuilder.setSpanKind(SpanKind.CLIENT).startSpan();
                 if (span.isRecording()) {
                     // If span is sampled in, add additional request attributes
                     addSpanRequestAttributes(span, context, spanName);
@@ -87,7 +87,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 return context.addData(PARENT_SPAN_KEY, span);
             case MESSAGE:
                 spanBuilder = getSpanBuilder(spanName, context);
-                span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
+                span = spanBuilder.setSpanKind(SpanKind.PRODUCER).startSpan();
                 if (span.isRecording()) {
                     // If span is sampled in, add additional request attributes
                     addSpanRequestAttributes(span, context, spanName);
@@ -266,7 +266,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
             SpanBuilder spanBuilder = getSpanBuilder(spanName, context);
-            span = spanBuilder.setSpanKind(Span.Kind.CONSUMER).startSpan();
+            span = spanBuilder.setSpanKind(SpanKind.CONSUMER).startSpan();
         }
         if (span.isRecording()) {
             // If span is sampled in, add additional request attributes
@@ -287,7 +287,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         SpanBuilder spanBuilder = TRACER.spanBuilder(spanName)
             .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(spanContext)));
 
-        spanBuilder.setSpanKind(Span.Kind.CONSUMER);
+        spanBuilder.setSpanKind(SpanKind.CONSUMER);
         return spanBuilder.startSpan();
     }
 
@@ -301,6 +301,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static Context setContextData(Span span) {
         SpanContext spanContext = span.getSpanContext();
         final String traceparent = AmqpPropagationFormatUtil.getDiagnosticId(spanContext);
+        if (traceparent == null) {
+            return Context.NONE;
+        }
         return new Context(DIAGNOSTIC_ID_KEY, traceparent).addData(SPAN_CONTEXT_KEY, spanContext);
     }
 
@@ -315,11 +318,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(span, "'span' cannot be null.");
         String entityPath = getOrDefault(context, ENTITY_PATH_KEY, null, String.class);
         if (entityPath != null) {
-            span.setAttribute(MESSAGING_DESTINATION, entityPath);
+            span.setAttribute(MESSAGE_BUS_DESTINATION, entityPath);
         }
         String hostName = getOrDefault(context, HOST_NAME_KEY, null, String.class);
         if (hostName != null) {
-            span.setAttribute(PEER_SERVICE, hostName);
+            span.setAttribute(PEER_ENDPOINT, hostName);
         }
         Long messageEnqueuedTime = getOrDefault(context, MESSAGE_ENQUEUED_TIME, null, Long.class);
         if (messageEnqueuedTime != null) {
