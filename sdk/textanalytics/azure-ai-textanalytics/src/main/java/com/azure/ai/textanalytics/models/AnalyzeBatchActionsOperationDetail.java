@@ -132,7 +132,7 @@ public final class AnalyzeBatchActionsOperationDetail {
     }
 
     /**
-     * Gets the created time of a action.
+     * Gets the created time of an action.
      *
      * @return the created time of a action.
      */
