@@ -4,6 +4,7 @@
 module com.azure.communication.administration {
 
     requires transitive com.azure.communication.common;
+    requires transitive com.azure.core;
 
     // public API surface area
     exports com.azure.communication.administration;

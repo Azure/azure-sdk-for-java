@@ -83,7 +83,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Override
     protected void cleanUpResources() {
         if (rgName != null) {
-            resourceManager.resourceGroups().deleteByName(rgName);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 

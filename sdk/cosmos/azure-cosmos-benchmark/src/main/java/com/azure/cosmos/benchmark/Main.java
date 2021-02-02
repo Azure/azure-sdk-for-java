@@ -4,12 +4,15 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
+import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
+import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
 
 public class Main {
@@ -38,6 +41,8 @@ public class Main {
                     asyncMultiClientBenchmark(cfg);
                 } else if(cfg.getOperationType().equals(CtlWorkload)) {
                     asyncCtlWorkload(cfg);
+                } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
+                    linkedInCtlWorkload(cfg);
                 }
                 else {
                     asyncBenchmark(cfg);
@@ -180,5 +185,27 @@ public class Main {
                 benchmark.shutdown();
             }
         }
+    }
+
+    private static void linkedInCtlWorkload(Configuration cfg) {
+        LOGGER.info("Executing the LinkedIn ctl workload");
+        LICtlWorkload workload = null;
+        try {
+            workload = new LICtlWorkload(cfg);
+
+            LOGGER.info("Setting up the LinkedIn ctl workload");
+            workload.setup();
+
+            LOGGER.info("Starting the LinkedIn ctl workload");
+            workload.run();
+        } catch (Exception e) {
+            LOGGER.error("Exception received while executing the LinkedIn ctl workload", e);
+            throw e;
+        }
+        finally {
+            Optional.ofNullable(workload)
+                .ifPresent(LICtlWorkload::shutdown);
+        }
+        LOGGER.info("Completed LinkedIn ctl workload execution");
     }
 }

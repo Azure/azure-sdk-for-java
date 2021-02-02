@@ -40,7 +40,7 @@ public class StorageAccountsImpl
 
     @Override
     public StorageAccountImpl define(String name) {
-        return wrapModel(name).withSku(StorageAccountSkuType.STANDARD_GRS).withGeneralPurposeAccountKind();
+        return wrapModel(name).withSku(StorageAccountSkuType.STANDARD_RAGRS).withGeneralPurposeAccountKindV2();
     }
 
     @Override

@@ -57,7 +57,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
@@ -129,7 +129,7 @@ public class EventHubConsumerClientTest {
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
-        verifyZeroInteractions(onClientClosed);
+        verifyNoMoreInteractions(onClientClosed);
     }
 
     @AfterAll
@@ -164,7 +164,7 @@ public class EventHubConsumerClientTest {
             Assertions.assertNull(event.getLastEnqueuedEventProperties());
         }
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoMoreInteractions(onClientClosed);
     }
 
     /**

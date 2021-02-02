@@ -24,6 +24,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -1675,7 +1676,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Analyze LRO
-
+    @Disabled("enable it once the service error resolved. Issue: 18798")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1694,6 +1695,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("enable it once the service error resolved. Issue: 18798")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1705,21 +1707,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
                 getExpectedAnalyzeTaskResultListForMultiplePages(0, 20, 2),
-                result.toStream().collect(Collectors.toList()));
-        }, 22);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyzeTasks(documents, options.setSkip(3).setTop(10)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
-            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
-                getExpectedAnalyzeTaskResultListForMultiplePages(3, 10, 9),
                 result.toStream().collect(Collectors.toList()));
         }, 22);
     }

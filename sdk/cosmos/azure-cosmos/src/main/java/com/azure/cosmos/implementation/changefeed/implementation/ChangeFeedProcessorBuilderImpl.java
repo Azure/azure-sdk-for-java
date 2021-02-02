@@ -4,12 +4,10 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.guava25.collect.Streams;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -23,23 +21,20 @@ import com.azure.cosmos.implementation.changefeed.PartitionController;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancer;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.function.Tuple2;
 
 import java.net.URI;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,16 +67,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     private static final String PK_RANGE_ID_SEPARATOR = ":";
     private static final String SEGMENT_SEPARATOR = "#";
     private static final String PROPERTY_NAME_LSN = "_lsn";
-    private static final String PROPERTY_NAME_TS = "_ts";
 
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
-    private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
-    private static final int DefaultQueryPartitionsMaxBatchSize = 100;
+    private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
 
-    private int queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-    private int degreeOfParallelism = 25; // default
+    private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
 
     private String hostName;
@@ -92,7 +84,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     private volatile String collectionResourceId;
     private ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
-    private PartitionProcessorFactory partitionProcessorFactory;
     private LeaseStoreManager leaseStoreManager;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
@@ -109,7 +100,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         if (this.partitionManager == null) {
             return this.initializeCollectionPropertiesForBuild()
                 .flatMap( value -> this.getLeaseStoreManager()
-                    .flatMap(leaseStoreManager -> this.buildPartitionManager(leaseStoreManager)))
+                    .flatMap(this::buildPartitionManager))
                 .flatMap(partitionManager1 -> {
                     this.partitionManager = partitionManager1;
                     return this.partitionManager.start();
@@ -164,18 +155,23 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                ChangeFeedOptions options = new ChangeFeedOptions()
-                    .setMaxItemCount(1)
-                    .setPartitionKeyRangeId(lease.getLeaseToken())
-                    .setStartFromBeginning(true)
-                    .setRequestContinuation(lease.getContinuationToken());
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
+                options.setMaxItemCount(1);
 
-                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
                     .take(1)
                     .map(feedResponse -> {
                         String ownerValue = lease.getOwner();
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
                         String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
@@ -193,18 +189,20 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
                         }
 
-                        Integer currentLsn = 0;
-                        Integer estimatedLag = 0;
+                        int currentLsn = 0;
+                        int estimatedLag;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                            estimatedLag = Integer.valueOf(latestLsn);
+                            currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            estimatedLag = Integer.parseInt(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                         } catch (NumberFormatException ex) {
                             logger.warn("Unexpected Cosmos LSN found", ex);
                             estimatedLag = -1;
                         }
 
-                        return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
+                        return Pair.of(
+                            ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn,
+                            estimatedLag);
                     });
             })
             .collectList()
@@ -227,25 +225,29 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
      */
     @Override
     public Mono<List<ChangeFeedProcessorState>> getCurrentState() {
-        List<ChangeFeedProcessorState> earlyResult = new ArrayList<>();
 
         if (this.leaseStoreManager == null || this.feedContextClient == null) {
-            return Mono.just(Collections.unmodifiableList(earlyResult));
+            return Mono.just(Collections.unmodifiableList(new ArrayList<>()));
         }
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                ChangeFeedOptions options = new ChangeFeedOptions()
-                    .setMaxItemCount(1)
-                    .setPartitionKeyRangeId(lease.getLeaseToken())
-                    .setStartFromBeginning(true)
-                    .setRequestContinuation(lease.getContinuationToken());
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
+                options.setMaxItemCount(1);
 
-                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
                     .take(1)
                     .map(feedResponse -> {
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
                         String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
@@ -254,7 +256,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             latestLsn = segments[1];
                         }
 
-                        // lease.getId() - the ID of the lease item representing the persistent state of a change feed processor worker.
+                        // lease.getId() - the ID of the lease item representing the persistent state of a
+                        // change feed processor worker.
                         // latestLsn - a marker representing the latest item that will be processed.
                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
                             .setHostName(lease.getOwner())
@@ -268,22 +271,14 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             return changeFeedProcessorState;
                         }
 
-                        changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+                        changeFeedProcessorState.setContinuationToken(
+                            feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
 
-                        // continuationTokenTimestamp - the system time for the last item that was processed.
-//                        try {
-//                            changeFeedProcessorState.setContinuationTokenTimestamp(Instant.ofEpochSecond(Long.valueOf(
-//                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_TS).asText("0"))));
-//                        } catch (NumberFormatException ex) {
-//                            logger.warn("Unexpected Cosmos _ts found", ex);
-//                            changeFeedProcessorState.setContinuationTokenTimestamp(null);
-//                        }
-
-                        Integer currentLsn = 0;
-                        Integer estimatedLag = 0;
+                        int currentLsn;
+                        int estimatedLag;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                            estimatedLag = Integer.valueOf(latestLsn);
+                            currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            estimatedLag = Integer.parseInt(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                             changeFeedProcessorState.setEstimatedLag(estimatedLag);
                         } catch (NumberFormatException ex) {
@@ -355,44 +350,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         return this;
     }
 
-    /**
-     * Sets an existing {@link ChangeFeedObserver} type to be used by a {@link ChangeFeedObserverFactory} to process changes.
-     * @param type the type of {@link ChangeFeedObserver} to be used.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl observer(Class<? extends ChangeFeedObserver> type) {
-        if (type == null) {
-            throw new IllegalArgumentException("type");
-        }
-
-        this.observerFactory = new ChangeFeedObserverFactoryImpl(type);
-
-        return this;
-    }
-
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
-    }
-
-    /**
-     * Sets the database resource ID of the monitored collection.
-     *
-     * @param databaseResourceId the database resource ID of the monitored collection.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withDatabaseResourceId(String databaseResourceId) {
-        this.databaseResourceId = databaseResourceId;
-        return this;
-    }
-
-    /**
-     * Sets the collection resource ID of the monitored collection.
-     * @param collectionResourceId the collection resource ID of the monitored collection.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withCollectionResourceId(String collectionResourceId) {
-        this.collectionResourceId = collectionResourceId;
-        return this;
     }
 
     /**
@@ -417,66 +376,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         this.leaseContextClient = new ChangeFeedContextClientImpl(leaseClient);
 
-        return this;
-    }
-
-    /**
-     * Sets the {@link PartitionLoadBalancingStrategy} to be used for partition load balancing.
-     *
-     * @param loadBalancingStrategy the {@link PartitionLoadBalancingStrategy} to be used for partition load balancing.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withPartitionLoadBalancingStrategy(PartitionLoadBalancingStrategy loadBalancingStrategy) {
-        if (loadBalancingStrategy == null) {
-            throw new IllegalArgumentException("loadBalancingStrategy");
-        }
-
-        this.loadBalancingStrategy = loadBalancingStrategy;
-        return this;
-    }
-
-    /**
-     * Sets the {@link PartitionProcessorFactory} to be used to create {@link PartitionProcessor} for partition processing.
-     *
-     * @param partitionProcessorFactory the instance of {@link PartitionProcessorFactory} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withPartitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
-        if (partitionProcessorFactory == null) {
-            throw new IllegalArgumentException("partitionProcessorFactory");
-        }
-
-        this.partitionProcessorFactory = partitionProcessorFactory;
-        return this;
-    }
-
-    /**
-     * Sets the {@link LeaseStoreManager} to be used to manage leases.
-     *
-     * @param leaseStoreManager the instance of {@link LeaseStoreManager} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withLeaseStoreManager(LeaseStoreManager leaseStoreManager) {
-        if (leaseStoreManager == null) {
-            throw new IllegalArgumentException("leaseStoreManager");
-        }
-
-        this.leaseStoreManager = leaseStoreManager;
-        return this;
-    }
-
-    /**
-     * Sets the {@link HealthMonitor} to be used to monitor unhealthiness situation.
-     *
-     * @param healthMonitor The instance of {@link HealthMonitor} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withHealthMonitor(HealthMonitor healthMonitor) {
-        if (healthMonitor == null) {
-            throw new IllegalArgumentException("healthMonitor");
-        }
-
-        this.healthMonitor = healthMonitor;
         return this;
     }
 
@@ -506,12 +405,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     }
 
     public ChangeFeedProcessorBuilderImpl() {
-        this.queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-        this.degreeOfParallelism = 25; // default
-    }
-
-    public ChangeFeedProcessorBuilderImpl(PartitionManager partitionManager) {
-        this.partitionManager = partitionManager;
     }
 
     private Mono<ChangeFeedProcessor> initializeCollectionPropertiesForBuild() {
@@ -593,19 +486,21 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             this.feedContextClient.getContainerClient(),
             leaseStoreManager,
             leaseStoreManager,
-            this.degreeOfParallelism,
-            this.queryPartitionsMaxBatchSize
+            DEFAULT_DEGREE_OF_PARALLELISM,
+            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+            this.collectionResourceId
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl(
             factory,
             leaseStoreManager,
-            this.partitionProcessorFactory != null ? this.partitionProcessorFactory : new PartitionProcessorFactoryImpl(
+            new PartitionProcessorFactoryImpl(
                 this.feedContextClient,
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
-                this.feedContextClient.getContainerClient()),
+                this.feedContextClient.getContainerClient(),
+                this.collectionResourceId),
             this.changeFeedProcessorOptions,
             this.scheduler
         );

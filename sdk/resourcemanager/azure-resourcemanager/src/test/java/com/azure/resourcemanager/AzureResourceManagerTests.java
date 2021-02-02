@@ -946,6 +946,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Failed to provision ExpressRoute circuit as the service provider does not have sufficient capacity at this location.")
     public void testExpressRouteCircuits() throws Exception {
         new TestExpressRouteCircuit().new Basic().runTest(azureResourceManager.expressRouteCircuits(), azureResourceManager.resourceGroups());
     }
@@ -956,6 +957,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Failed to provision ExpressRoute circuit as the service provider does not have sufficient capacity at this location.")
     public void testExpressRouteCircuitPeering() throws Exception {
         new TestExpressRouteCircuit().new ExpressRouteCircuitPeering()
             .runTest(azureResourceManager.expressRouteCircuits(), azureResourceManager.resourceGroups());
