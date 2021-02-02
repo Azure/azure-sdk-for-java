@@ -1,7 +1,32 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
+- Change user flow configuration, below is the new structure:
+    ```yaml
+    azure:
+      activedirectory:
+        b2c:
+          sign-in-user-flow: ${your-sign-up-or-in-user-flow}
+          user-flows:
+            - ${your-profile-edit-user-flow}
+            - ${your-password-reset-user-flow}
+    ```
 
+### New Features
+- Support client registrations based on B2C.
+- Support the use of `@RegisteredOAuth2AuthorizedClient` annotation to get `OAuth2AuthorizedClient`.
+- Enable following `azure-spring-boot-starter-active-directory-b2c` configuration properties, take `commerce` client as an example:
+    ```yaml
+    azure:
+      activedirectory:
+        b2c:
+          authorization-clients:
+            commerce:
+              scopes:
+                - https://commerceapi.office.net/teams
+                - openid
+                - offline_access
+    ```
 
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes

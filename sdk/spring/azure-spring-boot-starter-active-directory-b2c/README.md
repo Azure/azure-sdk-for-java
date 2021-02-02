@@ -196,7 +196,7 @@ respectively that completed earlier.
 3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
-4. Click linke with name of `${your-sign-up-or-in}` user flow, you should be rediected Azure AD B2C to start the authentication process.
+4. Click linke with name of `${your-sign-up-or-in-user-flow}` user flow, you should be rediected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
@@ -207,15 +207,16 @@ Azure SDKs for Java offers a consistent logging story to help aid in troubleshoo
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
-The following example shows potential logging settings in `application.properties`:
+The following example shows potential logging settings in `application.yml`:
 
-```properties
-logging.level.root=WARN
-logging.level.org.springframework.web=DEBUG
-logging.level.org.hibernate=ERROR
+```yaml
+logging:
+  level:
+    root: WARN
+    org.springframework.web: DEBUG
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-custom-log-levels).
  
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.

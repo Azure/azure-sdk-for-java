@@ -35,12 +35,14 @@ public class AADB2COAuth2UserService implements OAuth2UserService<OidcUserReques
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
-        if (authentication != null) {
-            return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
-        }
-
+        Object userObject = session.getAttribute(DEFAULT_OIDC_USER);
         // Delegate to the default implementation for loading a user
         DefaultOidcUser oidcUser = (DefaultOidcUser) oidcUserService.loadUser(userRequest);
+        if (authentication != null && userObject != null) {
+            DefaultOidcUser oriOidcUser = (DefaultOidcUser) userObject;
+            // Keep user information up-to-date and authority information unchanged
+            oidcUser = new DefaultOidcUser(oriOidcUser.getAuthorities(), oidcUser.getIdToken());
+        }
         session.setAttribute(DEFAULT_OIDC_USER, oidcUser);
         return oidcUser;
     }
