@@ -301,7 +301,7 @@ public class AADWebAppConfigurationTest {
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
-                    "https://graph.microsoft.com/Directory.AccessAsUser.All"
+                    "https://graph.microsoft.com/Directory.Read.All"
                 );
             });
     }
@@ -349,7 +349,7 @@ public class AADWebAppConfigurationTest {
         assertEquals(resourceServerCount(scopes), 0);
         scopes.add("https://graph.microsoft.com/User.Read");
         assertEquals(resourceServerCount(scopes), 1);
-        scopes.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+        scopes.add("https://graph.microsoft.com/Directory.Read.All");
         assertEquals(resourceServerCount(scopes), 1);
         scopes.add("https://manage.office.com/ActivityFeed.Read");
         assertEquals(resourceServerCount(scopes), 2);
