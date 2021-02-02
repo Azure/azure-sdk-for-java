@@ -60,7 +60,7 @@ public final class ShareLeaseAsyncClient {
         this.client = new AzureFileStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
-//            .version(serviceVersion)
+            .version(serviceVersion)
             .buildClient();
         this.accountName = accountName;
         this.shareName = shareName;
@@ -74,7 +74,7 @@ public final class ShareLeaseAsyncClient {
      */
     @Deprecated
     public String getFileUrl() {
-        return this.client.getUrl();
+        return this.getResourceUrl();
     }
 
     /**
@@ -85,7 +85,14 @@ public final class ShareLeaseAsyncClient {
      * @return URL of the lease client.
      */
     public String getResourceUrl() {
-        return this.client.getUrl();
+        StringBuilder resourceUrlString = new StringBuilder(this.client.getUrl()).append("/").append(shareName);
+        if (this.isShareFile) {
+            resourceUrlString.append("/").append(resourcePath);
+        }
+        if (shareSnapshot != null) {
+            resourceUrlString.append("?sharesnapshot=").append(shareSnapshot);
+        }
+        return resourceUrlString.toString();
     }
 
     /**
