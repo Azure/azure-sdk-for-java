@@ -7,6 +7,8 @@ import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,6 +25,7 @@ import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultPrope
 
 public class AADOnDemandIT {
     private AADSeleniumITHelper aadSeleniumITHelper;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOnDemandIT.class);
 
     @Test
     public void onDemandTest() {
@@ -30,6 +33,7 @@ public class AADOnDemandIT {
         properties.put("azure.activedirectory.authorization-clients.arm.scopes",
             "https://management.azure.com/user_impersonation");
         properties.put("azure.activedirectory.authorization-clients.arm.on-demand", "true");
+        LOGGER.info(AAD_USER_NAME_ON_DEMAND);
 
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_ON_DEMAND, AAD_USER_PASSWORD_ON_DEMAND);
@@ -38,7 +42,7 @@ public class AADOnDemandIT {
         String httpResponse = aadSeleniumITHelper.httpGet("api/azure");
         Assert.assertTrue(httpResponse.contains("azure"));
 
-        httpResponse = aadSeleniumITHelper.IncrementalConsent("api/arm");
+        httpResponse = aadSeleniumITHelper.httpGetWithIncreamentalConsent("api/arm");
         Assert.assertTrue(httpResponse.contains("arm"));
     }
 

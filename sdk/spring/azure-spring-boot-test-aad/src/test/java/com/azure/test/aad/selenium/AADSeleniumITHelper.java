@@ -63,7 +63,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         Assert.assertEquals(username, id);
     }
 
-    public String IncrementalConsent(String endpoint) {
+    public String httpGetWithIncreamentalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
         return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
