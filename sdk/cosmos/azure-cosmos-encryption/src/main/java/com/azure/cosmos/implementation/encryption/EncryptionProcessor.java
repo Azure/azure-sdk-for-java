@@ -16,8 +16,10 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.EncryptionType;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
@@ -62,6 +65,9 @@ public class EncryptionProcessor {
         this.cosmosAsyncContainer = cosmosAsyncContainer;
         this.encryptionCosmosClient = encryptionCosmosClient;
         this.isEncryptionSettingsInitDone = false;
+        this.encryptionSettings = new EncryptionSettings();
+        this.encryptionKeyStoreProvider = this.encryptionCosmosClient.getEncryptionKeyStoreProvider();
+
     }
 
     /**
@@ -86,9 +92,11 @@ public class EncryptionProcessor {
                 return Mono.empty();
             }
             this.clientEncryptionPolicy = clientEncryptionPolicy;
+            AtomicReference<Mono<List<Object>>> sequentialList = new AtomicReference<>();
+            List<Mono<Object>> monoList = new ArrayList<>();
             this.clientEncryptionPolicy.getIncludedPaths().stream().map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.clientEncryptionKeyId).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
-                EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
+                Mono<Object> clientEncryptionPropertiesMono = EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
                     clientEncryptionKeyId, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get())
                     .flatMap(keyProperties -> {
                         ProtectedDataEncryptionKey protectedDataEncryptionKey;
@@ -105,7 +113,7 @@ public class EncryptionProcessor {
                             return Mono.error(ex);
                         }
                         EncryptionSettings encryptionSettings = new EncryptionSettings();
-                        encryptionSettings.setEncryptionSettingTimeToLive(Instant.now().plus(Duration.ofMinutes(com.azure.cosmos.implementation.encryption.Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES)));
+                        encryptionSettings.setEncryptionSettingTimeToLive(Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES)));
                         encryptionSettings.setClientEncryptionKeyId(clientEncryptionKeyId);
                         encryptionSettings.setDataEncryptionKey(protectedDataEncryptionKey);
                         settingsByDekId.put(clientEncryptionKeyId, encryptionSettings);
@@ -124,12 +132,16 @@ public class EncryptionProcessor {
                     InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
                     if (invalidKeyException != null) {
                         forceRefreshClientEncryptionKey.set(true);
-                        return Mono.delay(Duration.ZERO).flux();
+                        return Mono.empty();
                     }
                     return Flux.error(throwable);
                 }))));
+                monoList.add(clientEncryptionPropertiesMono);
+               sequentialList.set(Flux.mergeSequential(monoList).collectList());
             });
-            return Mono.empty();
+            return sequentialList.get().map(objects -> {
+                return Mono.empty();
+            });
         }).flatMap(ignoreVoid -> {
             for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
                 EncryptionType encryptionType = EncryptionType.Plaintext;
@@ -161,7 +173,7 @@ public class EncryptionProcessor {
 
     public Mono<Void> initEncryptionSettingsIfNotInitializedAsync() {
         if (!this.isEncryptionSettingsInitDone) {
-            return initializeEncryptionSettingsAsync();
+            return initializeEncryptionSettingsAsync().then(Mono.empty());
         }
         return Mono.empty();
     }
@@ -214,44 +226,45 @@ public class EncryptionProcessor {
         ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
 
         assert (itemJObj != null);
-
-        for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-            if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
-                return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+        return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
+                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+                }
             }
-        }
-        List<Mono<Void>> encryptionMonoList = new ArrayList<>();
-        for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-            String propertyName = includedPath.path.substring(1);
-            // TODO: moderakh should support JPath
-            JsonNode propertyValueHolder = itemJObj.get(propertyName);
+            List<Mono<Void>> encryptionMonoList = new ArrayList<>();
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                String propertyName = includedPath.path.substring(1);
+                // TODO: moderakh should support JPath
+                JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
-            // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
-            if (propertyValueHolder != null) {
-                itemJObj.remove(propertyName);
+                // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
+                if (propertyValueHolder != null) {
+                    itemJObj.remove(propertyName);
 
-                Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
-                    this).flatMap(settings -> {
-                    byte[] cipherText;
-                    byte[] cipherTextWithTypeMarker;
-                    try {
-                        Pair<TypeMarker, byte[]> typeMarkerPair = toByteArray(propertyValueHolder);
-                        cipherText =
-                            settings.getAeadAes256CbcHmac256EncryptionAlgorithm().encrypt(typeMarkerPair.getRight());
-                        cipherTextWithTypeMarker = new byte[cipherText.length + 1];
-                        cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
-                        System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
-                        itemJObj.set(propertyName, toJsonNode(cipherTextWithTypeMarker, typeMarkerPair.getLeft()));
-                    } catch (MicrosoftDataEncryptionException ex) {
-                        return Mono.error(ex);
-                    }
-                    return Mono.empty();
-                });
-                encryptionMonoList.add(voidMono);
+                    Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                        this).flatMap(settings -> {
+                        byte[] cipherText;
+                        byte[] cipherTextWithTypeMarker;
+                        try {
+                            Pair<TypeMarker, byte[]> typeMarkerPair = toByteArray(propertyValueHolder);
+                            cipherText =
+                                settings.getAeadAes256CbcHmac256EncryptionAlgorithm().encrypt(typeMarkerPair.getRight());
+                            cipherTextWithTypeMarker = new byte[cipherText.length + 1];
+                            cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
+                            System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
+                            itemJObj.set(propertyName, toJsonNode(cipherTextWithTypeMarker, typeMarkerPair.getLeft()));
+                        } catch (MicrosoftDataEncryptionException ex) {
+                            return Mono.error(ex);
+                        }
+                        return Mono.empty();
+                    });
+                    encryptionMonoList.add(voidMono);
+                }
             }
-        }
-        Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-        return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+            Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
+            return listMono.flatMap(ignoreVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+        }));
     }
 
     public Mono<byte[]> decrypt(byte[] input) {
@@ -331,7 +344,7 @@ public class EncryptionProcessor {
                         sqlSerializerFactory.getDefaultSerializer((Number) 0).serialize(jsonNode));
                 case STRING:
                     return Pair.of(TypeMarker.STRING,
-                        sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).serialize(jsonNode));
+                        sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).serialize(jsonNode.asText()));
                 case OBJECT:
                     return Pair.of(TypeMarker.OBJECT,
                         sqlSerializerFactory.getDefaultSerializer(new Object()).serialize(jsonNode));
@@ -354,7 +367,8 @@ public class EncryptionProcessor {
                 case NUMBER:
                     return (JsonNode) sqlSerializerFactory.getDefaultSerializer((Number) 0).deserialize(serializedBytes);
                 case STRING:
-                    return (JsonNode) sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes);
+                    TextNode textNode  = TextNode.valueOf((String)sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
+                    return Utils.getSimpleObjectMapper().readTree((String)sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
                 case OBJECT:
                     return (JsonNode) sqlSerializerFactory.getDefaultSerializer(new Object()).deserialize(serializedBytes);
                 case ARRAY:
@@ -362,6 +376,10 @@ public class EncryptionProcessor {
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
     }

@@ -137,7 +137,7 @@ public final class EncryptionSettings {
 
         KeyEncryptionKey keyEncryptionKey =
             KeyEncryptionKey.getOrCreate(keyProperties.getEncryptionKeyWrapMetadata().name,
-                keyProperties.getEncryptionKeyWrapMetadata().name, encryptionKeyStoreProvider, false);
+                keyProperties.getEncryptionKeyWrapMetadata().value, encryptionKeyStoreProvider, false);
         return ProtectedDataEncryptionKey.getOrCreate(keyId, keyEncryptionKey,
             keyProperties.getWrappedDataEncryptionKey());
     }

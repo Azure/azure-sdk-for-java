@@ -16,7 +16,8 @@ public class EncryptionUtils {
     }
 
     public static byte[] toByteArray(ByteBuffer buf) {
-        byte[] arr = new byte[buf.limit()];
+        buf.position(0);
+        byte[] arr = new byte[buf.remaining()];
         buf.get(arr);
         return arr;
     }

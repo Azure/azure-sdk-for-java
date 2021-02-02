@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.BridgeInternal;
@@ -20,6 +19,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.models.EncryptionSqlQuerySpec;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -234,6 +234,35 @@ public class EncryptionCosmosAsyncContainer {
         }
 
         return CosmosBridgeInternal.queryItemsInternal(container, query, options,
+            new Transformer<T>() {
+                @Override
+                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+                    return queryDecryptionTransformer(classType, func);
+                }
+            });
+    }
+
+    /**
+     * Query for items in the current container using a string.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T>       the type parameter.
+     * @param query     the query.
+     * @param options   the query request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    public <T> CosmosPagedFlux<T> queryItems(EncryptionSqlQuerySpec query, CosmosQueryRequestOptions options,
+                                             Class<T> classType) {
+
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
+        return CosmosBridgeInternal.queryItemsInternal(container, query.getSqlQuerySpec(), options,
             new Transformer<T>() {
                 @Override
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
