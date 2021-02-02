@@ -192,7 +192,7 @@ class JdkAsyncHttpClient implements HttpClient {
                 continue;
             }
 
-            httpHeaders.put(key, values.size() == 1 ? values.get(0) : String.join(",", values));
+            httpHeaders.set(key, values);
         }
 
         return httpHeaders;
