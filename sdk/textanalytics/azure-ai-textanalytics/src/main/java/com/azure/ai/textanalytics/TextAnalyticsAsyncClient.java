@@ -1053,7 +1053,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze actions, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * Analyze actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
      * {@link String document} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
@@ -1091,7 +1091,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze actions, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * Analyze actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
      * {@link TextDocumentInput document} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.

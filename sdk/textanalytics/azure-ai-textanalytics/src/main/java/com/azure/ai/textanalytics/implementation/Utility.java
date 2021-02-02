@@ -278,14 +278,15 @@ public final class Utility {
     }
 
     /**
-     * Extracts the result ID from the URL.
+     * Extracts the operation ID from the 'operation-location' URL. An example of 'operation-location' is
+     * https://[...]/analyze/jobs/aaa11111-a111-a111-a1111-a12345678901
      *
      * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
-     * resultId used to track the progress and obtain the result of the analyze operation.
+     * operation ID used to track the progress and obtain the ID of the analyze operation.
      *
-     * @return The resultId used to track the progress.
+     * @return The operation ID that tracks the long running operation progress.
      */
-    public static String parseModelId(String operationLocation) {
+    public static String parseOperationId(String operationLocation) {
         if (!CoreUtils.isNullOrEmpty(operationLocation)) {
             int lastIndex = operationLocation.lastIndexOf('/');
             if (lastIndex != -1) {
@@ -293,7 +294,7 @@ public final class Utility {
             }
         }
         throw LOGGER.logExceptionAsError(
-            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
+            new RuntimeException("Failed to parse operation header for operation Id from: " + operationLocation));
     }
 
     /**

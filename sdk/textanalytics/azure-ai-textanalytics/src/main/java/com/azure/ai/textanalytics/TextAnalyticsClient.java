@@ -914,7 +914,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Analyze actions, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * Analyze actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
      * {@link String document} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
@@ -943,7 +943,7 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
         beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language,
             AnalyzeBatchActionsOptions options) {
-        return client.analyzeBatchActionsAsyncClient.beginAnalyzeTasksIterable(
+        return client.analyzeBatchActionsAsyncClient.beginAnalyzeBatchActionsIterable(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
@@ -978,7 +978,7 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
         beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
             AnalyzeBatchActionsOptions options, Context context) {
-        return client.analyzeBatchActionsAsyncClient.beginAnalyzeTasksIterable(documents, actions, options, context)
+        return client.analyzeBatchActionsAsyncClient.beginAnalyzeBatchActionsIterable(documents, actions, options, context)
                    .getSyncPoller();
     }
 }

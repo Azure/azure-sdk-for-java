@@ -27,7 +27,6 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
@@ -62,7 +61,7 @@ import java.util.stream.StreamSupport;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
+import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -91,10 +90,12 @@ class AnalyzeBatchActionsAsyncClient {
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
                     .setTasks(getJobManifestTasks(actions));
-            analyzeBatchInput.setDisplayName(actions.getDisplayName()); // setDisplayName() returns JobDescriptor
+            analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
+                // TODO: Be able to set the poll interval manually by user.
+                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
+                DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -102,10 +103,10 @@ class AnalyzeBatchActionsAsyncClient {
                             final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
                                 new AnalyzeBatchActionsOperationDetail();
                             AnalyzeBatchActionsOperationDetailPropertiesHelper.setOperationId(textAnalyticsOperationResult,
-                                parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
-                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
+                pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId,
                     finalIncludeStatistics, null, null, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
@@ -117,9 +118,9 @@ class AnalyzeBatchActionsAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> beginAnalyzeTasksIterable(
-        Iterable<TextDocumentInput> documents, TextAnalyticsActions tasks, AnalyzeBatchActionsOptions options,
-        Context context) {
+    PollerFlux<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
+        beginAnalyzeBatchActionsIterable(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
+            AnalyzeBatchActionsOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             if (options == null) {
@@ -128,84 +129,86 @@ class AnalyzeBatchActionsAsyncClient {
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(tasks));
-            analyzeBatchInput.setDisplayName(tasks.getDisplayName());
+                    .setTasks(getJobManifestTasks(actions));
+            analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
+                // TODO: Be able to set the poll interval manually by user.
+                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
+                DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
-                            final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
+                            final AnalyzeBatchActionsOperationDetail operationDetail =
                                 new AnalyzeBatchActionsOperationDetail();
-                            AnalyzeBatchActionsOperationDetailPropertiesHelper.setOperationId(textAnalyticsOperationResult,
-                                parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                            return textAnalyticsOperationResult;
+                            AnalyzeBatchActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                            return operationDetail;
                         })),
-                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
+                pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId,
                     finalIncludeStatistics, null, null, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    resultId, null, null, finalIncludeStatistics, context))))
+                fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
+                    operationId, null, null, finalIncludeStatistics, context))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
-    private JobManifestTasks getJobManifestTasks(TextAnalyticsActions tasks) {
+    private JobManifestTasks getJobManifestTasks(TextAnalyticsActions actions) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(tasks.getRecognizeEntitiesOptions() == null ? null
-                : StreamSupport.stream(tasks.getRecognizeEntitiesOptions().spliterator(), false).map(
-                    entitiesTask -> {
-                        if (entitiesTask == null) {
+            .setEntityRecognitionTasks(actions.getRecognizeEntitiesOptions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeEntitiesOptions().spliterator(), false).map(
+                    action -> {
+                        if (action == null) {
                             return null;
                         }
-                        final EntitiesTask entitiesTaskImpl = new EntitiesTask();
-                        entitiesTaskImpl.setParameters(
+                        final EntitiesTask entitiesTask = new EntitiesTask();
+                        entitiesTask.setParameters(
                             // TODO: currently, service does not set their default values for model version, we
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters().setModelVersion(
-                                entitiesTask.getModelVersion() == null ? "latest" : entitiesTask.getModelVersion()));
-                        return entitiesTaskImpl;
+                                action.getModelVersion() == null ? "latest" : action.getModelVersion()));
+                        return entitiesTask;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(tasks.getRecognizePiiEntitiesOptions() == null ? null
-                : StreamSupport.stream(tasks.getRecognizePiiEntitiesOptions().spliterator(), false).map(
-                    piiEntitiesTask -> {
-                        if (piiEntitiesTask == null) {
+            .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
+                : StreamSupport.stream(actions.getRecognizePiiEntitiesOptions().spliterator(), false).map(
+                    action -> {
+                        if (action == null) {
                             return null;
                         }
-                        final PiiTask piiTaskImpl = new PiiTask();
-                        piiTaskImpl.setParameters(
+                        final PiiTask piiTask = new PiiTask();
+                        piiTask.setParameters(
                             new PiiTaskParameters()
                                 // TODO: currently, service does not set their default values for model version, we
                                 // temporally set the default value to 'latest' until service correct it.
                                 // https://github.com/Azure/azure-sdk-for-java/issues/17625
-                                .setModelVersion(piiEntitiesTask.getModelVersion() == null
-                                                     ? "latest" : piiEntitiesTask.getModelVersion())
+                                .setModelVersion(action.getModelVersion() == null
+                                                     ? "latest" : action.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
-                                    piiEntitiesTask.getDomainFilter() == null ? null
-                                        : piiEntitiesTask.getDomainFilter().toString())));
-                        return piiTaskImpl;
+                                    action.getDomainFilter() == null ? null
+                                        : action.getDomainFilter().toString())));
+                        return piiTask;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(tasks.getExtractKeyPhrasesOptions() == null ? null
-                : StreamSupport.stream(tasks.getExtractKeyPhrasesOptions().spliterator(), false).map(
-                    keyPhrasesTask -> {
-                        if (keyPhrasesTask == null) {
+            .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesOptions() == null ? null
+                : StreamSupport.stream(actions.getExtractKeyPhrasesOptions().spliterator(), false).map(
+                    action -> {
+                        if (action == null) {
                             return null;
                         }
-                        final KeyPhrasesTask keyPhrasesTaskImpl = new KeyPhrasesTask();
-                        keyPhrasesTaskImpl.setParameters(
+                        final KeyPhrasesTask keyPhrasesTask = new KeyPhrasesTask();
+                        keyPhrasesTask.setParameters(
                             // TODO: currently, service does not set their default values for model version, we
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new KeyPhrasesTaskParameters()
-                                .setModelVersion(keyPhrasesTask.getModelVersion() == null
-                                                     ? "latest" : keyPhrasesTask.getModelVersion()));
-                        return keyPhrasesTaskImpl;
+                                .setModelVersion(action.getModelVersion() == null
+                                                     ? "latest" : action.getModelVersion()));
+                        return keyPhrasesTask;
                     }).collect(Collectors.toList()));
     }
 
@@ -229,8 +232,8 @@ class AnalyzeBatchActionsAsyncClient {
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                final String resultID = operationResultPollResponse.getValue().getOperationId();
-                return pollingFunction.apply(resultID)
+                final String operationId = operationResultPollResponse.getValue().getOperationId();
+                return pollingFunction.apply(operationId)
                     .flatMap(modelResponse -> processAnalyzedModelResponse(modelResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
@@ -246,8 +249,8 @@ class AnalyzeBatchActionsAsyncClient {
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                final String resultUUID = pollingContext.getLatestResponse().getValue().getOperationId();
-                return fetchingFunction.apply(resultUUID);
+                final String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
+                return fetchingFunction.apply(operationId);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -261,32 +264,32 @@ class AnalyzeBatchActionsAsyncClient {
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                final String resultUUID = pollingContext.getLatestResponse().getValue().getOperationId();
-                return fetchingFunction.apply(resultUUID);
+                final String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
+                return fetchingFunction.apply(operationId);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
         };
     }
 
-    PagedFlux<AnalyzeBatchActionsResult> getAnalyzeOperationFluxPage(String analyzeTasksId, Integer top, Integer skip,
+    PagedFlux<AnalyzeBatchActionsResult> getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
         return new PagedFlux<>(
-            () -> getPage(null, analyzeTasksId, top, skip, showStats, context),
-            continuationToken -> getPage(continuationToken, analyzeTasksId, top, skip, showStats, context));
+            () -> getPage(null, operationId, top, skip, showStats, context),
+            continuationToken -> getPage(continuationToken, operationId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AnalyzeBatchActionsResult>> getPage(String continuationToken, String analyzeTasksId, Integer top,
+    Mono<PagedResponse<AnalyzeBatchActionsResult>> getPage(String continuationToken, String operationId, Integer top,
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
             final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-            return service.analyzeStatusWithResponseAsync(analyzeTasksId, showStats, topValue, skipValue, context)
+            return service.analyzeStatusWithResponseAsync(operationId, showStats, topValue, skipValue, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         } else {
-            return service.analyzeStatusWithResponseAsync(analyzeTasksId, showStats, top, skip, context)
+            return service.analyzeStatusWithResponseAsync(operationId, showStats, top, skip, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         }
@@ -352,11 +355,11 @@ class AnalyzeBatchActionsAsyncClient {
         }
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
 
-        final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
         // TODO:
         //  Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
         //  Error index should map back to input tasks order. Currently, the target has reference and the
-        //  document result is object without error and value.
+        //  document result is object without error and value
+//        final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
 //        if (!CoreUtils.isNullOrEmpty(errors)) {
 //            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
 //                "Analyze operation failed", null, null);

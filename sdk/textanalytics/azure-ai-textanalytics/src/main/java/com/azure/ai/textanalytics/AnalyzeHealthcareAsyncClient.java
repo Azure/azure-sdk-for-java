@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
+import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.toJobState;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -88,7 +88,7 @@ class AnalyzeHealthcareAsyncClient {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =
                             new TextAnalyticsOperationResult();
                         TextAnalyticsOperationResultPropertiesHelper.setResultId(textAnalyticsOperationResult,
-                            parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                            parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                         return textAnalyticsOperationResult;
                     })),
                 pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId,
@@ -124,7 +124,7 @@ class AnalyzeHealthcareAsyncClient {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =
                             new TextAnalyticsOperationResult();
                         TextAnalyticsOperationResultPropertiesHelper.setResultId(textAnalyticsOperationResult,
-                            parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                            parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                         return textAnalyticsOperationResult;
                     })),
                 pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId, null,
@@ -210,7 +210,7 @@ class AnalyzeHealthcareAsyncClient {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =
                             new TextAnalyticsOperationResult();
                         TextAnalyticsOperationResultPropertiesHelper.setResultId(textAnalyticsOperationResult,
-                            parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                            parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                         return textAnalyticsOperationResult;
                     })),
                 pollingOperation(resultId ->
