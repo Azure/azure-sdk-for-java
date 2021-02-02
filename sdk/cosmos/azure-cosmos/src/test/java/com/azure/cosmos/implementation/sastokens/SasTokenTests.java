@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SasTokenTests {
     private final static String TEST_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
-    private final static String TEST_EXPECTED_SIMPLE_SASTOKEN = "type=sas&ver=1.0&sig=rQNGPRFDzgJbi9_W4fUmuLBGjgtSKjJCWsrtNO72NKk,dXNlcjEKCi9kYnMvZGIxL2NvbGxzL2NvbGwxLwoKMAoxQzIwCjAKNjAKMApGRkZGRkZGRgowCg";
+    private final static String TEST_EXPECTED_SIMPLE_SASTOKEN = "type=sas&ver=1.0&sig=rQNGPRFDzgJbi9_W4fUmuLBGjgtSKjJCWsrtNO72NKk;dXNlcjEKCi9kYnMvZGIxL2NvbGxzL2NvbGwxLwoKMAoxQzIwCjAKNjAKMApGRkZGRkZGRgowCg";
     private final static String TEST_EXPECTED_SIMPLE_PAYLOAD = "user1\n" +
         "\n" +
         "/dbs/db1/colls/coll1/\n" +
@@ -44,7 +44,7 @@ public class SasTokenTests {
         String[] tokenSegments = sasTokenValue.split("&");
         assertThat(3).isEqualTo(tokenSegments.length);
 
-        String[] sasTokenParts = tokenSegments[2].split(",");
+        String[] sasTokenParts = tokenSegments[2].split(";");
         assertThat(2).isEqualTo(sasTokenParts.length);
 
         byte[] decodedString = Base64.getDecoder().decode(sasTokenParts[1]);
@@ -53,7 +53,7 @@ public class SasTokenTests {
             .isEqualTo(sasTokenPayload);
     }
 
-    private final static String TEST_EXPECTED_EXPIRY_SASTOKEN = "type=sas&ver=1.0&sig=pCgZFxV9JQN1i3vzYNTfQldW1No7I-MSgN628TZcJAI,dXNlcjEKCi9kYnMvZGIxL2NvbGxzL2NvbGwxLwoKNUZFRTY2MDEKNjIxM0I3MDEKMAo2MAowCkZGRkZGRkZGCjAK";
+    private final static String TEST_EXPECTED_EXPIRY_SASTOKEN = "type=sas&ver=1.0&sig=pCgZFxV9JQN1i3vzYNTfQldW1No7I-MSgN628TZcJAI;dXNlcjEKCi9kYnMvZGIxL2NvbGxzL2NvbGwxLwoKNUZFRTY2MDEKNjIxM0I3MDEKMAo2MAowCkZGRkZGRkZGCjAK";
     private final static String TEST_EXPECTED_EXPIRY_PAYLOAD = "user1\n" +
         "\n" +
         "/dbs/db1/colls/coll1/\n" +
@@ -84,7 +84,7 @@ public class SasTokenTests {
         String[] tokenSegments = sasTokenValue.split("&");
         assertThat(3).isEqualTo(tokenSegments.length);
 
-        String[] sasTokenParts = tokenSegments[2].split(",");
+        String[] sasTokenParts = tokenSegments[2].split(";");
         assertThat(2).isEqualTo(sasTokenParts.length);
 
         byte[] decodedString = Base64.getDecoder().decode(sasTokenParts[1]);
