@@ -3,7 +3,6 @@
 
 package com.azure.spring.sample.servicebus.queue.binder;
 
-
 import com.azure.spring.integration.core.api.Checkpointer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.messaging.Message;
 import java.util.function.Consumer;
 
 import static com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER;
-
 
 @SpringBootApplication
 public class ServiceBusQueueBinderApplication {
