@@ -69,6 +69,33 @@ object CosmosAccountConfig {
 
 case class CosmosContainerConfig(database: String, container: String)
 
+case class CosmosWriteConfig(upsertEnabled: Boolean, maxRetryCount: Int)
+
+object CosmosWriteConfig {
+  val upsertEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.upsertEnabled",
+    mandatory = false,
+    defaultValue = Option.apply(true), // TODO: what the default value should be?
+    parseFromStringFunction = overwriteEnabled => overwriteEnabled.toBoolean,
+    helpMessage = "Cosmos DB Write Upsert Enabled")
+
+  val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
+    mandatory = false,
+    defaultValue = Option.apply(3),
+    parseFromStringFunction = maxRetryAttempt => maxRetryAttempt.toInt,
+    helpMessage = "Cosmos DB Write Max Retry Attempts on failure")
+
+  def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
+    val upsertEnabledOpt = CosmosConfigEntry.parse(cfg, upsertEnabled)
+    val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
+
+    // parsing above already validated this
+    assert(upsertEnabledOpt.isDefined)
+    assert(maxRetryCountOpt.isDefined)
+
+    CosmosWriteConfig(upsertEnabledOpt.get, maxRetryCountOpt.get)
+  }
+}
+
 object CosmosContainerConfig {
   val databaseName = CosmosConfigEntry[String](key = "spark.cosmos.database",
     mandatory = true,
@@ -117,7 +144,7 @@ object CosmosSchemaInferenceConfig {
 
 case class CosmosConfigEntry[T](key: String,
                                 mandatory: Boolean,
-                                defaultValue: Option[String] = Option.empty,
+                                defaultValue: Option[T] = Option.empty,
                                 parseFromStringFunction: String => T,
                                 helpMessage: String) {
   CosmosConfigEntry.configEntriesDefinitions.put(key, this)
@@ -150,7 +177,7 @@ object CosmosConfigEntry {
       if (configEntry.mandatory) {
         throw new RuntimeException(s"mandatory option ${configEntry.key} is missing. Config description: ${configEntry.helpMessage}")
       } else {
-        Option.empty
+        configEntry.defaultValue.orElse(Option.empty)
       }
     }
   }

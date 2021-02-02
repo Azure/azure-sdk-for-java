@@ -141,6 +141,14 @@ trait CosmosContainer extends CosmosDatabase {
     finally super.afterAll() // To be stackable, must call super.afterAll
   }
 
+  def queryItems(query: String): List[ObjectNode] = {
+    cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+      .queryItems(query, classOf[ObjectNode])
+      .toIterable
+      .asScala
+      .toList
+  }
+
   def readAllItems(): List[ObjectNode] = {
     cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
       .queryItems("SELECT * FROM r", classOf[ObjectNode])

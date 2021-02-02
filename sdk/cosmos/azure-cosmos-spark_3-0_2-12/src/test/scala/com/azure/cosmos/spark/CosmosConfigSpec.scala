@@ -48,16 +48,47 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
-    "Read Config Parser" should "parse read configuration" in {
-        val userConfig = Map(
-            "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-            "spark.cosmos.read.inferSchemaEnabled" -> "false"
-        )
+  it should "parse read configuration" in {
+    val userConfig = Map(
+      "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
+      "spark.cosmos.read.inferSchemaEnabled" -> "false"
+    )
 
-        val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
 
-        config.inferSchemaSamplingSize shouldEqual 50
-        config.inferSchemaEnabled shouldBe false
-    }
+    config.inferSchemaSamplingSize shouldEqual 50
+    config.inferSchemaEnabled shouldBe false
+  }
+
+  it should "provide default schema inference config" in {
+    val userConfig = Map[String, String]()
+
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+
+    config.inferSchemaSamplingSize shouldEqual 1000
+    config.inferSchemaEnabled shouldBe false
+  }
+
+  it should "provide default write config" in {
+    val userConfig = Map[String, String]()
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.upsertEnabled shouldEqual true
+    config.maxRetryCount shouldEqual 3
+  }
+
+  it should "parse write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.upsertEnabled" -> "false",
+      "spark.cosmos.write.maxRetryCount" -> "8"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.upsertEnabled shouldEqual false
+    config.maxRetryCount shouldEqual 8
+  }
+
   //scalastyle:on multiple.string.literals
 }
