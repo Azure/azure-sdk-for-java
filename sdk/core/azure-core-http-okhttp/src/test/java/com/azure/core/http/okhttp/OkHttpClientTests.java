@@ -4,11 +4,12 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -32,12 +33,19 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OkHttpClientTests {
+    static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
@@ -46,14 +54,18 @@ public class OkHttpClientTests {
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(
-            WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
-        server.stubFor(WireMock.get("/long").willReturn(WireMock.aResponse().withBody(LONG_BODY)));
-        server.stubFor(WireMock.get("/error")
-            .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
-        server.stubFor(
-            WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+        server = new WireMockServer(WireMockConfiguration.options()
+            .extensions(new OkHttpAsyncHttpClientResponseTransformer())
+            .dynamicPort()
+            .disableRequestJournal()
+            .gzipDisabled(true));
+
+        server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
+        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
+        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
+            .withTransformers(OkHttpAsyncHttpClientResponseTransformer.NAME)));
         server.start();
     }
 
@@ -96,22 +108,21 @@ public class OkHttpClientTests {
         assertEquals(500, response.getStatusCode());
     }
 
-    @Disabled("Not working accurately at present")
     @Test
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse("/long");
-        //
+
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
-        //
+
         StepVerifier.create(response.getBody(), stepVerifierOptions)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
             .thenRequest(3)
             .expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
-            .expectNextCount(1507)
+            .thenRequest(Long.MAX_VALUE)
+            .thenConsumeWhile(ByteBuffer::hasRemaining)
             .verifyComplete();
     }
 
@@ -226,6 +237,38 @@ public class OkHttpClientTests {
 //        t = System.currentTimeMillis() - t;
 //        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
 //        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+    }
+
+    @Test
+    public void validateHeadersReturnAsIs() {
+        HttpClient client = new OkHttpClientProvider().createInstance();
+
+        final String singleValueHeaderName = "singleValue";
+        final String singleValueHeaderValue = "value";
+
+        final String multiValueHeaderName = "Multi-value";
+        final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
+
+        HttpHeaders headers = new HttpHeaders()
+            .set(singleValueHeaderName, singleValueHeaderValue)
+            .set(multiValueHeaderName, multiValueHeaderValue);
+
+        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
+            headers, Flux.empty())))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                HttpHeaders responseHeaders = response.getHeaders();
+                HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
+                assertEquals(singleValueHeaderName, singleValueHeader.getName());
+                assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
+
+                HttpHeader multiValueHeader = responseHeaders.get("Multi-value");
+                assertEquals(multiValueHeaderName, multiValueHeader.getName());
+                assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 
     private static MessageDigest md5Digest() {

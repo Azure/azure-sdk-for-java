@@ -17,6 +17,9 @@
         <!-- App Configuration -->
         <module>sdk/appconfiguration/azure-data-appconfiguration</module>
 
+        <!-- Attestation -->
+        <module>sdk/attestation/azure-security-attestation</module>
+
         <!-- Azure Communication Service -->
         <module>sdk/communication/azure-communication-administration</module>
         <module>sdk/communication/azure-communication-chat</module>
@@ -555,6 +558,7 @@
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/appconfiguration</module>
+        <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/batch</module>
         <module>sdk/boms</module>
@@ -579,6 +583,7 @@
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/postgresql</module>
+        <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/relay</module>
         <module>sdk/resourcemanager</module>
@@ -592,7 +597,6 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
-        <module>sdk/quantum</module>
       </modules>
     </profile>
   </profiles>

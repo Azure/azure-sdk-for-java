@@ -11,6 +11,10 @@ import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.Response;
 
+import static com.azure.core.http.netty.ReactorNettyClientTests.EXPECTED_HEADER;
+import static com.azure.core.http.netty.ReactorNettyClientTests.NO_DOUBLE_UA_PATH;
+import static com.azure.core.http.netty.ReactorNettyClientTests.RETURN_HEADERS_AS_IS_PATH;
+
 /**
  * Mock response transformer used to test {@link NettyAsyncHttpClient}.
  */
@@ -24,6 +28,19 @@ public final class ReactorNettyClientResponseTransformer extends ResponseTransfo
 
         if ("/httpHeaders".equalsIgnoreCase(url)) {
             return httpHeadersResponseHandler(request, response);
+        } else if (NO_DOUBLE_UA_PATH.equalsIgnoreCase(url)) {
+            if (EXPECTED_HEADER.equals(request.getHeader("User-Agent"))) {
+                return response;
+            } else {
+                return Response.response()
+                    .status(400)
+                    .build();
+            }
+        } else if (RETURN_HEADERS_AS_IS_PATH.equalsIgnoreCase(url)) {
+            return Response.response()
+                .status(200)
+                .headers(request.getHeaders())
+                .build();
         }
 
         return response;

@@ -1,0 +1,121 @@
+parameters:
+- name: AdditionalPlatforms
+  type: object
+  default: {}
+- name: Clouds
+  type: string
+  default: 'Public'
+- name: UnsupportedClouds
+  type: string
+  default: ''
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: TestResultsFiles
+  type: object
+  default: ''
+- name: DisableAzureResourceCreation
+  type: boolean
+  default: false
+- name: PreSteps
+  type: object
+  default: []
+- name: PostSteps
+  type: object
+  default: []
+- name: EnvVars
+  type: object
+  default: {}
+- name: MaxParallel
+  type: number
+  default: 0
+- name: BuildInParallel
+  type: boolean
+  default: true
+- name: TimeoutInMinutes
+  type: number
+  default: 60
+- name: Location
+  type: string
+  default: ''
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: TestSetupSteps
+  type: stepList
+  default: []
+- name: CloudConfig
+  type: object
+  default:
+    Public:
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+    Preview:
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+    Canary:
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      Location: 'centraluseuap'
+    UsGov:
+      SubscriptionConfiguration: $(sub-config-gov-test-resources)
+    China:
+      SubscriptionConfiguration: $(sub-config-cn-test-resources)
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_live_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      GenerateVMJobs: true
+- name: AdditionalMatrixConfigs
+  type: object
+  default: []
+- name: PlatformPreSteps
+  type: object
+  default:
+    - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+- name: PlatformPostSteps
+  type: object
+  default: []
+
+stages:
+- ${{ each cloud in parameters.CloudConfig }}:
+  # TODO: re-enable tests-weekly allow filter once sovereign cloud live tests are stable: https://github.com/Azure/azure-sdk/issues/2074
+  # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
+  # - ${{ if or(contains(parameters.Clouds, cloud.key), contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), eq(cloud.key, 'Canary'))) }}:
+    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+      - stage: ${{ cloud.key }}
+        dependsOn: []
+        jobs:
+        - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+          parameters:
+            AdditionalParameters:
+              PreSteps:
+                - ${{ parameters.PlatformPreSteps }}
+                - ${{ parameters.PreSteps }}
+              PostSteps:
+                - ${{ parameters.PlatformPostSteps }}
+                - ${{ parameters.PostSteps }}
+              EnvVars: ${{ parameters.EnvVars }}
+              MaxParallel: ${{ parameters.MaxParallel }}
+              BuildInParallel: ${{ parameters.BuildInParallel }}
+              TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+              Location: ${{ parameters.Location }}
+              ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              Artifacts: ${{ parameters.Artifacts }}
+              AdditionalModules: ${{ parameters.AdditionalModules }}
+              TestResultsFiles: ${{ parameters.TestResultsFiles }}
+              DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
+            MatrixConfigs:
+              # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
+              - ${{ each config in parameters.MatrixConfigs }}:
+                -  ${{ config }}
+              - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                -  ${{ config }}
+            CloudConfig:
+              SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+              Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
+              Cloud: ${{ cloud.key }}
