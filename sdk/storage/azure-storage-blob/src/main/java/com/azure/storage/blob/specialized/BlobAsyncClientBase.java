@@ -192,13 +192,6 @@ public class BlobAsyncClientBase {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
-        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           when the sas token has already been applied. */
-        try {
-            URI.create(url);
-        } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -208,11 +201,18 @@ public class BlobAsyncClientBase {
 
         this.accountName = accountName;
         this.containerName = containerName;
-        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
+        this.blobName = Utility.urlDecode(blobName);
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.versionId = versionId;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobUrl());
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -266,7 +266,7 @@ public class BlobAsyncClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + blobName;
+        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
@@ -1253,7 +1253,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.getBlobs().deleteWithResponseAsync(containerName, blobName, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

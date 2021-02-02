@@ -117,13 +117,6 @@ public final class BlobContainerAsyncClient {
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           when the sas token has already been applied. */
-        try {
-            URI.create(url);
-        } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -136,6 +129,13 @@ public final class BlobContainerAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobContainerUrl());
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**

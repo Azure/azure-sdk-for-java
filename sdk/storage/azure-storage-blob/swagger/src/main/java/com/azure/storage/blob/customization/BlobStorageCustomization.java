@@ -111,18 +111,33 @@ public class BlobStorageCustomization extends Customization {
         blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobHttpHeaders\")");
         blobHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
 
+        ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
+        blobContainerEncryptionScope.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobContainerEncryptionScope\")");
+        blobContainerEncryptionScope.addAnnotation("@JacksonXmlRootElement(localName = \"blob-container-encryption-scope\")");
+        PropertyCustomization defaultEncryptionScope = blobContainerEncryptionScope.getProperty("defaultEncryptionScope");
+        defaultEncryptionScope.removeAnnotation("@JsonProperty(value = \"DefaultEncryptionScope\")");
+        defaultEncryptionScope.addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
+        PropertyCustomization encryptionScopeOverridePrevented = blobContainerEncryptionScope.getProperty("encryptionScopeOverridePrevented");
+        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty(value = \"EncryptionScopeOverridePrevented\")");
+        encryptionScopeOverridePrevented.addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
+        blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+
+        ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
+        blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        // TODO (change Boolean to boolean)
+//        blobContainerItemProperties.getMethod("public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {").rename("public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {");
+
         // Block - Generator
-//        ClassCustomization block = models.getClass("Block");
-//        MethodCustomization getSizeInt = block.getMethod("getSizeInt");
-//        getSizeInt.addAnnotation("@Deprecated");
-//        getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
-////        getSizeInt.setReturnType("int", "(int) this.sizeLong", true);
+        ClassCustomization block = models.getClass("Block");
+        MethodCustomization getSizeInt = block.getMethod("getSizeInt");
+        getSizeInt.addAnnotation("@Deprecated");
+        getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
 //        getSizeInt.rename("getSize");
-//
-//        MethodCustomization setSizeInt = block.getMethod("setSizeInt");
-//        setSizeInt.addAnnotation("@Deprecated");
-//        setSizeInt.getJavadoc().setDeprecated("Use {@link #setSizeLong(long)}");
-////        setSizeInt.setReturnType("Block", "setSizeLong(sizeInt)", true);
+
+        MethodCustomization setSizeInt = block.getMethod("setSizeInt");
+        setSizeInt.addAnnotation("@Deprecated");
+        setSizeInt.getJavadoc().setDeprecated("Use {@link #setSizeLong(long)}");
+//        setSizeInt.setReturnType("Block", "return %s.setSize((long) sizeInt);", true);
 //        setSizeInt.rename("setSize");
 
         ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");

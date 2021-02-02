@@ -74,7 +74,9 @@ public final class Block {
      * Get the sizeInt property: The SizeInt property.
      *
      * @return the sizeInt value.
+     * @deprecated Use {@link #getSizeLong()}
      */
+    @Deprecated
     public int getSizeInt() {
         return this.sizeInt;
     }
@@ -84,7 +86,9 @@ public final class Block {
      *
      * @param sizeInt the sizeInt value to set.
      * @return the Block object itself.
+     * @deprecated Use {@link #setSizeLong(long)}
      */
+    @Deprecated
     public Block setSizeInt(int sizeInt) {
         this.sizeInt = sizeInt;
         return this;

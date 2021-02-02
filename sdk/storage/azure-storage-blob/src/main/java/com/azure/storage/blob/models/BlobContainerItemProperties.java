@@ -278,8 +278,9 @@ public final class BlobContainerItemProperties {
      *
      * @return the encryptionScopeOverridePrevented value.
      */
-    public Boolean isEncryptionScopeOverridePrevented() {
-        return this.encryptionScopeOverridePrevented;
+    public boolean isEncryptionScopeOverridePrevented() {
+        Boolean returnValue = this.encryptionScopeOverridePrevented;
+        return Boolean.TRUE.equals(returnValue);
     }
 
     /**

@@ -26,6 +26,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
@@ -61,10 +62,11 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
+import reactor.core.publisher.Mono;
+
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Blobs. */
 public final class BlobsImpl {
@@ -161,7 +163,7 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-if-tags") String ifTags,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @QueryParam("deletetype") String blobDeleteType,
+                @QueryParam("deletetype") BlobDeleteType blobDeleteType,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -850,6 +852,8 @@ public final class BlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
+     *     if blob soft delete is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -871,8 +875,8 @@ public final class BlobsImpl {
             String ifNoneMatch,
             String ifTags,
             String requestId,
+            BlobDeleteType blobDeleteType,
             Context context) {
-        final String blobDeleteType = "Permanent";
         final String accept = "application/xml";
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
