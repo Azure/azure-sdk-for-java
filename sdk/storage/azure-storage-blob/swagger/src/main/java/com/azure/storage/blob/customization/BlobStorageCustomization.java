@@ -104,6 +104,11 @@ public class BlobStorageCustomization extends Customization {
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 
+        ClassCustomization blobItemInternal = implementationModels.getClass("BlobItemInternal");
+        PropertyCustomization objectReplicationMetadata = blobItemInternal.getProperty("objectReplicationMetadata");
+        objectReplicationMetadata.removeAnnotation("@JsonProperty(value = \"ObjectReplicationMetadata\")");
+        objectReplicationMetadata.addAnnotation("@JsonProperty(value = \"OrMetadata\")");
+
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 

@@ -92,7 +92,7 @@
       "Content-Type" : "application/octet-stream",
       "x-ms-version" : "2020-06-12",
       "x-ms-copy-id" : "226eee5e-54ec-4013-a87c-6db92ae92633",
-      "x-ms-copy-source" : "https://seancanary.blob.core.windows.net/jtccopymin0blobapitestcopyminbb5921816ec631b2c1664/javablobcopymin1blobapitestcopyminbb571201b6b9f92deb",
+      "x-ms-copy-source" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopymin0blobapitestcopyminbb5921816ec631b2c1664/javablobcopymin1blobapitestcopyminbb571201b6b9f92deb",
       "x-ms-copy-progress" : "7/7",
       "Date" : "Tue, 02 Feb 2021 00:06:55 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
