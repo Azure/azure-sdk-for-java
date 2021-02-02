@@ -451,11 +451,17 @@ public class OpenTelemetryTracerTest {
         assertEquals(spanContext, invalidSpanContext);
     }
 
+    // Add event tests
+    // Add event -> check span data
+    // Add timed event
+    // Check attributes
+    // Timeunit value ? / Attributes max size / Data payload?
+    // No normalization / will not create a span out if out of the span time?
+
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {
         assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
         // verify instance created of opentelemetry-sdk (test impl), span implementation
-        // TODO: (no longer instance of ReadableSpan?
         assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
 
         final ReadableSpan recordEventsSpan =

@@ -11,11 +11,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
 
+import java.time.Instant;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -187,6 +190,27 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
         return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
+    }
+
+    @Override
+    public void addEvent(String eventName, Map<String, ?> attributes, Instant timestamp) {
+        Span currentSpan = Span.current();
+        if (currentSpan == null) {
+            logger.warning("Failed to find a span to start an event with.");
+            return;
+        }
+        currentSpan.addEvent(eventName, convertToAttributes(attributes), timestamp);
+    }
+
+    private Attributes convertToAttributes(Map<String, ?> attributes) {
+        attributes.forEach((key, value) -> {
+            if (value instanceof Boolean) {
+                Attributes otelAttributes = Attributes.builder().put(key, (boolean) value).build();
+            } else if (value instanceof String) {
+                // convert to string attr
+            }
+        });
+        return null;
     }
 
     /**
