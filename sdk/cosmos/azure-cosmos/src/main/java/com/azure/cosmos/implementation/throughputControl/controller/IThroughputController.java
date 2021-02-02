@@ -11,29 +11,29 @@ public interface IThroughputController {
      * Decides whether the throughputController can handle the request.
      * Different level throughput controller will have its own criteria.
      *
-     * @param request
-     * @return
+     * @param request The request.
+     * @return Flag to indicate whether the controller can handle the request. Each controller will have its onw criteria.
      */
     boolean canHandleRequest(RxDocumentServiceRequest request);
 
     /**
      * Close all the scheduled tasks and any other resources need to release.
-     * @return
+     * @return a representation of the deferred computation of this call.
      */
     Mono<Void> close();
 
     /**
      * Initialize process.
      * Will create and initialize the lower level throughput controller and schedule tasks if needed.
-     * @return
+     * @return The initialized controller.
      */
     <T> Mono<T> init();
 
     /**
      * Route the request to lower level throughput controller which can handle the request.
      * @param request
-     * @param nextRequestMono
-     * @return
+     * @param originalRequestMono
+     * @return The response from the original request mono.
      */
-    <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono);
+    <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono);
 }

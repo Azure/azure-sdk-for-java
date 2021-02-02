@@ -62,8 +62,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link CosmosAsyncContainer}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosAsyncContainer getTargetContainer() {
+    CosmosAsyncContainer getTargetContainer() {
         return this.targetContainer;
     }
 

@@ -109,7 +109,9 @@ public class ThroughputControlStore {
     public void enableThroughputControlGroup(ThroughputControlGroup group) {
         checkNotNull(group, "Throughput control group cannot be null");
 
-        String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
+        String collectionLink = Utils.trimBeginningAndEndingSlashes(
+            BridgeInternal.extractContainerSelfLink(
+                BridgeInternal.getTargetContainerFromThroughputControlGroup(group)));
         this.groupMapByContainer.compute(collectionLink, (key, groupSet) -> {
             if (groupSet == null) {
                 groupSet = new HashSet<>();

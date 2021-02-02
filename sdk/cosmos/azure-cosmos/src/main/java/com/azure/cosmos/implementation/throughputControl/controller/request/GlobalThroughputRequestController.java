@@ -32,7 +32,6 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
         return Flux.fromIterable(this.globalEndpointManager.getReadEndpoints())
-            .mergeWith(Flux.fromIterable(this.globalEndpointManager.getWriteEndpoints()))
             .flatMap(endpoint -> {
                 requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> new ThroughputRequestThrottler(this.scheduledThroughput.get()));
                 return Mono.empty();

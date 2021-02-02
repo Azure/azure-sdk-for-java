@@ -471,7 +471,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param group Throughput control group going to be enabled.
      */
-    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+    void enableThroughputControlGroup(ThroughputControlGroup group) {
         checkNotNull(group, "Throughput control group cannot be null");
         this.asyncDocumentClient.enableThroughputControlGroup(group);
     }

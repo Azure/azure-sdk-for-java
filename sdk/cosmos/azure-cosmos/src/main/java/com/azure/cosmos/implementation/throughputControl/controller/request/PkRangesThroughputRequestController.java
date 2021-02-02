@@ -96,8 +96,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
 
     private Mono<Void> createRequestThrottlers() {
         // create request throttlers by region
-        return Flux.fromIterable(this.globalEndpointManager.getWriteEndpoints())
-            .mergeWith(Flux.fromIterable(this.globalEndpointManager.getReadEndpoints()))
+        return Flux.fromIterable(this.globalEndpointManager.getReadEndpoints())
             .flatMap(endpoint -> this.getOrCreateRegionRequestThrottlers(endpoint))
             .then();
     }

@@ -117,7 +117,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
             .flatMap(t -> this.resolveRequestController())
             .doOnSuccess(requestController -> requestController.renewThroughputUsageCycle(this.groupThroughput.get()))
             .onErrorResume(throwable -> {
-                logger.warn("Reset throughput usage failed with reason %s", throwable);
+                logger.warn("Reset throughput usage failed with reason", throwable);
                 return Mono.empty();
             })
             .then()
@@ -136,7 +136,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         } else if (this.connectionMode == ConnectionMode.GATEWAY) {
             requestController = new GlobalThroughputRequestController(this.globalEndpointManager, this.groupThroughput.get());
         } else {
-            throw new IllegalArgumentException(String.format("Connection mode %s is not supported"));
+            throw new IllegalArgumentException(String.format("Connection mode %s is not supported", this.connectionMode));
         }
 
         return requestController.init();

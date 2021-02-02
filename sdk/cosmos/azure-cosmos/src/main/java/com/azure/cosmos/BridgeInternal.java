@@ -749,4 +749,9 @@ public final class BridgeInternal {
     public static SqlQuerySpec getOfferQuerySpecFromResourceId(CosmosAsyncContainer container, String resourceId) {
         return container.getDatabase().getOfferQuerySpecFromResourceId(resourceId);
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosAsyncContainer getTargetContainerFromThroughputControlGroup(ThroughputControlGroup controlGroup) {
+        return controlGroup.getTargetContainer();
+    }
 }
