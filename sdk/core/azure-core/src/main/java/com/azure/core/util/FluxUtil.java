@@ -23,8 +23,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
@@ -186,21 +188,62 @@ public final class FluxUtil {
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
-            .map(context -> {
-                final Context[] azureContext = new Context[] { Context.NONE };
-
-                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
-                    contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
-                }
-
-                if (!context.isEmpty()) {
-                    context.stream().forEach(entry ->
-                        azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
-                }
-
-                return azureContext[0];
-            })
+            .map(context -> new ReactorToAzureContextWrapper(contextAttributes, context))
             .flatMap(serviceCall);
+    }
+
+    private static class ReactorToAzureContextWrapper extends Context {
+        private final Map<String, String> contextAttributes;
+        private final reactor.util.context.Context reactorContext;
+
+        public ReactorToAzureContextWrapper(reactor.util.context.Context reactorContext) {
+            this(null, reactorContext);
+        }
+
+        public ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
+                                            reactor.util.context.Context reactorContext) {
+            super("", "");
+            this.contextAttributes = contextAttributes;
+            this.reactorContext = reactorContext;
+        }
+
+        @Override
+        public Optional<Object> getData(Object key) {
+            if (key == null) {
+                // throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            }
+
+            // Look through the reactor context first
+            Optional<Object> value = reactorContext.getOrEmpty(key);
+            if (value.isPresent()) {
+                return value;
+            }
+
+            // then look through the map that we were given
+            if (contextAttributes != null && contextAttributes.containsKey(key)) {
+                return Optional.ofNullable(contextAttributes.get(key));
+            }
+
+            // otherwise defer up the context chain
+            return super.getData(key);
+        }
+
+        @Override
+        public Map<Object, Object> getValues() {
+            int size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
+            Map<Object, Object> map = new HashMap<>(size);
+
+            if (contextAttributes != null) {
+                map.putAll(contextAttributes);
+            }
+
+            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+
+            // defer up the chain, if there is any parent (unlikely)
+            map.putAll(super.getValues());
+
+            return map;
+        }
     }
 
     /**
@@ -279,14 +322,7 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        final Context[] azureContext = new Context[] { Context.NONE };
-
-        if (!context.isEmpty()) {
-            context.stream().forEach(entry ->
-                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
-        }
-
-        return azureContext[0];
+        return context == null || context.isEmpty() ? Context.NONE : new ReactorToAzureContextWrapper(context);
     }
 
     /**
