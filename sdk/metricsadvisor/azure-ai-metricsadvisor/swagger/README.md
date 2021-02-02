@@ -32,18 +32,10 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,AlertQueryTimeMode,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode
+custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode,FeedbackType
 ```
 
 ### Generated types renamed and moved to model
-
-#### TimeMode -> AlertQueryTimeMode
-```yaml
-directive:
-  - rename-model:
-      from: TimeMode
-      to: AlertQueryTimeModel
-```
 
 #### Severity -> AnomalySeverity
 ```yaml

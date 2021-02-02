@@ -27,6 +27,7 @@ import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOption
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.TimeMode;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
@@ -1052,7 +1053,7 @@ public class MetricsAdvisorAsyncClient {
         AlertingResultQuery query = new AlertingResultQuery();
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        query.setTimeMode(options.getTimeMode());
+        query.setTimeMode(options.getTimeMode() == null ? null : TimeMode.fromString(options.getTimeMode().toString()));
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
@@ -1077,7 +1078,7 @@ public class MetricsAdvisorAsyncClient {
         AlertingResultQuery query = new AlertingResultQuery();
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        query.setTimeMode(options.getTimeMode());
+        query.setTimeMode(options.getTimeMode() == null ? null : TimeMode.fromString(options.getTimeMode().toString()));
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,

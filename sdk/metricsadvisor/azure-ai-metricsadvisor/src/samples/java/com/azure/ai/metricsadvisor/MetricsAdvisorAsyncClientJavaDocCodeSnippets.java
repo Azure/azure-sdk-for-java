@@ -254,7 +254,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
 
         metricsAdvisorAsyncClient.listAlerts(alertConfigurationId, startTime, endTime, options)
             .subscribe(alert -> {
-                System.out.printf("Anomaly Alert Id: %s%n", alert.getId());
+                System.out.printf("Anomaly Alert Id: %s%n", alert.getAlertId());
                 System.out.printf("Created Time: %s%n", alert.getCreatedTime());
                 System.out.printf("Modified Time: %s%n", alert.getModifiedTime());
             });

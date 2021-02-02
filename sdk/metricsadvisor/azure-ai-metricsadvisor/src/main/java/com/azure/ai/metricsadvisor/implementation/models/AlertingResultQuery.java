@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -28,7 +27,7 @@ public final class AlertingResultQuery {
      * time mode
      */
     @JsonProperty(value = "timeMode", required = true)
-    private AlertQueryTimeMode timeMode;
+    private TimeMode timeMode;
 
     /**
      * Get the startTime property: start time.
@@ -75,7 +74,7 @@ public final class AlertingResultQuery {
      *
      * @return the timeMode value.
      */
-    public AlertQueryTimeMode getTimeMode() {
+    public TimeMode getTimeMode() {
         return this.timeMode;
     }
 
@@ -85,7 +84,7 @@ public final class AlertingResultQuery {
      * @param timeMode the timeMode value to set.
      * @return the AlertingResultQuery object itself.
      */
-    public AlertingResultQuery setTimeMode(AlertQueryTimeMode timeMode) {
+    public AlertingResultQuery setTimeMode(TimeMode timeMode) {
         this.timeMode = timeMode;
         return this;
     }

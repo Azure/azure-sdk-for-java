@@ -4,20 +4,11 @@
 package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationList;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchFillMissingPointForAd;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchNeedRollup;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchRollUpMethod;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchStatus;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchViewMode;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailRollUpMethod;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationList;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
 import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
@@ -25,10 +16,15 @@ import com.azure.ai.metricsadvisor.implementation.models.Granularity;
 import com.azure.ai.metricsadvisor.implementation.models.IngestionProgressResetOptions;
 import com.azure.ai.metricsadvisor.implementation.models.IngestionStatusQueryOptions;
 import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
+import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
-import com.azure.ai.metricsadvisor.implementation.util.Utility;
 import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.Utility;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
@@ -38,13 +34,12 @@ import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -202,7 +197,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
                 ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
             .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-            .setRollUpMethod(DataFeedDetailRollUpMethod.fromString(dataFeedRollupSettings
+            .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
                 .getDataFeedAutoRollUpMethod() == null
                 ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
             .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
@@ -331,30 +326,29 @@ public class MetricsAdvisorAdministrationAsyncClient {
                     ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
                 .setNeedRollup(
                     dataFeedRollupSettings.getRollupType() != null
-                    ? DataFeedDetailPatchNeedRollup.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
                     : null)
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
                 .setRollUpMethod(
                     dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
-                    ? DataFeedDetailPatchRollUpMethod.fromString(
+                    ? RollUpMethod.fromString(
                         dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
                         : null)
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointForAd(
+                .setFillMissingPointType(
                     dataFeedMissingDataPointFillSettings.getFillType() != null
-                    ? DataFeedDetailPatchFillMissingPointForAd.fromString(
-                        dataFeedMissingDataPointFillSettings.getFillType().toString())
+                    ? FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType().toString())
                         : null)
-                .setFillMissingPointForAdValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
+                .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
                 .setViewMode(
                     dataFeedOptions.getAccessMode() != null
-                    ? DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                    ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
                         : null)
                 .setViewers(dataFeedOptions.getViewerEmails())
                 .setAdmins(dataFeedOptions.getAdminEmails())
                 .setStatus(
                     dataFeed.getStatus() != null
-                        ? DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString())
+                        ? EntityStatus.fromString(dataFeed.getStatus().toString())
                         : null)
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
@@ -1027,7 +1021,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
                 if (innerConfigurationList != null && innerConfigurationList.getValue() != null) {
                     configurationList = innerConfigurationList.getValue()
                         .stream()
-                        .map(innerConfiguration -> DetectionConfigurationTransforms.fromInner(innerConfiguration))
+                        .map(DetectionConfigurationTransforms::fromInner)
                         .collect(Collectors.toList());
                 } else {
                     configurationList = new ArrayList<>();

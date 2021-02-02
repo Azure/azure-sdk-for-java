@@ -42,7 +42,7 @@ public class ListAlertsSample {
         PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, startTime, endTime,
             options, Context.NONE);
         for (AnomalyAlert anomalyAlert : alertsIterable) {
-            System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getId());
+            System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getAlertId());
             System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());
             System.out.printf("Modified Time: %s%n", anomalyAlert.getModifiedTime());
         }

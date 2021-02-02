@@ -133,11 +133,11 @@ public final class TestUtils {
     static DataFeed getSQLDataFeedSample() {
         return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
-                new DataFeedMetric().setName("cost"),
-                new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric().setMetricName("cost"),
+                new DataFeedMetric().setMetricName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city"),
-                new DataFeedDimension().setName("category"))))
+                new DataFeedDimension().setDimensionName("city"),
+                new DataFeedDimension().setDimensionName("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
@@ -146,11 +146,11 @@ public final class TestUtils {
     static DataFeed getAzureBlobDataFeedSample() {
         return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
-                new DataFeedMetric().setName("cost"),
-                new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric().setMetricName("cost"),
+                new DataFeedMetric().setMetricName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city"),
-                new DataFeedDimension().setName("category"))))
+                new DataFeedDimension().setDimensionName("city"),
+                new DataFeedDimension().setDimensionName("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));

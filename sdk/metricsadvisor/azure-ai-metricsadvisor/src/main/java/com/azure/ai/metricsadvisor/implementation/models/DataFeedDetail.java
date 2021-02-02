@@ -17,10 +17,10 @@ import java.util.UUID;
 
 /** The DataFeedDetail model. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "dataSourceType",
-    defaultImpl = DataFeedDetail.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "dataSourceType",
+        defaultImpl = DataFeedDetail.class)
 @JsonTypeName("DataFeedDetail")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureApplicationInsights", value = AzureApplicationInsightsDataFeed.class),
@@ -131,7 +131,7 @@ public class DataFeedDetail {
      * roll up method
      */
     @JsonProperty(value = "rollUpMethod")
-    private DataFeedDetailRollUpMethod rollUpMethod;
+    private RollUpMethod rollUpMethod;
 
     /*
      * roll up columns
@@ -191,7 +191,7 @@ public class DataFeedDetail {
      * data feed status
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private DataFeedDetailStatus status;
+    private EntityStatus status;
 
     /*
      * data feed created time
@@ -487,7 +487,7 @@ public class DataFeedDetail {
      *
      * @return the rollUpMethod value.
      */
-    public DataFeedDetailRollUpMethod getRollUpMethod() {
+    public RollUpMethod getRollUpMethod() {
         return this.rollUpMethod;
     }
 
@@ -497,7 +497,7 @@ public class DataFeedDetail {
      * @param rollUpMethod the rollUpMethod value to set.
      * @return the DataFeedDetail object itself.
      */
-    public DataFeedDetail setRollUpMethod(DataFeedDetailRollUpMethod rollUpMethod) {
+    public DataFeedDetail setRollUpMethod(RollUpMethod rollUpMethod) {
         this.rollUpMethod = rollUpMethod;
         return this;
     }
@@ -665,7 +665,7 @@ public class DataFeedDetail {
      *
      * @return the status value.
      */
-    public DataFeedDetailStatus getStatus() {
+    public EntityStatus getStatus() {
         return this.status;
     }
 

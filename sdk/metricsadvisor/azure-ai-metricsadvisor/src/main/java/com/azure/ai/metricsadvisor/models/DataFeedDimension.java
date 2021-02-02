@@ -14,51 +14,51 @@ public final class DataFeedDimension {
      * dimension name
      */
     @JsonProperty(value = "dimensionName", required = true)
-    private String name;
+    private String dimensionName;
 
     /*
      * dimension display name
      */
     @JsonProperty(value = "dimensionDisplayName")
-    private String displayName;
+    private String dimensionDisplayName;
 
     /**
-     * Get the name property: dimension name.
+     * Get the dimensionName property: dimension name.
      *
-     * @return the name value.
+     * @return the dimensionName value.
      */
-    public String getName() {
-        return this.name;
+    public String getDimensionName() {
+        return this.dimensionName;
     }
 
     /**
-     * Set the name property: dimension name.
+     * Set the dimensionName property: dimension name.
      *
-     * @param name the name value to set.
+     * @param dimensionName the dimensionName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setName(String name) {
-        this.name = name;
+    public DataFeedDimension setDimensionName(String dimensionName) {
+        this.dimensionName = dimensionName;
         return this;
     }
 
     /**
-     * Get the displayName property: dimension display name.
+     * Get the dimensionDisplayName property: dimension display name.
      *
-     * @return the displayName value.
+     * @return the dimensionDisplayName value.
      */
-    public String getDisplayName() {
-        return this.displayName;
+    public String getDimensionDisplayName() {
+        return this.dimensionDisplayName;
     }
 
     /**
-     * Set the displayName property: dimension display name.
+     * Set the dimensionDisplayName property: dimension display name.
      *
-     * @param displayName the displayName value to set.
+     * @param dimensionDisplayName the dimensionDisplayName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public DataFeedDimension setDimensionDisplayName(String dimensionDisplayName) {
+        this.dimensionDisplayName = dimensionDisplayName;
         return this;
     }
 }

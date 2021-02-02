@@ -14,7 +14,7 @@ public final class AnomalyDimensionList {
     /*
      * The @nextLink property.
      */
-    @JsonProperty(value = "@nextLink", required = true)
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
@@ -30,17 +30,6 @@ public final class AnomalyDimensionList {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The @nextLink property.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the AnomalyDimensionList object itself.
-     */
-    public AnomalyDimensionList setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

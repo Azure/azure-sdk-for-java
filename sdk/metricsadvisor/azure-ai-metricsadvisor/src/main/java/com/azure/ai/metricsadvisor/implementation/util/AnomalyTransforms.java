@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor.implementation.util;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyResult;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.Severity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityFilterCondition;
 import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
@@ -33,8 +34,8 @@ public class AnomalyTransforms {
         }
         if (minSeverity != null) {
             innerFilter.setSeverityFilter(new SeverityFilterCondition()
-                .setMin(minSeverity).
-                    setMax(maxSeverity));
+                .setMin(Severity.fromString(minSeverity.toString())).
+                    setMax(Severity.fromString(maxSeverity.toString())));
         }
         List<DimensionKey> seriesKeys = filter.getSeriesKeys();
         if (seriesKeys != null && !seriesKeys.isEmpty()) {
@@ -87,7 +88,8 @@ public class AnomalyTransforms {
             AnomalyHelper.setSeriesKey(dataPointAnomaly, new DimensionKey(innerAnomaly.getDimension()));
         }
         if (innerAnomaly.getProperty() != null) {
-            AnomalyHelper.setSeverity(dataPointAnomaly, innerAnomaly.getProperty().getAnomalySeverity());
+            AnomalyHelper.setSeverity(dataPointAnomaly,
+                AnomalySeverity.fromString(innerAnomaly.getProperty().getAnomalySeverity().toString()));
             AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
         }
 

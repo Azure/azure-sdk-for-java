@@ -40,12 +40,12 @@ public class DatafeedAsyncSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new DataFeedMetric().setName("cost"),
-                        new DataFeedMetric().setName("revenue")
+                        new DataFeedMetric().setMetricName("cost"),
+                        new DataFeedMetric().setMetricName("revenue")
                 )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension().setDimensionName("city"),
+                        new DataFeedDimension().setDimensionName("category")
                     ))
             ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
 

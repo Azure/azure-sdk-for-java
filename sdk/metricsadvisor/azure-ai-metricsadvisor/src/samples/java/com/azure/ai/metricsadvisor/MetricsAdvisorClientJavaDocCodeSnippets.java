@@ -345,7 +345,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             = metricsAdvisorClient.listAlerts(alertConfigurationId, startTime, endTime);
 
         for (AnomalyAlert anomalyAlert : alertsIterable) {
-            System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getId());
+            System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getAlertId());
             System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());
             System.out.printf("Modified Time: %s%n", anomalyAlert.getModifiedTime());
         }
@@ -374,7 +374,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             System.out.printf("Page: %d%n", pageCount[0]++);
             IterableStream<AnomalyAlert> alertsPageItems = alertsPage.getElements();
             for (AnomalyAlert anomalyAlert : alertsPageItems) {
-                System.out.printf("AnomalyAlert Id: %s%n", anomalyAlert.getId());
+                System.out.printf("AnomalyAlert Id: %s%n", anomalyAlert.getAlertId());
                 System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());
                 System.out.printf("Modified Time: %s%n", anomalyAlert.getModifiedTime());
             }

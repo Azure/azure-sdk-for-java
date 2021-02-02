@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SeverityCondition {
     /*
-     * min alert severity
+     * min alert AnomalySeverity
      */
     @JsonProperty(value = "minAlertSeverity", required = true)
     private AnomalySeverity minAlertSeverity;
 
     /*
-     * max alert severity
+     * max alert AnomalySeverity
      */
     @JsonProperty(value = "maxAlertSeverity", required = true)
     private AnomalySeverity maxAlertSeverity;
 
     /**
-     * Get the minAlertSeverity property: min alert severity.
+     * Get the minAlertSeverity property: min alert AnomalySeverity.
      *
      * @return the minAlertSeverity value.
      */
@@ -32,7 +32,7 @@ public final class SeverityCondition {
     }
 
     /**
-     * Set the minAlertSeverity property: min alert severity.
+     * Set the minAlertSeverity property: min alert AnomalySeverity.
      *
      * @param minAlertSeverity the minAlertSeverity value to set.
      * @return the SeverityCondition object itself.
@@ -43,7 +43,7 @@ public final class SeverityCondition {
     }
 
     /**
-     * Get the maxAlertSeverity property: max alert severity.
+     * Get the maxAlertSeverity property: max alert AnomalySeverity.
      *
      * @return the maxAlertSeverity value.
      */
@@ -52,7 +52,7 @@ public final class SeverityCondition {
     }
 
     /**
-     * Set the maxAlertSeverity property: max alert severity.
+     * Set the maxAlertSeverity property: max alert AnomalySeverity.
      *
      * @param maxAlertSeverity the maxAlertSeverity value to set.
      * @return the SeverityCondition object itself.

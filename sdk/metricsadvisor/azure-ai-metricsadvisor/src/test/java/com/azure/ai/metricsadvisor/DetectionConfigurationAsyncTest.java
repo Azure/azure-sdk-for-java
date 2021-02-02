@@ -51,11 +51,11 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
@@ -89,11 +89,11 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
@@ -128,11 +128,11 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
@@ -172,11 +172,11 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             final AnomalyDetectionConfiguration[] configs = new AnomalyDetectionConfiguration[1];
             StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,

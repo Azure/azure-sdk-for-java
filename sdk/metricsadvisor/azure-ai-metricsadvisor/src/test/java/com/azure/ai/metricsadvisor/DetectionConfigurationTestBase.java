@@ -792,11 +792,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         DataFeed dataFeed = new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY));
         dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric().setMetricName("cost").setMetricDisplayName("cost"),
+            new DataFeedMetric().setMetricName("revenue").setMetricDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city").setDisplayName("city"),
-                new DataFeedDimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension().setDimensionName("city").setDimensionDisplayName("city"),
+                new DataFeedDimension().setDimensionName("category").setDimensionDisplayName("category"))))
             .setName("java_data_feed_for_detection" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));

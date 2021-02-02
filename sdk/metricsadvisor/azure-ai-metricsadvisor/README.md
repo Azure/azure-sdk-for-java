@@ -182,12 +182,12 @@ DataFeed dataFeed = new DataFeed()
     .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
     .setSchema(new DataFeedSchema(
         Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")
+            new DataFeedMetric().setMetricName("cost"),
+            new DataFeedMetric().setMetricName("revenue")
         )).setDimensions(
         Arrays.asList(
-            new DataFeedDimension().setName("city"),
-            new DataFeedDimension().setName("category")
+            new DataFeedDimension().setDimensionName("city"),
+            new DataFeedDimension().setDimensionName("category")
         ))
     )
     .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -329,13 +329,13 @@ metricsAdvisorClient.listAlerts(
     alertConfigurationId,
         startTime, endTime)
     .forEach(alert -> {
-        System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
+        System.out.printf("AnomalyAlert Id: %s%n", alert.getAlertId());
         System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
         // List anomalies for returned alerts
         metricsAdvisorClient.listAnomaliesForAlert(
             alertConfigurationId,
-            alert.getId())
+            alert.getAlertId())
             .forEach(anomaly -> {
                 System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
                 System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());

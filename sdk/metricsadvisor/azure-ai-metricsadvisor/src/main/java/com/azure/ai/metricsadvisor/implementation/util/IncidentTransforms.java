@@ -4,7 +4,10 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.implementation.models.IncidentResult;
+import com.azure.ai.metricsadvisor.implementation.models.Severity;
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -54,8 +57,10 @@ public class IncidentTransforms {
                 new DimensionKey(innerIncident.getRootNode().getDimension()));
         }
         if (innerIncident.getProperty() != null) {
-            IncidentHelper.setSeverity(incident, innerIncident.getProperty().getMaxSeverity());
-            IncidentHelper.setStatus(incident, innerIncident.getProperty().getIncidentStatus());
+            IncidentHelper.setSeverity(incident, AnomalySeverity.fromString(innerIncident.getProperty().getMaxSeverity()
+                == null ? null : innerIncident.getProperty().getMaxSeverity().toString()));
+            IncidentHelper.setStatus(incident, AnomalyIncidentStatus.fromString(innerIncident.getProperty().getIncidentStatus()
+                == null ? null : innerIncident.getProperty().getIncidentStatus().toString()));
         }
 
         IncidentHelper.setStartTime(incident, innerIncident.getStartTime());

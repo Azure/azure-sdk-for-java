@@ -53,11 +53,11 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfig(costMetricId,
@@ -91,11 +91,11 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfig(costMetricId,
@@ -128,11 +128,11 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfig(costMetricId,
@@ -168,11 +168,11 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
             Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
-                .filter(m -> m.getName().equalsIgnoreCase("cost"))
+                .filter(m -> m.getMetricName().equalsIgnoreCase("cost"))
                 .findFirst();
 
             final DataFeedMetric costMetric = optMetric.get();
-            final String costMetricId = costMetric.getId();
+            final String costMetricId = costMetric.getMetricId();
 
             AnomalyDetectionConfiguration configuration
                 = client.createMetricAnomalyDetectionConfig(costMetricId,

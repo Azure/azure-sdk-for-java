@@ -28,7 +28,7 @@ public final class AnomalyAlertingConfigurationPatch {
      * cross metrics operator
      */
     @JsonProperty(value = "crossMetricsOperator")
-    private AnomalyAlertingConfigurationPatchCrossMetricsOperator crossMetricsOperator;
+    private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
 
     /*
      * hook unique ids
@@ -87,7 +87,7 @@ public final class AnomalyAlertingConfigurationPatch {
      *
      * @return the crossMetricsOperator value.
      */
-    public AnomalyAlertingConfigurationPatchCrossMetricsOperator getCrossMetricsOperator() {
+    public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
 
@@ -98,7 +98,7 @@ public final class AnomalyAlertingConfigurationPatch {
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
     public AnomalyAlertingConfigurationPatch setCrossMetricsOperator(
-            AnomalyAlertingConfigurationPatchCrossMetricsOperator crossMetricsOperator) {
+            AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
         return this;
     }

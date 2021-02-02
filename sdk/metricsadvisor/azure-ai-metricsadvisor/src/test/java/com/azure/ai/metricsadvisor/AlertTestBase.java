@@ -38,7 +38,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     protected void assertAlertOutput(AnomalyAlert anomalyAlert) {
         Assertions.assertNotNull(anomalyAlert);
-        Assertions.assertNotNull(anomalyAlert.getId());
+        Assertions.assertNotNull(anomalyAlert.getAlertId());
         Assertions.assertNotNull(anomalyAlert.getCreatedTime());
         Assertions.assertNotNull(anomalyAlert.getModifiedTime());
         Assertions.assertNotNull(anomalyAlert.getTimestamp());

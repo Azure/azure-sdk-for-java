@@ -31,8 +31,6 @@ import com.azure.ai.metricsadvisor.implementation.models.DetectionSeriesQuery;
 import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusList;
 import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusQueryOption;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
-import com.azure.ai.metricsadvisor.models.AnomalyAlert;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.implementation.models.Granularity;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfo;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfoPatch;
@@ -49,19 +47,22 @@ import com.azure.ai.metricsadvisor.implementation.models.MetricDimensionQueryOpt
 import com.azure.ai.metricsadvisor.implementation.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.MetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.implementation.models.MetricFeedbackList;
+import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesItem;
 import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesList;
 import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOptions;
 import com.azure.ai.metricsadvisor.implementation.models.RootCauseList;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesResultList;
 import com.azure.ai.metricsadvisor.implementation.models.UsageStats;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesItem;
+import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -85,6 +86,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -121,12 +124,30 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         return this.httpPipeline;
     }
 
-    /** Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client. */
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
+     *
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
+     */
     AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
 
@@ -134,12 +155,31 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      */
     AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
+     */
+    AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.service =
-                RestProxy.create(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service.class, this.httpPipeline);
+                RestProxy.create(
+                        AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service.class,
+                        this.httpPipeline,
+                        this.getSerializerAdapter());
     }
 
     /**
@@ -152,7 +192,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         @Get("/stats/latest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
-        Mono<Response<UsageStats>> getActiveSeriesCount(@HostParam("endpoint") String endpoint, Context context);
+        Mono<Response<UsageStats>> getActiveSeriesCount(
+                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({200})
@@ -160,6 +201,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/alert/anomaly/configurations/{configurationId}")
@@ -168,7 +210,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> updateAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
-                @BodyParam("application/json") AnomalyAlertingConfigurationPatch body,
+                @BodyParam("application/merge-patch+json") AnomalyAlertingConfigurationPatch body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/alert/anomaly/configurations/{configurationId}")
@@ -177,6 +220,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> deleteAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/alert/anomaly/configurations")
@@ -185,6 +229,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyAlertingConfiguration body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
@@ -196,6 +241,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") AlertingResultQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/anomalies")
@@ -207,6 +253,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @PathParam("alertId") String alertId,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
@@ -218,6 +265,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @PathParam("alertId") String alertId,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}")
@@ -226,6 +274,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
@@ -234,7 +283,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> updateAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
-                @BodyParam("application/json") AnomalyDetectionConfigurationPatch body,
+                @BodyParam("application/merge-patch+json") AnomalyDetectionConfigurationPatch body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/enrichment/anomalyDetection/configurations/{configurationId}")
@@ -243,6 +293,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> deleteAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/enrichment/anomalyDetection/configurations")
@@ -251,6 +302,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyDetectionConfiguration body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/alert/anomaly/configurations")
@@ -260,6 +312,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
                         @HostParam("endpoint") String endpoint,
                         @PathParam("configurationId") UUID configurationId,
+                        @HeaderParam("Accept") String accept,
                         Context context);
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
@@ -269,6 +322,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @BodyParam("application/json") DetectionSeriesQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
@@ -280,6 +334,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") DetectionAnomalyResultQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/dimension/query")
@@ -291,6 +346,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") AnomalyDimensionQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
@@ -301,6 +357,18 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") DetectionIncidentResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNextPages(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$top") Integer top,
+                @QueryParam("$token") String token,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
@@ -310,6 +378,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @PathParam("incidentId") String incidentId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/dataFeeds")
@@ -324,6 +393,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("creator") String creator,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/dataFeeds")
@@ -332,13 +402,17 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<CreateDataFeedResponse> createDataFeed(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") DataFeedDetail body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<DataFeedDetail>> getDataFeedById(
-                @HostParam("endpoint") String endpoint, @PathParam("dataFeedId") UUID dataFeedId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Patch("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({204})
@@ -346,20 +420,27 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> updateDataFeed(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
-                @BodyParam("application/json") DataFeedDetailPatch body,
+                @BodyParam("application/merge-patch+json") DataFeedDetailPatch body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<Void>> deleteDataFeed(
-                @HostParam("endpoint") String endpoint, @PathParam("dataFeedId") UUID dataFeedId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/feedback/metric/{feedbackId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<MetricFeedback>> getMetricFeedback(
-                @HostParam("endpoint") String endpoint, @PathParam("feedbackId") UUID feedbackId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("feedbackId") UUID feedbackId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/feedback/metric/query")
         @ExpectedResponses({200})
@@ -369,6 +450,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") MetricFeedbackFilter body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/feedback/metric")
@@ -377,6 +459,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<CreateMetricFeedbackResponse> createMetricFeedback(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") MetricFeedback body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/hooks")
@@ -387,19 +470,26 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("hookName") String hookName,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/hooks")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<CreateHookResponse> createHook(
-                @HostParam("endpoint") String endpoint, @BodyParam("application/json") HookInfo body, Context context);
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") HookInfo body,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/hooks/{hookId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<HookInfo>> getHook(
-                @HostParam("endpoint") String endpoint, @PathParam("hookId") UUID hookId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("hookId") UUID hookId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Patch("/hooks/{hookId}")
         @ExpectedResponses({204})
@@ -407,14 +497,18 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
         Mono<Response<Void>> updateHook(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
-                @BodyParam("application/json") HookInfoPatch body,
+                @BodyParam("application/merge-patch+json") HookInfoPatch body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/hooks/{hookId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<Void>> deleteHook(
-                @HostParam("endpoint") String endpoint, @PathParam("hookId") UUID hookId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("hookId") UUID hookId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
         @ExpectedResponses({200})
@@ -425,6 +519,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") IngestionStatusQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/dataFeeds/{dataFeedId}/ingestionProgress/reset")
@@ -434,13 +529,17 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @BodyParam("application/json") IngestionProgressResetOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<DataFeedIngestionProgress>> getIngestionProgress(
-                @HostParam("endpoint") String endpoint, @PathParam("dataFeedId") UUID dataFeedId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/metrics/{metricId}/data/query")
         @ExpectedResponses({200})
@@ -449,6 +548,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
                 @BodyParam("application/json") MetricDataQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/metrics/{metricId}/series/query")
@@ -460,6 +560,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") MetricSeriesQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/metrics/{metricId}/dimension/query")
@@ -471,13 +572,17 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") MetricDimensionQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetric(
-                @HostParam("endpoint") String endpoint, @PathParam("metricId") UUID metricId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/metrics/{metricId}/status/enrichment/anomalyDetection/query")
         @ExpectedResponses({200})
@@ -488,109 +593,142 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
                 @BodyParam("application/json") EnrichmentStatusQueryOption body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") AlertingResultQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") DetectionAnomalyResultQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<AnomalyDimensionList>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") AnomalyDimensionQuery body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<MetricFeedbackList>> listMetricFeedbacksNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") MetricFeedbackFilter body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatusNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") IngestionStatusQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<MetricSeriesList>> getMetricSeriesNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") MetricSeriesQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<MetricDimensionList>> getMetricDimensionNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") MetricDimensionQueryOptions body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("{nextLink}")
+        @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetricNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") EnrichmentStatusQueryOption body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNextPagesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<DataFeedList>> listDataFeedsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorCodeException.class)
         Mono<Response<HookList>> listHooksNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -602,7 +740,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UsageStats>> getActiveSeriesCountWithResponseAsync() {
-        return FluxUtil.withContext(context -> service.getActiveSeriesCount(this.getEndpoint(), context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getActiveSeriesCount(this.getEndpoint(), accept, context));
     }
 
     /**
@@ -616,7 +755,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UsageStats>> getActiveSeriesCountWithResponseAsync(Context context) {
-        return service.getActiveSeriesCount(this.getEndpoint(), context);
+        final String accept = "application/json";
+        return service.getActiveSeriesCount(this.getEndpoint(), accept, context);
     }
 
     /**
@@ -683,8 +823,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return latest usage stats.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsageStats getActiveSeriesCount(Context context) {
-        return getActiveSeriesCountAsync(context).block();
+    public Response<UsageStats> getActiveSeriesCountWithResponse(Context context) {
+        return getActiveSeriesCountWithResponseAsync(context).block();
     }
 
     /**
@@ -699,8 +839,10 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfigurationWithResponseAsync(
             UUID configurationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, context));
+                context ->
+                        service.getAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, accept, context));
     }
 
     /**
@@ -716,7 +858,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfigurationWithResponseAsync(
             UUID configurationId, Context context) {
-        return service.getAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, context);
+        final String accept = "application/json";
+        return service.getAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -790,8 +933,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyAlertingConfiguration getAnomalyAlertingConfiguration(UUID configurationId, Context context) {
-        return getAnomalyAlertingConfigurationAsync(configurationId, context).block();
+    public Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationWithResponse(
+            UUID configurationId, Context context) {
+        return getAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -807,9 +951,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAnomalyAlertingConfigurationWithResponseAsync(
             UUID configurationId, AnomalyAlertingConfigurationPatch body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.updateAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, body, context));
+                        service.updateAnomalyAlertingConfiguration(
+                                this.getEndpoint(), configurationId, body, accept, context));
     }
 
     /**
@@ -826,7 +972,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAnomalyAlertingConfigurationWithResponseAsync(
             UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
-        return service.updateAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, body, context);
+        final String accept = "application/json";
+        return service.updateAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -887,11 +1034,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAnomalyAlertingConfiguration(
+    public Response<Void> updateAnomalyAlertingConfigurationWithResponse(
             UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
-        updateAnomalyAlertingConfigurationAsync(configurationId, body, context).block();
+        return updateAnomalyAlertingConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -905,8 +1053,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyAlertingConfigurationWithResponseAsync(UUID configurationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, context));
+                context ->
+                        service.deleteAnomalyAlertingConfiguration(
+                                this.getEndpoint(), configurationId, accept, context));
     }
 
     /**
@@ -922,7 +1073,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyAlertingConfigurationWithResponseAsync(
             UUID configurationId, Context context) {
-        return service.deleteAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, context);
+        final String accept = "application/json";
+        return service.deleteAnomalyAlertingConfiguration(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -977,10 +1129,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAnomalyAlertingConfiguration(UUID configurationId, Context context) {
-        deleteAnomalyAlertingConfigurationAsync(configurationId, context).block();
+    public Response<Void> deleteAnomalyAlertingConfigurationWithResponse(UUID configurationId, Context context) {
+        return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -995,8 +1148,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfigurationWithResponseAsync(
             AnomalyAlertingConfiguration body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createAnomalyAlertingConfiguration(this.getEndpoint(), body, context));
+                context -> service.createAnomalyAlertingConfiguration(this.getEndpoint(), body, accept, context));
     }
 
     /**
@@ -1012,7 +1166,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfigurationWithResponseAsync(
             AnomalyAlertingConfiguration body, Context context) {
-        return service.createAnomalyAlertingConfiguration(this.getEndpoint(), body, context);
+        final String accept = "application/json";
+        return service.createAnomalyAlertingConfiguration(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -1067,10 +1222,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAnomalyAlertingConfiguration(AnomalyAlertingConfiguration body, Context context) {
-        createAnomalyAlertingConfigurationAsync(body, context).block();
+    public Response<Void> createAnomalyAlertingConfigurationWithResponse(
+            AnomalyAlertingConfiguration body, Context context) {
+        return createAnomalyAlertingConfigurationWithResponseAsync(body, context).block();
     }
 
     /**
@@ -1078,8 +1235,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1088,10 +1245,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getAlertsByAnomalyAlertingConfiguration(
-                                        this.getEndpoint(), configurationId, skip, top, body, context))
+                                        this.getEndpoint(), configurationId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1108,8 +1266,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1119,8 +1277,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getAlertsByAnomalyAlertingConfiguration(
-                        this.getEndpoint(), configurationId, skip, top, body, context)
+                        this.getEndpoint(), configurationId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1137,8 +1296,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1157,8 +1316,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1170,7 +1329,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(configurationId, body, skip, top, context),
-                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, body));
+                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -1178,8 +1337,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1196,8 +1355,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param body query alerting result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1216,8 +1375,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1226,10 +1385,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, String alertId, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getAnomaliesFromAlertByAnomalyAlertingConfiguration(
-                                        this.getEndpoint(), configurationId, alertId, skip, top, context))
+                                        this.getEndpoint(), configurationId, alertId, skip, top, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1246,8 +1406,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1257,8 +1417,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, String alertId, Integer skip, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getAnomaliesFromAlertByAnomalyAlertingConfiguration(
-                        this.getEndpoint(), configurationId, alertId, skip, top, context)
+                        this.getEndpoint(), configurationId, alertId, skip, top, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1275,8 +1436,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1297,8 +1458,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1312,7 +1473,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 () ->
                         getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
                                 configurationId, alertId, skip, top, context),
-                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink));
+                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1320,8 +1481,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1339,8 +1500,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1359,8 +1520,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1369,10 +1530,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, String alertId, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getIncidentsFromAlertByAnomalyAlertingConfiguration(
-                                        this.getEndpoint(), configurationId, alertId, skip, top, context))
+                                        this.getEndpoint(), configurationId, alertId, skip, top, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1389,8 +1551,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1400,8 +1562,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, String alertId, Integer skip, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getIncidentsFromAlertByAnomalyAlertingConfiguration(
-                        this.getEndpoint(), configurationId, alertId, skip, top, context)
+                        this.getEndpoint(), configurationId, alertId, skip, top, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1418,8 +1581,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1440,8 +1603,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1455,7 +1618,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 () ->
                         getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
                                 configurationId, alertId, skip, top, context),
-                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink));
+                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1463,8 +1626,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1482,8 +1645,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @param alertId alert id.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -1509,8 +1672,10 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, context));
+                context ->
+                        service.getAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, accept, context));
     }
 
     /**
@@ -1526,7 +1691,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, Context context) {
-        return service.getAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, context);
+        final String accept = "application/json";
+        return service.getAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -1600,8 +1766,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration getAnomalyDetectionConfiguration(UUID configurationId, Context context) {
-        return getAnomalyDetectionConfigurationAsync(configurationId, context).block();
+    public Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationWithResponse(
+            UUID configurationId, Context context) {
+        return getAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -1617,10 +1784,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, AnomalyDetectionConfigurationPatch body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateAnomalyDetectionConfiguration(
-                                this.getEndpoint(), configurationId, body, context));
+                                this.getEndpoint(), configurationId, body, accept, context));
     }
 
     /**
@@ -1637,7 +1805,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
-        return service.updateAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, body, context);
+        final String accept = "application/json";
+        return service.updateAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -1698,11 +1867,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAnomalyDetectionConfiguration(
+    public Response<Void> updateAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
-        updateAnomalyDetectionConfigurationAsync(configurationId, body, context).block();
+        return updateAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -1716,8 +1886,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyDetectionConfigurationWithResponseAsync(UUID configurationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, context));
+                context ->
+                        service.deleteAnomalyDetectionConfiguration(
+                                this.getEndpoint(), configurationId, accept, context));
     }
 
     /**
@@ -1733,7 +1906,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, Context context) {
-        return service.deleteAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, context);
+        final String accept = "application/json";
+        return service.deleteAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -1788,10 +1962,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAnomalyDetectionConfiguration(UUID configurationId, Context context) {
-        deleteAnomalyDetectionConfigurationAsync(configurationId, context).block();
+    public Response<Void> deleteAnomalyDetectionConfigurationWithResponse(UUID configurationId, Context context) {
+        return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -1806,8 +1981,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfigurationWithResponseAsync(
             AnomalyDetectionConfiguration body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createAnomalyDetectionConfiguration(this.getEndpoint(), body, context));
+                context -> service.createAnomalyDetectionConfiguration(this.getEndpoint(), body, accept, context));
     }
 
     /**
@@ -1823,7 +1999,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfigurationWithResponseAsync(
             AnomalyDetectionConfiguration body, Context context) {
-        return service.createAnomalyDetectionConfiguration(this.getEndpoint(), body, context);
+        final String accept = "application/json";
+        return service.createAnomalyDetectionConfiguration(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -1878,10 +2055,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAnomalyDetectionConfiguration(AnomalyDetectionConfiguration body, Context context) {
-        createAnomalyDetectionConfigurationAsync(body, context).block();
+    public Response<Void> createAnomalyDetectionConfigurationWithResponse(
+            AnomalyDetectionConfiguration body, Context context) {
+        return createAnomalyDetectionConfigurationWithResponseAsync(body, context).block();
     }
 
     /**
@@ -1896,10 +2075,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfigurationList>>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(UUID configurationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
-                                this.getEndpoint(), configurationId, context));
+                                this.getEndpoint(), configurationId, accept, context));
     }
 
     /**
@@ -1916,8 +2096,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     public Mono<Response<AnomalyAlertingConfigurationList>>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(
                     UUID configurationId, Context context) {
+        final String accept = "application/json";
         return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
-                this.getEndpoint(), configurationId, context);
+                this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -1994,9 +2175,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyAlertingConfigurationList getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
-            UUID configurationId, Context context) {
-        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(configurationId, context).block();
+    public Response<AnomalyAlertingConfigurationList>
+            getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponse(
+                    UUID configurationId, Context context) {
+        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(
+                        configurationId, context)
+                .block();
     }
 
     /**
@@ -2012,10 +2196,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SeriesResultList>> getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, DetectionSeriesQuery body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSeriesByAnomalyDetectionConfiguration(
-                                this.getEndpoint(), configurationId, body, context));
+                                this.getEndpoint(), configurationId, body, accept, context));
     }
 
     /**
@@ -2032,7 +2217,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SeriesResultList>> getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, DetectionSeriesQuery body, Context context) {
-        return service.getSeriesByAnomalyDetectionConfiguration(this.getEndpoint(), configurationId, body, context);
+        final String accept = "application/json";
+        return service.getSeriesByAnomalyDetectionConfiguration(
+                this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -2111,9 +2298,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SeriesResultList getSeriesByAnomalyDetectionConfiguration(
+    public Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, DetectionSeriesQuery body, Context context) {
-        return getSeriesByAnomalyDetectionConfigurationAsync(configurationId, body, context).block();
+        return getSeriesByAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -2121,8 +2308,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2131,10 +2318,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getAnomaliesByAnomalyDetectionConfiguration(
-                                        this.getEndpoint(), configurationId, skip, top, body, context))
+                                        this.getEndpoint(), configurationId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2151,8 +2339,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2162,8 +2350,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getAnomaliesByAnomalyDetectionConfiguration(
-                        this.getEndpoint(), configurationId, skip, top, body, context)
+                        this.getEndpoint(), configurationId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2180,8 +2369,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2200,8 +2389,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2215,7 +2404,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 () ->
                         getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
                                 configurationId, body, skip, top, context),
-                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body));
+                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -2223,8 +2412,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2241,8 +2430,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection anomaly result request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2261,8 +2450,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2271,10 +2460,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
-                                        this.getEndpoint(), configurationId, skip, top, body, context))
+                                        this.getEndpoint(), configurationId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2291,8 +2481,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2302,8 +2492,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
-                        this.getEndpoint(), configurationId, skip, top, body, context)
+                        this.getEndpoint(), configurationId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2320,8 +2511,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2342,8 +2533,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2357,7 +2548,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 () ->
                         getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
                                 configurationId, body, skip, top, context),
-                nextLink -> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body));
+                nextLink ->
+                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
+                                nextLink, body, context));
     }
 
     /**
@@ -2365,8 +2558,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2384,8 +2577,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query dimension values request.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2404,7 +2597,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2413,10 +2606,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, DetectionIncidentResultQuery body, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getIncidentsByAnomalyDetectionConfiguration(
-                                        this.getEndpoint(), configurationId, top, body, context))
+                                        this.getEndpoint(), configurationId, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2433,7 +2627,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2443,8 +2637,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
             UUID configurationId, DetectionIncidentResultQuery body, Integer top, Context context) {
+        final String accept = "application/json";
         return service.getIncidentsByAnomalyDetectionConfiguration(
-                        this.getEndpoint(), configurationId, top, body, context)
+                        this.getEndpoint(), configurationId, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2461,7 +2656,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2480,7 +2675,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2492,7 +2687,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID configurationId, DetectionIncidentResultQuery body, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(configurationId, body, top, context),
-                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink));
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2500,7 +2695,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2517,7 +2712,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @param body query detection incident result request.
-     * @param top The top parameter.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2529,6 +2724,143 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID configurationId, DetectionIncidentResultQuery body, Integer top, Context context) {
         return new PagedIterable<>(
                 getIncidentsByAnomalyDetectionConfigurationAsync(configurationId, body, top, context));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
+            UUID configurationId, Integer top, String token) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.getIncidentsByAnomalyDetectionConfigurationNextPages(
+                                        this.getEndpoint(), configurationId, top, token, accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
+            UUID configurationId, Integer top, String token, Context context) {
+        final String accept = "application/json";
+        return service.getIncidentsByAnomalyDetectionConfigurationNextPages(
+                        this.getEndpoint(), configurationId, top, token, accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
+            UUID configurationId, Integer top, String token) {
+        return new PagedFlux<>(
+                () -> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(configurationId, top, token),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
+            UUID configurationId, Integer top, String token, Context context) {
+        return new PagedFlux<>(
+                () ->
+                        getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
+                                configurationId, top, token, context),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
+            UUID configurationId, Integer top, String token) {
+        return new PagedIterable<>(
+                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(configurationId, top, token));
+    }
+
+    /**
+     * Query incidents under anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param top for paging, item number in response.
+     * @param token the token for getting the next page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
+            UUID configurationId, Integer top, String token, Context context) {
+        return new PagedIterable<>(
+                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(configurationId, top, token, context));
     }
 
     /**
@@ -2544,10 +2876,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, String incidentId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getRootCauseOfIncidentByAnomalyDetectionConfiguration(
-                                this.getEndpoint(), configurationId, incidentId, context));
+                                this.getEndpoint(), configurationId, incidentId, accept, context));
     }
 
     /**
@@ -2564,8 +2897,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
             UUID configurationId, String incidentId, Context context) {
+        final String accept = "application/json";
         return service.getRootCauseOfIncidentByAnomalyDetectionConfiguration(
-                this.getEndpoint(), configurationId, incidentId, context);
+                this.getEndpoint(), configurationId, incidentId, accept, context);
     }
 
     /**
@@ -2646,9 +2980,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RootCauseList getRootCauseOfIncidentByAnomalyDetectionConfiguration(
+    public Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, String incidentId, Context context) {
-        return getRootCauseOfIncidentByAnomalyDetectionConfigurationAsync(configurationId, incidentId, context).block();
+        return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
+                        configurationId, incidentId, context)
+                .block();
     }
 
     /**
@@ -2659,8 +2995,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2675,6 +3011,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             String creator,
             Integer skip,
             Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDataFeeds(
@@ -2686,6 +3023,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         creator,
                                         skip,
                                         top,
+                                        accept,
                                         context))
                 .map(
                         res ->
@@ -2706,8 +3044,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2724,6 +3062,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             Integer skip,
             Integer top,
             Context context) {
+        final String accept = "application/json";
         return service.listDataFeeds(
                         this.getEndpoint(),
                         dataFeedName,
@@ -2733,6 +3072,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                         creator,
                         skip,
                         top,
+                        accept,
                         context)
                 .map(
                         res ->
@@ -2753,8 +3093,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2784,8 +3124,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2806,7 +3146,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                 () ->
                         listDataFeedsSinglePageAsync(
                                 dataFeedName, dataSourceType, granularityName, status, creator, skip, top, context),
-                nextLink -> listDataFeedsNextSinglePageAsync(nextLink));
+                nextLink -> listDataFeedsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2817,8 +3157,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2845,8 +3185,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param granularityName filter data feed by its granularity.
      * @param status filter data feed by its status.
      * @param creator filter data feed by its creator.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -2878,7 +3218,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFeedResponse> createDataFeedWithResponseAsync(DataFeedDetail body) {
-        return FluxUtil.withContext(context -> service.createDataFeed(this.getEndpoint(), body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createDataFeed(this.getEndpoint(), body, accept, context));
     }
 
     /**
@@ -2893,7 +3234,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFeedResponse> createDataFeedWithResponseAsync(DataFeedDetail body, Context context) {
-        return service.createDataFeed(this.getEndpoint(), body, context);
+        final String accept = "application/json";
+        return service.createDataFeed(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -2946,10 +3288,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createDataFeed(DataFeedDetail body, Context context) {
-        createDataFeedAsync(body, context).block();
+    public Response<Void> createDataFeedWithResponse(DataFeedDetail body, Context context) {
+        return createDataFeedWithResponseAsync(body, context).block();
     }
 
     /**
@@ -2963,7 +3306,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> getDataFeedByIdWithResponseAsync(UUID dataFeedId) {
-        return FluxUtil.withContext(context -> service.getDataFeedById(this.getEndpoint(), dataFeedId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getDataFeedById(this.getEndpoint(), dataFeedId, accept, context));
     }
 
     /**
@@ -2978,7 +3323,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> getDataFeedByIdWithResponseAsync(UUID dataFeedId, Context context) {
-        return service.getDataFeedById(this.getEndpoint(), dataFeedId, context);
+        final String accept = "application/json";
+        return service.getDataFeedById(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -3051,8 +3397,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return a data feed by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFeedDetail getDataFeedById(UUID dataFeedId, Context context) {
-        return getDataFeedByIdAsync(dataFeedId, context).block();
+    public Response<DataFeedDetail> getDataFeedByIdWithResponse(UUID dataFeedId, Context context) {
+        return getDataFeedByIdWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
@@ -3067,7 +3413,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateDataFeedWithResponseAsync(UUID dataFeedId, DataFeedDetailPatch body) {
-        return FluxUtil.withContext(context -> service.updateDataFeed(this.getEndpoint(), dataFeedId, body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.updateDataFeed(this.getEndpoint(), dataFeedId, body, accept, context));
     }
 
     /**
@@ -3084,7 +3432,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateDataFeedWithResponseAsync(
             UUID dataFeedId, DataFeedDetailPatch body, Context context) {
-        return service.updateDataFeed(this.getEndpoint(), dataFeedId, body, context);
+        final String accept = "application/json";
+        return service.updateDataFeed(this.getEndpoint(), dataFeedId, body, accept, context);
     }
 
     /**
@@ -3141,10 +3490,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateDataFeed(UUID dataFeedId, DataFeedDetailPatch body, Context context) {
-        updateDataFeedAsync(dataFeedId, body, context).block();
+    public Response<Void> updateDataFeedWithResponse(UUID dataFeedId, DataFeedDetailPatch body, Context context) {
+        return updateDataFeedWithResponseAsync(dataFeedId, body, context).block();
     }
 
     /**
@@ -3158,7 +3508,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFeedWithResponseAsync(UUID dataFeedId) {
-        return FluxUtil.withContext(context -> service.deleteDataFeed(this.getEndpoint(), dataFeedId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteDataFeed(this.getEndpoint(), dataFeedId, accept, context));
     }
 
     /**
@@ -3173,7 +3524,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFeedWithResponseAsync(UUID dataFeedId, Context context) {
-        return service.deleteDataFeed(this.getEndpoint(), dataFeedId, context);
+        final String accept = "application/json";
+        return service.deleteDataFeed(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -3226,16 +3578,17 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataFeed(UUID dataFeedId, Context context) {
-        deleteDataFeedAsync(dataFeedId, context).block();
+    public Response<Void> deleteDataFeedWithResponse(UUID dataFeedId, Context context) {
+        return deleteDataFeedWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3243,13 +3596,15 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricFeedback>> getMetricFeedbackWithResponseAsync(UUID feedbackId) {
-        return FluxUtil.withContext(context -> service.getMetricFeedback(this.getEndpoint(), feedbackId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getMetricFeedback(this.getEndpoint(), feedbackId, accept, context));
     }
 
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3258,13 +3613,14 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricFeedback>> getMetricFeedbackWithResponseAsync(UUID feedbackId, Context context) {
-        return service.getMetricFeedback(this.getEndpoint(), feedbackId, context);
+        final String accept = "application/json";
+        return service.getMetricFeedback(this.getEndpoint(), feedbackId, accept, context);
     }
 
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3286,7 +3642,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3309,7 +3665,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3323,7 +3679,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get a metric feedback by its id.
      *
-     * @param feedbackId The feedbackId parameter.
+     * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3331,16 +3687,16 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return a metric feedback by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricFeedback getMetricFeedback(UUID feedbackId, Context context) {
-        return getMetricFeedbackAsync(feedbackId, context).block();
+    public Response<MetricFeedback> getMetricFeedbackWithResponse(UUID feedbackId, Context context) {
+        return getMetricFeedbackWithResponseAsync(feedbackId, context).block();
     }
 
     /**
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3349,8 +3705,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePageAsync(
             MetricFeedbackFilter body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listMetricFeedbacks(this.getEndpoint(), skip, top, body, context))
+                        context -> service.listMetricFeedbacks(this.getEndpoint(), skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3366,8 +3723,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3377,7 +3734,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePageAsync(
             MetricFeedbackFilter body, Integer skip, Integer top, Context context) {
-        return service.listMetricFeedbacks(this.getEndpoint(), skip, top, body, context)
+        final String accept = "application/json";
+        return service.listMetricFeedbacks(this.getEndpoint(), skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3393,8 +3751,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3411,8 +3769,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3424,15 +3782,15 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             MetricFeedbackFilter body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> listMetricFeedbacksSinglePageAsync(body, skip, top, context),
-                nextLink -> listMetricFeedbacksNextSinglePageAsync(nextLink, body));
+                nextLink -> listMetricFeedbacksNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3447,8 +3805,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List feedback on the given metric.
      *
      * @param body metric feedback filter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3472,7 +3830,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateMetricFeedbackResponse> createMetricFeedbackWithResponseAsync(MetricFeedback body) {
-        return FluxUtil.withContext(context -> service.createMetricFeedback(this.getEndpoint(), body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createMetricFeedback(this.getEndpoint(), body, accept, context));
     }
 
     /**
@@ -3488,7 +3847,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateMetricFeedbackResponse> createMetricFeedbackWithResponseAsync(
             MetricFeedback body, Context context) {
-        return service.createMetricFeedback(this.getEndpoint(), body, context);
+        final String accept = "application/json";
+        return service.createMetricFeedback(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -3542,18 +3902,19 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createMetricFeedback(MetricFeedback body, Context context) {
-        createMetricFeedbackAsync(body, context).block();
+    public Response<Void> createMetricFeedbackWithResponse(MetricFeedback body, Context context) {
+        return createMetricFeedbackWithResponseAsync(body, context).block();
     }
 
     /**
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3561,7 +3922,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksSinglePageAsync(String hookName, Integer skip, Integer top) {
-        return FluxUtil.withContext(context -> service.listHooks(this.getEndpoint(), hookName, skip, top, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context -> service.listHooks(this.getEndpoint(), hookName, skip, top, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3577,8 +3940,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3588,7 +3951,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksSinglePageAsync(
             String hookName, Integer skip, Integer top, Context context) {
-        return service.listHooks(this.getEndpoint(), hookName, skip, top, context)
+        final String accept = "application/json";
+        return service.listHooks(this.getEndpoint(), hookName, skip, top, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3604,8 +3968,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3622,8 +3986,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3634,15 +3998,15 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     public PagedFlux<HookInfo> listHooksAsync(String hookName, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> listHooksSinglePageAsync(hookName, skip, top, context),
-                nextLink -> listHooksNextSinglePageAsync(nextLink));
+                nextLink -> listHooksNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3657,8 +4021,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * List all hooks.
      *
      * @param hookName filter hook by its name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -3681,7 +4045,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateHookResponse> createHookWithResponseAsync(HookInfo body) {
-        return FluxUtil.withContext(context -> service.createHook(this.getEndpoint(), body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createHook(this.getEndpoint(), body, accept, context));
     }
 
     /**
@@ -3696,7 +4061,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateHookResponse> createHookWithResponseAsync(HookInfo body, Context context) {
-        return service.createHook(this.getEndpoint(), body, context);
+        final String accept = "application/json";
+        return service.createHook(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -3749,10 +4115,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createHook(HookInfo body, Context context) {
-        createHookAsync(body, context).block();
+    public Response<Void> createHookWithResponse(HookInfo body, Context context) {
+        return createHookWithResponseAsync(body, context).block();
     }
 
     /**
@@ -3766,7 +4133,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> getHookWithResponseAsync(UUID hookId) {
-        return FluxUtil.withContext(context -> service.getHook(this.getEndpoint(), hookId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getHook(this.getEndpoint(), hookId, accept, context));
     }
 
     /**
@@ -3781,7 +4149,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> getHookWithResponseAsync(UUID hookId, Context context) {
-        return service.getHook(this.getEndpoint(), hookId, context);
+        final String accept = "application/json";
+        return service.getHook(this.getEndpoint(), hookId, accept, context);
     }
 
     /**
@@ -3854,8 +4223,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return a hook by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public HookInfo getHook(UUID hookId, Context context) {
-        return getHookAsync(hookId, context).block();
+    public Response<HookInfo> getHookWithResponse(UUID hookId, Context context) {
+        return getHookWithResponseAsync(hookId, context).block();
     }
 
     /**
@@ -3870,7 +4239,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateHookWithResponseAsync(UUID hookId, HookInfoPatch body) {
-        return FluxUtil.withContext(context -> service.updateHook(this.getEndpoint(), hookId, body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateHook(this.getEndpoint(), hookId, body, accept, context));
     }
 
     /**
@@ -3886,7 +4256,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateHookWithResponseAsync(UUID hookId, HookInfoPatch body, Context context) {
-        return service.updateHook(this.getEndpoint(), hookId, body, context);
+        final String accept = "application/json";
+        return service.updateHook(this.getEndpoint(), hookId, body, accept, context);
     }
 
     /**
@@ -3943,10 +4314,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateHook(UUID hookId, HookInfoPatch body, Context context) {
-        updateHookAsync(hookId, body, context).block();
+    public Response<Void> updateHookWithResponse(UUID hookId, HookInfoPatch body, Context context) {
+        return updateHookWithResponseAsync(hookId, body, context).block();
     }
 
     /**
@@ -3960,7 +4332,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHookWithResponseAsync(UUID hookId) {
-        return FluxUtil.withContext(context -> service.deleteHook(this.getEndpoint(), hookId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteHook(this.getEndpoint(), hookId, accept, context));
     }
 
     /**
@@ -3975,7 +4348,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHookWithResponseAsync(UUID hookId, Context context) {
-        return service.deleteHook(this.getEndpoint(), hookId, context);
+        final String accept = "application/json";
+        return service.deleteHook(this.getEndpoint(), hookId, accept, context);
     }
 
     /**
@@ -4028,10 +4402,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteHook(UUID hookId, Context context) {
-        deleteHookAsync(hookId, context).block();
+    public Response<Void> deleteHookWithResponse(UUID hookId, Context context) {
+        return deleteHookWithResponseAsync(hookId, context).block();
     }
 
     /**
@@ -4039,8 +4414,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4049,10 +4424,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusSinglePageAsync(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getDataFeedIngestionStatus(
-                                        this.getEndpoint(), dataFeedId, skip, top, body, context))
+                                        this.getEndpoint(), dataFeedId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4069,8 +4445,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4080,7 +4456,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusSinglePageAsync(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer top, Context context) {
-        return service.getDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, skip, top, body, context)
+        final String accept = "application/json";
+        return service.getDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4097,8 +4474,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4117,8 +4494,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4130,7 +4507,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getDataFeedIngestionStatusSinglePageAsync(dataFeedId, body, skip, top, context),
-                nextLink -> getDataFeedIngestionStatusNextSinglePageAsync(nextLink, body));
+                nextLink -> getDataFeedIngestionStatusNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -4138,8 +4515,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4156,8 +4533,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @param body The query time range.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4183,8 +4560,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDataFeedIngestionStatusWithResponseAsync(
             UUID dataFeedId, IngestionProgressResetOptions body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.resetDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, body, context));
+                context -> service.resetDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, body, accept, context));
     }
 
     /**
@@ -4201,7 +4579,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDataFeedIngestionStatusWithResponseAsync(
             UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
-        return service.resetDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, body, context);
+        final String accept = "application/json";
+        return service.resetDataFeedIngestionStatus(this.getEndpoint(), dataFeedId, body, accept, context);
     }
 
     /**
@@ -4261,10 +4640,12 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDataFeedIngestionStatus(UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
-        resetDataFeedIngestionStatusAsync(dataFeedId, body, context).block();
+    public Response<Void> resetDataFeedIngestionStatusWithResponse(
+            UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
+        return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body, context).block();
     }
 
     /**
@@ -4278,7 +4659,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedIngestionProgress>> getIngestionProgressWithResponseAsync(UUID dataFeedId) {
-        return FluxUtil.withContext(context -> service.getIngestionProgress(this.getEndpoint(), dataFeedId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getIngestionProgress(this.getEndpoint(), dataFeedId, accept, context));
     }
 
     /**
@@ -4294,7 +4677,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedIngestionProgress>> getIngestionProgressWithResponseAsync(
             UUID dataFeedId, Context context) {
-        return service.getIngestionProgress(this.getEndpoint(), dataFeedId, context);
+        final String accept = "application/json";
+        return service.getIngestionProgress(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -4367,8 +4751,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return data last success ingestion job timestamp by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFeedIngestionProgress getIngestionProgress(UUID dataFeedId, Context context) {
-        return getIngestionProgressAsync(dataFeedId, context).block();
+    public Response<DataFeedIngestionProgress> getIngestionProgressWithResponse(UUID dataFeedId, Context context) {
+        return getIngestionProgressWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
@@ -4383,7 +4767,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricDataList>> getMetricDataWithResponseAsync(UUID metricId, MetricDataQueryOptions body) {
-        return FluxUtil.withContext(context -> service.getMetricData(this.getEndpoint(), metricId, body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getMetricData(this.getEndpoint(), metricId, body, accept, context));
     }
 
     /**
@@ -4400,7 +4786,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricDataList>> getMetricDataWithResponseAsync(
             UUID metricId, MetricDataQueryOptions body, Context context) {
-        return service.getMetricData(this.getEndpoint(), metricId, body, context);
+        final String accept = "application/json";
+        return service.getMetricData(this.getEndpoint(), metricId, body, accept, context);
     }
 
     /**
@@ -4477,8 +4864,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return time series data from metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricDataList getMetricData(UUID metricId, MetricDataQueryOptions body, Context context) {
-        return getMetricDataAsync(metricId, body, context).block();
+    public Response<MetricDataList> getMetricDataWithResponse(
+            UUID metricId, MetricDataQueryOptions body, Context context) {
+        return getMetricDataWithResponseAsync(metricId, body, context).block();
     }
 
     /**
@@ -4486,8 +4874,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4496,8 +4884,10 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesSinglePageAsync(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getMetricSeries(this.getEndpoint(), metricId, skip, top, body, context))
+                        context ->
+                                service.getMetricSeries(this.getEndpoint(), metricId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4514,8 +4904,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4525,7 +4915,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesSinglePageAsync(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer top, Context context) {
-        return service.getMetricSeries(this.getEndpoint(), metricId, skip, top, body, context)
+        final String accept = "application/json";
+        return service.getMetricSeries(this.getEndpoint(), metricId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4542,8 +4933,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4562,8 +4953,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4575,7 +4966,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getMetricSeriesSinglePageAsync(metricId, body, skip, top, context),
-                nextLink -> getMetricSeriesNextSinglePageAsync(nextLink, body));
+                nextLink -> getMetricSeriesNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -4583,8 +4974,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4601,8 +4992,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body filter to query series.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4620,8 +5011,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4630,8 +5021,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionSinglePageAsync(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getMetricDimension(this.getEndpoint(), metricId, skip, top, body, context))
+                        context ->
+                                service.getMetricDimension(
+                                        this.getEndpoint(), metricId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4648,8 +5042,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4659,7 +5053,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionSinglePageAsync(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer top, Context context) {
-        return service.getMetricDimension(this.getEndpoint(), metricId, skip, top, body, context)
+        final String accept = "application/json";
+        return service.getMetricDimension(this.getEndpoint(), metricId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4676,8 +5071,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4696,8 +5091,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4709,7 +5104,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getMetricDimensionSinglePageAsync(metricId, body, skip, top, context),
-                nextLink -> getMetricDimensionNextSinglePageAsync(nextLink, body));
+                nextLink -> getMetricDimensionNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -4717,8 +5112,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4735,8 +5130,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query dimension option.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4761,8 +5156,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetricWithResponseAsync(
             UUID metricId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnomalyDetectionConfigurationsByMetric(this.getEndpoint(), metricId, context));
+                context ->
+                        service.getAnomalyDetectionConfigurationsByMetric(
+                                this.getEndpoint(), metricId, accept, context));
     }
 
     /**
@@ -4778,7 +5176,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetricWithResponseAsync(
             UUID metricId, Context context) {
-        return service.getAnomalyDetectionConfigurationsByMetric(this.getEndpoint(), metricId, context);
+        final String accept = "application/json";
+        return service.getAnomalyDetectionConfigurationsByMetric(this.getEndpoint(), metricId, accept, context);
     }
 
     /**
@@ -4852,8 +5251,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfigurationList getAnomalyDetectionConfigurationsByMetric(UUID metricId, Context context) {
-        return getAnomalyDetectionConfigurationsByMetricAsync(metricId, context).block();
+    public Response<AnomalyDetectionConfigurationList> getAnomalyDetectionConfigurationsByMetricWithResponse(
+            UUID metricId, Context context) {
+        return getAnomalyDetectionConfigurationsByMetricWithResponseAsync(metricId, context).block();
     }
 
     /**
@@ -4861,8 +5261,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4871,10 +5271,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricSinglePageAsync(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer top) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getEnrichmentStatusByMetric(
-                                        this.getEndpoint(), metricId, skip, top, body, context))
+                                        this.getEndpoint(), metricId, skip, top, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4891,8 +5292,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4902,7 +5303,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricSinglePageAsync(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer top, Context context) {
-        return service.getEnrichmentStatusByMetric(this.getEndpoint(), metricId, skip, top, body, context)
+        final String accept = "application/json";
+        return service.getEnrichmentStatusByMetric(this.getEndpoint(), metricId, skip, top, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4919,8 +5321,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4939,8 +5341,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -4952,7 +5354,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getEnrichmentStatusByMetricSinglePageAsync(metricId, body, skip, top, context),
-                nextLink -> getEnrichmentStatusByMetricNextSinglePageAsync(nextLink, body));
+                nextLink -> getEnrichmentStatusByMetricNextSinglePageAsync(nextLink, body, context));
     }
 
     /**
@@ -4960,8 +5362,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4978,8 +5380,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param metricId metric unique id.
      * @param body query options.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
+     * @param skip for paging, skipped number.
+     * @param top for paging, item number in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorCodeException thrown if the request is rejected by server.
@@ -5005,10 +5407,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, AlertingResultQuery body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getAlertsByAnomalyAlertingConfigurationNext(
-                                        this.getEndpoint(), nextLink, body, context))
+                                        this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5016,7 +5419,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        null,
                                         null));
     }
 
@@ -5034,7 +5437,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, AlertingResultQuery body, Context context) {
-        return service.getAlertsByAnomalyAlertingConfigurationNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getAlertsByAnomalyAlertingConfigurationNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5042,7 +5446,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        null,
                                         null));
     }
 
@@ -5059,10 +5463,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink, DetectionAnomalyResultQuery body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getAnomaliesByAnomalyDetectionConfigurationNext(
-                                        this.getEndpoint(), nextLink, body, context))
+                                        this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5088,7 +5493,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink, DetectionAnomalyResultQuery body, Context context) {
-        return service.getAnomaliesByAnomalyDetectionConfigurationNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getAnomaliesByAnomalyDetectionConfigurationNext(
+                        this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5113,10 +5520,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink, AnomalyDimensionQuery body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNext(
-                                        this.getEndpoint(), nextLink, body, context))
+                                        this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5124,7 +5532,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        null,
                                         null));
     }
 
@@ -5142,8 +5550,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink, AnomalyDimensionQuery body, Context context) {
+        final String accept = "application/json";
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNext(
-                        this.getEndpoint(), nextLink, body, context)
+                        this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5151,7 +5560,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        null,
                                         null));
     }
 
@@ -5168,8 +5577,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksNextSinglePageAsync(
             String nextLink, MetricFeedbackFilter body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listMetricFeedbacksNext(this.getEndpoint(), nextLink, body, context))
+                        context -> service.listMetricFeedbacksNext(this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5195,7 +5605,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksNextSinglePageAsync(
             String nextLink, MetricFeedbackFilter body, Context context) {
-        return service.listMetricFeedbacksNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.listMetricFeedbacksNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5220,8 +5631,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusNextSinglePageAsync(
             String nextLink, IngestionStatusQueryOptions body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getDataFeedIngestionStatusNext(this.getEndpoint(), nextLink, body, context))
+                        context ->
+                                service.getDataFeedIngestionStatusNext(
+                                        this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5247,7 +5661,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusNextSinglePageAsync(
             String nextLink, IngestionStatusQueryOptions body, Context context) {
-        return service.getDataFeedIngestionStatusNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getDataFeedIngestionStatusNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5255,7 +5670,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        null,
                                         null));
     }
 
@@ -5272,7 +5687,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesNextSinglePageAsync(
             String nextLink, MetricSeriesQueryOptions body) {
-        return FluxUtil.withContext(context -> service.getMetricSeriesNext(this.getEndpoint(), nextLink, body, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context -> service.getMetricSeriesNext(this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5298,7 +5715,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesNextSinglePageAsync(
             String nextLink, MetricSeriesQueryOptions body, Context context) {
-        return service.getMetricSeriesNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getMetricSeriesNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5323,8 +5741,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionNextSinglePageAsync(
             String nextLink, MetricDimensionQueryOptions body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getMetricDimensionNext(this.getEndpoint(), nextLink, body, context))
+                        context -> service.getMetricDimensionNext(this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5350,7 +5769,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionNextSinglePageAsync(
             String nextLink, MetricDimensionQueryOptions body, Context context) {
-        return service.getMetricDimensionNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getMetricDimensionNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5375,8 +5795,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricNextSinglePageAsync(
             String nextLink, EnrichmentStatusQueryOption body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getEnrichmentStatusByMetricNext(this.getEndpoint(), nextLink, body, context))
+                        context ->
+                                service.getEnrichmentStatusByMetricNext(
+                                        this.getEndpoint(), nextLink, body, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5402,7 +5825,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricNextSinglePageAsync(
             String nextLink, EnrichmentStatusQueryOption body, Context context) {
-        return service.getEnrichmentStatusByMetricNext(this.getEndpoint(), nextLink, body, context)
+        final String accept = "application/json";
+        return service.getEnrichmentStatusByMetricNext(this.getEndpoint(), nextLink, body, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5426,8 +5850,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(nextLink, context))
+                        context ->
+                                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(
+                                        nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5452,7 +5879,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(nextLink, context)
+        final String accept = "application/json";
+        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(
+                        nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5476,8 +5905,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getIncidentsFromAlertByAnomalyAlertingConfigurationNext(nextLink, context))
+                        context ->
+                                service.getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
+                                        nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5502,7 +5934,9 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNext(nextLink, context)
+        final String accept = "application/json";
+        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
+                        nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5526,8 +5960,11 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getIncidentsByAnomalyDetectionConfigurationNext(nextLink, context))
+                        context ->
+                                service.getIncidentsByAnomalyDetectionConfigurationNext(
+                                        nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5552,7 +5989,63 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getIncidentsByAnomalyDetectionConfigurationNext(nextLink, context)
+        final String accept = "application/json";
+        return service.getIncidentsByAnomalyDetectionConfigurationNext(nextLink, this.getEndpoint(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(
+            String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.getIncidentsByAnomalyDetectionConfigurationNextPagesNext(
+                                        nextLink, this.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(
+            String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.getIncidentsByAnomalyDetectionConfigurationNextPagesNext(
+                        nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5575,7 +6068,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listDataFeedsNext(nextLink, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listDataFeedsNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5599,7 +6093,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listDataFeedsNext(nextLink, context)
+        final String accept = "application/json";
+        return service.listDataFeedsNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5622,7 +6117,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listHooksNext(nextLink, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listHooksNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5646,7 +6142,8 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksNextSinglePageAsync(String nextLink, Context context) {
-        return service.listHooksNext(nextLink, context)
+        final String accept = "application/json";
+        return service.listHooksNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

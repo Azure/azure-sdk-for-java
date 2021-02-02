@@ -8,14 +8,14 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AlertResult model. */
+/** The AnomalyAlert model. */
 @Immutable
 public final class AnomalyAlert {
     /*
      * alert id
      */
     @JsonProperty(value = "alertId", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private String alertId;
 
     /*
      * anomaly time
@@ -40,8 +40,8 @@ public final class AnomalyAlert {
      *
      * @return the alertId value.
      */
-    public String getId() {
-        return this.id;
+    public String getAlertId() {
+        return this.alertId;
     }
 
     /**

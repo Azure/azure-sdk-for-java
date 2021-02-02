@@ -706,14 +706,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setMetricName("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setMetricName("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
             assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
@@ -802,8 +802,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            DataFeedMetric dataFeedMetric = new DataFeedMetric().setName("cost");
-            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setName("cost");
+            DataFeedMetric dataFeedMetric = new DataFeedMetric().setMetricName("cost");
+            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setMetricName("cost");
 
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));

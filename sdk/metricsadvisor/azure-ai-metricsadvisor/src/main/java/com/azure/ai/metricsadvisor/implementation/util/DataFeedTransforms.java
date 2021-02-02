@@ -129,7 +129,7 @@ public final class DataFeedTransforms {
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
             dataFeedDetail.getMetrics().stream()
-                .collect(Collectors.toMap(DataFeedMetric::getId, DataFeedMetric::getName)));
+                .collect(Collectors.toMap(DataFeedMetric::getMetricId, DataFeedMetric::getMetricName)));
         return dataFeed;
     }
 

@@ -171,11 +171,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
         }
         testRunner.accept(dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric().setMetricName("cost").setMetricDisplayName("cost"),
+            new DataFeedMetric().setMetricName("revenue").setMetricDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city").setDisplayName("city"),
-                new DataFeedDimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension().setDimensionName("city").setDimensionDisplayName("city"),
+                new DataFeedDimension().setDimensionName("category").setDimensionDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME)));
@@ -376,36 +376,36 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
 
     private void validateDataFeedSchema(DataFeedSchema expectedDataFeedSchema, DataFeedSchema actualDataFeedSchema) {
         assertEquals(expectedDataFeedSchema.getDimensions().size(), actualDataFeedSchema.getDimensions().size());
-        expectedDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getName));
-        actualDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getName));
+        expectedDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getDimensionName));
+        actualDataFeedSchema.getDimensions().sort(Comparator.comparing(DataFeedDimension::getDimensionName));
         for (int i = 0; i < expectedDataFeedSchema.getDimensions().size(); i++) {
             DataFeedDimension expectedDimension = expectedDataFeedSchema.getDimensions().get(i);
             DataFeedDimension actualDimension = actualDataFeedSchema.getDimensions().get(i);
-            assertEquals(expectedDimension.getName(), actualDimension.getName());
-            assertNotNull(actualDimension.getDisplayName());
-            if (expectedDimension.getDisplayName() != null) {
-                assertEquals(expectedDimension.getDisplayName(), actualDimension.getDisplayName());
+            assertEquals(expectedDimension.getDimensionName(), actualDimension.getDimensionName());
+            assertNotNull(actualDimension.getDimensionDisplayName());
+            if (expectedDimension.getDimensionDisplayName() != null) {
+                assertEquals(expectedDimension.getDimensionDisplayName(), actualDimension.getDimensionDisplayName());
             } else {
-                assertEquals(expectedDimension.getName(), actualDimension.getDisplayName());
+                assertEquals(expectedDimension.getDimensionName(), actualDimension.getDimensionName());
             }
         }
 
         assertEquals(expectedDataFeedSchema.getMetrics().size(), actualDataFeedSchema.getMetrics().size());
-        expectedDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getName));
-        actualDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getName));
+        expectedDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getMetricName));
+        actualDataFeedSchema.getMetrics().sort(Comparator.comparing(DataFeedMetric::getMetricName));
         for (int i = 0; i < expectedDataFeedSchema.getMetrics().size(); i++) {
             DataFeedMetric expectedMetric = expectedDataFeedSchema.getMetrics().get(i);
             DataFeedMetric actualMetric = actualDataFeedSchema.getMetrics().get(i);
-            assertNotNull(actualMetric.getId());
-            assertEquals(expectedMetric.getName(), actualMetric.getName());
-            if (expectedMetric.getDescription() != null) {
-                assertEquals(expectedMetric.getDescription(), actualMetric.getDescription());
+            assertNotNull(actualMetric.getMetricId());
+            assertEquals(expectedMetric.getMetricName(), actualMetric.getMetricName());
+            if (expectedMetric.getMetricDescription() != null) {
+                assertEquals(expectedMetric.getMetricDescription(), actualMetric.getMetricDescription());
             }
-            assertNotNull(actualMetric.getDescription());
-            if (expectedMetric.getDisplayName() != null) {
-                assertEquals(expectedMetric.getDisplayName(), actualMetric.getDisplayName());
+            assertNotNull(actualMetric.getMetricDescription());
+            if (expectedMetric.getMetricDisplayName() != null) {
+                assertEquals(expectedMetric.getMetricDisplayName(), actualMetric.getMetricDisplayName());
             } else {
-                assertEquals(expectedMetric.getName(), actualMetric.getDisplayName());
+                assertEquals(expectedMetric.getMetricDisplayName(), actualMetric.getMetricDisplayName());
             }
         }
         assertNotNull(actualDataFeedSchema.getTimestampColumn());
