@@ -360,7 +360,7 @@ syncPoller.getFinalResult().forEach(healthcareTaskResult ->
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same 
 set of documents. Currently, the supported features are: `entity recognition`, `key phrase extraction`, and 
 `Personally Identifiable Information (PII) recognition`. 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L232-L278 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L232-L280 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
     new TextDocumentInput("0",
@@ -382,6 +382,7 @@ SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActions
         Context.NONE);
 syncPoller.waitForCompletion();
 syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+    System.out.println("Key phrases extraction action results:");
     analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
@@ -393,6 +394,7 @@ syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
             }
         }
     });
+    System.out.println("PII entities recognition action results:");
     analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {

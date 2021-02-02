@@ -367,25 +367,11 @@ class AnalyzeBatchActionsAsyncClient {
         }
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
 
-        // TODO:
-        //  Partial complete is still not well functional, https://github.com/Azure/azure-sdk-for-java/issues/18897
-        //  Error index should map back to input tasks order. Currently, the target has reference and the
-        //  document result is object without error and value
-//        final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
-//        if (!CoreUtils.isNullOrEmpty(errors)) {
-//            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-//                "Analyze operation failed", null, null);
-//            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors =
-//                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
-//            TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
-//            throw logger.logExceptionAsError(textAnalyticsException);
-//        }
-
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {
             batchStatistics = new TextDocumentBatchStatistics(
-                requestStatistics.getDocumentsCount(), requestStatistics.getErroneousDocumentsCount(),
+                requestStatistics.getDocumentsCount(), requestStatistics.getErrofinal List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(neousDocumentsCount(),
                 requestStatistics.getValidDocumentsCount(), requestStatistics.getTransactionsCount()
             );
         }
