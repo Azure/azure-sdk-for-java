@@ -5,7 +5,7 @@ stages:
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
-        TestStepMavenInputs:
+        TestSetupSteps:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
 
@@ -80,7 +80,7 @@ stages:
           AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
 
-        PreRunSteps:
+        PreSteps:
           - powershell: |
               az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user create --user-principal-name "$env:AAD_USER_NAME_ON_DEMAND" --display-name "user$(System.JobId)" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
@@ -89,7 +89,7 @@ stages:
               AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)@aadittest1.onmicrosoft.com"
             displayName: 'Create On-demand test user'
 
-        PostRunSteps:
+        PostSteps:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
