@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -26,7 +27,9 @@ import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -38,6 +41,7 @@ import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
+import com.microsoft.aad.msal4j.RequestedClaimAdditionalInfo;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
@@ -83,6 +87,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -285,6 +290,10 @@ public class IdentityClient {
         if (options.getExecutorService() != null) {
             publicClientApplicationBuilder.executorService(options.getExecutorService());
         }
+
+        Set<String> set = new HashSet<>(1);
+        set.add("CP1");
+        publicClientApplicationBuilder.clientCapabilities(set);
         if (options.isSharedTokenCacheEnabled()) {
             try {
                 PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
@@ -368,12 +377,19 @@ public class IdentityClient {
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
-                RefreshTokenParameters parameters = RefreshTokenParameters
-                                                        .builder(new HashSet<>(request.getScopes()), refreshToken)
-                                                            .build();
+                RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
+                    RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), refreshToken);
+
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+                    refreshTokenParametersBuilder.claims(customClaimRequest);
+                }
+
 
                 return publicClientApplicationAccessor.getValue()
-                   .flatMap(pc -> Mono.fromFuture(pc.acquireToken(parameters)).map(MsalToken::new));
+                   .flatMap(pc -> Mono.fromFuture(pc.acquireToken(refreshTokenParametersBuilder.build()))
+                                      .map(MsalToken::new));
 
             } else {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
@@ -506,7 +522,7 @@ public class IdentityClient {
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
+        HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -526,11 +542,24 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
                                                             String username, String password) {
         return publicClientApplicationAccessor.getValue()
-               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(UserNamePasswordParameters.builder(
-                            new HashSet<>(request.getScopes()), username, password.toCharArray()).build()))
-                    .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
-                                                               + "password", null, t))
-                    .map(MsalToken::new));
+               .flatMap(pc -> Mono.fromFuture(() -> {
+
+                    UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
+                        UserNamePasswordParameters.builder(
+                        new HashSet<>(request.getScopes()), username, password.toCharArray());
+
+                    if (request.getClaims() != null) {
+                        ClaimsRequest customClaimRequest = CustomClaimRequest
+                                   .formatAsClaimsRequest(request.getClaims());
+                        userNamePasswordParametersBuilder.claims(customClaimRequest);
+                    }
+
+                   return pc.acquireToken(userNamePasswordParametersBuilder.build());
+                    }
+               ))
+                .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
+                                                           + "password", null, t))
+                .map(MsalToken::new);
     }
 
     /**
@@ -545,6 +574,14 @@ public class IdentityClient {
             .flatMap(pc -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                     new HashSet<>(request.getScopes()));
+
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+                    parametersBuilder.claims(customClaimRequest);
+                    parametersBuilder.forceRefresh(true);
+
+                }
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
@@ -560,6 +597,13 @@ public class IdentityClient {
                         new HashSet<>(request.getScopes())).forceRefresh(true);
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
+                    }
+
+                    if (request.getClaims() != null) {
+                        ClaimsRequest customClaimRequest = CustomClaimRequest
+                                                               .formatAsClaimsRequest(request.getClaims());
+
+                        forceParametersBuilder.claims(customClaimRequest);
                     }
                     try {
                         return pc.acquireTokenSilently(forceParametersBuilder.build());
@@ -603,11 +647,19 @@ public class IdentityClient {
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         return publicClientApplicationAccessor.getValue().flatMap(pc ->
             Mono.fromFuture(() -> {
-                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(
+                DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
+                    DeviceCodeFlowParameters.builder(
                     new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                         new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
-                return pc.acquireToken(parameters);
+                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+                    parametersBuilder.claims(customClaimRequest);
+                }
+
+                return pc.acquireToken(parametersBuilder.build());
             }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
                 .map(MsalToken::new));
     }
@@ -628,12 +680,17 @@ public class IdentityClient {
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
 
-        RefreshTokenParameters parameters = RefreshTokenParameters
-                                                .builder(new HashSet<>(request.getScopes()), credential)
-                                                .build();
+        RefreshTokenParameters.RefreshTokenParametersBuilder parametersBuilder = RefreshTokenParameters
+                                                .builder(new HashSet<>(request.getScopes()), credential);
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+            parametersBuilder.claims(customClaimRequest);
+        }
 
         return publicClientApplicationAccessor.getValue()
-                .flatMap(pc ->  Mono.fromFuture(pc.acquireToken(parameters)).map(MsalToken::new));
+                .flatMap(pc ->  Mono.fromFuture(pc.acquireToken(parametersBuilder.build())).map(MsalToken::new));
     }
 
     /**
@@ -646,16 +703,23 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
-        AuthorizationCodeParameters parameters = AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-            .scopes(new HashSet<>(request.getScopes()))
-            .build();
+        AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder =
+            AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
+            .scopes(new HashSet<>(request.getScopes()));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+            parametersBuilder.claims(customClaimRequest);
+        }
+
         Mono<IAuthenticationResult> acquireToken;
         if (clientSecret != null) {
             acquireToken = confidentialClientApplicationAccessor.getValue()
-                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parametersBuilder.build())));
         } else {
             acquireToken = publicClientApplicationAccessor.getValue()
-                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parametersBuilder.build())));
         }
         return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
             "Failed to acquire token with authorization code", null, t)).map(MsalToken::new);
@@ -689,12 +753,13 @@ public class IdentityClient {
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = InteractiveRequestParameters.builder(redirectUri)
-                                                     .scopes(new HashSet<>(request.getScopes()))
-                                                     .prompt(Prompt.ADMING_CONSENT);
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            InteractiveRequestParameters.builder(redirectUri).scopes(new HashSet<>(request.getScopes()));
 
         if (request.getClaims() != null) {
-            builder.claimsChallenge(request.getClaims());
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+
+            builder.claims(customClaimRequest);
         }
 
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
