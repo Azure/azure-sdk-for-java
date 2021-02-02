@@ -13,6 +13,7 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelR
 import com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ContentType1;
 import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyCustomModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
@@ -163,6 +164,7 @@ public final class FormRecognizerClientImpl {
         Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") TrainRequest trainRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/custom/models/{modelId}")
@@ -172,13 +174,17 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeKeys") Boolean includeKeys,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/custom/models/{modelId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteCustomModel(
-                @HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") UUID modelId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
@@ -190,6 +196,7 @@ public final class FormRecognizerClientImpl {
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/custom/models/{modelId}/analyze")
@@ -200,6 +207,7 @@ public final class FormRecognizerClientImpl {
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
@@ -209,6 +217,7 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/custom/models/{modelId}/copy")
@@ -218,6 +227,7 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @BodyParam("application/json") CopyRequest copyRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/custom/models/{modelId}/copyResults/{resultId}")
@@ -227,13 +237,14 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/custom/models/copyAuthorization")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorization(
-                @HostParam("endpoint") String endpoint, Context context);
+                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/custom/models/compose")
         @ExpectedResponses({201})
@@ -241,6 +252,7 @@ public final class FormRecognizerClientImpl {
         Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") ComposeRequest composeRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/prebuilt/businessCard/analyze")
@@ -250,9 +262,10 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") ContentType1 contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/prebuilt/businessCard/analyze")
@@ -263,13 +276,17 @@ public final class FormRecognizerClientImpl {
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/prebuilt/businessCard/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResult(
-                @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/prebuilt/invoice/analyze")
         @ExpectedResponses({202})
@@ -278,9 +295,10 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") ContentType1 contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/prebuilt/invoice/analyze")
@@ -291,13 +309,17 @@ public final class FormRecognizerClientImpl {
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/prebuilt/invoice/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResult(
-                @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
@@ -306,9 +328,10 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") ContentType1 contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/prebuilt/receipt/analyze")
@@ -319,13 +342,17 @@ public final class FormRecognizerClientImpl {
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/prebuilt/receipt/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResult(
-                @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
@@ -334,9 +361,10 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("language") Language language,
                 @QueryParam("Pages") String pages,
-                @HeaderParam("Content-Type") ContentType contentType,
+                @HeaderParam("Content-Type") ContentType1 contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/layout/analyze")
@@ -347,25 +375,35 @@ public final class FormRecognizerClientImpl {
                 @QueryParam("language") Language language,
                 @QueryParam("Pages") String pages,
                 @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResult(
-                @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> listCustomModels(
-                @HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("op") String op,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> getCustomModels(
-                @HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("op") String op,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -373,6 +411,7 @@ public final class FormRecognizerClientImpl {
         Mono<Response<Models>> listCustomModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -386,7 +425,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,8 +433,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
+                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context));
     }
 
     /**
@@ -408,7 +448,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -418,7 +458,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(
             TrainRequest trainRequest, Context context) {
-        return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context);
+        final String accept = "application/json";
+        return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context);
     }
 
     /**
@@ -431,7 +472,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -453,7 +494,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -476,7 +517,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -496,7 +537,7 @@ public final class FormRecognizerClientImpl {
      * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type
      * of content is ignored.
      *
-     * @param trainRequest Request parameter to train a new custom model.
+     * @param trainRequest Training request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -520,8 +561,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
+                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context));
     }
 
     /**
@@ -537,7 +579,8 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys, Context context) {
-        return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context);
+        final String accept = "application/json";
+        return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context);
     }
 
     /**
@@ -629,7 +672,8 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
-        return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, accept, context));
     }
 
     /**
@@ -644,7 +688,8 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
-        return service.deleteCustomModel(this.getEndpoint(), modelId, context);
+        final String accept = "application/json";
+        return service.deleteCustomModel(this.getEndpoint(), modelId, accept, context);
     }
 
     /**
@@ -710,8 +755,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,6 +771,7 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeWithCustomModel(
@@ -735,6 +781,7 @@ public final class FormRecognizerClientImpl {
                                 contentType,
                                 fileStream,
                                 contentLength,
+                                accept,
                                 context));
     }
 
@@ -744,8 +791,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param context The context to associate with this operation.
@@ -762,8 +809,16 @@ public final class FormRecognizerClientImpl {
             long contentLength,
             Boolean includeTextDetails,
             Context context) {
+        final String accept = "application/json";
         return service.analyzeWithCustomModel(
-                this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
+                this.getEndpoint(),
+                modelId,
+                includeTextDetails,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -772,8 +827,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,8 +854,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param context The context to associate with this operation.
@@ -828,8 +883,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -852,8 +907,8 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param context The context to associate with this operation.
@@ -882,7 +937,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -891,10 +946,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeWithCustomModel(
-                                this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
+                                this.getEndpoint(), modelId, includeTextDetails, fileStream, accept, context));
     }
 
     /**
@@ -904,7 +960,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -914,7 +970,9 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream, Context context) {
-        return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context);
+        final String accept = "application/json";
+        return service.analyzeWithCustomModel(
+                this.getEndpoint(), modelId, includeTextDetails, fileStream, accept, context);
     }
 
     /**
@@ -924,7 +982,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -943,7 +1001,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -964,7 +1022,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -981,7 +1039,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1006,8 +1064,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
+                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context));
     }
 
     /**
@@ -1024,7 +1083,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
-        return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context);
+        final String accept = "application/json";
+        return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context);
     }
 
     /**
@@ -1110,8 +1170,7 @@ public final class FormRecognizerClientImpl {
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,16 +1178,16 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context));
+                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context));
     }
 
     /**
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1138,15 +1197,15 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(
             UUID modelId, CopyRequest copyRequest, Context context) {
-        return service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context);
+        final String accept = "application/json";
+        return service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context);
     }
 
     /**
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1162,8 +1221,7 @@ public final class FormRecognizerClientImpl {
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1180,8 +1238,7 @@ public final class FormRecognizerClientImpl {
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1195,8 +1252,7 @@ public final class FormRecognizerClientImpl {
      * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
-     * @param copyRequest Request parameter to copy an existing custom model from the source resource to a target
-     *     resource referenced by the resource ID.
+     * @param copyRequest Copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1220,8 +1276,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(UUID modelId, UUID resultId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context));
+                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context));
     }
 
     /**
@@ -1238,7 +1295,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
-        return service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context);
+        final String accept = "application/json";
+        return service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context);
     }
 
     /**
@@ -1329,7 +1387,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync() {
-        return FluxUtil.withContext(context -> service.generateModelCopyAuthorization(this.getEndpoint(), context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.generateModelCopyAuthorization(this.getEndpoint(), accept, context));
     }
 
     /**
@@ -1344,7 +1404,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync(
             Context context) {
-        return service.generateModelCopyAuthorization(this.getEndpoint(), context);
+        final String accept = "application/json";
+        return service.generateModelCopyAuthorization(this.getEndpoint(), accept, context);
     }
 
     /**
@@ -1419,7 +1480,7 @@ public final class FormRecognizerClientImpl {
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1428,15 +1489,16 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
             ComposeRequest composeRequest) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
-                context -> service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, context));
+                context -> service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context));
     }
 
     /**
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1446,14 +1508,15 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
             ComposeRequest composeRequest, Context context) {
-        return service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, context);
+        final String accept = "application/json, text/json";
+        return service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context);
     }
 
     /**
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1469,7 +1532,7 @@ public final class FormRecognizerClientImpl {
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1486,7 +1549,7 @@ public final class FormRecognizerClientImpl {
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1500,7 +1563,7 @@ public final class FormRecognizerClientImpl {
      * Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
-     * @param composeRequest Request contract for compose operation.
+     * @param composeRequest Compose models.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1517,8 +1580,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1530,11 +1593,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeBusinessCardAsync(
@@ -1544,6 +1608,7 @@ public final class FormRecognizerClientImpl {
                                 contentType,
                                 fileStream,
                                 contentLength,
+                                accept,
                                 context));
     }
 
@@ -1552,8 +1617,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1566,14 +1631,22 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             Context context) {
+        final String accept = "application/json";
         return service.analyzeBusinessCardAsync(
-                this.getEndpoint(), includeTextDetails, locale, contentType, fileStream, contentLength, context);
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1581,8 +1654,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1594,7 +1667,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeBusinessCardAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -1609,8 +1682,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1623,7 +1696,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeBusinessCardAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -1639,8 +1712,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1651,7 +1724,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeBusinessCardAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -1664,8 +1737,8 @@ public final class FormRecognizerClientImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1678,7 +1751,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> analyzeBusinessCardAsyncWithResponse(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -1697,7 +1770,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1706,10 +1779,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeBusinessCardAsync(
-                                this.getEndpoint(), includeTextDetails, locale, fileStream, context));
+                                this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context));
     }
 
     /**
@@ -1720,7 +1794,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1730,7 +1804,9 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream, Context context) {
-        return service.analyzeBusinessCardAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, context);
+        final String accept = "application/json";
+        return service.analyzeBusinessCardAsync(
+                this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context);
     }
 
     /**
@@ -1741,7 +1817,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1761,7 +1837,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1783,7 +1859,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1801,7 +1877,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1825,8 +1901,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(UUID resultId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, context));
+                context -> service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
@@ -1842,7 +1919,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(
             UUID resultId, Context context) {
-        return service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, context);
+        final String accept = "application/json";
+        return service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
@@ -1924,8 +2002,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1937,11 +2015,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeInvoiceAsync(
@@ -1951,6 +2030,7 @@ public final class FormRecognizerClientImpl {
                                 contentType,
                                 fileStream,
                                 contentLength,
+                                accept,
                                 context));
     }
 
@@ -1959,8 +2039,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1973,14 +2053,22 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             Context context) {
+        final String accept = "application/json";
         return service.analyzeInvoiceAsync(
-                this.getEndpoint(), includeTextDetails, locale, contentType, fileStream, contentLength, context);
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1988,8 +2076,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2001,7 +2089,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeInvoiceAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2015,8 +2103,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2029,7 +2117,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeInvoiceAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2045,8 +2133,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2057,7 +2145,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeInvoiceAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2070,8 +2158,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2084,7 +2172,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> analyzeInvoiceAsyncWithResponse(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2103,7 +2191,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2112,10 +2200,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeInvoiceAsync(
-                                this.getEndpoint(), includeTextDetails, locale, fileStream, context));
+                                this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context));
     }
 
     /**
@@ -2126,7 +2215,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2136,7 +2225,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream, Context context) {
-        return service.analyzeInvoiceAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, context);
+        final String accept = "application/json";
+        return service.analyzeInvoiceAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context);
     }
 
     /**
@@ -2147,7 +2237,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2167,7 +2257,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2189,7 +2279,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2207,7 +2297,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2231,7 +2321,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
@@ -2247,7 +2339,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(
             UUID resultId, Context context) {
-        return service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, context);
+        final String accept = "application/json";
+        return service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
@@ -2329,8 +2422,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2342,11 +2435,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeReceiptAsync(
@@ -2356,6 +2450,7 @@ public final class FormRecognizerClientImpl {
                                 contentType,
                                 fileStream,
                                 contentLength,
+                                accept,
                                 context));
     }
 
@@ -2364,8 +2459,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2378,14 +2473,22 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             Context context) {
+        final String accept = "application/json";
         return service.analyzeReceiptAsync(
-                this.getEndpoint(), includeTextDetails, locale, contentType, fileStream, contentLength, context);
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -2393,8 +2496,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2406,7 +2509,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2420,8 +2523,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2434,7 +2537,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2450,8 +2553,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2462,7 +2565,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeReceiptAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2475,8 +2578,8 @@ public final class FormRecognizerClientImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
      * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2489,7 +2592,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> analyzeReceiptAsyncWithResponse(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
@@ -2508,7 +2611,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2517,10 +2620,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.analyzeReceiptAsync(
-                                this.getEndpoint(), includeTextDetails, locale, fileStream, context));
+                                this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context));
     }
 
     /**
@@ -2531,7 +2635,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2541,7 +2645,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, SourcePath fileStream, Context context) {
-        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, context);
+        final String accept = "application/json";
+        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, accept, context);
     }
 
     /**
@@ -2552,7 +2657,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2572,7 +2677,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2594,7 +2699,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2612,7 +2717,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
-     * @param fileStream Uri or local path to source data.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2636,7 +2741,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
@@ -2652,7 +2759,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(
             UUID resultId, Context context) {
-        return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context);
+        final String accept = "application/json";
+        return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
@@ -2734,11 +2842,16 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2746,11 +2859,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
             List<String> pages) {
+        final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
@@ -2762,6 +2876,7 @@ public final class FormRecognizerClientImpl {
                                 contentType,
                                 fileStream,
                                 contentLength,
+                                accept,
                                 context));
     }
 
@@ -2770,11 +2885,16 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2783,16 +2903,17 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
             List<String> pages,
             Context context) {
+        final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeLayoutAsync(
-                this.getEndpoint(), language, pagesConverted, contentType, fileStream, contentLength, context);
+                this.getEndpoint(), language, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
 
     /**
@@ -2800,11 +2921,16 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2812,7 +2938,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
@@ -2826,11 +2952,16 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2839,7 +2970,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
@@ -2854,18 +2985,23 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeLayoutAsync(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
@@ -2878,11 +3014,16 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * @param contentType Upload file type.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param contentLength The contentLength parameter.
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2891,7 +3032,7 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> analyzeLayoutAsyncWithResponse(
-            ContentType contentType,
+            ContentType1 contentType,
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Language language,
@@ -2906,9 +3047,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2917,11 +3063,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             Language language, List<String> pages, SourcePath fileStream) {
+        final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
                 context ->
-                        service.analyzeLayoutAsync(this.getEndpoint(), language, pagesConverted, fileStream, context));
+                        service.analyzeLayoutAsync(
+                                this.getEndpoint(), language, pagesConverted, fileStream, accept, context));
     }
 
     /**
@@ -2929,9 +3077,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2941,9 +3094,10 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             Language language, List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
-        return service.analyzeLayoutAsync(this.getEndpoint(), language, pagesConverted, fileStream, context);
+        return service.analyzeLayoutAsync(this.getEndpoint(), language, pagesConverted, fileStream, accept, context);
     }
 
     /**
@@ -2951,9 +3105,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2970,9 +3129,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2991,9 +3155,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3008,9 +3177,14 @@ public final class FormRecognizerClientImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
-     * @param language Language code.
-     * @param pages Array of PagesItemsItem.
-     * @param fileStream Uri or local path to source data.
+     * @param language The BCP-47 language code of the text in the document. Currently, only English ('en'), Dutch
+     *     (‘nl’), French (‘fr’), German (‘de’), Italian (‘it’), Portuguese (‘pt'), simplified Chinese ('zh-Hans') and
+     *     Spanish ('es') are supported (print – nine languages and handwritten – English only). Layout supports auto
+     *     language identification and multi language documents, so only provide a language code if you would like to
+     *     force the documented to be processed as that specific language.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma or space.
+     * @param fileStream .json, .pdf, .jpg, .png or .tiff type file stream.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3034,7 +3208,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
@@ -3050,7 +3226,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(
             UUID resultId, Context context) {
-        return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context);
+        final String accept = "application/json";
+        return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
@@ -3137,7 +3314,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
-        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3161,7 +3339,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
-        return service.listCustomModels(this.getEndpoint(), op, context)
+        final String accept = "application/json";
+        return service.listCustomModels(this.getEndpoint(), op, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3238,7 +3417,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Models>> getCustomModelsWithResponseAsync() {
         final String op = "summary";
-        return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, accept, context));
     }
 
     /**
@@ -3253,7 +3433,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Models>> getCustomModelsWithResponseAsync(Context context) {
         final String op = "summary";
-        return service.getCustomModels(this.getEndpoint(), op, context);
+        final String accept = "application/json";
+        return service.getCustomModels(this.getEndpoint(), op, accept, context);
     }
 
     /**
@@ -3335,7 +3516,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, this.getEndpoint(), context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context -> service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3359,7 +3542,8 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listCustomModelsNext(nextLink, this.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

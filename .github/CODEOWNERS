@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
+/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu
 
 # BOM
 # PRLabel: %Azure.Core
@@ -26,7 +26,7 @@
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
 # PRLabel: %Communication
-/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
@@ -80,6 +80,9 @@
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
+# PRLabel: %Tables
+/sdk/tables/                                        @vcolin7 @conniey
+
 # PRLabel: %EngSys
 /sdk/template/                                      @Azure/azure-sdk-eng
 
@@ -110,7 +113,8 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity
+/eng/mgmt/                                          @JimSuplizio @mitchdenny @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay
 /parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek

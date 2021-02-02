@@ -58,15 +58,16 @@ As a first step you'll need to:
 1. Select **New registration**.
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `Spring Boot Sample`.
    - In the **Supported account types** section, select **Accounts in any organizational directory**.
+   - Choose **Single-page application(SPA)** as application type.
    - Add `http://localhost:8080` as the `Reply URL` under Redirect URI.
-   - Select **Register** to create the application.
-   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**.
+   - Select **Register** to create the application. ![create the application](docs/application-register.png "create the application")
+   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**. ![add tokens](docs/add_tokens.png "add tokens")
 1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the application.properties file for this project.
 1. On selecting your application from the the registered applcations you can see **Certificates & secrets** in left navigation pane, go to that page and in the **Client secrets** section, choose **New client secret**:
 
    - Type a key description (of instance `app secret`),
-   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**.
-   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location.
+   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**. ![create the secret](docs/create_secret.png "create the secret")
+   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location. ![secret value](docs/secret_value.png "secret value")
    - You'll need this key later to configure the project. This key value will not be displayed again, nor retrievable by any other means,
    so record it as soon as it is visible from the Azure portal.   
    
@@ -75,68 +76,64 @@ As a first step you'll need to:
    - Ensure that the **Microsoft APIs** tab is selected
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**
-   - Select the **Add permissions** button
+   - Select the **Add permissions** button ![add permissions](docs/add_permissions.png "add permissions")
    
 1. At this stage permissions are assigned correctly but the client app does not allow interaction. 
    Therefore no consent can be presented via a UI and accepted to use the service app. 
    Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the
-   requested permissions for all account in the tenant.
+   requested permissions for all account in the tenant. ![grant admin consent](docs/grant_admin_consent.png "grant admin consent")
    You need to be an Azure AD tenant admin to do this.
    
 ---
 ### Step 3:  Configure the sample to use your Azure AD tenant
 
-In the steps below, "ClientID" is the same as "Application ID" or "AppId".
+In the steps below, "client-id" is the same as "Application ID" or "AppId".
 
-Open application.properties in your project to configure:
+Open application.yml in your project to configure:
 
-1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `azure.activedirectory.environment=cn` to use [Azure China](https://docs.microsoft.com/azure/china/china-welcome), the default value is `global`.
+```yml
+azure:
+  activedirectory:
+    tenant-id: <your-tenant-id>
+    client-id: <your-client-id>
+    client-secret: <your-client-secret>
+    # Optional, default value is http://localhost:8080/
+    redirect-uri-template: <your-redirect-uri>
+    # groups that you created in your Azure AD tenant
+    user-group:
+      allowed-groups: group1,group2
+    # Optional, the default value is 
+    # environment: global  
+```
+
+
+
+1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `environment: cn` to use [Azure China][azure-china], the default value is `global`.
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
-azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
+tenant-id: xxxxxx-your-client-id-xxxxxx
+client-id: xxxxxx-your-client-secret-xxxxxx
 ```
 
 3. List all the AAD groups `ActiveDirectoryGroups` that you want to have a Spring Security role object mapping to it. The role objects can then be used to manage access to resources that is behind Spring Security. e.g.
 ```properties
 # groups that you created in your Azure AD tenant
-azure.activedirectory.user-group.allowed-groups=group1,group2
+allowed-groups: group1,group2
 ```
 
 4. (Optional) If you want to configure oauth2 redirect uri, please configure by :
 ```properties
-spring.security.oauth2.client.registration.azure.redirect-uri=xxxxxx-your-redirect-uri-xxxxxx
+redirectUriTemplate: xxxxxx-your-redirect-uri-xxxxxx
 ```
 
- ---
+---
  ### Step 4: Change Role_group1 to your group
 1. You can use `@PreAuthorize` annotation or `UserPrincipal` to manage access to web API based on user's group membership. You will need to change `ROLE_group1` to groups you want to allow to access the API in `TodoListController.java` or you will get "Access is denied".
    
----   
-### Step 5: Angular JS
-In `app.js`, make following changes. The client leverages Azure AD library for JS to handle AAD authentication in single page application. The following snippet of code configures msal provider for your registered app. ClientID is your application ID and \<tenant\> is a identifier within the directory itself (e.g. a domain associated to the tenant, such as contoso.onmicrosoft.com, or the GUID representing the TenantID property of the directory). 
-```js
-window.applicationConfig = {
-    clientID: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-};
+---
 
-msalProvider.init(
-    {
-        auth: {
-            clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            authority: "https://login.microsoftonline.com/<tenant>",
-            redirectUri: "http://localhost:8080/",
-        },
-        cache: {
-            cacheLocation: "sessionStorage", // This configures where your cache will be stored
-            storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
-        }
-    }
-);
-```
-
-### Step 6: Give it a run
+### Step 5: Give it a run
 
 * Run with Maven 
  ```
@@ -152,4 +149,6 @@ msalProvider.init(
 ## Contributing
 
 <!-- LINKS -->
+
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[azure-china]: https://docs.microsoft.com/azure/china/china-welcome

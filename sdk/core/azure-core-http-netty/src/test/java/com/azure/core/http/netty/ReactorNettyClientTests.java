@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.implementation.ReactorNettyClientProvider;
 import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -54,6 +53,9 @@ public class ReactorNettyClientTests {
     private static final String SHORT_BODY_PATH = "/short";
     private static final String LONG_BODY_PATH = "/long";
 
+    static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
+    static final String EXPECTED_HEADER = "userAgent";
+
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
 
@@ -74,6 +76,8 @@ public class ReactorNettyClientTests {
         server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(post("/httpHeaders").willReturn(aResponse()
+            .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
+        server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
             .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
@@ -366,11 +370,21 @@ public class ReactorNettyClientTests {
     public void requestHeader(String headerValue, String expectedValue) {
         HttpClient client = new ReactorNettyClientProvider().createInstance();
 
-        HttpHeaders headers = new HttpHeaders().put(TEST_HEADER, headerValue);
+        HttpHeaders headers = new HttpHeaders().set(TEST_HEADER, headerValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/httpHeaders"), headers, Flux.empty());
 
         StepVerifier.create(client.send(request))
             .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void validateRequestHasOneUserAgentHeader() {
+        HttpClient httpClient = new ReactorNettyClientProvider().createInstance();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, NO_DOUBLE_UA_PATH),
+            new HttpHeaders().set("User-Agent", EXPECTED_HEADER), Flux.empty())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 

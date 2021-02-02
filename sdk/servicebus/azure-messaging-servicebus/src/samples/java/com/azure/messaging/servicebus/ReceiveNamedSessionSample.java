@@ -4,9 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -14,6 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The sample below runs for 2 minutes. In those two minutes, it will poll Service Bus for batches of messages.
  */
 public class ReceiveNamedSessionSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
@@ -22,10 +26,21 @@ public class ReceiveNamedSessionSample {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        final AtomicBoolean isRunning = new AtomicBoolean(true);
+        ReceiveNamedSessionSample sample = new ReceiveNamedSessionSample();
+        sample.run();
+    }
 
-        Mono.delay(Duration.ofMinutes(2)).subscribe(index -> {
-            System.out.println("2 minutes has elapsed, stopping receive loop.");
+    /**
+     * This method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
+     * Bus Queue.
+     */
+    @Test
+    public void run() {
+        final AtomicBoolean isRunning = new AtomicBoolean(true);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
+
+        Mono.delay(Duration.ofMinutes(1)).subscribe(index -> {
+            System.out.println("1 minutes has elapsed, stopping receive loop.");
             isRunning.set(false);
         });
 
@@ -33,16 +48,17 @@ public class ReceiveNamedSessionSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}";
+        // The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
 
         // Create a receiver.
-        // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
-        // Service Bus namespace.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .queueName("<<queue-name>>")
+            .queueName(queueName)
             .buildClient();
 
         // Receiving messages that have the sessionId "greetings-id" set. This can be set via
@@ -53,7 +69,7 @@ public class ReceiveNamedSessionSample {
 
         try {
             while (isRunning.get()) {
-                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(20));
 
                 for (ServiceBusReceivedMessage message : messages) {
                     // Process message.
@@ -72,7 +88,6 @@ public class ReceiveNamedSessionSample {
             // Dispose of our resources.
             receiver.close();
         }
-
 
         // Close the receiver.
         sessionReceiver.close();

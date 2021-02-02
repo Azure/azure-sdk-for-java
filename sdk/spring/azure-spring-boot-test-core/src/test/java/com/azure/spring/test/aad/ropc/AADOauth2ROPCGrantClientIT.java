@@ -5,12 +5,12 @@ package com.azure.spring.test.aad.ropc;
 
 import org.junit.Test;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.junit.Assert.assertNotNull;
 
 public class AADOauth2ROPCGrantClientIT {

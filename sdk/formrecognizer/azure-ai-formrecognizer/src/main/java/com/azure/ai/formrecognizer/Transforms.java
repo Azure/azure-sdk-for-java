@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.AppearanceHelper;
+import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
 import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
-import com.azure.ai.formrecognizer.implementation.StyleHelper;
+import com.azure.ai.formrecognizer.implementation.TextStyleHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -20,7 +20,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.Appearance;
+import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -36,8 +36,8 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.Style;
 import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -232,7 +232,8 @@ final class Transforms {
                             .map(dataTableCell -> new FormTableCell(
                                 dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
                                 dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
-                                dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
+                                dataTableCell.getColumnSpan() == null
+                                    ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
                                 dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                                 dataTableCell.getConfidence(),
                                 dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
@@ -263,7 +264,7 @@ final class Transforms {
                     readResultItem.getPage(),
                     toWords(textLine.getWords(), readResultItem.getPage()));
 
-                FormLineHelper.setAppearance(formLine, getAppearance(textLine));
+                FormLineHelper.setAppearance(formLine, getTextAppearance(textLine));
                 return formLine;
             })
             .collect(Collectors.toList());
@@ -274,19 +275,19 @@ final class Transforms {
      * @param textLine The service side text line object.
      * @return the custom type Appearance model.
      */
-    private static Appearance getAppearance(TextLine textLine) {
-        Style style = new Style();
+    private static TextAppearance getTextAppearance(TextLine textLine) {
+        TextStyle textStyle = new TextStyle();
         if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
             if (textLine.getAppearance().getStyle().getName() != null) {
-                StyleHelper.setName(style,
-                    TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
+                TextStyleHelper.setName(textStyle,
+                    TextStyleName.fromString(textLine.getAppearance().getStyle().getName().toString()));
             }
-            StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+            TextStyleHelper.setConfidence(textStyle, textLine.getAppearance().getStyle().getConfidence());
         }
-        
-        Appearance appearance = new Appearance();
-        AppearanceHelper.setStyle(appearance, style);
-        return appearance;
+
+        TextAppearance textAppearance = new TextAppearance();
+        TextAppearanceHelper.setStyle(textAppearance, textStyle);
+        return textAppearance;
     }
 
     /**
@@ -564,7 +565,7 @@ final class Transforms {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                     readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
-                FormLineHelper.setAppearance(lineElement, getAppearance(textLine));
+                FormLineHelper.setAppearance(lineElement, getTextAppearance(textLine));
                 formElementList.add(lineElement);
             }
         });

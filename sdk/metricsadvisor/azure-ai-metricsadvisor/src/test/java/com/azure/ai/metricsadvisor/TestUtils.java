@@ -5,12 +5,12 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
 import com.azure.core.http.HttpClient;
@@ -35,6 +35,8 @@ public final class TestUtils {
     private static final String AZURE_METRICS_ADVISOR_TEST_SERVICE_VERSIONS =
         "AZURE_METRIC_ADVISOR_TEST_SERVICE_VERSIONS";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+
     static final String INCORRECT_UUID = "a0a3998a-4c4affe66b7";
     static final String INCORRECT_UUID_ERROR = "Invalid UUID string: " + INCORRECT_UUID;
     static final String DATAFEED_ID_REQUIRED_ERROR = "'dataFeedId' cannot be null.";
@@ -123,6 +125,8 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
 
+    static final long DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS = 60;
+
     private TestUtils() {
     }
 
@@ -183,7 +187,6 @@ public final class TestUtils {
      * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
      *
      * @param serviceVersion ServiceVersion needs to check
-     *
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(MetricsAdvisorServiceVersion serviceVersion) {

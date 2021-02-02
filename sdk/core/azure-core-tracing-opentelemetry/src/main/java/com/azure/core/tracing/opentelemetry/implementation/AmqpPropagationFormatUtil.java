@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-
 import com.azure.core.util.Context;
-import io.opentelemetry.trace.SpanContext;
-import io.opentelemetry.trace.SpanId;
-import io.opentelemetry.trace.TraceFlags;
-import io.opentelemetry.trace.TraceId;
-import io.opentelemetry.trace.TraceState;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanId;
+import io.opentelemetry.api.trace.TraceFlags;
+import io.opentelemetry.api.trace.TraceId;
+import io.opentelemetry.api.trace.TraceState;
 
 import java.util.Objects;
+
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 public final class AmqpPropagationFormatUtil {
 
@@ -46,11 +46,14 @@ public final class AmqpPropagationFormatUtil {
         chars[0] = '0';
         chars[1] = '0';
         chars[2] = '-';
-        spanContext.getTraceId().copyLowerBase16To(chars, 3);
+        TraceId.copyHexInto(spanContext.getTraceIdBytes(), chars, 3);
         chars[35] = '-';
-        spanContext.getSpanId().copyLowerBase16To(chars, 36);
+        String spanId = spanContext.getSpanIdAsHexString();
+        for (int i = 0; i < spanId.length(); i++) {
+            chars[36 + i] = spanId.charAt(i);
+        }
         chars[52] = '-';
-        spanContext.getTraceFlags().copyLowerBase16To(chars, 53);
+        spanContext.copyTraceFlagsHexTo(chars, 53);
         return new String(chars);
     }
 
@@ -75,9 +78,9 @@ public final class AmqpPropagationFormatUtil {
             );
         }
         return SpanContext.create(
-            TraceId.fromLowerBase16(diagnosticId, 3),
-            SpanId.fromLowerBase16(diagnosticId, 36),
-            TraceFlags.fromLowerBase16(diagnosticId, 53),
+            TraceId.bytesToHex(TraceId.bytesFromHex(diagnosticId, 3)),
+            SpanId.bytesToHex(SpanId.bytesFromHex(diagnosticId, 36)),
+            TraceFlags.byteFromHex(diagnosticId, 53),
             TraceState.builder().build());
     }
 }

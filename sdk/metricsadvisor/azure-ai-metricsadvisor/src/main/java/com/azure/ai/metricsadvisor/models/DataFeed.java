@@ -7,7 +7,7 @@ import com.azure.ai.metricsadvisor.implementation.util.DataFeedHelper;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
 
 /**
  * The Data feed metadata model.
@@ -15,7 +15,7 @@ import java.util.List;
 @Fluent
 public final class DataFeed {
     private String id;
-    private List<String> metricIds;
+    private Map<String, String> metricIds;
     private OffsetDateTime createdTime;
     private DataFeedStatus dataFeedStatus;
     private DataFeedSourceType dataFeedSourceType;
@@ -36,7 +36,7 @@ public final class DataFeed {
             }
 
             @Override
-            public void setMetricIds(DataFeed feed, List<String> metricIds) {
+            public void setMetricIds(DataFeed feed, Map<String, String> metricIds) {
                 feed.setMetricIds(metricIds);
             }
 
@@ -82,7 +82,7 @@ public final class DataFeed {
      *
      * @return the metricIds value.
      */
-    public List<String> getMetricIds() {
+    public Map<String, String> getMetricIds() {
         return this.metricIds;
     }
 
@@ -256,14 +256,14 @@ public final class DataFeed {
      */
     public DataFeed setOptions(DataFeedOptions dataFeedOptions) {
         this.dataFeedOptions = dataFeedOptions;
-        return null;
+        return this;
     }
 
     void setId(String id) {
         this.id = id;
     }
 
-    void setMetricIds(List<String> metricIds) {
+    void setMetricIds(Map<String, String> metricIds) {
         this.metricIds = metricIds;
     }
 

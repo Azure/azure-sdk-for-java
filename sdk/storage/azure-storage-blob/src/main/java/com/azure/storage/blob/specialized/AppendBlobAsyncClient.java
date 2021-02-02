@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -52,7 +54,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * BlobContainerAsyncClient}, and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  *
  * <p>
@@ -108,6 +110,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create() {
         try {
             return create(false);
@@ -127,6 +130,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create(boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -155,6 +159,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
@@ -174,6 +179,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createWithResponse(AppendBlobCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options, context));
@@ -220,6 +226,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * data emitted by the {@code Flux}.
      * @return {@link Mono} containing the information of the append blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
         try {
             return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
@@ -250,6 +257,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
@@ -296,6 +304,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceRange The source {@link BlobRange} to copy.
      * @return {@link Mono} containing the information of the append blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
         try {
             return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
@@ -323,6 +332,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
@@ -379,6 +389,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> seal() {
         try {
             return sealWithResponse(new AppendBlobSealOptions())
@@ -398,6 +409,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link AppendBlobSealOptions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sealWithResponse(AppendBlobSealOptions options) {
         try {
             return withContext(context -> sealWithResponse(options, context));

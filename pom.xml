@@ -17,6 +17,9 @@
         <!-- App Configuration -->
         <module>sdk/appconfiguration/azure-data-appconfiguration</module>
 
+        <!-- Attestation -->
+        <module>sdk/attestation/azure-security-attestation</module>
+
         <!-- Azure Communication Service -->
         <module>sdk/communication/azure-communication-administration</module>
         <module>sdk/communication/azure-communication-chat</module>
@@ -67,6 +70,9 @@
 
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
+
+        <!-- Quantum Jobs -->
+        <module>sdk/quantum/azure-quantum-jobs</module>
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
@@ -238,6 +244,10 @@
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
                   <group>
+                    <title>Azure Quantum Jobs</title>
+                    <packages>com.azure.quantum.jobs*</packages>
+                  </group>
+                  <group>
                     <title>Azure Search Documents</title>
                     <packages>com.azure.search.documents*</packages>
                   </group>
@@ -381,7 +391,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <configuration>
               <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
               <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -548,11 +558,13 @@
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/appconfiguration</module>
+        <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/batch</module>
         <module>sdk/boms</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
+        <module>sdk/confluent</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
@@ -571,6 +583,7 @@
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/postgresql</module>
+        <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/relay</module>
         <module>sdk/resourcemanager</module>

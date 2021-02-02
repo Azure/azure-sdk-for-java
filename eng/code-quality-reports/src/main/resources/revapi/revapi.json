@@ -269,7 +269,20 @@
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
-      },{
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "class com.azure.storage.file.share.models.ShareProtocolSettings",
+        "new": "class com.azure.storage.file.share.models.ShareProtocolSettings",
+        "justification": "Annotation required to resolve a swagger error. The value is now correct."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "class com.azure.storage.file.share.models.ShareSmbSettings",
+        "new": "class com.azure.storage.file.share.models.ShareSmbSettings",
+        "justification": "Annotation required to resolve a swagger error. The value is now correct."
+      },
+      {
         "code": "java.method.returnTypeChanged",
         "old": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
         "new": "method java.util.List<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
