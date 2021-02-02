@@ -10,7 +10,7 @@ private case class CosmosClientConfiguration (
     key: String,
     consistencyLevel: ConsistencyLevel)
 
-private object CosmosClientConfiguration {
+private object CosmosClientConfiguration extends CosmosLoggingTrait {
     def apply(config: Map[String, String]): CosmosClientConfiguration = {
         val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
         val consistency = cosmosAccountConfig.consistency match {
@@ -34,6 +34,7 @@ private object CosmosClientConfiguration {
         }
         catch {
             case _: IllegalArgumentException =>
+                logWarning(s"Could not parse Consistency value $stringValue in configuration")
                 // ignore the exception and return the default
                 None
         }
