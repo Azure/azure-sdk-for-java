@@ -13,6 +13,7 @@ import com.github.tomakehurst.wiremock.http.Response;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.EXPECTED_HEADER;
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.NO_DOUBLE_UA_PATH;
+import static com.azure.core.http.netty.NettyAsyncHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
 
 /**
  * Mock response transformer used to test {@link NettyAsyncHttpClient}.
@@ -35,6 +36,11 @@ public final class NettyAsyncHttpClientResponseTransformer extends ResponseTrans
                     .status(400)
                     .build();
             }
+        } else if (RETURN_HEADERS_AS_IS_PATH.equalsIgnoreCase(url)) {
+            return Response.response()
+                .status(200)
+                .headers(request.getHeaders())
+                .build();
         }
 
         return response;

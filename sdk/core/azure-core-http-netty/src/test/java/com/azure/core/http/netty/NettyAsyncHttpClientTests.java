@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -38,6 +39,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -47,6 +49,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -60,6 +63,7 @@ public class NettyAsyncHttpClientTests {
 
     static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
     static final String EXPECTED_HEADER = "userAgent";
+    static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
@@ -86,6 +90,8 @@ public class NettyAsyncHttpClientTests {
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
         server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
             .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
+        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
+            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -346,6 +352,38 @@ public class NettyAsyncHttpClientTests {
             new HttpHeaders().set("User-Agent", EXPECTED_HEADER), Flux.empty())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @Test
+    public void validateHeadersReturnAsIs() {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+
+        final String singleValueHeaderName = "singleValue";
+        final String singleValueHeaderValue = "value";
+
+        final String multiValueHeaderName = "Multi-value";
+        final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
+
+        HttpHeaders headers = new HttpHeaders()
+            .set(singleValueHeaderName, singleValueHeaderValue)
+            .set(multiValueHeaderName, multiValueHeaderValue);
+
+        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
+            headers, Flux.empty())))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                HttpHeaders responseHeaders = response.getHeaders();
+                HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
+                assertEquals(singleValueHeaderName, singleValueHeader.getName());
+                assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
+
+                HttpHeader multiValueHeader = responseHeaders.get("Multi-value");
+                assertEquals(multiValueHeaderName, multiValueHeader.getName());
+                assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 
     private static Stream<Arguments> requestHeaderSupplier() {

@@ -58,6 +58,17 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
      * @return azure-core HttpHeaders
      */
     private static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
-        return new HttpHeaders().setAll(okHttpHeaders.toMultimap());
+        /*
+         * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
+         * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while
+         * doing the conversion. This is fine when working purely with HTTPs request-response structure as headers are
+         * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
+         * serialization or deserialization as casing may matter.
+         */
+        HttpHeaders azureHeaders = new HttpHeaders();
+
+        okHttpHeaders.names().forEach(name -> azureHeaders.set(name, okHttpHeaders.values(name)));
+
+        return azureHeaders;
     }
 }
