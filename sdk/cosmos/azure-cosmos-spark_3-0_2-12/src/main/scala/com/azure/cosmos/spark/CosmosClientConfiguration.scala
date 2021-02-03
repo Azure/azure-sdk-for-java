@@ -5,18 +5,19 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.ConsistencyLevel
 import com.azure.cosmos.BridgeInternal
 
-private case class CosmosClientConfiguration (
+private[spark] case class CosmosClientConfiguration (
     endpoint: String,
     key: String,
     consistencyLevel: ConsistencyLevel)
 
-private object CosmosClientConfiguration extends CosmosLoggingTrait {
-    def apply(config: Map[String, String]): CosmosClientConfiguration = {
+private[spark] object CosmosClientConfiguration extends CosmosLoggingTrait {
+    private[spark] def apply(config: Map[String, String]): CosmosClientConfiguration = {
         val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
         val consistency = cosmosAccountConfig.consistency match {
             case Some(consistencyAsString) =>
                 parseStringAsConsistencyLevel(consistencyAsString) match {
                     case Some(parsedConsistency) => parsedConsistency
+                    // Should we throw instead of defaulting to Eventual if the value does not map correctly?
                     case None => ConsistencyLevel.EVENTUAL
                 }
             case None => ConsistencyLevel.EVENTUAL
