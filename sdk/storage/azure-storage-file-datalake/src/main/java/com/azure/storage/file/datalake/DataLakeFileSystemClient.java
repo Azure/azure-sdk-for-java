@@ -17,11 +17,13 @@ import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.datalake.implementation.models.PathDeletedItem;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -366,6 +368,42 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
         return new PagedIterable<>(dataLakeFileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories recently soft deleted in this file system. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths}
+     *
+     * @return The list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PathDeletedItem> listDeletedPaths() {
+        return this.listPaths(new ListDeletedPathsOptions(), null);
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories recently soft deleted in this account. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration}
+     *
+     * @param options A {@link ListDeletedPathsOptions} which specifies what data should be returned by the service.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PathDeletedItem> listPaths(ListDeletedPathsOptions options, Duration timeout) {
+        return new PagedIterable<>(dataLakeFileSystemAsyncClient.listDeletedPathsWithOptionalTimeout(options, timeout));
     }
 
     /**

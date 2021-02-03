@@ -16,6 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -24,14 +25,18 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.models.PathDeletedItem;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -42,10 +47,13 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -470,6 +478,77 @@ public class DataLakeFileSystemAsyncClient {
             this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
                 options.isRecursive(), marker, options.getPath(), options.getMaxResults(),
                 options.isUserPrincipalNameReturned(), null, null, Context.NONE), timeout);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this filesystem that have been recently soft
+     * deleted lazily as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths}
+     *
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths() {
+        try {
+            return this.listDeletedPaths(new ListDeletedPathsOptions());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#ListDeletedPathsOptions}
+     *
+     * @param options A {@link ListDeletedPathsOptions} which specifies what data should be returned by the service.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths(ListDeletedPathsOptions options) {
+        return listDeletedPathsWithOptionalTimeout(options, null);
+    }
+
+    PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(ListDeletedPathsOptions options,
+        Duration timeout) {
+        Function<String, Mono<PagedResponse<PathDeletedItem>>> func =
+            marker -> listDeletedPathsSegment(marker, options, timeout)
+                .map(response -> {
+                    List<PathDeletedItem> value = response.getValue().getSegment() == null
+                        ? Collections.emptyList()
+                        : Stream.concat(
+                        response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                        response.getValue().getSegment().getBlobPrefixes().stream()
+                            .map(Transforms::toPathDeletedItem)
+                    ).collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
+                });
+
+        return new PagedFlux<>(() -> func.apply(null), func);
+    }
+
+    private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
+        ListDeletedPathsOptions options, Duration timeout) {
+        options = options == null ? new ListDeletedPathsOptions() : options;
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureDataLakeStorage.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(
+                null, options.getPath(), marker, options.getMaxResults(),
+                null, ListBlobsShowOnly.DELETED, null, null, Context.NONE), timeout);
     }
 
     /**

@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -31,7 +32,10 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
+import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
+import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
@@ -274,6 +278,18 @@ class Transforms {
                 DateTimeFormatter.RFC_1123_DATE_TIME), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions());
+    }
+
+    static PathDeletedItem toPathDeletedItem(BlobItemInternal blobItem) {
+        if (blobItem == null) {
+            return null;
+        }
+        return new PathDeletedItem(blobItem.getName(), false, blobItem.getDeletionId(),
+            blobItem.getProperties().getDeletedTime(), blobItem.getProperties().getRemainingRetentionDays());
+    }
+
+    static PathDeletedItem toPathDeletedItem(BlobPrefix blobPrefix) {
+        return new PathDeletedItem(blobPrefix.getName(), true, null, null, null);
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
