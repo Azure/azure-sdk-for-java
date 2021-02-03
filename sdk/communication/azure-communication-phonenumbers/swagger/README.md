@@ -23,30 +23,11 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21b4154a41d72275dbcf40e24d55b978e3a42c85/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/stable/2021-03-07/phonenumbers.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/37b08248be630e7abece6a4baac27f44d607b0ba/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
-custom-types: AcquiredPhoneNumber,BillingFrequency,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
+custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperationResult,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
-```
-
-### Rename searchId to reservationId in CreateSearchResponse
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.CreateSearchResponse.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
-```
-### Rename searchId to reservationId in PhoneNumberSearch 
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberSearch.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
 ```
 
 ### Rename PhoneNumberSearch to PhoneNumberReservation
@@ -54,29 +35,9 @@ directive:
 ``` yaml
 directive:
     - rename-model:
-        from: PhoneNumberSearch
-        to: PhoneNumberReservation
+        from: PhoneNumberOperation
+        to: PhoneNumberOperationResult
 ```
-
-### Rename CreateSearchOptions to CreateReservationOptions
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchOptions
-        to: CreateReservationOptions
-```
-
-### Rename CreateSearchResponse to CreateReservationResponse
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchResponse
-        to: CreateReservationResponse
-```
-
-### Code generation settings
 
 ``` yaml
 java: true

@@ -36,17 +36,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
-        Configuration.getGlobalConfiguration().get("AREA_CODE", "619");
-    protected static final String LOCALE =
-        Configuration.getGlobalConfiguration().get("LOCALE", "en-us");
-    protected static final String LOCATION_OPTION_STATE =
-        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
-    protected static final String LOCATION_OPTION_CITY =
-        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-SD");
-    protected static final String RESERVATION_OPTIONS_DESCRIPTION =
-        Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_DESCRIPTION", "testReservation20200014");
-    protected static final String RESERVATION_OPTIONS_NAME =
-        Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_NAME", "testReservation20200014");
+        Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")

@@ -198,7 +198,7 @@ public final class PhoneNumbersClientBuilder {
             logger.info("Build client for service version" + this.version.getVersion());
         }
 
-        return new PhoneNumbersClient(this.createPhoneNumberAdminClient());
+        return new PhoneNumbersClient(this.createPhoneNumberAdminClient(), buildAsyncClient());
     }
 
     /**

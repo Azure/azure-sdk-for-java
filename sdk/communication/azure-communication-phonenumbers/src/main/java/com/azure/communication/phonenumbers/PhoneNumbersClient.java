@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
@@ -16,7 +18,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -29,9 +30,11 @@ public final class PhoneNumbersClient {
 
     private final ClientLogger logger = new ClientLogger(PhoneNumbersClient.class);
     private final PhoneNumbersImpl client;
+    private final PhoneNumbersAsyncClient asyncClient;
 
-    PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
+    PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient, PhoneNumbersAsyncClient asyncClient) {
         this.client = phoneNumberAdminClient.getPhoneNumbers();
+        this.asyncClient = asyncClient;
     }
   
    /**
@@ -63,7 +66,7 @@ public final class PhoneNumbersClient {
     /**
      * Gets the list of the acquired phone numbers with context.
      *
-     *
+     * @param context A {@link Context} representing the request context.
      * @return A {@link PagedIterable} of {@link AcquiredPhoneNumber} instances representing acquired telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -78,7 +81,7 @@ public final class PhoneNumbersClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param update {@link AcquiredPhoneNumberUpdate} specifying updates to an acquired phone number.
+     * @param update {@link PhoneNumberUpdateRequest} specifying updates to an acquired phone number.
      * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -113,12 +116,14 @@ public final class PhoneNumbersClient {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param searchRequest The search request
+     * @param searchRequest The search request
+
      * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<PhoneNumberSearchResult>, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest) {
-        return null;
+    public SyncPoller<PhoneNumberOperationResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberSearchRequest searchRequest, Duration pollInterval) {
+        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, searchRequest, pollInterval).getSyncPoller();
     }
 
     /**
@@ -131,7 +136,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginPurchasePhoneNumbers(String searchId) {
+    public SyncPoller<PhoneNumberOperationResult, Void> beginPurchasePhoneNumbers(String searchId) {
         return null;
     }
 
@@ -147,7 +152,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginReleasePhoneNumbers(String phoneNumber) {
+    public SyncPoller<PhoneNumberOperationResult, Void> beginReleasePhoneNumbers(String phoneNumber) {
         return null;
     }
 
@@ -162,7 +167,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AcquiredPhoneNumber>, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
+    public SyncPoller<PhoneNumberOperationResult, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         return null;
     }
 }

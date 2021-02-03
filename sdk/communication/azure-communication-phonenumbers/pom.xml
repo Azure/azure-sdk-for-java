@@ -49,8 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.55</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.00</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -111,11 +111,6 @@
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
