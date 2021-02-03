@@ -25,19 +25,9 @@ case class CosmosPartitionReader(config: Map[String, String],
   extends PartitionReader[InternalRow] with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
   val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
 
-  // TODO: moderakh cache the cosmos clients and manage the lifetime of the clients
-  // we shouldn't recreate everytime, causing resource leak, inefficient behaviour
-  val builder = new CosmosClientBuilder()
-    .endpoint(endpointConfig.endpoint)
-    .key(endpointConfig.key)
-
-  val metadataCache = cosmosClientStateHandle.value;
-
-  SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
-  val client = builder.buildAsyncClient();
+  val client = CosmosClientCache(CosmosClientConfiguration(config), Some(cosmosClientStateHandle))
 
   val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)

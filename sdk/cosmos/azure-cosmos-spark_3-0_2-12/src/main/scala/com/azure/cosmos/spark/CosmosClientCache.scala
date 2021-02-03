@@ -11,7 +11,7 @@ import scala.collection.concurrent.TrieMap
 private[spark] object CosmosClientCache {
     private val cache = new TrieMap[CosmosClientConfiguration, CosmosAsyncClient]
 
-    def apply(cosmosClientConfiguration: CosmosClientConfiguration,
+    private[spark] def apply(cosmosClientConfiguration: CosmosClientConfiguration,
               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
         cache.get(cosmosClientConfiguration) match {
             case Some(client) => client
@@ -41,7 +41,7 @@ private[spark] object CosmosClientCache {
         }
     }
 
-    def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
+    private[spark] def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
         cache.get(cosmosClientConfiguration) match {
             case None => Unit
             case Some(existingClient) =>

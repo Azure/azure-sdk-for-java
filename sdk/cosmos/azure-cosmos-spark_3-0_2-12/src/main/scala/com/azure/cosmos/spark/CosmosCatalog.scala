@@ -47,11 +47,8 @@ class CosmosCatalog extends CatalogPlugin
     * @param options a case-insensitive string map of configuration
     */
   override def initialize(name: String, options: CaseInsensitiveStringMap): Unit = {
-    val accountConfig = CosmosAccountConfig.parseCosmosAccountConfig(options.asCaseSensitiveMap().asScala.toMap)
-    this.client = new CosmosClientBuilder()
-      .key(accountConfig.key)
-      .endpoint(accountConfig.endpoint)
-      .buildAsyncClient()
+
+    this.client = CosmosClientCache(CosmosClientConfiguration(options.asCaseSensitiveMap().asScala.toMap), None)
 
     // TODO: moderakh do we need to do config validation here?
     tableOptions = toTableConfig(options)

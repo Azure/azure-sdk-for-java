@@ -40,10 +40,8 @@ class CosmosTable(val transforms: Array[Transform],
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
-  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
-  val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
-    .key(clientConfig.key)
-    .buildAsyncClient()
+
+  val client = CosmosClientCache(CosmosClientConfiguration(effectiveUserConfig), None)
 
   // This can only be used for data operation against a certain container.
   lazy val containerStateHandle : Broadcast[CosmosClientMetadataCachesSnapshot] = initializeAndBroadcastCosmosClientStateForContainer

@@ -23,17 +23,9 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
   class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
     logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-    val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
     val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
 
-    // TODO moderakh: this needs to be shared to avoid creating multiple clients
-    val builder = new CosmosClientBuilder()
-      .key(cosmosAccountConfig.key)
-      .endpoint(cosmosAccountConfig.endpoint)
-      .consistencyLevel(ConsistencyLevel.EVENTUAL);
-
-    SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
-    val client = builder.buildAsyncClient();
+    val client = CosmosClientCache(CosmosClientConfiguration(userConfig), Some(cosmosClientStateHandle))
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code
