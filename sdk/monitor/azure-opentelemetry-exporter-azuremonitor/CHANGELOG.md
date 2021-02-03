@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
+### Dependency Updates
+- Updated versions of `opentelemetry-api` and `opentelemetry-sdk` to `0.14.1` version.
 
 ## 1.0.0-beta.2 (2021-01-12)
 ### Breaking changes

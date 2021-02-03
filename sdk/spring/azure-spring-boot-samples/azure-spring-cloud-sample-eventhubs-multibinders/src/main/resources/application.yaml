@@ -2,16 +2,16 @@ spring:
   cloud:
     stream:
       bindings:
-        input:
+        consume1-in-0:
           destination: [eventhub-1-name]
           group: [consumer-group]
-        output:
+        supply1-out-0:
           destination: [the-same-eventhub-1-name-as-above]
-        input1:
+        consume2-in-0:
           binder: eventhub-2
           destination: [eventhub-1-name]
           group: [consumer-group]
-        output1:
+        supply2-out-0:
           binder: eventhub-2
           destination: [the-same-eventhub-2-name-as-above]
 
@@ -42,9 +42,16 @@ spring:
                     checkpoint-container: [checkpoint-container-2]
       eventhub:
         bindings:
-          input:
+          consume1-in-0:
             consumer:
               checkpoint-mode: MANUAL
-          input1:
+          consume2-in-0:
             consumer:
               checkpoint-mode: MANUAL
+
+      function:
+        definition: consume1;supply1;consume2;supply2;
+      poller:
+        initial-delay: 0
+        fixed-delay: 1000
+

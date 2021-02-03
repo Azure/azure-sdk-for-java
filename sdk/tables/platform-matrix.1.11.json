@@ -1,0 +1,36 @@
+{
+  "displayNames": {
+    "@{endpointType='storage'}": "Storage",
+    "@{endpointType='cosmos'}": "Cosmos",
+    "true": "TestFromSource"
+  },
+  "matrix": {
+    "Agent": {
+      "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" },
+      "ubuntu-1804": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" },
+      "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" }
+    },
+    "JavaTestVersion": "1.11",
+    "AZURE_TEST_HTTP_CLIENTS": "netty",
+    "ArmTemplateParameters": [ "@{endpointType='cosmos'}", "@{endpointType='storage'}" ]
+  },
+  "include": [
+    {
+      "Agent": {
+        "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" }
+      },
+      "JavaTestVersion": "1.11",
+      "AZURE_TEST_HTTP_CLIENTS": "okhttp",
+      "ArmTemplateParameters": "@{endpointType='storage'}"
+    },
+    {
+      "Agent": {
+        "ubuntu-1804": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+      },
+      "JavaTestVersion": "1.11",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "ArmTemplateParameters": "@{endpointType='storage'}",
+      "TestFromSource": true
+    }
+  ]
+}

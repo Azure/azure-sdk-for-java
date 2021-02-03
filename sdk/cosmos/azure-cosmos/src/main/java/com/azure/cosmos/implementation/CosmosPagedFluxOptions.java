@@ -63,18 +63,34 @@ public class CosmosPagedFluxOptions {
     }
 
     /**
-     * Gets the maximum number of items to be returned in the enumeration
-     * operation.
+     * Gets the targeted number of items to be returned in the enumeration
+     * operation per page.
+     * <p>
+     * For query operations this is a hard upper limit.
+     * For ChangeFeed operations the number of items returned in a single
+     * page can exceed the targeted number if the targeted number is smaller
+     * than the number of change feed events within an atomic transaction. In this case
+     * all items within that atomic transaction are returned even when this results in
+     * page size > targeted maxItemSize.
+     * </p>
      *
-     * @return the max number of items.
+     * @return the targeted number of items.
      */
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
     /**
-     * Sets the maximum number of items to be returned in the enumeration
-     * operation.
+     * Sets the targeted number of items to be returned in the enumeration
+     * operation per page.
+     * <p>
+     * For query operations this is a hard upper limit.
+     * For ChangeFeed operations the number of items returned in a single
+     * page can exceed the targeted number if the targeted number is smaller
+     * than the number of change feed events within an atomic transaction. In this case
+     * all items within that atomic transaction are returned even when this results in
+     * page size > targeted maxItemSize.
+     * </p>
      *
      * @param maxItemCount the max number of items.
      * @return the {@link CosmosPagedFluxOptions}.

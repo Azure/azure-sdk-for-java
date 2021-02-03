@@ -16,24 +16,9 @@ npm install -g autorest
 ```
 
 ### Generation
-
-There are two swaggers for Administration management APIs, `identity` and `phonenumber`.
-
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
 autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
-```
-
-
-
-### Tag: identity
-
-These settings apply only when `--tag=identity` is specified on the command line.
-
-``` yaml $(tag) == 'identity'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/preview/2020-07-20-preview2/CommunicationIdentity.json
-add-context-parameter: true
 ```
 
 ### Tag: phonenumber
