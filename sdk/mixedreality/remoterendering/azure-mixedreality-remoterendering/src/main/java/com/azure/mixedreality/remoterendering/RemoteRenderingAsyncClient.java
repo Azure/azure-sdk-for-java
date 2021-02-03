@@ -57,6 +57,55 @@ public class RemoteRenderingAsyncClient {
     }
 
     /**
+     * Creates a new rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param options Settings for the session to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
+    public PollerFlux<Session, Session> beginSession(String sessionId, SessionCreationOptions options) {
+        return new PollerFlux<Session, Session>(
+            options.getPollInterval(),
+            pollingContext -> {
+                return impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
+            },
+            pollingContext -> {
+                Mono<Session> response = impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                return response.map(session -> {
+                    final SessionStatus sessionStatus = session.getStatus();
+                    LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                    if (sessionStatus == SessionStatus.STARTING) {
+                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                    } else if (sessionStatus == SessionStatus.ERROR) {
+                        lroStatus = LongRunningOperationStatus.FAILED;
+                    } else if (sessionStatus == SessionStatus.READY) {
+                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                    } else if (sessionStatus == SessionStatus.STOPPED) {
+                        // TODO Check semantics of STOPPED and USER_CANCELLED is close enough.
+                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                    } else {
+                        // TODO Assert? Throw?
+                    }
+                    return new PollResponse<Session>(lroStatus, session);
+                });
+            },
+            (pollingContext, pollResponse) -> {
+                // TODO should re-query for a new Session object
+                return impl.stopSessionWithResponseAsync(accountId, sessionId, Context.NONE).then(Mono.just(pollingContext.getLatestResponse().getValue()));
+            },
+            pollingContext -> {
+                PollResponse<Session> response = pollingContext.getLatestResponse();
+                return Mono.just(response.getValue());
+            }
+        );
+    };
+
+    /**
      * Gets properties of a particular rendering session.
      *
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
@@ -204,7 +253,7 @@ public class RemoteRenderingAsyncClient {
                     return new PollResponse<Conversion>(lroStatus, conversion);
                 });
             },
-            (activationResponse, pollingContext) ->
+            (pollingContext, pollResponse) ->
                 Mono.error(new RuntimeException("Cancellation is not supported."))
             ,
             pollingContext -> {

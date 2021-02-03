@@ -1,5 +1,7 @@
 package com.azure.mixedreality.remoterendering.models;
 
+import java.time.Duration;
+
 public class SessionCreationOptions {
     /*
      * The time in minutes the session will run after reaching the 'Ready'
@@ -16,6 +18,8 @@ public class SessionCreationOptions {
      */
     private final SessionSize size;
 
+    private Duration pollInterval;
+
     /**
      * Creates an instance of CreateSessionSettings class.
      *
@@ -25,6 +29,7 @@ public class SessionCreationOptions {
     public SessionCreationOptions(int maxLeaseTimeMinutes, SessionSize size) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
         this.size = size;
+        this.pollInterval = Duration.ofSeconds(10);
     }
 
     /**
@@ -45,5 +50,19 @@ public class SessionCreationOptions {
      */
     public SessionSize getSize() {
         return this.size;
+    }
+
+    /**
+     * Set the polling interval to use during long-running beginSession operations.
+     * @return The current polling interval.
+     */
+    public Duration getPollInterval() { return this.pollInterval; }
+
+    /**
+     * Set the polling interval to use during long-running beginSession operations.
+     * @param interval The new period to use for polling.
+     */
+    public void setPollInterval(Duration interval) {
+        this.pollInterval = interval;
     }
 }

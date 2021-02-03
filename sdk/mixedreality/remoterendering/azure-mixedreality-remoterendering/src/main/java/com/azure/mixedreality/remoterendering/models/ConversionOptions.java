@@ -24,9 +24,17 @@ public class ConversionOptions {
         return this.conversionOutputOptions;
     }
 
+    /**
+     * Set the polling interval to use during long-running beginConversion operations.
+     * @return The current polling interval.
+     */
     public Duration getPollInterval() { return this.pollInterval; }
 
-    public void setPollInterval(Duration period) {
-        this.pollInterval = period;
+    /**
+     * Set the polling interval to use during long-running beginConversion operations.
+     * @param interval The new period to use for polling.
+     */
+    public void setPollInterval(Duration interval) {
+        this.pollInterval = interval;
     }
 }
