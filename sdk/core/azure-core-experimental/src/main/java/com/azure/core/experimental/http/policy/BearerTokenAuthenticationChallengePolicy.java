@@ -52,20 +52,26 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
         this.cache = new AccessTokenCache(defaultTokenSupplier);
     }
 
-
-    private Mono<Void> authenticateRequest(HttpPipelineCallContext context,
-                                           Supplier<Mono<AccessToken>> tokenSupplier, boolean forceTokenRefresh) {
-        return cache.getToken(tokenSupplier, forceTokenRefresh)
-           .flatMap(token -> {
-               context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
-               return Mono.empty();
-           });
-    }
-
+    /**
+     *
+     * Executed before sending the initial request and authenticates the request.
+     *
+     * @param context The request context.
+     * @return A {@link Mono} containing {@link Void}
+     */
     public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
         return authenticateRequest(context, defaultTokenSupplier, false);
     }
 
+    /**
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
+     * challenge header is received after the initial request.
+     *
+     * @param context The request context.
+     * @param response The Http Response containing the authentication challenge header.
+     * @return A {@link Mono} containing the status, whether the challenge was successfully extracted and handled.
+     *  if true then a follow up request needs to be sent authorized with the challenge based bearer token.
+     */
     public Mono<Boolean> onChallengeAsync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue("WWW-Authenticate");
         if (response.getStatusCode() == 401 && authHeader != null) {
@@ -110,11 +116,26 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                    });
     }
 
+    /**
+     * Get the {@link AccessTokenCache} holding the cached access tokens and the logic to retrieve and refresh
+     * access tokens.
+     *
+     * @return the {@link AccessTokenCache}
+     */
     public AccessTokenCache getTokenCache() {
         return cache;
     }
 
-    private List<AuthenticationChallenge> parseChallenges(String header) {
+    private Mono<Void> authenticateRequest(HttpPipelineCallContext context, Supplier<Mono<AccessToken>> tokenSupplier,
+                                           boolean forceTokenRefresh) {
+        return cache.getToken(tokenSupplier, forceTokenRefresh)
+           .flatMap(token -> {
+               context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+               return Mono.empty();
+           });
+    }
+
+    List<AuthenticationChallenge> parseChallenges(String header) {
         Pattern pattern = Pattern.compile(AUTHENTICATION_CHALLENGE_REGEX);
         Matcher matcher = pattern.matcher(header);
 
@@ -126,7 +147,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
         return challenges;
     }
 
-    private Map<String, String> parseChallengeParams(String challengeParams) {
+    Map<String, String> parseChallengeParams(String challengeParams) {
         Pattern pattern = Pattern.compile(AUTHENTICATION_CHALLENGE_PARAMS_REGEX);
         Matcher matcher = pattern.matcher(challengeParams);
 
