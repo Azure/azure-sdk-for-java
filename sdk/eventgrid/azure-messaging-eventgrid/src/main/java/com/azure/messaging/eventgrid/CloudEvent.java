@@ -45,6 +45,7 @@ public final class CloudEvent {
      * @param source a URI identifying the origin of the event. It can't be null or empty.
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived". It can't be null or empty.
      * @param data the payload of this event. Set to null if your event doesn't have the data payload.
+     *             It will be serialized as a String if it's a String, or application/json if it's not a String.
      */
     public CloudEvent(String source, String type, Object data) {
         this(source, type);
@@ -55,7 +56,7 @@ public final class CloudEvent {
      * Create an instance of CloudEvent. The source and type are required fields to publish.
      * @param source a URI identifying the origin of the event.
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
-     * @param data the payload of this event.
+     * @param data the payload in bytes of this event. It will be serialized to Base64 format.
      * @param dataContentType the type of the data.
      */
     public CloudEvent(String source, String type, byte[] data, String dataContentType) {
@@ -149,9 +150,11 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     private CloudEvent setDataBase64(byte[] data, String dataContentType) {
-        byte[] encoded = Base64.getEncoder().encode(data);
-        this.cloudEvent.setDataBase64(encoded);
-        this.cloudEvent.setDatacontenttype(dataContentType);
+        if (data != null) {
+            byte[] encoded = Base64.getEncoder().encode(data);
+            this.cloudEvent.setDataBase64(encoded);
+            this.cloudEvent.setDatacontenttype(dataContentType);
+        }
         return this;
     }
 
