@@ -1443,6 +1443,13 @@ public class CosmosAsyncContainer {
         return this.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, false);
     }
 
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     * @return
+     */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
         return this.enableThroughputControlGroup(groupName, null, targetThroughputThreshold, ThroughputControlMode.LOCAL, isDefault);
