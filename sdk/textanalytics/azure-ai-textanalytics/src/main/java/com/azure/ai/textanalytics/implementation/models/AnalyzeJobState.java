@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The AnalyzeJobState model. */
 @Fluent
-public final class AnalyzeJobState extends JobMetadata {
+public final class AnalyzeJobState extends AnalyzeJobMetadata {
     /*
      * The errors property.
      */

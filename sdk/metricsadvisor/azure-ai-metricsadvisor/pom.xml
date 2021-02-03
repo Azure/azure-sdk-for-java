@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -100,11 +100,6 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-opens com.azure.ai.metricsadvisor/com.azure.ai.metricsadvisor=ALL-UNNAMED
               </argLine>
-              <systemPropertyVariables>
-                <!-- Parallel runs disabled due to subscriber timeout issue causing failures in tests. -->
-                <!-- https://github.com/Azure/azure-sdk-for-java/issues/17069 -->
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

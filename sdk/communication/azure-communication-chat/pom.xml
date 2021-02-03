@@ -53,6 +53,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-identity</artifactId>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-communication-administration</artifactId>
       <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
     </dependency>
@@ -101,10 +107,9 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <excludes>
-            <exclude>com/azure/communication/chat/models/**/*</exclude>
-            <exclude>com/azure/communication/chat/implementation/**/*</exclude>
-          </excludes>
+          <includes>
+            <include>com/azure/communication/chat/*.class</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>

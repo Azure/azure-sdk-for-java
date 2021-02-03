@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
@@ -227,7 +228,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
-        final EventData eventData = new EventData(body, systemProperties, Context.NONE);
+        final EventData eventData = new EventData(BinaryData.fromBytes(body), systemProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();

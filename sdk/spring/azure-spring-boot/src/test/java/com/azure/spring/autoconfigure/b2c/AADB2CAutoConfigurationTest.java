@@ -12,17 +12,20 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class AADB2CAutoConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
-            .withPropertyValues(
-                    String.format("%s=%s", AADB2CConstants.TENANT, AADB2CConstants.TEST_TENANT),
-                    String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
-                    String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
-                    String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
-                    String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
-                    String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
-                    String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
-            );
+        .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
+        .withPropertyValues(
+            String.format("%s=%s", AADB2CConstants.TENANT, AADB2CConstants.TEST_TENANT),
+            String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
+            String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+            String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
+            String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
+            String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+            String.format("%s=%s", AADB2CConstants.SIGN_UP, AADB2CConstants.TEST_SIGN_UP_NAME),
+            String.format("%s=%s", AADB2CConstants.SIGN_IN, AADB2CConstants.TEST_SIGN_IN_NAME),
+            String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
+            String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT),
+            String.format("%s=%s", AADB2CConstants.USER_NAME_ATTRIBUTE_NAME, AADB2CConstants.TEST_ATTRIBUTE_NAME)
+        );
 
     @Test
     public void testAutoConfigurationBean() {
@@ -43,12 +46,18 @@ public class AADB2CAutoConfigurationTest {
             assertThat(properties.getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(AADB2CConstants.TEST_CLIENT_SECRET);
             assertThat(properties.getReplyUrl()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
+            assertThat(properties.getUserNameAttributeName()).isEqualTo(AADB2CConstants.TEST_ATTRIBUTE_NAME);
 
             final String signUpOrSignIn = properties.getUserFlows().getSignUpOrSignIn();
+            final String signIn = properties.getUserFlows().getSignIn();
+            final String signUp = properties.getUserFlows().getSignUp();
             final Object prompt = properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.PROMPT);
-            final String loginHint = String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));
+            final String loginHint =
+                String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));
 
             assertThat(signUpOrSignIn).isEqualTo(AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
+            assertThat(signIn).isEqualTo(AADB2CConstants.TEST_SIGN_IN_NAME);
+            assertThat(signUp).isEqualTo(AADB2CConstants.TEST_SIGN_UP_NAME);
             assertThat(prompt).isEqualTo(AADB2CConstants.TEST_PROMPT);
             assertThat(loginHint).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);
         });

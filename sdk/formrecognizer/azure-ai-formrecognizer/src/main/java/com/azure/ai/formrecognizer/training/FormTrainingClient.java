@@ -87,7 +87,7 @@ public final class FormTrainingClient {
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
         return beginTraining(trainingFilesUrl, useTrainingLabels, null, Context.NONE);
@@ -118,7 +118,7 @@ public final class FormTrainingClient {
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels,
         TrainingOptions trainingOptions, Context context) {
@@ -269,7 +269,7 @@ public final class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
         return beginCopyModel(modelId, target, null, Context.NONE);
@@ -299,7 +299,7 @@ public final class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval, Context context) {
         return client.beginCopyModel(modelId, target, pollInterval, context).getSyncPoller();
@@ -368,7 +368,7 @@ public final class FormTrainingClient {
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds) {
         return beginCreateComposedModel(modelIds, null, null);
     }
@@ -397,7 +397,7 @@ public final class FormTrainingClient {
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
         CreateComposedModelOptions createComposedModelOptions, Context context) {
         return client.beginCreateComposedModel(modelIds, createComposedModelOptions, context).getSyncPoller();

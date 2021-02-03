@@ -6,7 +6,7 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.azure.communication.administration.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
@@ -15,13 +15,19 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.JWT;
@@ -35,10 +41,20 @@ public class ChatClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
+
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("id")
+        .add("token");
+        
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
+
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -55,7 +71,9 @@ public class ChatClientTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
@@ -68,7 +86,9 @@ public class ChatClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
         return builder;
     }
@@ -168,5 +188,16 @@ public class ChatClientTestBase extends TestBase {
 
     protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
+        }
+
+        return content;
     }
 }

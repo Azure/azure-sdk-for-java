@@ -46,9 +46,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
         return cache.getToken()
-                   .flatMap(token -> {
-                       context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
-                       return next.process();
-                   });
+            .flatMap(token -> {
+                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+                return next.process();
+            });
     }
 }

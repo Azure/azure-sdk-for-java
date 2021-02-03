@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-opentelemetry-exporter-azuremonitor</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-opentelemetry-exporter-azuremonitor;current} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-opentelemetry-exporter-azuremonitor;current} -->
         </dependency>
       </dependencies>
 

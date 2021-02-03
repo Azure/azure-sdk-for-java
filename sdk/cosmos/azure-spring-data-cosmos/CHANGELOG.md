@@ -1,7 +1,16 @@
 ## Release History
 
-## 3.3.0-beta.1 (Unreleased)
+## 3.4.0-beta.1 (Unreleased)
 
+
+### 3.3.0 (2020-01-15)
+#### New Features
+* Support for composite indexes in `CosmosIndexPolicy` annotation.
+* Support for changes in `CosmosIndexPolicy` annotation.
+* Updated azure-cosmos version to 4.11.0.
+
+#### Key Bug Fixes
+* Fixed query generation with sort and limit.
 
 ### 3.2.0 (2020-12-11)
 #### New Features

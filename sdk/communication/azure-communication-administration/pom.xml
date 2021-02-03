@@ -20,8 +20,8 @@
 
   <name>Microsoft Azure client administration library for communication</name>
   <description>
-    This package contains APIs for application administration in Microsoft Azure Communication Services. 
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/CHANGELOG.md. 
+    This package contains APIs for application administration in Microsoft Azure Communication Services.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/CHANGELOG.md.
     Microsoft Azure Communication Administration quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
   </description>
   <licenses>
@@ -49,7 +49,7 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.55</jacoco.min.branchcoverage>
   </properties>
 
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.13.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->    
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->    
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -127,10 +127,9 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <excludes>
-            <exclude>com/azure/communication/**/models/**/*</exclude>
-            <exclude>com/azure/communication/**/implementation/**/*</exclude>
-          </excludes>
+          <includes>
+            <include>com/azure/communication/administration/*.class</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>

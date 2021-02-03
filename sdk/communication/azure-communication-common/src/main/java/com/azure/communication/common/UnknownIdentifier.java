@@ -13,7 +13,7 @@ public class UnknownIdentifier extends CommunicationIdentifier {
 
     /**
      * Creates an UnknownIdentifier object
-     * 
+     *
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
@@ -24,10 +24,27 @@ public class UnknownIdentifier extends CommunicationIdentifier {
         this.id = id;
     }
 
-    /**
-     * @return the string identifier representing the object identity
-     */
+    @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof UnknownIdentifier)) {
+            return false;
+        }
+
+        UnknownIdentifier thatId = (UnknownIdentifier) that;
+        return this.id.equals(thatId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

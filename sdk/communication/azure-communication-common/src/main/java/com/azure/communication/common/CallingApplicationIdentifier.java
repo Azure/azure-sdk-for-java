@@ -13,7 +13,7 @@ public class CallingApplicationIdentifier extends CommunicationIdentifier {
 
     /**
      * Creates a CallingApplicationIdentifier object
-     * 
+     *
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
@@ -24,10 +24,27 @@ public class CallingApplicationIdentifier extends CommunicationIdentifier {
         this.id = id;
     }
 
-    /**
-     * @return the string identifier representing the object identity
-     */
+    @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof CallingApplicationIdentifier)) {
+            return false;
+        }
+
+        return ((CallingApplicationIdentifier) that).getId().equals(id);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }
