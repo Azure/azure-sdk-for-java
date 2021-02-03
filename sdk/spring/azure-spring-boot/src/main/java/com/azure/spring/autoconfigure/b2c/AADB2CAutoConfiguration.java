@@ -130,9 +130,9 @@ public class AADB2CAutoConfiguration {
         }
     }
 
-    private ClientRegistration createClientBuilder(String id, AuthorizationClientScopesProperties authz) {
+    private ClientRegistration createClientBuilder(String registrationId, AuthorizationClientScopesProperties authz) {
         String userFlow = properties.getSignInUserFlow();
-        ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
+        ClientRegistration.Builder result = ClientRegistration.withRegistrationId(registrationId);
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
         result.redirectUriTemplate(properties.getReplyUrl());
         result.clientId(properties.getClientId());
@@ -142,10 +142,10 @@ public class AADB2CAutoConfiguration {
         result.tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow));
         result.jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow));
         result.userNameAttributeName(properties.getUserNameAttributeName());
-        if (authz.getScopes().contains("openid")) {
+        if (!authz.getScopes().contains("openid")) {
             authz.getScopes().add("openid");
         }
-        if (authz.getScopes().contains("offline_access")) {
+        if (!authz.getScopes().contains("offline_access")) {
             authz.getScopes().add("offline_access");
         }
         result.scope(authz.getScopes());
