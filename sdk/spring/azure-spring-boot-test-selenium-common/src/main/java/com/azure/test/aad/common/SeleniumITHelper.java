@@ -25,7 +25,7 @@ public class SeleniumITHelper {
 
     protected void createDriver() {
         if (driver == null) {
-            System.setProperty("wdm.cachePath", getClass().getClassLoader().getResource("selenium").getPath());
+            System.setProperty("wdm.cachePath", getClass().getResource("selenium").getPath());
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
