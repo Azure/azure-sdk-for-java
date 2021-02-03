@@ -1087,10 +1087,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getOffset(), actual.getOffset());
-        validateHealthcareEntityLinkList(expected.getDataSources(), actual.getDataSources());
+        validateEntitiyDataSourceList(expected.getDataSources(), actual.getDataSources());
     }
 
-    static void validateHealthcareEntityLinkList(IterableStream<EntityDataSource> expected,
+    static void validateEntitiyDataSourceList(IterableStream<EntityDataSource> expected,
         IterableStream<EntityDataSource> actual) {
         if (expected == actual) {
             return;
@@ -1108,7 +1108,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
     }
 
-    static void validateHealthcareTaskResults(boolean showStatistics, List<AnalyzeHealthcareEntitiesResultCollection> expected,
+    static void validateAnalyzeHealthcareEntitiesResultCollectionList(boolean showStatistics,
+        List<AnalyzeHealthcareEntitiesResultCollection> expected,
         List<AnalyzeHealthcareEntitiesResultCollection> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {

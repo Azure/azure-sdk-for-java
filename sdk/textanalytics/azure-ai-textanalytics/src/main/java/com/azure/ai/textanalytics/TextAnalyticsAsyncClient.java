@@ -1019,8 +1019,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze healthcare entities, entity linking, and entity relations in a list of
-     * {@link String document} with provided request options.
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link String documents} with provided request options.
      *
      * Note: In order to use this functionality, request to access public preview is required.
      * Azure Active Directory (AAD) is not currently supported. For more information see
@@ -1034,7 +1034,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
-     * when analyzing healthcare task.
+     * when analyzing healthcare entities.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of
@@ -1058,7 +1058,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of
-     * {@link TextDocumentInput document} with provided request options.
+     * {@link TextDocumentInput documents} with provided request options.
      *
      * Note: In order to use this functionality, request to access public preview is required.
      * Azure Active Directory (AAD) is not currently supported. For more information see
@@ -1075,7 +1075,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
-     * when analyzing healthcare task.
+     * when analyzing healthcare entities.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of
