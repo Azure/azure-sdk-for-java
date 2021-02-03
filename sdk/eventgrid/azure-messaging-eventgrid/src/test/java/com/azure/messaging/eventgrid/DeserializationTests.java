@@ -1152,7 +1152,9 @@ public class DeserializationTests {
     private String getTestPayloadFromFile(String fileName) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream("customization/" + fileName)) {
-            return new String(inputStream.readAllBytes());
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            return new String(bytes);
         }
     }
 }
