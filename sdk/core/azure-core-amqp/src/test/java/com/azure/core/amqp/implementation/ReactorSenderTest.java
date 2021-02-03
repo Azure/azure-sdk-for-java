@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -59,7 +59,7 @@ import static org.mockito.Mockito.when;
  */
 public class ReactorSenderTest {
 
-    private String entityPath = "entity-path";
+    private static final String ENTITY_PATH = "entity-path";
 
     @Mock
     private Sender sender;
@@ -82,6 +82,9 @@ public class ReactorSenderTest {
     private ArgumentCaptor<Runnable> dispatcherCaptor;
     @Captor
     private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
+
+    private Message message;
+    private AmqpRetryOptions options;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -108,6 +111,7 @@ public class ReactorSenderTest {
         doNothing().when(selectable).onFree(any());
         doNothing().when(selectable).setReading(true);
         doNothing().when(reactor).update(selectable);
+
         ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactor.attachments()).thenReturn(new Record() {
             @Override
@@ -117,7 +121,6 @@ public class ReactorSenderTest {
 
             @Override
             public <T> void set(Object o, Class<T> aClass, T t) {
-
             }
 
             @Override
@@ -127,6 +130,14 @@ public class ReactorSenderTest {
         });
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(1000));
+
+        options = new AmqpRetryOptions()
+            .setTryTimeout(Duration.ofSeconds(1))
+            .setMode(AmqpRetryMode.EXPONENTIAL);
+
+        message = Proton.message();
+        message.setMessageId("id");
+        message.setBody(new AmqpValue("hello"));
     }
 
     @AfterEach
@@ -138,38 +149,40 @@ public class ReactorSenderTest {
 
     @Test
     public void testLinkSize() {
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+
         StepVerifier.create(reactorSender.getLinkSize())
             .expectNext(1000)
             .verifyComplete();
         StepVerifier.create(reactorSender.getLinkSize())
             .expectNext(1000)
             .verifyComplete();
-        verify(sender, times(1)).getRemoteMaxMessageSize();
+
+        verify(sender).getRemoteMaxMessageSize();
     }
 
     @Test
     public void testSendWithTransactionFailed() {
         // Arrange
-        Message message = Proton.message();
-        message.setMessageId("id");
-        message.setBody(new AmqpValue("hello"));
-        final String exceptionString = "fake  exception";
+        final String exceptionString = "fake exception";
 
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final ReactorSender spyReactorSender = spy(reactorSender);
 
-        Throwable exception = new RuntimeException(exceptionString);
-        doReturn(Mono.error(exception)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
+        final Throwable exception = new RuntimeException(exceptionString);
+        doReturn(Mono.error(exception)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
+            eq(transactionalState));
 
         // Act
         StepVerifier.create(spyReactorSender.send(message, transactionalState))
             .verifyErrorMessage(exceptionString);
+
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
-        verify(spyReactorSender).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
+        verify(spyReactorSender).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT),
+            eq(transactionalState));
     }
 
     /**
@@ -178,15 +191,12 @@ public class ReactorSenderTest {
     @Test
     public void testSendWithTransaction() {
         // Arrange
-        Message message = Proton.message();
-        message.setMessageId("id");
-        message.setBody(new AmqpValue("hello"));
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final ReactorSender spyReactorSender = spy(reactorSender);
 
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
-
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
+        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
+            eq(transactionalState));
 
         // Act
         StepVerifier.create(spyReactorSender.send(message, transactionalState))
@@ -195,7 +205,7 @@ public class ReactorSenderTest {
             .verifyComplete();
 
         // Assert
-        verify(sender, times(1)).getRemoteMaxMessageSize();
+        verify(sender).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(),
             eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
     }
@@ -206,16 +216,13 @@ public class ReactorSenderTest {
     @Test
     public void testSendWithTransactionDeliverySet() throws IOException {
         // Arrange
-        Message message = Proton.message();
-        message.setMessageId("id");
-        message.setBody(new AmqpValue("hello"));
         // This is specific to this message and needs to align with this message.
         when(sender.send(any(byte[].class), anyInt(), anyInt())).thenReturn(26);
 
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
 
-        ReactorDispatcher reactorDispatcherMock = mock(ReactorDispatcher.class);
+        final ReactorDispatcher reactorDispatcherMock = mock(ReactorDispatcher.class);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcherMock);
         doNothing().when(reactorDispatcherMock).invoke(any(Runnable.class));
 
@@ -244,63 +251,68 @@ public class ReactorSenderTest {
 
     @Test
     public void testSend() {
-        Message message = Proton.message();
-        message.setMessageId("id");
-        message.setBody(new AmqpValue("hello"));
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
+        // Arrange
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
+
+        // Act
         StepVerifier.create(spyReactorSender.send(message))
             .verifyComplete();
         StepVerifier.create(spyReactorSender.send(message))
             .verifyComplete();
-        verify(sender, times(1)).getRemoteMaxMessageSize();
+
+        // Assert
+        verify(sender).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(), anyInt(), isNull());
     }
 
     @Test
     public void testSendBatch() {
-        Message message = Proton.message();
-        message.setMessageId("id1");
-        message.setBody(new AmqpValue("hello"));
-
-        Message message2 = Proton.message();
+        // Arrange
+        final Message message2 = Proton.message();
         message2.setMessageId("id2");
         message2.setBody(new AmqpValue("world"));
 
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
+
+        // Act
         StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2)))
             .verifyComplete();
         StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2)))
             .verifyComplete();
+
+        // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(), anyInt(), isNull());
     }
 
     @Test
     public void testLinkSizeSmallerThanMessageSize() {
+        // Arrange
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(10));
-        Message message = Proton.message();
-        message.setMessageId("id");
-        message.setBody(new AmqpValue("hello"));
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
+
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
 
+        // Act
         StepVerifier.create(spyReactorSender.send(message))
             .verifyErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof AmqpException);
                 Assertions.assertTrue(throwable.getMessage().startsWith("Error sending. Size of the payload exceeded "
                     + "maximum message size"));
             });
+
+        // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(0)).send(any(byte[].class), anyInt(), anyInt(), isNull());
     }
