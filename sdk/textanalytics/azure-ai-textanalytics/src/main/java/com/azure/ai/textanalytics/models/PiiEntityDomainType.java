@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Defines values for PiiEntityDomainType.
+ * Defines values for {@link PiiEntityDomainType}.
  */
 @Immutable
 public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDomainType> {
@@ -17,7 +17,9 @@ public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDom
      */
     public static final PiiEntityDomainType PROTECTED_HEALTH_INFORMATION = fromString("PHI");
 
-    /** Static value none for PiiTaskParametersDomain. */
+    /**
+     * None as the PiiEntityDomainType.
+     */
     public static final PiiEntityDomainType NONE = fromString("none");
 
     /**

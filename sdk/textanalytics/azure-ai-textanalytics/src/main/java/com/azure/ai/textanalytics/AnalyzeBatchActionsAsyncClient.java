@@ -83,15 +83,8 @@ class AnalyzeBatchActionsAsyncClient {
         Context context) {
         try {
             inputDocumentsValidation(documents);
-            if (options == null) {
-                options = new AnalyzeBatchActionsOptions();
-            }
-            final Context finalContext;
-            if (context == null) {
-                finalContext = Context.NONE;
-            } else {
-                finalContext = context;
-            }
+            options = getNotNullAnalyzeBatchActionsOptions(options);
+            final Context finalContext = getNotNullContext(context);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -108,16 +101,17 @@ class AnalyzeBatchActionsAsyncClient {
                         .map(analyzeResponse -> {
                             final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
                                 new AnalyzeBatchActionsOperationDetail();
-                            AnalyzeBatchActionsOperationDetailPropertiesHelper.setOperationId(textAnalyticsOperationResult,
-                                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                            AnalyzeBatchActionsOperationDetailPropertiesHelper
+                                .setOperationId(textAnalyticsOperationResult,
+                                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
                 pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId,
                     finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperation(resultId -> Mono.just(getAnalyzeOperationFluxPage(
-                    resultId, null, null, finalIncludeStatistics, finalContext)))
+                fetchingOperation(operationId -> Mono.just(getAnalyzeOperationFluxPage(
+                    operationId, null, null, finalIncludeStatistics, finalContext)))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -129,15 +123,8 @@ class AnalyzeBatchActionsAsyncClient {
             AnalyzeBatchActionsOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            if (options == null) {
-                options = new AnalyzeBatchActionsOptions();
-            }
-            final Context finalContext;
-            if (context == null) {
-                finalContext = Context.NONE;
-            } else {
-                finalContext = context;
-            }
+            options = getNotNullAnalyzeBatchActionsOptions(options);
+            final Context finalContext = getNotNullContext(context);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -183,8 +170,8 @@ class AnalyzeBatchActionsAsyncClient {
                             // TODO: currently, service does not set their default values for model version, we
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
-                            new EntitiesTaskParameters().setModelVersion(
-                                action.getModelVersion() == null ? "latest" : action.getModelVersion()));
+                            new EntitiesTaskParameters()
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -199,8 +186,7 @@ class AnalyzeBatchActionsAsyncClient {
                                 // TODO: currently, service does not set their default values for model version, we
                                 // temporally set the default value to 'latest' until service correct it.
                                 // https://github.com/Azure/azure-sdk-for-java/issues/17625
-                                .setModelVersion(action.getModelVersion() == null
-                                                     ? "latest" : action.getModelVersion())
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString())));
@@ -218,8 +204,7 @@ class AnalyzeBatchActionsAsyncClient {
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new KeyPhrasesTaskParameters()
-                                .setModelVersion(action.getModelVersion() == null
-                                                     ? "latest" : action.getModelVersion()));
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion())));
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()));
     }
@@ -427,5 +412,17 @@ class AnalyzeBatchActionsAsyncClient {
         AnalyzeBatchActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+    }
+
+    private Context getNotNullContext(Context context) {
+        return context == null ? Context.NONE : context;
+    }
+
+    private AnalyzeBatchActionsOptions getNotNullAnalyzeBatchActionsOptions(AnalyzeBatchActionsOptions options) {
+        return options == null ? new AnalyzeBatchActionsOptions() : options;
+    }
+
+    private String getNotNullModelVersion(String modelVersion) {
+        return modelVersion == null ? "latest" : modelVersion;
     }
 }
