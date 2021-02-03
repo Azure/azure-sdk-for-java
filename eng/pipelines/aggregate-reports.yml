@@ -100,6 +100,7 @@ jobs:
       condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
       displayName: 'Publish Security Analysis Logs'
+      condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
       displayName: 'Post Analysis'
       inputs:
