@@ -33,6 +33,8 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     private static final String BEARER = "Bearer";
     public static final String AUTHENTICATION_CHALLENGE_REGEX = "(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?";
     public static final String AUTHENTICATION_CHALLENGE_PARAMS_REGEX = "(?:(\\w+)=\"([^\"\"]*)\")+";
+    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    public static final String CLAIMS_PARAMETER = "claims";
 
     private final TokenCredential credential;
     private final String[] scopes;
@@ -74,15 +76,15 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      *  if true then a follow up request needs to be sent authorized with the challenge based bearer token.
      */
     public Mono<Boolean> onChallengeAsync(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue("WWW-Authenticate");
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
         if (response.getStatusCode() == 401 && authHeader != null) {
             List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
             for (AuthenticationChallenge authenticationChallenge : challenges) {
                 Map<String, String> extractedChallengeParams =
                     parseChallengeParams(authenticationChallenge.getChallengeParameters());
-                if (extractedChallengeParams.containsKey("claims")) {
+                if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
                     String claims = new String(Base64.getUrlDecoder()
-                                                   .decode(extractedChallengeParams.get("claims")));
+                                                   .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)));
                     return authenticateRequest(context,
                         () -> credential.getToken(new TokenRequestContext()
                                                       .addScopes(scopes).setClaims(claims)), true)
@@ -103,7 +105,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
         return onBeforeRequest(context)
                    .then(next.process())
                    .flatMap(httpResponse -> {
-                       String authHeader = httpResponse.getHeaderValue("WWW-Authenticate");
+                       String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
                            return onChallengeAsync(context, httpResponse).flatMap(retry -> {
                                if (retry) {
