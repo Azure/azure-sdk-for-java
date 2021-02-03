@@ -3,22 +3,23 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
-import com.azure.ai.textanalytics.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiTask;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
@@ -237,9 +238,9 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for analyzing tasks in documents.
+     * Code snippet for executing actions in a batch of documents.
      */
-    public void analyzeTasks() {
+    public void analyzeBatchActions() {
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -250,34 +251,42 @@ public class ReadmeSamples {
                     + " www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! The"
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeTasks(documents,
-                new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
-                    .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
-                    .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())),
+
+        SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeBatchActions(documents,
+                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
+                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
+                    .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+                new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(analyzeJobState -> {
-            analyzeJobState.getKeyPhraseExtractionTasks().forEach(taskResult -> {
+        syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+            System.out.println("Key phrases extraction action results:");
+            analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : taskResult) {
-                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                    System.out.println("Extracted phrases:");
-                    extractKeyPhraseResult.getKeyPhrases()
-                        .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                if (!actionResult.isError()) {
+                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
+                        System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                        System.out.println("Extracted phrases:");
+                        extractKeyPhraseResult.getKeyPhrases()
+                            .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                    }
                 }
             });
-            analyzeJobState.getEntityRecognitionPiiTasks().forEach(taskResult -> {
+            System.out.println("PII entities recognition action results:");
+            analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizePiiEntitiesResult entitiesResult : taskResult) {
-                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                    PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
-                    System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
-                    piiEntityCollection.forEach(entity -> System.out.printf(
-                        "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
-                            + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                        entity.getConfidenceScore()));
+                if (!actionResult.isError()) {
+                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {
+                        System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                        PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
+                        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+                        piiEntityCollection.forEach(entity -> System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
+                                + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
+                            entity.getConfidenceScore()));
+                    }
                 }
             });
         });

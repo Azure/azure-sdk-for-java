@@ -3,13 +3,17 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AnalyzeTasksResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -19,6 +23,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
@@ -29,8 +34,10 @@ import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -52,6 +59,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,6 +80,7 @@ import static java.util.Arrays.asList;
 final class TestUtils {
     private static final String DEFAULT_MODEL_VERSION = "2019-10-01";
 
+    static final OffsetDateTime TIME_NOW = OffsetDateTime.now();
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String FAKE_API_KEY = "1234567890";
@@ -693,26 +702,51 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
+    static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(
+        RecognizeEntitiesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+        RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
+        RecognizeEntitiesActionResultPropertiesHelper.setResult(recognizeEntitiesActionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
+        return recognizeEntitiesActionResult;
+    }
+
+    static RecognizePiiEntitiesActionResult getExpectedRecognizePiiEntitiesActionResult(
+        RecognizePiiEntitiesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+        RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
+        RecognizePiiEntitiesActionResultPropertiesHelper.setResult(recognizePiiEntitiesActionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
+        return recognizePiiEntitiesActionResult;
+    }
+
+    static ExtractKeyPhrasesActionResult getExpectedExtractKeyPhrasesActionResult(
+        ExtractKeyPhrasesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+        ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
+        ExtractKeyPhrasesActionResultPropertiesHelper.setResult(extractKeyPhrasesActionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
+        return extractKeyPhrasesActionResult;
+    }
+
     /**
-     * Helper method that get the expected AnalyzeTasksResult result.
+     * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
-    static AnalyzeTasksResult getExpectedAnalyzeTasksResult(
-        List<RecognizeEntitiesResultCollection> recognizeEntitiesResults,
-        List<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesResults,
-        List<ExtractKeyPhrasesResultCollection> extractKeyPhraseResults) {
-        // Analyze Tasks result
-        final AnalyzeTasksResult analyzeTasksResult = new AnalyzeTasksResult(
-            null, null, null, null, "Test1", null);
-        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult,
+    static AnalyzeBatchActionsResult getExpectedAnalyzeBatchActionsResult(
+        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
+        IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
+        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
+
+        final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
+        AnalyzeBatchActionsResultPropertiesHelper.setStatistics(analyzeBatchActionsResult,
             new TextDocumentBatchStatistics(1, 1, 0, 1));
-        AnalyzeTasksResultPropertiesHelper.setCompleted(analyzeTasksResult, 3);
-        AnalyzeTasksResultPropertiesHelper.setFailed(analyzeTasksResult, 0);
-        AnalyzeTasksResultPropertiesHelper.setInProgress(analyzeTasksResult, 0);
-        AnalyzeTasksResultPropertiesHelper.setTotal(analyzeTasksResult, 3);
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult, recognizeEntitiesResults);
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult, recognizePiiEntitiesResults);
-        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult, extractKeyPhraseResults);
-        return analyzeTasksResult;
+        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeBatchActionsResult,
+            recognizeEntitiesActionResults);
+        AnalyzeBatchActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeBatchActionsResult,
+            recognizePiiEntitiesActionResults);
+        AnalyzeBatchActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeBatchActionsResult,
+            extractKeyPhrasesActionResults);
+        return analyzeBatchActionsResult;
     }
 
     /**
@@ -772,24 +806,29 @@ final class TestUtils {
     /**
      * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
      */
-    static List<AnalyzeTasksResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+    static List<AnalyzeBatchActionsResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
         int firstPage, int secondPage) {
-        List<AnalyzeTasksResult> analyzeTasksResults = new ArrayList<>();
+        List<AnalyzeBatchActionsResult> analyzeBatchActionsResults = new ArrayList<>();
         // First Page
-        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
-            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage)),
-            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage)),
-            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage))
+        analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
+            IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
+                getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false))),
+            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false))),
+            IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
+                getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false)))
         ));
-
         // Second Page
         startIndex += firstPage;
-        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
-            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage)),
-            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage)),
-            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage))
+        analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
+            IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
+                getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false))),
+            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false))),
+            IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
+                getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false)))
         ));
-        return analyzeTasksResults;
+        return analyzeBatchActionsResults;
     }
 
     /**
