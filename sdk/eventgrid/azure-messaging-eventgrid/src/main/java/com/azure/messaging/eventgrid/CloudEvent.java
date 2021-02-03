@@ -47,6 +47,23 @@ public final class CloudEvent {
      * @param data the payload of this event. Set to null if your event doesn't have the data payload.
      */
     public CloudEvent(String source, String type, Object data) {
+        this(source, type);
+        this.setData(data);
+    }
+
+    /**
+     * Create an instance of CloudEvent. The source and type are required fields to publish.
+     * @param source a URI identifying the origin of the event.
+     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
+     * @param data the payload of this event.
+     * @param dataContentType the type of the data.
+     */
+    public CloudEvent(String source, String type, byte[] data, String dataContentType) {
+        this(source, type);
+        this.setDataBase64(data, dataContentType);
+    }
+
+    private CloudEvent(String source, String type) {
         if (CoreUtils.isNullOrEmpty(source)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
         }
@@ -59,21 +76,7 @@ public final class CloudEvent {
             .setSource(source)
             .setType(type)
             .setSpecversion(SPEC_VERSION);
-        this.setData(data);
     }
-
-    /**
-     * Create an instance of CloudEvent. The source and type are required fields to publish.
-     * @param source a URI identifying the origin of the event.
-     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
-     * @param data the payload of this event.
-     * @param dataContentType the type of the data.
-     */
-    public CloudEvent(String source, String type, Object data, String dataContentType) {
-        this(source, type, data);
-        this.cloudEvent.setDatacontenttype(dataContentType);
-    }
-
     /**
      * Deserialize the {@link CloudEvent} from a JSON string.
      * @param cloudEventJsonString the JSON payload containing one or more events.
@@ -134,25 +137,30 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     CloudEvent setData(Object data) {
-        if (data instanceof byte[]) {
-            byte[] encoded = Base64.getEncoder().encode((byte[]) data);
-            this.cloudEvent.setDataBase64(encoded);
-        } else {
-            this.cloudEvent.setData(data);
-        }
+        this.cloudEvent.setData(data);
         return this;
     }
 
     /**
-     * Set the data associated with this event, along with a content type URI
-     * @param data            the data to set.
-     * @param dataContentType a URI identifying the MIME type of the data.
-     *                        For example, if the data was an XML string, the data content type could be
-     *                        {@code "application/xml"}.
+     * Set the Base64 data associated with this event.
+     * @param data the data to set.
+     * @param dataContentType the data content type of the CloudEvent.
+     *
      * @return the cloud event itself.
      */
-    CloudEvent setData(Object data, String dataContentType) {
-        this.setData(data);
+    private CloudEvent setDataBase64(byte[] data, String dataContentType) {
+        byte[] encoded = Base64.getEncoder().encode((byte[]) data);
+        this.cloudEvent.setDataBase64(encoded);
+        this.cloudEvent.setDatacontenttype(dataContentType);
+        return this;
+    }
+
+    /**
+     * Set the data content type with this event.
+     * @param dataContentType the data content type to set.
+     * @return the cloud event itself.
+     */
+    public CloudEvent setDataContentType(String dataContentType) {
         this.cloudEvent.setDatacontenttype(dataContentType);
         return this;
     }

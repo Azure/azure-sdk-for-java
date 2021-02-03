@@ -50,9 +50,9 @@ public final class EventGridSasGenerator {
      * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
      * service.
      * @param endpoint the endpoint of the Event Grid topic or domain.
-     * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
      * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
