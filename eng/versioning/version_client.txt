@@ -200,6 +200,7 @@ com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managedservices;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
