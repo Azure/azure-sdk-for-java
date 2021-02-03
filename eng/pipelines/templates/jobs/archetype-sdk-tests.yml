@@ -58,7 +58,7 @@ jobs:
                 ArmTemplateParameters: $(ArmTemplateParameters)
         - ${{ if not(parameters.TestResourceDirectories) }}:
           - script: |
-              - echo "1222"
+              echo "1222"
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
