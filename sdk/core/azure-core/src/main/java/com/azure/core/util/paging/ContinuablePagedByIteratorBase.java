@@ -91,7 +91,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                 this.done = continuationState.isDone();
 
                 return page;
-            }).blockLast();
+            }).blockFirst();
 
         /*
          * In the scenario when the subscription completes without emitting an element indicate we are done by checking
