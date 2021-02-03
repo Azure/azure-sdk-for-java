@@ -30,7 +30,7 @@ public final class SendSmsOptions {
      *
      * @return the enableDeliveryReport value.
      */
-    public Boolean isEnableDeliveryReport() {
+    public Boolean isDeliveryReportEnabled() {
         return this.enableDeliveryReport;
     }
 
@@ -41,7 +41,7 @@ public final class SendSmsOptions {
      * @param enableDeliveryReport the enableDeliveryReport value to set.
      * @return the SendSmsOptions object itself.
      */
-    public SendSmsOptions setEnableDeliveryReport(Boolean enableDeliveryReport) {
+    public SendSmsOptions setEnableDeliveryReportEnabled(Boolean enableDeliveryReport) {
         this.enableDeliveryReport = enableDeliveryReport;
         return this;
     }

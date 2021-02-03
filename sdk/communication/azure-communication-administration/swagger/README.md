@@ -100,6 +100,7 @@ license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.administration
 generate-client-as-impl: true
 custom-types-subpackage: models
+
 sync-methods: all
 context-client-method-parameter: true
 ```

@@ -34,17 +34,18 @@ To update generated files for Sms service, run the following command
 input-file: https://github.com/Azure/azure-rest-api-specs/tree/users/shamkh/featureSendSmsChanges/specification/communication/data-plane/Microsoft.CommunicationServicesSms/stable/2021-03-07/communicationservicessms.json
 java: true
 output-folder: ..\
-sync-methods: all
-license-header: MICROSOFT_MIT_SMALL	
-namespace: com.azure.communication.sms	
-generate-client-as-impl: true	
+generate-client-as-impl: true
+namespace: com.azure.communication.sms
+sync-methods: none
+license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true	
+models-subpackage: implementation.models
+context-client-method-parameter: true	
 custom-types-subpackage: models
-add-context-parameter: true
-context-client-method-parameter: true
+custom-types: SendSmsResult,SendSmsOptions
 ```
-### Rename searchId to reservationId in CreateSearchResponse
 
-### Rename SendSmsResponse to SenSmsResult
+### Rename SendSmsResponseItem to SenSmsResult
 
 ``` yaml
 directive:

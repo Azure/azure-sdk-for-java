@@ -5,7 +5,6 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
-import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResult;
 import com.azure.core.annotation.ReturnType;
@@ -39,7 +38,7 @@ public final class SmsAsyncClient {
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
+     * Phone number has to be in the format 000 - 00 - 00
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
@@ -75,7 +74,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResult> send(String from, List<String> to, String message) {
+    public PagedFlux<SendSmsResult> send(String from, Iterable<String> to, String message) {
 
 
         return null;
@@ -92,41 +91,13 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResult> send(String from, List<String> to, String message,
-                                               SendSmsOptions smsOptions) {
+    public PagedFlux<SendSmsResult> send(String from, Iterable<String> to, String message,
+                                               SendSmsOptions smsOptions, Context context) {
 
 
         return null;
     }
 
-    /**
-     * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param from Number that is sending the message.
-     * @param to A list of the recipient's phone numbers.
-     * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
-     * @param context The context to associate with this operation.
-     * @return response for a successful send Sms request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResult> sendWithContext(String from, List<String> to, String message,
-                                                          SendSmsOptions smsOptions, Context context) {
 
 
-        return null;
-    }
-
-    private SendMessageRequest createSmsMessageRequest(String from, List<String> to, String message,
-                                                       SendSmsOptions smsOptions) {
-
-        SendMessageRequest sendMessageRequest = new SendMessageRequest();
-        sendMessageRequest.setFrom(from)
-            .setTo(to)
-            .setMessage(message)
-            .setSendSmsOptions(smsOptions);
-
-        return sendMessageRequest;
-    }
 }

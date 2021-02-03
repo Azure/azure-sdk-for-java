@@ -11,6 +11,7 @@ import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
 
 import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -26,7 +27,8 @@ public class ReadmeSamples {
 
         // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
+        //Enter your azureKeyCredential
+        AzureKeyCredential azureKeyCredential = null;
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -36,7 +38,7 @@ public class ReadmeSamples {
 
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
-            .accessKey(accessKey)
+            .azureKeyCredential(azureKeyCredential)
             .httpClient(httpClient);
 
         // Build a new SmsClient
@@ -64,7 +66,7 @@ public class ReadmeSamples {
 
         // to enable a delivery report to the Azure Event Grid
         SendSmsOptions options = new SendSmsOptions();
-        options.setEnableDeliveryReport(true);
+        options.setEnableDeliveryReportEnabled(true);
         //addionaly you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag");/* Optional */
 
@@ -87,7 +89,7 @@ public class ReadmeSamples {
 
         // to enable a delivery report to the Azure Event Grid
         SendSmsOptions options = new SendSmsOptions();
-        options.setEnableDeliveryReport(true);
+        options.setEnableDeliveryReportEnabled(true);
         //addionaly you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag");/* Optional */
 

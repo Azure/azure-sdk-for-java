@@ -26,6 +26,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
+
 /**
  * Builder for creating clients of Azure Communication Service Chat
  */
@@ -169,7 +170,7 @@ public final class ChatClientBuilder {
         } else {
             Objects.requireNonNull(communicationTokenCredential);
             Objects.requireNonNull(httpClient);
-            CommunicationBearerTokenCredential tokenCredential = 
+            CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
             pipeline = createHttpPipeline(httpClient,
