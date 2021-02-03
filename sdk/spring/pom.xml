@@ -152,16 +152,11 @@
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-storage-resource</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
