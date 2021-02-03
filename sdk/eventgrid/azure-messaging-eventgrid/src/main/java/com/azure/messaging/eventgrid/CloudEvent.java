@@ -149,7 +149,7 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     private CloudEvent setDataBase64(byte[] data, String dataContentType) {
-        byte[] encoded = Base64.getEncoder().encode((byte[]) data);
+        byte[] encoded = Base64.getEncoder().encode(data);
         this.cloudEvent.setDataBase64(encoded);
         this.cloudEvent.setDatacontenttype(dataContentType);
         return this;

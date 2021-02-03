@@ -251,7 +251,7 @@ BinaryData data = eventGridEvent.getData();
 //Deserialize data to a model class
 User dataInModelClass = eventData.toObject(TypeReference.createInstance(User.class));
 
-Deserialize data to a Map
+//Deserialize data to a Map
 Map<?, ?> dataMap = eventData.toObject(TypeReference.createInstance(Map.class));
 
 //Deserialize data to a String
@@ -267,7 +267,7 @@ System Topic Event, or System Event.
 A system topic in Event Grid represents events published by an [Event Source](https://docs.microsoft.com/azure/event-grid/overview#event-sources) like Azure Storage, Azure Event Hubs, App Configuration and so on.
 An example is when a blob is created, a system event with event type "Microsoft.Storage.BlobCreated" is sent to the configured System Topic. 
 The system event class for this event type is `StorageBlobCreatedEventData` defined in package `com.azure.messaging.eventgrid.systemevents`.
-EventGrid current has system events for:
+EventGrid has system events for:
 - [Azure App Configuration](https://docs.microsoft.com/azure/event-grid/event-schema-app-configuration)
 - [Azure App Service](https://docs.microsoft.com/azure/event-grid/event-schema-app-service)
 - [Azure Blob Storage](https://docs.microsoft.com/azure/event-grid/event-schema-blob-storage)
