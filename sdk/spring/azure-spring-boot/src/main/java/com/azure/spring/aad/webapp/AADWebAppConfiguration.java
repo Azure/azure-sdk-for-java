@@ -116,7 +116,7 @@ public class AADWebAppConfiguration {
         if (properties.allowedGroupsConfigured()) {
             // The 2 scopes are need to get group name from graph.
             result.add(properties.getGraphBaseUri() + "User.Read");
-            result.add(properties.getGraphBaseUri() + "Directory.AccessAsUser.All");
+            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
         }
         return result;
     }
