@@ -254,6 +254,8 @@ public final class Constants {
          */
         public static final String VERSIONID_QUERY_PARAMETER = "versionid";
 
+        public static final String DELETIONID_QUERY_PARAMETER = "deletionid";
+
         /**
          * The SAS service version parameter.
          */

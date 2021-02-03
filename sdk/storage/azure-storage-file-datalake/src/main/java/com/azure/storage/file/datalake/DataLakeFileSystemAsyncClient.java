@@ -27,9 +27,12 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathDeletedItem;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -55,8 +58,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.*;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -791,6 +795,78 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
         return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePath#String-String}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakePathAsyncClient> restorePath(String deletedPath, String deletionId) {
+        return restorePathWithResponse(deletedPath, deletionId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakePathAsyncClient>> restorePathWithResponse(String deletedPath, String deletionId) {
+        try {
+            return withContext(context -> restorePathWithResponse(deletedPath, deletionId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<DataLakePathAsyncClient>> restorePathWithResponse(String deletedPath, String deletionId,
+        Context context) {
+        Objects.requireNonNull(deletedPath);
+        Objects.requireNonNull(deletionId);
+
+        context = context == null ? Context.NONE : context;
+        // Initial rest call
+        return this.azureDataLakeStorage.paths().undeleteWithRestResponseAsync(null,
+            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            /*
+            Perform a get properties to determine if it's a file or directory. Zip with the original response for
+            constructing the final response later
+             */
+            .flatMap(response -> Mono.zip(Mono.just(response),
+                this.blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null).getProperties())
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            // Construct the new client and final response from the undelete + getProperties responses
+            .map(tuple2 -> new SimpleResponse<>(tuple2.getT1(),
+                new DataLakePathAsyncClient(getHttpPipeline(),
+                    StorageImplUtils.appendToUrlPath(getFileSystemUrl(),
+                        Utility.urlEncode(Utility.urlDecode(deletedPath)))
+                        .toString(), serviceVersion, accountName, fileSystemName, deletedPath,
+                    tuple2.getT2().getMetadata().getOrDefault("hdi_isfolder", "").equals("true")
+                        ? PathResourceType.DIRECTORY : PathResourceType.FILE,
+                    blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null).getBlockBlobAsyncClient()))));
     }
 
     /**
