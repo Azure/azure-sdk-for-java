@@ -458,63 +458,12 @@ public class SasTokenImpl implements SasTokenProperties {
                 this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_FEEDS.value();
                 break;
             }
-            case CONTAINER_CREATE_STORE_PROCEDURES: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_CREATE_STORED_PROCEDURES.value();
-                break;
-            }
-            case CONTAINER_READ_STORE_PROCEDURES: {
-                this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_STORED_PROCEDURES.value();
-                break;
-            }
-            case CONTAINER_REPLACE_STORE_PROCEDURES: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_REPLACE_STORED_PROCEDURES.value();
-                break;
-            }
-            case CONTAINER_DELETE_STORE_PROCEDURES: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_STORED_PROCEDURES.value();
-                break;
-            }
-            case CONTAINER_CREATE_TRIGGERS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_CREATE_TRIGGERS.value();
-                break;
-            }
-            case CONTAINER_READ_TRIGGERS: {
-                this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_TRIGGERS.value();
-                break;
-            }
-            case CONTAINER_REPLACE_TRIGGERS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_REPLACE_TRIGGERS.value();
-                break;
-            }
-            case CONTAINER_DELETE_TRIGGERS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_TRIGGERS.value();
-                break;
-            }
-            case CONTAINER_CREATE_USER_DEFINED_FUNCTIONS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_CREATE_USER_DEFINED_FUNCTIONS.value();
-                break;
-            }
-            case CONTAINER_READ_USER_DEFINED_FUNCTIONS: {
-                this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_USER_DEFINED_FUNCTIONS.value();
-                break;
-            }
-            case CONTAINER_REPLACE_USER_DEFINED_FUNCTIONS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_REPLACE_USER_DEFINED_FUNCTIONS.value();
-                break;
-            }
-            case CONTAINER_DELETE_USER_DEFINED_FUNCTIONS: {
-                this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_USER_DEFINED_FUNCTIONS.value();
-                break;
-            }
             case CONTAINER_EXECUTE_STORED_PROCEDURES: {
                 this.dataPlaneWriterScope |= SCOPE_CONTAINER_EXECUTE_STORED_PROCEDURES.value();
                 break;
             }
-            case CONTAINER_READ_CONFLICTS: {
+            case CONTAINER_MANAGE_CONFLICTS: {
                 this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_CONFLICTS.value();
-                break;
-            }
-            case CONTAINER_DELETE_CONFLICTS: {
                 this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_CONFLICTS.value();
                 break;
             }
@@ -556,49 +505,8 @@ public class SasTokenImpl implements SasTokenProperties {
                 break;
             }
 
-            // Cosmos container store procedure scope.
-            case STORE_PROCEDURE_READ: {
-                this.dataPlaneReaderScope |= SCOPE_STORED_PROCEDURE_READ.value();
-                break;
-            }
-            case STORE_PROCEDURE_REPLACE: {
-                this.dataPlaneWriterScope |= SCOPE_STORED_PROCEDURE_REPLACE.value();
-                break;
-            }
-            case STORE_PROCEDURE_DELETE: {
-                this.dataPlaneWriterScope |= SCOPE_STORED_PROCEDURE_DELETE.value();
-                break;
-            }
             case STORE_PROCEDURE_EXECUTE: {
                 this.dataPlaneWriterScope |= SCOPE_STORED_PROCEDURE_EXECUTE.value();
-                break;
-            }
-
-            // Cosmos container user defined function scope.
-            case USER_DEFINED_FUNCTION_READ: {
-                this.dataPlaneReaderScope |= SCOPE_USER_DEFINED_FUNCTION_READ.value();
-                break;
-            }
-            case USER_DEFINED_FUNCTION_REPLACE: {
-                this.dataPlaneWriterScope |= SCOPE_USER_DEFINED_FUNCTION_REPLACE.value();
-                break;
-            }
-            case USER_DEFINED_FUNCTION_DELETE: {
-                this.dataPlaneWriterScope |= SCOPE_USER_DEFINED_FUNCTION_DELETE.value();
-                break;
-            }
-
-            // Cosmos container trigger scope.
-            case TRIGGER_READ: {
-                this.dataPlaneReaderScope |= SCOPE_TRIGGER_READ.value();
-                break;
-            }
-            case TRIGGER_REPLACE: {
-                this.dataPlaneWriterScope |= SCOPE_TRIGGER_REPLACE.value();
-                break;
-            }
-            case TRIGGER_DELETE: {
-                this.dataPlaneWriterScope |= SCOPE_TRIGGER_DELETE.value();
                 break;
             }
 
