@@ -3,8 +3,7 @@
 package com.azure.spring.aad.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
-import java.util.Set;
-import java.util.function.Predicate;
+import java.util.List;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -21,7 +20,7 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AADJwtIssuerValidator(Set<String> trustedIssuers) {
+    public AADJwtIssuerValidator(List<String> trustedIssuers) {
         this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, iss -> trustedIssuers.contains(iss));
     }
 

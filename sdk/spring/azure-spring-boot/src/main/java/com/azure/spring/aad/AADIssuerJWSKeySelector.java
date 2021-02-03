@@ -22,8 +22,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Selecting key candidates for processing a signed JWT which
- * provides access to the JWT claims set in addition to the JWS header.
+ * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
+ * JWS header.
  */
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
@@ -53,26 +53,18 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
             return this.selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
         throw new IllegalArgumentException(
-            "The current issuer is not included in the trustedIssuers, no JWS key selector is configured.");
+            "The current issuer is not included in the trusted issuers, no jws key selector is configured.");
     }
-
 
     private JWSKeySelector<SecurityContext> fromIssuer(String metadataUrlPrefix) {
         return Optional.ofNullable(metadataUrlPrefix)
-            .map(u -> {
-                Map<String, Object> configuration = AADJwtDecoderProviderConfiguration
-                    .getConfigurationForIssuerLocation(u);
-                String jwkSetUrl = withProviderConfiguration(configuration);
-                return fromUri(jwkSetUrl);
-            })
+            .map(AADJwtDecoderProviderConfiguration::getConfigurationForOidcIssuerLocation)
+            .map(this::fromUri)
             .orElseThrow(() -> new IllegalArgumentException("Cannot create JWSKeySelector."));
     }
 
-    private String withProviderConfiguration(Map<String, Object> configuration) {
-        return configuration.get("jwks_uri").toString();
-    }
-
-    private JWSKeySelector<SecurityContext> fromUri(String uri) {
+    private JWSKeySelector<SecurityContext> fromUri(Map<String, Object> configuration) {
+        String uri = configuration.get("jwks_uri").toString();
         try {
             DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
                 sizeLimit);

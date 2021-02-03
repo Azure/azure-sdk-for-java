@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.webapi.AADResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -50,7 +50,7 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testNotAudienceDefaultValidator() {
-        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new HashSet<>());
+        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new ArrayList<>());
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .run(context -> {
@@ -65,7 +65,7 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testExistAudienceDefaultValidator() {
-        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new HashSet<>());
+        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new ArrayList<>());
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withPropertyValues("azure.activedirectory.app-id-uri=fake-app-id-uri")

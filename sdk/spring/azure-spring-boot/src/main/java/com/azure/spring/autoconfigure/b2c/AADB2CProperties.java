@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import java.net.MalformedURLException;
 import java.util.Map;
 import javax.validation.constraints.NotBlank;
@@ -52,11 +53,20 @@ public class AADB2CProperties {
      */
     private String AppIdUri;
 
-    private int connectTimeout = 500;
+    /**
+     * Connection Timeout for the JWKSet Remote URL call.
+     */
+    private int jwtConnectTimeout = RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT; /* milliseconds */
 
-    private int readTimeout = 500;
+    /**
+     * Read Timeout for the JWKSet Remote URL call.
+     */
+    private int jwtReadTimeout = RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT; /* milliseconds */
 
-    private int sizeLimit = 50 * 1024;
+    /**
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     */
+    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false, will use Oauth2
@@ -248,28 +258,28 @@ public class AADB2CProperties {
         AppIdUri = appIdUri;
     }
 
-    public int getConnectTimeout() {
-        return connectTimeout;
+    public int getJwtConnectTimeout() {
+        return jwtConnectTimeout;
     }
 
-    public void setConnectTimeout(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public void setJwtConnectTimeout(int jwtConnectTimeout) {
+        this.jwtConnectTimeout = jwtConnectTimeout;
     }
 
-    public int getReadTimeout() {
-        return readTimeout;
+    public int getJwtReadTimeout() {
+        return jwtReadTimeout;
     }
 
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
+    public void setJwtReadTimeout(int jwtReadTimeout) {
+        this.jwtReadTimeout = jwtReadTimeout;
     }
 
-    public int getSizeLimit() {
-        return sizeLimit;
+    public int getJwtSizeLimit() {
+        return jwtSizeLimit;
     }
 
-    public void setSizeLimit(int sizeLimit) {
-        this.sizeLimit = sizeLimit;
+    public void setJwtSizeLimit(int jwtSizeLimit) {
+        this.jwtSizeLimit = jwtSizeLimit;
     }
 
     public String getTenantId() {

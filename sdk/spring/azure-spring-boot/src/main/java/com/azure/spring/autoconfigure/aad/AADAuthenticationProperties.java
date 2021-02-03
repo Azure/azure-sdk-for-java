@@ -90,12 +90,6 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private String postLogoutRedirectUri;
 
-    private int connectTimeout = 500;
-
-    private int readTimeout = 500;
-
-    private int sizeLimit = 50 * 1024;
-
     /**
      * If Telemetry events should be published to Azure AD.
      */
@@ -318,30 +312,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
-    }
-
-    public int getConnectTimeout() {
-        return connectTimeout;
-    }
-
-    public void setConnectTimeout(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
-    }
-
-    public int getReadTimeout() {
-        return readTimeout;
-    }
-
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
-    }
-
-    public int getSizeLimit() {
-        return sizeLimit;
-    }
-
-    public void setSizeLimit(int sizeLimit) {
-        this.sizeLimit = sizeLimit;
     }
 
     @Override

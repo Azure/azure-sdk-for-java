@@ -9,7 +9,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 import com.azure.spring.aad.AADIssuerJWSKeySelector;
 import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.validator.AADJwtValidators;
+import com.azure.spring.aad.validator.AADJwtIssuerValidator;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -39,7 +40,9 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -82,49 +85,6 @@ public class AADB2CAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AADTrustedIssuerRepository trustedIssuerRepository() {
-        return new AADTrustedIssuerRepository(properties.getTenantId(), properties.getTenantName(),
-            properties.getUserFlows());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
-        AADTrustedIssuerRepository trustedIssuerRepository) {
-        return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getConnectTimeout(),
-            properties.getReadTimeout(), properties.getSizeLimit());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
-        ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
-        jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
-        return jwtProcessor;
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
-        AADTrustedIssuerRepository trustedIssuerRepository) {
-        NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
-        List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
-            validAudiences.add(properties.getAppIdUri());
-        }
-        if (!StringUtils.isEmpty(properties.getClientId())) {
-            validAudiences.add(properties.getClientId());
-        }
-        if (!validAudiences.isEmpty()) {
-            validators.add(new AADJwtAudienceValidator(validAudiences));
-        }
-        validators.add(AADJwtValidators.createDefaultWithIssuer(trustedIssuerRepository.getTrustedIssuers()));
-        decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
-        return decoder;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
         return new AADB2CAuthorizationRequestResolver(repository, properties);
     }
@@ -152,6 +112,63 @@ public class AADB2CAutoConfiguration {
             events.put(TENANT_NAME, properties.getTenantName());
 
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
+        }
+    }
+
+    /**
+     * Automatic configuration class of AADB2CResourceServer
+     */
+    @Configuration
+    @ConditionalOnClass(BearerTokenAuthenticationToken.class)
+    public static class AADB2CResourceServerAutoConfiguration {
+
+        private final AADB2CProperties properties;
+
+        public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
+            this.properties = properties;
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        AADTrustedIssuerRepository trustedIssuerRepository() {
+            return new AADTrustedIssuerRepository(properties.getTenantId());
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
+            AADTrustedIssuerRepository trustedIssuerRepository) {
+            return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getJwtConnectTimeout(),
+                properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
+            ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
+            jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
+            return jwtProcessor;
+        }
+
+        @Bean
+        JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
+            AADTrustedIssuerRepository trustedIssuerRepository) {
+            NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
+            List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
+            List<String> validAudiences = new ArrayList<>();
+            if (!StringUtils.isEmpty(properties.getAppIdUri())) {
+                validAudiences.add(properties.getAppIdUri());
+            }
+            if (!StringUtils.isEmpty(properties.getClientId())) {
+                validAudiences.add(properties.getClientId());
+            }
+            if (!validAudiences.isEmpty()) {
+                validators.add(new AADJwtAudienceValidator(validAudiences));
+            }
+            validators.add(new AADJwtIssuerValidator(trustedIssuerRepository.getTrustedIssuers()));
+            validators.add(new JwtTimestampValidator());
+            decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
+            return decoder;
         }
     }
 

@@ -6,7 +6,7 @@ package com.azure.spring.aad.webapi;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.validator.AADJwtValidators;
+import com.azure.spring.aad.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
@@ -81,7 +82,8 @@ public class AADResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(AADJwtValidators.createDefaultWithIssuer(aadTrustedIssuerRepository.getTrustedIssuers()));
+        validators.add(new AADJwtIssuerValidator(aadTrustedIssuerRepository.getTrustedIssuers()));
+        validators.add(new JwtTimestampValidator());
         return validators;
     }
 

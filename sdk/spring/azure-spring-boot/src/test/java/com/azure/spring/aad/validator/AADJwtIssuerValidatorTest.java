@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -22,7 +22,7 @@ public class AADJwtIssuerValidatorTest {
     private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
     @Test
     public void testIssuerSuccessVerify() {
-        Set<String> trustedIssuers = new HashSet<>();
+        List<String> trustedIssuers = new ArrayList<>();
         trustedIssuers.add("https://sts.windows.net/fake-tenant-id/v1.0");
         trustedIssuers.add("https://sts.windows.net/fake-tenant-id/v2.0");
         when(aadAuthenticationProperties.getTenantId()).thenReturn("fake-tenant-id");
@@ -37,7 +37,7 @@ public class AADJwtIssuerValidatorTest {
 
     @Test
     public void testIssuerFailureVerify() {
-        Set<String> trustedIssuers = new HashSet<>();
+        List<String> trustedIssuers = new ArrayList<>();
         trustedIssuers.add("https://sts.windows.net/fake-tenant-id/v1.0");
         trustedIssuers.add("https://sts.windows.net/fake-tenant-id/v2.0");
         when(aadAuthenticationProperties.getTenantId()).thenReturn("common");
