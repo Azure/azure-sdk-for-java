@@ -14,6 +14,13 @@ import java.util.UUID;
 
 /**
  * The EventGridEvent model. This represents events in the EventGrid schema to be used with the EventGrid service.
+ *
+ * When you send a EventGridEvent to an Event Grid Topic, the topic must be configured to receive the EventGridEvent schema.
+ *
+ * For new customers, {@link CloudEvent} is generally preferred over EventGridEvent because the
+ * <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">CloudEvent schema</a> is supported across
+ * organizations while the <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">EventGridEvent schema</a> is not.
+ *
  * @see EventGridPublisherAsyncClient
  * @see EventGridPublisherClient
  **/
@@ -112,27 +119,12 @@ public final class EventGridEvent {
     }
 
     /**
-     * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventNames
-     * @return The system event if the event is a system event, or {@code null} if it's not.
-     */
-    Object asSystemEventData() {
-        if (event.getData() == null) {
-            return null;
-        }
-        return EventGridDeserializer.getSystemEventData(this.getData(), event.getEventType());
-    }
-
-    /**
      * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
      * a String, an Object, or a byte[].
      * @return A {@link BinaryData} that wraps the this event's data payload.
      */
     public BinaryData getData() {
-        if (event.getData() != null) {
-            return EventGridDeserializer.getData(event.getData());
-        }
-        return null;
+        return EventGridDeserializer.getData(event.getData());
     }
 
     /**

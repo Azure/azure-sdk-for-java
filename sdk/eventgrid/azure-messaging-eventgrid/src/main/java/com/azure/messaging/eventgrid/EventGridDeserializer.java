@@ -5,7 +5,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.UncheckedIOException;
@@ -38,7 +37,7 @@ final class EventGridDeserializer {
      * @throws IllegalArgumentException if the input parameter isn't a JSON string for a eventgrid event
      * or an array of it.
      */
-    public static List<EventGridEvent> deserializeEventGridEvents(String eventGridEventsJson) {
+    static List<EventGridEvent> deserializeEventGridEvents(String eventGridEventsJson) {
         try {
             return Arrays.stream(DESERIALIZER
                 .deserialize(new ByteArrayInputStream(eventGridEventsJson.getBytes(StandardCharsets.UTF_8)),
@@ -66,7 +65,7 @@ final class EventGridDeserializer {
      * @return all of the events in the payload deserialized as {@link CloudEvent}s.
      * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it.
      */
-    public static List<CloudEvent> deserializeCloudEvents(String cloudEventsJson) {
+    static List<CloudEvent> deserializeCloudEvents(String cloudEventsJson) {
         try {
             return Arrays.stream(DESERIALIZER
                 .deserialize(new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
@@ -85,22 +84,6 @@ final class EventGridDeserializer {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
                 uncheckedIOException.getCause()));
         }
-    }
-
-    static Object getSystemEventData(BinaryData data, String eventType) {
-        if (SystemEventNames.getSystemEventMappings().containsKey(eventType)) {
-            return data
-                .toObject(TypeReference.createInstance(SystemEventNames.getSystemEventMappings().get(eventType)));
-        }
-        return null;
-    }
-
-    static Mono<Object> getSystemEventDataAsync(Mono<BinaryData> data, String eventType) {
-        if (SystemEventNames.getSystemEventMappings().containsKey(eventType)) {
-            return data.map(binaryData -> binaryData
-                .toObject(TypeReference.createInstance(SystemEventNames.getSystemEventMappings().get(eventType))));
-        }
-        return Mono.empty();
     }
 
     static BinaryData getData(Object data) {

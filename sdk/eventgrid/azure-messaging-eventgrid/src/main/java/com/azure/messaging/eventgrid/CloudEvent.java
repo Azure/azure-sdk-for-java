@@ -18,8 +18,16 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The CloudEvent model. This represents a cloud event as specified by the Cloud Native Computing Foundation
- * (https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
+ * The CloudEvent model. This represents a cloud event as specified by the
+ * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>
+ *
+ * When you send a CloudEvent to an Event Grid Topic, the topic must be configured to receive the CloudEvent schema.
+ *
+ * For new customers, CloudEvent is generally preferred over {@link EventGridEvent} because the
+ *
+ * <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">CloudEvent schema</a> is supported across
+ * organizations while the <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">EventGridEvent schema</a> is not.
+ *
  * @see EventGridPublisherAsyncClient to send cloud events asynchronously.
  * @see EventGridPublisherClient to send cloud events.
  **/
@@ -34,9 +42,9 @@ public final class CloudEvent {
 
     /**
      * Create an instance of CloudEvent. The source and type are required fields to publish.
-     * @param source a URI identifying the origin of the event.
-     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
-     * @param data the payload of this event.
+     * @param source a URI identifying the origin of the event. It can't be null or empty.
+     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived". It can't be null or empty.
+     * @param data the payload of this event. Set to null if your event doesn't have the data payload.
      */
     public CloudEvent(String source, String type, Object data) {
         if (CoreUtils.isNullOrEmpty(source)) {
@@ -108,18 +116,6 @@ public final class CloudEvent {
     }
 
     /**
-     * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventNames
-     * @return The system event if the event is a system event, or {@code null} if it's not.
-     */
-    Object asSystemEventData() {
-        if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
-            return null;
-        }
-        return EventGridDeserializer.getSystemEventData(this.getData(), cloudEvent.getType());
-    }
-
-    /**
      * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
      * a String, an Object, or a byte[].
      * @return A {@link BinaryData} that wraps the this event's data payload.
@@ -128,10 +124,7 @@ public final class CloudEvent {
         if (cloudEvent.getDataBase64() != null) {
             return BinaryData.fromBytes(cloudEvent.getDataBase64());
         }
-        if (cloudEvent.getData() != null) {
-            return EventGridDeserializer.getData(cloudEvent.getData());
-        }
-        return null;
+        return EventGridDeserializer.getData(cloudEvent.getData());
     }
 
     /**
