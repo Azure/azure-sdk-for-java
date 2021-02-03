@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -14,7 +13,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -60,14 +58,14 @@ public class CancelHealthcareTaskAsync {
         PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
 
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
-
-        client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
-            .map(response -> {
-                System.out.println(response.getStatus());
-                return response;
-            })
-            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
+        // TODO: update the changes in the healthcare PR #18828
+//        client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
+//            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
+//            .map(response -> {
+//                System.out.println(response.getStatus());
+//                return response;
+//            })
+//            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
 
         syncPoller.waitForCompletion();
 

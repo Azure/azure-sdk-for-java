@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -15,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,13 +57,13 @@ public class CancelHealthcareTask {
         PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
 
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
+        // TODO: update the changes in the healthcare PR #18828
+//        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
+//            = client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
+//            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
 
-        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-
-        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
+//        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
+//        System.out.printf("Task status: %s.%n", poll.getStatus());
 
         syncPoller.waitForCompletion();
     }
