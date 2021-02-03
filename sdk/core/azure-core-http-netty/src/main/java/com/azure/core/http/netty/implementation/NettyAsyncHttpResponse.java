@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
@@ -14,17 +14,17 @@ import reactor.netty.http.client.HttpClientResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-import static com.azure.core.http.netty.NettyAsyncHttpClient.closeConnection;
-import static com.azure.core.http.netty.NettyAsyncHttpClient.deepCopyBuffer;
+import static com.azure.core.http.netty.implementation.Utility.closeConnection;
+import static com.azure.core.http.netty.implementation.Utility.deepCopyBuffer;
 
 /**
  * Default HTTP response for Reactor Netty.
  */
-final class ReactorNettyHttpResponse extends ReactorNettyHttpResponseBase {
+public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final Connection reactorNettyConnection;
     private final boolean disableBufferCopy;
 
-    ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
+    public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
         HttpRequest httpRequest, boolean disableBufferCopy) {
         super(reactorNettyResponse, httpRequest);
         this.reactorNettyConnection = reactorNettyConnection;
@@ -62,7 +62,7 @@ final class ReactorNettyHttpResponse extends ReactorNettyHttpResponseBase {
     }
 
     // used for testing only
-    Connection internConnection() {
+    public Connection internConnection() {
         return reactorNettyConnection;
     }
 }
