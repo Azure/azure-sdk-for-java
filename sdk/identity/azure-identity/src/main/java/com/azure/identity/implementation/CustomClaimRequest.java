@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,10 +39,8 @@ public class CustomClaimRequest extends ClaimsRequest {
             CustomClaimRequest cr = new CustomClaimRequest();
 
             ObjectMapper mapper = new ObjectMapper();
-            ObjectReader reader = mapper.readerFor(new TypeReference<List<String>>() {});
-
+            ObjectReader reader = mapper.readerFor(new TypeReference<List<String>>() { });
             JsonNode jsonClaims = mapper.readTree(claims);
-
             addClaimsFromJsonNode(jsonClaims.get("id_token"), "id_token", cr, reader);
             addClaimsFromJsonNode(jsonClaims.get("userinfo"), "userinfo", cr, reader);
             addClaimsFromJsonNode(jsonClaims.get("access_token"), "access_token", cr, reader);
@@ -62,17 +63,27 @@ public class CustomClaimRequest extends ClaimsRequest {
                 List<String> values = null;
                 RequestedClaimAdditionalInfo claimInfo = null;
 
-                if (claims.get(claim).has("essential")) essential = claims.get(claim).get("essential").asBoolean();
-                if (claims.get(claim).has("value")) value = claims.get(claim).get("value").textValue();
-                if (claims.get(claim).has("values")) values = reader.readValue(claims.get(claim).get("values"));
+                if (claims.get(claim).has("essential")) {
+                    essential = claims.get(claim).get("essential").asBoolean();
+                }
+                if (claims.get(claim).has("value")) {
+                    value = claims.get(claim).get("value").textValue();
+                }
+                if (claims.get(claim).has("values")) {
+                    values = reader.readValue(claims.get(claim).get("values"));
+                }
 
                 //'null' is a valid value for RequestedClaimAdditionalInfo, so only initialize it if one of the parameters is not null
                 if (essential != null || value != null || values != null) {
                     claimInfo = new RequestedClaimAdditionalInfo(essential == null ? false : essential, value, values);
                 }
 
-                if (group.equals("id_token")) cr.requestClaimInIdToken(claim, claimInfo);
-                if (group.equals("access_token")) cr.requestClaimInAccessToken(claim, claimInfo);
+                if (group.equals("id_token")) {
+                    cr.requestClaimInIdToken(claim, claimInfo);
+                }
+                if (group.equals("access_token")) {
+                    cr.requestClaimInAccessToken(claim, claimInfo);
+                }
             }
         }
     }

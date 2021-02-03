@@ -10,7 +10,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -27,7 +26,6 @@ import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -38,10 +36,8 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
-import com.microsoft.aad.msal4j.RequestedClaimAdditionalInfo;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
@@ -542,23 +538,19 @@ public class IdentityClient {
                                                             String username, String password) {
         return publicClientApplicationAccessor.getValue()
                .flatMap(pc -> Mono.fromFuture(() -> {
+                   UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
+                       UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()),
+                            username, password.toCharArray());
 
-                    UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
-                        UserNamePasswordParameters.builder(
-                        new HashSet<>(request.getScopes()), username, password.toCharArray());
-
-                    if (request.getClaims() != null) {
-                        ClaimsRequest customClaimRequest = CustomClaimRequest
-                                   .formatAsClaimsRequest(request.getClaims());
-                        userNamePasswordParametersBuilder.claims(customClaimRequest);
-                    }
-
+                   if (request.getClaims() != null) {
+                       ClaimsRequest customClaimRequest = CustomClaimRequest
+                                                               .formatAsClaimsRequest(request.getClaims());
+                       userNamePasswordParametersBuilder.claims(customClaimRequest);
+                   }
                    return pc.acquireToken(userNamePasswordParametersBuilder.build());
-                    }
-               ))
-                .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
-                                                           + "password", null, t))
-                .map(MsalToken::new);
+               }
+               )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
+                                + "password", null, t)).map(MsalToken::new);
     }
 
     /**
@@ -596,7 +588,7 @@ public class IdentityClient {
 
                     if (request.getClaims() != null) {
                         ClaimsRequest customClaimRequest = CustomClaimRequest
-                           .formatAsClaimsRequest(request.getClaims());
+                                                               .formatAsClaimsRequest(request.getClaims());
                         forceParametersBuilder.claims(customClaimRequest);
                     }
 
