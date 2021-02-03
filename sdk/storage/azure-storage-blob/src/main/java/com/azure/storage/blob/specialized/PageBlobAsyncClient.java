@@ -247,12 +247,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().createWithResponseAsync(containerName, blobName,0, options.getSize(), null,
-            null, options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), options.getSequenceNumber(),
-            null, tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getPageBlobs().createWithResponseAsync(containerName, blobName, 0,
+            options.getSize(), null, null, options.getMetadata(), requestConditions.getLeaseId(),
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
+            options.getSequenceNumber(), null, tagsToString(options.getTags()), options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -542,8 +543,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         String pageRangeStr = pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().clearPagesWithResponseAsync(containerName, blobName,0, null, pageRangeStr,
-            pageBlobRequestConditions.getLeaseId(), pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
+        return this.azureBlobStorage.getPageBlobs().clearPagesWithResponseAsync(containerName, blobName, 0,
+            null, pageRangeStr, pageBlobRequestConditions.getLeaseId(),
+            pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
@@ -748,8 +750,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,getSnapshotId(),
-            null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+        return this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
+            getSnapshotId(), null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

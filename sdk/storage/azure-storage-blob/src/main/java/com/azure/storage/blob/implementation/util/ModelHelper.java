@@ -47,7 +47,7 @@ import java.util.Map;
 public class ModelHelper {
 
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
-    private static final ClientLogger logger = new ClientLogger(ModelHelper.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
 
     /**
@@ -470,7 +470,7 @@ public class ModelHelper {
         try {
             return SERIALIZER.deserialize(headers, BlobsDownloadHeaders.class);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -481,7 +481,7 @@ public class ModelHelper {
         try {
             return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
