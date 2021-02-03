@@ -36,7 +36,7 @@ public class RemoteRenderingClientBuilder {
     }
 
     public RemoteRenderingAsyncClient buildAsyncClient() {
-
+        // TODO Not sure if client building should be doing communication.
         var accessToken = stsBuilder.buildAsyncClient().getToken();
 
         builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> accessToken));
@@ -94,7 +94,7 @@ public class RemoteRenderingClientBuilder {
      * Sets the Remote Rendering service endpoint.
      * <p>
      * For converting assets, it is preferable to pick a region close to the storage containing the assets.
-     * For rendering, it is strongly recommended that you pick the closest region to the devices using the service. 
+     * For rendering, it is strongly recommended that you pick the closest region to the devices using the service.
      * The time taken to communicate with the server impacts the quality of the experience.
      *
      * @param endpoint the host value.

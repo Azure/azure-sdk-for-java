@@ -11,14 +11,23 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImpl;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionSettings;
+import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
 import com.azure.mixedreality.remoterendering.models.*;
 import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.polling.PollerFlux;
 
+import java.time.Duration;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
 public class RemoteRenderingAsyncClient {
@@ -148,6 +157,62 @@ public class RemoteRenderingAsyncClient {
         return impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), Context.NONE)
             .map(r -> ModelTranslator.fromGenerated(r.getValue()));
     }
+
+    /**
+     * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
+     * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
+     * storageContainerWriteSas) for storage access need to be provided. Documentation how to link your Azure Remote
+     * Rendering account with the Azure Blob Storage account can be found in the
+     * [documentation](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
+     *
+     * <p>All files in the input container starting with the blobPrefix will be retrieved to perform the conversion. To
+     * cut down on conversion times only necessary files should be available under the blobPrefix.
+     *
+     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
+     * @param options The conversion options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the conversion.
+     */
+    public PollerFlux<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
+        return new PollerFlux<Conversion, Conversion>(
+            options.getPollInterval(),
+            pollingContext -> {
+                return impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), Context.NONE)
+                    .map(r -> ModelTranslator.fromGenerated(r.getValue()));
+            },
+            pollingContext -> {
+                Mono<Conversion> response = impl.getConversionWithResponseAsync(accountId, conversionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                return response.map(conversion -> {
+                    final ConversionStatus convStatus = conversion.getStatus();
+                    LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                    // TODO Check whether semantics of LongRunningOperationStatus.NOT_STARTED matches ConversionStatus.NOT_STARTED.
+                    if ((convStatus == ConversionStatus.RUNNING) || (convStatus == ConversionStatus.NOT_STARTED)) {
+                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                    } else if (convStatus == ConversionStatus.FAILED) {
+                        lroStatus = LongRunningOperationStatus.FAILED;
+                    } else if (convStatus == ConversionStatus.SUCCEEDED) {
+                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                    } else if (convStatus == ConversionStatus.CANCELLED) {
+                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                    } else {
+                        // TODO Assert? Throw?
+                    }
+                    return new PollResponse<Conversion>(lroStatus, conversion);
+                });
+            },
+            (activationResponse, pollingContext) ->
+                Mono.error(new RuntimeException("Cancellation is not supported."))
+            ,
+            pollingContext -> {
+                PollResponse<Conversion> response = pollingContext.getLatestResponse();
+                return Mono.just(response.getValue());
+            }
+        );
+    };
 
     /**
      * Gets the status of a previously created asset conversion.

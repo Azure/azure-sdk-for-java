@@ -7,6 +7,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.models.*;
 
 import java.util.List;
@@ -121,6 +123,30 @@ public class RemoteRenderingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Conversion startConversion(String conversionId, ConversionOptions options) {
         return client.startConversion(conversionId, options).block();
+    }
+
+    /**
+     * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
+     * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
+     * storageContainerWriteSas) for storage access need to be provided. Documentation how to link your Azure Remote
+     * Rendering account with the Azure Blob Storage account can be found in the
+     * [documentation](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
+     *
+     * <p>All files in the input container starting with the blobPrefix will be retrieved to perform the conversion. To
+     * cut down on conversion times only necessary files should be available under the blobPrefix.
+     *
+     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
+     * @param options The conversion options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the conversion.
+     */
+    public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
+        PollerFlux<Conversion, Conversion> asyncPoller = client.beginConversion(conversionId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
