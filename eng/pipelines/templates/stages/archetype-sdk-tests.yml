@@ -47,6 +47,9 @@ parameters:
 - name: ServiceDirectory
   type: string
   default: not-specified
+- name: TestResourceDirectories
+  type: object
+  default: not-specified
 - name: TestSetupSteps
   type: stepList
   default: []

@@ -46,6 +46,8 @@ jobs:
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if parameters.TestResourceDirectories }}:
+          - script: |
+              echo "lll"
           - ${{ each directory in parameters.TestResourceDirectories }}:
             - template: /eng/common/TestResources/deploy-test-resources.yml
               parameters:
@@ -55,6 +57,8 @@ jobs:
                 SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
                 ArmTemplateParameters: $(ArmTemplateParameters)
         - ${{ if not(parameters.TestResourceDirectories) }}:
+          - script: |
+              - echo "1222"
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
