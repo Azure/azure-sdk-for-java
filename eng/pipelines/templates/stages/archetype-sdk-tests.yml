@@ -120,6 +120,7 @@ stages:
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               Location: ${{ parameters.Location }}
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
