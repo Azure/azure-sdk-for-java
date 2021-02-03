@@ -11,14 +11,14 @@ import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.Response;
 
-import static com.azure.core.http.netty.ReactorNettyClientTests.EXPECTED_HEADER;
-import static com.azure.core.http.netty.ReactorNettyClientTests.NO_DOUBLE_UA_PATH;
-import static com.azure.core.http.netty.ReactorNettyClientTests.RETURN_HEADERS_AS_IS_PATH;
+import static com.azure.core.http.netty.NettyAsyncHttpClientTests.EXPECTED_HEADER;
+import static com.azure.core.http.netty.NettyAsyncHttpClientTests.NO_DOUBLE_UA_PATH;
+import static com.azure.core.http.netty.NettyAsyncHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
 
 /**
  * Mock response transformer used to test {@link NettyAsyncHttpClient}.
  */
-public final class ReactorNettyClientResponseTransformer extends ResponseTransformer {
+public final class NettyAsyncHttpClientResponseTransformer extends ResponseTransformer {
     public static final String NAME = "reactor-netty-client-response-transformer";
     public static final String NULL_REPLACEMENT = "null";
 
@@ -57,13 +57,13 @@ public final class ReactorNettyClientResponseTransformer extends ResponseTransfo
     }
 
     private static Response httpHeadersResponseHandler(Request request, Response response) {
-        String responseTestHeaderValue = request.containsHeader(ReactorNettyClientTests.TEST_HEADER)
-            ? request.getHeaders().getHeader(ReactorNettyClientTests.TEST_HEADER).firstValue()
+        String responseTestHeaderValue = request.containsHeader(NettyAsyncHttpClientTests.TEST_HEADER)
+            ? request.getHeaders().getHeader(NettyAsyncHttpClientTests.TEST_HEADER).firstValue()
             : NULL_REPLACEMENT;
 
         return new Response.Builder()
             .status(response.getStatus())
-            .headers(new HttpHeaders(new HttpHeader(ReactorNettyClientTests.TEST_HEADER, responseTestHeaderValue)))
+            .headers(new HttpHeaders(new HttpHeader(NettyAsyncHttpClientTests.TEST_HEADER, responseTestHeaderValue)))
             .build();
     }
 }

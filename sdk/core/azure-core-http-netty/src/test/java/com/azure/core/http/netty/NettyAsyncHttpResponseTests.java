@@ -5,6 +5,7 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
@@ -40,9 +41,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link ReactorNettyHttpResponse}.
+ * Tests {@link NettyAsyncHttpResponse}.
  */
-public class ReactorNettyHttpResponseTests {
+public class NettyAsyncHttpResponseTests {
     private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
     private static final String HELLO = "hello";
     private static final byte[] HELLO_BYTES = HELLO.getBytes(StandardCharsets.UTF_8);
@@ -52,7 +53,7 @@ public class ReactorNettyHttpResponseTests {
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.status()).thenReturn(HttpResponseStatus.OK);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(reactorNettyResponse, null, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, null, REQUEST, false);
 
         assertEquals(200, response.getStatusCode());
     }
@@ -66,7 +67,7 @@ public class ReactorNettyHttpResponseTests {
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.responseHeaders()).thenReturn(headers);
 
-        com.azure.core.http.HttpHeaders actualHeaders = new ReactorNettyHttpResponse(
+        com.azure.core.http.HttpHeaders actualHeaders = new NettyAsyncHttpResponse(
             reactorNettyResponse, null, REQUEST, false)
             .getHeaders();
 
@@ -86,7 +87,7 @@ public class ReactorNettyHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -105,7 +106,7 @@ public class ReactorNettyHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
 
         StepVerifier.create(response.getBodyAsByteArray())
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -130,7 +131,7 @@ public class ReactorNettyHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(reactorNettyResponse, connection, REQUEST,
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
             false);
 
         StepVerifier.create(response.getBodyAsString())
@@ -150,7 +151,7 @@ public class ReactorNettyHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
 
         StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
             .assertNext(actual -> assertEquals(HELLO, actual))
@@ -162,7 +163,7 @@ public class ReactorNettyHttpResponseTests {
         Connection connection = mock(Connection.class);
         when(connection.isDisposed()).thenReturn(true);
 
-        new ReactorNettyHttpResponse(null, connection, REQUEST, false).close();
+        new NettyAsyncHttpResponse(null, connection, REQUEST, false).close();
 
         verify(connection, times(1)).isDisposed();
     }
@@ -171,7 +172,7 @@ public class ReactorNettyHttpResponseTests {
     @MethodSource("verifyDisposalSupplier")
     public void verifyDisposal(String methodName, Class<?>[] argumentTypes, Object[] argumentValues)
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method method = ReactorNettyHttpResponse.class.getMethod(methodName, argumentTypes);
+        Method method = NettyAsyncHttpResponse.class.getMethod(methodName, argumentTypes);
         ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
             ByteBufAllocator.DEFAULT);
         HttpHeaders headers = new DefaultHttpHeaders()
@@ -195,7 +196,7 @@ public class ReactorNettyHttpResponseTests {
         when(connection.isDisposed()).thenReturn(false);
         when(connection.channel()).thenReturn(channel);
 
-        ReactorNettyHttpResponse response = new ReactorNettyHttpResponse(reactorNettyResponse, connection, REQUEST,
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
             false);
 
         Object object = method.invoke(response, argumentValues);

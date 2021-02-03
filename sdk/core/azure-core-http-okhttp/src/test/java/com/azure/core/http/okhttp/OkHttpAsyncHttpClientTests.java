@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class OkHttpClientTests {
+public class OkHttpAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
     private static final String SHORT_BODY = "hi there";
@@ -241,7 +241,7 @@ public class OkHttpClientTests {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = new OkHttpClientProvider().createInstance();
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
         final String singleValueHeaderName = "singleValue";
         final String singleValueHeaderValue = "value";
@@ -305,7 +305,7 @@ public class OkHttpClientTests {
         return client.send(request).block();
     }
 
-    private static URL url(WireMockServer server, String path) {
+    static URL url(WireMockServer server, String path) {
         try {
             return new URL("http://localhost:" + server.port() + path);
         } catch (MalformedURLException e) {
