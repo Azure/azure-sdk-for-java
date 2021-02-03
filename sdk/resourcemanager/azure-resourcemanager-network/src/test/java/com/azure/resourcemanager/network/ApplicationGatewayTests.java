@@ -38,6 +38,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
+        if (skipInPlayback()) {
+            return; // removed pfx
+        }
         String appGatewayName = generateRandomResourceName("agwaf", 15);
         String appPublicIp = generateRandomResourceName("pip", 15);
         PublicIpAddress pip =
