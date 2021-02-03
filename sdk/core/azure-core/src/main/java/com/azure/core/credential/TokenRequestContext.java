@@ -56,8 +56,7 @@ public class TokenRequestContext {
      * Set the additional claims to be included in the token.
      *
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a> for more information on
-     *     format and content
+     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
      *
      * @param claims the additional claims to be included in the token.
      * @return the updated TokenRequestContext itself
@@ -71,8 +70,7 @@ public class TokenRequestContext {
      * Get the additional claims to be included in the token.
      *
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a> for more information on
-     *     format and content
+     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
      *
      * @return the additional claims to be included in the token.
      */
