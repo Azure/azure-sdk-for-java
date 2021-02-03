@@ -3,14 +3,16 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder}
-import com.azure.cosmos.implementation.SparkBridgeInternal
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
+import org.apache.spark.broadcast.Broadcast
 
 import scala.collection.concurrent.TrieMap
 
 private[spark] object CosmosClientCache {
     private val cache = new TrieMap[CosmosClientConfiguration, CosmosAsyncClient]
 
-    def apply(cosmosClientConfiguration: CosmosClientConfiguration): CosmosAsyncClient = {
+    def apply(cosmosClientConfiguration: CosmosClientConfiguration,
+              cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
         cache.get(cosmosClientConfiguration) match {
             case Some(client) => client
             case None =>
@@ -18,6 +20,13 @@ private[spark] object CosmosClientCache {
                     .key(cosmosClientConfiguration.key)
                     .endpoint(cosmosClientConfiguration.endpoint)
                     .consistencyLevel(cosmosClientConfiguration.consistencyLevel)
+
+                cosmosClientStateHandle match {
+                    case Some(handle) =>
+                        val metadataCache = handle.value;
+                        SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
+                    case None => Unit
+                }
 
                 val client = builder.buildAsyncClient()
 
