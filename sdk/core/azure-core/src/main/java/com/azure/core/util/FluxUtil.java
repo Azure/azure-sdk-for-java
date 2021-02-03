@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
@@ -15,13 +16,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.Channels;
 import java.nio.channels.CompletionHandler;
 import java.util.Collections;
 import java.util.Map;
@@ -50,45 +49,35 @@ public final class FluxUtil {
     }
 
     /**
-     * Collects ByteBuffer emitted by a Flux into a byte array.
+     * Collects ByteBuffers emitted by a Flux into a byte array.
      *
      * @param stream A stream which emits ByteBuffer instances.
      * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
+     * @throws OutOfMemoryError If the combined size of the emitted ByteBuffers is greater than {@link
+     * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
-        return stream
-            .collect(ByteArrayOutputStream::new, FluxUtil::accept)
-            .map(ByteArrayOutputStream::toByteArray);
+        return stream.collect(ByteBufferCollector::new, ByteBufferCollector::write)
+            .map(ByteBufferCollector::toByteArray);
     }
 
-    private static void accept(ByteArrayOutputStream byteOutputStream, ByteBuffer byteBuffer) {
-        try {
-            /*
-             * Given that ByteArrayOutputStream will need to buffer the written byte array, first check that the
-             * ByteBuffer uses a backing array and write that directly. Otherwise, use the more expensive operation
-             * that will result in a double copy.
-             *
-             * We could also investigate using our own custom type which has an accessible backing array that we can
-             * check for containing enough space to write into it directly.
-             */
-            if (byteBuffer.hasArray()) {
-                int offset = byteBuffer.position();
-                int remaining = byteBuffer.remaining();
-
-                if (remaining == 0) {
-                    return;
-                }
-
-                byteOutputStream.write(byteBuffer.array(), offset, remaining);
-
-                // Given that we accessed the backing array directly we need to move the position ourselves.
-                byteBuffer.position(offset + remaining);
-            } else {
-                byteOutputStream.write(byteBufferToArray(byteBuffer));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error occurred writing ByteBuffer to ByteArrayOutputStream.", e);
-        }
+    /**
+     * Collects ByteBuffers emitted by a Flux into a byte array.
+     * <p>
+     * Unlike {@link #collectBytesInByteBufferStream(Flux)}, this method accepts a second parameter {@code sizeHint}.
+     * This size hint allows for optimizations when creating the initial buffer to reduce the number of times it needs
+     * to be resized while concatenating emitted ByteBuffers.
+     *
+     * @param stream A stream which emits ByteBuffer instances.
+     * @param sizeHint A hint about the expected stream size.
+     * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
+     * @throws IllegalArgumentException If {@code sizeHint} is equal to or less than {@code 0}.
+     * @throws OutOfMemoryError If the combined size of the emitted ByteBuffers is greater than {@link
+     * Integer#MAX_VALUE}.
+     */
+    public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream, int sizeHint) {
+        return stream.collect(() -> new ByteBufferCollector(sizeHint), ByteBufferCollector::write)
+            .map(ByteBufferCollector::toByteArray);
     }
 
     /**
@@ -210,7 +199,7 @@ public final class FluxUtil {
         Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
             .map(context -> {
-                final Context[] azureContext = new Context[] { Context.NONE };
+                final Context[] azureContext = new Context[]{Context.NONE};
 
                 if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
                     contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
@@ -302,7 +291,7 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        final Context[] azureContext = new Context[] { Context.NONE };
+        final Context[] azureContext = new Context[]{Context.NONE};
 
         if (!context.isEmpty()) {
             context.stream().forEach(entry ->
