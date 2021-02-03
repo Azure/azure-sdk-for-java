@@ -580,8 +580,8 @@ public class IdentityClient {
 
                     parametersBuilder.claims(customClaimRequest);
                     parametersBuilder.forceRefresh(true);
-
                 }
+
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
@@ -595,6 +595,13 @@ public class IdentityClient {
                 .switchIfEmpty(Mono.fromFuture(() -> {
                     SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes())).forceRefresh(true);
+
+                    if (request.getClaims() != null) {
+                        ClaimsRequest customClaimRequest = CustomClaimRequest
+                           .formatAsClaimsRequest(request.getClaims());
+                        forceParametersBuilder.claims(customClaimRequest);
+                    }
+
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
                     }
