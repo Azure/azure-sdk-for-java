@@ -914,8 +914,8 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
-     * {@link String document} with provided request options.
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
+     * {@link String documents} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
@@ -954,8 +954,8 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction in a list of
-     * {@link TextDocumentInput document} with provided request options.
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
+     * {@link TextDocumentInput documents} with provided request options.
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
