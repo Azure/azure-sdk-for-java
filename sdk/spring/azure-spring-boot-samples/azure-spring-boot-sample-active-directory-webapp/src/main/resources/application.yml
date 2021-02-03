@@ -7,7 +7,7 @@ azure:
       graph:
         scopes:
             - https://graph.microsoft.com/User.Read
-            - https://graph.microsoft.com/Directory.AccessAsUser.All
+            - https://graph.microsoft.com/Directory.Read.All
       office:
         scopes:
             - https://manage.office.com/ActivityFeed.Read

@@ -5,10 +5,9 @@ stages:
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
-        AdditionalPlatforms:
-          TestStepMavenInputs:
-            options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
-            goals: "verify"
+        TestStepMavenInputs:
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          goals: "verify"
 
         Artifacts:
           - name: azure-spring-boot-test-application
