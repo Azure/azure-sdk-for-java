@@ -22,7 +22,7 @@ public class RemoteRenderingClient {
         this.client = client;
     }
 
-
+    // TODO REMOVE
     /**
      * Creates a new rendering session.
      *
@@ -38,6 +38,23 @@ public class RemoteRenderingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Session createSession(String sessionId, SessionCreationOptions options) {
         return client.createSession(sessionId, options).block();
+    }
+
+    /**
+     * Creates a new rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param options Options for the session to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
+    public SyncPoller<Session, Session> beginSession(String sessionId, SessionCreationOptions options) {
+        PollerFlux<Session, Session> asyncPoller = client.beginSession(sessionId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -101,6 +118,7 @@ public class RemoteRenderingClient {
         return client.listSessions().collectList().block();
     }
 
+    // TODO REMOVE
     /**
      * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
      * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
