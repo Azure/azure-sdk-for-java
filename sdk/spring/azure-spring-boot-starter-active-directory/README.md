@@ -289,9 +289,9 @@ This starter provides following properties:
 
 Here are some examples about how to use these properties:
 
-#### Example 1. Use [Azure China] instead of Azure Global:
+#### Property example 1: Use [Azure China] instead of Azure Global.
 
-Step 1: Add property in application.yml
+* Step 1: Add property in application.yml
 ```yaml
 azure:
   activedirectory:
@@ -299,9 +299,9 @@ azure:
     graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
 ```
 
-#### Example 2. Use user group name to protect some method in web application:
+#### Property example 2: Use `group name` to protect some method in web application.
 
-Step 1: Add property in application.yml
+* Step 1: Add property in application.yml
 ```yaml
 azure:
   activedirectory:
@@ -309,7 +309,7 @@ azure:
       allowed-groups: group1, group2
 ```
 
-Step 2: We need `@EnableGlobalMethodSecurity(prePostEnabled = true)` in you application:
+* Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -344,6 +344,49 @@ public class RoleController {
     }
 }
 ```
+
+#### Property example 3: [Incremental consent] in web application with function of visiting resource servers.
+
+* Step 1: Add property in application.yml
+```yaml
+azure:
+  activedirectory:
+    authorization-clients:
+      graph:
+        scopes: https://graph.microsoft.com/Analytics.Read, email
+      arm: # client registration id
+        on-demand: true  # means incremental consent
+        scopes: https://management.core.windows.net/user_impersonation
+```
+
+* Step 2: Add a new redirect uri
+![add-a-new-redirect-uri-1.png](resource/add-a-new-redirect-uri-1.png)
+![add-a-new-redirect-uri-2.png](resource/add-a-new-redirect-uri-2.png)
+
+* Step 3: Write Java code:
+```java
+@Controller
+public class OnDemandClientController {
+
+    @GetMapping("/arm")
+    @ResponseBody
+    public String arm(
+        @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient oAuth2AuthorizedClient
+    ) {
+        // toJsonString() is just a demo.
+        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
+        return toJsonString(oAuth2AuthorizedClient);
+    }
+}
+```
+
+After these steps. `arm`'s scopes (https://management.core.windows.net/user_impersonation) doesn't 
+need to be consented at login time. When user request `/arm` endpoint, user need to consent the 
+scope. That's `incremental consent` means.
+
+After the scopes have been consented, AAD server will remember that this user has already granted 
+the permission to the web application. So incremental consent will not happen anymore after user 
+consented.
 
 ## Examples
 
@@ -405,3 +448,4 @@ Please follow [instructions here] to build from source or contribute.
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
+[Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent

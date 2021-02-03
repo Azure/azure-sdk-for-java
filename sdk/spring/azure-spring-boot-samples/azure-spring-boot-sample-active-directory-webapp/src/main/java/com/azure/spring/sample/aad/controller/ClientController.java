@@ -32,6 +32,8 @@ public class ClientController {
     public String graph(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient
     ) {
+        // toJsonString() is just a demo.
+        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
         return toJsonString(oAuth2AuthorizedClient);
     }
 
