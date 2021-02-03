@@ -382,7 +382,6 @@ public class IdentityClient {
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
                     refreshTokenParametersBuilder.claims(customClaimRequest);
                 }
 
@@ -577,7 +576,6 @@ public class IdentityClient {
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
                     parametersBuilder.claims(customClaimRequest);
                     parametersBuilder.forceRefresh(true);
                 }
@@ -609,7 +607,6 @@ public class IdentityClient {
                     if (request.getClaims() != null) {
                         ClaimsRequest customClaimRequest = CustomClaimRequest
                                                                .formatAsClaimsRequest(request.getClaims());
-
                         forceParametersBuilder.claims(customClaimRequest);
                     }
                     try {
@@ -662,7 +659,6 @@ public class IdentityClient {
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
                     parametersBuilder.claims(customClaimRequest);
                 }
 
@@ -692,7 +688,6 @@ public class IdentityClient {
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
             parametersBuilder.claims(customClaimRequest);
         }
 
@@ -716,7 +711,6 @@ public class IdentityClient {
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
             parametersBuilder.claims(customClaimRequest);
         }
 
@@ -765,7 +759,6 @@ public class IdentityClient {
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-
             builder.claims(customClaimRequest);
         }
 
