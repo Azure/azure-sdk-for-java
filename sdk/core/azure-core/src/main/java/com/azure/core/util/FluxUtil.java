@@ -196,12 +196,12 @@ public final class FluxUtil {
         private final Map<String, String> contextAttributes;
         private final reactor.util.context.Context reactorContext;
 
-        public ReactorToAzureContextWrapper(reactor.util.context.Context reactorContext) {
+        ReactorToAzureContextWrapper(reactor.util.context.Context reactorContext) {
             this(null, reactorContext);
         }
 
-        public ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
-                                            reactor.util.context.Context reactorContext) {
+        ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
+                                     reactor.util.context.Context reactorContext) {
             super();
             this.contextAttributes = contextAttributes;
             this.reactorContext = reactorContext;
@@ -210,7 +210,7 @@ public final class FluxUtil {
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
-                // throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+                super.getData(null);
             }
 
             // Look through the reactor context first
