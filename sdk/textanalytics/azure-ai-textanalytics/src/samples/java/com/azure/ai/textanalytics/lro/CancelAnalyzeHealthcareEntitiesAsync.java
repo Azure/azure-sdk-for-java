@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously cancel a healthcare job.
+ * Sample demonstrates how to asynchronously cancel the long-running healthcare entities analysis.
  */
 public class CancelAnalyzeHealthcareEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to cancel the healthcare long-running operation.
+     * Main method to invoke this demo about how to cancel the long-running healthcare entities analysis.
      *
      * @param args Unused arguments to the program.
      */

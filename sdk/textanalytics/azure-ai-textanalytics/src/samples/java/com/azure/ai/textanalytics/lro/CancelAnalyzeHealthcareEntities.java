@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sample demonstrates how to cancel a healthcare job.
+ * Sample demonstrates how to cancel the long-running healthcare entities analysis.
  */
 public class CancelAnalyzeHealthcareEntities {
     /**
-     * Main method to invoke this demo about how to cancel the healthcare long-running operation.
+     * Main method to invoke this demo about how to cancel the long-running healthcare entities analysis.
      *
      * @param args Unused arguments to the program.
      */

@@ -74,9 +74,10 @@ public class AnalyzeHealthcareEntitiesAsync {
                         AtomicInteger ct = new AtomicInteger();
                         // Healthcare entities
                         healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                            System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                            System.out.printf(
+                                "\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
                                 ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                                healthcareEntity.getConfidenceScore());
+                                healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
                             // Data sources
                             IterableStream<EntityDataSource> dataSources = healthcareEntity.getDataSources();
                             if (dataSources != null) {

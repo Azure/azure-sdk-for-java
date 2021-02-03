@@ -216,9 +216,9 @@ public class ReadmeSamples {
                 System.out.println("Document entities: ");
                 AtomicInteger ct = new AtomicInteger();
                 healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                    System.out.printf("i = %d, Text: %s, category: %s, confidence score: %f.%n",
+                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
                         ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                        healthcareEntity.getConfidenceScore());
+                        healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
                     IterableStream<EntityDataSource> healthcareEntityDataSources =
                         healthcareEntity.getDataSources();
                     if (healthcareEntityDataSources != null) {

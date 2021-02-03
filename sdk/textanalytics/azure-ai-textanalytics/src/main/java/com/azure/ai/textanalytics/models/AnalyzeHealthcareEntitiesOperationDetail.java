@@ -48,36 +48,36 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     }
 
     /**
-     * Gets the taskId property of the HealthcareTaskOperationResult.
+     * Gets the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
      *
-     * @return the taskId property of the HealthcareTaskOperationResult.
+     * @return the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the created time of a task.
+     * Gets the created time of an action.
      *
-     * @return the created time of a task.
+     * @return the created time of an action.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * Gets the expiration time of a task.
+     * Gets the expiration time of an action.
      *
-     * @return the expiration time of a task.
+     * @return the expiration time of an action.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
     }
 
     /**
-     * Gets the last updated time of a task.
+     * Gets the last updated time of an action.
      *
-     * @return the last updated time of a task.
+     * @return the last updated time of an action.
      */
     public OffsetDateTime getLastModifiedAt() {
         return lastModifiedAt;

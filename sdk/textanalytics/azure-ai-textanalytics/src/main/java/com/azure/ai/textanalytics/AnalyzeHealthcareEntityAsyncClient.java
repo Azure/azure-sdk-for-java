@@ -48,8 +48,8 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
+import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeHealthcareEntitiesResults;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -71,12 +71,12 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
-        Context context) {
+            Context context) {
         try {
             inputDocumentsValidation(documents);
-            if (options == null) {
-                options = new AnalyzeHealthcareEntitiesOptions();
-            }
+            options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
+            final Context finalContext = getNotNullContext(context)
+                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 // TODO: after poller has the poll interval, use it.
@@ -87,20 +87,19 @@ class AnalyzeHealthcareEntityAsyncClient {
                     options.getModelVersion(),
                     // TODO: explore StringIndexType to user. https://github.com/Azure/azure-sdk-for-java/issues/18745
                     StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                    .map(healthResponse -> {
-                        final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                            new AnalyzeHealthcareEntitiesOperationDetail();
-                        AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    })),
-                pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId,
-                    null, null, finalIncludeStatistics, context)),
-                cancelOperation(healthcareTaskId -> service.cancelHealthJobWithResponseAsync(healthcareTaskId,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))),
-                fetchingOperation(resultId -> Mono.just(getHealthcareEntitiesResultCollectionFluxPage(resultId,
-                    null, null, finalIncludeStatistics, context)))
+                    finalContext).map(
+                        healthResponse -> {
+                            final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
+                                new AnalyzeHealthcareEntitiesOperationDetail();
+                            AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                                parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                            return operationDetail;
+                        })),
+                pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId,
+                    null, null, finalIncludeStatistics, finalContext)),
+                cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesResultCollectionFluxPage(operationId,
+                    null, null, finalIncludeStatistics, finalContext)))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -112,9 +111,9 @@ class AnalyzeHealthcareEntityAsyncClient {
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            if (options == null) {
-                options = new AnalyzeHealthcareEntitiesOptions();
-            }
+            options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
+            final Context finalContext = getNotNullContext(context)
+                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 // TODO: after poller has the poll interval, use it.
@@ -125,45 +124,44 @@ class AnalyzeHealthcareEntityAsyncClient {
                     options.getModelVersion(),
                     // TODO: explore StringIndexType to user. https://github.com/Azure/azure-sdk-for-java/issues/18745
                     StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                    .map(healthResponse -> {
-                        final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                            new AnalyzeHealthcareEntitiesOperationDetail();
-                        AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                            parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationDetail;
-                    })),
+                    finalContext).map(
+                        healthResponse -> {
+                            final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
+                                new AnalyzeHealthcareEntitiesOperationDetail();
+                            AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                                parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                            return operationDetail;
+                        })),
                 pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId, null,
-                    null, finalIncludeStatistics, context)),
-                cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))),
+                    null, finalIncludeStatistics, finalContext)),
+                cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
                 fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(
                     getHealthcareEntitiesResultCollectionFluxPage(operationId, null, null, finalIncludeStatistics,
-                        context)))));
+                        finalContext)))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     PagedFlux<AnalyzeHealthcareEntitiesResultCollection> getHealthcareEntitiesResultCollectionFluxPage(
-        UUID healthcareTaskId, Integer top, Integer skip, boolean showStats, Context context) {
+        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         return new PagedFlux<>(
-            () -> getPagedResult(null, healthcareTaskId, top, skip, showStats, context),
-            continuationToken -> getPagedResult(continuationToken, healthcareTaskId, top, skip, showStats, context));
+            () -> getPagedResult(null, operationId, top, skip, showStats, context),
+            continuationToken -> getPagedResult(continuationToken, operationId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> getPagedResult(String continuationToken,
-        UUID healthcareTaskId, Integer top, Integer skip, boolean showStats, Context context) {
+        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
                 final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
                 final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(healthcareTaskId, topValue, skipValue, showStats, context)
+                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } else {
-                return service.healthStatusWithResponseAsync(healthcareTaskId, top, skip, showStats, context)
+                return service.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             }
@@ -297,9 +295,6 @@ class AnalyzeHealthcareEntityAsyncClient {
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse) {
         LongRunningOperationStatus status;
         switch (analyzeOperationResultResponse.getValue().getStatus()) {
-            case CANCELLING:
-                status = LongRunningOperationStatus.fromString("CANCELLING", false);
-                break;
             case NOT_STARTED:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
@@ -307,21 +302,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
-            case REJECTED:
-                status = LongRunningOperationStatus.fromString("REJECTED", true);
-                break;
-            case FAILED:
-                final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
-                    null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrors(exception,
-                    IterableStream.of(analyzeOperationResultResponse.getValue().getErrors().stream()
-                        .map(Utility::toTextAnalyticsError).collect(Collectors.toList())));
-                throw logger.logExceptionAsError(exception);
             case CANCELLED:
                 status = LongRunningOperationStatus.USER_CANCELLED;
-                break;
-            case PARTIALLY_COMPLETED:
-                status = LongRunningOperationStatus.fromString("PARTIALLY_COMPLETED", false);
                 break;
             default:
                 status = LongRunningOperationStatus.fromString(
@@ -336,5 +318,14 @@ class AnalyzeHealthcareEntityAsyncClient {
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+    }
+
+    private Context getNotNullContext(Context context) {
+        return context == null ? Context.NONE : context;
+    }
+
+    private AnalyzeHealthcareEntitiesOptions getNotNullAnalyzeHealthcareEntitiesOptions(
+        AnalyzeHealthcareEntitiesOptions options) {
+        return options == null ? new AnalyzeHealthcareEntitiesOptions() : options;
     }
 }

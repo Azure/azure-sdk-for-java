@@ -61,11 +61,9 @@ public class AnalyzeHealthcareEntities {
 
         // Task operation statistics
         AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
-        System.out.printf("Job created time: %s, expiration time: %s.%n",
+        System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
-
         System.out.printf("Poller status: %s.%n", syncPoller.poll().getStatus());
-
         Iterable<PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> pagedResults =
             healthcareResultIterable.iterableByPage();
         for (PagedResponse<AnalyzeHealthcareEntitiesResultCollection> page : pagedResults) {
@@ -73,7 +71,8 @@ public class AnalyzeHealthcareEntities {
             System.out.println("Continuation Token: " + page.getContinuationToken());
             page.getElements().forEach(healthcareEntitiesResultCollection -> {
                 // Model version
-                System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+                System.out.printf(
+                    "Results of Azure Text Analytics \"Analyze Healthcare Entities\" Model, version: %s%n",
                     healthcareEntitiesResultCollection.getModelVersion());
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = healthcareEntitiesResultCollection.getStatistics();
@@ -88,9 +87,9 @@ public class AnalyzeHealthcareEntities {
                     AtomicInteger ct = new AtomicInteger();
                     // Healthcare entities
                     healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                        System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                        System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
                             ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                            healthcareEntity.getConfidenceScore());
+                            healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
                         // Data sources
                         IterableStream<EntityDataSource> dataSources = healthcareEntity.getDataSources();
                         if (dataSources != null) {
