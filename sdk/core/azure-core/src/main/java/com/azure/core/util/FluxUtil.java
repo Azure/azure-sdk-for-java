@@ -202,7 +202,7 @@ public final class FluxUtil {
 
         public ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
                                             reactor.util.context.Context reactorContext) {
-            super("", "");
+            super();
             this.contextAttributes = contextAttributes;
             this.reactorContext = reactorContext;
         }

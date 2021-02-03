@@ -34,6 +34,12 @@ public class Context {
     private final Object key;
     private final Object value;
 
+    protected Context() {
+        this.parent = null;
+        this.key = null;
+        this.value = null;
+    }
+
     /**
      * Constructs a new {@link Context} object.
      *
