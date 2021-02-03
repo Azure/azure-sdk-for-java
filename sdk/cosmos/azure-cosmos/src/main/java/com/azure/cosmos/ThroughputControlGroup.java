@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
