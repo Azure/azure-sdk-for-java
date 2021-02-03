@@ -6,12 +6,11 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-
+import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
@@ -3000,5 +2999,34 @@ class DirectoryAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Get file and subdirectory client"() {
+        setup:
+        def dirName = generatePathName()
+        def subPath = generatePathName()
+        dc = fsc.getDirectoryClient(resourcePrefix +  dirName)
+
+        when:
+        def fileClient = dc.getFileClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        fileClient.getFilePath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        when:
+        def subDirectoryClient = dc.getSubdirectoryClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        subDirectoryClient.getDirectoryPath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        where:
+        resourcePrefix          | subResourcePrefix         || _
+        ""                      | ""                        || _
+        Utility.urlEncode("%")  | ""                        || _ // Resource has special character
+        ""                      | Utility.urlEncode("%")    || _ // Sub resource has special character
+        Utility.urlEncode("%")  | Utility.urlEncode("%")    || _
     }
 }

@@ -35,7 +35,7 @@ public class AzureVMMetadata {
         this.compute = compute;
     }
 
-    private static class Compute {
+    public static class Compute {
         private String location;
         private String sku;
         private String azEnvironment;

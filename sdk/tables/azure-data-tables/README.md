@@ -138,7 +138,7 @@ Common uses of the Tables service include:
   - [Create a table](#create-a-table)
   - [List tables](#list-tables)
   - [Delete a table](#delete-a-table)
-- [Create, List, and Delete table entities](##create-list-and-delete-table-entities)
+- [Create, List, and Delete table entities](#create-list-and-delete-table-entities)
   - [Construct a `TableClient`](#construct-a-tableclient)
   - [Create an entity](#create-an-entity)
   - [List entities](#list-entities)

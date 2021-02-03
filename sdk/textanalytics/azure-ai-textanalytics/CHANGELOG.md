@@ -1,6 +1,31 @@
 # Release History
 ## 5.1.0-beta.4 (Unreleased)
+### Breaking changes
+#### Analyze multiple actions
+- Replace API `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
+  Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options)` to 
+  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
+  beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, 
+  AnalyzeBatchActionsOptions options)`. 
+- New overload API, `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
+  beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, 
+  AnalyzeBatchActionsOptions options)`
+- New class `ExtractKeyPhrasesActionResult`, `RecognizeEntitiesActionResult`, `RecognizePiiEntitiesActionResult`,
+  `TextAnalyticsActions`, `TextAnalyticsActionResult`
+- Removed `EntitiesTask`, `KeyPhrasesTask`, `PiiTask`, `TextAnalyticsErrorInformation`
+- Renamed
+  `AnalyzeTasksOptions` to `AnalyzeBatchActionsOptions`,
+  `AnalyzeTasksResult` to `AnalyzeBatchActionsResult`,
+  `EntitiesTaskParameters` to `RecognizeEntitiesOptions`
+  `KeyPhrasesTaskParameters` to `ExtractKeyPhrasesOptions`,
+  `PiiTaskParameters` to `RecognizePiiEntityOptions`,
+  `PiiEntityDomainType` to `PiiEntitiesDomainType`,
+  `RecognizePiiEntityOptions` to `RecognizePiiEntitiesOptions`,
+  `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`,
 
+## 5.0.2 (2021-01-14)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.12.0 and `azure-core-http-netty` to 1.7.1.
 
 ## 5.1.0-beta.3 (2020-11-19)
 ### New features

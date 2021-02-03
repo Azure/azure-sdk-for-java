@@ -140,7 +140,7 @@ extends:
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-with-filter
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
@@ -148,7 +148,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-resource-server-obo
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-stateless
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
@@ -170,12 +170,6 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-complete
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-initial
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration
-        groupId: com.azure.spring
       - name: azure-spring-cloud-sample-cache
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-binder
@@ -187,10 +181,6 @@ extends:
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management-web
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-messaging
         groupId: com.azure.spring

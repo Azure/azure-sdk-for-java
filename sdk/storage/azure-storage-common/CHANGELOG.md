@@ -1,7 +1,12 @@
 # Release History
 
-## 12.10.0-beta.2 (Unreleased)
+## 12.11.0-beta.1 (Unreleased)
+- Added support to log retries 
+- Removed a deep copy in PayloadSizeGate
+- Fixed a bug that would throw if uploading using a stream that returned a number > 0 from available() after the stream had ended
 
+## 12.10.0 (2021-01-14)
+- GA release
 
 ## 12.10.0-beta.1 (2020-12-07)
 - Added ability to specify timeout units in RequestRetryOptions.

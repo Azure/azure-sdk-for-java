@@ -35,7 +35,17 @@ import java.util.function.Function;
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
  *
- * @see ServiceBusAdministrationAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
+ * <p><strong>Create a queue</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string}
+ *
+ * <p><strong>Edit an existing subscription</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties}
+ *
+ * <p><strong>List all queues</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues}
+ *
+ * @see ServiceBusAdministrationClientBuilder
+ * @see ServiceBusAdministrationAsyncClient ServiceBusAdministrationAsyncClient for an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
 public final class ServiceBusAdministrationClient {
@@ -397,7 +407,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Deletes a subscription the matching {@code subscriptionName}.
+     * Deletes a subscription matching the {@code subscriptionName} in topic {@code topicName}.
      *
      * @param topicName Name of topic associated with subscription to delete.
      * @param subscriptionName Name of subscription to delete.
@@ -412,7 +422,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSubscription(String topicName, String subscriptionName) {
-        asyncClient.deleteSubscription(topicName, subscriptionName);
+        asyncClient.deleteSubscription(topicName, subscriptionName).block();
     }
 
     /**

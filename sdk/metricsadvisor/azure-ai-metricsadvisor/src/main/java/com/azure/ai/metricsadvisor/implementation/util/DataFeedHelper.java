@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link DataFeed} instance.
@@ -23,7 +23,7 @@ public final class DataFeedHelper {
      */
     public interface DataFeedAccessor {
         void setId(DataFeed feed, String id);
-        void setMetricIds(DataFeed feed, List<String> metricIds);
+        void setMetricIds(DataFeed feed, Map<String, String> metricIds);
         void setCreatedTime(DataFeed feed, OffsetDateTime createdTime);
         void setStatus(DataFeed feed, DataFeedStatus dataFeedStatus);
         void setSourceType(DataFeed feed, DataFeedSourceType dataFeedSourceType);
@@ -44,7 +44,7 @@ public final class DataFeedHelper {
         accessor.setId(feed, id);
     }
 
-    static void setMetricIds(DataFeed feed, List<String> metricIds) {
+    static void setMetricIds(DataFeed feed, Map<String, String> metricIds) {
         accessor.setMetricIds(feed, metricIds);
     }
 

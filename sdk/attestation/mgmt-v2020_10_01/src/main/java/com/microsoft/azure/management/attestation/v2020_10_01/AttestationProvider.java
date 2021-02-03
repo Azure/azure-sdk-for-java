@@ -18,6 +18,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.attestation.v2020_10_01.implementation.AttestationManager;
+import java.util.List;
 import com.microsoft.azure.management.attestation.v2020_10_01.implementation.AttestationProviderInner;
 
 /**
@@ -28,6 +29,11 @@ public interface AttestationProvider extends HasInner<AttestationProviderInner>,
      * @return the attestUri value.
      */
     String attestUri();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * @return the status value.
@@ -72,7 +78,7 @@ public interface AttestationProvider extends HasInner<AttestationProviderInner>,
         interface WithProperties {
            /**
             * Specifies properties.
-            * @param properties Properties of the attestation service instance
+            * @param properties Properties of the attestation provider
             * @return the next definition stage
 */
             WithCreate withProperties(AttestationServiceCreationSpecificParams properties);

@@ -33,7 +33,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

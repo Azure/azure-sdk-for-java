@@ -78,10 +78,19 @@ final class LocationData {
      */
     void update(int pollResponseStatusCode, HttpHeaders pollResponseHeaders, String pollResponseBody) {
         if (pollResponseStatusCode == 202) {
-            this.provisioningState = ProvisioningState.IN_PROGRESS;
-            final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger);
-            if (locationUrl != null) {
-                this.pollUrl = locationUrl;
+            try {
+                this.provisioningState = ProvisioningState.IN_PROGRESS;
+                final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger);
+                if (locationUrl != null) {
+                    this.pollUrl = locationUrl;
+                }
+            } catch (Util.MalformedUrlException mue) {
+                this.provisioningState = ProvisioningState.FAILED;
+                this.pollError = new Error(
+                    "Long running operation contains a malformed Location header.",
+                    pollResponseStatusCode,
+                    pollResponseHeaders.toMap(),
+                    pollResponseBody);
             }
         } else if (pollResponseStatusCode == 200 || pollResponseStatusCode == 201 || pollResponseStatusCode == 204) {
             this.provisioningState = ProvisioningState.SUCCEEDED;

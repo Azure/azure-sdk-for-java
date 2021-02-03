@@ -89,7 +89,7 @@ public final class CertificateClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
@@ -114,7 +114,7 @@ public final class CertificateClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags, Duration pollingInterval) {
         return client.beginCreateCertificate(certificateName, policy, isEnabled, tags, pollingInterval).getSyncPoller();
     }
@@ -136,7 +136,7 @@ public final class CertificateClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return client.beginCreateCertificate(certificateName, policy).getSyncPoller();
     }
@@ -154,7 +154,7 @@ public final class CertificateClient {
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link SyncPoller} to poll on the certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         return client.getCertificateOperation(certificateName).getSyncPoller();
     }
@@ -173,7 +173,7 @@ public final class CertificateClient {
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link SyncPoller} to poll on the certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName, Duration pollingInterval) {
         return client.getCertificateOperation(certificateName, pollingInterval).getSyncPoller();
     }
@@ -315,7 +315,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedCertificate deleted certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         return client.beginDeleteCertificate(certificateName).getSyncPoller();
     }
@@ -338,7 +338,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedCertificate deleted certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName, Duration pollingInterval) {
         return client.beginDeleteCertificate(certificateName, pollingInterval).getSyncPoller();
     }
@@ -442,7 +442,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
         return client.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
     }
@@ -464,7 +464,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName, Duration pollingInterval) {
         return client.beginRecoverDeletedCertificate(certificateName, pollingInterval).getSyncPoller();
     }

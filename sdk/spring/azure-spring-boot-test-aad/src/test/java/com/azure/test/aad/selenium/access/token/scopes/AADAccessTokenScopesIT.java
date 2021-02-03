@@ -3,7 +3,13 @@
 
 package com.azure.test.aad.selenium.access.token.scopes;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,33 +20,30 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 public class AADAccessTokenScopesIT {
 
+    private AADSeleniumITHelper aadSeleniumITHelper;
+
     @Test
-    public void testAccessTokenScopes() throws InterruptedException {
-        Map<String, String> arguments = new HashMap<>();
-        arguments.put(
+    public void testAccessTokenScopes() {
+        Map<String, String> properties = createDefaultProperties();
+        properties.put(
             "azure.activedirectory.authorization-clients.office.scopes",
             "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
                 + "https://manage.office.com/ServiceHealth.Read");
-        arguments.put(
+        properties.put(
             "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
-
+            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.Read.All");
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
+        aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
@@ -49,8 +52,13 @@ public class AADAccessTokenScopesIT {
         Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
         Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
-        httpResponse = aadSeleniumITHelper.httpGet("arm");
-        Assert.assertNotEquals(httpResponse, "arm");
+        httpResponse = aadSeleniumITHelper.httpGet("notExist");
+        Assert.assertNotEquals(httpResponse, "notExist");
+    }
+
+    @After
+    public void destroy() {
+        aadSeleniumITHelper.destroy();
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -85,10 +93,10 @@ public class AADAccessTokenScopesIT {
                            .orElse(null);
         }
 
-        @GetMapping(value = "arm")
-        public String arm(
-            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
-            return "arm";
+        @GetMapping(value = "notExist")
+        public String notExist(
+            @RegisteredOAuth2AuthorizedClient("notExist") OAuth2AuthorizedClient authorizedClient) {
+            return "notExist";
         }
     }
 
