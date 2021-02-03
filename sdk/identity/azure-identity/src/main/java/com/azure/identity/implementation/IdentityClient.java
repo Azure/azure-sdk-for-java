@@ -522,7 +522,7 @@ public class IdentityClient {
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
