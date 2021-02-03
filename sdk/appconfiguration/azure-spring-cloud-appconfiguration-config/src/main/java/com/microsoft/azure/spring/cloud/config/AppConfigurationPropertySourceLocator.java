@@ -57,6 +57,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
+    private static AtomicBoolean configLoaded = new AtomicBoolean(false);
+
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
@@ -73,6 +75,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     @Override
     public PropertySource<?> locate(Environment environment) {
         if (!(environment instanceof ConfigurableEnvironment)) {
+            return null;
+        }
+
+        if (configLoaded.get()) {
             return null;
         }
 
@@ -99,6 +105,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
+        configLoaded.set(true);
         startup.set(false);
         return composite;
     }
