@@ -51,23 +51,6 @@ public class RemoteRenderingAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Session> createSession(String sessionId, SessionCreationOptions options) {
-        return impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
-    }
-
-    /**
-     * Creates a new rendering session.
-     *
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
-     *     cannot contain more than 256 characters.
-     * @param options Settings for the session to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the rendering session.
-     */
     public PollerFlux<Session, Session> beginSession(String sessionId, SessionCreationOptions options) {
         return new PollerFlux<Session, Session>(
             options.getPollInterval(),
@@ -179,33 +162,6 @@ public class RemoteRenderingAsyncClient {
                     p.getValue().stream().map(sessionProperties -> ModelTranslator.fromGenerated(sessionProperties)).collect(Collectors.toList()),
                     p.getContinuationToken(),
                     null)));
-    }
-
-    // TODO REMOVE
-    /**
-     * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
-     * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
-     * storageContainerWriteSas) for storage access need to be provided. Documentation how to link your Azure Remote
-     * Rendering account with the Azure Blob Storage account can be found in the
-     * [documentation](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
-     *
-     * <p>All files in the input container starting with the blobPrefix will be retrieved to perform the conversion. To
-     * cut down on conversion times only necessary files should be available under the blobPrefix.
-     *
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
-     *     more than 256 characters.
-     * @param options The conversion options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the conversion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> startConversion(String conversionId, ConversionOptions options) {
-
-        return impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), Context.NONE)
-            .map(r -> ModelTranslator.fromGenerated(r.getValue()));
     }
 
     /**
