@@ -23,6 +23,7 @@ public final class ByteBufferCollector {
     private static final int DEFAULT_INITIAL_SIZE = 1024;
 
     private static final String INVALID_INITIAL_SIZE = "'initialSize' cannot be equal to or less than 0.";
+    private static final String REQUESTED_BUFFER_INVALID = "Required capacity is greater than Integer.MAX_VALUE.";
 
     private final ClientLogger logger = new ClientLogger(ByteBufferCollector.class);
 
@@ -84,7 +85,7 @@ public final class ByteBufferCollector {
          * overflow response by checking that the result uses the same sign as both of the addition arguments.
          */
         if (((currentCapacity ^ requiredCapacity) & (byteBufferRemaining ^ requiredCapacity)) < 0) {
-            throw logger.logThrowableAsError(new OutOfMemoryError());
+            throw logger.logExceptionAsError(new IllegalStateException(REQUESTED_BUFFER_INVALID));
         }
 
         // Buffer is already large enough to accept the data being written.

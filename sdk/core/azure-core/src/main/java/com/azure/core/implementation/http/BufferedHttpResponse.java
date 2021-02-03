@@ -28,7 +28,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
+        this.cachedBody = collectResponseWithHint(innerHttpResponse.getBody(),
+            innerHttpResponse.getHeaderValue("Content-Length"))
             .map(ByteBuffer::wrap)
             .flux()
             .cache()
@@ -74,5 +75,18 @@ public final class BufferedHttpResponse extends HttpResponse {
     @Override
     public BufferedHttpResponse buffer() {
         return this;
+    }
+
+    private static Mono<byte[]> collectResponseWithHint(Flux<ByteBuffer> data, String contentLengthHeader) {
+        if (contentLengthHeader == null) {
+            return FluxUtil.collectBytesInByteBufferStream(data);
+        } else {
+            try {
+                int contentLength = Integer.parseInt(contentLengthHeader);
+                return FluxUtil.collectBytesInByteBufferStream(data, contentLength);
+            } catch (NumberFormatException ex) {
+                return FluxUtil.collectBytesInByteBufferStream(data);
+            }
+        }
     }
 }

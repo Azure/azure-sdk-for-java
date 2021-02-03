@@ -53,7 +53,7 @@ public final class FluxUtil {
      *
      * @param stream A stream which emits ByteBuffer instances.
      * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
-     * @throws OutOfMemoryError If the combined size of the emitted ByteBuffers is greater than {@link
+     * @throws IllegalStateException If the combined size of the emitted ByteBuffers is greater than {@link
      * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
@@ -72,7 +72,7 @@ public final class FluxUtil {
      * @param sizeHint A hint about the expected stream size.
      * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
      * @throws IllegalArgumentException If {@code sizeHint} is equal to or less than {@code 0}.
-     * @throws OutOfMemoryError If the combined size of the emitted ByteBuffers is greater than {@link
+     * @throws IllegalStateException If the combined size of the emitted ByteBuffers is greater than {@link
      * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream, int sizeHint) {

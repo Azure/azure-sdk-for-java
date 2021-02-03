@@ -66,9 +66,8 @@ class JdkAsyncHttpClient implements HttpClient {
                         int statusCode = innerResponse.statusCode();
                         HttpHeaders headers = fromJdkHttpHeaders(innerResponse.headers());
 
-                        return FluxUtil.collectBytesInByteBufferStream(JdkFlowAdapter
-                            .flowPublisherToFlux(innerResponse.body())
-                            .flatMapSequential(Flux::fromIterable))
+                        return collectResponseWithHint(JdkFlowAdapter.flowPublisherToFlux(innerResponse.body())
+                            .flatMapSequential(Flux::fromIterable), headers)
                             .map(bytes -> new BufferedJdkHttpResponse(request, statusCode, headers, bytes));
                     } else {
                         return Mono.just(new JdkHttpResponse(request, innerResponse));
@@ -196,5 +195,20 @@ class JdkAsyncHttpClient implements HttpClient {
         }
 
         return httpHeaders;
+    }
+
+    static Mono<byte[]> collectResponseWithHint(Flux<ByteBuffer> data, HttpHeaders headers) {
+        HttpHeader contentLengthHeader = headers.get("Content-Length");
+
+        if (contentLengthHeader == null) {
+            return FluxUtil.collectBytesInByteBufferStream(data);
+        } else {
+            try {
+                int contentLength = Integer.parseInt(contentLengthHeader.getValue());
+                return FluxUtil.collectBytesInByteBufferStream(data, contentLength);
+            } catch (NumberFormatException ex) {
+                return FluxUtil.collectBytesInByteBufferStream(data);
+            }
+        }
     }
 }
