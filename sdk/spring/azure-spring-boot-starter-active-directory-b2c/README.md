@@ -61,9 +61,10 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
 This starter provides a way to integrate with Spring Security and authenticate with Azure Active Directory B2C, which are designed for the scenario of web application.
 
 The authorization flow for web application includes:
-* Login with credentials by self-defined sign up or sign in client registration that will be the default client, and trigger **authorization code flow**. Application acquires access token by the fixed scopes, which are `clientId` of the sign in or sign up user flow, `openid`, and `offline_access`.
+* Login with credentials by self-defined sign up or sign in client registration that will be the default client, and trigger **authorization code flow**. 
+  Application acquires access token by the fixed scopes, which are your registered application id, Microsoft Graph `openid`, and `offline_access`.
 * Each user flow instance will act as a client registration.
-* Support built-in other resources or custom resources, also act as a client registration.
+* Support built-in other resources or custom resources, which also act as client registrations.
 * When resources are visited, associated clients will be loaded and trigger **authorization code flow** like the default client.
 
 ### Configurable properties
@@ -207,16 +208,15 @@ Azure SDKs for Java offers a consistent logging story to help aid in troubleshoo
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
-The following example shows potential logging settings in `application.yml`:
+The following example shows potential logging settings in `application.properties`:
 
-```yaml
-logging:
-  level:
-    root: WARN
-    org.springframework.web: DEBUG
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-custom-log-levels).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.

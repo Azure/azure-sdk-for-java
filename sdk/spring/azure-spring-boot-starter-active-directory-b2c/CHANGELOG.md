@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
+- Remove `azure.activedirectory.b2c.oidc-enabled` configuration.
 - Change user flow configuration, below is the new structure:
     ```yaml
     azure:
@@ -24,8 +25,6 @@
             commerce:
               scopes:
                 - https://commerceapi.office.net/teams
-                - openid
-                - offline_access
     ```
 
 ## 3.1.0 (2021-01-20)
