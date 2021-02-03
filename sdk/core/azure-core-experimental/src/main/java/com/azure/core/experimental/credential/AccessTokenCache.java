@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.http.policy;
+package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;

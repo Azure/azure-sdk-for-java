@@ -6,6 +6,7 @@ package com.azure.core.experimental.http.policy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.credential.AccessTokenCache;
 import com.azure.core.experimental.implementation.AuthenticationChallenge;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;

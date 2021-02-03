@@ -37,7 +37,7 @@ public class SimpleTokenCache {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+                                                .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
     /**
@@ -45,14 +45,6 @@ public class SimpleTokenCache {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
-        return getToken(this.tokenSupplier);
-    }
-
-    /**
-     * Asynchronously get a token from either the cache or replenish the cache with a new token.
-     * @return a Publisher that emits an AccessToken
-     */
-    public Mono<AccessToken> getToken(Supplier<Mono<AccessToken>> tokenSupplier) {
         return Mono.defer(() -> {
             try {
                 if (wip.compareAndSet(null, MonoProcessor.create())) {
