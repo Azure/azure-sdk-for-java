@@ -8,14 +8,7 @@ parameters:
   PreSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
-  TestStepMavenInputs:
-    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
-    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '$(JavaTestVersion)'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    goals: 'verify'
+  TestStepMavenInputs: {}
   TestResultsFiles: ''
   CloudConfig: {}
   ArmTemplateParameters: '@{}'
