@@ -76,7 +76,7 @@ public final class ConditionalAccessException extends RuntimeException {
      */
     public static Map<String, Object> httpHeaderToParameters(String httpHeader) {
         String[] parameters = Optional.of(httpHeader)
-                                      .map(str -> str.substring(Constants.BEARER_PREFIX.length() + 1,str.length() - 1))
+                                      .map(str -> str.substring(Constants.BEARER_PREFIX.length() + 1, str.length() - 1))
                                       .map(str -> str.split(", "))
                                       .orElse(null);
         return Arrays.asList(parameters)
