@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.azure.communication.common.ConnectionString;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -30,11 +30,11 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-    
-    protected static final String PHONE_NUMBER = 
+
+    protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
     protected static final String COUNTRY_CODE =
-        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");   
+        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
         Configuration.getGlobalConfiguration().get("AREA_CODE", "619");
     protected static final String LOCALE =
@@ -93,16 +93,16 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
-        
+
         return builder;
     }
 
     protected PhoneNumberClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
         builder
-            .endpoint(new ConnectionString(CONNECTION_STRING).getEndpoint())
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {

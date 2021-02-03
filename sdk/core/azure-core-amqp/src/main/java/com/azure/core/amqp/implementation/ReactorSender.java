@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -80,7 +81,8 @@ class ReactorSender implements AmqpSendLink {
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
     private final AmqpRetryPolicy retry;
-    private final Duration timeout;
+    private final AmqpRetryOptions retryOptions;
+    private final String activeTimeoutMessage;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
 
     private final Object errorConditionLock = new Object();
@@ -90,15 +92,19 @@ class ReactorSender implements AmqpSendLink {
     private volatile int linkSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-        TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry) {
+        TokenManager tokenManager, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
         this.reactorProvider = reactorProvider;
         this.tokenManager = tokenManager;
         this.messageSerializer = messageSerializer;
-        this.retry = retry;
-        this.timeout = timeout;
+        this.retryOptions = retryOptions;
+        this.retry = RetryUtil.getRetryPolicy(retryOptions);
+        this.activeTimeoutMessage = String.format(
+            "ReactorSender connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
+            handler.getConnectionId(), handler.getLinkName());
 
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
@@ -257,22 +263,23 @@ class ReactorSender implements AmqpSendLink {
 
         synchronized (this) {
             if (linkSize > 0) {
-                return Mono.just(this.linkSize);
+                return Mono.just(linkSize);
             }
 
-            return RetryUtil.withRetry(
-                getEndpointStates()
-                    .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
-                    .then(Mono.fromCallable(() -> {
-                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+            return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+                retryOptions, activeTimeoutMessage)
+                .then(Mono.fromCallable(() -> {
+                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+                    if (remoteMaxMessageSize != null) {
+                        linkSize = remoteMaxMessageSize.intValue();
+                    } else {
+                        logger.warning("connectionId[{}], linkName[{}]: Could not get the getRemoteMaxMessageSize."
+                                + " Returning current link size: {}", handler.getConnectionId(), handler.getLinkName(),
+                            linkSize);
+                    }
 
-                        if (remoteMaxMessageSize != null) {
-                            this.linkSize = remoteMaxMessageSize.intValue();
-                        }
-
-                        return this.linkSize;
-                    })),
-                timeout, retry);
+                    return linkSize;
+                }));
         }
     }
 
@@ -316,16 +323,14 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
-        return validateEndpoint()
-            .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
-                arrayOffset, messageFormat, sink, timeout, deliveryState)))
-            );
-    }
+        final Flux<EndpointState> activeEndpointFlux = RetryUtil.withRetry(
+            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), retryOptions,
+            activeTimeoutMessage);
 
-    private Mono<Void> validateEndpoint() {
-        return Mono.defer(() -> RetryUtil.withRetry(
-            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-            .then());
+        return activeEndpointFlux.then(Mono.create(sink -> {
+            sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
+                deliveryState));
+        }));
     }
 
     /**
@@ -405,7 +410,7 @@ class ReactorSender implements AmqpSendLink {
                     getLinkName(), deliveryTag);
 
                 workItem.setWaitingForAck();
-                sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
+                sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), retryOptions.getTryTimeout().toMillis());
             } else {
                 logger.verbose(
                     "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], "
@@ -585,7 +590,8 @@ class ReactorSender implements AmqpSendLink {
                 final boolean isLastErrorAfterSleepTime =
                     lastErrorTime.isAfter(now.minusSeconds(SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS));
                 final boolean isServerBusy = lastError instanceof AmqpException && isLastErrorAfterSleepTime;
-                final boolean isLastErrorAfterOperationTimeout = lastErrorTime.isAfter(now.minus(timeout));
+                final boolean isLastErrorAfterOperationTimeout =
+                    lastErrorTime.isAfter(now.minus(retryOptions.getTryTimeout()));
 
                 cause = isServerBusy || isLastErrorAfterOperationTimeout
                     ? lastError

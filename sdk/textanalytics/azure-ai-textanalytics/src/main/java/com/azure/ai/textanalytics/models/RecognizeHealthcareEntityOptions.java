@@ -10,7 +10,7 @@ import java.time.Duration;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
 /**
- * The {@link RecognizePiiEntityOptions} model.
+ * The {@link RecognizeHealthcareEntityOptions} model.
  */
 @Fluent
 public final class RecognizeHealthcareEntityOptions extends TextAnalyticsRequestOptions {

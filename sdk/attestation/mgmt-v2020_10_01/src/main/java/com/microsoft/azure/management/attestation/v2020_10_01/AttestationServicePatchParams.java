@@ -12,17 +12,17 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for patching an attestation service instance.
+ * Parameters for patching an attestation provider.
  */
 public class AttestationServicePatchParams {
     /**
-     * The tags that will be assigned to the attestation service instance.
+     * The tags that will be assigned to the attestation provider.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
-     * Get the tags that will be assigned to the attestation service instance.
+     * Get the tags that will be assigned to the attestation provider.
      *
      * @return the tags value
      */
@@ -31,7 +31,7 @@ public class AttestationServicePatchParams {
     }
 
     /**
-     * Set the tags that will be assigned to the attestation service instance.
+     * Set the tags that will be assigned to the attestation provider.
      *
      * @param tags the tags value to set
      * @return the AttestationServicePatchParams object itself.
