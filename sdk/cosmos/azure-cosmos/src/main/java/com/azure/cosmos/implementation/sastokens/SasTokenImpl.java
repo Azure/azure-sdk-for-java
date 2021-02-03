@@ -23,6 +23,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionScope.SCOPE_CONTAINER_READ;
 import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionScope.SCOPE_CONTAINER_READ_OFFER;
+import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionScope.SCOPE_CONTAINER_WRITE_ALL_ACCESS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_ITEMS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_STORED_PROCEDURES;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_TRIGGERS;
@@ -203,7 +204,7 @@ public class SasTokenImpl implements SasTokenProperties {
             .append(String.format("%X", this.dataPlaneReaderScope)). append("\n")
             .append(String.format("%X", this.dataPlaneWriterScope)). append("\n");
 
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(payload.toString().getBytes(StandardCharsets.UTF_8));
+        return Utils.encodeBase64String(payload.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private String getSasTokenWithHMACSHA256(String key) {
@@ -218,7 +219,7 @@ public class SasTokenImpl implements SasTokenProperties {
             String payload = this.generatePayload();
             byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8);
             byte[] digest = macInstance.doFinal(payloadBytes);
-            String authorizationToken = Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
+            String authorizationToken = Utils.encodeBase64String(digest);
 
             StringBuilder token = new StringBuilder(AUTH_PREFIX)
                 .append(authorizationToken)
@@ -505,7 +506,7 @@ public class SasTokenImpl implements SasTokenProperties {
                 this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_USER_DEFINED_FUNCTIONS.value();
                 break;
             }
-            case CONTAINER_EXECUTE_STORE_PROCEDURES: {
+            case CONTAINER_EXECUTE_STORED_PROCEDURES: {
                 this.dataPlaneWriterScope |= SCOPE_CONTAINER_EXECUTE_STORED_PROCEDURES.value();
                 break;
             }
@@ -517,14 +518,24 @@ public class SasTokenImpl implements SasTokenProperties {
                 this.dataPlaneWriterScope |= SCOPE_CONTAINER_DELETE_CONFLICTS.value();
                 break;
             }
+            case CONTAINER_READ_ANY: {
+                this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_ALL_ACCESS.value();
+                break;
+            }
+            case CONTAINER_FULL_ACCESS: {
+                this.dataPlaneReaderScope |= SCOPE_CONTAINER_READ_ALL_ACCESS.value();
+                this.dataPlaneWriterScope |= SCOPE_CONTAINER_WRITE_ALL_ACCESS.value();
+                break;
+            }
+
 
             // Cosmos container item scope.
             case ITEM_FULL_ACCESS: {
                 this.dataPlaneWriterScope |= SCOPE_ITEM_WRITE_ALL_ACCESS.value();
-                this.addPermission(SasTokenPermissionKind.ITEM_READ_ALL_ACCESS);
+                this.addPermission(SasTokenPermissionKind.ITEM_READ_ANY);
                 break;
             }
-            case ITEM_READ_ALL_ACCESS: {
+            case ITEM_READ_ANY: {
                 this.dataPlaneReaderScope |= SCOPE_ITEM_READ_ALL_ACCESS.value();
                 break;
             }

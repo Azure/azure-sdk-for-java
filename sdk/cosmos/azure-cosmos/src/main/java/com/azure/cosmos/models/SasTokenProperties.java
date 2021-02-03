@@ -212,6 +212,7 @@ public interface SasTokenProperties {
 
     /**
      * Adds a permission setting to execute specific Cosmos operation or set of operations.
+     * If no specific permission was set, default is read permissions at the container level.
      *
      * @param permissionKind the permission setting which allows execution of specific Cosmos operation or set of operations.
      * @return the current permission configuration object.

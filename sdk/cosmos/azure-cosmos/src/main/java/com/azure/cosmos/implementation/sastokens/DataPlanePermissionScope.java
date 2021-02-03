@@ -97,13 +97,13 @@ public enum DataPlanePermissionScope {
     /**
      * Composite read scope.
      */
-    SCOPE_CONTAINER_READ_ALL_ACCESS("ContainersReadAllAccess", SCOPE_CONTAINER_READ_ALL_ACCESS_VALUE),
+    SCOPE_CONTAINER_READ_ALL_ACCESS("ContainerReadAllAccess", SCOPE_CONTAINER_READ_ALL_ACCESS_VALUE),
     SCOPE_ITEM_READ_ALL_ACCESS("ItemReadAllAccess", SCOPE_ITEM_READ_ALL_ACCESS_VALUE),
 
     /**
      * Composite write scope.
      */
-    SCOPE_CONTAINER_WRITE_ALL_ACCESS("ContainersWriteAllAccess", SCOPE_CONTAINER_WRITE_ALL_ACCESS_VALUE),
+    SCOPE_CONTAINER_WRITE_ALL_ACCESS("ContainerWriteAllAccess", SCOPE_CONTAINER_WRITE_ALL_ACCESS_VALUE),
     SCOPE_ITEM_WRITE_ALL_ACCESS("ItemWriteAllAccess", SCOPE_ITEM_WRITE_ALL_ACCESS_VALUE),
 
     NONE("None", 0x0);
