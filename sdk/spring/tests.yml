@@ -75,24 +75,18 @@ stages:
           AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
           AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
-          AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)@aadittest1.onmicrosoft.com"
+          AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)-$(System.JobAttempt)@aadittest1.onmicrosoft.com"
           AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
           AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
 
         PreSteps:
           - powershell: |
-              echo $(System.JobId)
-              echo $(System.JobAttempt)
-              echo $(System.DefinitionId)
-              echo $(System.PullRequest.PullRequestId)
-              echo $(Build.BuildId)
-              echo $(Build.BuildNumber)
               az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
-              az ad user create --user-principal-name "$env:AAD_USER_NAME_ON_DEMAND" --display-name "user$(System.JobId)" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+              az ad user create --user-principal-name "$env:AAD_USER_NAME_ON_DEMAND" --display-name "user$(System.JobId)-$(Build.BuildId)-$(System.JobAttempt)" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
               az logout
             env:
-              AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)@aadittest1.onmicrosoft.com"
+              AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)-$(System.JobAttempt)@aadittest1.onmicrosoft.com"
             displayName: 'Create On-demand test user'
 
         PostSteps:
@@ -152,6 +146,6 @@ stages:
               az ad user delete --id "$env:AAD_USER_NAME_ON_DEMAND"
               az logout
             env:
-              AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)@aadittest1.onmicrosoft.com"
+              AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)-$(System.JobAttempt)@aadittest1.onmicrosoft.com"
             condition: always()
             displayName: 'Delete On-demand test user'
