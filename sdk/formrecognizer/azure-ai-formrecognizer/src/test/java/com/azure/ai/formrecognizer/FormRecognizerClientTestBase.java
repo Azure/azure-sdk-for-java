@@ -332,7 +332,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
                     break;
                 case STRING:
-                    if (!Objects.equals(actualFormField.getName(), "ReceiptType")) {
+                    if (!"ReceiptType".equals(actualFormField.getName())) {
                         assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
                     }
                     break;

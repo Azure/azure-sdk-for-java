@@ -5,9 +5,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import java.util.Collection;
 
 /** Defines values for FormRecognizerLanguage. */
 public final class FormRecognizerLanguage extends ExpandableStringEnum<FormRecognizerLanguage> {
@@ -44,13 +41,7 @@ public final class FormRecognizerLanguage extends ExpandableStringEnum<FormRecog
      * @param name a name to look for.
      * @return the corresponding FormRecognizerLanguage.
      */
-    @JsonCreator
     public static FormRecognizerLanguage fromString(String name) {
         return fromString(name, FormRecognizerLanguage.class);
-    }
-
-    /** @return known FormRecognizerLanguage values. */
-    public static Collection<FormRecognizerLanguage> values() {
-        return values(FormRecognizerLanguage.class);
     }
 }

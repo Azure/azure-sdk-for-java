@@ -5,11 +5,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
-/** Defines values for c. */
+/** Defines values for FormRecognizerLocale. */
 public final class FormRecognizerLocale extends ExpandableStringEnum<FormRecognizerLocale> {
     /** Static value en-AU for FormRecognizerLocale. */
     public static final FormRecognizerLocale EN_AU = fromString("en-AU");
@@ -32,13 +29,7 @@ public final class FormRecognizerLocale extends ExpandableStringEnum<FormRecogni
      * @param name a name to look for.
      * @return the corresponding FormRecognizerLocale.
      */
-    @JsonCreator
     public static FormRecognizerLocale fromString(String name) {
         return fromString(name, FormRecognizerLocale.class);
-    }
-
-    /** @return known FormRecognizerLocale values. */
-    public static Collection<FormRecognizerLocale> values() {
-        return values(FormRecognizerLocale.class);
     }
 }
