@@ -174,7 +174,6 @@ public class ClientTelemetry {
         }).subscribe();
     }
 
-
     private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
         try {
             return OBJECT_MAPPER.readValue(itemResponseBodyAsString, itemClassType);
