@@ -83,7 +83,11 @@ public final class BufferedHttpResponse extends HttpResponse {
         } else {
             try {
                 int contentLength = Integer.parseInt(contentLengthHeader);
-                return FluxUtil.collectBytesInByteBufferStream(data, contentLength);
+                if (contentLength > 0) {
+                    return FluxUtil.collectBytesInByteBufferStream(data, contentLength);
+                } else {
+                    return Mono.just(new byte[0]);
+                }
             } catch (NumberFormatException ex) {
                 return FluxUtil.collectBytesInByteBufferStream(data);
             }

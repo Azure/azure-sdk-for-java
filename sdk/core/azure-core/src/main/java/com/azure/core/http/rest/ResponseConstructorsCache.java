@@ -69,7 +69,8 @@ final class ResponseConstructorsCache {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
                 try {
-                    return MethodHandles.lookup().unreflectConstructor(constructor);
+                    return MethodHandles.publicLookup().unreflectConstructor(constructor);
+//                    return MethodHandles.lookup().unreflectConstructor(constructor);
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
                 }
