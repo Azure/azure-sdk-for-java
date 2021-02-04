@@ -7,8 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.models.*;
 
 import java.util.List;
@@ -22,6 +20,7 @@ public class RemoteRenderingClient {
         this.client = client;
     }
 
+
     /**
      * Creates a new rendering session.
      *
@@ -34,9 +33,9 @@ public class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    public SyncPoller<Session, Session> beginSession(String sessionId, CreateSessionOptions options) {
-        PollerFlux<Session, Session> asyncPoller = client.beginSession(sessionId, options);
-        return asyncPoller.getSyncPoller();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Session createSession(String sessionId, SessionCreationOptions options) {
+        return client.createSession(sessionId, options).block();
     }
 
     /**
@@ -68,7 +67,7 @@ public class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Session updateSession(String sessionId, UpdateSessionOptions options) {
+    public Session updateSession(String sessionId, SessionUpdateOptions options) {
         return client.updateSession(sessionId, options).block();
     }
 
@@ -119,9 +118,9 @@ public class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the conversion.
      */
-    public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
-        PollerFlux<Conversion, Conversion> asyncPoller = client.beginConversion(conversionId, options);
-        return asyncPoller.getSyncPoller();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Conversion startConversion(String conversionId, ConversionOptions options) {
+        return client.startConversion(conversionId, options).block();
     }
 
     /**

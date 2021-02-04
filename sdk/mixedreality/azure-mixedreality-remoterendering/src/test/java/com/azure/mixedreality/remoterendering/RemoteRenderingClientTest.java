@@ -5,7 +5,7 @@ import com.azure.mixedreality.remoterendering.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.UUID;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,14 +29,13 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
 
-        ConversionOptions conversionOptions = new ConversionOptionsBuilder()
+        ConversionOptions conversionOptions = new ConversionOptions()
             .inputStorageContainerUri(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
             .inputStorageContainerReadListSas(getBlobContainerSasToken())
             .outputStorageContainerUri(getStorageUrl())
-            .outputBlobPrefix("Output")
-            .buildConversionOptions();
+            .outputBlobPrefix("Output");
 
         String conversionId = getRandomId("conversionTest");
 
@@ -45,7 +44,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         var conversion0 = conversionPoller.poll().getValue();
 
         assertEquals(conversionId, conversion0.getId());
-        assertEquals(conversionOptions.getConversionInputOptions().getRelativeAssetPath(), conversion0.getOptions().getConversionInputOptions().getRelativeAssetPath());
+        assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion0.getOptions().getInputRelativeAssetPath());
         assertNotEquals(ConversionStatus.FAILED, conversion0.getStatus());
 
         Conversion conversion = client.getConversion(conversionId);
@@ -74,7 +73,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     //@MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
-        SessionCreationOptions options = new SessionCreationOptions(4, SessionSize.STANDARD);
+        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(SessionSize.STANDARD);
 
         String sessionId = getRandomId("sessionTest");
 
@@ -88,19 +87,19 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         Session sessionProperties = client.getSession(sessionId);
         assertEquals(session0.getCreationTime(), sessionProperties.getCreationTime());
 
-        SessionUpdateOptions updateOptions = new SessionUpdateOptions(5);
+        UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(5));
         Session updatedSession = client.updateSession(sessionId, updateOptions);
-        assertEquals(updatedSession.getMaxLeaseTimeMinutes(), 5);
+        assertEquals(updatedSession.getMaxLeaseTime().toMinutes(), 5);
 
         Session readyRenderingSession = sessionPoller.getFinalResult();
-        assertTrue(readyRenderingSession.getMaxLeaseTimeMinutes() == 5);
+        assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 5);
         assertNotNull(readyRenderingSession.getHostname());
         assertNotNull(readyRenderingSession.getArrInspectorPort());
         assertNotNull(readyRenderingSession.getHostname());
         assertEquals(readyRenderingSession.getSize(), options.getSize());
 
-        SessionUpdateOptions updateOptions2 = new SessionUpdateOptions(6);
-        assertEquals(6, updateOptions2.getMaxLeaseTimeMinutes());
+        UpdateSessionOptions updateOptions2 = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(6));
+        assertEquals(6, updateOptions2.getMaxLeaseTime().toMinutes());
 
         AtomicReference<Boolean> foundSession = new AtomicReference<Boolean>(false);
 
