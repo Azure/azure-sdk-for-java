@@ -29,7 +29,7 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
 
         assertThatThrownBy(() -> container.enableThroughputLocalControlGroup("group-2", 10, true))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Only at most one group can be set as default");
+            .hasMessage("A default group already exists");
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
