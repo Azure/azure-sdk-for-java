@@ -12,7 +12,7 @@ public class TestInvitationDataGenerator {
 
     @Test(groups="unit")
     public void testGenerate() {
-        final InvitationDataGenerator invitationDataGenerator = new InvitationDataGenerator();
+        final InvitationDataGenerator invitationDataGenerator = new InvitationDataGenerator(RECORD_COUNT);
         final Map<Key, ObjectNode> results = invitationDataGenerator.generate(RECORD_COUNT);
         assertThat(results.size()).isEqualTo(RECORD_COUNT);
     }
