@@ -11,12 +11,19 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.options.OnActionAddedOptions;
+import com.azure.search.documents.options.OnActionErrorOptions;
+import com.azure.search.documents.options.OnActionSentOptions;
+import com.azure.search.documents.options.OnActionSucceededOptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -40,11 +47,18 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private volatile boolean isClosed = false;
 
     SearchIndexingBufferedAsyncSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
-        SearchIndexingBufferedSenderOptions<T> options) {
-        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, options);
+        Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
+        int initialBatchActionCount, int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
+        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
+        Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
+        Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
+        Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
+            initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
+            onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
 
-        this.autoFlush = options.getAutoFlush();
-        this.flushWindowMillis = Math.max(0, options.getAutoFlushInterval().toMillis());
+        this.autoFlush = autoFlush;
+        this.flushWindowMillis = Math.max(0, autoFlushInterval.toMillis());
         this.autoFlushTimer = (this.autoFlush && this.flushWindowMillis > 0) ? new Timer() : null;
 
     }

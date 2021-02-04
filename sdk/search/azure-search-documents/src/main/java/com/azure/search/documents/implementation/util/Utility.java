@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
@@ -151,6 +152,16 @@ public final class Utility {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    public static SearchIndexClientImpl buildRestClient(String endpoint, String indexName, HttpPipeline httpPipeline,
+        SerializerAdapter adapter) {
+        return new SearchIndexClientImplBuilder()
+            .endpoint(endpoint)
+            .indexName(indexName)
+            .pipeline(httpPipeline)
+            .serializerAdapter(adapter)
+            .buildClient();
     }
 
     private Utility() {

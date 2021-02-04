@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.search.documents.SearchIndexingBufferedSenderOptions;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.util.Utility;
@@ -55,8 +54,8 @@ public final class SearchIndexingPublisher<T> {
     private final boolean autoFlush;
     private int batchActionCount;
     private final int maxRetries;
-    private final Duration retryDelay;
-    private final Duration maxRetryDelay;
+    private final Duration throttlingDelay;
+    private final Duration maxThrottlingDelay;
 
     private final Consumer<OnActionAddedOptions<T>> onActionAddedConsumer;
     private final Consumer<OnActionSentOptions<T>> onActionSentConsumer;
@@ -75,26 +74,30 @@ public final class SearchIndexingPublisher<T> {
     volatile Duration currentRetryDelay = Duration.ZERO;
 
     public SearchIndexingPublisher(SearchIndexClientImpl restClient, JsonSerializer serializer,
-        SearchIndexingBufferedSenderOptions<T> options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        this.documentKeyRetriever = Objects.requireNonNull(options.getDocumentKeyRetriever(),
-            "'options.documentKeyRetriever' cannot be null");
+        Function<T, String> documentKeyRetriever, boolean autoFlush, int initialBatchActionCount,
+        int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
+        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
+        Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
+        Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
+        Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
+            "'documentKeyRetriever' cannot be null");
 
         this.restClient = restClient;
         this.serializer = serializer;
 
-        this.autoFlush = options.getAutoFlush();
-        this.batchActionCount = options.getInitialBatchActionCount();
-        this.maxRetries = options.getMaxRetriesPerAction();
-        this.retryDelay = options.getThrottlingDelay();
-        this.maxRetryDelay = (options.getMaxThrottlingDelay().compareTo(retryDelay) < 0)
-            ? retryDelay
-            : options.getMaxThrottlingDelay();
+        this.autoFlush = autoFlush;
+        this.batchActionCount = initialBatchActionCount;
+        this.maxRetries = maxRetriesPerAction;
+        this.throttlingDelay = throttlingDelay;
+        this.maxThrottlingDelay = (maxThrottlingDelay.compareTo(this.throttlingDelay) < 0)
+            ? this.throttlingDelay
+            : maxThrottlingDelay;
 
-        this.onActionAddedConsumer = options.getOnActionAdded();
-        this.onActionSentConsumer = options.getOnActionSent();
-        this.onActionSucceededConsumer = options.getOnActionSucceeded();
-        this.onActionErrorConsumer = options.getOnActionError();
+        this.onActionAddedConsumer = onActionAddedConsumer;
+        this.onActionSentConsumer = onActionSentConsumer;
+        this.onActionSucceededConsumer = onActionSucceededConsumer;
+        this.onActionErrorConsumer = onActionErrorConsumer;
     }
 
     public synchronized Collection<IndexAction<?>> getActions() {
@@ -353,10 +356,10 @@ public final class SearchIndexingPublisher<T> {
     private Duration calculateRetryDelay(int backoffCount) {
         // Introduce a small amount of jitter to base delay
         long delayWithJitterInNanos = ThreadLocalRandom.current()
-            .nextLong((long) (retryDelay.toNanos() * (1 - JITTER_FACTOR)),
-                (long) (retryDelay.toNanos() * (1 + JITTER_FACTOR)));
+            .nextLong((long) (throttlingDelay.toNanos() * (1 - JITTER_FACTOR)),
+                (long) (throttlingDelay.toNanos() * (1 + JITTER_FACTOR)));
 
-        return Duration.ofNanos(Math.min((1L << backoffCount) * delayWithJitterInNanos, maxRetryDelay.toNanos()));
+        return Duration.ofNanos(Math.min((1L << backoffCount) * delayWithJitterInNanos, maxThrottlingDelay.toNanos()));
     }
 
     private static RuntimeException createDocumentTooLargeException() {

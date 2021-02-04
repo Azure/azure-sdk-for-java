@@ -3,14 +3,15 @@
 
 package com.azure.search.documents.options;
 
-import com.azure.search.documents.SearchIndexingBufferedSenderOptions;
+import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexingResult;
 
 import java.util.function.Consumer;
 
 /**
- * Options passed when {@link SearchIndexingBufferedSenderOptions#setOnActionError(Consumer)} is called.
+ * Options passed when {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder#onActionError(Consumer)} is
+ * called.
  *
  * @param <T> Type of the document in the action.
  */
