@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -101,7 +102,7 @@ class RecognizeEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedEntitiesResponse(documents, options, context));
@@ -120,7 +121,7 @@ class RecognizeEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizedEntitiesResponse(documents, options, context);
@@ -178,18 +179,26 @@ class RecognizeEntityAsyncClient {
      * {@link RecognizeEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
      * @param documents The list of documents to recognize entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The {@link RecognizeEntitiesOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
+        String modelVersion = null;
+        Boolean includeStatistics = null;
+        StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            if (options.getStringIndexType() != null) {
+                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
+            }
+        }
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            StringIndexType.UTF16CODE_UNIT,
+            modelVersion, includeStatistics, stringIndexType,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",

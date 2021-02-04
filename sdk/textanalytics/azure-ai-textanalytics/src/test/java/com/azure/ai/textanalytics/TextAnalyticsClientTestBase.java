@@ -25,6 +25,7 @@ import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -153,10 +154,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Personally Identifiable Information Entities
     @Test
@@ -198,6 +205,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Linked Entities
     @Test
     abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -221,10 +231,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Key Phrases
     @Test
@@ -317,6 +333,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Healthcare LRO
     @Test
@@ -420,6 +439,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
+    void recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
+        BiConsumer<List<TextDocumentInput>, RecognizeEntitiesOptions> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
+        RecognizeEntitiesOptions options = new RecognizeEntitiesOptions().setIncludeStatistics(true);
+        testRunner.accept(textDocumentInputs, options);
+    }
+
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -482,6 +508,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+
+        testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
+    }
+
+    void recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
+        BiConsumer<List<TextDocumentInput>, RecognizeLinkedEntitiesOptions> testRunner) {
+        RecognizeLinkedEntitiesOptions options = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
 
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
     }
@@ -617,6 +650,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept("👩 " + text); // count as 3 units
     }
 
+    void batchEmojiRunner(Consumer<List<TextDocumentInput>> testRunner, String text) {
+        testRunner.accept(Collections.singletonList(new TextDocumentInput("0", "👩 " + text))); // count as 3 units
+    }
     void emojiWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
         testRunner.accept("👩🏻 " + text); // count as 5 units
     }

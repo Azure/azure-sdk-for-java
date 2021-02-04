@@ -14,9 +14,11 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -337,6 +339,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
+            (inputs, options) -> validateCategorizedEntitiesResultCollectionWithResponse(true,
+                getExpectedBatchCategorizedEntities(), 200,
+                client.recognizeEntitiesBatchWithResponse(inputs, options, Context.NONE))
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntityStringInputRunner((inputs) ->
@@ -386,6 +400,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
                 }),
+            CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> client.recognizeEntitiesBatchWithResponse(documents,
+                new RecognizeEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT), Context.NONE)
+                             .getValue().forEach(result -> result.getEntities().forEach(
+                                 categorizedEntity -> assertEquals(12, categorizedEntity.getOffset()))),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -625,6 +652,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> client.recognizePiiEntitiesBatchWithResponse(documents,
+                new RecognizePiiEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT), Context.NONE)
+                             .getValue().forEach(result -> result.getEntities().forEach(
+                                 piiEntity -> assertEquals(7, piiEntity.getOffset()))),
+            PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(document -> {
@@ -828,6 +868,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
+            (inputs, options) ->
+                validateLinkedEntitiesResultCollectionWithResponse(true, getExpectedBatchLinkedEntities(), 200,
+                    client.recognizeLinkedEntitiesBatchWithResponse(inputs, options, Context.NONE)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeLinkedStringInputRunner((inputs) ->
@@ -873,6 +924,23 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
                     })),
+            LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> client.recognizeLinkedEntitiesBatchWithResponse(documents,
+                new RecognizeLinkedEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT),
+                Context.NONE)
+                             .getValue().forEach(
+                                 recognizeLinkedEntitiesResult -> recognizeLinkedEntitiesResult.getEntities().forEach(
+                                     linkedEntity -> linkedEntity.getMatches().forEach(
+                                         linkedEntityMatch ->
+                                             assertEquals(12, linkedEntityMatch.getOffset())))),
             LINKED_ENTITY_INPUTS.get(1)
         );
     }
@@ -1429,6 +1497,20 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
                 }),
+            SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> client.analyzeSentimentBatchWithResponse(documents,
+                new AnalyzeSentimentOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT), Context.NONE)
+                             .getValue().forEach(analyzeSentimentResult ->
+                    analyzeSentimentResult.getDocumentSentiment().getSentences().forEach(
+                        sentenceSentiment -> assertEquals(0, sentenceSentiment.getOffset()))),
             SENTIMENT_OFFSET_INPUT
         );
     }

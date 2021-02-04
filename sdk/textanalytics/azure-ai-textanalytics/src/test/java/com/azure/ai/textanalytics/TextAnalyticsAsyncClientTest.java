@@ -11,9 +11,11 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -365,6 +367,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
+            (inputs, options) ->
+                StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, options))
+                    .assertNext(response -> validateCategorizedEntitiesResultCollectionWithResponse(true,
+                        getExpectedBatchCategorizedEntities(), 200, response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeCategorizedEntityStringInputRunner((inputs) ->
@@ -416,6 +431,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(documents,
+                new RecognizeEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
+                                     categorizedEntity -> assertEquals(12, categorizedEntity.getOffset()))))
+                    .verifyComplete(),
+            CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
 
@@ -650,6 +680,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(documents,
+                new RecognizePiiEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 result -> result.getEntities().forEach(
+                                     piiEntity -> assertEquals(7, piiEntity.getOffset()))))
+                             .verifyComplete(),
+            PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(document ->
@@ -854,6 +899,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
+            (inputs, options) ->
+                StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, options))
+                    .assertNext(response -> validateLinkedEntitiesResultCollectionWithResponse(true,
+                        getExpectedBatchLinkedEntities(), 200, response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeLinkedStringInputRunner((inputs) ->
@@ -907,6 +965,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         assertEquals(13, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(documents,
+                new RecognizeLinkedEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 result -> result.getEntities().forEach(
+                                     linkedEntity -> {
+                                         linkedEntity.getMatches().forEach(linkedEntityMatch ->
+                                             assertEquals(12, linkedEntityMatch.getOffset()));
+                                     })))
+                             .verifyComplete(),
+            LINKED_ENTITY_INPUTS.get(1)
         );
     }
 
@@ -1501,6 +1577,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.analyzeSentimentBatchWithResponse(documents,
+                new AnalyzeSentimentOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 result -> result.getDocumentSentiment().getSentences().forEach(
+                                     sentenceSentiment -> assertEquals(0, sentenceSentiment.getOffset()))))
+                             .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 

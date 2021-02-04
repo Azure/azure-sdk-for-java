@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -101,7 +102,7 @@ class RecognizeLinkedEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
@@ -115,14 +116,14 @@ class RecognizeLinkedEntityAsyncClient {
      * which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param documents The list of documents to recognize linked entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The {@link RecognizeLinkedEntitiesOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
-            TextAnalyticsRequestOptions options, Context context) {
+            RecognizeLinkedEntitiesOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizedLinkedEntitiesResponse(documents, options, context);
@@ -196,14 +197,22 @@ class RecognizeLinkedEntityAsyncClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    private Mono<Response<RecognizeLinkedEntitiesResultCollection>>
-        getRecognizedLinkedEntitiesResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options,
-            Context context) {
+    private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context) {
+        String modelVersion = null;
+        Boolean includeStatistics = null;
+        StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            if (options.getStringIndexType() != null) {
+                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
+            }
+        }
+
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            StringIndexType.UTF16CODE_UNIT,
+            modelVersion, includeStatistics, stringIndexType,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",

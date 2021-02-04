@@ -6,10 +6,10 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link RecognizeEntitiesOptions} model.
+ * The {@link RecognizeLinkedEntitiesOptions} model.
  */
 @Fluent
-public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions {
+public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOptions {
     private StringIndexType stringIndexType;
 
     /**
@@ -18,10 +18,10 @@ public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions 
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizeEntitiesOptions} object itself.
+     * @return The {@link RecognizeLinkedEntitiesOptions} object itself.
      */
     @Override
-    public RecognizeEntitiesOptions setModelVersion(String modelVersion) {
+    public RecognizeLinkedEntitiesOptions setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
@@ -32,10 +32,10 @@ public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions 
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link RecognizeEntitiesOptions} object itself.
+     * @return the {@link RecognizeLinkedEntitiesOptions} object itself.
      */
     @Override
-    public RecognizeEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
+    public RecognizeLinkedEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
         return this;
     }
@@ -56,9 +56,9 @@ public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions 
      * @param stringIndexType It used to set the value of string indexing type. It could be 'TextElements_v8',
      * 'UNICODE_CODE_POINT', or 'UTF16CODE_UNIT' type.
      *
-     * @return the {@link RecognizeEntitiesOptions} object itself.
+     * @return the {@link RecognizeLinkedEntitiesOptions} object itself.
      */
-    public RecognizeEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
+    public RecognizeLinkedEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

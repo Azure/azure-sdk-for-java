@@ -208,14 +208,18 @@ class AnalyzeSentimentAsyncClient {
         String modelVersion = null;
         Boolean includeStatistics = null;
         Boolean includeOpinionMining = null;
+        StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
         if (options != null) {
             modelVersion = options.getModelVersion();
             includeStatistics = options.isIncludeStatistics();
             includeOpinionMining = options.isIncludeOpinionMining();
+            if (options.getStringIndexType() != null) {
+                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
+            }
         }
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
+            modelVersion, includeStatistics, includeOpinionMining, stringIndexType,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)
             )
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))

@@ -7,15 +7,15 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -202,6 +202,7 @@ class RecognizePiiEntityAsyncClient {
         String modelVersion = null;
         Boolean includeStatistics = null;
         String domainFilter = null;
+        StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
         if (options != null) {
             modelVersion = options.getModelVersion();
             includeStatistics = options.isIncludeStatistics();
@@ -209,13 +210,13 @@ class RecognizePiiEntityAsyncClient {
             if (domainType != null) {
                 domainFilter = domainType.toString();
             }
+            if (options.getStringIndexType() != null) {
+                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
+            }
         }
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            modelVersion,
-            includeStatistics,
-            domainFilter,
-            StringIndexType.UTF16CODE_UNIT,
+            modelVersion, includeStatistics, domainFilter, stringIndexType,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))

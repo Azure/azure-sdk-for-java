@@ -1,5 +1,19 @@
 # Release History
 ## 5.1.0-beta.4 (Unreleased)
+### New features
+- Added new classes, `StringIndexType`, `RecognizeLinkedEntitiesOptions`.
+- Added `StringIndexType` to all `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`,
+`RecognizePiiEntitiesOptions` and the default is `UTF16CODE_UNIT` if null value is passed.
+- Added new API,
+  `Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options)`,
+  `Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context)`,
+  `Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options)`,
+  `Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context)`
+  
 ### Breaking changes
 #### Analyze multiple actions
 - Replace API `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(

@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
     private PiiEntityDomainType domainFilter;
+    private StringIndexType stringIndexType;
 
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -62,6 +63,29 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      */
     public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomainType domainFilter) {
         this.domainFilter = domainFilter;
+        return this;
+    }
+
+    /**
+     * Get the value of {@code stringIndexType}.
+     *
+     * @return The value of {@code stringIndexType}.
+     */
+    public StringIndexType getStringIndexType() {
+        return stringIndexType;
+    }
+
+    /**
+     * Set the value of {@code stringIndexType}. It could be 'TextElements_v8', 'UNICODE_CODE_POINT', or
+     * 'UTF16CODE_UNIT' type.
+     *
+     * @param stringIndexType It used to set the value of string indexing type. It could be 'TextElements_v8',
+     * 'UNICODE_CODE_POINT', or 'UTF16CODE_UNIT' type.
+     *
+     * @return the {@link RecognizePiiEntitiesOptions} object itself.
+     */
+    public RecognizePiiEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
         return this;
     }
 }
