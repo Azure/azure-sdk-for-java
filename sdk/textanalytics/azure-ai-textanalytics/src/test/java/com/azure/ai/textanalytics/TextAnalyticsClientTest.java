@@ -34,6 +34,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -1585,7 +1586,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Healthcare LRO - Cancellation
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1595,8 +1595,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                           PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller.cancelOperation();
-            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
             syncPoller.waitForCompletion();
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 

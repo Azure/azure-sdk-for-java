@@ -1660,8 +1660,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.cancelOperation();
-            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
             syncPoller.waitForCompletion();
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 
