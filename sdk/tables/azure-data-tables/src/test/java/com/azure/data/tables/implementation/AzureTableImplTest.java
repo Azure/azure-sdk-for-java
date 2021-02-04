@@ -22,13 +22,7 @@ import com.azure.data.tables.TablesServiceVersion;
 import com.azure.data.tables.TablesSharedKeyCredential;
 import com.azure.data.tables.TablesSharedKeyCredentialPolicy;
 import com.azure.data.tables.TestUtils;
-import com.azure.data.tables.implementation.models.OdataMetadataFormat;
-import com.azure.data.tables.implementation.models.QueryOptions;
-import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.TableProperties;
-import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
+import com.azure.data.tables.implementation.models.*;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import org.junit.jupiter.api.AfterAll;
@@ -181,11 +175,8 @@ public class AzureTableImplTest extends TestBase {
                 assertTrue(error instanceof TableServiceErrorException);
 
                 final TableServiceErrorException exception = (TableServiceErrorException) error;
-                assertNotNull(exception.getValue());
 
-                final TableServiceErrorOdataError odataError = exception.getValue().getOdataError();
-                assertNotNull(odataError);
-                assertEquals(expectedErrorCode, odataError.getCode());
+                assertTrue(exception.getMessage().contains(expectedErrorCode));
             })
             .verify();
     }
