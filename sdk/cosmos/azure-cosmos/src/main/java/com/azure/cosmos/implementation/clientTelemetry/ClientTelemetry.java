@@ -163,9 +163,8 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        httpResponseMono.flatMap(response -> response.bodyAsString())
-                        .map(metadataJson -> parse(metadataJson, AzureVMMetadata.class))
-                        .doOnSuccess(azureVMMetadata -> {
+        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
+            AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
