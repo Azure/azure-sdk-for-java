@@ -25,26 +25,14 @@ import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionSc
 import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionScope.SCOPE_CONTAINER_READ_OFFER;
 import static com.azure.cosmos.implementation.sastokens.ControlPlanePermissionScope.SCOPE_CONTAINER_WRITE_ALL_ACCESS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_ITEMS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_STORED_PROCEDURES;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_TRIGGERS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_CREATE_USER_DEFINED_FUNCTIONS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_DELETE_CONFLICTS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_DELETE_ITEMS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_DELETE_STORED_PROCEDURES;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_DELETE_TRIGGERS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_DELETE_USER_DEFINED_FUNCTIONS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_EXECUTE_QUERIES;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_EXECUTE_STORED_PROCEDURES;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_ALL_ACCESS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_CONFLICTS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_FEEDS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_STORED_PROCEDURES;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_TRIGGERS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_READ_USER_DEFINED_FUNCTIONS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_REPLACE_ITEMS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_REPLACE_STORED_PROCEDURES;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_REPLACE_TRIGGERS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_REPLACE_USER_DEFINED_FUNCTIONS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_CONTAINER_UPSERT_ITEMS;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_ITEM_DELETE;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_ITEM_READ;
@@ -52,16 +40,7 @@ import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_ITEM_REPLACE;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_ITEM_UPSERT;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_ITEM_WRITE_ALL_ACCESS;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_STORED_PROCEDURE_DELETE;
 import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_STORED_PROCEDURE_EXECUTE;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_STORED_PROCEDURE_READ;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_STORED_PROCEDURE_REPLACE;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_TRIGGER_DELETE;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_TRIGGER_READ;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_TRIGGER_REPLACE;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_USER_DEFINED_FUNCTION_DELETE;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_USER_DEFINED_FUNCTION_READ;
-import static com.azure.cosmos.implementation.sastokens.DataPlanePermissionScope.SCOPE_USER_DEFINED_FUNCTION_REPLACE;
 
 /**
  * Represents the implementation of a permission configuration object to be used when creating a Cosmos shared access
@@ -112,8 +91,8 @@ public class SasTokenImpl implements SasTokenProperties {
      * {@literal
      *    user\n
      *    userTag\n
-     *    resourcePathPrefix\n
-     *    partitionRangesCommaSeparated\n
+     *    resourcePath\n
+     *    BASE64_ENCODED_PartitionKeyValues_CommaSeparated\n
      *    epochStartTime\n
      *    epochExpiryTime\n
      *    keyKind\n
@@ -194,7 +173,7 @@ public class SasTokenImpl implements SasTokenProperties {
 
         StringBuilder payload = new StringBuilder(this.user).append("\n")
             .append(this.userTag).append("\n")
-            .append(resourcePrefixPath).append("\n")
+            .append(this.resourcePath).append("\n")
             .append(partitionRanges).append("\n")
             .append(String.format("%X", this.startTime.getEpochSecond())).append("\n")
             .append(String.format("%X", this.expiryTime.getEpochSecond())).append("\n")
@@ -209,7 +188,7 @@ public class SasTokenImpl implements SasTokenProperties {
 
     private String getSasTokenWithHMACSHA256(String key) {
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
-        byte[] keyDecodedBytes = Utils.Base64Decoder.decode(key);
+        byte[] keyDecodedBytes = Utils.Base64Decoder.decode(keyBytes);
         SecretKey signingKey = new SecretKeySpec(keyDecodedBytes, "HMACSHA256");
         try {
             Mac macInstance = Mac.getInstance("HMACSHA256");
