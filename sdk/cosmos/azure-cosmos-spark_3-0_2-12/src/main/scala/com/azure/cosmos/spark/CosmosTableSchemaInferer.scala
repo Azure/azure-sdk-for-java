@@ -18,13 +18,13 @@ import scala.collection.JavaConverters._
 private object CosmosTableSchemaInferer
   extends CosmosLoggingTrait {
 
-  private[spark] val RAW_JSON_BODY_ATTRIBUTE_NAME = "_rawBody"
-  private[spark] val TIMESTAMP_ATTRIBUTE_NAME = "_ts"
-  private[spark] val ID_ATTRIBUTE_NAME = "id"
-  private[spark] val ETAG_ATTRIBUTE_NAME = "_etag"
-  private[spark] val PREVIOUS_RAW_JSON_BODY_ATTRIBUTE_NAME = "_previousRawBody"
-  private[spark] val TTL_EXPIRED_ATTRIBUTE_NAME = "_ttlExpired"
-  private[spark] val OPERATION_TYPE_ATTRIBUTE_NAME = "_operationType"
+  private[spark] val RawJsonBodyAttributeName = "_rawBody"
+  private[spark] val TimestampAttributeName = "_ts"
+  private[spark] val IdAttributeName = "id"
+  private[spark] val ETagAttributeName = "_etag"
+  private[spark] val PreviousRawJsonBodyAttributeName = "_previousRawBody"
+  private[spark] val TtlExpiredAttributeName = "_ttlExpired"
+  private[spark] val OperationTypeAttributeName = "_operationType"
 
   private[spark] def inferSchema(inferredItems: Seq[ObjectNode]): StructType = {
     if (inferredItems.isEmpty) {

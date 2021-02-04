@@ -5,9 +5,9 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosTableSchemaInferer.{
-  ID_ATTRIBUTE_NAME,
-  RAW_JSON_BODY_ATTRIBUTE_NAME,
-  TIMESTAMP_ATTRIBUTE_NAME
+  IdAttributeName,
+  RawJsonBodyAttributeName,
+  TimestampAttributeName
 }
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import org.apache.spark.broadcast.Broadcast
@@ -31,9 +31,9 @@ private object CosmosTable {
   // TODO fabianm - ??? Should we also add a default "_pk" column, which would retrieve the
   //  pk value ???
   private[spark] val defaultSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
-    StructField(ID_ATTRIBUTE_NAME, StringType),
-    StructField(TIMESTAMP_ATTRIBUTE_NAME, LongType)
+    StructField(RawJsonBodyAttributeName, StringType),
+    StructField(IdAttributeName, StringType),
+    StructField(TimestampAttributeName, LongType)
   ))
 }
 

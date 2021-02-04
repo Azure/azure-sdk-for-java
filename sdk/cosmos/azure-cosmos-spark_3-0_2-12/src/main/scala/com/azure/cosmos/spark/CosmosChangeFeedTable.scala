@@ -23,23 +23,23 @@ import org.apache.spark.sql.types._
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private object CosmosChangeFeedTable {
+private[spark] object CosmosChangeFeedTable {
 
   private[spark] val defaultIncrementalChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
-    StructField(ID_ATTRIBUTE_NAME, StringType),
-    StructField(TIMESTAMP_ATTRIBUTE_NAME, LongType),
-    StructField(ETAG_ATTRIBUTE_NAME, StringType)
+    StructField(RawJsonBodyAttributeName, StringType),
+    StructField(IdAttributeName, StringType),
+    StructField(TimestampAttributeName, LongType),
+    StructField(ETagAttributeName, StringType)
   ))
 
   private[spark] val defaultFullFidelityChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
-    StructField(ID_ATTRIBUTE_NAME, StringType),
-    StructField(TIMESTAMP_ATTRIBUTE_NAME, LongType),
-    StructField(ETAG_ATTRIBUTE_NAME, StringType),
-    StructField(OPERATION_TYPE_ATTRIBUTE_NAME, StringType),
-    StructField(PREVIOUS_RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
-    StructField(TTL_EXPIRED_ATTRIBUTE_NAME, BooleanType)
+    StructField(RawJsonBodyAttributeName, StringType),
+    StructField(IdAttributeName, StringType),
+    StructField(TimestampAttributeName, LongType),
+    StructField(ETagAttributeName, StringType),
+    StructField(OperationTypeAttributeName, StringType),
+    StructField(PreviousRawJsonBodyAttributeName, StringType),
+    StructField(TtlExpiredAttributeName, BooleanType)
   ))
 }
 

@@ -26,6 +26,7 @@ private case class CosmosChangeFeedPartitionReader
 
   private val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
   // TODO: moderakh cache the cosmos clients and manage the lifetime of the clients
   // we shouldn't recreate everytime, causing resource leak, inefficient behaviour
@@ -43,8 +44,14 @@ private case class CosmosChangeFeedPartitionReader
     .getContainer(containerTargetConfig.container)
 
   // TODO fabianm this needs to be initialized based on InputPartition and startFrom configuration
-  private val changeFeedRequestOptions =
-    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange)
+  private val changeFeedRequestOptions = this.changeFeedConfig.changeFeedMode match {
+    case ChangeFeedModes.incremental =>
+      CosmosChangeFeedRequestOptions.createForProcessingFromBeginning (FeedRange.forFullRange)
+    case ChangeFeedModes.fullFidelity =>
+      CosmosChangeFeedRequestOptions
+        .createForProcessingFromNow(FeedRange.forFullRange)
+        .fullFidelity()
+  }
 
   private lazy val iterator = cosmosAsyncContainer
     .queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
