@@ -5,7 +5,9 @@ package com.microsoft.azure.spring.cloud.config.properties;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.util.Assert;
 
 public class AppConfigurationStoreMonitoring {
@@ -14,7 +16,7 @@ public class AppConfigurationStoreMonitoring {
 
     private Duration cacheExpiration = Duration.ofSeconds(30);
 
-    private List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+    private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
     private PushNotification pushNotification = new PushNotification();
 
@@ -49,17 +51,17 @@ public class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * @return the selects
+     * @return the triggers
      */
-    public List<AppConfigurationStoreSelects> getSelects() {
-        return selects;
+    public List<AppConfigurationStoreTrigger> getTriggers() {
+        return triggers;
     }
 
     /**
-     * @param selects the selects to set
+     * @param triggers the triggers to set
      */
-    public void setSelects(List<AppConfigurationStoreSelects> selects) {
-        this.selects = selects;
+    public void setTriggers(List<AppConfigurationStoreTrigger> triggers) {
+        this.triggers = triggers;
     }
 
     /**
@@ -79,8 +81,8 @@ public class AppConfigurationStoreMonitoring {
     @PostConstruct
     public void validateAndInit() {
         if (enabled) {
-            Assert.notEmpty(selects, "Selects need to be set if refresh is enabled.");
-            for (AppConfigurationStoreSelects select : selects) {
+            Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
+            for (AppConfigurationStoreTrigger select : triggers) {
                 select.validateAndInit();
             }
         }

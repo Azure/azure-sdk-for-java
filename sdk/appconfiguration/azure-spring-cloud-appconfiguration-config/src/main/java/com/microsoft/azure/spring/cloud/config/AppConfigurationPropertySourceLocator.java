@@ -29,7 +29,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
@@ -219,7 +219,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             // Setting new ETag values for Watch
             List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
-            for (AppConfigurationStoreSelects select : store.getMonitoring().getSelects()) {
+            for (AppConfigurationStoreTrigger select : store.getMonitoring().getTriggers()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(select.getKey())
                     .setLabelFilter(select.getLabel());
 

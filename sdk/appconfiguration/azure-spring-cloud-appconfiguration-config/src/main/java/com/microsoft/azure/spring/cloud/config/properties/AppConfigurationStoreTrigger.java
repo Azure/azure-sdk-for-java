@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.util.Assert;
 
-public class AppConfigurationStoreSelects {
+public class AppConfigurationStoreTrigger {
 
     @NotNull
     private String key;

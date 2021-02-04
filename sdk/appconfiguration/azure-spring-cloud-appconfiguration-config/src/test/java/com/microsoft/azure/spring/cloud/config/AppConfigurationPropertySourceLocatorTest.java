@@ -28,7 +28,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.io.IOException;
@@ -121,12 +121,12 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(false);
-        AppConfigurationStoreSelects select = new AppConfigurationStoreSelects();
-        select.setKey("sentinal");
-        select.setKey("test");
-        ArrayList<AppConfigurationStoreSelects> selects = new ArrayList<AppConfigurationStoreSelects>();
-        selects.add(select);
-        monitoring.setSelects(selects);
+        AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
+        trigger.setKey("sentinal");
+        trigger.setKey("test");
+        ArrayList<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        triggers.add(trigger);
+        monitoring.setTriggers(triggers);
         when(configStoreMock.getMonitoring()).thenReturn(monitoring);
 
         when(configClientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
