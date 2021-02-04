@@ -21,7 +21,7 @@ public class CommunicationIdentifierSerializerTests {
     final String testPhoneNumber = "+12223334444";
 
     @Test
-    public void deserializerThrowsOnMoreThanOneNestedObject() {
+    public void deserializerThrowsWhenMoreThanOneNestedObjectsSet() {
         CommunicationIdentifierModel[] modelsWithTooManyNestedObjects = new CommunicationIdentifierModel[] {
             new CommunicationIdentifierModel()
                 .setRawId(rawId)
@@ -56,7 +56,7 @@ public class CommunicationIdentifierSerializerTests {
     }
 
     @Test
-    public void deserializerThrowsONMissingProperty() {
+    public void deserializerThrowsWhenMissingProperty() {
         CommunicationIdentifierModel[] modelsWithMissingMandatoryProperty = new CommunicationIdentifierModel[] {
             new CommunicationIdentifierModel(), // Missing RawId
             new CommunicationIdentifierModel().setRawId(rawId).setCommunicationUser(new CommunicationUserIdentifierModel()), // Missing Id
@@ -142,8 +142,8 @@ public class CommunicationIdentifierSerializerTests {
     public void deserializePhoneNumber() {
         CommunicationIdentifier identifier = CommunicationIdentifierSerializer.deserialize(
             new CommunicationIdentifierModel()
-                .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(testPhoneNumber))
-                .setRawId(rawId));
+                .setRawId(rawId)
+                .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(testPhoneNumber)));
 
         assertEquals(PhoneNumberIdentifier.class, identifier.getClass());
         assertEquals(testPhoneNumber, ((PhoneNumberIdentifier) identifier).getPhoneNumber());

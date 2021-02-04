@@ -49,9 +49,9 @@ public class PhoneNumberIdentifier extends CommunicationIdentifier {
     /**
      * Set full id of the identifier
      * @param rawId full id of the identifier
-     * @return CommunicationIdentifier object itself
+     * @return PhoneNumberIdentifier object itself
      */
-    public CommunicationIdentifier setRawId(String rawId) {
+    public PhoneNumberIdentifier setRawId(String rawId) {
         this.rawId = rawId;
         return this;
     }
