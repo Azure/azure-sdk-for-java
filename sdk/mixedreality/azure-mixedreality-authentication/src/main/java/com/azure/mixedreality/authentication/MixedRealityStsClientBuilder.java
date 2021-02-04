@@ -6,16 +6,9 @@ package com.azure.mixedreality.authentication;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.*;
+import com.azure.core.http.policy.*;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -49,11 +42,13 @@ public final class MixedRealityStsClientBuilder {
     private final ClientLogger logger = new ClientLogger(MixedRealityStsClientBuilder.class);
 
     private String accountDomain;
-    private UUID accountId;
+    private String accountId;
     private MixedRealityStsServiceVersion apiVersion;
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private String endpoint;
     private HttpClient httpClient;
+    private AzureKeyCredential keyCredential;
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
@@ -86,12 +81,16 @@ public final class MixedRealityStsClientBuilder {
     /**
      * Sets the Mixed Reality service account identifier.
      *
-     * @param accountId The Mixed Reality service account identifier.
+     * @param accountId The Mixed Reality service account identifier. The value is expected to be in UUID format.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      * @throws NullPointerException If {@code accountId} is null.
      */
-    public MixedRealityStsClientBuilder accountId(UUID accountId) {
-        this.accountId = Objects.requireNonNull(accountId, "'accountId' cannot be null.");
+    public MixedRealityStsClientBuilder accountId(String accountId) {
+        if (CoreUtils.isNullOrEmpty(accountId)) {
+            throw new IllegalArgumentException("'accountId' cannot be null or empty.");
+        }
+
+        this.accountId = accountId;
 
         return this;
     }
@@ -124,24 +123,40 @@ public final class MixedRealityStsClientBuilder {
      *
      * @return A {@link MixedRealityStsAsyncClient} with the options set from the builder.
      * @throws NullPointerException If any required values are null.
+     * @throws IllegalArgumentException If the accountId or endpoint are not properly formatted.
      */
     public MixedRealityStsAsyncClient buildAsyncClient() {
         Objects.requireNonNull(this.accountId, "The 'accountId' has not been set and is required.");
         Objects.requireNonNull(this.accountDomain, "The 'accountDomain' has not been set and is required.");
 
-        String endpoint = this.endpoint != null
-            ? this.endpoint
-            : AuthenticationEndpoint.constructFromDomain(this.accountDomain);
+        UUID accountId;
+        try {
+            accountId = UUID.fromString(this.accountId);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
+        }
 
-        HttpPipeline pipeline;
-
-        if (this.pipeline != null) {
-            pipeline = this.pipeline;
+        String endpoint;
+        if (this.endpoint != null) {
+            try {
+                new URL(this.endpoint);
+                endpoint = this.endpoint;
+            } catch (MalformedURLException ex) {
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'endpoint' must be a valid URL."));
+            }
         } else {
-            Objects.requireNonNull(this.tokenCredential, "A credential has not been set.");
+            endpoint = AuthenticationEndpoint.constructFromDomain(this.accountDomain);
+        }
+
+        if (this.pipeline == null) {
+            if (this.tokenCredential == null && this.keyCredential != null) {
+                this.tokenCredential = new MixedRealityAccountKeyCredential(accountId, this.keyCredential);
+            }
+
+            Objects.requireNonNull(this.tokenCredential, "The 'credential' has not been set and is required.");
             String scope = AuthenticationEndpoint.constructScope(endpoint);
             HttpPipelinePolicy authPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, scope);
-            pipeline = createHttpPipeline(this.httpClient, authPolicy, this.customPolicies);
+            this.pipeline = createHttpPipeline(this.httpClient, authPolicy, this.customPolicies);
         }
 
         MixedRealityStsServiceVersion version;
@@ -154,11 +169,27 @@ public final class MixedRealityStsClientBuilder {
 
         MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
             //.apiVersion(version.getVersion())
-            .pipeline(pipeline)
+            .pipeline(this.pipeline)
             .host(endpoint)
             .buildClient();
 
-        return new MixedRealityStsAsyncClient(this.accountId, serviceClient);
+        return new MixedRealityStsAsyncClient(accountId, serviceClient);
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated {@link MixedRealityStsClientBuilder} object.
+     */
+    public MixedRealityStsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+
+        return this;
     }
 
     /**
@@ -170,6 +201,7 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        this.keyCredential = null;
 
         return this;
     }
@@ -185,11 +217,10 @@ public final class MixedRealityStsClientBuilder {
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     public MixedRealityStsClientBuilder credential(AzureKeyCredential keyCredential) {
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        this.tokenCredential = null;
 
-        TokenCredential tokenCredential = new MixedRealityAccountKeyCredential(this.accountId, keyCredential);
-
-        return this.credential(tokenCredential);
+        return this;
     }
 
     /**
@@ -215,14 +246,6 @@ public final class MixedRealityStsClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public MixedRealityStsClientBuilder endpoint(String endpoint) {
-        if (endpoint != null) {
-            try {
-                new URL(endpoint);
-            } catch (MalformedURLException ex) {
-                throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
-            }
-        }
-
         this.endpoint = endpoint;
 
         return this;
@@ -313,6 +336,15 @@ public final class MixedRealityStsClientBuilder {
             : new RetryPolicy();
 
         policies.add(getUserAgentPolicy());
+
+        // If client options has headers configured, add a policy for each.
+        if (this.clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            this.clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         policies.add(retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(this.logOptions));
@@ -331,9 +363,9 @@ public final class MixedRealityStsClientBuilder {
         }
 
         return new HttpPipelineBuilder()
-        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-        .httpClient(httpClient)
-        .build();
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /*
@@ -347,7 +379,13 @@ public final class MixedRealityStsClientBuilder {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
+        // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
+        // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
+        String applicationId = this.clientOptions == null
+            ? this.logOptions.getApplicationId()
+            : this.clientOptions.getApplicationId();
+
         return new UserAgentPolicy(
-            logOptions.getApplicationId(), clientName, clientVersion, this.configuration);
+            applicationId, clientName, clientVersion, this.configuration);
     }
 }
