@@ -90,14 +90,16 @@ azure:
 
 To make **aad-starter** work, `AADWebSecurityConfigurerAdapter` is required.
 
-1. If you don't want to  configure `WebSecurityConfigurerAdapter`, **aad-starter** will provide a 
-default implementation: `DefaultAADWebSecurityConfigurerAdapter`, which extends 
-`AADWebSecurityConfigurerAdapter`. 
+1. **aad-starter** provided a default implementation: `DefaultAADWebSecurityConfigurerAdapter`, 
+which extends `AADWebSecurityConfigurerAdapter`. 
 
-1. If you have your own `WebSecurityConfigurerAdapter`, `DefaultAADWebSecurityConfigurerAdapter` will 
-not take effect, so your adapter should extend `AADWebSecurityConfigurerAdapter` and call 
-`super.configure(http)` explicitly in the `configure(HttpSecurity http)` function. Demo adapter class:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L26 -->
+1. If you want to add more configurations, you should write your own `WebSecurityConfigurerAdapter`. 
+`DefaultAADWebSecurityConfigurerAdapter` will not take effect if you write your own adapter. your 
+adapter should extend `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
+in the `configure(HttpSecurity http)` function. 
+
+Demo adapter class:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -106,6 +108,9 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .anyRequest().authenticated();
     }
 }
 ```
@@ -310,17 +315,19 @@ azure:
 ```
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
+
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
 
-    /**
-     * Add configuration logic as needed.
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .anyRequest().authenticated();
     }
 }
 ```
