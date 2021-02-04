@@ -20,7 +20,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +53,7 @@ public class ResponseConstructorsCacheBenchMark {
             Class<? extends Response<?>> responseClass =
                     (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
-            MethodHandle constructor = defaultCache.get(responseClass);
+            Constructor<? extends Response<?>> constructor = defaultCache.get(responseClass);
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }

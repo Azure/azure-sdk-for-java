@@ -24,7 +24,6 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -39,7 +38,6 @@ import reactor.core.publisher.Signal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -73,7 +71,6 @@ public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
 
-    // Should this be static?
     private final ResponseConstructorsCache responseConstructorsCache;
 
     /**
@@ -257,7 +254,7 @@ public final class RestProxy implements InvocationHandler {
 
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
-            if (CoreUtils.isNullOrEmpty(contentType)) {
+            if (contentType == null || contentType.isEmpty()) {
                 if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
                 } else {
@@ -318,7 +315,9 @@ public final class RestProxy implements InvocationHandler {
     }
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
+        final HttpResponse httpResponse,
+        final byte[] responseContent,
+        final Object responseDecodedContent) {
         final int responseStatusCode = httpResponse.getStatusCode();
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         final String bodyRepresentation;
@@ -332,18 +331,13 @@ public final class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            /*
-             * Could we cache this constructor?
-             */
             final Constructor<? extends HttpResponseException> exceptionConstructor =
                 exception.getExceptionType().getConstructor(String.class, HttpResponse.class,
                     exception.getExceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse, responseDecodedContent);
+                httpResponse,
+                responseDecodedContent);
         } catch (ReflectiveOperationException e) {
-            /*
-             * Would this be worth using a StringBuilder?
-             */
             String message = "Status code " + responseStatusCode + ", but an instance of "
                 + exception.getExceptionType().getCanonicalName() + " cannot be created."
                 + " Response body: " + bodyRepresentation;
@@ -369,35 +363,48 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+            Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
 
-        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
-            return Mono.just(decodedResponse);
+            asyncResult = bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
+                // bodyAsString() emits non-empty string, now look for decoded version of same string
+                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
+
+                return decodedErrorBody
+                    .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
+                        // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception
+                        // body object
+                        Throwable exception =
+                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                                decodedResponse.getSourceResponse(),
+                                responseContent,
+                                responseDecodedErrorObject);
+                        return Mono.error(exception);
+                    })
+                    .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+                        // decodedBody() emits empty, indicate unable to decode 'responseContent',
+                        // create exception with un-decodable content string and without exception body object.
+                        Throwable exception =
+                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                                decodedResponse.getSourceResponse(),
+                                responseContent,
+                                null);
+                        return Mono.error(exception);
+                    }));
+            }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+                // bodyAsString() emits empty, indicate no body, create exception empty content string no exception
+                // body object.
+                Throwable exception =
+                    instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                        decodedResponse.getSourceResponse(),
+                        null,
+                        null);
+                return Mono.error(exception);
+            }));
+        } else {
+            asyncResult = Mono.just(decodedResponse);
         }
-
-        UnexpectedExceptionInformation exceptionInformation = methodParser.getUnexpectedException(responseStatusCode);
-        HttpResponse response = decodedResponse.getSourceResponse();
-
-        Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
-        return bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
-            // bodyAsString() emits non-empty string, now look for decoded version of same string
-            return decodedResponse.getDecodedBody(responseContent)
-                /*
-                 * getDecodedBody() emits the successfully decoded exception body object.
-                 */
-                .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> Mono.error(
-                    instantiateUnexpectedException(exceptionInformation, response, responseContent,
-                        responseDecodedErrorObject)))
-                .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
-                    // decodedBody() emits empty, indicate unable to decode 'responseContent',
-                    // create exception with un-decodable content string and without exception body object.
-                    return Mono.error(instantiateUnexpectedException(exceptionInformation, response, responseContent,
-                        null));
-                }));
-        }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
-            // bodyAsString() emits empty, indicate no body, create exception empty content string no exception
-            // body object.
-            return Mono.error(instantiateUnexpectedException(exceptionInformation, response, null, null));
-        }));
+        return asyncResult;
     }
 
     private Mono<?> handleRestResponseReturnType(final HttpDecodedResponse response,
@@ -437,7 +444,7 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        MethodHandle ctr = this.responseConstructorsCache.get(cls);
+        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
         if (ctr != null) {
             return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
         } else {
@@ -486,7 +493,9 @@ public final class RestProxy implements InvocationHandler {
      * @return the deserialized result
      */
     private Object handleRestReturnType(final Mono<HttpDecodedResponse> asyncHttpDecodedResponse,
-        final SwaggerMethodParser methodParser, final Type returnType, final Context context) {
+        final SwaggerMethodParser methodParser,
+        final Type returnType,
+        final Context context) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
                 .doOnEach(RestProxy::endTracingSpan)
@@ -578,10 +587,23 @@ public final class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     private static HttpPipeline createDefaultPipeline() {
+        return createDefaultPipeline(null);
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     *
+     * @param credentialsPolicy the credentials policy factory to use to apply authentication to the pipeline
+     * @return the default HttpPipeline
+     */
+    private static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
+        if (credentialsPolicy != null) {
+            policies.add(credentialsPolicy);
+        }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
