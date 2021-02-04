@@ -90,7 +90,6 @@ public final class EventGridPublisherAsyncClient {
                 if (this.eventDataSerializer != null && internalEvent.getData() != null) {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     eventDataSerializer.serialize(bos, event.getData());
-                    byte[] data = bos.toByteArray();
                     internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
                 }
                 return internalEvent;
