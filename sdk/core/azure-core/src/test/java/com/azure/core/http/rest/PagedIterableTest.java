@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -372,7 +373,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void streamFindFirstWithMapPage() throws InterruptedException {
+    public void streamFindFirstWithMapPage() {
         int numberOfPages = 5;
         createPagedResponse(numberOfPages);
 
@@ -385,17 +386,62 @@ public class PagedIterableTest {
             return getNextPage(continuationToken, pagedResponses);
         });
 
+        // Test retrieving mapped first page only
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
         pagedIterable = pagedIterable.mapPage(Function.identity());
 
         Integer next = pagedIterable.stream().findFirst().get();
 
-        Thread.sleep(2000);
-
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
          */
         assertEquals(1, pageGetCount.get());
+
+        // Test retrieving mapped pages using an iterator (hasNext, next pattern)
+
+        // reset count
+        pageGetCount.set(0);
+        PagedIterable<Integer> testPageIterator = new PagedIterable<>(pagedFlux);
+        Iterator<PagedResponse<Integer>> iterator = testPageIterator
+            .mapPage(Function.identity())
+            .iterableByPage()
+            .iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            PagedResponse<Integer> next1 = iterator.next();
+            count++;
+            if (count == 3) {
+                break;
+            }
+        }
+        assertEquals(3, pageGetCount.get());
+
+        // Test retrieving mapped pages using stream and limit to first 3 pages
+        // reset count
+        pageGetCount.set(0);
+        PagedIterable<Integer> testStreamByPageWithLimit = new PagedIterable<>(pagedFlux);
+
+        List<PagedResponse<Integer>> collect = testStreamByPageWithLimit
+            .mapPage(Function.identity())
+            .streamByPage()
+            .limit(3)
+            .collect(Collectors.toList());
+        assertEquals(3, pageGetCount.get());
+
+
+        // Test retrieving mapped pages using stream starting from a continuation token
+        // reset count
+        pageGetCount.set(0);
+        PagedIterable<Integer> testStreamByPageWithContinuationToken = new PagedIterable<>(pagedFlux);
+
+        List<PagedResponse<Integer>> collect1 = testStreamByPageWithContinuationToken
+            .mapPage(Function.identity())
+            .streamByPage("1") // start from page 2 (index 1) so, only 2 pages are available
+            .limit(2)
+            .collect(Collectors.toList());
+
+        assertEquals(3, collect1.get(0).getValue().get(0)); // assert results start from page 4
+        assertEquals(2, pageGetCount.get());
     }
 }
