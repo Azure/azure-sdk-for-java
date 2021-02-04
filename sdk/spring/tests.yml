@@ -82,6 +82,9 @@ stages:
 
         PreSteps:
           - powershell: |
+              echo $(System.JobId)
+              echo $(System.JobAttempt)
+              echo $(System.DefinitionId)
               az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user create --user-principal-name "$env:AAD_USER_NAME_ON_DEMAND" --display-name "user$(System.JobId)" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
               az logout
