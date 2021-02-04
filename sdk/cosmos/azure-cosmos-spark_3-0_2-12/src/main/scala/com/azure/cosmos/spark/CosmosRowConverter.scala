@@ -211,45 +211,42 @@ private object CosmosRowConverter
       }
     }
 
-    private def parsePreviousImage(objectNode: ObjectNode): Any = {
-      val metadataNode = getFullFidelityMetadata(objectNode)
-      if (metadataNode.isEmpty) {
-        null
-      } else {
-        val previousImageNode: JsonNode = metadataNode.get.get(PreviousImagePropertyName)
-        if (previousImageNode != null && previousImageNode.isObject) {
-          previousImageNode.asInstanceOf[ObjectNode].toString
-        } else {
-          null
+    private def parsePreviousImage(objectNode: ObjectNode): String = {
+      getFullFidelityMetadata(objectNode)
+        match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(PreviousImagePropertyName) match {
+            case previousImageObjectNode: ObjectNode => Option(previousImageObjectNode).map(o => o.toString).orNull
+            case _ => null
+          }
         }
+        case _ => null
       }
     }
 
     private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
-      val metadataNode = getFullFidelityMetadata(objectNode)
-      if (metadataNode.isEmpty) {
-        false
-      } else {
-        val ttlExpiredNode: JsonNode = metadataNode.get.get(TimeToLiveExpiredPropertyName)
-        if (ttlExpiredNode != null) {
-          ttlExpiredNode.asBoolean(false)
-        } else {
-          false
+      getFullFidelityMetadata(objectNode) match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(TimeToLiveExpiredPropertyName) match {
+            case valueNode: JsonNode =>
+              Option(valueNode).fold(false)(v => v.asBoolean(false))
+            case _ => false
+          }
         }
+        case _ => false
       }
     }
 
     private def parseOperationType(objectNode: ObjectNode): String = {
-      val metadataNode = getFullFidelityMetadata(objectNode)
-      if (metadataNode.isEmpty) {
-        null
-      } else {
-        val operationTypeNode: JsonNode = metadataNode.get.get(OperationTypePropertyName)
-        if (operationTypeNode != null) {
-          operationTypeNode.asText(null)
-        } else {
-          null
+      getFullFidelityMetadata(objectNode) match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(OperationTypePropertyName) match {
+            case valueNode: JsonNode =>
+              Option(valueNode).fold(null: String)(v => v.asText(null))
+            case _ => null
+          }
         }
+        case _ => null
       }
     }
 
