@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import java.time.Duration;
 import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
@@ -116,14 +115,13 @@ public final class PhoneNumbersClient {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param searchRequest The search request
-     * @param searchRequest The search request
-
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperationResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest, Duration pollInterval) {
-        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, searchRequest, pollInterval).getSyncPoller();
+    public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
+        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, searchRequest, context).getSyncPoller();
     }
 
     /**
@@ -133,11 +131,12 @@ public final class PhoneNumbersClient {
      * operation is complete.
      *
      * @param searchId ID of the search
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperationResult, Void> beginPurchasePhoneNumbers(String searchId) {
-        return null;
+    public SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId, Context context) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
     }
 
     /**
@@ -149,11 +148,12 @@ public final class PhoneNumbersClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperationResult, Void> beginReleasePhoneNumbers(String phoneNumber) {
-        return null;
+    public SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumbers(String phoneNumber, Context context) {
+        return asyncClient.beginReleasePhoneNumber(phoneNumber).getSyncPoller();
     }
 
     /**
@@ -164,10 +164,11 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperationResult, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
-        return null;
+    public SyncPoller<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
+        return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, context).getSyncPoller();
     }
 }

@@ -4,10 +4,14 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
@@ -17,6 +21,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -31,6 +36,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client for Communication service phone number operations
@@ -138,39 +144,49 @@ public final class PhoneNumbersAsyncClient {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param searchRequest {@link PhoneNumberSearchRequest} specifying the search request
-     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperationResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest, Duration pollInterval) {
-        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
-        Objects.requireNonNull(searchRequest, "'searchRequest' cannot be null.");
-        
-        if (pollInterval == null) {
-            pollInterval = defaultPollInterval;
-        }
-
-        return new PollerFlux<>(pollInterval,
-            searchAvailableNumbersInitOperation(countryCode, searchRequest),
-            searchAvailableNumbersPollOperation(),
-            cancelOperation(),
-            fetchFinalResultOperation());
+    public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberSearchRequest searchRequest) {
+        return beginSearchAvailablePhoneNumbers(countryCode, searchRequest, null);
     }
 
-    private Function<PollingContext<PhoneNumberOperationResult>, Mono<PhoneNumberOperationResult>>
-        searchAvailableNumbersInitOperation(String countryCode, PhoneNumberSearchRequest searchRequest) {
+    PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
+        try {
+            Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+            Objects.requireNonNull(searchRequest, "'searchRequest' cannot be null.");
+
+            return new PollerFlux<>(defaultPollInterval,
+                searchAvailableNumbersInitOperation(countryCode, searchRequest, context),
+                pollOperation(),
+                cancelOperation(),
+                searchAvailableNumbersFetchFinalResultOperation());
+
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
+        searchAvailableNumbersInitOperation(String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
         return (pollingContext) -> {
-            return client.searchAvailablePhoneNumbersWithResponseAsync(countryCode, searchRequest)
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return client.searchAvailablePhoneNumbersWithResponseAsync(countryCode, searchRequest, contextValue)
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
                     pollingContext.setData("searchId", parseIdFromUrl(response.getDeserializedHeaders().getLocation()));
                     return client.getOperationAsync(pollingContext.getData("operationId"))
-                    .flatMap((PhoneNumberOperationResult result) -> {
+                    .flatMap((PhoneNumberOperation result) -> {
                         return Mono.just(result);
                     });
                 });
+            });
         };
     }
 
@@ -180,8 +196,8 @@ public final class PhoneNumbersAsyncClient {
         return id.substring(0, id.indexOf("?"));
     }
 
-    private Function<PollingContext<PhoneNumberOperationResult>, Mono<PollResponse<PhoneNumberOperationResult>>>
-        searchAvailableNumbersPollOperation() {
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
+        pollOperation() {
         return (pollingContext) -> { 
             return client.getOperationAsync(pollingContext.getData("operationId"))
             .flatMap(operation -> {
@@ -200,8 +216,8 @@ public final class PhoneNumbersAsyncClient {
         };
     }
 
-    private BiFunction<PollingContext<PhoneNumberOperationResult>,
-        PollResponse<PhoneNumberOperationResult>, Mono<PhoneNumberOperationResult>>
+    private BiFunction<PollingContext<PhoneNumberOperation>,
+        PollResponse<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         cancelOperation() {
         return (pollingContext, firstResponse) -> {
             if (firstResponse == null || firstResponse.getValue() == null) {
@@ -217,8 +233,8 @@ public final class PhoneNumbersAsyncClient {
         };
     }
     
-    private Function<PollingContext<PhoneNumberOperationResult>, Mono<PhoneNumberSearchResult>>
-        fetchFinalResultOperation() {
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberSearchResult>>
+        searchAvailableNumbersFetchFinalResultOperation() {
         return (pollingContext) -> {
             return client.getSearchResultAsync(pollingContext.getData("searchId"));
         };
@@ -231,9 +247,40 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Void, Void> beginPurchasePhoneNumbers(String searchId) {
-        Objects.requireNonNull(searchId, "'searchId' can not be null.");
-        return null;
+    public PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId) {
+        return beginPurchasePhoneNumbers(searchId, null);
+    }
+
+    PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId, Context context) {
+        try {
+            Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+            return new PollerFlux<>(defaultPollInterval,
+                purchaseNumbersInitOperation(searchId, context),
+                pollOperation(),
+                (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+                (pollingContext) -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+        purchaseNumbersInitOperation(String searchId, Context context) {
+        return (pollingContext) -> {
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
+                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
+                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    return client.getOperationAsync(pollingContext.getData("operationId"))
+                        .flatMap((PhoneNumberOperation result) -> {
+                            return Mono.just(result);
+                        });
+                });
+            });
+        };
     }
 
     /**
@@ -248,9 +295,40 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Void, Void> beginReleasePhoneNumber(String phoneNumber) {
-        Objects.requireNonNull(phoneNumber, "'phoneNumbers' cannot be null.");
-        return null;
+    public PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber) {
+        return beginReleasePhoneNumber(phoneNumber, null);
+    }
+
+    PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber, Context context) {
+        try {
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            return new PollerFlux<>(defaultPollInterval,
+                releaseNumberInitOperation(phoneNumber, context),
+                pollOperation(),
+                (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+                (pollingContext) -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+        releaseNumberInitOperation(String phoneNumber, Context context) {
+        return (pollingContext) -> {
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
+                .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
+                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    return client.getOperationAsync(pollingContext.getData("operationId"))
+                    .flatMap((PhoneNumberOperation result) -> {
+                        return Mono.just(result);
+                    });
+                });
+            });
+        };
     }
 
     /**
@@ -261,8 +339,51 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
-        Objects.requireNonNull(phoneNumber, "'phoneNumbers' cannot be null.");
-        return null;
+    public PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
+        return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, null);
     }
+
+    PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
+        try {
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            Objects.requireNonNull(capabilitiesUpdateRequest, "'capabilitiesUpdateRequest' cannot be null.");
+
+            return new PollerFlux<>(defaultPollInterval,
+                updateNumberCapabilitiesInitOperation(phoneNumber, capabilitiesUpdateRequest, context),
+                pollOperation(),
+                (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+                updateNumberCapabilitiesFetchFinalResultOperation(phoneNumber));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+        updateNumberCapabilitiesInitOperation(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
+        return (pollingContext) -> {
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
+                .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
+                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    return client.getOperationAsync(pollingContext.getData("operationId"))
+                    .flatMap((PhoneNumberOperation result) -> {
+                        return Mono.just(result);
+                    });
+                });
+            });
+        };
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<AcquiredPhoneNumber>>
+        updateNumberCapabilitiesFetchFinalResultOperation(String phoneNumber) {
+        return (pollingContext) -> {
+            return client.getByNumberAsync(phoneNumber);
+        };
+    }
+
 }

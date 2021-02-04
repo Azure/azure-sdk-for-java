@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The PhoneNumberOperationResult model. */
+/** The PhoneNumberOperation model. */
 @Fluent
-public final class PhoneNumberOperationResult {
+public final class PhoneNumberOperation {
     /*
      * Status of operation.
      */
@@ -66,9 +66,9 @@ public final class PhoneNumberOperationResult {
      * Set the status property: Status of operation.
      *
      * @param status the status value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setStatus(PhoneNumberOperationStatus status) {
+    public PhoneNumberOperation setStatus(PhoneNumberOperationStatus status) {
         this.status = status;
         return this;
     }
@@ -86,9 +86,9 @@ public final class PhoneNumberOperationResult {
      * Set the resourceLocation property: URL for retrieving the result of the operation, if any.
      *
      * @param resourceLocation the resourceLocation value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setResourceLocation(String resourceLocation) {
+    public PhoneNumberOperation setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
         return this;
     }
@@ -106,9 +106,9 @@ public final class PhoneNumberOperationResult {
      * Set the createdDateTime property: The date that the operation was created.
      *
      * @param createdDateTime the createdDateTime value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setCreatedDateTime(OffsetDateTime createdDateTime) {
+    public PhoneNumberOperation setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
     }
@@ -126,9 +126,9 @@ public final class PhoneNumberOperationResult {
      * Set the error property: The Communication Services error.
      *
      * @param error the error value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setError(CommunicationError error) {
+    public PhoneNumberOperation setError(CommunicationError error) {
         this.error = error;
         return this;
     }
@@ -146,9 +146,9 @@ public final class PhoneNumberOperationResult {
      * Set the id property: Id of operation.
      *
      * @param id the id value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setId(String id) {
+    public PhoneNumberOperation setId(String id) {
         this.id = id;
         return this;
     }
@@ -166,9 +166,9 @@ public final class PhoneNumberOperationResult {
      * Set the operationType property: The type of operation, e.g. Search.
      *
      * @param operationType the operationType value to set.
-     * @return the PhoneNumberOperationResult object itself.
+     * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperationResult setOperationType(PhoneNumberOperationType operationType) {
+    public PhoneNumberOperation setOperationType(PhoneNumberOperationType operationType) {
         this.operationType = operationType;
         return this;
     }

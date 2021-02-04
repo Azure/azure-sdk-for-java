@@ -15,7 +15,7 @@ import java.time.Duration;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityValue;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
@@ -31,7 +31,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
             beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers").last()
-            .flatMap((AsyncPollResponse<PhoneNumberOperationResult, PhoneNumberSearchResult> result) -> {
+            .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
                 return result.getFinalResult();
             }) 
         ).assertNext((PhoneNumberSearchResult searchResult) -> {
@@ -41,7 +41,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         .verifyComplete();
     }
 
-    private PollerFlux<PhoneNumberOperationResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
+    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
         PhoneNumberSearchRequest phoneNumberSearchRequest = new PhoneNumberSearchRequest();
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityValue.INBOUND);
@@ -53,9 +53,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .setCapabilities(capabilities)
             .setQuantity(1);
 
-        Duration duration = Duration.ofSeconds(1);
         return this.getClientWithConnectionString(httpClient, testName)
-            .beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest, duration);
+            .beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest).setPollInterval(Duration.ofSeconds(1));
     }
 
     private PhoneNumbersAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {

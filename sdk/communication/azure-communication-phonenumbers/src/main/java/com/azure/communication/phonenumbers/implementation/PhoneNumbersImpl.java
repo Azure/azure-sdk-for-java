@@ -13,7 +13,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
@@ -98,7 +98,7 @@ public final class PhoneNumbersImpl {
         @Get("/phoneNumbers/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberOperationResult>> getOperation(
+        Mono<Response<PhoneNumberOperation>> getOperation(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
@@ -510,7 +510,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberOperationResult>> getOperationWithResponseAsync(String operationId) {
+    public Mono<Response<PhoneNumberOperation>> getOperationWithResponseAsync(String operationId) {
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
@@ -528,8 +528,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberOperationResult>> getOperationWithResponseAsync(
-            String operationId, Context context) {
+    public Mono<Response<PhoneNumberOperation>> getOperationWithResponseAsync(String operationId, Context context) {
         return service.getOperation(this.client.getEndpoint(), operationId, this.client.getApiVersion(), context);
     }
 
@@ -543,10 +542,10 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberOperationResult> getOperationAsync(String operationId) {
+    public Mono<PhoneNumberOperation> getOperationAsync(String operationId) {
         return getOperationWithResponseAsync(operationId)
                 .flatMap(
-                        (Response<PhoneNumberOperationResult> res) -> {
+                        (Response<PhoneNumberOperation> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -566,10 +565,10 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberOperationResult> getOperationAsync(String operationId, Context context) {
+    public Mono<PhoneNumberOperation> getOperationAsync(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context)
                 .flatMap(
-                        (Response<PhoneNumberOperationResult> res) -> {
+                        (Response<PhoneNumberOperation> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -588,7 +587,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberOperationResult getOperation(String operationId) {
+    public PhoneNumberOperation getOperation(String operationId) {
         return getOperationAsync(operationId).block();
     }
 
@@ -603,7 +602,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberOperationResult getOperation(String operationId, Context context) {
+    public PhoneNumberOperation getOperation(String operationId, Context context) {
         return getOperationAsync(operationId, context).block();
     }
 
