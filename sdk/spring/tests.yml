@@ -1,9 +1,15 @@
 trigger: none
 
 parameters:
-  AadOnDemandUserName: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
-  AadOnDemandUserDisplayName: 'user$(System.JobId)-$(Build.BuildId)'
-  AadOnDemandUserNameChina: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
+- name: AadOnDemandUserName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
+- name: AadOnDemandUserDisplayName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)'
+- name: AadOnDemandUserNameChina
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
