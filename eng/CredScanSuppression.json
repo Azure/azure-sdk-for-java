@@ -4,7 +4,11 @@
         {
             "placeholder": [
                 "secret=",
-                "NewPassword1!"
+                "NewPassword1!",
+                "temp2",
+                "123",
+                "Xabo2448",
+                "12NewPAwX0rd!"
             ],
             "_justification": "Secret used by test code, it is fake."
         }
