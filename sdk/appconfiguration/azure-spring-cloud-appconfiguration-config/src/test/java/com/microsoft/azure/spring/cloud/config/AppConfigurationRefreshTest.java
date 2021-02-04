@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.time.Duration;
@@ -46,7 +46,7 @@ public class AppConfigurationRefreshTest {
     private ArrayList<ConfigurationSetting> keys;
     @Mock
     private Map<String, List<String>> contextsMap;
-    private AppConfigurationStoreTrigger trigger;
+    private AppConfigurationStoreSelects select;
     private AppConfigurationStoreMonitoring monitoring;
     @Mock
     private Date date;
@@ -62,12 +62,12 @@ public class AppConfigurationRefreshTest {
         store.setConnectionString(TEST_CONN_STRING);
 
         monitoring = new AppConfigurationStoreMonitoring();
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
+        select = new AppConfigurationStoreSelects();
+        select.setKey(WATCHED_KEYS);
+        select.setLabel("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<AppConfigurationStoreSelects>();
+        selects.add(select);
+        monitoring.setSelects(selects);
         monitoring.setCacheExpiration(Duration.ofMinutes(-60));
         monitoring.setEnabled(true);
         store.setMonitoring(monitoring);
@@ -184,12 +184,12 @@ public class AppConfigurationRefreshTest {
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
+        select = new AppConfigurationStoreSelects();
+        select.setKey(WATCHED_KEYS);
+        select.setLabel("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<AppConfigurationStoreSelects>();
+        selects.add(select);
+        monitoring.setSelects(selects);
         monitoring.setCacheExpiration(Duration.ofMinutes(-60));
         store.setMonitoring(monitoring);
 
@@ -219,12 +219,12 @@ public class AppConfigurationRefreshTest {
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
+        select = new AppConfigurationStoreSelects();
+        select.setKey(WATCHED_KEYS);
+        select.setLabel("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<AppConfigurationStoreSelects>();
+        selects.add(select);
+        monitoring.setSelects(selects);
         monitoring.setCacheExpiration(Duration.ofMinutes(60));
         store.setMonitoring(monitoring);
 

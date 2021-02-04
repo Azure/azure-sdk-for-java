@@ -29,7 +29,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
@@ -40,7 +40,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String SPRING_APP_NAME_PROP = "spring.application.name";
 
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
-    
+
     private static final String PATH_SPLITTER = "/";
 
     private final AppConfigurationProperties properties;
@@ -203,7 +203,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
         try {
             String[] labels = store.getLabels(profiles);
-            
+
             for (String label : labels) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
@@ -218,9 +218,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
             // Setting new ETag values for Watch
             List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
-            for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
-                    .setLabelFilter(trigger.getLabel());
+
+            for (AppConfigurationStoreSelects select : store.getMonitoring().getSelects()) {
+                SettingSelector settingSelector = new SettingSelector().setKeyFilter(select.getKey())
+                    .setLabelFilter(select.getLabel());
 
                 ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
                     store.getEndpoint());

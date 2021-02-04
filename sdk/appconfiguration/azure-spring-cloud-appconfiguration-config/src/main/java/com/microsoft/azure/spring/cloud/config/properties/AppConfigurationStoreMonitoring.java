@@ -14,7 +14,7 @@ public class AppConfigurationStoreMonitoring {
 
     private Duration cacheExpiration = Duration.ofSeconds(30);
 
-    private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
+    private List<AppConfigurationStoreSelects> selects = new ArrayList<>();
 
     private PushNotification pushNotification = new PushNotification();
 
@@ -49,17 +49,17 @@ public class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * @return the triggers
+     * @return the selects
      */
-    public List<AppConfigurationStoreTrigger> getTriggers() {
-        return triggers;
+    public List<AppConfigurationStoreSelects> getSelects() {
+        return selects;
     }
 
     /**
-     * @param triggers the triggers to set
+     * @param selects the selects to set
      */
-    public void setTriggers(List<AppConfigurationStoreTrigger> triggers) {
-        this.triggers = triggers;
+    public void setSelects(List<AppConfigurationStoreSelects> selects) {
+        this.selects = selects;
     }
 
     /**
@@ -79,9 +79,9 @@ public class AppConfigurationStoreMonitoring {
     @PostConstruct
     public void validateAndInit() {
         if (enabled) {
-            Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
-            for (AppConfigurationStoreTrigger trigger : triggers) {
-                trigger.validateAndInit();
+            Assert.notEmpty(selects, "Selects need to be set if refresh is enabled.");
+            for (AppConfigurationStoreSelects select : selects) {
+                select.validateAndInit();
             }
         }
         Assert.isTrue(cacheExpiration.getSeconds() >= 1, "Minimum Watch time is 1 Second.");
