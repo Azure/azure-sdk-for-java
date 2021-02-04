@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
@@ -66,11 +65,12 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public String httpGetWithIncreamentalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
+
         String oauth2AuthorizationUrlFraction = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/"
             + "authorize?", AAD_TENANT_ID_1);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
+
         String onDemandAuthorizationUrl = driver.getCurrentUrl();
-        System.out.println("======================" + onDemandAuthorizationUrl);
         Assert.assertTrue(onDemandAuthorizationUrl.contains("https://management.azure.com/user_impersonation"));
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
         return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
