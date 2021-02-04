@@ -16,8 +16,10 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
@@ -31,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
@@ -96,48 +99,49 @@ public class EncryptionProcessor {
             List<Mono<Object>> monoList = new ArrayList<>();
             this.clientEncryptionPolicy.getIncludedPaths().stream().map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.clientEncryptionKeyId).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
-                Mono<Object> clientEncryptionPropertiesMono = EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
-                    clientEncryptionKeyId, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get())
-                    .flatMap(keyProperties -> {
-                        ProtectedDataEncryptionKey protectedDataEncryptionKey;
-                        try {
-                            // we pull out the Encrypted Client Encryption Key and Build the Protected Data
-                            // Encryption key
-                            // Here a request is sent out to unwrap using the Master Key configured via the Key
-                            // Encryption Key.
-                            protectedDataEncryptionKey =
-                                this.encryptionSettings.buildProtectedDataEncryptionKey(keyProperties,
-                                    this.encryptionKeyStoreProvider,
-                                    clientEncryptionKeyId);
-                        } catch (Exception ex) {
-                            return Mono.error(ex);
-                        }
-                        EncryptionSettings encryptionSettings = new EncryptionSettings();
-                        encryptionSettings.setEncryptionSettingTimeToLive(Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES)));
-                        encryptionSettings.setClientEncryptionKeyId(clientEncryptionKeyId);
-                        encryptionSettings.setDataEncryptionKey(protectedDataEncryptionKey);
-                        settingsByDekId.put(clientEncryptionKeyId, encryptionSettings);
-                        return Mono.empty();
-                    }).retryWhen(Retry.withThrowable((throwableFlux -> throwableFlux.flatMap(throwable -> {
-                    //TODO DO we need to check for MicrosoftDataEncryptionException too ?
-                    // ProtectedDataEncryptionKey.getOrCreate throws Exception object and not specific
-                    // exceptions
+                Mono<Object> clientEncryptionPropertiesMono =
+                    EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
+                        clientEncryptionKeyId, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get())
+                        .flatMap(keyProperties -> {
+                            ProtectedDataEncryptionKey protectedDataEncryptionKey;
+                            try {
+                                // we pull out the Encrypted Client Encryption Key and Build the Protected Data
+                                // Encryption key
+                                // Here a request is sent out to unwrap using the Master Key configured via the Key
+                                // Encryption Key.
+                                protectedDataEncryptionKey =
+                                    this.encryptionSettings.buildProtectedDataEncryptionKey(keyProperties,
+                                        this.encryptionKeyStoreProvider,
+                                        clientEncryptionKeyId);
+                            } catch (Exception ex) {
+                                return Mono.error(ex);
+                            }
+                            EncryptionSettings encryptionSettings = new EncryptionSettings();
+                            encryptionSettings.setEncryptionSettingTimeToLive(Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES)));
+                            encryptionSettings.setClientEncryptionKeyId(clientEncryptionKeyId);
+                            encryptionSettings.setDataEncryptionKey(protectedDataEncryptionKey);
+                            settingsByDekId.put(clientEncryptionKeyId, encryptionSettings);
+                            return Mono.empty();
+                        }).retryWhen(Retry.withThrowable((throwableFlux -> throwableFlux.flatMap(throwable -> {
+                        //TODO DO we need to check for MicrosoftDataEncryptionException too ?
+                        // ProtectedDataEncryptionKey.getOrCreate throws Exception object and not specific
+                        // exceptions
 
-                    // The access to master key was revoked. Try to fetch the latest ClientEncryptionKeyProperties
-                    // from the backend.
-                    // This will succeed provided the user has rewraped the Client Encryption Key with right set of
-                    // meta data.
-                    // This is based on the AKV provider implementaion so we expect a RequestFailedException in case
-                    // other providers are used in unwrap implementation.
-                    InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
-                    if (invalidKeyException != null) {
-                        forceRefreshClientEncryptionKey.set(true);
-                        return Mono.empty();
-                    }
-                    return Flux.error(throwable);
-                }))));
+                        // The access to master key was revoked. Try to fetch the latest ClientEncryptionKeyProperties
+                        // from the backend.
+                        // This will succeed provided the user has rewraped the Client Encryption Key with right set of
+                        // meta data.
+                        // This is based on the AKV provider implementaion so we expect a RequestFailedException in case
+                        // other providers are used in unwrap implementation.
+                        InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
+                        if (invalidKeyException != null) {
+                            forceRefreshClientEncryptionKey.set(true);
+                            return Mono.empty();
+                        }
+                        return Flux.error(throwable);
+                    }))));
                 monoList.add(clientEncryptionPropertiesMono);
-               sequentialList.set(Flux.mergeSequential(monoList).collectList());
+                sequentialList.set(Flux.mergeSequential(monoList).collectList());
             });
             return sequentialList.get().map(objects -> {
                 return Mono.empty();
@@ -253,7 +257,7 @@ public class EncryptionProcessor {
                             cipherTextWithTypeMarker = new byte[cipherText.length + 1];
                             cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
                             System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
-                            itemJObj.set(propertyName, toJsonNode(cipherTextWithTypeMarker, typeMarkerPair.getLeft()));
+                            itemJObj.put(propertyName, cipherTextWithTypeMarker);
                         } catch (MicrosoftDataEncryptionException ex) {
                             return Mono.error(ex);
                         }
@@ -297,7 +301,8 @@ public class EncryptionProcessor {
                     byte[] cipherText;
                     byte[] cipherTextWithTypeMarker;
                     try {
-                        cipherTextWithTypeMarker = Utils.getSimpleObjectMapper().writeValueAsBytes(propertyValueHolder);
+
+                        cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
                         cipherText = new byte[cipherTextWithTypeMarker.length - 1];
                         System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,
                             cipherTextWithTypeMarker.length - 1);
@@ -306,6 +311,8 @@ public class EncryptionProcessor {
                             TypeMarker.valueOf(cipherTextWithTypeMarker[0]).get()));
                     } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
                         return Mono.error(ex);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     return Mono.empty();
                 });
@@ -338,13 +345,18 @@ public class EncryptionProcessor {
             switch (jsonNode.getNodeType()) {
                 case BOOLEAN:
                     return Pair.of(TypeMarker.BOOLEAN,
-                        sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).serialize(jsonNode));
+                        sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).serialize(jsonNode.asBoolean()));
                 case NUMBER:
-                    return Pair.of(TypeMarker.NUMBER,
-                        sqlSerializerFactory.getDefaultSerializer((Number) 0).serialize(jsonNode));
+                    if (jsonNode.isInt() || jsonNode.isLong()) {
+                        return Pair.of(TypeMarker.LONG,
+                            sqlSerializerFactory.getDefaultSerializer(0l).serialize(jsonNode.asLong()));
+                    } else if (jsonNode.isFloat() || jsonNode.isDouble()) {
+                        return Pair.of(TypeMarker.DOUBLE,
+                            sqlSerializerFactory.getDefaultSerializer(0d).serialize(jsonNode.asDouble()));
+                    }
                 case STRING:
                     return Pair.of(TypeMarker.STRING,
-                        sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).serialize(jsonNode.asText()));
+                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.asText()));
                 case OBJECT:
                     return Pair.of(TypeMarker.OBJECT,
                         sqlSerializerFactory.getDefaultSerializer(new Object()).serialize(jsonNode));
@@ -363,12 +375,13 @@ public class EncryptionProcessor {
             SqlSerializerFactory sqlSerializerFactory = new SqlSerializerFactory();
             switch (typeMarker) {
                 case BOOLEAN:
-                    return (JsonNode) sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).deserialize(serializedBytes);
-                case NUMBER:
-                    return (JsonNode) sqlSerializerFactory.getDefaultSerializer((Number) 0).deserialize(serializedBytes);
+                    return BooleanNode.valueOf((boolean) sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).deserialize(serializedBytes));
+                case LONG:
+                    return LongNode.valueOf((long) sqlSerializerFactory.getDefaultSerializer(0l).deserialize(serializedBytes));
+                case DOUBLE:
+                    return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
                 case STRING:
-                    TextNode textNode  = TextNode.valueOf((String)sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
-                    return Utils.getSimpleObjectMapper().readTree((String)sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
+                    return TextNode.valueOf((String) sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
                 case OBJECT:
                     return (JsonNode) sqlSerializerFactory.getDefaultSerializer(new Object()).deserialize(serializedBytes);
                 case ARRAY:
@@ -376,22 +389,23 @@ public class EncryptionProcessor {
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+//        } catch (JsonMappingException e) {
+//            e.printStackTrace();
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
         }
         throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
     }
 
 
     public enum TypeMarker {
-        NULL(0), // not used
-        BOOLEAN(1),
-        NUMBER(2),
-        STRING(3),
-        OBJECT(4),
-        ARRAY(5);
+        NULL(1), // not used
+        BOOLEAN(2),
+        DOUBLE(3),
+        LONG(4),
+        STRING(5),
+        ARRAY(5),
+        OBJECT(6);
         private final int value;
 
         public static Optional<TypeMarker> valueOf(int value) {

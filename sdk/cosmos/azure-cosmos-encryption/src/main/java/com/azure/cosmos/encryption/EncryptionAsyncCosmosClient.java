@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -35,7 +36,7 @@ public class EncryptionAsyncCosmosClient {
         this.clientEncryptionPolicyCacheByContainerId = new AsyncCache<>();
     }
 
-    EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
+    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
         return encryptionKeyStoreProvider;
     }
 
@@ -71,9 +72,10 @@ public class EncryptionAsyncCosmosClient {
         /// Client Encryption key Id is unique within a Database.
         String cacheKey = cosmosAsyncContainer.getDatabase().getId() + "/" + clientEncryptionKeyId;
         if (!shouldForceRefresh) {
-            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
-                this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId));
+            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
+                return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
+                    clientEncryptionKeyId);
+            });
         } else {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
@@ -103,12 +105,14 @@ public class EncryptionAsyncCosmosClient {
 
     /**
      * Get Cosmos Client with Encryption support for performing operations using client-side encryption.
-     * @param cosmosAsyncClient Regular Cosmos Client.
-     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master keys.
+     *
+     * @param cosmosAsyncClient          Regular Cosmos Client.
+     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
+     *                                  keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
     public static EncryptionAsyncCosmosClient buildEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                                               EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+                                                                         EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
         }
@@ -116,19 +120,27 @@ public class EncryptionAsyncCosmosClient {
             throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
         }
 
-         return new EncryptionAsyncCosmosClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+        return new EncryptionAsyncCosmosClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 
     /**
-     * Gets a Container with Encryption capabilities
+     * Gets a database with Encryption capabilities
      *
-     * @param container original container
-     * @param encryptionAsyncCosmosClient encryption client to be used, which can be created using{@link #buildEncryptionAsyncClient(CosmosAsyncClient, EncryptionKeyStoreProvider)}
-     * @return container with encryption capabilities
+     * @param cosmosAsyncDatabase original database
+     * @return database with encryption capabilities
      */
-    public static EncryptionCosmosAsyncContainer buildCosmosAsyncContainer(CosmosAsyncContainer container, EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
-        return new EncryptionCosmosAsyncContainer(container, encryptionAsyncCosmosClient);
+    public EncryptionCosmosAsyncDatabase getEncryptedCosmosAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase) {
+        return new EncryptionCosmosAsyncDatabase(cosmosAsyncDatabase, this);
     }
 
-
+    /**
+     * Gets a database with Encryption capabilities
+     *
+     * @param databaseId original database id
+     * @return database with encryption capabilities
+     */
+    public EncryptionCosmosAsyncDatabase getEncryptedCosmosAsyncDatabase(String databaseId) {
+        CosmosAsyncDatabase database= this.cosmosAsyncClient.getDatabase(databaseId);
+        return new EncryptionCosmosAsyncDatabase(database, this);
+    }
 }

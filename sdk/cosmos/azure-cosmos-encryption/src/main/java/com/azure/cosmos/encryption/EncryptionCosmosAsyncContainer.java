@@ -87,11 +87,9 @@ public class EncryptionCosmosAsyncContainer {
             encryptedPayload,
             partitionKey,
             finalRequestOptions)
-            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
-                setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
-                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
-            }));
+            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
 
@@ -140,11 +138,9 @@ public class EncryptionCosmosAsyncContainer {
             encryptedPayload,
             partitionKey,
             finalRequestOptions)
-            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
-                setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
-                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
-            }));
+            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
     /**
@@ -177,11 +173,9 @@ public class EncryptionCosmosAsyncContainer {
             itemId,
             partitionKey,
             finalRequestOptions)
-            .publishOn(encryptionScheduler).map(cosmosItemResponse -> {
-                setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponse.getItem()));
-                return this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass());
-            }));
+            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
     /**
@@ -205,12 +199,9 @@ public class EncryptionCosmosAsyncContainer {
             partitionKey,
             requestOptions, byte[].class);
 
-        return responseMessageMono.publishOn(encryptionScheduler).map(
-            responseMessage -> {
-                setByteArrayContent(responseMessage, this.encryptionProcessor.decrypt(responseMessage.getItem()));
-                return this.responseFactory.createItemResponse(responseMessage, classType);
-            }
-        );
+        return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+            this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+            .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType)));
     }
 
     /**
