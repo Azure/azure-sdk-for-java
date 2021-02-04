@@ -4,12 +4,14 @@
 package com.azure.test.aad.common;
 
 import com.azure.spring.test.AppRunner;
-import java.util.Map;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 public class SeleniumITHelper {
 
@@ -17,15 +19,17 @@ public class SeleniumITHelper {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws IOException {
         createDriver();
         createAppRunner(appClass, properties);
     }
 
 
-    protected void createDriver() {
+    protected void createDriver() throws IOException {
         if (driver == null) {
-            System.setProperty("wdm.cachePath", getClass().getClassLoader().getResource("selenium").getPath());
+            String destination = System.getProperty("user.dir") + File.separator + "selenium";
+            JarUtil.copyFolderFromJar("selenium", new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
+            System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
