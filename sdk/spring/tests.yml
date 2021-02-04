@@ -1,9 +1,9 @@
 trigger: none
 
 parameters:
-  AadOnDemandUserName: "user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com"
-  AadOnDemandUserDisplayName: "user$(System.JobId)-$(Build.BuildId)"
-  AadOnDemandUserNameChina: "user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn"
+  AadOnDemandUserName: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
+  AadOnDemandUserDisplayName: 'user$(System.JobId)-$(Build.BuildId)'
+  AadOnDemandUserNameChina: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
