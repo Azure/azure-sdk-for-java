@@ -293,13 +293,9 @@ public class PagedIterableTest {
         createPagedResponse(numberOfPages);
 
         AtomicInteger pageGetCount = new AtomicInteger(0);
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> {
-            pageGetCount.getAndIncrement();
-            return pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0));
-        }, continuationToken -> {
-            pageGetCount.getAndIncrement();
-            return getNextPage(continuationToken, pagedResponses);
-        });
+        PagedFlux<Integer> pagedFlux = new PagedFlux<>(
+            () -> Mono.defer(() -> Mono.just(pagedResponses.get(0)).doOnNext(page -> pageGetCount.getAndIncrement())),
+            continuationToken -> Mono.defer(() -> getNextPage(continuationToken, pagedResponses).doOnNext(page -> pageGetCount.getAndIncrement())));
 
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
