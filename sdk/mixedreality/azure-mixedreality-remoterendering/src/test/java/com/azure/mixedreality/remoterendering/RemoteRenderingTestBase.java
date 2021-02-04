@@ -44,13 +44,12 @@ public class RemoteRenderingTestBase extends TestBase {
         String accountDomain = getAccountDomain();
         AzureKeyCredential keyCredential = getAccountKey();
 
-        /*
-        TokenCredential credential = constructAccountKeyCredential(accountId, keyCredential);
-        String endpoint = AuthenticationEndpoint.constructFromDomain(accountDomain);
-        String authenticationScope = AuthenticationEndpoint.constructScope(endpoint);
+        //TokenCredential credential = constructAccountKeyCredential(accountId, keyCredential);
+        //String endpoint = AuthenticationEndpoint.constructFromDomain(accountDomain);
+        //String authenticationScope = AuthenticationEndpoint.constructScope(endpoint);
 
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new BearerTokenAuthenticationPolicy(credential, authenticationScope));
+        //policies.add(new BearerTokenAuthenticationPolicy(credential, authenticationScope));
 
         if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
@@ -60,7 +59,7 @@ public class RemoteRenderingTestBase extends TestBase {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
-         */
+
         return pipeline;
     }
 
@@ -113,4 +112,16 @@ public class RemoteRenderingTestBase extends TestBase {
 
         return serviceEndpoint;
     }
+
+    String getRandomId(String playback) {
+        if (!interceptorManager.isPlaybackMode())
+        {
+            return UUID.randomUUID().toString();
+        }
+        else
+        {
+            return playback;
+        }
+    }
+
 }

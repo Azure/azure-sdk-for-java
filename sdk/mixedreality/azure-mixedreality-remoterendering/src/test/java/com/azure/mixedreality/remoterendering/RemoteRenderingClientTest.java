@@ -5,6 +5,7 @@ import com.azure.mixedreality.remoterendering.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     private RemoteRenderingClient client;
 
     private RemoteRenderingClient getClient(HttpClient httpClient) {
-        client = new RemoteRenderingClientBuilder()
+        return new RemoteRenderingClientBuilder()
             .accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
             .endpoint(super.getServiceEndpoint())
@@ -28,21 +29,16 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
 
-        ConversionInputOptions input = new ConversionInputOptions(getStorageUrl(), "testBox.fbx");
-        //{
-        //    // We use SAS for live testing, as there can be a delay before DRAM-based access is available for new accounts.
-        //    StorageContainerReadListSas = TestEnvironment.SasToken,
-        //    BlobPrefix = "Input"
-        //};
-        ConversionOutputOptions output = new ConversionOutputOptions(getStorageUrl());
-        //{
-        //    StorageContainerWriteSas = TestEnvironment.SasToken,
-        //    BlobPrefix = "Output"
-        //};
+        ConversionOptions conversionOptions = new ConversionOptionsBuilder()
+            .inputStorageContainerUri(getStorageUrl())
+            .inputRelativeAssetPath("testBox.fbx")
+            .inputBlobPrefix("Input")
+            .inputStorageContainerReadListSas(getBlobContainerSasToken())
+            .outputStorageContainerUri(getStorageUrl())
+            .outputBlobPrefix("Output")
+            .buildConversionOptions();
 
-        ConversionOptions conversionOptions = new ConversionOptions(input, output);
-
-        String conversionId = Recording.Random.NewGuid().ToString();
+        String conversionId = getRandomId("conversionTest");
 
         var conversionPoller = client.beginConversion(conversionId, conversionOptions);
 
@@ -80,7 +76,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         var client = getClient(httpClient);
         SessionCreationOptions options = new SessionCreationOptions(4, SessionSize.STANDARD);
 
-        String sessionId = Recording.Random.NewGuid().ToString();
+        String sessionId = getRandomId("sessionTest");
 
         var sessionPoller = client.beginSession(sessionId, options);
 
