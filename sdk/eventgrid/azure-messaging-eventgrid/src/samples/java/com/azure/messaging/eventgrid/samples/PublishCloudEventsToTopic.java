@@ -35,13 +35,13 @@ public class PublishCloudEventsToTopic {
         CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object", newUser);
         // Create a CloudEvent with binary data
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
-        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", byteSample);
+        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", byteSample, "bytes");
 
         // Send them to the event grid topic altogether.
         List<CloudEvent> events = new ArrayList<>();
         events.add(cloudEventJson);
         events.add(cloudEventModel);
-        events.add(cloudEventBytes);
+        events.add(cloudEventBytes.addExtensionAttribute("extension", "value"));
         publisherClient.sendCloudEvents(events);
     }
 }
