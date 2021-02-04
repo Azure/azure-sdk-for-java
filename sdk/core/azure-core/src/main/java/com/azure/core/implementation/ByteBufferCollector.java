@@ -56,9 +56,22 @@ public final class ByteBufferCollector {
      * Writes a ByteBuffers content into the backing array.
      *
      * @param byteBuffer The ByteBuffer to concatenate into the collector.
+     * @throws IllegalStateException If the size of the backing array would be larger than {@link Integer#MAX_VALUE}
+     * when the passed buffer is written.
      */
     public synchronized void write(ByteBuffer byteBuffer) {
+        // Null buffer.
+        if (byteBuffer == null) {
+            return;
+        }
+
         int remaining = byteBuffer.remaining();
+
+        // Nothing to write.
+        if (remaining == 0) {
+            return;
+        }
+
         ensureCapacity(remaining);
         byteBuffer.get(buffer, position, remaining);
         position += remaining;
@@ -78,13 +91,13 @@ public final class ByteBufferCollector {
      */
     private void ensureCapacity(int byteBufferRemaining) throws OutOfMemoryError {
         int currentCapacity = buffer.length;
-        int requiredCapacity = currentCapacity + byteBufferRemaining;
+        int requiredCapacity = position + byteBufferRemaining;
 
         /*
          * This validates that adding the current capacity and ByteBuffer remaining doesn't result in an integer
          * overflow response by checking that the result uses the same sign as both of the addition arguments.
          */
-        if (((currentCapacity ^ requiredCapacity) & (byteBufferRemaining ^ requiredCapacity)) < 0) {
+        if (((position ^ requiredCapacity) & (byteBufferRemaining ^ requiredCapacity)) < 0) {
             throw logger.logExceptionAsError(new IllegalStateException(REQUESTED_BUFFER_INVALID));
         }
 
@@ -96,10 +109,15 @@ public final class ByteBufferCollector {
         // Propose a new capacity that is double the size of the current capacity.
         int proposedNewCapacity = currentCapacity << 1;
 
-        // If the proposed capacity is less than the required capacity use that instead.
+        // If the proposed capacity is less than the required capacity use the required capacity.
         // Subtraction is used instead of a direct comparison as the bit shift could overflow into a negative int.
         if ((proposedNewCapacity - requiredCapacity) < 0) {
             proposedNewCapacity = requiredCapacity;
+        }
+
+        // If the proposed capacity doubling overflowed integer use a slightly smaller size than max value.
+        if (proposedNewCapacity < 0) {
+            proposedNewCapacity = Integer.MAX_VALUE - 8;
         }
 
         buffer = Arrays.copyOf(buffer, proposedNewCapacity);
