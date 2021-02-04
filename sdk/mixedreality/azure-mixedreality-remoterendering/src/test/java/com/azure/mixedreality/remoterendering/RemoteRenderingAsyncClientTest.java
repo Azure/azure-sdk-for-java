@@ -1,4 +1,4 @@
 package com.azure.mixedreality.remoterendering;
 
-public class RemoteRenderingAsyncClientTest {
+public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 }
