@@ -1,16 +1,39 @@
 package com.azure.mixedreality.remoterendering.models;
 
-import com.azure.mixedreality.remoterendering.implementation.models.Error;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RemoteRenderingServiceError {
-    private Error error;
+    private String code;
+    private String message;
+    private String target;
+    private RemoteRenderingServiceError innerError;
+    private List<RemoteRenderingServiceError> rootErrors;
 
-    RemoteRenderingServiceError(Error error) {
-        this.error = error;
+    public RemoteRenderingServiceError setCode(String code) {
+        this.code = code;
+        return this;
     }
+
+    public RemoteRenderingServiceError setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public RemoteRenderingServiceError setTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    public RemoteRenderingServiceError setInnerError(RemoteRenderingServiceError innerError) {
+        this.innerError = innerError;
+        return this;
+    }
+
+    public RemoteRenderingServiceError setRootErrors(List<RemoteRenderingServiceError> rootErrors) {
+        this.rootErrors = rootErrors;
+        return this;
+    }
+
 
     /**
      * Get the code property: Error code.
@@ -18,7 +41,7 @@ public class RemoteRenderingServiceError {
      * @return the code value.
      */
     public String getCode() {
-        return error.getCode();
+        return this.code;
     }
 
     /**
@@ -27,7 +50,7 @@ public class RemoteRenderingServiceError {
      * @return the message value.
      */
     public String getMessage() {
-        return error.getMessage();
+        return this.message;
     }
 
     /**
@@ -36,7 +59,7 @@ public class RemoteRenderingServiceError {
      * @return the target value.
      */
     public String getTarget() {
-        return error.getTarget();
+        return this.target;
     }
 
     /**
@@ -46,8 +69,7 @@ public class RemoteRenderingServiceError {
      * @return the innerError value.
      */
     public RemoteRenderingServiceError getInnerError() {
-        var innerError = error.getInnerError();
-        return innerError != null ? new RemoteRenderingServiceError(innerError) : null;
+        return this.innerError;
     }
 
     /**
@@ -56,6 +78,6 @@ public class RemoteRenderingServiceError {
      * @return the list of errors.
      */
     public List<RemoteRenderingServiceError> listRootErrors() {
-        return error.getDetails().stream().map(error -> new RemoteRenderingServiceError(error)).collect(Collectors.toList());
+        return this.rootErrors;
     }
 }

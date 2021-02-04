@@ -34,7 +34,7 @@ public class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    public SyncPoller<Session, Session> beginSession(String sessionId, SessionCreationOptions options) {
+    public SyncPoller<Session, Session> beginSession(String sessionId, CreateSessionOptions options) {
         PollerFlux<Session, Session> asyncPoller = client.beginSession(sessionId, options);
         return asyncPoller.getSyncPoller();
     }
@@ -68,7 +68,7 @@ public class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Session updateSession(String sessionId, SessionUpdateOptions options) {
+    public Session updateSession(String sessionId, UpdateSessionOptions options) {
         return client.updateSession(sessionId, options).block();
     }
 

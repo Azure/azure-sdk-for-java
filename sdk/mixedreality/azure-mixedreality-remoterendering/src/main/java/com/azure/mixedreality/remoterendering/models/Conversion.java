@@ -5,11 +5,45 @@ import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
 import java.time.OffsetDateTime;
 
 public class Conversion {
-    private com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion;
+    private String id;
+    private ConversionOptions options;
+    private String outputAssetUri;
+    private RemoteRenderingServiceError error;
+    private ConversionStatus conversionStatus;
+    private OffsetDateTime creationTime;
 
-    public Conversion(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
-        this.conversion = conversion;
+
+    public Conversion setId(String id) {
+        this.id = id;
+        return this;
     }
+
+    public Conversion setOptions(ConversionOptions options) {
+        this.options = options;
+        return this;
+    }
+
+    public Conversion setOutputAssetUri(String outputAssetUri) {
+        this.outputAssetUri = outputAssetUri;
+        return this;
+    }
+
+    public Conversion setError(RemoteRenderingServiceError error) {
+        this.error = error;
+        return this;
+    }
+
+    public Conversion setConversionStatus(ConversionStatus conversionStatus) {
+        this.conversionStatus = conversionStatus;
+        return this;
+    }
+
+    public Conversion setCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+
 
     /**
      * Get the id property: The id of the conversion supplied when the conversion was created.
@@ -17,7 +51,7 @@ public class Conversion {
      * @return the id value.
      */
     public String getId() {
-        return conversion.getId();
+        return this.id;
     }
 
     /**
@@ -27,7 +61,7 @@ public class Conversion {
      * @return the conversion options value.
      */
     public ConversionOptions getOptions() {
-        return ModelTranslator.fromGenerated(conversion.getSettings());
+        return this.options;
     }
 
     /**
@@ -37,8 +71,7 @@ public class Conversion {
      * @return the outputAssetUri value.
      */
     public String getOutputAssetUri() {
-        var conversionOutput = conversion.getOutput();
-        return conversionOutput != null ? conversionOutput.getOutputAssetUri() : null;
+        return this.outputAssetUri;
     }
 
     /**
@@ -47,7 +80,7 @@ public class Conversion {
      * @return the error value.
      */
     public RemoteRenderingServiceError getError() {
-        return new RemoteRenderingServiceError(conversion.getError());
+        return this.error;
     }
 
     /**
@@ -56,7 +89,7 @@ public class Conversion {
      * @return the status value.
      */
     public ConversionStatus getStatus() {
-        return ConversionStatus.fromString(conversion.getStatus().toString());
+        return this.conversionStatus;
     }
 
     /**
@@ -65,6 +98,6 @@ public class Conversion {
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
-        return conversion.getCreationTime();
+        return this.creationTime;
     }
 }

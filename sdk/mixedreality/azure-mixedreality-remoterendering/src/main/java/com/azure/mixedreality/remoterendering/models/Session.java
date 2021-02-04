@@ -1,15 +1,77 @@
 package com.azure.mixedreality.remoterendering.models;
 
-import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
-
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 public class Session {
-    private com.azure.mixedreality.remoterendering.implementation.models.SessionProperties session;
+    private String id;
+    private int arrInspectorPort;
+    private int handshakePort;
+    private Duration elapsedTime;
+    private String hostname;
+    private Duration maxLeaseTime;
+    private SessionSize sessionSize;
+    private SessionStatus sessionStatus;
+    private float teraflops;
+    private RemoteRenderingServiceError error;
+    private OffsetDateTime creationTime;
 
-    public Session(com.azure.mixedreality.remoterendering.implementation.models.SessionProperties session) {
-        this.session = session;
+    public Session setId(String id) {
+        this.id = id;
+        return this;
     }
+
+    public Session setArrInspectorPort(int arrInspectorPort) {
+        this.arrInspectorPort = arrInspectorPort;
+        return this;
+    }
+
+    public Session setHandshakePort(int handshakePort) {
+        this.handshakePort = handshakePort;
+        return this;
+    }
+
+    public Session setElapsedTime(Duration elapsedTime) {
+        this.elapsedTime = elapsedTime;
+        return this;
+    }
+
+    public Session setHostname(String hostname) {
+        this.hostname = hostname;
+        return this;
+    }
+
+    public Session setMaxLeaseTime(Duration maxLeaseTime) {
+        this.maxLeaseTime = maxLeaseTime;
+        return this;
+    }
+
+    public Session setSessionSize(SessionSize sessionSize) {
+        this.sessionSize = sessionSize;
+        return this;
+    }
+
+    public Session setSessionStatus(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
+        return this;
+    }
+
+    public Session setTeraflops(float teraflops) {
+        this.teraflops = teraflops;
+        return this;
+    }
+
+    public Session setError(RemoteRenderingServiceError error) {
+        this.error = error;
+        return this;
+    }
+
+    public Session setCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+
 
     /**
      * Get the id property: The id of the session supplied when the conversion was created.
@@ -17,7 +79,7 @@ public class Session {
      * @return the id value.
      */
     public String getId() {
-        return session.getId();
+        return this.id;
     }
 
     /**
@@ -26,7 +88,7 @@ public class Session {
      * @return the arrInspectorPort value.
      */
     public int getArrInspectorPort() {
-        return session.getArrInspectorPort();
+        return this.arrInspectorPort;
     }
 
     /**
@@ -35,17 +97,17 @@ public class Session {
      * @return the handshakePort value.
      */
     public int getHandshakePort() {
-        return session.getHandshakePort();
+        return this.handshakePort;
     }
 
     /**
-     * Get the elapsedTimeMinutes property: Amount of time in minutes the session is or has been in Ready state. Time is
+     * Get the elapsedTime property: Amount of timethe session is or has been in Ready state. Time is
      * rounded down to a full minute.
      *
-     * @return the elapsedTimeMinutes value.
+     * @return the elapsedTime value.
      */
-    public int getElapsedTimeMinutes() {
-        return session.getElapsedTimeMinutes();
+    public Duration getElapsedTime() {
+        return elapsedTime;
     }
 
     /**
@@ -54,16 +116,16 @@ public class Session {
      * @return the hostname value.
      */
     public String getHostname() {
-        return session.getHostname();
+        return this.hostname;
     }
 
     /**
-     * Get the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
+     * Get the maxLeaseTime property: The time the session will run after reaching the 'Ready' state.
      *
-     * @return the maxLeaseTimeMinutes value.
+     * @return the maxLeaseTime value.
      */
-    public int getMaxLeaseTimeMinutes() {
-        return session.getMaxLeaseTimeMinutes();
+    public Duration getMaxLeaseTime() {
+        return this.maxLeaseTime;
     }
 
     /**
@@ -74,7 +136,7 @@ public class Session {
      * @return the size value.
      */
     public SessionSize getSize() {
-        return SessionSize.fromString(session.getSize().toString());
+        return this.sessionSize;
     }
 
     /**
@@ -84,7 +146,7 @@ public class Session {
      * @return the status value.
      */
     public SessionStatus getStatus() {
-        return SessionStatus.fromString(session.getStatus().toString());
+        return this.sessionStatus;
     }
 
     /**
@@ -93,7 +155,7 @@ public class Session {
      * @return the teraflops value.
      */
     public float getTeraflops() {
-        return session.getTeraflops();
+        return this.teraflops;
     }
 
     /**
@@ -102,7 +164,7 @@ public class Session {
      * @return the error value.
      */
     public RemoteRenderingServiceError getError() {
-        return new RemoteRenderingServiceError(session.getError());
+        return this.error;
     }
 
     /**
@@ -111,6 +173,6 @@ public class Session {
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
-        return session.getCreationTime();
+        return this.creationTime;
     }
 }

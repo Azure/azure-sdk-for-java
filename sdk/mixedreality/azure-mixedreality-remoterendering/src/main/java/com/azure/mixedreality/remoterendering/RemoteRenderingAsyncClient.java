@@ -13,21 +13,15 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImpl;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionSettings;
-import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
 import com.azure.mixedreality.remoterendering.models.*;
 import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.polling.PollerFlux;
 
-import java.time.Duration;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.azure.core.util.FluxUtil.monoError;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
 public class RemoteRenderingAsyncClient {
@@ -51,7 +45,7 @@ public class RemoteRenderingAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    public PollerFlux<Session, Session> beginSession(String sessionId, SessionCreationOptions options) {
+    public PollerFlux<Session, Session> beginSession(String sessionId, CreateSessionOptions options) {
         return new PollerFlux<Session, Session>(
             options.getPollInterval(),
             pollingContext -> {
@@ -117,7 +111,7 @@ public class RemoteRenderingAsyncClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Session> updateSession(String sessionId, SessionUpdateOptions options) {
+    public Mono<Session> updateSession(String sessionId, UpdateSessionOptions options) {
         return impl.updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
     }
 
