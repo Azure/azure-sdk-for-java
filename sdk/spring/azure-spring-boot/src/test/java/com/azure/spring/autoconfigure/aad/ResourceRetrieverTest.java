@@ -16,12 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResourceRetrieverTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withPropertyValues("azure.activedirectory.client-id=fake-client-id",
-                    "azure.activedirectory.client-secret=fake-client-secret",
-                    "azure.activedirectory.user-group.allowed-groups=fake-group",
-                    "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri");
+        .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
+        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+        .withPropertyValues(
+            "azure.activedirectory.client-id=fake-client-id",
+            "azure.activedirectory.client-secret=fake-client-secret",
+            "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri");
 
     @Test
     public void resourceRetrieverDefaultConfig() {
@@ -39,19 +39,21 @@ public class ResourceRetrieverTest {
 
     @Test
     public void resourceRetriverIsConfigurable() {
-        this.contextRunner.withPropertyValues("azure.activedirectory.jwt-connect-timeout=1234",
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.jwt-connect-timeout=1234",
                 "azure.activedirectory.jwt-read-timeout=1234",
                 "azure.activedirectory.jwt-size-limit=123400",
                 "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri")
-                .run(context -> {
-                    assertThat(context).hasSingleBean(ResourceRetriever.class);
-                    final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
-                    assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
+            .run(context -> {
+                assertThat(context).hasSingleBean(ResourceRetriever.class);
+                final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
+                assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
 
-                    final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
-                    assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(1234);
-                    assertThat(defaultRetriever.getReadTimeout()).isEqualTo(1234);
-                    assertThat(defaultRetriever.getSizeLimit()).isEqualTo(123400);
-                });
+                final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
+                assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(1234);
+                assertThat(defaultRetriever.getReadTimeout()).isEqualTo(1234);
+                assertThat(defaultRetriever.getSizeLimit()).isEqualTo(123400);
+            });
     }
 }

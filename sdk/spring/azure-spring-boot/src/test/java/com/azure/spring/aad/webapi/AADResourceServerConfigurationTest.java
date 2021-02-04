@@ -18,17 +18,14 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 
 public class AADResourceServerConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues("azure.activedirectory.user-group.allowed-groups=User");
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri"));
     }
 
     @Test

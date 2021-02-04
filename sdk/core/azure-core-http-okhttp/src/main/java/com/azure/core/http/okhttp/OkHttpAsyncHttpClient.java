@@ -9,6 +9,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
 import com.azure.core.util.Context;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -178,17 +180,17 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     try {
                         byte[] bytes = body.bytes();
                         body.close();
-                        sink.success(new BufferedOkHttpResponse(response, request, bytes));
+                        sink.success(new OkHttpAsyncBufferedResponse(response, request, bytes));
                     } catch (IOException ex) {
                         // Reading the body bytes may cause an IOException, if it happens propagate it.
                         sink.error(ex);
                     }
                 } else {
                     // Body is null, use the non-buffering response.
-                    sink.success(new OkHttpResponse(response, request));
+                    sink.success(new OkHttpAsyncResponse(response, request));
                 }
             } else {
-                sink.success(new OkHttpResponse(response, request));
+                sink.success(new OkHttpAsyncResponse(response, request));
             }
         }
     }
