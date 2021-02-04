@@ -118,7 +118,7 @@ This starter provides following properties to be customized:
    azure:
      activedirectory:
        b2c:
-         tenant: ${your-tenant-name}
+         tenant: ${your-tenant-name} # ❗not tenant id
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
          reply-url: ${your-reply-url-from-aad} # should be absolute url.
@@ -126,9 +126,11 @@ This starter provides following properties to be customized:
          user-name-attribute-name: ${your-user-name-attribute-name}
          sign-in-user-flow: ${your-sign-up-or-in-user-flow}
          user-flows:
-           - ${your-sign-up-or-in-user-flow}
-           - ${your-profile-edit-user-flow}
-           - ${your-password-reset-user-flow}
+           - ${your-sign-up-or-in-user-flow}   # optional
+           - ${your-profile-edit-user-flow}    # optional
+           - ${your-password-reset-user-flow}  # optional
+           - ${your-sign-in-user-flow}         # optional
+           - ${your-sign-up-user-flow}         # optional
          authenticate-additional-parameters: 
            prompt: [login,none,consent]   # optional
            login_hint: xxxxxxxxx          # optional

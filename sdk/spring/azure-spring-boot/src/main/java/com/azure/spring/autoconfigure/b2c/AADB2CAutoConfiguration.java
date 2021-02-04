@@ -25,13 +25,12 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,7 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oAuth2UserService() {
-        return new AADB2COAuth2UserService();
+        return new AADB2COAuth2UserService(properties);
     }
 
     @Bean
@@ -102,71 +101,46 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
+        final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
         final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-
-        addB2CClientRegistration(signUpOrSignInRegistrations, properties.getSignInUserFlow());
+        signUpOrSignInRegistrations.add(b2cClientRegistration(properties.getSignInUserFlow()));
         for (String userFlow : properties.getUserFlows()) {
-            if (!userFlow.equalsIgnoreCase(properties.getSignInUserFlow())) {
-                addB2CClientRegistration(otherRegistrations, userFlow);
-            }
+            otherRegistrations.add(b2cClientRegistration(userFlow));
         }
 
         if (null != properties.getAuthorizationClients()) {
             for (String name : properties.getAuthorizationClients().keySet()) {
-                if (properties.getSignInUserFlow().equals(name)) {
-                    continue;
-                }
                 AuthorizationClientScopesProperties authz = properties.getAuthorizationClients().get(name);
-                otherRegistrations.add(createClientBuilder(name, authz));
+                if (!authz.getScopes().contains("openid")) {
+                    authz.getScopes().add("openid");
+                }
+                if (!authz.getScopes().contains("offline_access")) {
+                    authz.getScopes().add("offline_access");
+                }
+                otherRegistrations.add(createClientBuilder(name, authz.getScopes()));
             }
         }
         return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
     }
 
-    private void addB2CClientRegistration(@NonNull List<ClientRegistration> registrations, String userFlow) {
-        if (StringUtils.hasText(userFlow)) {
-            registrations.add(b2cClientRegistration(userFlow));
-        }
-    }
-
-    private ClientRegistration createClientBuilder(String registrationId, AuthorizationClientScopesProperties authz) {
-        String userFlow = properties.getSignInUserFlow();
-        ClientRegistration.Builder result = ClientRegistration.withRegistrationId(registrationId);
-        result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate(properties.getReplyUrl());
-        result.clientId(properties.getClientId());
-        result.clientSecret(properties.getClientSecret());
-        result.clientAuthenticationMethod(ClientAuthenticationMethod.POST);
-        result.authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()));
-        result.tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow));
-        result.jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow));
-        result.userNameAttributeName(properties.getUserNameAttributeName());
-        if (!authz.getScopes().contains("openid")) {
-            authz.getScopes().add("openid");
-        }
-        if (!authz.getScopes().contains("offline_access")) {
-            authz.getScopes().add("offline_access");
-        }
-        result.scope(authz.getScopes());
-        return result.build();
-    }
-
-    private ClientRegistration b2cClientRegistration(String userFlow) {
-        Assert.hasText(userFlow, "User flow should contains text.");
-        return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
+    private ClientRegistration createClientBuilder(String registrationId, Collection<String> scopes) {
+        return ClientRegistration.withRegistrationId(registrationId)
+                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                 .redirectUriTemplate(properties.getReplyUrl())
                                  .clientId(properties.getClientId())
                                  .clientSecret(properties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUriTemplate(properties.getReplyUrl())
-                                 .scope(Arrays.asList(properties.getClientId(), "openid", "offline_access"))
                                  .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                                 .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                                 .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                                 .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), properties.getSignInUserFlow()))
+                                 .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), properties.getSignInUserFlow()))
                                  .userNameAttributeName(properties.getUserNameAttributeName())
-                                 .clientName(userFlow)
+                                 .scope(scopes)
+                                 .clientName(registrationId)
                                  .build();
+    }
+
+    private ClientRegistration b2cClientRegistration(String userFlow) {
+        return createClientBuilder(userFlow, Arrays.asList(properties.getClientId(), "openid", "offline_access"));
     }
 
     /**

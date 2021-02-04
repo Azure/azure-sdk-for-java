@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.common;
+package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.webapp.AADWebAppClientRegistrationRepository;
-import com.azure.spring.aad.webapp.WebApplicationContextRunnerUtils;
-import com.azure.spring.utils.ApplicationId;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -26,7 +23,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
+public class AADOAuth2AuthzCodeGrantRequestEntityConverterTest {
 
     private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
@@ -86,9 +83,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
-        AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(ApplicationId.AZURE_SPRING_AAD,
-                clientRepo.getAzureClient());
+        AADOAuth2AuthzCodeGrantRequestEntityConverter converter =
+            new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
             .map(HttpEntity::getHeaders)
@@ -96,8 +92,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private Object[] expectedHeaders() {
-        return AADOAuth2AuthorizationCodeGrantRequestEntityConverter
-            .getHttpHeaders(ApplicationId.AZURE_SPRING_AAD)
+        return new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
+            .getHttpHeaders()
             .entrySet()
             .stream()
             .filter(entry -> !entry.getKey().equals("client-request-id"))
@@ -105,9 +101,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
-        AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(ApplicationId.AZURE_SPRING_AAD,
-                clientRepo.getAzureClient());
+        AADOAuth2AuthzCodeGrantRequestEntityConverter converter =
+            new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }

@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,7 +27,10 @@ public class AADB2COAuth2UserService implements OAuth2UserService<OidcUserReques
     private final OidcUserService oidcUserService;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
-    public AADB2COAuth2UserService() {
+    private final AADB2CProperties properties;
+
+    public AADB2COAuth2UserService(AADB2CProperties properties) {
+        this.properties = properties;
         this.oidcUserService = new OidcUserService();
     }
 
@@ -41,7 +45,12 @@ public class AADB2COAuth2UserService implements OAuth2UserService<OidcUserReques
         if (authentication != null && userObject != null) {
             DefaultOidcUser oriOidcUser = (DefaultOidcUser) userObject;
             // Keep user information up-to-date and authority information unchanged
-            oidcUser = new DefaultOidcUser(oriOidcUser.getAuthorities(), oidcUser.getIdToken());
+            if (StringUtils.hasText(properties.getUserNameAttributeName())) {
+                oidcUser = new DefaultOidcUser(oriOidcUser.getAuthorities(), oidcUser.getIdToken(),
+                    null, properties.getUserNameAttributeName());
+            } else {
+                oidcUser = new DefaultOidcUser(oriOidcUser.getAuthorities(), oidcUser.getIdToken());
+            }
         }
         session.setAttribute(DEFAULT_OIDC_USER, oidcUser);
         return oidcUser;

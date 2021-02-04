@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.aad.webapp;
+
+import com.azure.spring.common.OAuth2AuthzCodeGrantRequestEntityConverter;
+import com.azure.spring.utils.ApplicationId;
+import org.springframework.http.RequestEntity;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+/**
+ * When using "auth-code", it's used to set the azure service header tag.
+ */
+public class AADOAuth2AuthzCodeGrantRequestEntityConverter
+    extends OAuth2AuthzCodeGrantRequestEntityConverter {
+
+    private final AzureClientRegistration azureClient;
+
+    public AADOAuth2AuthzCodeGrantRequestEntityConverter(AzureClientRegistration client) {
+        this.azureModule = ApplicationId.AZURE_SPRING_AAD;
+        azureClient = client;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
+        return super.convert(request);
+    }
+
+    private boolean isRequestForDefaultClient(OAuth2AuthorizationCodeGrantRequest request) {
+        return request.getClientRegistration().equals(azureClient.getClient());
+    }
+
+    @Override
+    public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        String scopes = String.join(" ", isRequestForDefaultClient(request)
+            ? azureClient.getAccessTokenScopes()
+            : request.getClientRegistration().getScopes());
+        body.add("scope", scopes);
+        return body;
+    }
+}
