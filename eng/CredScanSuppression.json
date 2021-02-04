@@ -1,4 +1,12 @@
 {
     "tool": "Credential Scanner",
-    "suppressions": []
+    "suppressions": [
+        {
+            "placeholder": [
+                "secret=",
+                "NewPassword1!"
+            ],
+            "_justification": "Secret used by test code, it is fake."
+        }
+    ]
 }
