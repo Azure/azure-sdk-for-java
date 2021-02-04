@@ -28,6 +28,7 @@ public class RemoteRenderingClientBuilder {
     private MixedRealityStsClientBuilder stsBuilder;
     private RemoteRenderingServiceVersion apiVersion;
     private AccessToken accessToken;
+    private String endpoint;
 
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
@@ -39,14 +40,15 @@ public class RemoteRenderingClientBuilder {
     }
 
     public RemoteRenderingAsyncClient buildAsyncClient() {
+        String scope = this.endpoint.replaceFirst("/$", "") + "/.default";
         if (accessToken == null)
         {
             var stsClient = stsBuilder.buildAsyncClient();
-            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken()));
+            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
         }
         else
         {
-            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken)));
+            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken), scope));
         }
 
         return new RemoteRenderingAsyncClient(builder.buildClient(), accountId);
@@ -121,6 +123,7 @@ public class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder endpoint(String endpoint) {
         builder.endpoint(endpoint);
+        this.endpoint = endpoint;
         return this;
     }
 

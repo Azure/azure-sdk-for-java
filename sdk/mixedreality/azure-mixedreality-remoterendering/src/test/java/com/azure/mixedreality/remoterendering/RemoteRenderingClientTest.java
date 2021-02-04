@@ -19,6 +19,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         return new RemoteRenderingClientBuilder()
             .accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
+            .credential(super.getAccountKey())
             .endpoint(super.getServiceEndpoint())
             .pipeline(super.getHttpPipeline(httpClient))
             .buildClient();
@@ -35,7 +36,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
             .inputBlobPrefix("Input")
             .inputStorageContainerReadListSas(getBlobContainerSasToken())
             .outputStorageContainerUri(getStorageUrl())
-            .outputBlobPrefix("Output");
+            .outputBlobPrefix("Output")
+            .outputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("conversionTest");
 
@@ -61,7 +63,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         // iterate over each page
         client.listConversions().forEach(c -> {
-            if (c.getId() == conversionId) {
+            if (c.getId().equals(conversionId)) {
                 foundConversion.set(true);
             }
         });
@@ -104,7 +106,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         AtomicReference<Boolean> foundSession = new AtomicReference<Boolean>(false);
 
         client.listSessions().forEach(s -> {
-            if (s.getId() == sessionId) {
+            if (s.getId().equals(sessionId)) {
                 foundSession.set(true);
             }
         });

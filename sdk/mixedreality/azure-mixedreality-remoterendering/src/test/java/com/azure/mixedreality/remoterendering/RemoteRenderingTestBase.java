@@ -46,11 +46,13 @@ public class RemoteRenderingTestBase extends TestBase {
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        String scope = getServiceEndpoint().replaceFirst("/$", "") + "/.default";
+
         if (interceptorManager.isPlaybackMode())
         {
             // We don't need to test communication with the STS Authentication Library, so in playback
             // we use a code-path which does not attempt to contact that service.
-            policies.add(new BearerTokenAuthenticationPolicy(r -> Mono.just(new AccessToken("Sanitized", OffsetDateTime.MAX))));
+            policies.add(new BearerTokenAuthenticationPolicy(r -> Mono.just(new AccessToken("Sanitized", OffsetDateTime.MAX)), scope));
         }
         else
         {
@@ -59,7 +61,7 @@ public class RemoteRenderingTestBase extends TestBase {
                 .accountDomain(getAccountDomain())
                 .credential(getAccountKey())
                 .buildAsyncClient();
-            policies.add(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken()));
+            policies.add(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
         }
 
         if (getTestMode() == TestMode.RECORD) {
