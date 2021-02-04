@@ -14,7 +14,7 @@ public class CommunicationUserIdentifier extends CommunicationIdentifier {
     /**
      * Creates a CommunicationUserIdentifier object
      *
-     * @param id the id of the communication user.
+     * @param id id of the communication user.
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
     public CommunicationUserIdentifier(String id) {
