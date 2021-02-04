@@ -6,12 +6,8 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.time.OffsetDateTime;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -39,6 +35,7 @@ public final class EventGridPublisherClient {
     /**
      * Publishes the given EventGrid events to the given topic or domain.
      * @param events the EventGrid events to publish.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEventGridEvents(Iterable<EventGridEvent> events) {
@@ -48,6 +45,7 @@ public final class EventGridPublisherClient {
     /**
      * Publishes the given cloud events to the given topic or domain.
      * @param events the cloud events to publish.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCloudEvents(Iterable<CloudEvent> events) {
@@ -57,6 +55,7 @@ public final class EventGridPublisherClient {
     /**
      * Publishes the given custom events to the given topic or domain.
      * @param events the custom events to publish.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCustomEvents(Iterable<Object> events) {
@@ -69,6 +68,7 @@ public final class EventGridPublisherClient {
      * @param context the context to use along the pipeline.
      *
      * @return the response given by the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
@@ -81,6 +81,7 @@ public final class EventGridPublisherClient {
      * @param context the context to use along the pipeline.
      *
      * @return the response given by the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
@@ -93,6 +94,7 @@ public final class EventGridPublisherClient {
      * @param context the context to use along the pipeline.
      *
      * @return the response given by the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {

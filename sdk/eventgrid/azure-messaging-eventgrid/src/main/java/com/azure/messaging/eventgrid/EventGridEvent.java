@@ -37,14 +37,16 @@ public final class EventGridEvent {
      * @param eventType   the type of the event, e.g. "Contoso.Items.ItemReceived".
      * @param data        the data associated with this event.
      * @param dataVersion the version of the data sent along with the event.
+     *
+     * @throws IllegalArgumentException if subject, eventType or data is {@code null} or empty.
      */
     public EventGridEvent(String subject, String eventType, Object data, String dataVersion) {
         if (CoreUtils.isNullOrEmpty(subject)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("subject cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'subject' cannot be null or empty."));
         } else if (CoreUtils.isNullOrEmpty(eventType)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("event type cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventType' cannot be null or empty."));
         } else if (CoreUtils.isNullOrEmpty(dataVersion)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("data version cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'dataVersion' cannot be null or empty."));
         }
 
         this.event = new com.azure.messaging.eventgrid.implementation.models.EventGridEvent()
@@ -61,8 +63,9 @@ public final class EventGridEvent {
      * @param eventGridJsonString the JSON payload containing one or more events.
      *
      * @return all of the events in the payload deserialized as {@link EventGridEvent}s.
-     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a eventgrid event
+     * @throws IllegalArgumentException if eventGridJsonString isn't a JSON string for a eventgrid event
      * or an array of it.
+     * @throws NullPointerException if eventGridJsonString is {@code null}.
      */
     public static List<EventGridEvent> fromString(String eventGridJsonString) {
         return EventGridDeserializer.deserializeEventGridEvents(eventGridJsonString);
@@ -85,7 +88,7 @@ public final class EventGridEvent {
      */
     public EventGridEvent setId(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("id cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'id' cannot be null or empty."));
         }
         this.event.setId(id);
         return this;

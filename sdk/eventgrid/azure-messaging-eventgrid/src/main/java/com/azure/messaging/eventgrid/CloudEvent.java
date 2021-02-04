@@ -46,6 +46,7 @@ public final class CloudEvent {
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived". It can't be null or empty.
      * @param data the payload of this event. Set to null if your event doesn't have the data payload.
      *             It will be serialized as a String if it's a String, or application/json if it's not a String.
+     * @throws NullPointerException if source or type is {@code null}.
      */
     public CloudEvent(String source, String type, Object data) {
         this(source, type);
@@ -58,6 +59,7 @@ public final class CloudEvent {
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
      * @param data the payload in bytes of this event. It will be serialized to Base64 format.
      * @param dataContentType the type of the data.
+     * @throws NullPointerException if source or type is {@code null}.
      */
     public CloudEvent(String source, String type, byte[] data, String dataContentType) {
         this(source, type);
@@ -66,10 +68,10 @@ public final class CloudEvent {
 
     private CloudEvent(String source, String type) {
         if (CoreUtils.isNullOrEmpty(source)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'source' cannot be null or empty."));
         }
         if (CoreUtils.isNullOrEmpty(type)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("type cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'type' cannot be null or empty."));
         }
 
         this.cloudEvent = new com.azure.messaging.eventgrid.implementation.models.CloudEvent()
@@ -83,7 +85,8 @@ public final class CloudEvent {
      * @param cloudEventJsonString the JSON payload containing one or more events.
      *
      * @return all of the events in the payload deserialized as {@link CloudEvent}s.
-     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it.
+     * @throws IllegalArgumentException if cloudEventJsonString isn't a JSON string for a cloud event or an array of it.
+     * @throws NullPointerException if cloudEventJsonString is {@code null}.
      */
     public static List<CloudEvent> fromString(String cloudEventJsonString) {
         return EventGridDeserializer.deserializeCloudEvents(cloudEventJsonString);
