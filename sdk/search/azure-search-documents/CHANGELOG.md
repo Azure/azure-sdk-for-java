@@ -2,6 +2,12 @@
 
 ## 11.2.0-beta.4 (Unreleased)
 
+## 11.1.3 (2021-01-15)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.12.0`.
+- Updated `azure-core-http-netty` to `1.7.1`.
 
 ## 11.2.0-beta.3 (2020-11-10)
 

@@ -68,6 +68,9 @@
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
 
+        <!-- Mixed Reality -->
+        <module>sdk/mixedreality/azure-mixedreality-authentication</module>
+
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
         <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
@@ -284,6 +287,10 @@
                   <group>
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Mixed Reality Authentication</title>
+                    <packages>com.azure.mixedreality.authentication*</packages>
                   </group>
                 </groups>
                 <links>
@@ -553,6 +560,7 @@
         <module>sdk/boms</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
+        <module>sdk/confluent</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
@@ -568,6 +576,7 @@
         <module>sdk/loganalytics</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
+        <module>sdk/mixedreality</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/postgresql</module>

@@ -46,7 +46,7 @@ public final class KeyVaultBackupClient {
      * @return A {@link SyncPoller} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         return asyncClient.beginBackup(blobStorageUrl, sasToken).getSyncPoller();
     }
@@ -60,7 +60,7 @@ public final class KeyVaultBackupClient {
      * @return A {@link SyncPoller} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken, Duration pollingInterval) {
         return asyncClient.beginBackup(blobStorageUrl, sasToken, pollingInterval).getSyncPoller();
     }
@@ -75,7 +75,7 @@ public final class KeyVaultBackupClient {
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken) {
         return asyncClient.beginRestore(backupFolderUrl, sasToken).getSyncPoller();
     }
@@ -91,7 +91,7 @@ public final class KeyVaultBackupClient {
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken, Duration pollingInterval) {
         return asyncClient.beginRestore(backupFolderUrl, sasToken, pollingInterval).getSyncPoller();
     }
@@ -109,7 +109,7 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl, String sasToken) {
         return asyncClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken).getSyncPoller();
     }
@@ -128,7 +128,7 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl, String sasToken, Duration pollingInterval) {
         return asyncClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken, pollingInterval).getSyncPoller();
     }
