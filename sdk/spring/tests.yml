@@ -7,10 +7,6 @@ stages:
         ServiceDirectory: spring
         TestResourceDirectories:
           - spring/azure-spring-boot-test-cosmos
-          - spring/azure-spring-boot-test-servicebus-jms
-          - spring/azure-spring-cloud-test-eventhubs
-          - spring/azure-spring-boot-test-keyvault
-          - spring/azure-spring-boot-test-storage
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
