@@ -24,8 +24,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
             .buildClient();
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    //@ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    //@MethodSource("getHttpClients")
     public void conversionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
 
@@ -70,8 +70,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertTrue(foundConversion.get());
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    //@ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    //@MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
         SessionCreationOptions options = new SessionCreationOptions(4, SessionSize.STANDARD);

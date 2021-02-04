@@ -3,6 +3,7 @@
 
 package com.azure.mixedreality.remoterendering;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -13,8 +14,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,16 +44,23 @@ public class RemoteRenderingTestBase extends TestBase {
     private final String playbackServiceEndpoint = "westeurope";
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        UUID accountId = getAccountId();
-        String accountDomain = getAccountDomain();
-        AzureKeyCredential keyCredential = getAccountKey();
-
-        //TokenCredential credential = constructAccountKeyCredential(accountId, keyCredential);
-        //String endpoint = AuthenticationEndpoint.constructFromDomain(accountDomain);
-        //String authenticationScope = AuthenticationEndpoint.constructScope(endpoint);
-
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        //policies.add(new BearerTokenAuthenticationPolicy(credential, authenticationScope));
+
+        if (interceptorManager.isPlaybackMode())
+        {
+            // We don't need to test communication with the STS Authentication Library, so in playback
+            // we use a code-path which does not attempt to contact that service.
+            policies.add(new BearerTokenAuthenticationPolicy(r -> Mono.just(new AccessToken("Sanitized", OffsetDateTime.MAX))));
+        }
+        else
+        {
+            var stsClient = new MixedRealityStsClientBuilder()
+                .accountId(getAccountId())
+                .accountDomain(getAccountDomain())
+                .credential(getAccountKey())
+                .buildAsyncClient();
+            policies.add(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken()));
+        }
 
         if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());

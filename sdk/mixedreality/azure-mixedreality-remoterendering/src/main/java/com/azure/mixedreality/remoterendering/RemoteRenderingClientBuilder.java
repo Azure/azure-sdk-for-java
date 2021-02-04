@@ -1,6 +1,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -14,6 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.mixedreality.authentication.MixedRealityStsServiceVersion;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -25,6 +27,7 @@ public class RemoteRenderingClientBuilder {
     private UUID accountId;
     private MixedRealityStsClientBuilder stsBuilder;
     private RemoteRenderingServiceVersion apiVersion;
+    private AccessToken accessToken;
 
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
@@ -36,10 +39,15 @@ public class RemoteRenderingClientBuilder {
     }
 
     public RemoteRenderingAsyncClient buildAsyncClient() {
-        // TODO Not sure if client building should be doing communication.
-        var accessToken = stsBuilder.buildAsyncClient().getToken();
-
-        builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> accessToken));
+        if (accessToken == null)
+        {
+            var stsClient = stsBuilder.buildAsyncClient();
+            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken()));
+        }
+        else
+        {
+            builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken)));
+        }
 
         return new RemoteRenderingAsyncClient(builder.buildClient(), accountId);
     }
@@ -73,7 +81,7 @@ public class RemoteRenderingClientBuilder {
      * @param accountKeyCredential the accountKeyCredential value.
      * @return the RemoteRenderingClientBuilder.
      */
-    public RemoteRenderingClientBuilder accountKeyCredential(AzureKeyCredential accountKeyCredential) {
+    public RemoteRenderingClientBuilder credential(AzureKeyCredential accountKeyCredential) {
         this.stsBuilder.credential(accountKeyCredential);
         return this;
     }
@@ -87,6 +95,17 @@ public class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder credential(TokenCredential tokenCredential) {
         this.stsBuilder.credential(tokenCredential);
+        return this;
+    }
+
+    /**
+     * Use a {@link AccessToken} for authentication.
+     *
+     * @param accessToken An access token used to access the specified Azure Remote Rendering account
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder credential(AccessToken accessToken) {
+        this.accessToken = accessToken;
         return this;
     }
 
