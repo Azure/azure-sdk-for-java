@@ -114,8 +114,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? byPage().take(1)
-                : byPage(continuationToken).take(1);
+                ? byPage()
+                : byPage(continuationToken);
             return flux.map(mapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
