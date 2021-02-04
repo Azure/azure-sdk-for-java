@@ -28,6 +28,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     private final ClientLogger logger;
 
     private volatile boolean done;
+    private volatile Iterator<P> currentPageIterator;
 
     ContinuablePagedByIteratorBase(PageRetriever<C, P> pageRetriever, ContinuationState<C> continuationState,
         Integer defaultPageSize, ClientLogger logger) {
@@ -81,23 +82,34 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
             return;
         }
 
-        AtomicBoolean receivedPages = new AtomicBoolean(false);
-        pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-            .map(page -> {
-                receivedPages.set(true);
-                addPage(page);
-
-                continuationState.setLastContinuationToken(page.getContinuationToken());
-                this.done = continuationState.isDone();
-
-                return page;
-            }).blockLast();
+        Iterator<P> pageIterator = this.currentPageIterator;
+        if (pageIterator == null || !pageIterator.hasNext()) {
+            // initiate a new pageIterator from pageRetriever
+            pageIterator = pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
+                .toIterable(1).iterator();
+            this.currentPageIterator = pageIterator;
+        }
+        // get new page from pageIterator
+        boolean receivedPages = tryGetNextPage(pageIterator);
 
         /*
          * In the scenario when the subscription completes without emitting an element indicate we are done by checking
          * if we have any additional elements to return.
          */
-        this.done = done || (!receivedPages.get() && !isNextAvailable());
+        this.done = done || (!receivedPages && !isNextAvailable());
+    }
+
+    private boolean tryGetNextPage(Iterator<P> pageIterator) {
+        boolean receivedPages = false;
+        if (pageIterator.hasNext()) {
+            P page = pageIterator.next();
+            addPage(page);
+            receivedPages = true;
+
+            continuationState.setLastContinuationToken(page.getContinuationToken());
+            this.done = continuationState.isDone();
+        }
+        return receivedPages;
     }
 
     /*
