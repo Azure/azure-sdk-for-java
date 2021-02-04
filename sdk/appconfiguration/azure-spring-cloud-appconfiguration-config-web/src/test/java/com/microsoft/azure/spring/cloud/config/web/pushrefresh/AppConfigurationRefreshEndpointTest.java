@@ -13,7 +13,7 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProper
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class AppConfigurationRefreshEndpointTest {
 
     private ArrayList<ConfigStore> configStores;
 
-    private ArrayList<AppConfigurationStoreSelects> selects;
+    private ArrayList<AppConfigurationStoreTrigger> triggers;
 
     private AppConfigurationStoreMonitoring monitoring;
 
@@ -68,12 +68,12 @@ public class AppConfigurationRefreshEndpointTest {
         MockitoAnnotations.initMocks(this);
 
         monitoring = new AppConfigurationStoreMonitoring();
-        AppConfigurationStoreSelects select = new AppConfigurationStoreSelects();
-        select.setKey(TRIGGER_KEY);
-        select.setLabel(TRIGGER_LABEL);
-        selects = new ArrayList<AppConfigurationStoreSelects>();
-        selects.add(select);
-        monitoring.setSelects(selects);
+        AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
+        trigger.setKey(TRIGGER_KEY);
+        trigger.setLabel(TRIGGER_LABEL);
+        triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        triggers.add(trigger);
+        monitoring.setTriggers(triggers);
         PushNotification pushNotification = monitoring.getPushNotification();
         AccessToken primaryToken = pushNotification.getPrimaryToken();
         primaryToken.setName(tokenName);
