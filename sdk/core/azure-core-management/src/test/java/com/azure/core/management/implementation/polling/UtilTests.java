@@ -25,18 +25,19 @@ public class UtilTests {
         headers.put("Location", locationUrl);
 
         Assertions.assertEquals(new URL(asyncOpUrl), Util.getAzureAsyncOperationUrl(headers, logger));
-        Assertions.assertEquals(new URL(locationUrl), Util.getLocationUrl(headers, logger));
+        Assertions.assertEquals(new URL(locationUrl), Util.getLocationUrl(headers, logger, true));
     }
 
     @Test
     public void testGetMalformedURL() {
         HttpHeaders asyncOpHeaders = new HttpHeaders();
         asyncOpHeaders.put("Azure-AsyncOperation", "invalidUrl");
-        Assertions.assertThrows(RuntimeException.class, () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
+        Assertions.assertThrows(Util.MalformedUrlException.class, () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
 
         // malformed URL in location will be ignored
         HttpHeaders locationHeaders = new HttpHeaders();
         locationHeaders.put("Location", "invalidUrl");
-        Assertions.assertNull(Util.getLocationUrl(locationHeaders, logger));
+        Assertions.assertNull(Util.getLocationUrl(locationHeaders, logger, true));
+        Assertions.assertThrows(Util.MalformedUrlException.class, () -> Util.getLocationUrl(locationHeaders, logger));
     }
 }

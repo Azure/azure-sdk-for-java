@@ -11,7 +11,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * Protocol settings.
  */
-@JacksonXmlRootElement(localName = "ShareProtocolSettings")
+@JacksonXmlRootElement(localName = "ProtocolSettings")
 @Fluent
 public final class ShareProtocolSettings {
     /*
