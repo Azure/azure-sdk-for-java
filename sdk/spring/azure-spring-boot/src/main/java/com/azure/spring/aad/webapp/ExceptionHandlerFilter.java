@@ -4,8 +4,6 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,9 +18,6 @@ import java.util.Optional;
  * Handle the specified exception.
  */
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
-
-    @Autowired
-    OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

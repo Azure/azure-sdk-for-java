@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  *
  * <p>
  * step 6: {@link AADWebAppConfiguration#conditionalAccessExceptionFilterFunction()} receives the response and convert
- * it into {@link ConditionalAccessException}. {@link ConditionalAccessException} can catch this exception and put the
+ * it into {@link ConditionalAccessException}. {@link ExceptionHandlerFilter} can catch this exception and put the
  * claims field into session. then clear the authorization information and redirect. At last {@link
  * AADOAuth2AuthorizationRequestResolver} intercepts authorization-url, put claims into {@link
  * OAuth2AuthorizationRequest} to reauthorize.
