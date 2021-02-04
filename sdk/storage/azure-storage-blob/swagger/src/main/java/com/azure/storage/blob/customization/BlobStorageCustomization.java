@@ -134,16 +134,19 @@ public class BlobStorageCustomization extends Customization {
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");
-        MethodCustomization getSizeInt = block.getMethod("getSizeInt");
-        getSizeInt.addAnnotation("@Deprecated");
+        MethodCustomization getSizeInt = block.getMethod("getSizeInt")
+            .rename("getSize")
+            .addAnnotation("@Deprecated");
+//            .setReturnType("int", "return (int) this.sizeLong; #%s", true);
         getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
-//        getSizeInt.rename("getSize");
+
 
         MethodCustomization setSizeInt = block.getMethod("setSizeInt");
+        setSizeInt = setSizeInt.rename("setSize");
         setSizeInt.addAnnotation("@Deprecated");
         setSizeInt.getJavadoc().setDeprecated("Use {@link #setSizeLong(long)}");
 //        setSizeInt.setReturnType("Block", "return %s.setSize((long) sizeInt);", true);
-//        setSizeInt.rename("setSize");
+
 
         ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");
         PropertyCustomization hourMetrics = blobServiceProperties.getProperty("hourMetrics");
@@ -158,6 +161,8 @@ public class BlobStorageCustomization extends Customization {
 
         // CPKInfo - New generator removed a property and it's getter and setter methods.
         ClassCustomization cpkInfo = models.getClass("CpkInfo");
+        cpkInfo.removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")");
+        cpkInfo.addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
 //        cpkInfo.addMethod("public EncryptionAlgorithmType getEncryptionAlgorithm() { return this.encryptionAlgorithm; } ");
 //        cpkInfo.addMethod("public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {\t\n" +
 //            "        this.encryptionAlgorithm = encryptionAlgorithm;\t\n" +

@@ -77,7 +77,7 @@ public final class Block {
      * @deprecated Use {@link #getSizeLong()}
      */
     @Deprecated
-    public int getSizeInt() {
+    public int getSize() {
         return this.sizeInt;
     }
 
@@ -89,7 +89,7 @@ public final class Block {
      * @deprecated Use {@link #setSizeLong(long)}
      */
     @Deprecated
-    public Block setSizeInt(int sizeInt) {
+    public Block setSize(int sizeInt) {
         this.sizeInt = sizeInt;
         return this;
     }
