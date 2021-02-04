@@ -1,49 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefilesysteminitialcheckfail134276e4694c7309f?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefilesysteminitialcheckfail129619d06f45777bb?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cb251317-6ccd-4623-badf-0a051269ce57"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c89ee73-7bfa-4474-b43a-48a62c584088"
     },
     "Response" : {
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "x-ms-error-code" : "AuthenticationFailed",
       "retry-after" : "0",
-      "Content-Length" : "769",
+      "Content-Length" : "760",
       "StatusCode" : "403",
-      "x-ms-request-id" : "1a01152c-301e-00b6-3eb8-6a3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:1a01152c-301e-00b6-3eb8-6a3e8e000000\nTime:2020-08-04T23:39:10.0464107Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'Y5z0CtxAqoxQiGl+xHEBc5Qjzs3FLgCUbcdC3adko5w=' is not the same as any computed signature. Server used following string to sign: 'GET\n\n\n\n\n\nTue, 04 Aug 2020 23:39:10 GMT\n\n\n\n\n\nx-ms-client-request-id:cb251317-6ccd-4623-badf-0a051269ce57\nx-ms-version:2019-12-12\n/azstoragesdkaccount/jtccreatefilesysteminitialcheckfail134276e4694c7309f\nrestype:container'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Tue, 04 Aug 2020 23:39:09 GMT",
+      "x-ms-request-id" : "4651e196-101e-00c1-794a-fb51c3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:4651e196-101e-00c1-794a-fb51c3000000\nTime:2021-02-04T23:10:23.5920684Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'pCQL5g56py/BMU/MbubpOTCEyuQa+F9s3G5yXnl2vRg=' is not the same as any computed signature. Server used following string to sign: 'GET\n\n\n\n\n\nThu, 04 Feb 2021 23:10:23 GMT\n\n\n\n\n\nx-ms-client-request-id:5c89ee73-7bfa-4474-b43a-48a62c584088\nx-ms-version:2020-06-12\n/seancanary/jtccreatefilesysteminitialcheckfail129619d06f45777bb\nrestype:container'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 04 Feb 2021 23:10:22 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccreatefilesysteminitialcheckfail&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtccreatefilesysteminitialcheckfail",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4fb9fba3-c2cf-4037-b56a-bd2e9bfa4187"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf23aa54-1292-4a85-8239-43c633baa8f8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "accadd61-201e-010c-0bb8-6a98d2000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminitialcheckfail</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 04 Aug 2020 23:39:09 GMT",
-      "x-ms-client-request-id" : "4fb9fba3-c2cf-4037-b56a-bd2e9bfa4187",
+      "x-ms-request-id" : "4651e19b-101e-00c1-7e4a-fb51c3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminitialcheckfail</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 04 Feb 2021 23:10:22 GMT",
+      "x-ms-client-request-id" : "cf23aa54-1292-4a85-8239-43c633baa8f8",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefilesysteminitialcheckfail074637d39a106961c", "jtccreatefilesysteminitialcheckfail134276e4694c7309f" ]
+  "variables" : [ "jtccreatefilesysteminitialcheckfail075611ef650ad49d0", "jtccreatefilesysteminitialcheckfail129619d06f45777bb" ]
 }
