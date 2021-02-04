@@ -19,6 +19,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -27,6 +30,7 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -37,11 +41,15 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.*;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -306,6 +314,128 @@ public class DataLakeServiceAsyncClient {
                     blobsPagedResponse.getContinuationToken(),
                     null));
         });
+    }
+
+    /**
+     * Gets the properties of a storage account’s DataLake service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.getProperties}
+     *
+     * @return A reactive response containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakeServiceProperties> getProperties() {
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets the properties of a storage account’s DataLake service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse}
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the storage
+     * account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeServiceProperties>> getPropertiesWithResponse() {
+        try{
+            return this.blobServiceAsyncClient.getPropertiesWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response ->
+                    new SimpleResponse<>(response, Transforms.toDataLakeServiceProperties(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties}
+     *
+     * @param properties Configures the service.
+     * @return A {@link Mono} containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setProperties(DataLakeServiceProperties properties) {
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.setPropertiesWithResponse#DatalakeServiceProperties}
+     *
+     * @param properties Configures the service.
+     * @return A {@link Mono} containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesWithResponse(DataLakeServiceProperties properties) {
+        try{
+            return this.blobServiceAsyncClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
+     * @param originalRule {@link BlobCorsRule}
+     * @return The validated {@link BlobCorsRule}
+     */
+    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
+        if (originalRule == null) {
+            return null;
+        }
+        BlobCorsRule validRule = new BlobCorsRule();
+        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
+        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
+        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
+        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
+        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
+        return validRule;
+    }
+
+    /**
+     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
+     * @param retentionPolicy {@link BlobRetentionPolicy}
+     * @param policyName The name of the variable for errors.
+     */
+    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
+        if (retentionPolicy == null) {
+            return;
+        }
+        if (retentionPolicy.isEnabled()) {
+            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
+        }
     }
 
     /**

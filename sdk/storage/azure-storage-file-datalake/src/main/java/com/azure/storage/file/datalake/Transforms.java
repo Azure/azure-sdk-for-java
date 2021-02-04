@@ -4,16 +4,19 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.models.BlobAccessPolicy;
+import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -28,6 +31,8 @@ import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -40,7 +45,12 @@ import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
+import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeCorsRule;
+import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryArrowField;
@@ -79,6 +89,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 class Transforms {
 
@@ -240,6 +251,129 @@ class Transforms {
         }
     }
 
+    static DataLakeServiceProperties toDataLakeServiceProperties(BlobServiceProperties blobProps) {
+        if (blobProps == null) {
+            return null;
+        }
+
+        return new DataLakeServiceProperties()
+            .setDefaultServiceVersion(blobProps.getDefaultServiceVersion())
+            .setCors(blobProps.getCors().stream().map(Transforms::toDataLakeCorsRule).collect(Collectors.toList()))
+            .setDeleteRetentionPolicy(toDataLakeRetentionPolicy(blobProps.getDeleteRetentionPolicy()))
+            .setHourMetrics(toDataLakeMetrics(blobProps.getHourMetrics()))
+            .setMinuteMetrics(toDataLakeMetrics(blobProps.getMinuteMetrics()))
+            .setLogging(toDataLakeAnalyticsLogging(blobProps.getLogging()));
+    }
+
+    static DataLakeAnalyticsLogging toDataLakeAnalyticsLogging(BlobAnalyticsLogging blobLogging) {
+        if (blobLogging == null) {
+            return null;
+        }
+
+        return new DataLakeAnalyticsLogging()
+            .setDelete(blobLogging.isDelete())
+            .setRead(blobLogging.isRead())
+            .setWrite(blobLogging.isWrite())
+            .setRetentionPolicy(toDataLakeRetentionPolicy(blobLogging.getRetentionPolicy()))
+            .setVersion(blobLogging.getVersion());
+    }
+
+    static DataLakeCorsRule toDataLakeCorsRule(BlobCorsRule blobRule) {
+        if (blobRule == null) {
+            return null;
+        }
+
+        return new DataLakeCorsRule()
+            .setAllowedHeaders(blobRule.getAllowedHeaders())
+            .setAllowedMethods(blobRule.getAllowedMethods())
+            .setAllowedOrigins(blobRule.getAllowedOrigins())
+            .setExposedHeaders(blobRule.getExposedHeaders())
+            .setMaxAgeInSeconds(blobRule.getMaxAgeInSeconds());
+    }
+
+    static DataLakeMetrics toDataLakeMetrics(BlobMetrics blobMetrics) {
+        if (blobMetrics == null) {
+            return null;
+        }
+
+        return new DataLakeMetrics()
+            .setEnabled(blobMetrics.isEnabled())
+            .setIncludeApis(blobMetrics.isIncludeApis())
+            .setVersion(blobMetrics.getVersion())
+            .setRetentionPolicy(toDataLakeRetentionPolicy(blobMetrics.getRetentionPolicy()));
+    }
+
+    static DataLakeRetentionPolicy toDataLakeRetentionPolicy(BlobRetentionPolicy blobPolicy) {
+        if (blobPolicy == null) {
+            return null;
+        }
+
+        return new DataLakeRetentionPolicy()
+            .setDays(blobPolicy.getDays())
+            .setEnabled(blobPolicy.isEnabled());
+    }
+
+    static BlobServiceProperties toBlobServiceProperties(DataLakeServiceProperties datalakeProperties) {
+        if (datalakeProperties == null) {
+            return null;
+        }
+
+        return new BlobServiceProperties()
+            .setDefaultServiceVersion(datalakeProperties.getDefaultServiceVersion())
+            .setCors(datalakeProperties.getCors().stream().map(Transforms::toBlobCorsRule).collect(Collectors.toList()))
+            .setDeleteRetentionPolicy(toBlobRetentionPolicy(datalakeProperties.getDeleteRetentionPolicy()))
+            .setHourMetrics(toBlobMetrics(datalakeProperties.getHourMetrics()))
+            .setMinuteMetrics(toBlobMetrics(datalakeProperties.getMinuteMetrics()))
+            .setLogging(toBlobAnalyticsLogging(datalakeProperties.getLogging()));
+    }
+
+    static BlobAnalyticsLogging toBlobAnalyticsLogging(DataLakeAnalyticsLogging datalakeLogging) {
+        if (datalakeLogging == null) {
+            return null;
+        }
+
+        return new BlobAnalyticsLogging()
+            .setDelete(datalakeLogging.isDelete())
+            .setRead(datalakeLogging.isRead())
+            .setWrite(datalakeLogging.isWrite())
+            .setRetentionPolicy(toBlobRetentionPolicy(datalakeLogging.getRetentionPolicy()))
+            .setVersion(datalakeLogging.getVersion());
+    }
+
+    static BlobCorsRule toBlobCorsRule(DataLakeCorsRule datalakeRule) {
+        if (datalakeRule == null) {
+            return null;
+        }
+
+        return new BlobCorsRule()
+            .setAllowedHeaders(datalakeRule.getAllowedHeaders())
+            .setAllowedMethods(datalakeRule.getAllowedMethods())
+            .setAllowedOrigins(datalakeRule.getAllowedOrigins())
+            .setExposedHeaders(datalakeRule.getExposedHeaders())
+            .setMaxAgeInSeconds(datalakeRule.getMaxAgeInSeconds());
+    }
+
+    static BlobMetrics toBlobMetrics(DataLakeMetrics datalakeMetrics) {
+        if (datalakeMetrics == null) {
+            return null;
+        }
+
+        return new BlobMetrics()
+            .setEnabled(datalakeMetrics.isEnabled())
+            .setIncludeApis(datalakeMetrics.isIncludeApis())
+            .setVersion(datalakeMetrics.getVersion())
+            .setRetentionPolicy(toBlobRetentionPolicy(datalakeMetrics.getRetentionPolicy()));
+    }
+
+    static BlobRetentionPolicy toBlobRetentionPolicy(DataLakeRetentionPolicy datalakePolicy) {
+        if (datalakePolicy == null) {
+            return null;
+        }
+
+        return new BlobRetentionPolicy()
+            .setDays(datalakePolicy.getDays())
+            .setEnabled(datalakePolicy.isEnabled());
+    }
 
     static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
         if (blobContainerItem == null) {

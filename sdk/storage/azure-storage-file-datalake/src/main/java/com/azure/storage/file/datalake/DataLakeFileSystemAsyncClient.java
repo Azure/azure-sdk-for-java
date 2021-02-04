@@ -861,11 +861,11 @@ public class DataLakeFileSystemAsyncClient {
             // Construct the new client and final response from the undelete + getProperties responses
             .map(tuple2 -> new SimpleResponse<>(tuple2.getT1(),
                 new DataLakePathAsyncClient(getHttpPipeline(),
-                    StorageImplUtils.appendToUrlPath(getFileSystemUrl(),
-                        Utility.urlEncode(Utility.urlDecode(deletedPath)))
-                        .toString(), serviceVersion, accountName, fileSystemName, deletedPath,
+                    StorageImplUtils.appendToUrlPath(getFileSystemUrl(), // Construct the URL
+                        Utility.urlEncode(Utility.urlDecode(deletedPath))).toString(),
+                    serviceVersion, accountName, fileSystemName, deletedPath,
                     tuple2.getT2().getMetadata().getOrDefault("hdi_isfolder", "").equals("true")
-                        ? PathResourceType.DIRECTORY : PathResourceType.FILE,
+                        ? PathResourceType.DIRECTORY : PathResourceType.FILE, // Determine directory or file
                     blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null).getBlockBlobAsyncClient()))));
     }
 
