@@ -4,112 +4,61 @@ parameters:
   AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
-  Matrix:
-    Linux - Java 8 (AzureCloud):
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.8'
-      DisplayName: 'Linux - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    macOS - Java 8 (AzureCloud):
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      DisplayName: 'macOS - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    Windows - Java 8 (AzureCloud):
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      DisplayName: 'Windows - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Linux - Java 11 (AzureCloud):
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      DisplayName: 'Linux - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    macOS - Java 11 (AzureCloud):
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      DisplayName: 'macOS - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Windows - Java 11 (AzureCloud):
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.11'
-      DisplayName: 'Windows - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    Linux From Source - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      DisplayName: 'From Source: Linux on Java 1.11'
-      AZURE_TEST_HTTP_CLIENTS: netty
-      TestFromSource: true
-  PreRunSteps: []
-  PostRunSteps: []
-  TestName: LiveTest
-  TestCanary: false
+  PreSteps: []
+  PostSteps: []
   TimeoutInMinutes: 60
-  TestStepMavenInputs:
-    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
-    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '$(JavaTestVersion)'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    goals: 'verify'
+  TestStepMavenInputs: {}
   TestResultsFiles: ''
-  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-  ResourceGroupLocationCanary: "centraluseuap"
+  CloudConfig: {}
   ArmTemplateParameters: '@{}'
   Location: ''
+  Matrix: ''
+  DependsOn: ''
+  UsePlatformContainer: false
+  DisableAzureResourceCreation: false
 
 jobs:
-  - job: ${{ parameters.TestName }}
-    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+  - job:
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: ne(${{ parameters.Matrix }}, '{}')
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
       - template: ../variables/globals.yml
-      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
-      - name: SubscriptionConfiguration
-        value: ${{ parameters.SubscriptionConfiguration }}
       - name: ArmTemplateParameters
-        value: ${{ parameters.ArmTemplateParameters }}
-      - name: Location
-        value: ${{ parameters.Location }}
+        value: '@{}'
 
-    strategy:
-      matrix:
-        ${{ insert }}: ${{ parameters.Matrix }}
-        ${{ if eq(parameters.TestCanary, 'true') }}:
-          Linux - Java 11 (AzureCloudCanary):
-            OSVmImage: 'ubuntu-18.04'
-            JavaTestVersion: '1.11'
-            DisplayName: 'Linux - Java 11'
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-            Location: ${{ parameters.ResourceGroupLocationCanary }}
-            AZURE_TEST_HTTP_CLIENTS: netty
-      maxParallel: ${{ parameters.MaxParallel }}
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     pool:
+      name: $(Pool)
       vmImage: $(OSVmImage)
 
-    steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
+      # Add a default so the job doesn't fail when the matrix is empty
+      container: $[ variables['Container'] ]
 
-      - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+    steps:
+#      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/deploy-test-resources.yml
           parameters:
+            ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+              Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             ArmTemplateParameters: $(ArmTemplateParameters)
-            Location: $(Location)
 
-      - ${{ parameters.PreRunSteps }}
+      - ${{ parameters.PreSteps }}
 
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
-      
+
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -143,33 +92,19 @@ jobs:
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: 'Run tests: $(DisplayName)'
+        displayName: 'Run tests: $(Agent.JobName)'
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
-      - task: Maven@3
-        displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
-        inputs:
-          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: -Pcoverage
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          goals: jacoco:report-aggregate
-          # we want to run this when TestFromSource isn't true
-          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
-
-      - ${{ parameters.PostRunSteps }}
+      - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/remove-test-resources.yml
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
 
       - template: ../steps/upload-repository-on-failure.yml
 
@@ -177,16 +112,6 @@ jobs:
         condition: always()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(Agent.JobName)'
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}
-
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
-      # Code coverage reporting is setup only for Track 2 modules.
-      - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
-          failIfCoverageEmpty: false

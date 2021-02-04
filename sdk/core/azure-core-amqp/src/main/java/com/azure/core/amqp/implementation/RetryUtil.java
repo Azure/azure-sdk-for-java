@@ -9,10 +9,10 @@ import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
+import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -22,6 +22,10 @@ import java.util.concurrent.TimeoutException;
  * Helper class to help with retry policies.
  */
 public class RetryUtil {
+    private static final double JITTER_FACTOR = 0.08;
+    // Base sleep wait time.
+    private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
+
     private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
 
     // So this class can't be instantiated.
@@ -32,6 +36,7 @@ public class RetryUtil {
      * Given a set of {@link AmqpRetryOptions options}, creates the appropriate retry policy.
      *
      * @param options A set of options used to configure the retry policy.
+     *
      * @return A new retry policy configured with the given {@code options}.
      * @throws IllegalArgumentException If {@link AmqpRetryOptions#getMode()} is not a supported mode.
      */
@@ -51,51 +56,50 @@ public class RetryUtil {
      * Given a {@link Flux} will apply the retry policy to it when the operation times out.
      *
      * @param source The publisher to apply the retry policy to.
+     *
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
-     *         Otherwise, propagates a {@link TimeoutException}.
+     *     Otherwise, propagates a {@link TimeoutException}.
      */
-    public static <T> Flux<T> withRetry(Flux<T> source, Duration operationTimeout, AmqpRetryPolicy retryPolicy) {
-        return Flux.defer(() -> source.timeout(operationTimeout))
-            .retryWhen(Retry.withThrowable(errors -> retry(errors, retryPolicy)));
+    public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
+        return source.timeout(retryOptions.getTryTimeout())
+            .retryWhen(createRetry(retryOptions))
+            .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
 
     /**
      * Given a {@link Mono} will apply the retry policy to it when the operation times out.
      *
      * @param source The publisher to apply the retry policy to.
+     *
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
-     *         Otherwise, propagates a {@link TimeoutException}.
+     *     Otherwise, propagates a {@link TimeoutException}.
      */
-    public static <T> Mono<T> withRetry(Mono<T> source, Duration operationTimeout, AmqpRetryPolicy retryPolicy) {
-        return Mono.defer(() -> source.timeout(operationTimeout))
-            .retryWhen(Retry.withThrowable(errors -> retry(errors, retryPolicy)));
+    public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
+        return source.timeout(retryOptions.getTryTimeout())
+            .retryWhen(createRetry(retryOptions))
+            .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
 
-    private static Flux<Long> retry(Flux<Throwable> source, AmqpRetryPolicy retryPolicy) {
-        return source.zipWith(Flux.range(1, retryPolicy.getMaxRetries() + 1),
-            (error, attempt) -> {
-                if (attempt > retryPolicy.getMaxRetries()) {
-                    LOGGER.warning("Retry attempts are exhausted. Current: {}. Max: {}.", attempt,
-                        retryPolicy.getMaxRetries());
-                    throw Exceptions.propagate(error);
-                }
+    static Retry createRetry(AmqpRetryOptions options) {
+        final Duration delay = options.getDelay().plus(SERVER_BUSY_WAIT_TIME);
+        final RetryBackoffSpec retrySpec;
+        switch (options.getMode()) {
+            case FIXED:
+                retrySpec = Retry.fixedDelay(options.getMaxRetries(), delay);
+                break;
+            case EXPONENTIAL:
+                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
+                break;
+            default:
+                LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
+                    options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
+                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
+                break;
+        }
 
-                if (error instanceof TimeoutException) {
-                    LOGGER.info("TimeoutException error occurred. Retrying operation. Attempt: {}.",
-                        attempt, error);
-
-                    return retryPolicy.calculateRetryDelay(error, attempt);
-                } else if (error instanceof AmqpException && (((AmqpException) error).isTransient())) {
-                    LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}. Error condition: {}",
-                        attempt, ((AmqpException) error).getErrorCondition(), error);
-
-                    return retryPolicy.calculateRetryDelay(error, attempt);
-                } else {
-                    LOGGER.warning("Error is not a TimeoutException nor is it a retryable AMQP exception.", error);
-
-                    throw Exceptions.propagate(error);
-                }
-            })
-            .flatMap(Mono::delay);
+        return retrySpec.jitter(JITTER_FACTOR)
+            .maxBackoff(options.getMaxDelay())
+            .filter(error -> error instanceof TimeoutException
+                || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
     }
 }

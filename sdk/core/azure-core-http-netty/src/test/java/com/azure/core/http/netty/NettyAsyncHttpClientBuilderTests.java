@@ -189,7 +189,7 @@ public class NettyAsyncHttpClientBuilderTests {
         };
 
         String[] requestUrlsWithProxying = new String[] {
-            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+            "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*
@@ -291,7 +291,7 @@ public class NettyAsyncHttpClientBuilderTests {
         };
 
         String[] requestUrlsWithProxying = new String[] {
-            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+            "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*
@@ -342,6 +342,7 @@ public class NettyAsyncHttpClientBuilderTests {
         return arguments.stream();
     }
 
+    @SuppressWarnings("deprecation")
     private static HttpClient nettyHttpClientWithProxyValidation(boolean shouldHaveProxy, ProxyOptions.Type proxyType,
         boolean isAuthenticated) {
         TestProxyValidator validator = new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated);
@@ -416,7 +417,7 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWiretappedClient() {
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) ->
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) ->
             assertNotNull(connection.channel().pipeline().get(LoggingHandler.class)));
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
@@ -449,7 +450,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) -> {
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) -> {
             // Validate that the EventLoop being used is a NioEventLoop.
             NioEventLoop eventLoop = (NioEventLoop) connection.channel().eventLoop();
             assertNotNull(eventLoop);

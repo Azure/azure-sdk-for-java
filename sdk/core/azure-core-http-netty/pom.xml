@@ -46,7 +46,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.80</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -196,6 +196,17 @@
               </includes>
             </bannedDependencies>
           </rules>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:deprecation</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

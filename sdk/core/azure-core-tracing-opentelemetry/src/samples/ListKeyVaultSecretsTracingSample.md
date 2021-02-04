@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.6.0</version>
+    <version>0.14.1</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.6.0</version>
+    <version>0.14.1</version>
 </dependency>
 ```
 
@@ -23,17 +23,17 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.8</version>
+    <version>1.2.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.5</version>
+    <version>4.2.4</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.7</version>
 </dependency>
 ```
 
@@ -43,13 +43,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
 
 public class Sample {
   private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
@@ -60,11 +59,12 @@ public class Sample {
   }
 
   private static Tracer configureOpenTelemetryAndLoggingExporter() {
-    LoggingSpanExporter exporter = new LoggingSpanExporter();
-    TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
-    tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
-    // Acquire a tracer
-    return tracerSdkProvider.get("Sample");
+      LoggingSpanExporter exporter = new LoggingSpanExporter();
+      OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
+      openTelemetry
+          .getTracerManagement()
+          .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
+      return openTelemetry.getTracer("Sample");
   }
 
   private static void doClientWork() {
@@ -73,8 +73,8 @@ public class Sample {
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-    Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-    try (final Scope scope = TRACER.withSpan(span)) {
+    Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
+    try (final Scope scope = userParentSpan.makeCurrent()) {
         secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
         secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
           // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
@@ -82,7 +82,7 @@ public class Sample {
           System.out.printf("Retrieved Secret with name: %s%n", secret.getName());
         });
     } finally {
-        span.end();
+        userParentSpan.end();
     }
   }
 }

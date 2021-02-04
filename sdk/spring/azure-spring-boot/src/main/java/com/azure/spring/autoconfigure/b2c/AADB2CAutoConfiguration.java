@@ -124,11 +124,12 @@ public class AADB2CAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
+            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
 
-
             addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
+            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignIn());
+            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUp());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
 
@@ -148,7 +149,7 @@ public class AADB2CAutoConfiguration {
                 .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
                 .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
                 .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
-                .userNameAttributeName("name")
+                .userNameAttributeName(properties.getUserNameAttributeName())
                 .clientName(userFlow)
                 .build();
         }

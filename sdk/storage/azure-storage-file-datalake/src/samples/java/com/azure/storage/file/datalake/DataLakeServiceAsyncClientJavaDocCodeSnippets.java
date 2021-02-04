@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -12,6 +13,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -158,4 +161,65 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
         String sas = client.generateAccountSas(sasValues, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
     }
+
+    /**
+     * Code snippet for {@link DataLakeServiceAsyncClient#undeleteFileSystem(String, String)}
+     */
+    public void undeleteFileSystem() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystem#String-String
+        ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions();
+        listFileSystemsOptions.getDetails().setRetrieveDeleted(true);
+        client.listFileSystems(listFileSystemsOptions).flatMap(
+            deletedFileSystem -> {
+                Mono<DataLakeFileSystemAsyncClient> fileSystemClient = client.undeleteFileSystem(
+                    deletedFileSystem.getName(), deletedFileSystem.getVersion());
+                return fileSystemClient;
+            }
+        ).then().block();
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystem#String-String
+    }
+
+    /**
+     * Code snippet for
+     * {@link DataLakeServiceAsyncClient#undeleteFileSystemWithResponse(FileSystemUndeleteOptions)}
+     */
+    public void undeleteFileSystemWithResponse() {
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions
+        ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions();
+        listFileSystemsOptions.getDetails().setRetrieveDeleted(true);
+        client.listFileSystems(listFileSystemsOptions).flatMap(
+            deletedFileSystem -> {
+                Mono<DataLakeFileSystemAsyncClient> fileSystemClient = client.undeleteFileSystemWithResponse(
+                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion())
+                        .setDestinationFileSystemName(deletedFileSystem.getName() + "V2"))
+                    .map(Response::getValue);
+                return fileSystemClient;
+            }
+        ).then().block();
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions
+    }
+
+//    /**
+//     * Code snippet for {@link DataLakeServiceAsyncClient#renameFileSystem(String, String)}
+//     */
+//    public void renameFileSystem() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystem#String-String
+//        DataLakeFileSystemAsyncClient fileSystemClient =
+//            client.renameFileSystem("oldFileSystemName", "newFileSystemName")
+//                .block();
+//        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystem#String-String
+//    }
+//
+//    /**
+//     * Code snippet for {@link DataLakeServiceAsyncClient#renameFileSystemWithResponse(String, FileSystemRenameOptions)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystemWithResponse#String-FileSystemRenameOptions
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        DataLakeFileSystemAsyncClient fileSystemClient = client
+//            .renameFileSystemWithResponse("oldFileSystemName", new FileSystemRenameOptions("newFileSystemName"
+//            ).setRequestConditions(requestConditions)).block().getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystemWithResponse#String-FileSystemRenameOptions
+//    }
 }
