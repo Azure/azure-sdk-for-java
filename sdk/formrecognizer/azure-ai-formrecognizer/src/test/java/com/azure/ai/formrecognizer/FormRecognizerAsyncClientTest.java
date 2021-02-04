@@ -7,6 +7,8 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
@@ -603,7 +605,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         testingContainerUrlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("de"))
+                    new RecognizeContentOptions().setPollInterval(durationTestMode)
+                        .setLanguage(FormRecognizerLanguage.DE))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
@@ -620,7 +623,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             HttpResponseException exception
                 = assertThrows(HttpResponseException.class,
                     () -> client.beginRecognizeContentFromUrl(sourceUrl,
-                        new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("language"))
+                        new RecognizeContentOptions().setPollInterval(durationTestMode)
+                            .setLanguage(FormRecognizerLanguage.fromString("language")))
                         .getSyncPoller());
             assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(), "NotSupportedLanguage");
         }, CONTENT_GERMAN_PDF);
@@ -853,14 +857,15 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                         true, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
                 trainingPoller.waitForCompletion();
+                String modelId = trainingPoller.getFinalResult().getModelId();
 
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
+                    modelId, toFluxByteBuffer(data), dataLength,
                     new RecognizeCustomFormsOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateMultiPageDataLabeled(syncPoller.getFinalResult());
+                validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
             }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1218,12 +1223,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .beginTraining(trainingFilesUrl, true,
                             new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
                 trainingPoller.waitForCompletion();
-
+                String modelId = trainingPoller.getFinalResult().getModelId();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
+                    modelId, fileUrl, new RecognizeCustomFormsOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateMultiPageDataLabeled(syncPoller.getFinalResult());
+                validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
             }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1580,7 +1585,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl,
                     new RecognizeReceiptsOptions()
-                        .setLocale("en-US")
+                        .setLocale(FormRecognizerLocale.EN_US)
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.getFinalResult();
             validateNetworkCallRecord("locale", "en-US");
@@ -1598,7 +1603,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
                     new RecognizeBusinessCardsOptions()
-                        .setLocale("en-US")
+                        .setLocale(FormRecognizerLocale.EN_US)
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.getFinalResult();
             validateNetworkCallRecord("locale", "en-US");
@@ -1813,7 +1818,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         urlRunner(sourceUrl -> {
             final SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"))
+                new RecognizeInvoicesOptions().setPollInterval(durationTestMode)
+                    .setLocale(FormRecognizerLocale.EN_US))
                 .getSyncPoller();
             syncPoller.getFinalResult();
             // need to update this method for removing flakiness
