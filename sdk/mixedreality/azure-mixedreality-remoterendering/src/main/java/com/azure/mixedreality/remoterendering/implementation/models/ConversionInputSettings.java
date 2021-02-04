@@ -18,10 +18,11 @@ public final class ConversionInputSettings {
     private String storageContainerUri;
 
     /*
-     * A Azure blob storage container shared access signature giving read and
+     * An Azure blob storage container shared access signature giving read and
      * list access to the storage container. Optional. If not is not provided
      * the Azure Remote Rendering rendering account needs to be linked with the
-     * storage account containing the blob container.
+     * storage account containing the blob container. For security purposes
+     * this field will never be filled out in responses bodies.
      */
     @JsonProperty(value = "storageContainerReadListSas")
     private String storageContainerReadListSas;
@@ -65,9 +66,10 @@ public final class ConversionInputSettings {
     }
 
     /**
-     * Get the storageContainerReadListSas property: A Azure blob storage container shared access signature giving read
+     * Get the storageContainerReadListSas property: An Azure blob storage container shared access signature giving read
      * and list access to the storage container. Optional. If not is not provided the Azure Remote Rendering rendering
-     * account needs to be linked with the storage account containing the blob container.
+     * account needs to be linked with the storage account containing the blob container. For security purposes this
+     * field will never be filled out in responses bodies.
      *
      * @return the storageContainerReadListSas value.
      */
@@ -76,9 +78,10 @@ public final class ConversionInputSettings {
     }
 
     /**
-     * Set the storageContainerReadListSas property: A Azure blob storage container shared access signature giving read
+     * Set the storageContainerReadListSas property: An Azure blob storage container shared access signature giving read
      * and list access to the storage container. Optional. If not is not provided the Azure Remote Rendering rendering
-     * account needs to be linked with the storage account containing the blob container.
+     * account needs to be linked with the storage account containing the blob container. For security purposes this
+     * field will never be filled out in responses bodies.
      *
      * @param storageContainerReadListSas the storageContainerReadListSas value to set.
      * @return the ConversionInputSettings object itself.

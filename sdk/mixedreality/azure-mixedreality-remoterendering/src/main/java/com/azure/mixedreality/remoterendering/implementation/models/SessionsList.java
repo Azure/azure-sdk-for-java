@@ -5,6 +5,7 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,15 +16,25 @@ public final class SessionsList {
      * The list of rendering sessions. Does not include sessions in 'Stopped'
      * state.
      */
-    @JsonProperty(value = "sessions")
+    @JsonProperty(value = "sessions", required = true)
     private List<SessionProperties> sessions;
 
     /*
      * If more rendering sessions are available this link with the same
      * authentication header can be used to retrieve further values
      */
-    @JsonProperty(value = "@nextLink")
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /**
+     * Creates an instance of SessionsList class.
+     *
+     * @param sessions the sessions value to set.
+     */
+    @JsonCreator
+    public SessionsList(@JsonProperty(value = "sessions", required = true) List<SessionProperties> sessions) {
+        this.sessions = sessions;
+    }
 
     /**
      * Get the sessions property: The list of rendering sessions. Does not include sessions in 'Stopped' state.
@@ -35,17 +46,6 @@ public final class SessionsList {
     }
 
     /**
-     * Set the sessions property: The list of rendering sessions. Does not include sessions in 'Stopped' state.
-     *
-     * @param sessions the sessions value to set.
-     * @return the SessionsList object itself.
-     */
-    public SessionsList setSessions(List<SessionProperties> sessions) {
-        this.sessions = sessions;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: If more rendering sessions are available this link with the same authentication header
      * can be used to retrieve further values.
      *
@@ -53,17 +53,5 @@ public final class SessionsList {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: If more rendering sessions are available this link with the same authentication header
-     * can be used to retrieve further values.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the SessionsList object itself.
-     */
-    public SessionsList setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

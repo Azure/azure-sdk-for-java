@@ -22,7 +22,7 @@ public final class ConversionList {
      * If more conversions are available this link with the same authentication
      * header can be used to retrieve further values
      */
-    @JsonProperty(value = "@nextLink")
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -52,17 +52,5 @@ public final class ConversionList {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: If more conversions are available this link with the same authentication header can be
-     * used to retrieve further values.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ConversionList object itself.
-     */
-    public ConversionList setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

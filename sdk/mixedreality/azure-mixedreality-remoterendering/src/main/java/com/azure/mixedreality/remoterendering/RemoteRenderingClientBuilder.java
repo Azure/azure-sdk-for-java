@@ -120,7 +120,7 @@ public class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder endpoint(String endpoint) {
-        builder.host(endpoint);
+        builder.endpoint(endpoint);
         return this;
     }
 
