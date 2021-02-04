@@ -52,7 +52,7 @@ public class AnalyzeHealthcareEntitiesAsync {
         client.beginAnalyzeHealthcareEntities(documents, options)
             .flatMap(pollResult -> {
                 AnalyzeHealthcareEntitiesOperationDetail operationResult = pollResult.getValue();
-                System.out.printf("Job created time: %s, expiration time: %s.%n",
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
@@ -82,7 +82,7 @@ public class AnalyzeHealthcareEntitiesAsync {
                             IterableStream<EntityDataSource> dataSources = healthcareEntity.getDataSources();
                             if (dataSources != null) {
                                 dataSources.forEach(dataSource -> System.out.printf(
-                                    "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                                    "\t\tEntity ID in data source: %s, data source: %s.%n",
                                     dataSource.getEntityId(), dataSource.getName()));
                             }
                             // Entities relationship

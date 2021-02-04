@@ -57,7 +57,7 @@ public class CancelAnalyzeHealthcareEntities {
             syncPoller = client.beginAnalyzeHealthcareEntities(documents, null, Context.NONE);
 
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.poll();
-        System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getOperationId());
+        System.out.printf("The operation ID that is cancelling is %s.%n", pollResponse.getValue().getOperationId());
         System.out.printf("Status before cancel the task: %s.%n", syncPoller.poll().getStatus());
         syncPoller.cancelOperation();
         System.out.printf("Status after request the healthcare analysis cancellation: %s.%n",

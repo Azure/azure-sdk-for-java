@@ -819,7 +819,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities(documents, options)
             .flatMap(pollResult -> {
                 AnalyzeHealthcareEntitiesOperationDetail operationResult = pollResult.getValue();
-                System.out.printf("Job created time: %s, expiration time: %s.%n",
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
@@ -853,7 +853,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                     healthcareEntity.getDataSources();
                                 if (healthcareEntityDataSources != null) {
                                     healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                                        "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                                        "\t\tEntity ID in data source: %s, data source: %s.%n",
                                         healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                                 }
                                 Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =

@@ -58,7 +58,7 @@ public class CancelAnalyzeHealthcareEntitiesAsync {
         poller
             .take(1)
             .flatMap(response -> {
-                System.out.printf("The Job ID that is cancelling is %s.%n", response.getValue().getOperationId());
+                System.out.printf("The operation ID that is cancelling is %s.%n", response.getValue().getOperationId());
                 System.out.printf("Status before cancel the task: %s.%n", response.getStatus());
                 return response.cancelOperation();
             })

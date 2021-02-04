@@ -850,7 +850,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Task operation statistics
         final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
-        System.out.printf("Job created time: %s, expiration time: %s.%n",
+        System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
         healthcareResultIterable.forEach(healthcareTaskResult -> {
@@ -878,7 +878,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         healthcareEntity.getDataSources();
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                            "\t\tEntity ID in data source: %s, data source: %s.%n",
                             healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
                     Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =

@@ -223,7 +223,7 @@ public class ReadmeSamples {
                         healthcareEntity.getDataSources();
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                            "\t\tEntity ID in data source: %s, data source: %s.%n",
                             healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
                     Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
