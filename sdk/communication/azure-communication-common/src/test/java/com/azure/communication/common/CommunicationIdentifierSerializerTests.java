@@ -93,7 +93,7 @@ public class CommunicationIdentifierSerializerTests {
                 .setCommunicationUser(new CommunicationUserIdentifierModel().setId(someId)));
 
         assertEquals(identifier.getClass(), CommunicationUserIdentifier.class);
-        assertEquals(someId, identifier.getId());
+        assertEquals(someId, ((CommunicationUserIdentifier) identifier).getId());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class CommunicationIdentifierSerializerTests {
             new CommunicationIdentifierModel()
                 .setRawId(rawId));
         assertEquals(UnknownIdentifier.class, unknownIdentifier.getClass());
-        assertEquals(rawId, unknownIdentifier.getId());
+        assertEquals(rawId, ((UnknownIdentifier) unknownIdentifier).getId());
     }
 
     @Test
@@ -119,7 +119,6 @@ public class CommunicationIdentifierSerializerTests {
             () -> {
                 CommunicationIdentifierSerializer.serialize(
                     new CommunicationIdentifier() {
-                        @Override
                         public String getId() {
                             return someId;
                         }

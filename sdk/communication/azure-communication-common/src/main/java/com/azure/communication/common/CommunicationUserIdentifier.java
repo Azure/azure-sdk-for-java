@@ -25,10 +25,9 @@ public class CommunicationUserIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * Get the id of the communication user.
-     * @return the id of the communication user.
+     * Get id of the communication user.
+     * @return id of the communication user.
      */
-    @Override
     public String getId() {
         return id;
     }

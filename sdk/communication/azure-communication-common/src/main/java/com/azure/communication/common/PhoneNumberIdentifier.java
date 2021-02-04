@@ -41,11 +41,6 @@ public class PhoneNumberIdentifier extends CommunicationIdentifier {
         return rawId;
     }
 
-    @Override
-    public String getId() {
-        return getRawId();
-    }
-
     /**
      * Set full id of the identifier
      * @param rawId full id of the identifier

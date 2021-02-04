@@ -76,7 +76,8 @@ class CommunicationIdentifierSerializer {
 
         if (identifier instanceof CommunicationUserIdentifier) {
             return new CommunicationIdentifierModel()
-                .setCommunicationUser(new CommunicationUserIdentifierModel().setId(identifier.getId()));
+                .setCommunicationUser(
+                    new CommunicationUserIdentifierModel().setId(((CommunicationUserIdentifier) identifier).getId()));
         }
 
         if (identifier instanceof PhoneNumberIdentifier) {
@@ -99,7 +100,7 @@ class CommunicationIdentifierSerializer {
 
         if (identifier instanceof UnknownIdentifier) {
             return new CommunicationIdentifierModel()
-                .setRawId(identifier.getId());
+                .setRawId(((UnknownIdentifier) identifier).getId());
         }
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));

@@ -13,7 +13,7 @@ public class CommunicationIdentifierTests {
     final String fullId = "some lengthy id string";
 
     @Test
-    public void equalityOnlyTestIdIfPresentOnBothSide() {
+    public void equalityOnlyTestRawIdIfPresentOnBothSide() {
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId),
             new MicrosoftTeamsUserIdentifier(userId, true));
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true),
