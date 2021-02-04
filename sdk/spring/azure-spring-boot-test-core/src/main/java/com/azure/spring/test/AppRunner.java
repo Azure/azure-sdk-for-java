@@ -40,6 +40,7 @@ public class AppRunner implements AutoCloseable {
             int port = availableTcpPort();
             LOGGER.info("port = {}.", port);
             builder.properties(String.format("server.port=%d", port));
+            builder.properties("logging.level.root=WARN");
             builder.properties(props());
             LOGGER.info("app begin to run.");
             app = builder.build().run();
