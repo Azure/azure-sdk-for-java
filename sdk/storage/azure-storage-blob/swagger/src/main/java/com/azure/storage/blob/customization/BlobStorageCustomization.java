@@ -130,7 +130,7 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
         // TODO (change Boolean to boolean)
-//        blobContainerItemProperties.getMethod("public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {").rename("public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {");
+//        blobContainerItemProperties.getMethod("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)").rename("setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");
@@ -160,10 +160,10 @@ public class BlobStorageCustomization extends Customization {
         deleteRetentionPolicy.addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
 
         // CPKInfo - New generator removed a property and it's getter and setter methods.
-        ClassCustomization cpkInfo = models.getClass("CpkInfo");
-        cpkInfo.removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")");
-        cpkInfo.addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
-//        cpkInfo.addMethod("public EncryptionAlgorithmType getEncryptionAlgorithm() { return this.encryptionAlgorithm; } ");
+        ClassCustomization cpkInfo = models.getClass("CpkInfo")
+            .removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
+
 //        cpkInfo.addMethod("public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {\t\n" +
 //            "        this.encryptionAlgorithm = encryptionAlgorithm;\t\n" +
 //            "        return this;\t\n" +
