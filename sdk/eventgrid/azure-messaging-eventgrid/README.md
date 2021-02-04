@@ -277,14 +277,14 @@ EventGrid has system events for:
 
 You can't send a System Event to a System Topic by using this SDK.
 
-Receiving and consuming system events is the same as other events. For convenience, we have pre-defined a set of classes
-that represent the data part of the system events. These classes are under package `com.azure.messaging.eventgrid.systemevents`.
-You can use this SDK's convenience APIs to deal with System Events and their data:
-- look up the System Event data class that a System Event can be deserialized to;
+Receiving and consuming system events is the same as other events. Additionally, a set of model classes
+for the various system event data are defined in package `com.azure.messaging.eventgrid.systemevents`. You can do the 
+following after you deserialize an event by using `EventGridEvent.fromString()` or `CloudEvent.fromString()`:
+- look up the system event data model class that the System Event data can be deserialized to;
 ```java
     Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 ```
-- deserialize the system event data to a class instance like any other model classes;
+- deserialize a system event's data to a model class instance like deserializing any other event data;
 ```java
     // Deserialize the event data to an instance of a specific System Event data class type
     BinaryData data = event.getData();
