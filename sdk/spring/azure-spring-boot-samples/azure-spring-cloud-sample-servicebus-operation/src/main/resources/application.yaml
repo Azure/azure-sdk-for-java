@@ -2,4 +2,4 @@ spring:
   cloud:
     azure:
       servicebus:
-        connection-string: [servicebus-namespace-connection-string]
+        connection-string: Endpoint=sb://yiservice.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=TeThMItEv1g54qorJbyCvdMFHEO0BbblTTpi1V/wmWE=
