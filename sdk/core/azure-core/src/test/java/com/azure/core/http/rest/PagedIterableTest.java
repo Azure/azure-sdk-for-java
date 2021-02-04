@@ -294,8 +294,8 @@ public class PagedIterableTest {
 
         AtomicInteger pageGetCount = new AtomicInteger(0);
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(
-            () -> Mono.defer(() -> Mono.just(pagedResponses.get(0)).doOnNext(page -> pageGetCount.getAndIncrement())),
-            continuationToken -> Mono.defer(() -> getNextPage(continuationToken, pagedResponses).doOnNext(page -> pageGetCount.getAndIncrement())));
+            () -> Mono.defer(() -> Mono.just(pagedResponses.get(0))).doOnNext(page -> pageGetCount.getAndIncrement()),
+            continuationToken -> Mono.defer(() -> getNextPage(continuationToken, pagedResponses)).doOnNext(page -> pageGetCount.getAndIncrement()));
 
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
