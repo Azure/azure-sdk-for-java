@@ -5,30 +5,48 @@ package com.azure.test.aad.common;
 
 import com.azure.spring.test.AppRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 public class SeleniumITHelper {
+    Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
+    public static String folderName = "selenium";
 
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws IOException {
+    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties)  {
         createDriver();
         createAppRunner(appClass, properties);
     }
 
-
-    protected void createDriver() throws IOException {
+    protected void createDriver() {
         if (driver == null) {
-            String destination = System.getProperty("user.dir") + File.separator + "selenium";
-            JarUtil.copyFolderFromJar("selenium", new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
+            String destination = System.getProperty("user.dir") + File.separator + folderName;
+            String path = this.getClass().getResource("/" + folderName).getPath();
+            if (path.contains(".jar")) {
+                try {
+                    JarUtil.copyFolderFromJar(folderName, new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
+                } catch (IOException e) {
+                    logger.error("error copy from jar to folder", e);
+                }
+            } else {
+                try {
+                    FileUtils.copyDirectory(new File(path), new File(destination));
+                } catch (IOException e) {
+                    logger.error("error copy from folder to folder", e);
+                }
+            }
+
             System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
