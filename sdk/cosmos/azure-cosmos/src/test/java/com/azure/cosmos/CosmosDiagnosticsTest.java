@@ -342,7 +342,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"regionsContacted\"");
     }
 
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2, enabled = false)
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2)
     public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
         CosmosClient testDirectClient = new CosmosClientBuilder()
                                             .endpoint(TestConfigurations.HOST)
