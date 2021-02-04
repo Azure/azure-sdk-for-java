@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.validator;
+package com.azure.spring.aad.webapi.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -29,7 +29,7 @@ public class AADJwtIssuerValidatorTest {
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
         when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(trustedIssuers);
 
-        AADJwtIssuerValidator validator = new AADJwtIssuerValidator(aadTrustedIssuerRepository.getTrustedIssuers());
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
         OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
@@ -44,7 +44,7 @@ public class AADJwtIssuerValidatorTest {
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
         when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(trustedIssuers);
 
-        AADJwtIssuerValidator validator = new AADJwtIssuerValidator(aadTrustedIssuerRepository.getTrustedIssuers());
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
         OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isNotEmpty();

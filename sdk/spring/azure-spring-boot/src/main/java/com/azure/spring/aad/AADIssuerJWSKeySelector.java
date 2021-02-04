@@ -14,11 +14,11 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+
 import java.net.URL;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    private AADTrustedIssuerRepository trustedIssuerRepository;
+    private AADTrustedIssuerRepository trustedIssuers;
 
     private int connectTimeout;
 
@@ -37,9 +37,9 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepository, int connectTimeout,
-        int readTimeout, int sizeLimit) {
-        this.trustedIssuerRepository = trustedIssuerRepository;
+    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuers, int connectTimeout,
+                                   int readTimeout, int sizeLimit) {
+        this.trustedIssuers = trustedIssuers;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
         this.sizeLimit = sizeLimit;
@@ -49,30 +49,31 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     public List<? extends Key> selectKeys(JWSHeader header, JWTClaimsSet claimsSet, SecurityContext context)
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
-        if (trustedIssuerRepository.getTrustedIssuers().contains(iss)) {
-            return this.selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
+        if (trustedIssuers.getTrustedIssuers().contains(iss)) {
+            List<? extends Key> keys;
+            if (selectors.containsKey(iss)) {
+                keys = selectors.get(iss).selectJWSKeys(header, context);
+                return keys;
+            }
+            try {
+                keys = fromIssuer(iss).selectJWSKeys(header, context);
+            } catch (Exception ex) {
+                throw new KeySourceException("The issuer: '" + iss + "' were unable to create a Key Source.", ex);
+            }
+            return keys;
         }
-        throw new IllegalArgumentException(
-            "The current issuer is not included in the trusted issuers, no jws key selector is configured.");
+        throw new IllegalArgumentException("The issuer: '" + iss + "' is not registered in trusted issuer repository,"
+            + " so cannot create JWSKeySelector.");
     }
 
-    private JWSKeySelector<SecurityContext> fromIssuer(String metadataUrlPrefix) {
-        return Optional.ofNullable(metadataUrlPrefix)
-            .map(AADJwtDecoderProviderConfiguration::getConfigurationForOidcIssuerLocation)
-            .map(this::fromUri)
-            .orElseThrow(() -> new IllegalArgumentException("Cannot create JWSKeySelector."));
-    }
-
-    private JWSKeySelector<SecurityContext> fromUri(Map<String, Object> configuration) {
-        String uri = configuration.get("jwks_uri").toString();
-        try {
-            DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
-                sizeLimit);
-            JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
-            return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(ex);
-        }
+    private JWSKeySelector<SecurityContext> fromIssuer(String issuer) throws Exception {
+        Map<String, Object> configurationForOidcIssuerLocation =
+            AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(issuer);
+        String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
+        DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
+            sizeLimit);
+        JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
+        return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
     }
 
 }

@@ -2,27 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
-
-import com.azure.spring.aad.AADIssuerJWSKeySelector;
-import com.azure.spring.aad.AADTrustedIssuerRepository;
-import com.azure.spring.aad.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.validator.AADJwtIssuerValidator;
 import com.azure.spring.telemetry.TelemetrySender;
-import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
-import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
-import com.nimbusds.jwt.proc.JWTProcessor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -36,16 +17,19 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
@@ -63,7 +47,6 @@ import org.springframework.util.StringUtils;
     prefix = AADB2CProperties.PREFIX,
     value = {
         "tenant-name",
-        "tenant-id",
         "client-id",
         "client-secret",
         "reply-url",
@@ -78,7 +61,7 @@ public class AADB2CAutoConfiguration {
     private final AADB2CProperties properties;
 
     public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
-        @NonNull AADB2CProperties properties) {
+                                   @NonNull AADB2CProperties properties) {
         this.repository = repository;
         this.properties = properties;
     }
@@ -98,7 +81,7 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
-        AADB2CAuthorizationRequestResolver resolver) {
+                                                        AADB2CAuthorizationRequestResolver resolver) {
         return new AADB2COidcLoginConfigurer(properties, handler, resolver);
     }
 
@@ -115,62 +98,6 @@ public class AADB2CAutoConfiguration {
         }
     }
 
-    /**
-     * Automatic configuration class of AADB2CResourceServer
-     */
-    @Configuration
-    @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-    public static class AADB2CResourceServerAutoConfiguration {
-
-        private final AADB2CProperties properties;
-
-        public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
-            this.properties = properties;
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        AADTrustedIssuerRepository trustedIssuerRepository() {
-            return new AADTrustedIssuerRepository(properties.getTenantId());
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
-            AADTrustedIssuerRepository trustedIssuerRepository) {
-            return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getJwtConnectTimeout(),
-                properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
-            ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
-            jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
-            return jwtProcessor;
-        }
-
-        @Bean
-        JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
-            AADTrustedIssuerRepository trustedIssuerRepository) {
-            NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
-            List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-            List<String> validAudiences = new ArrayList<>();
-            if (!StringUtils.isEmpty(properties.getAppIdUri())) {
-                validAudiences.add(properties.getAppIdUri());
-            }
-            if (!StringUtils.isEmpty(properties.getClientId())) {
-                validAudiences.add(properties.getClientId());
-            }
-            if (!validAudiences.isEmpty()) {
-                validators.add(new AADJwtAudienceValidator(validAudiences));
-            }
-            validators.add(new AADJwtIssuerValidator(trustedIssuerRepository.getTrustedIssuers()));
-            validators.add(new JwtTimestampValidator());
-            decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
-            return decoder;
-        }
-    }
 
     /**
      * Automatic configuration class of AADB2COidc
@@ -214,18 +141,18 @@ public class AADB2CAutoConfiguration {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
-                .clientId(properties.getClientId())
-                .clientSecret(properties.getClientSecret())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate(properties.getReplyUrl())
-                .scope(properties.getClientId(), "openid")
-                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenantName()))
-                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenantName(), userFlow))
-                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenantName(), userFlow))
-                .userNameAttributeName(properties.getUserNameAttributeName())
-                .clientName(userFlow)
-                .build();
+                                     .clientId(properties.getClientId())
+                                     .clientSecret(properties.getClientSecret())
+                                     .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
+                                     .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                     .redirectUriTemplate(properties.getReplyUrl())
+                                     .scope(properties.getClientId(), "openid")
+                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenantName()))
+                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenantName(), userFlow))
+                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenantName(), userFlow))
+                                     .userNameAttributeName(properties.getUserNameAttributeName())
+                                     .clientName(userFlow)
+                                     .build();
         }
     }
 }

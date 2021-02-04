@@ -3,11 +3,13 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.b2c.AADB2CProperties.UserFlows;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -27,16 +29,18 @@ public class AADTrustedIssuerRepository {
 
     public AADTrustedIssuerRepository(String tenantId) {
         this.tenantId = tenantId;
-        trustedIssuers.addAll(buildAADIssuer(PATH_DELIMITER));
-        trustedIssuers.addAll(buildAADIssuer(PATH_DELIMITER_V2));
+        trustedIssuers.addAll(buildAADIssuers(PATH_DELIMITER));
+        trustedIssuers.addAll(buildAADIssuers(PATH_DELIMITER_V2));
     }
 
-    private List<String> buildAADIssuer(String delimiter) {
-        return Arrays.asList(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER).stream()
-            .map(s -> s + tenantId + delimiter).collect(Collectors.toList());
+    private List<String> buildAADIssuers(String delimiter) {
+        return Arrays.asList(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER)
+                     .stream()
+                     .map(s -> s + tenantId + delimiter)
+                     .collect(Collectors.toList());
     }
 
-    public void buildB2CIssuer(String tenantName) {
+    public void addB2CIssuer(String tenantName) {
         Assert.notNull(tenantName, "tenantName cannot be null.");
         trustedIssuers.add(String.format("https://%s.b2clogin.com/%s/v2.0/", tenantName, tenantId));
     }
@@ -44,30 +48,33 @@ public class AADTrustedIssuerRepository {
     /**
      * Only the V2 version of Access Token is supported when using Azure AD B2C user flows.
      */
-    public void buildB2CUserFlowsIssuer(String tenantName, UserFlows userFlows) {
+    public void addB2CUserFlowIssuers(String tenantName, UserFlows userFlows) {
         Assert.notNull(tenantName, "tenantName cannot be null.");
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        trustedIssuers.add(String
-            .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, userFlows.getSignUpOrSignIn()));
+        creatB2CUserFlowIssuer(tenantName, userFlows.getSignUpOrSignIn());
         if (!StringUtils.isEmpty(userFlows.getProfileEdit())) {
-            trustedIssuers.add(String
-                .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, userFlows.getProfileEdit()));
+            creatB2CUserFlowIssuer(tenantName, userFlows.getProfileEdit());
         }
         if (!StringUtils.isEmpty(userFlows.getPasswordReset())) {
-            trustedIssuers.add(String
-                .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, userFlows.getPasswordReset()));
+            creatB2CUserFlowIssuer(tenantName, userFlows.getPasswordReset());
         }
+    }
+
+    private void creatB2CUserFlowIssuer(String tenantName, String UserFlowName) {
+        trustedIssuers.add(String
+            .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, UserFlowName));
     }
 
     public List<String> getTrustedIssuers() {
         return Collections.unmodifiableList(trustedIssuers);
     }
 
-    public boolean addTrustedIssuer(String... issuer) {
-        if(ArrayUtils.isEmpty(issuer)){
+    public boolean addTrustedIssuer(String... issuers) {
+        if (ArrayUtils.isEmpty(issuers)) {
             return false;
         }
-        return trustedIssuers.addAll(Arrays.stream(issuer).collect(Collectors.toSet()));
+        return trustedIssuers
+            .addAll(Arrays.stream(issuers).collect(Collectors.toSet()));
     }
 
 }

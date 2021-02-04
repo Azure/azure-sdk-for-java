@@ -3,9 +3,11 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+
 import java.net.MalformedURLException;
 import java.util.Map;
 import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
@@ -55,7 +57,7 @@ public class AADB2CProperties {
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an token.
      */
-    private String AppIdUri;
+    private String appIdUri;
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -284,11 +286,11 @@ public class AADB2CProperties {
     }
 
     public String getAppIdUri() {
-        return AppIdUri;
+        return appIdUri;
     }
 
     public void setAppIdUri(String appIdUri) {
-        AppIdUri = appIdUri;
+        this.appIdUri = appIdUri;
     }
 
     public int getJwtConnectTimeout() {

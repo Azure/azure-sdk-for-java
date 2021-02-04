@@ -5,15 +5,12 @@ package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.AADTrustedIssuerRepository;
-import com.azure.spring.aad.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.validator.AADJwtIssuerValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +27,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
@@ -38,9 +38,8 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@EnableConfigurationProperties({AADAuthenticationProperties.class})
+@EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"tenant-id"})
 public class AADResourceServerConfiguration {
 
     @Autowired
@@ -59,18 +58,17 @@ public class AADResourceServerConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+    public JwtDecoder jwtDecoder() {
         AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
             aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
-        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadTrustedIssuerRepository);
+        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
     }
 
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator(
-        AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
@@ -82,7 +80,7 @@ public class AADResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator(aadTrustedIssuerRepository.getTrustedIssuers()));
+        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }
