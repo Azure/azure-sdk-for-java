@@ -211,6 +211,25 @@ public class EncryptionCosmosAsyncContainer {
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param <T>       the type parameter.
+     * @param query     the query text.
+     * @param options   the query request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options,
+                                             Class<T> classType) {
+
+        return this.queryItems(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
+    }
+
+    /**
+     * Query for items in the current container using a string.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T>       the type parameter.
      * @param query     the query.
      * @param options   the query request options.
      * @param classType the class type.
@@ -246,7 +265,7 @@ public class EncryptionCosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(EncryptionSqlQuerySpec query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItemsOnEncryptedProperties(EncryptionSqlQuerySpec query, CosmosQueryRequestOptions options,
                                              Class<T> classType) {
 
         if (options == null) {
@@ -262,7 +281,7 @@ public class EncryptionCosmosAsyncContainer {
             });
     }
 
-    public CosmosAsyncContainer getContainer() {
+    public CosmosAsyncContainer getCosmosAsyncContainer() {
         return container;
     }
 

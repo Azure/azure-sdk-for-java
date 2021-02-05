@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -57,7 +58,6 @@ public class EncryptionProcessor {
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                EncryptionAsyncCosmosClient encryptionCosmosClient) {
-
         if (cosmosAsyncContainer == null) {
             throw new IllegalStateException("encryptionCosmosContainer is null");
         }
@@ -70,7 +70,6 @@ public class EncryptionProcessor {
         this.isEncryptionSettingsInitDone = false;
         this.encryptionSettings = new EncryptionSettings();
         this.encryptionKeyStoreProvider = this.encryptionCosmosClient.getEncryptionKeyStoreProvider();
-
     }
 
     /**
@@ -102,6 +101,7 @@ public class EncryptionProcessor {
                 Mono<Object> clientEncryptionPropertiesMono =
                     EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
                         clientEncryptionKeyId, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get())
+                        .publishOn(Schedulers.elastic())
                         .flatMap(keyProperties -> {
                             ProtectedDataEncryptionKey protectedDataEncryptionKey;
                             try {
@@ -239,7 +239,6 @@ public class EncryptionProcessor {
             List<Mono<Void>> encryptionMonoList = new ArrayList<>();
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 String propertyName = includedPath.path.substring(1);
-                // TODO: moderakh should support JPath
                 JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
                 // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
@@ -359,10 +358,10 @@ public class EncryptionProcessor {
                         SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.asText()));
                 case OBJECT:
                     return Pair.of(TypeMarker.OBJECT,
-                        sqlSerializerFactory.getDefaultSerializer(new Object()).serialize(jsonNode));
+                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.toString()));
                 case ARRAY:
                     return Pair.of(TypeMarker.ARRAY,
-                        sqlSerializerFactory.getDefaultSerializer((Arrays) new Object()).serialize(jsonNode));
+                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.toString()));
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
@@ -381,18 +380,14 @@ public class EncryptionProcessor {
                 case DOUBLE:
                     return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
                 case STRING:
-                    return TextNode.valueOf((String) sqlSerializerFactory.getDefaultSerializer(StringUtils.EMPTY).deserialize(serializedBytes));
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
                 case OBJECT:
-                    return (JsonNode) sqlSerializerFactory.getDefaultSerializer(new Object()).deserialize(serializedBytes);
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
                 case ARRAY:
-                    return (JsonNode) sqlSerializerFactory.getDefaultSerializer((Arrays) new Object()).deserialize(serializedBytes);
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
-//        } catch (JsonMappingException e) {
-//            e.printStackTrace();
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
         }
         throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
     }

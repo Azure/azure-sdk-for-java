@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.encryption;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -310,7 +309,8 @@ public class EncryptionCosmosAsyncDatabase {
 
     /**
      * Rewrap a cosmos client encryption key
-     * @param clientEncryptionKeyId the client encryption key properties to create.
+     *
+     * @param clientEncryptionKeyId        the client encryption key properties to create.
      * @param newEncryptionKeyWrapMetadata EncryptionKeyWrapMetadata.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
@@ -352,6 +352,7 @@ public class EncryptionCosmosAsyncDatabase {
             return Mono.error(ex);
         }
     }
+
     /**
      * Gets a Container with Encryption capabilities
      *
@@ -379,5 +380,14 @@ public class EncryptionCosmosAsyncDatabase {
 
     private void setEncryptionAsyncCosmosClient(EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
         this.encryptionAsyncCosmosClient = encryptionAsyncCosmosClient;
+    }
+
+    /**
+     * Gets a regular async database object.
+     *
+     * @return regular async database object
+     */
+    public CosmosAsyncDatabase getCosmosAsyncDatabase() {
+        return this.cosmosAsyncDatabase;
     }
 }

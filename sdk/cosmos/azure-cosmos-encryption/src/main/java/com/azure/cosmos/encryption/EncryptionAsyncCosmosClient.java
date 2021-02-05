@@ -108,7 +108,7 @@ public class EncryptionAsyncCosmosClient {
      *
      * @param cosmosAsyncClient          Regular Cosmos Client.
      * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
-     *                                  keys.
+     *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
     public static EncryptionAsyncCosmosClient buildEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
@@ -140,7 +140,14 @@ public class EncryptionAsyncCosmosClient {
      * @return database with encryption capabilities
      */
     public EncryptionCosmosAsyncDatabase getEncryptedCosmosAsyncDatabase(String databaseId) {
-        CosmosAsyncDatabase database= this.cosmosAsyncClient.getDatabase(databaseId);
+        CosmosAsyncDatabase database = this.cosmosAsyncClient.getDatabase(databaseId);
         return new EncryptionCosmosAsyncDatabase(database, this);
+    }
+
+    /**
+     * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
+     */
+    public void close() {
+        cosmosAsyncClient.close();
     }
 }

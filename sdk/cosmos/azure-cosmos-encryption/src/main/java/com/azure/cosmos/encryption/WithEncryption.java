@@ -17,7 +17,7 @@ public class WithEncryption {
      * @return container with encryption capabilities
      */
     public static EncryptionCosmosAsyncContainer withEncryptor(CosmosAsyncContainer container, Encryptor encryptor) {
-        return new EncryptionCosmosAsyncContainer(container.getId(), container.getDatabase(), encryptor);
+        return null;
     }
 
     /**

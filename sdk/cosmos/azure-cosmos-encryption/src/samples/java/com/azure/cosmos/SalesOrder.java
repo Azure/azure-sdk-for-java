@@ -3,42 +3,41 @@
 
 package com.azure.cosmos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 
 public class SalesOrder {
-    //You can use JsonProperty attributes to control how your objects are
-    //handled by the Json Serializer/Deserializer
-    //Any of the supported JSON.NET attributes here are supported, including the use of JsonConverters
-    //if you really want fine grained control over the process
-
-    //Here we are using JsonProperty to control how the Id property is passed over the wire
-    //In this case, we're just making it a lowerCase string but you could entirely rename it
-    //like we do with PurchaseOrderNumber below
-    @JsonProperty("id")
     public String id;
+    public String purchaseOrderNumber;
 
-    @JsonProperty("ponumber")
-    public String PurchaseOrderNumber;
+    public int timeToLive;
 
-    // used to set expiration policy
-    @JsonProperty("ttl")
-    public int TimeToLive;
+    public String orderDate;
 
-    public OffsetTime OrderDate;
-    public OffsetTime ShippedDate;
-    public String AccountNumber;
-    public Double SubTotal;
-    public Double TaxAmount;
-    public Double Freight;
-    public Double TotalDue;
-    public SalesOrderDetail[] Items;
+    public String shippedDate;
+    public String accountNumber;
+    public Double subTotal;
+    public Double taxAmount;
+    public Double freight;
+    public Double totalDue;
+    public SalesOrderDetail[] items;
 
     public static class SalesOrderDetail {
-        public int OrderQty;
-        public int ProductId;
-        public double UnitPrice;
-        public double LineTotal;
+        public int orderQty;
+        public int productId;
+        public double unitPrice;
+        public double lineTotal;
     }
 }

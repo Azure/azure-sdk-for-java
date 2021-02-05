@@ -30,21 +30,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class EncryptionSettings {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionSettings.class);
 
-    private AsyncCache<String, CachedEncryptionSettings> EncryptionSettingCacheByPropertyName = new AsyncCache<>();
+    private AsyncCache<String, CachedEncryptionSettings> encryptionSettingCacheByPropertyName = new AsyncCache<>();
     private String clientEncryptionKeyId;
     private Instant encryptionSettingTimeToLive;
     private ProtectedDataEncryptionKey dataEncryptionKey;
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
 
-
     public EncryptionSettings() {
     }
 
-    Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
+    public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
         EncryptionProcessor encryptionProcessor) {
-        Mono<CachedEncryptionSettings> settingsMono = this.EncryptionSettingCacheByPropertyName.getAsync(propertyName
+        Mono<CachedEncryptionSettings> settingsMono = this.encryptionSettingCacheByPropertyName.getAsync(propertyName
             , null, () -> fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor));
         return settingsMono.flatMap(cachedEncryptionSettings -> {
             if (cachedEncryptionSettings == null) {
@@ -59,7 +58,7 @@ public final class EncryptionSettings {
             // the user might have rewraped the Key and that is when we try to force fetch it from the Backend.
             // So we only read back from the backend only when an operation like wrap/unwrap with the Master Key fails.
             if (cachedEncryptionSettings.getEncryptionSettingsExpiryUtc().isBefore(Instant.now())) {
-                return this.EncryptionSettingCacheByPropertyName.getAsync(propertyName, cachedEncryptionSettings,
+                return this.encryptionSettingCacheByPropertyName.getAsync(propertyName, cachedEncryptionSettings,
                     () -> fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor)).map(latestCachedEncryptionSettings -> cachedEncryptionSettings.getEncryptionSettings());
             }
             return Mono.just(cachedEncryptionSettings.getEncryptionSettings());
@@ -151,7 +150,7 @@ public final class EncryptionSettings {
     }
 
     public AsyncCache<String, CachedEncryptionSettings> getEncryptionSettingCacheByPropertyName() {
-        return EncryptionSettingCacheByPropertyName;
+        return encryptionSettingCacheByPropertyName;
     }
 
     public Instant getEncryptionSettingTimeToLive() {
@@ -171,7 +170,7 @@ public final class EncryptionSettings {
     }
 
     public void setEncryptionSettingCacheByPropertyName(AsyncCache<String, CachedEncryptionSettings> encryptionSettingCacheByPropertyName) {
-        EncryptionSettingCacheByPropertyName = encryptionSettingCacheByPropertyName;
+        this.encryptionSettingCacheByPropertyName = encryptionSettingCacheByPropertyName;
     }
 
     public AeadAes256CbcHmac256EncryptionAlgorithm getAeadAes256CbcHmac256EncryptionAlgorithm() {
@@ -193,7 +192,7 @@ public final class EncryptionSettings {
     void setEncryptionSettingForProperty(String propertyName, EncryptionSettings encryptionSettings,
                                          Instant expiryUtc) {
         CachedEncryptionSettings cachedEncryptionSettings = new CachedEncryptionSettings(encryptionSettings, expiryUtc);
-        this.EncryptionSettingCacheByPropertyName.set(propertyName, cachedEncryptionSettings);
+        this.encryptionSettingCacheByPropertyName.set(propertyName, cachedEncryptionSettings);
     }
 
     static EncryptionSettings create(
