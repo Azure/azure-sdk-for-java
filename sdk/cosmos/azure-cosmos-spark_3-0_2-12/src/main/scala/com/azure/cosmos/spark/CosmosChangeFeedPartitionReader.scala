@@ -3,8 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosClientBuilder
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -24,7 +23,6 @@ private case class CosmosChangeFeedPartitionReader
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  private val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
