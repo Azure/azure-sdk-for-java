@@ -205,7 +205,7 @@ class CosmosRowConverterSpec extends UnitSpec {
 
         val row = new GenericRowWithSchema(
             Array(sourceObjectNode.toString),
-            StructType(Seq(StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType))))
+            StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))))
 
         val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         objectNode.get(colName1).asInt shouldEqual colVal1
@@ -450,7 +450,7 @@ class CosmosRowConverterSpec extends UnitSpec {
 
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put(colName1, colVal1)
-        val schema = StructType(Seq(StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType)))
+        val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType)))
         val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
         row.getString(0) shouldEqual objectNode.toString
     }

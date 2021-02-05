@@ -37,11 +37,11 @@ class SparkE2EChangeFeedSpec
       "spark.cosmos.read.inferSchemaEnabled" -> "false"
     )
 
-    val df = spark.read.format("cosmos.changeFeed.items").options(cfg).load()
+    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 2
     df.schema.equals(
-      CosmosChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
 
     val cfgExplicit = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -52,11 +52,11 @@ class SparkE2EChangeFeedSpec
       "spark.cosmos.changeFeed.mode" -> "Incremental"
     )
 
-    val dfExplicit = spark.read.format("cosmos.changeFeed.items").options(cfgExplicit).load()
+    val dfExplicit = spark.read.format("cosmos.changeFeed").options(cfgExplicit).load()
     val rowsArrayExplicit = dfExplicit.collect()
     rowsArrayExplicit should have size 2
     dfExplicit.schema.equals(
-      CosmosChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
 
   "spark change feed query (full fidelity)" can "use default schema" taggedAs RequiresCosmosEndpoint in {
@@ -83,11 +83,11 @@ class SparkE2EChangeFeedSpec
       // TODO fabianm ChangeFeed mode currently is case sensitive. Is that acceptable?
     )
 
-    val df = spark.read.format("cosmos.changeFeed.items").options(cfg).load()
+    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 0
     df.schema.equals(
-      CosmosChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
+      ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

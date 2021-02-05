@@ -4,12 +4,19 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{
+  IdAttributeName,
+  RawJsonBodyAttributeName,
+  TimestampAttributeName
+}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.connector.catalog.{SupportsRead, Table, TableCapability}
+import org.apache.spark.sql.connector.catalog.{SupportsRead, SupportsWrite, Table, TableCapability}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.read.ScanBuilder
+import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
+import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import org.codehaus.jackson.node.ObjectNode
 
@@ -17,56 +24,43 @@ import java.util
 import java.util.UUID
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.spark.CosmosTableSchemaInferer._
-import org.apache.spark.sql.types._
-
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] object CosmosChangeFeedTable {
-
-  private[spark] val defaultIncrementalChangeFeedSchemaForInferenceDisabled = StructType(Seq(
+private object ItemsTable {
+  private[spark] val defaultSchemaForInferenceDisabled = StructType(Seq(
     StructField(RawJsonBodyAttributeName, StringType),
     StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType),
-    StructField(ETagAttributeName, StringType)
-  ))
-
-  private[spark] val defaultFullFidelityChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType),
-    StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType),
-    StructField(ETagAttributeName, StringType),
-    StructField(OperationTypeAttributeName, StringType),
-    StructField(PreviousRawJsonBodyAttributeName, StringType),
-    StructField(TtlExpiredAttributeName, BooleanType)
+    StructField(TimestampAttributeName, LongType)
   ))
 }
 
 /**
- * CosmosChangeFeedTable is the entry point for the change feed data source - this is registered in the spark
+ * ItemsTable is the entry point this is registered in the spark
  *
  * @param transforms         The specified table partitioning.
  * @param userConfig         The effective user configuration
  * @param userProvidedSchema The user provided schema - can be null/none
  */
-private class CosmosChangeFeedTable(val transforms: Array[Transform],
-                                    val userConfig: util.Map[String, String],
-                                    val userProvidedSchema: Option[StructType] = None)
+private class ItemsTable(val transforms: Array[Transform],
+                         val databaseName: Option[String],
+                         val containerName: Option[String],
+                         val userConfig: util.Map[String, String],
+                         val userProvidedSchema: Option[StructType] = None)
   extends Table
+    with SupportsWrite
     with SupportsRead
     with CosmosLoggingTrait {
-
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
     initializeAndBroadcastCosmosClientStateForContainer()
   private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
   private val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
-  private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
-  private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(effectiveUserConfig)
-  private val tableName = s"com.azure.cosmos.spark.changeFeed.items.${clientConfig.accountName}." +
+  private val cosmosContainerConfig =
+    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, databaseName, containerName)
+  private val tableName = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
   private val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
     .key(clientConfig.key)
@@ -75,11 +69,15 @@ private class CosmosChangeFeedTable(val transforms: Array[Transform],
   override def name(): String = tableName
 
   override def capabilities(): util.Set[TableCapability] = Set(
+    // ACCEPT_ANY_SCHEMA is needed because of this bug https://github.com/apache/spark/pull/30273
+    // It was fixed in Spark 3.1.0 but Databricks currently only supports 3.0.1
+    TableCapability.ACCEPT_ANY_SCHEMA,
+    TableCapability.BATCH_WRITE,
     TableCapability.BATCH_READ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
-    CosmosChangeFeedScanBuilder(new CaseInsensitiveStringMap(
-      CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
+    // TODO moderakh how options and userConfig should be merged? is there any difference?
+    ItemsScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
       schema(),
       containerStateHandle)
   }
@@ -91,20 +89,23 @@ private class CosmosChangeFeedTable(val transforms: Array[Transform],
   private def inferSchema(client: CosmosAsyncClient,
                           userConfig: Map[String, String]): StructType = {
 
-    val defaultSchema: StructType = changeFeedConfig.changeFeedMode match {
-      case ChangeFeedModes.incremental =>
-        CosmosChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled
-      case ChangeFeedModes.fullFidelity =>
-        CosmosChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled
-    }
+    CosmosTableSchemaInferrer.inferSchema(
+      client,
+      userConfig,
+      ItemsTable.defaultSchemaForInferenceDisabled)
+  }
 
-    CosmosTableSchemaInferer.inferSchema(client, userConfig, defaultSchema)
+  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
+    // TODO: moderakh merge logicalWriteInfo config with other configs
+    new ItemsWriterBuilder(
+      new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava),
+      logicalWriteInfo.schema(),
+      containerStateHandle
+    )
   }
 
   // This can be used only when databaseName and ContainerName are specified.
-  private[spark] def initializeAndBroadcastCosmosClientStateForContainer()
-  : Broadcast[CosmosClientMetadataCachesSnapshot] = {
-
+  private[spark] def initializeAndBroadcastCosmosClientStateForContainer(): Broadcast[CosmosClientMetadataCachesSnapshot] = {
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
         UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
@@ -120,4 +121,3 @@ private class CosmosChangeFeedTable(val transforms: Array[Transform],
     sparkSession.sparkContext.broadcast(state)
   }
 }
-

@@ -23,16 +23,16 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     * @return StructType inferred schema
     */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    new CosmosTable(Array.empty, None, None, options).schema()
+    new ItemsTable(Array.empty, None, None, options).schema()
   }
 
   /**
     * Represents the format that this data source provider uses.
     */
-  override def shortName(): String = "cosmos.items"
+  override def shortName(): String = CosmosConstants.Names.ItemsDataSourceShortName
 
   /**
-    * Return a {@link Table} instance with the specified table schema, partitioning and properties
+    * Return a `Table` instance with the specified table schema, partitioning and properties
     * to do read/write. The returned table should report the same schema and partitioning with the
     * specified ones, or Spark may fail the operation.
     *
@@ -45,7 +45,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     */
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosTable(
+    new ItemsTable(
       partitioning,
       None,
       None,

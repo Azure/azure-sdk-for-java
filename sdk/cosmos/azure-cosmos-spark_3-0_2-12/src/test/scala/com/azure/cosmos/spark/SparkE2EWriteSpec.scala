@@ -11,7 +11,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  case class UpsertParameterTest(itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
+  private case class UpsertParameterTest(itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
   private val upsertParameterTest = Seq(
     UpsertParameterTest(itemWriteStrategy = ItemOverwrite),

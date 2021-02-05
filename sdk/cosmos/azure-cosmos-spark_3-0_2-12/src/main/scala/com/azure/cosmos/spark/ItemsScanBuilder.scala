@@ -14,7 +14,9 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private case class ItemsScanBuilder(config: CaseInsensitiveStringMap,
+                                    inputSchema: StructType,
+                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns
@@ -51,7 +53,11 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: Stru
     assert(this.processedPredicates.isDefined)
 
     // TODO moderakh when inferring schema we should consolidate the schema from pruneColumns
-    CosmosScan(inputSchema, config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery, cosmosClientStateHandle)
+    ItemsScan(
+      inputSchema,
+      config.asScala.toMap,
+      this.processedPredicates.get.cosmosParametrizedQuery,
+      cosmosClientStateHandle)
   }
 
   /**
@@ -61,7 +67,7 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: Stru
     * also OK to do the pruning partially, e.g., a data source may not be able to prune nested
     * fields, and only prune top-level columns.
     *
-    * Note that, {@link Scan# readSchema ( )} implementation should take care of the column
+    * Note that, `Scan` implementation should take care of the column
     * pruning applied here.
     */
   override def pruneColumns(requiredSchema: StructType): Unit = {

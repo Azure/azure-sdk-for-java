@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // Infers a schema by reading sample data from a source container.
-private object CosmosTableSchemaInferer
+private object CosmosTableSchemaInferrer
   extends CosmosLoggingTrait {
 
   private[spark] val RawJsonBodyAttributeName = "_rawBody"

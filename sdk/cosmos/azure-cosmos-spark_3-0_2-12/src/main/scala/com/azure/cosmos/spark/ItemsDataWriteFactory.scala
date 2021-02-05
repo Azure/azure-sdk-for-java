@@ -12,53 +12,49 @@ import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, Writ
 import org.apache.spark.sql.types.StructType
 
 // scalastyle:off multiple.string.literals
-class CosmosDataWriteFactory(userConfig: Map[String, String],
-                             inputSchema: StructType,
-                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private class ItemsDataWriteFactory(userConfig: Map[String, String],
+                            inputSchema: StructType,
+                            cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends DataWriterFactory
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter(inputSchema)
 
-  class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
+  private class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
     logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-    val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-    val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
+    private val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+    private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
 
     // TODO moderakh: this needs to be shared to avoid creating multiple clients
-    val builder = new CosmosClientBuilder()
+    private val builder = new CosmosClientBuilder()
       .key(cosmosAccountConfig.key)
       .endpoint(cosmosAccountConfig.endpoint)
       .consistencyLevel(ConsistencyLevel.EVENTUAL)
 
     SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
-    val client = builder.buildAsyncClient();
+    private val client = builder.buildAsyncClient()
 
-    val container = client.getDatabase(cosmosTargetContainerConfig.database)
+    private val container = client.getDatabase(cosmosTargetContainerConfig.database)
       .getContainer(cosmosTargetContainerConfig.container)
 
-    val containerDefinition = container.read().block().getProperties
-    val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
+    private val containerDefinition = container.read().block().getProperties
+    private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
     override def write(internalRow: InternalRow): Unit = {
       val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
 
-      // TODO modreakh investigate if we should also support point write in non-blocking way
+      // TODO moderakh investigate if we should also support point write in non-blocking way
       // TODO moderakh support patch?
       // TODO moderakh bulkWrite in another PR
 
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
 
       cosmosWriteConfig.itemWriteStrategy match {
-        case ItemWriteStrategy.ItemOverwrite => {
-          upsertWithRetry(partitionKeyValue, objectNode)
-        }
-        case ItemWriteStrategy.ItemAppend => {
-          createWithRetry(partitionKeyValue, objectNode)
-        }
+        case ItemWriteStrategy.ItemOverwrite => upsertWithRetry(partitionKeyValue, objectNode)
+        case ItemWriteStrategy.ItemAppend => createWithRetry(partitionKeyValue, objectNode)
       }
     }
 
@@ -72,16 +68,15 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
           container.createItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
           return
         } catch {
-          case e: CosmosException if Exceptions.isResourceExistsException(e) => {
+          case e: CosmosException if Exceptions.isResourceExistsException(e) =>
             // TODO: what should we do on unique index violation? should we ignore or throw?
-
             // TODO moderakh we need to add log messages extract identifier (id, pk) and log
             return
-          }
-          case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
-            logWarning(s"create item attempt #${attempt} max remaining retries ${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+          case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+            logWarning(
+              s"create item attempt #$attempt max remaining retries"
+                  + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
             exceptionOpt = Option.apply(e)
-          }
         }
       }
 
@@ -98,10 +93,11 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
           container.upsertItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
           return
         } catch {
-          case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
-            logWarning(s"upsert item attempt #${attempt} max remaining retries ${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+          case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+            logWarning(
+              s"upsert item attempt #$attempt max remaining retries "
+                  + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
             exceptionOpt = Option.apply(e)
-          }
         }
       }
 

@@ -7,8 +7,15 @@ import com.azure.cosmos.models.{PartitionKey, PartitionKeyDefinition}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 private object PartitionKeyHelper {
-  def getPartitionKeyPath(objectNode: ObjectNode, partitionKeyDefinition: PartitionKeyDefinition): PartitionKey = {
-    val partitionKeyInternal = RxDocumentClientImpl.extractPartitionKeyValueFromDocument(new InternalObjectNode(objectNode), partitionKeyDefinition)
-    ImplementationBridgeHelpers.PartitionKeyHelper.getPartitionKeyAccessor().toPartitionKey(partitionKeyInternal)
+  def getPartitionKeyPath(objectNode: ObjectNode,
+                          partitionKeyDefinition: PartitionKeyDefinition): PartitionKey = {
+    val partitionKeyInternal = RxDocumentClientImpl
+      .extractPartitionKeyValueFromDocument(
+        new InternalObjectNode(objectNode),
+        partitionKeyDefinition)
+    ImplementationBridgeHelpers
+      .PartitionKeyHelper
+      .getPartitionKeyAccessor
+      .toPartitionKey(partitionKeyInternal)
   }
 }
