@@ -380,7 +380,7 @@ class AnalyzeBatchActionsAsyncClient {
                     new com.azure.ai.textanalytics.models.TextAnalyticsError(
                         TextAnalyticsErrorCode.fromString(
                             error.getCode() == null ? null : error.getCode().toString()),
-                        error.getMessage(), error.getTarget()));
+                        error.getMessage(), null));
             }
         }
 

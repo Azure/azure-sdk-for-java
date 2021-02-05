@@ -1379,6 +1379,5 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
         assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertNotNull(actualError.getMessage());
-        assertEquals(expectedError.getTarget(), actualError.getTarget());
     }
 }
