@@ -39,7 +39,7 @@
 **aad-starter** supports 2 types of web server: Web application and resource server. 
 
 1. `Web application`: Support login by Microsoft account.
-1. `Resource server`: Not support login. Just protect the server by validating the [JWT], and if valid, serves the request.
+1. `Resource server`: Not support login. Just protect the server by validating the access_token, and if valid, serves the request.
 
 Both `web application` and `resource server` support extra function: itself can access other resource servers which are protected by Azure Active Directory. So there are 4 scenarios:
 
@@ -87,17 +87,12 @@ azure:
 
 * Step 3: Write Java code:
 
-To make **aad-starter** work, `AADWebSecurityConfigurerAdapter` is required.
+`AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
-1. **aad-starter** provided a default implementation: `DefaultAADWebSecurityConfigurerAdapter`, 
-which extends `AADWebSecurityConfigurerAdapter`. 
+ (A). `DefaultAADWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
-1. If you want to add more configurations, you should write your own `WebSecurityConfigurerAdapter`. 
-`DefaultAADWebSecurityConfigurerAdapter` will not take effect if you write your own adapter. your 
-adapter should extend `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
-in the `configure(HttpSecurity http)` function. 
-
-Demo adapter class:
+ (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
+in the `configure(HttpSecurity http)` function. Here is an example:
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
 ```java
 @EnableWebSecurity
@@ -148,20 +143,23 @@ azure:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
 ```
+Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 3: Write Java code:
 ```java
 @GetMapping("/graph")
 @ResponseBody
-public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient) {
     // toJsonString() is just a demo.
-    // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
-    return toJsonString(oAuth2AuthorizedClient);
+    // graphClient contains access_token. We can use this access_token to access resource server.
+    return toJsonString(graphClient);
 }
 ```
+Here, `graph` is the client name configured in step 2. OAuth2AuthorizedClient contains access_token. 
+access_token can be used to access resource server.
 
 ### Resource server
-This scenario not support login. Just protect the server by validating the [JWT], and if valid, serves the request.
+This scenario not support login. Just protect the server by validating the access_token, and if valid, serves the request.
 
 **System diagram**:
 
@@ -192,12 +190,15 @@ azure:
     client-id: <client-id>
     app-id-uri: <app-id-uri>
 ```
-`app-id-uri` can be get in Azure Portal:
+Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-uri` can be get in Azure Portal:
+
 ![get-app-id-uri-1.png](resource/get-app-id-uri-1.png)
 ![get-app-id-uri-2.png](resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
-Using `AADOAuth2ResourceServerSecurityConfig` to extends `WebSecurityConfigurerAdapter`:
+
+Write your own adapter class which extends `WebSecurityConfigurerAdapter`, 
+and `AzureJwtBearerTokenAuthenticationConverter` need to be included.
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -208,6 +209,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
+            // Note that AzureJwtBearerTokenAuthenticationConverter need to be included.
     }
 }
 ```
@@ -269,27 +271,19 @@ public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2Authori
 
 This starter provides following properties:
 
-| Properties                                                        | Description                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **azure.activedirectory**.allow-telemetry                        | If telemetry events should be published to Azure AD. The default value is true. |
-| **azure.activedirectory**.app-id-uri                             | Used in the "aud" claim of an id token.                      |
-| **azure.activedirectory**.authorization-clients                  | Resource server name that the application is going to visit. |
-| **azure.activedirectory**.authorization-clients.{client-name}.scopes | API permissions of a resource server that the application is going to acquire. |
-| **azure.activedirectory**.authorization-clients.{client-name}.on-demand | This is used for incremental consent. The default value is false. If it's true, the client will not be authorized at login time. After login, if user need use this client in a http request, the request will redirected to Microsoft Identity consent page.|
-| **azure.activedirectory**.base-uri                               | Base uri for authorization server, the default value is `https://login.microsoftonline.com/`. |
-| **azure.activedirectory**.client-id                              | Registered application ID in Azure AD.                       |
-| **azure.activedirectory**.client-secret                          | API Access Key of the registered application.                |
-| **azure.activedirectory**.graph-membership-uri                   | The way this starter uses to load users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. <br>To get all transitive membership, you can configure it as `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. |
-| **azure.activedirectory**.jwk-set-cache-refresh-time             | The refresh time of the cached JWK set before it expires, default is 5 minutes. |
-| **azure.activedirectory**.jwt-connect-timeout                    | Connection Timeout for the JWKSet Remote URL call.           |
-| **azure.activedirectory**.jwt-read-timeout                       | Read Timeout for the JWKSet Remote URL call.                 |
-| **azure.activedirectory**.jwt-set-cache-lifespan                 | The lifespan of the cached JWK set before it expires, default is 5 minutes. |
-| **azure.activedirectory**.jwt-size-limit                         | Size limit in Bytes of the JWKSet Remote URL call.           |
-| **azure.activedirectory**.post-logout-redirect-uri               | Redirect uri for posting log-out.                            |
-| **azure.activedirectory**.redirect-uri-template                  | Used by the authorization server to return responses containing authorization credentials to the client via the resource owner user-agent. |
-| **azure.activedirectory**.session-stateless                      | If true, the stateless authentication filter `AADAppRoleStatelessAuthenticationFilter` will be activated. By default, the value is false, which activates `AADAuthenticationFilter`. Note, these two filters are deprecated now.|
-| **azure.activedirectory**.tenant-id                              | Azure Tenant ID.                                             |
-| **azure.activedirectory**.user-group.allowed-groups              | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
+| Properties                                                              | Description                                                                                    |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **azure.activedirectory**.app-id-uri                                    | It used in resource server, used to validate the audience in access_token. access_token is valid only when the audience in access_token equal to client-id or app-id-uri    |
+| **azure.activedirectory**.authorization-clients                         | A map configure the resource APIs the application is going to visit. Each item corresponding to one resource API the application is going to visit. In Spring code, each item corresponding to one OAuth2AuthorizedClient object|
+| **azure.activedirectory**.authorization-clients.{client-name}.scopes    | API permissions of a resource server that the application is going to acquire.                 |
+| **azure.activedirectory**.authorization-clients.{client-name}.on-demand | This is used for incremental consent. The default value is false. If it's true, it's not consent when user login, when application needs the additional permission, incremental consent is performed with one OAuth2 authorization code flow.|
+| **azure.activedirectory**.base-uri                                      | Base uri for authorization server, the default value is `https://login.microsoftonline.com/`.  |
+| **azure.activedirectory**.client-id                                     | Registered application ID in Azure AD.                                                         |
+| **azure.activedirectory**.client-secret                                 | client secret of the registered application.                                                   |
+| **azure.activedirectory**.graph-membership-uri                          | It's used to load users' groups. The default value is `https://graph.microsoft.com/v1.0/me/memberOf`, this uri just get direct groups. To get all transitive membership, set it to `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. The 2 uris are both Azure Global, check `Property example 1` if you want to use Azure China.|
+| **azure.activedirectory**.post-logout-redirect-uri                      | Redirect uri for posting log-out.                            |
+| **azure.activedirectory**.tenant-id                                     | Azure Tenant ID.                                             |
+| **azure.activedirectory**.user-group.allowed-groups                     | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
 
 Here are some examples about how to use these properties:
 
@@ -431,7 +425,6 @@ Please follow [instructions here] to build from source or contribute.
 
 <!-- LINKS -->
 [Azure Portal]: https://ms.portal.azure.com/#home
-[JWT]: https://jwt.io/
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
 [azure_subscription]: https://azure.microsoft.com/free
 [azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
