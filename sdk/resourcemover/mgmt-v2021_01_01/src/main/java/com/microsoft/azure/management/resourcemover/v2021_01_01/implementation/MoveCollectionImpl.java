@@ -16,9 +16,9 @@ import com.microsoft.azure.management.resourcemover.v2021_01_01.Identity;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.MoveCollectionProperties;
 import rx.functions.Func1;
 
-class MoveCollectionImpl extends GroupableResourceCoreImpl<MoveCollection, MoveCollectionInner, MoveCollectionImpl, MigrateManager> implements MoveCollection, MoveCollection.Definition, MoveCollection.Update {
+class MoveCollectionImpl extends GroupableResourceCoreImpl<MoveCollection, MoveCollectionInner, MoveCollectionImpl, ResourceMoverManager> implements MoveCollection, MoveCollection.Definition, MoveCollection.Update {
     private UpdateMoveCollectionRequest updateParameter;
-    MoveCollectionImpl(String name, MoveCollectionInner inner, MigrateManager manager) {
+    MoveCollectionImpl(String name, MoveCollectionInner inner, ResourceMoverManager manager) {
         super(name, inner, manager);
         this.updateParameter = new UpdateMoveCollectionRequest();
     }

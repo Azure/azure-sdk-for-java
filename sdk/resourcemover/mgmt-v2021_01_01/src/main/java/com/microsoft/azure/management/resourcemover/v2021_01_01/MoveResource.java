@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MigrateManager;
+import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.ResourceMoverManager;
 import java.util.List;
 
 /**
  * Type representing MoveResource.
  */
-public interface MoveResource extends HasInner<MoveResourceInner>, Indexable, Refreshable<MoveResource>, Updatable<MoveResource.Update>, HasManager<MigrateManager> {
+public interface MoveResource extends HasInner<MoveResourceInner>, Indexable, Refreshable<MoveResource>, Updatable<MoveResource.Update>, HasManager<ResourceMoverManager> {
     /**
      * @return the id value.
      */

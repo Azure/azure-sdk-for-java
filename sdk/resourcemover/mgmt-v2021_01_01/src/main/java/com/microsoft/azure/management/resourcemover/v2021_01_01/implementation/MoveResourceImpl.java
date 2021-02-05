@@ -16,14 +16,14 @@ import java.util.List;
 import rx.functions.Func1;
 
 class MoveResourceImpl extends CreatableUpdatableImpl<MoveResource, MoveResourceInner, MoveResourceImpl> implements MoveResource, MoveResource.Definition, MoveResource.Update {
-    private final MigrateManager manager;
+    private final ResourceMoverManager manager;
     private String resourceGroupName;
     private String moveCollectionName;
     private String moveResourceName;
     private MoveResourceProperties cproperties;
     private MoveResourceProperties uproperties;
 
-    MoveResourceImpl(String name, MigrateManager manager) {
+    MoveResourceImpl(String name, ResourceMoverManager manager) {
         super(name, new MoveResourceInner());
         this.manager = manager;
         // Set resource name
@@ -33,7 +33,7 @@ class MoveResourceImpl extends CreatableUpdatableImpl<MoveResource, MoveResource
         this.uproperties = new MoveResourceProperties();
     }
 
-    MoveResourceImpl(MoveResourceInner inner, MigrateManager manager) {
+    MoveResourceImpl(MoveResourceInner inner, ResourceMoverManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -48,7 +48,7 @@ class MoveResourceImpl extends CreatableUpdatableImpl<MoveResource, MoveResource
     }
 
     @Override
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

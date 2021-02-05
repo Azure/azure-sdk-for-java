@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.UnresolvedDependency;
 
 class UnresolvedDependenciesImpl extends WrapperImpl<UnresolvedDependenciesInner> implements UnresolvedDependencies {
-    private final MigrateManager manager;
+    private final ResourceMoverManager manager;
 
-    UnresolvedDependenciesImpl(MigrateManager manager) {
+    UnresolvedDependenciesImpl(ResourceMoverManager manager) {
         super(manager.inner().unresolvedDependencies());
         this.manager = manager;
     }
 
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

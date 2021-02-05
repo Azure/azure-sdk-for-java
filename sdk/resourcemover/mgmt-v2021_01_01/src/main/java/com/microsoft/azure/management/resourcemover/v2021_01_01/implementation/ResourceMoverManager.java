@@ -24,30 +24,30 @@ import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImp
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
- * Entry point to Azure Migrate resource management.
+ * Entry point to Azure ResourceMover resource management.
  */
-public final class MigrateManager extends ManagerCore<MigrateManager, ResourceMoverServiceAPIImpl> {
+public final class ResourceMoverManager extends ManagerCore<ResourceMoverManager, ResourceMoverServiceAPIImpl> {
     private MoveCollections moveCollections;
     private MoveResources moveResources;
     private UnresolvedDependencies unresolvedDependencies;
     private OperationsDiscoverys operationsDiscoverys;
     /**
-    * Get a Configurable instance that can be used to create MigrateManager with optional configuration.
+    * Get a Configurable instance that can be used to create ResourceMoverManager with optional configuration.
     *
     * @return the instance allowing configurations
     */
     public static Configurable configure() {
-        return new MigrateManager.ConfigurableImpl();
+        return new ResourceMoverManager.ConfigurableImpl();
     }
     /**
-    * Creates an instance of MigrateManager that exposes Migrate resource management API entry points.
+    * Creates an instance of ResourceMoverManager that exposes ResourceMover resource management API entry points.
     *
     * @param credentials the credentials to use
     * @param subscriptionId the subscription UUID
-    * @return the MigrateManager
+    * @return the ResourceMoverManager
     */
-    public static MigrateManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new MigrateManager(new RestClient.Builder()
+    public static ResourceMoverManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new ResourceMoverManager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
@@ -55,27 +55,27 @@ public final class MigrateManager extends ManagerCore<MigrateManager, ResourceMo
             .build(), subscriptionId);
     }
     /**
-    * Creates an instance of MigrateManager that exposes Migrate resource management API entry points.
+    * Creates an instance of ResourceMoverManager that exposes ResourceMover resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
     * @param subscriptionId the subscription UUID
-    * @return the MigrateManager
+    * @return the ResourceMoverManager
     */
-    public static MigrateManager authenticate(RestClient restClient, String subscriptionId) {
-        return new MigrateManager(restClient, subscriptionId);
+    public static ResourceMoverManager authenticate(RestClient restClient, String subscriptionId) {
+        return new ResourceMoverManager(restClient, subscriptionId);
     }
     /**
     * The interface allowing configurations to be set.
     */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-        * Creates an instance of MigrateManager that exposes Migrate management API entry points.
+        * Creates an instance of ResourceMoverManager that exposes ResourceMover management API entry points.
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing Migrate management API entry points that work across subscriptions
+        * @return the interface exposing ResourceMover management API entry points that work across subscriptions
         */
-        MigrateManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        ResourceMoverManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -122,11 +122,11 @@ public final class MigrateManager extends ManagerCore<MigrateManager, ResourceMo
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public MigrateManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return MigrateManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public ResourceMoverManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+           return ResourceMoverManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
      }
-    private MigrateManager(RestClient restClient, String subscriptionId) {
+    private ResourceMoverManager(RestClient restClient, String subscriptionId) {
         super(
             restClient,
             subscriptionId,

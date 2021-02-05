@@ -17,13 +17,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MigrateManager;
+import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.ResourceMoverManager;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MoveCollectionInner;
 
 /**
  * Type representing MoveCollection.
  */
-public interface MoveCollection extends HasInner<MoveCollectionInner>, Resource, GroupableResourceCore<MigrateManager, MoveCollectionInner>, HasResourceGroup, Refreshable<MoveCollection>, Updatable<MoveCollection.Update>, HasManager<MigrateManager> {
+public interface MoveCollection extends HasInner<MoveCollectionInner>, Resource, GroupableResourceCore<ResourceMoverManager, MoveCollectionInner>, HasResourceGroup, Refreshable<MoveCollection>, Updatable<MoveCollection.Update>, HasManager<ResourceMoverManager> {
     /**
      * @return the etag value.
      */

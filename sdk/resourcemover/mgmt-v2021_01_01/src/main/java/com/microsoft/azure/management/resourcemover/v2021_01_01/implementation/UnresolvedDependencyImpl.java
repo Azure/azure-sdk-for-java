@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class UnresolvedDependencyImpl extends WrapperImpl<UnresolvedDependencyInner> implements UnresolvedDependency {
-    private final MigrateManager manager;
+    private final ResourceMoverManager manager;
 
-    UnresolvedDependencyImpl(UnresolvedDependencyInner inner,  MigrateManager manager) {
+    UnresolvedDependencyImpl(UnresolvedDependencyInner inner,  ResourceMoverManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

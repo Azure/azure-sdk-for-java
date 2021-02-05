@@ -14,11 +14,11 @@
         <version>1.3.2</version>
         <relativePath>../../parents/azure-arm-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-migrate</artifactId>
+    <artifactId>azure-mgmt-resourcemover</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Migrate Management</name>
-    <description>This package contains Microsoft Migrate Management SDK.</description>
+    <name>Microsoft Azure SDK for ResourceMover Management</name>
+    <description>This package contains Microsoft ResourceMover Management SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>

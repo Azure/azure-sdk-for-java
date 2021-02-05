@@ -10,14 +10,14 @@ package com.microsoft.azure.management.resourcemover.v2021_01_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MigrateManager;
+import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.ResourceMoverManager;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.OperationsDiscoveryCollectionInner;
 import java.util.List;
 
 /**
  * Type representing OperationsDiscoveryCollection.
  */
-public interface OperationsDiscoveryCollection extends HasInner<OperationsDiscoveryCollectionInner>, HasManager<MigrateManager> {
+public interface OperationsDiscoveryCollection extends HasInner<OperationsDiscoveryCollectionInner>, HasManager<ResourceMoverManager> {
     /**
      * @return the nextLink value.
      */

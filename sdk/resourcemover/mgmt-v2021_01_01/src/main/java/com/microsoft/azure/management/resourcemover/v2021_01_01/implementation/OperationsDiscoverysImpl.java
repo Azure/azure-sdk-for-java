@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.OperationsDiscoveryCollection;
 
 class OperationsDiscoverysImpl extends WrapperImpl<OperationsDiscoverysInner> implements OperationsDiscoverys {
-    private final MigrateManager manager;
+    private final ResourceMoverManager manager;
 
-    OperationsDiscoverysImpl(MigrateManager manager) {
+    OperationsDiscoverysImpl(ResourceMoverManager manager) {
         super(manager.inner().operationsDiscoverys());
         this.manager = manager;
     }
 
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

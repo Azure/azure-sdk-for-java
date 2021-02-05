@@ -25,8 +25,8 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.OperationStatus;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.RequiredForResourcesCollection;
 
-class MoveCollectionsImpl extends GroupableResourcesCoreImpl<MoveCollection, MoveCollectionImpl, MoveCollectionInner, MoveCollectionsInner, MigrateManager>  implements MoveCollections {
-    protected MoveCollectionsImpl(MigrateManager manager) {
+class MoveCollectionsImpl extends GroupableResourcesCoreImpl<MoveCollection, MoveCollectionImpl, MoveCollectionInner, MoveCollectionsInner, ResourceMoverManager>  implements MoveCollections {
+    protected MoveCollectionsImpl(ResourceMoverManager manager) {
         super(manager.inner().moveCollections(), manager);
     }
 

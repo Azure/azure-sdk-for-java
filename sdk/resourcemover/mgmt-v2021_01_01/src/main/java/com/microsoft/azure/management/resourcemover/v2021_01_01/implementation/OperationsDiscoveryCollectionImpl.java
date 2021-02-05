@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.OperationsDiscovery;
 
 class OperationsDiscoveryCollectionImpl extends WrapperImpl<OperationsDiscoveryCollectionInner> implements OperationsDiscoveryCollection {
-    private final MigrateManager manager;
-    OperationsDiscoveryCollectionImpl(OperationsDiscoveryCollectionInner inner, MigrateManager manager) {
+    private final ResourceMoverManager manager;
+    OperationsDiscoveryCollectionImpl(OperationsDiscoveryCollectionInner inner, ResourceMoverManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

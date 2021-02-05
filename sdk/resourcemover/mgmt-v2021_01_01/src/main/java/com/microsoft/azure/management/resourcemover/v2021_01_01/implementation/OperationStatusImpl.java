@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.OperationStatusError;
 
 class OperationStatusImpl extends WrapperImpl<OperationStatusInner> implements OperationStatus {
-    private final MigrateManager manager;
-    OperationStatusImpl(OperationStatusInner inner, MigrateManager manager) {
+    private final ResourceMoverManager manager;
+    OperationStatusImpl(OperationStatusInner inner, ResourceMoverManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

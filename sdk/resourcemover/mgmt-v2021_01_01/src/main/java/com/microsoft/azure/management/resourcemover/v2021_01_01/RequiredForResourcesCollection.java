@@ -10,14 +10,14 @@ package com.microsoft.azure.management.resourcemover.v2021_01_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MigrateManager;
+import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.ResourceMoverManager;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.RequiredForResourcesCollectionInner;
 import java.util.List;
 
 /**
  * Type representing RequiredForResourcesCollection.
  */
-public interface RequiredForResourcesCollection extends HasInner<RequiredForResourcesCollectionInner>, HasManager<MigrateManager> {
+public interface RequiredForResourcesCollection extends HasInner<RequiredForResourcesCollectionInner>, HasManager<ResourceMoverManager> {
     /**
      * @return the sourceIds value.
      */

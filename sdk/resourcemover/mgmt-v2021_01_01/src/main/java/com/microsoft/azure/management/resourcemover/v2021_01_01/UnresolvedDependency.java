@@ -11,12 +11,12 @@ package com.microsoft.azure.management.resourcemover.v2021_01_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.UnresolvedDependencyInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.MigrateManager;
+import com.microsoft.azure.management.resourcemover.v2021_01_01.implementation.ResourceMoverManager;
 
 /**
  * Type representing UnresolvedDependency.
  */
-public interface UnresolvedDependency extends HasInner<UnresolvedDependencyInner>, HasManager<MigrateManager> {
+public interface UnresolvedDependency extends HasInner<UnresolvedDependencyInner>, HasManager<ResourceMoverManager> {
     /**
      * @return the count value.
      */

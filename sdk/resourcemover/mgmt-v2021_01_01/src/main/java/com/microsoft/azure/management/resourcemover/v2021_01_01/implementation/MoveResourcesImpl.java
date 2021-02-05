@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resourcemover.v2021_01_01.MoveResource;
 
 class MoveResourcesImpl extends WrapperImpl<MoveResourcesInner> implements MoveResources {
-    private final MigrateManager manager;
+    private final ResourceMoverManager manager;
 
-    MoveResourcesImpl(MigrateManager manager) {
+    MoveResourcesImpl(ResourceMoverManager manager) {
         super(manager.inner().moveResources());
         this.manager = manager;
     }
 
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 

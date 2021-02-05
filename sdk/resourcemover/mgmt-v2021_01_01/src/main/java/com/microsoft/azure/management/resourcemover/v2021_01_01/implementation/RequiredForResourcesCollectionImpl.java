@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class RequiredForResourcesCollectionImpl extends WrapperImpl<RequiredForResourcesCollectionInner> implements RequiredForResourcesCollection {
-    private final MigrateManager manager;
-    RequiredForResourcesCollectionImpl(RequiredForResourcesCollectionInner inner, MigrateManager manager) {
+    private final ResourceMoverManager manager;
+    RequiredForResourcesCollectionImpl(RequiredForResourcesCollectionInner inner, ResourceMoverManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MigrateManager manager() {
+    public ResourceMoverManager manager() {
         return this.manager;
     }
 
