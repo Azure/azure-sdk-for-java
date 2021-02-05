@@ -662,8 +662,14 @@ public class EventHubClientBuilder {
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode);
+        if (customEndpointAddress == null) {
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
+                retryOptions, proxyOptions, scheduler, options, verificationMode);
+        } else {
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
+                retryOptions, proxyOptions, scheduler, options, verificationMode, customEndpointAddress.getHost(),
+                customEndpointAddress.getPort());
+        }
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
