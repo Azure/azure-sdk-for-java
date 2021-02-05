@@ -76,19 +76,19 @@ class CosmosConfigSpec extends UnitSpec {
 
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
 
-    config.upsertEnabled shouldEqual true
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
     config.maxRetryCount shouldEqual 3
   }
 
   it should "parse write config" in {
     val userConfig = Map(
-      "spark.cosmos.write.upsertEnabled" -> "false",
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
       "spark.cosmos.write.maxRetryCount" -> "8"
     )
 
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
 
-    config.upsertEnabled shouldEqual false
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemOverwrite
     config.maxRetryCount shouldEqual 8
   }
 

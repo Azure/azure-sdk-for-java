@@ -3,21 +3,23 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.spark.ItemWriteStrategy.{ItemAppend, ItemOverwrite, ItemWriteStrategy}
+import org.scalatest.Succeeded
 
 class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  case class UpsertParameterTest(upsertEnabled: Boolean)
+  case class UpsertParameterTest(itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(upsertEnabled = true),
-    UpsertParameterTest(upsertEnabled = false)
+    UpsertParameterTest(itemWriteStrategy = ItemOverwrite),
+    UpsertParameterTest(itemWriteStrategy = ItemAppend)
   )
 
-  for (UpsertParameterTest(upsertEnabled) <- upsertParameterTest) {
-    it should s"support upsert = ${upsertEnabled}" taggedAs (RequiresCosmosEndpoint) in {
+  for (UpsertParameterTest(itemWriteStrategy, hasId) <- upsertParameterTest) {
+    it should s"support itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -31,7 +33,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
-        "spark.cosmos.write.upsertEnabled" -> (if (upsertEnabled) "true" else "false"))
+        "spark.cosmos.write.strategy" -> itemWriteStrategy.toString)
 
       val newSpark = getSpark()
 
@@ -52,9 +54,18 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
         ("Quark", "Quark", "green", "Yes"),
         ("Boson", "Boson", "", "")
 
-      ).toDF("particle name", "id", "color", "color charge")
+      ).toDF("particle name", if (hasId) "id" else "no-id", "color", "color charge")
 
-      overwriteDf.write.format("cosmos.items").mode("Append").options(cfgOverwrite).save()
+
+      try {
+        overwriteDf.write.format("cosmos.items").mode("Append").options(cfgOverwrite).save()
+        hasId shouldBe true
+      } catch {
+        case e: Exception => {
+          hasId shouldBe false
+          Succeeded
+        }
+      }
 
       // verify data is written
 
@@ -77,14 +88,14 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
       val quark = quarks(0)
       quark.get("particle name").asText() shouldEqual "Quark"
       quark.get("id").asText() shouldEqual "Quark"
-      quark.get("color").asText() shouldEqual (if (upsertEnabled) "green" else "Red")
+      quark.get("color").asText() shouldEqual (if (itemWriteStrategy == ItemOverwrite) "green" else "Red")
 
-      quark.has("spin") shouldEqual !upsertEnabled
-      if (!upsertEnabled) {
+      quark.has("spin") shouldEqual !(itemWriteStrategy == ItemOverwrite)
+      if (!(itemWriteStrategy == ItemOverwrite)) {
         quark.get("spin").asDouble() shouldEqual 0.5
       }
 
-      if (upsertEnabled) {
+      if ((itemWriteStrategy == ItemOverwrite)) {
         quark.get("color charge").asText() shouldEqual "Yes"
       } else {
         quark.has("color charge") shouldEqual false
@@ -132,7 +143,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
 
       val df = Seq(
         (299792458, "speed of light")
-      ).toDF("number", "word")
+      ).toDF("number", "id")
       df.printSchema()
 
       try {

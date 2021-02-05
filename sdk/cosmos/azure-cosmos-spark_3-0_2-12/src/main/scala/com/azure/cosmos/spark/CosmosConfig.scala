@@ -3,9 +3,10 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
+
 import java.net.URL
 import java.util.Locale
-
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -69,14 +70,24 @@ object CosmosAccountConfig {
 
 case class CosmosContainerConfig(database: String, container: String)
 
-case class CosmosWriteConfig(upsertEnabled: Boolean, maxRetryCount: Int)
+case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int)
+
+object ItemWriteStrategy extends Enumeration {
+  type ItemWriteStrategy = Value
+  val ItemOverwrite, ItemAppend = Value
+
+  def withNameOrThrow(name: String): Value =
+    values.find(_.toString.toLowerCase == name.toLowerCase()).getOrElse(
+      throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
+}
 
 object CosmosWriteConfig {
-  val upsertEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.upsertEnabled",
+  val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
+    defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
     mandatory = false,
-    defaultValue = Option.apply(true), // TODO: what the default value should be?
-    parseFromStringFunction = overwriteEnabled => overwriteEnabled.toBoolean,
-    helpMessage = "Cosmos DB Write Upsert Enabled")
+    parseFromStringFunction = itemWriteStrategyAsString =>
+      ItemWriteStrategy.withNameOrThrow(itemWriteStrategyAsString),
+    helpMessage = "Cosmos DB Item write Strategy: ItemOverwrite (using upsert), ItemAppend (using create, ignore 409)")
 
   val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
@@ -84,21 +95,21 @@ object CosmosWriteConfig {
     parseFromStringFunction = maxRetryAttempt => {
       val cnt = maxRetryAttempt.toInt
       if (cnt < 0) {
-        throw new RuntimeException(s"expected a non-negative number")
+        throw new IllegalArgumentException(s"expected a non-negative number")
       }
       cnt
     },
     helpMessage = "Cosmos DB Write Max Retry Attempts on failure")
 
   def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
-    val upsertEnabledOpt = CosmosConfigEntry.parse(cfg, upsertEnabled)
+    val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
 
     // parsing above already validated this
-    assert(upsertEnabledOpt.isDefined)
+    assert(itemWriteStrategyOpt.isDefined)
     assert(maxRetryCountOpt.isDefined)
 
-    CosmosWriteConfig(upsertEnabledOpt.get, maxRetryCountOpt.get)
+    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get)
   }
 }
 

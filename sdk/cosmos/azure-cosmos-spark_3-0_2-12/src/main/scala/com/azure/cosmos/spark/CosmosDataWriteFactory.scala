@@ -11,8 +11,6 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
 
-import java.util.UUID
-
 class CosmosDataWriteFactory(userConfig: Map[String, String],
                              inputSchema: StructType,
                              cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
@@ -46,7 +44,6 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
 
     override def write(internalRow: InternalRow): Unit = {
       val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
-      ensureHasId(objectNode)
 
       // TODO modreakh investigate if we should also support point write in non-blocking way
       // TODO moderakh support patch?
@@ -54,56 +51,60 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
 
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
 
-      if (cosmosWriteConfig.upsertEnabled) {
-        upsertWithRetry(partitionKeyValue, objectNode, cosmosWriteConfig.maxRetryCount + 1)
-      } else {
-        createWithRetry(partitionKeyValue, objectNode, cosmosWriteConfig.maxRetryCount + 1)
+      cosmosWriteConfig.itemWriteStrategy match {
+        case ItemWriteStrategy.ItemOverwrite => {
+          upsertWithRetry(partitionKeyValue, objectNode)
+        }
+        case ItemWriteStrategy.ItemAppend => {
+          createWithRetry(partitionKeyValue, objectNode)
+        }
       }
     }
 
     private def createWithRetry(partitionKeyValue: PartitionKey,
-                                objectNode: ObjectNode,
-                                remainingAttempts: Int,
-                                exceptionToThrow: Option[Exception] = Option.empty): Unit = {
-      if (remainingAttempts == 0) {
-        assert(exceptionToThrow.isDefined)
-        throw exceptionToThrow.get
-      }
-      try {
-        container.createItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
-      } catch {
-        case e: CosmosException if Exceptions.isResourceExistsException(e) => {
-          // TODO: what should we do on unique index violation? should we ignore or throw?
-          // DONE
+                                objectNode: ObjectNode): Unit = {
+
+      var exceptionOpt = Option.empty[Exception]
+      for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+        try {
+          container.createItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
+          return
+        } catch {
+          case e: CosmosException if Exceptions.isResourceExistsException(e) => {
+            // TODO: what should we do on unique index violation? should we ignore or throw?
+
+            // TODO moderakh we need to add log messages extract identifier (id, pk) and log
+            return
+          }
+          case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
+            logWarning(s"create item attempt #${attempt} max remaining retries ${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+            exceptionOpt = Option.apply(e)
+          }
         }
-        case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
-          createWithRetry(partitionKeyValue, objectNode, remainingAttempts - 1, exceptionToThrow)
-        }
       }
+
+      assert(exceptionOpt.isDefined)
+      throw exceptionOpt.get
     }
 
     private def upsertWithRetry(partitionKeyValue: PartitionKey,
-                                objectNode: ObjectNode,
-                                remainingAttempts: Int,
-                                exceptionToThrow: Option[Exception] = Option.empty): Unit = {
-      if (remainingAttempts == 0) {
-        assert(exceptionToThrow.isDefined)
-        throw exceptionToThrow.get
-      }
-      try {
-        container.upsertItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
-      } catch {
-        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
-          upsertWithRetry(partitionKeyValue, objectNode, remainingAttempts - 1, Option.apply(e))
-        case e: Exception => throw e // unexpected failure
-      }
-    }
+                                objectNode: ObjectNode): Unit = {
+      var exceptionOpt = Option.empty[Exception]
+      for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
 
-    private def ensureHasId(objectNode: ObjectNode): Unit = {
-      // ensures the id has id otherwise it will autogenerate one
-      if (!objectNode.has(CosmosConstants.CosmosIdFieldName)) {
-        objectNode.put(CosmosConstants.CosmosIdFieldName, UUID.randomUUID().toString)
+        try {
+          container.upsertItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
+          return
+        } catch {
+          case e: CosmosException if Exceptions.canBeTransientFailure(e) => {
+            logWarning(s"upsert item attempt #${attempt} max remaining retries ${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+            exceptionOpt = Option.apply(e)
+          }
+        }
       }
+
+      assert(exceptionOpt.isDefined)
+      throw exceptionOpt.get
     }
 
     override def commit(): WriterCommitMessage = {
