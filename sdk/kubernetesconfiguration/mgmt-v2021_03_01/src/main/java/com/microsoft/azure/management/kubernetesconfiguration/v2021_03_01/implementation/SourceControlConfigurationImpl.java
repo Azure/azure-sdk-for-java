@@ -42,9 +42,9 @@ class SourceControlConfigurationImpl extends CreatableUpdatableImpl<SourceContro
         this.sourceControlConfigurationName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.clusterRp = String.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "providers"));
+        this.clusterRp = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
         this.sourceControlConfigurationName = IdParsingUtils.getValueFromIdByName(inner.id(), "sourceControlConfigurations");
-        this.clusterResourceName = String.fromString(IdParsingUtils.getValueFromIdByPosition(inner.id(), 6));
+        this.clusterResourceName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 6);
         this.clusterName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 7);
         //
     }
