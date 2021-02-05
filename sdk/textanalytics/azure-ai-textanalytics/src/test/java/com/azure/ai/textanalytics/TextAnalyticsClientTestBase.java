@@ -508,6 +508,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void analyzeBatchActionsPartialCompleted(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -900,9 +907,26 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+                .setExtractKeyPhrasesOptions(
+                    new ExtractKeyPhrasesOptions().setModelVersion("latest"))
+                .setRecognizePiiEntitiesOptions(
+                    new RecognizePiiEntitiesOptions().setModelVersion("invalidVersion"),
+                    new RecognizePiiEntitiesOptions().setModelVersion("latest")));
+    }
+
+    void analyzeBatchActionsAllFailedRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", PII_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions().setModelVersion("invalidVersion"))
                 .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"))
-                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
+                .setRecognizePiiEntitiesOptions(
+                    new RecognizePiiEntitiesOptions().setModelVersion("invalidaVersion"),
+                    new RecognizePiiEntitiesOptions().setModelVersion("2929")));
     }
 
     String getEndpoint() {
@@ -1383,9 +1407,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertNotNull(actual.getError());
                 validateErrorDocument(expected.getError(), actual.getError());
             }
+        } else {
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.getResult(),
+                actual.getResult());
         }
-        validateCategorizedEntitiesResultCollection(showStatistics, expected.getResult(),
-            actual.getResult());
     }
 
     static void validateRecognizePiiEntitiesActionResult(boolean showStatistics,
@@ -1398,9 +1423,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertNotNull(actual.getError());
                 validateErrorDocument(expected.getError(), actual.getError());
             }
+        } else {
+            validatePiiEntitiesResultCollection(showStatistics, expected.getResult(),
+                actual.getResult());
         }
-        validatePiiEntitiesResultCollection(showStatistics, expected.getResult(),
-            actual.getResult());
     }
 
     static void validateExtractKeyPhrasesActionResult(boolean showStatistics,
@@ -1413,9 +1439,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertNotNull(actual.getError());
                 validateErrorDocument(expected.getError(), actual.getError());
             }
+        } else {
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getResult(),
+                actual.getResult());
         }
-        validateExtractKeyPhrasesResultCollection(showStatistics, expected.getResult(),
-            actual.getResult());
     }
 
     /**
@@ -1540,7 +1567,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
         assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
-        assertEquals(expectedError.getMessage(), actualError.getMessage());
-        assertEquals(expectedError.getTarget(), actualError.getTarget());
+        assertNotNull(actualError.getMessage());
     }
 }

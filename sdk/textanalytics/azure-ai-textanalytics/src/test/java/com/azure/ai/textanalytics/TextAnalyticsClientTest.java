@@ -41,15 +41,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.ENTITY_TASK;
+import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASES_TASK;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.PII_TASK;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
+import static com.azure.ai.textanalytics.TestUtils.getActionError;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
@@ -77,6 +82,7 @@ import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
+import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_REQUEST;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1697,11 +1703,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                        getRecognizeEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                        getRecognizePiiEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                        getExtractKeyPhrasesResultCollection(), TIME_NOW, false))))),
+                        false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
                 result.stream().collect(Collectors.toList()));
         });
     }
@@ -1735,5 +1741,62 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeBatchActionsPartialCompletedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+                syncPoller.waitForCompletion();
+                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(
+                                false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(
+                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
+                    result.stream().collect(Collectors.toList()));
+            }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeBatchActionsAllFailedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+                syncPoller.waitForCompletion();
+                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(asList(
+                            getExpectedRecognizeEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, ENTITY_TASK, "0")))),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "1")))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))))),
+                    result.stream().collect(Collectors.toList()));
+            }
+        );
     }
 }
