@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefilesysteminitialcheckfail129619d06f45777bb?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefilesysteminitialcheckfail1701193091eae4335?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5c89ee73-7bfa-4474-b43a-48a62c584088"
+      "x-ms-client-request-id" : "053281c7-ed93-4d81-b857-82e3ab36bac6"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -13,9 +13,9 @@
       "retry-after" : "0",
       "Content-Length" : "760",
       "StatusCode" : "403",
-      "x-ms-request-id" : "4651e196-101e-00c1-794a-fb51c3000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:4651e196-101e-00c1-794a-fb51c3000000\nTime:2021-02-04T23:10:23.5920684Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'pCQL5g56py/BMU/MbubpOTCEyuQa+F9s3G5yXnl2vRg=' is not the same as any computed signature. Server used following string to sign: 'GET\n\n\n\n\n\nThu, 04 Feb 2021 23:10:23 GMT\n\n\n\n\n\nx-ms-client-request-id:5c89ee73-7bfa-4474-b43a-48a62c584088\nx-ms-version:2020-06-12\n/seancanary/jtccreatefilesysteminitialcheckfail129619d06f45777bb\nrestype:container'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 04 Feb 2021 23:10:22 GMT",
+      "x-ms-request-id" : "75fce728-301e-009b-48e3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:75fce728-301e-009b-48e3-fb3724000000\nTime:2021-02-05T17:21:28.9286532Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'F88IiaVt1QDjotUaY84e1BgMI5dekpFsjwthBcsEp7g=' is not the same as any computed signature. Server used following string to sign: 'GET\n\n\n\n\n\nFri, 05 Feb 2021 17:21:29 GMT\n\n\n\n\n\nx-ms-client-request-id:053281c7-ed93-4d81-b857-82e3ab36bac6\nx-ms-version:2020-06-12\n/seancanary/jtccreatefilesysteminitialcheckfail1701193091eae4335\nrestype:container'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 05 Feb 2021 17:21:28 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -25,7 +25,7 @@
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf23aa54-1292-4a85-8239-43c633baa8f8"
+      "x-ms-client-request-id" : "0fab1e59-fb22-4f48-aba1-94771d122122"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -33,13 +33,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4651e19b-101e-00c1-7e4a-fb51c3000000",
+      "x-ms-request-id" : "75fce739-301e-009b-54e3-fb3724000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminitialcheckfail</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:10:22 GMT",
-      "x-ms-client-request-id" : "cf23aa54-1292-4a85-8239-43c633baa8f8",
+      "Date" : "Fri, 05 Feb 2021 17:21:28 GMT",
+      "x-ms-client-request-id" : "0fab1e59-fb22-4f48-aba1-94771d122122",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefilesysteminitialcheckfail075611ef650ad49d0", "jtccreatefilesysteminitialcheckfail129619d06f45777bb" ]
+  "variables" : [ "jtccreatefilesysteminitialcheckfail01492891739c7015a", "jtccreatefilesysteminitialcheckfail1701193091eae4335" ]
 }

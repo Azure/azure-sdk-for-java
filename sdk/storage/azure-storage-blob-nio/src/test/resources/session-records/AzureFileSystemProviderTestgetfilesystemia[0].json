@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9f4842cf-6f36-4128-b5f1-e1f72cf1bcf0"
+      "x-ms-client-request-id" : "53680c35-42c6-4e0d-a933-091b89feb40f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,13 +13,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4651e19e-101e-00c1-014a-fb51c3000000",
+      "x-ms-request-id" : "75fce74d-301e-009b-67e3-fb3724000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtcgetfilesystemia</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:10:23 GMT",
-      "x-ms-client-request-id" : "9f4842cf-6f36-4128-b5f1-e1f72cf1bcf0",
+      "Date" : "Fri, 05 Feb 2021 17:21:28 GMT",
+      "x-ms-client-request-id" : "53680c35-42c6-4e0d-a933-091b89feb40f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetfilesystemia085680d6dfe7a0f09342b7877" ]
+  "variables" : [ "jtcgetfilesystemia022344e2f1c473c2244d83a1a" ]
 }

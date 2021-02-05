@@ -68,7 +68,7 @@ public class RecognizeCustomFormsAsync {
                 System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
                 System.out.printf("Form has form type confidence : %.2f%n", form.getFormTypeConfidence());
-                System.out.printf("Form was analyzed with model with ID: ", form.getModelId());
+                System.out.printf("Form was analyzed with model with ID: %s%n", form.getModelId());
                 form.getFields().forEach((label, formField) -> {
                     System.out.printf("Field '%s' has label '%s' with confidence score of %.2f.%n", label,
                         formField.getLabelData().getText(),

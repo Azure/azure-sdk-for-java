@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f5d7bf19-bfb6-4479-823d-8a0b11a74ffd"
+      "x-ms-client-request-id" : "c44759e2-3a02-4ff3-82a2-18f234dbc27a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,13 +13,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4651d465-101e-00c1-324a-fb51c3000000",
+      "x-ms-request-id" : "75fcc8c0-301e-009b-0ae3-fb3724000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreatefailia</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:09:04 GMT",
-      "x-ms-client-request-id" : "f5d7bf19-bfb6-4479-823d-8a0b11a74ffd",
+      "Date" : "Fri, 05 Feb 2021 17:20:11 GMT",
+      "x-ms-client-request-id" : "c44759e2-3a02-4ff3-82a2-18f234dbc27a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefailia0azurefilesystemtestcreatefailia1cf018135b61", "jtccreatefailia1azurefilesystemtestcreatefailia1cf59904a9c4" ]
+  "variables" : [ "jtccreatefailia0azurefilesystemtestcreatefailia56430112ae04", "jtccreatefailia1azurefilesystemtestcreatefailia56453066e446" ]
 }

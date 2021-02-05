@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "634174e4-91d9-4bf6-9826-4e6d5797cf72"
+      "x-ms-client-request-id" : "f6f1430f-27b0-475f-9e48-f0a6f7f78a83"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,13 +13,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4651e18b-101e-00c1-734a-fb51c3000000",
+      "x-ms-request-id" : "75fce6f1-301e-009b-16e3-fb3724000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminvaliduri</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:10:22 GMT",
-      "x-ms-client-request-id" : "634174e4-91d9-4bf6-9826-4e6d5797cf72",
+      "Date" : "Fri, 05 Feb 2021 17:21:27 GMT",
+      "x-ms-client-request-id" : "f6f1430f-27b0-475f-9e48-f0a6f7f78a83",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefilesysteminvaliduri029107a0fc86f860864e" ]
+  "variables" : [ "jtccreatefilesysteminvaliduri001238744c2e65a63548" ]
 }
