@@ -8,49 +8,49 @@ import org.apache.spark.broadcast.Broadcast
 import org.mockito.Mockito.{mock, verify}
 
 class CosmosClientCacheSpec extends UnitSpec {
-    //scalastyle:off multiple.string.literals
+  //scalastyle:off multiple.string.literals
 
-    private val cosmosEndpoint = TestConfigurations.HOST
-    private val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  private val cosmosEndpoint = TestConfigurations.HOST
+  private val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
 
-    "CosmosClientCache" should "get cached object with same config" in {
-        val userConfig = CosmosClientConfiguration(Map(
-            "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey
-        ), useEventualConsistency = true)
+  "CosmosClientCache" should "get cached object with same config" in {
+    val userConfig = CosmosClientConfiguration(Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey
+    ), useEventualConsistency = true)
 
-        val client1 = CosmosClientCache(userConfig, None)
-        val client2 = CosmosClientCache(userConfig, None)
+    val client1 = CosmosClientCache(userConfig, None)
+    val client2 = CosmosClientCache(userConfig, None)
 
-        client2 should be theSameInstanceAs client1
-        CosmosClientCache.purge(userConfig)
-    }
+    client2 should be theSameInstanceAs client1
+    CosmosClientCache.purge(userConfig)
+  }
 
-    it should "return a new instance after purging" in {
-        val userConfig = CosmosClientConfiguration(Map(
-            "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey
-        ), useEventualConsistency = true)
+  it should "return a new instance after purging" in {
+    val userConfig = CosmosClientConfiguration(Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey
+    ), useEventualConsistency = true)
 
-        val client1 = CosmosClientCache(userConfig, None)
-        CosmosClientCache.purge(userConfig)
-        val client2 = CosmosClientCache(userConfig, None)
+    val client1 = CosmosClientCache(userConfig, None)
+    CosmosClientCache.purge(userConfig)
+    val client2 = CosmosClientCache(userConfig, None)
 
-        client2 shouldNot be theSameInstanceAs client1
-        CosmosClientCache.purge(userConfig)
-    }
+    client2 shouldNot be theSameInstanceAs client1
+    CosmosClientCache.purge(userConfig)
+  }
 
-    it should "use state during initialization" in {
-        val userConfig = CosmosClientConfiguration(Map(
-            "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey
-        ), useEventualConsistency = true)
+  it should "use state during initialization" in {
+    val userConfig = CosmosClientConfiguration(Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey
+    ), useEventualConsistency = true)
 
-        val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
-        val client1 = CosmosClientCache(userConfig, Option(broadcast))
-        verify(broadcast).value
-        client1 shouldBe a[CosmosAsyncClient]
-        CosmosClientCache.purge(userConfig)
-    }
+    val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
+    val client1 = CosmosClientCache(userConfig, Option(broadcast))
+    verify(broadcast).value
+    client1 shouldBe a[CosmosAsyncClient]
+    CosmosClientCache.purge(userConfig)
+  }
 }

@@ -52,29 +52,29 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
-    "Schema inference Parser" should "parse configuration" in {
-        val customQuery = "select * from c"
-        val userConfig = Map(
-            "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-            "spark.cosmos.read.inferSchemaEnabled" -> "false",
-            "spark.cosmos.read.inferSchemaQuery" -> customQuery
-        )
+  "Schema inference Parser" should "parse configuration" in {
+    val customQuery = "select * from c"
+    val userConfig = Map(
+        "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
+        "spark.cosmos.read.inferSchemaEnabled" -> "false",
+        "spark.cosmos.read.inferSchemaQuery" -> customQuery
+    )
 
-        val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
 
-        config.inferSchemaSamplingSize shouldEqual 50
-        config.inferSchemaEnabled shouldBe false
-        config.inferSchemaQuery shouldEqual Some(customQuery)
-    }
+    config.inferSchemaSamplingSize shouldEqual 50
+    config.inferSchemaEnabled shouldBe false
+    config.inferSchemaQuery shouldEqual Some(customQuery)
+  }
 
-    "Read Parser" should "parse configuration" in {
-        val userConfig = Map(
-            "spark.cosmos.read.forceEventualConsistency" -> "false"
-        )
+  "Read Parser" should "parse configuration" in {
+    val userConfig = Map(
+        "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
 
-        val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-        config.forceEventualConsistency shouldBe false
-    }
+    config.forceEventualConsistency shouldBe false
+  }
   //scalastyle:on multiple.string.literals
 }

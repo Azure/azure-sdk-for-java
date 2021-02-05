@@ -64,13 +64,13 @@ private[spark] object CosmosAccountConfig {
   private[spark] val CosmosAccountName = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
-        val url = new URL(accountEndpointUri)
-        val separatorIndex = url.getHost.indexOf('.')
-        if (separatorIndex > 0) {
-            url.getHost.substring(0, separatorIndex)
-        } else {
-            url.getHost()
-        }
+      val url = new URL(accountEndpointUri)
+      val separatorIndex = url.getHost.indexOf('.')
+      if (separatorIndex > 0) {
+          url.getHost.substring(0, separatorIndex)
+      } else {
+          url.getHost()
+      }
     },
     helpMessage = "Cosmos DB Account Name")
 
