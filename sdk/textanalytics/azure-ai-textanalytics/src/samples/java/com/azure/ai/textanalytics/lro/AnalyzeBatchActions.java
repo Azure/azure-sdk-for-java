@@ -72,7 +72,7 @@ public class AnalyzeBatchActions {
         // Task operation statistics
         while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
             final AnalyzeBatchActionsOperationDetail operationResult = syncPoller.poll().getValue();
-            System.out.printf("Action display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
+            System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d, failed actions: %d, total actions: %d%n",
                 operationResult.getDisplayName(), operationResult.getActionsSucceeded(),
                 operationResult.getActionsInProgress(), operationResult.getActionsFailed(),
                 operationResult.getActionsInTotal());
