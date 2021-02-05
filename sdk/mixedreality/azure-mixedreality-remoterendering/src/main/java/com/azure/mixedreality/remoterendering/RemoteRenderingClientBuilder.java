@@ -137,28 +137,6 @@ public final class RemoteRenderingClientBuilder {
     }
 
     /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the RemoteRenderingClientBuilder.
-     */
-    public RemoteRenderingClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        builder.serializerAdapter(serializerAdapter);
-        return this;
-    }
-
-    /**
-     * Sets The HTTP client used to send the request.
-     *
-     * @param httpClient the httpClient value.
-     * @return the RemoteRenderingClientBuilder.
-     */
-    public RemoteRenderingClientBuilder httpClient(HttpClient httpClient) {
-        builder.httpClient(httpClient);
-        return this;
-    }
-
-    /**
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
@@ -166,28 +144,6 @@ public final class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
-        return this;
-    }
-
-    /**
-     * Sets The logging configuration for HTTP requests and responses.
-     *
-     * @param httpLogOptions the httpLogOptions value.
-     * @return the RemoteRenderingClientBuilder.
-     */
-    public RemoteRenderingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        builder.httpLogOptions(httpLogOptions);
-        return this;
-    }
-
-    /**
-     * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
-     * @param retryPolicy the retryPolicy value.
-     * @return the RemoteRenderingClientBuilder.
-     */
-    public RemoteRenderingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        builder.retryPolicy(retryPolicy);
         return this;
     }
 
