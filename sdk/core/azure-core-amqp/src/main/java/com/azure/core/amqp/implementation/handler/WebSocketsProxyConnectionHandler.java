@@ -39,6 +39,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     private final InetSocketAddress connectionHostname;
     private final ProxyOptions proxyOptions;
     private final String fullyQualifiedNamespace;
+    private final String amqpBrokerHostname;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -59,6 +60,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        this.amqpBrokerHostname = connectionOptions.getFullyQualifiedNamespace() + ":" + connectionOptions.getPort();
 
         if (proxyOptions.isProxyAddressConfigured()) {
             this.connectionHostname = (InetSocketAddress) proxyOptions.getProxyAddress().address();
@@ -192,15 +194,14 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             ? new ProxyImpl(getProtonConfiguration())
             : new ProxyImpl();
 
-        // host name used to create proxy connect request
+        // host name used to create proxy connect request must contain a port number.
         // after creating the socket to proxy
-        final String hostname = event.getConnection().getHostname();
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        proxy.configure(hostname, null, proxyHandler, transport);
+        proxy.configure(amqpBrokerHostname, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
-        logger.info("connectionId[{}] addProxyHandshake: hostname[{}]", getConnectionId(), hostname);
+        logger.info("connectionId[{}] addProxyHandshake: hostname[{}]", getConnectionId(), amqpBrokerHostname);
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
