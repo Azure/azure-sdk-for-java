@@ -71,23 +71,23 @@ The following sections provide several code snippets covering some of the most c
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L41-L57 -->
 ```Java
+String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
+// Create an HttpClient builder of your choice and customize it
+// Use com.azure.core.http.netty.NettyAsyncHttpClientBuilder if that suits your needs
+NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
+HttpClient httpClient = httpClientBuilder.build();
 
+// Your user access token retrieved from your trusted service
+String token = "SECRET";
+CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Initialize the chat client
+final ChatClientBuilder builder = new ChatClientBuilder();
+builder.endpoint(endpoint)
+    .credential(credential)
+    .httpClient(httpClient);
+ChatClient chatClient = builder.buildClient();
 ```
 
 ### Chat Thread Operations
@@ -108,24 +108,24 @@ The `ChatThread` object also contains the `getId()` method which retrieves the u
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L71-L88 -->
 ```Java
+List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-    ChatParticipant firstParticipant = new ChatParticipant()
-        .setUser(user1)
-        .setDisplayName("Participant Display Name 1");
+ChatParticipant firstParticipant = new ChatParticipant()
+    .setUser(user1)
+    .setDisplayName("Participant Display Name 1");
 
-    ChatParticipant secondParticipant = new ChatParticipant()
-        .setUser(user2)
-        .setDisplayName("Participant Display Name 2");
+ChatParticipant secondParticipant = new ChatParticipant()
+    .setUser(user2)
+    .setDisplayName("Participant Display Name 2");
 
-    participants.add(firstParticipant);
-    participants.add(secondParticipant);
+participants.add(firstParticipant);
+participants.add(secondParticipant);
 
-    CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
-        .setTopic("Topic")
-        .setParticipants(participants);
-    CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
-    String chatThreadId = result.getChatThread().getId();
-}
+CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
+    .setTopic("Topic")
+    .setParticipants(participants);
+CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+String chatThreadId = result.getChatThread().getId();
 ```
 
 #### Get a chat thread
@@ -135,8 +135,8 @@ The `getChatThread` method retrieves a thread from the service.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L97-L98 -->
 ```Java
-    ChatThread chatThread = chatClient.getChatThread(chatThreadId);
-}
+String chatThreadId = "Id";
+ChatThread chatThread = chatClient.getChatThread(chatThreadId);
 ```
 
 #### Delete a thread
@@ -146,8 +146,8 @@ Use `deleteChatThread` method to delete a chat thread
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L107-L108 -->
 ```Java
-    chatClient.deleteChatThread(chatThreadId);
-}
+String chatThreadId = "Id";
+chatClient.deleteChatThread(chatThreadId);
 ```
 
 #### Get a chat thread client
@@ -157,8 +157,8 @@ The `getChatThreadClient` method returns a thread client for a thread that alrea
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L119-L120 -->
 ```Java
-
-
+String chatThreadId = "Id";
+ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chatThreadId);
 ```
 
 #### Update a chat thread topic
@@ -168,7 +168,7 @@ Use `updateTopic` method to update a thread's topic
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L131-L131 -->
 ```Java
-}
+chatThreadClient.updateTopic("New Topic");
 ```
 
 ### Chat Message Operations
@@ -186,13 +186,13 @@ A `String` response returned from sending a chat message, it contains an id, whi
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L142-L148 -->
 ```Java
-    SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
-        .setContent("Message content")
-        .setSenderDisplayName("Sender Display Name");
+
+SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
+    .setContent("Message content")
+    .setSenderDisplayName("Sender Display Name");
 
 
-    String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
-}
+String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
 ```
 
 #### Get a chat message
@@ -202,8 +202,8 @@ The `getMessage` method retrieves a chat message from the service.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L157-L158 -->
 ```Java
-    ChatMessage chatMessage = chatThreadClient.getMessage(chatMessageId);
-}
+String chatMessageId = "Id";
+ChatMessage chatMessage = chatThreadClient.getMessage(chatMessageId);
 ```
 
 #### Get chat messages
@@ -212,14 +212,14 @@ You can retrieve chat messages using the `listMessages` method on the chat threa
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L167-L174 -->
 ```Java
-    chatMessagesResponse.iterableByPage().forEach(resp -> {
-        System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-            resp.getRequest().getUrl(), resp.getStatusCode());
-        resp.getItems().forEach(message -> {
-            System.out.printf("Message id is %s.", message.getId());
-        });
+PagedIterable<ChatMessage> chatMessagesResponse = chatThreadClient.listMessages();
+chatMessagesResponse.iterableByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(message -> {
+        System.out.printf("Message id is %s.", message.getId());
     });
-}
+});
 ```
 
 `listMessages` returns the latest version of the message, including any edits or deletes that happened to the message using `.editMessage()` and `.deleteMessage()`. 
@@ -252,11 +252,11 @@ Use `updateMessage` to update a chat message identified by chatThreadId and mess
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L183-L187 -->
 ```Java
-    UpdateChatMessageOptions updateChatMessageOptions = new UpdateChatMessageOptions()
-        .setContent("Updated message content");
+String chatMessageId = "Id";
+UpdateChatMessageOptions updateChatMessageOptions = new UpdateChatMessageOptions()
+    .setContent("Updated message content");
 
-    chatThreadClient.updateMessage(chatMessageId, updateChatMessageOptions);
-}
+chatThreadClient.updateMessage(chatMessageId, updateChatMessageOptions);
 ```
 
 #### Delete a chat message
@@ -266,8 +266,8 @@ Use `updateMessage` to update a chat message identified by chatThreadId and chat
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L196-L197 -->
 ```Java
-    chatThreadClient.deleteMessage(chatMessageId);
-}
+String chatMessageId = "Id";
+chatThreadClient.deleteMessage(chatMessageId);
 ```
 
 ### Chat Thread Member Operations
@@ -278,14 +278,14 @@ Use `listParticipants` to retrieve a paged collection containing the participant
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L206-L213 -->
 ```Java
-    chatParticipantsResponse.iterableByPage().forEach(resp -> {
-        System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-            resp.getRequest().getUrl(), resp.getStatusCode());
-        resp.getItems().forEach(chatParticipant -> {
-            System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
-        });
+PagedIterable<ChatParticipant> chatParticipantsResponse = chatThreadClient.listParticipants();
+chatParticipantsResponse.iterableByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(chatParticipant -> {
+        System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
     });
-}
+});
 ```
 
 #### Add participants
@@ -299,22 +299,22 @@ Use `addParticipants` method to add participants to the thread identified by thr
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L225-L240 -->
 ```Java
+List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-    ChatParticipant firstParticipant = new ChatParticipant()
-        .setUser(user1)
-        .setDisplayName("Display Name 1");
+ChatParticipant firstParticipant = new ChatParticipant()
+    .setUser(user1)
+    .setDisplayName("Display Name 1");
 
-    ChatParticipant secondParticipant = new ChatParticipant()
-        .setUser(user2)
-        .setDisplayName("Display Name 2");
+ChatParticipant secondParticipant = new ChatParticipant()
+    .setUser(user2)
+    .setDisplayName("Display Name 2");
 
-    participants.add(firstParticipant);
-    participants.add(secondParticipant);
+participants.add(firstParticipant);
+participants.add(secondParticipant);
 
-    AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
-        .setParticipants(participants);
-    chatThreadClient.addParticipants(addChatParticipantsOptions);
-}
+AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
+    .setParticipants(participants);
+chatThreadClient.addParticipants(addChatParticipantsOptions);
 ```
 
 #### Remove participant
@@ -324,7 +324,7 @@ Use `removeParticipant` method to remove a participant from the chat thread iden
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L251-L251 -->
 ```Java
-}
+chatThreadClient.removeParticipant(user);
 ```
 
 ### Read Receipt Operations
@@ -336,8 +336,8 @@ Use `sendReadReceipt` method to post a read receipt event to a chat thread, on b
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L260-L261 -->
 ```Java
-    chatThreadClient.sendReadReceipt(chatMessageId);
-}
+String chatMessageId = "Id";
+chatThreadClient.sendReadReceipt(chatMessageId);
 ```
 
 #### Get read receipts
@@ -346,14 +346,14 @@ Use `sendReadReceipt` method to post a read receipt event to a chat thread, on b
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L270-L277 -->
 ```Java
-    readReceiptsResponse.iterableByPage().forEach(resp -> {
-        System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-            resp.getRequest().getUrl(), resp.getStatusCode());
-        resp.getItems().forEach(readReceipt -> {
-            System.out.printf("Read message id is %s.", readReceipt.getChatMessageId());
-        });
+PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
+readReceiptsResponse.iterableByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(readReceipt -> {
+        System.out.printf("Read message id is %s.", readReceipt.getChatMessageId());
     });
-}
+});
 ```
 
 ### Typing Notification Operations
@@ -364,7 +364,7 @@ Use `sendTypingNotification` method to post a typing notification event to a cha
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L286-L286 -->
 ```Java
-}
+chatThreadClient.sendTypingNotification();
 ```
 
 

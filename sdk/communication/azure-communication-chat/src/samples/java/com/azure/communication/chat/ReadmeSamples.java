@@ -29,6 +29,7 @@ import java.util.List;
  *
  * Class containing code snippets that will be injected to README.md.
  */
+
 public class ReadmeSamples {
 
     /**
