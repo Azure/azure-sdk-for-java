@@ -246,7 +246,7 @@ object, which has methods to further deserialize the data into usable types:
   an overload to accept your deserializer if you want to use your own.
 
 ```java
-BinaryData data = eventGridEvent.getData();
+BinaryData eventData = eventGridEvent.getData();
 
 //Deserialize data to a model class
 User dataInModelClass = eventData.toObject(TypeReference.createInstance(User.class));

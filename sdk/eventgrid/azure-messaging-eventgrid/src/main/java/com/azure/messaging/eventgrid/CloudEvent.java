@@ -26,7 +26,7 @@ import java.util.UUID;
  * For new customers, CloudEvent is generally preferred over {@link EventGridEvent} because the
  *
  * <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">CloudEvent schema</a> is supported across
- * organizations while the <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">EventGridEvent schema</a> is not.
+ * organizations while the <a href="https://docs.microsoft.com/azure/event-grid/event-schema">EventGridEvent schema</a> is not.
  *
  * @see EventGridPublisherAsyncClient to send cloud events asynchronously.
  * @see EventGridPublisherClient to send cloud events.
@@ -84,7 +84,7 @@ public final class CloudEvent {
      * Deserialize the {@link CloudEvent} from a JSON string.
      * @param cloudEventJsonString the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload deserialized as {@link CloudEvent}s.
+     * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws IllegalArgumentException if cloudEventJsonString isn't a JSON string for a cloud event or an array of it.
      * @throws NullPointerException if cloudEventJsonString is {@code null}.
      */

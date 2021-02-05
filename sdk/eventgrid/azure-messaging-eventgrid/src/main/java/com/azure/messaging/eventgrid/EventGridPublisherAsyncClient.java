@@ -71,7 +71,7 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given EventGrid events to the set topic or domain.
      * @param events the EventGrid events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -103,7 +103,7 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given cloud events to the set topic or domain.
      * @param events the cloud events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -136,7 +136,7 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given custom events to the set topic or domain.
      * @param events the custom events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

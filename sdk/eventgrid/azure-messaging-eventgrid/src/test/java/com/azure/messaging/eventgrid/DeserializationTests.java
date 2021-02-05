@@ -158,13 +158,6 @@ public class DeserializationTests {
         assertThrows(IllegalArgumentException.class, () -> {
             EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
         });
-
-//        EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
-//
-//        assertNotNull(events);
-//        assertEquals(1, events.length);
-//        assertNull(toSystemEventData(events[0]));
-//        assertEquals("/blobServices/default/containers/testcontainer/blobs/testfile.txt", events[0].getSubject());
     }
 
     @Test
