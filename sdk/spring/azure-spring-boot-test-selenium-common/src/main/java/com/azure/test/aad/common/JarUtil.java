@@ -80,9 +80,10 @@ public class JarUtil {
             if (!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
 
-            if (!file.exists())
+            if (!file.exists()){
                 file.createNewFile();
                 file.setExecutable(true);
+            }
             FileOutputStream fos = new FileOutputStream(file);
 
             int len;
@@ -105,8 +106,4 @@ public class JarUtil {
         String trim(String original);
     }
 
-    public static void main(String[] ar) throws IOException {
-        copyFolderFromJar("SomeFolder", new File(""), CopyOption.REPLACE_IF_EXIST);
-
-    }
 }
