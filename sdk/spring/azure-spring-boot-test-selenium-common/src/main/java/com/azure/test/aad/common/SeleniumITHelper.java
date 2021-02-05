@@ -31,7 +31,7 @@ public class SeleniumITHelper {
 
     protected void createDriver() {
         if (driver == null) {
-            String destination = System.getProperty("user.dir") + File.separator + folderName;
+            String destination = System.getProperty("user.dir");
             String path = this.getClass().getResource("/" + folderName).getPath();
             if (path.contains(".jar")) {
                 try {

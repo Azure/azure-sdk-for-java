@@ -82,6 +82,7 @@ public class JarUtil {
 
             if (!file.exists())
                 file.createNewFile();
+                file.setExecutable(true);
             FileOutputStream fos = new FileOutputStream(file);
 
             int len;
