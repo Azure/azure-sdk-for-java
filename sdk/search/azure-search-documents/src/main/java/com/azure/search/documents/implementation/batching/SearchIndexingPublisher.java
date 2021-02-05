@@ -107,8 +107,18 @@ public final class SearchIndexingPublisher<T> {
         this.onActionErrorConsumer = onActionErrorConsumer;
     }
 
-    public synchronized Collection<IndexAction<?>> getActions() {
-        return actions.stream().map(TryTrackingIndexAction::getAction).collect(Collectors.toList());
+    public synchronized Collection<IndexAction<T>> getActions() {
+        List<IndexAction<T>> actions = new ArrayList<>();
+
+        for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
+            actions.add(inFlightAction.getAction());
+        }
+
+        for (TryTrackingIndexAction<T> action : this.actions) {
+            actions.add(action.getAction());
+        }
+
+        return actions;
     }
 
     public int getBatchActionCount() {
@@ -374,7 +384,7 @@ public final class SearchIndexingPublisher<T> {
     }
 
     private boolean batchAvailableForProcessing() {
-        return actions.size() >= batchActionCount;
+        return (actions.size() + inFlightActions.size()) >= batchActionCount;
     }
 
     private static boolean isSuccess(int statusCode) {

@@ -29,7 +29,7 @@ public final class SearchIndexingBufferedSender<T> {
      *
      * @return The list of {@link IndexAction IndexActions} in the batch that are ready to be indexed.
      */
-    public Collection<IndexAction<?>> getActions() {
+    public Collection<IndexAction<T>> getActions() {
         return client.getActions();
     }
 

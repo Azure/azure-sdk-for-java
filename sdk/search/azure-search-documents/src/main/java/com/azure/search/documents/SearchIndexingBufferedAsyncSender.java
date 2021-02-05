@@ -68,7 +68,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
      *
      * @return The {@link IndexAction IndexActions} in the batch that are ready to be indexed.
      */
-    public Collection<IndexAction<?>> getActions() {
+    public Collection<IndexAction<T>> getActions() {
         return publisher.getActions();
     }
 
