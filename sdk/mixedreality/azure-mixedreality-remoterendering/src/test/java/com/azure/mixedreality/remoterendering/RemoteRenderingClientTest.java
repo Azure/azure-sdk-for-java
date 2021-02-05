@@ -2,8 +2,6 @@ package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.http.HttpClient;
 import com.azure.mixedreality.remoterendering.models.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,11 +29,11 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         var client = getClient(httpClient);
 
         ConversionOptions conversionOptions = new ConversionOptions()
-            .inputStorageContainerUri(getStorageUrl())
+            .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
             .inputStorageContainerReadListSas(getBlobContainerSasToken())
-            .outputStorageContainerUri(getStorageUrl())
+            .outputStorageContainerUrl(getStorageUrl())
             .outputBlobPrefix("Output")
             .outputStorageContainerWriteSas(getBlobContainerSasToken());
 
@@ -57,7 +55,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         assertEquals(conversionId, conversion2.getId());
         assertEquals(ConversionStatus.SUCCEEDED, conversion2.getStatus());
-        assertTrue(conversion2.getOutputAssetUri().endsWith("Output/testBox.arrAsset"));
+        assertTrue(conversion2.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
 
         AtomicReference<Boolean> foundConversion = new AtomicReference<Boolean>(false);
 
@@ -86,14 +84,14 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertEquals(options.getSize(), session0.getSize());
         assertEquals(sessionId, session0.getId());
 
-        Session sessionProperties = client.getSession(sessionId);
+        RenderingSession sessionProperties = client.getSession(sessionId);
         assertEquals(session0.getCreationTime(), sessionProperties.getCreationTime());
 
         UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(5));
-        Session updatedSession = client.updateSession(sessionId, updateOptions);
+        RenderingSession updatedSession = client.updateSession(sessionId, updateOptions);
         assertEquals(updatedSession.getMaxLeaseTime().toMinutes(), 5);
 
-        Session readyRenderingSession = sessionPoller.getFinalResult();
+        RenderingSession readyRenderingSession = sessionPoller.getFinalResult();
         assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 5);
         assertNotNull(readyRenderingSession.getHostname());
         assertNotNull(readyRenderingSession.getArrInspectorPort());

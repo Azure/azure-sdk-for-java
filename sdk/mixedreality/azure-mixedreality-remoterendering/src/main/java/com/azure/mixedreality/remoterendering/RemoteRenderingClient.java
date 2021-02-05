@@ -8,6 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.models.*;
@@ -36,12 +38,15 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
-        PollerFlux<RenderingSession, RenderingSession> asyncPoller = client.beginSession(sessionId, options);
-        return asyncPoller.getSyncPoller();
+        return client.beginSession(sessionId, options).getSyncPoller();
     }
 
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId) {
         return beginSession(sessionId, new CreateSessionOptions());
+    }
+
+    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, CreateSessionOptions options, Context context) {
+        return client.beginSessionWithResponse(sessionId, options, context).getSyncPoller();
     }
 
     /**
@@ -58,6 +63,11 @@ public final class RemoteRenderingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RenderingSession getSession(String sessionId) {
         return client.getSession(sessionId).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RenderingSession> getSessionWithResponse(String sessionId, Context context) {
+        return client.getSessionWithResponse(sessionId, context).block();
     }
 
     /**
@@ -77,6 +87,11 @@ public final class RemoteRenderingClient {
         return client.updateSession(sessionId, options).block();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RenderingSession> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
+        return client.updateSessionWithResponse(sessionId, options, context).block();
+    }
+
     /**
      * Stops a particular rendering session.
      *
@@ -90,6 +105,11 @@ public final class RemoteRenderingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopSession(String sessionId) {
         client.stopSession(sessionId).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopSessionWithResponse(String sessionId, Context context) {
+        return client.stopSessionWithResponse(sessionId, context).block();
     }
 
     /**
@@ -125,8 +145,11 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
-        PollerFlux<Conversion, Conversion> asyncPoller = client.beginConversion(conversionId, options);
-        return asyncPoller.getSyncPoller();
+        return client.beginConversion(conversionId, options).getSyncPoller();
+    }
+
+    public SyncPoller<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
+        return client.beginConversionWithResponse(conversionId, options, context).getSyncPoller();
     }
 
     /**
@@ -143,6 +166,11 @@ public final class RemoteRenderingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Conversion getConversion(String conversionId) {
         return client.getConversion(conversionId).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Conversion> getConversionWithResponse(String conversionId, Context context) {
+        return client.getConversionWithResponse(conversionId, context).block();
     }
 
     /**

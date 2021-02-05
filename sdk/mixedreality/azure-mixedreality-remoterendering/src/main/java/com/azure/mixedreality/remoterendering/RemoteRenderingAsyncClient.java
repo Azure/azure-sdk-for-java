@@ -15,7 +15,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImpl;
+import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionResponse;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionSettings;
+import com.azure.mixedreality.remoterendering.implementation.models.GetConversionResponse;
 import com.azure.mixedreality.remoterendering.implementation.models.SessionProperties;
 import com.azure.mixedreality.remoterendering.models.*;
 import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
@@ -172,7 +174,6 @@ public final class RemoteRenderingAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all rendering sessions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedFlux<RenderingSession> listSessions() {
         return new PagedFlux<RenderingSession>(
             () -> impl.listSessionsSinglePageAsync(accountId, Context.NONE).map(p ->
@@ -211,16 +212,23 @@ public final class RemoteRenderingAsyncClient {
      * @return the conversion.
      */
     public PollerFlux<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
-        return new PollerFlux<Conversion, Conversion>(
+        return beginConversionInternal(conversionId, options, Context.NONE, c -> ModelTranslator.fromGenerated(c.getValue()), c -> ModelTranslator.fromGenerated(c.getValue()), Conversion::getStatus);
+    }
+
+    public PollerFlux<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
+        return beginConversionInternal(conversionId, options, context, ModelTranslator::fromGenerated, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
+    }
+
+    private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, ConversionOptions options, Context context, Function<CreateConversionResponse, T> mapper, Function<GetConversionResponse, T> mapper2, Function<T, ConversionStatus> statusgetter) {
+        return new PollerFlux<T, T>(
             options.getPollInterval(),
             pollingContext -> {
-                return impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), Context.NONE)
-                    .map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                return impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(mapper);
             },
             pollingContext -> {
-                Mono<Conversion> response = impl.getConversionWithResponseAsync(accountId, conversionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                Mono<T> response = impl.getConversionWithResponseAsync(accountId, conversionId, context).map(mapper2);
                 return response.map(conversion -> {
-                    final ConversionStatus convStatus = conversion.getStatus();
+                    final ConversionStatus convStatus = statusgetter.apply(conversion);
                     LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
                     // TODO Check whether semantics of LongRunningOperationStatus.NOT_STARTED matches ConversionStatus.NOT_STARTED.
                     if ((convStatus == ConversionStatus.RUNNING) || (convStatus == ConversionStatus.NOT_STARTED)) {
@@ -234,18 +242,19 @@ public final class RemoteRenderingAsyncClient {
                     } else {
                         // TODO Assert? Throw?
                     }
-                    return new PollResponse<Conversion>(lroStatus, conversion);
+                    return new PollResponse<T>(lroStatus, conversion);
                 });
             },
             (pollingContext, pollResponse) ->
                 Mono.error(new RuntimeException("Cancellation is not supported."))
             ,
             pollingContext -> {
-                PollResponse<Conversion> response = pollingContext.getLatestResponse();
+                PollResponse<T> response = pollingContext.getLatestResponse();
                 return Mono.just(response.getValue());
             }
         );
-    };
+    }
+
 
     /**
      * Gets the status of a previously created asset conversion.
