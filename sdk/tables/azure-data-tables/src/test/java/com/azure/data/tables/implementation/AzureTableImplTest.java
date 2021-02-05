@@ -42,8 +42,6 @@ import java.util.Map;
 import static com.azure.data.tables.implementation.TablesConstants.PARTITION_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.ROW_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.TABLE_NAME_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
