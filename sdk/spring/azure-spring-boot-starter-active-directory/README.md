@@ -29,7 +29,6 @@
 1. Click `Certificates & secrets`.
 1. Click `New client secret`.
 1. Input `Description`.
-1. Select `Expires`: `Never`.
 1. Click `Add`.
 ![create-a-new-client-secret-1.png](resource/create-a-new-client-secret-1.png)
 1. Copy client-secret. We will need it later.
