@@ -35,6 +35,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -689,6 +690,7 @@ public class IdentityClient {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
         InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
+                                                     .prompt(Prompt.SELECT_ACCOUNT)
                                                      .scopes(new HashSet<>(request.getScopes()))
                                                      .build();
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
