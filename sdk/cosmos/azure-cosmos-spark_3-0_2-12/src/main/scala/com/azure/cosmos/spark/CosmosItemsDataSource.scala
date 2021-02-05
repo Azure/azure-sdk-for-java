@@ -23,7 +23,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     * @return StructType inferred schema
     */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    new CosmosTable(Array.empty, options).schema()
+    new CosmosTable(Array.empty, None, None, options).schema()
   }
 
   /**
@@ -45,7 +45,12 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     */
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosTable(partitioning, CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava, Option.apply(schema))
+    new CosmosTable(
+      partitioning,
+      None,
+      None,
+      CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava,
+      Option.apply(schema))
   }
 
   /**

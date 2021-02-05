@@ -3,15 +3,15 @@
 package com.azure.cosmos.spark
 
 import java.util.UUID
-
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.CosmosItemRequestOptions
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, CosmosItemRequestOptions}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
+import java.time.Duration
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
@@ -133,6 +133,10 @@ trait CosmosContainer extends CosmosDatabase {
 
   override def beforeAll(): Unit = {
     super.beforeAll()
+    this.createContainerCore()
+  }
+
+  def createContainerCore(): Unit = {
     cosmosClient.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
   }
 
@@ -147,6 +151,19 @@ trait CosmosContainer extends CosmosDatabase {
       .toIterable
       .asScala
       .toList
+  }
+}
+
+trait CosmosContainerWithRetention extends CosmosContainer {
+  this: Suite =>
+  //scalastyle:off
+
+  override def createContainerCore(): Unit = {
+    val properties: CosmosContainerProperties =
+      new CosmosContainerProperties(cosmosContainer, "/id")
+    properties.setChangeFeedPolicy(
+      ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
+    cosmosClient.getDatabase(cosmosDatabase).createContainerIfNotExists(properties).block()
   }
 }
 
