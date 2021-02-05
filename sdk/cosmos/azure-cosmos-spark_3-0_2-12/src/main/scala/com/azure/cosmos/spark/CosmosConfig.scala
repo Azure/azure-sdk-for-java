@@ -43,6 +43,7 @@ object CosmosConfig {
 private[spark] case class CosmosAccountConfig(
     endpoint: String,
     key: String,
+    accountName: String,
     applicationName: Option[String],
     useGatewayMode: Boolean)
 
@@ -60,19 +61,33 @@ private[spark] object CosmosAccountConfig {
     parseFromStringFunction = accountKey => accountKey,
     helpMessage = "Cosmos DB Account Key")
 
-  val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
+  private[spark] val CosmosAccountName = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
+    mandatory = true,
+    parseFromStringFunction = accountEndpointUri => {
+        val url = new URL(accountEndpointUri)
+        val separatorIndex = url.getHost.indexOf('.')
+        if (separatorIndex > 0) {
+            url.getHost.substring(0, separatorIndex)
+        } else {
+            url.getHost()
+        }
+    },
+    helpMessage = "Cosmos DB Account Name")
+
+  private[spark] val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
     mandatory = false,
     parseFromStringFunction = applicationName => applicationName,
     helpMessage = "Application name")
 
-  val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
-        mandatory = false,
-        parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
-        helpMessage = "Use gateway mode for the client operations")
+  private[spark] val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
+    mandatory = false,
+    parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
+    helpMessage = "Use gateway mode for the client operations")
 
   private[spark] def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
+    val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
 
@@ -84,6 +99,7 @@ private[spark] object CosmosAccountConfig {
     CosmosAccountConfig(
         endpointOpt.get,
         key.get,
+        accountName.get,
         applicationName,
         useGatewayMode.getOrElse(false))
   }
