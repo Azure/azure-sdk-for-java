@@ -14,13 +14,11 @@
   <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
   <name>Azure Spring Cloud Starter App Configuration Config</name>
 
-  <properties>
-    <main.basedir>${basedir}/../..</main.basedir>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
     </dependency>
   </dependencies>
 </project>
