@@ -20,7 +20,7 @@ import scala.collection.JavaConverters._
 //case class ClientConfig()
 //case class CosmosBatchWriteConfig()
 
-object CosmosConfig {
+private object CosmosConfig {
 
   def getEffectiveConfig(sparkConf: SparkConf, // spark application config
                          userProvidedOptions: Map[String, String] // user provided config
@@ -41,9 +41,9 @@ object CosmosConfig {
   }
 }
 
-case class CosmosAccountConfig(endpoint: String, key: String, accountName: String)
+private case class CosmosAccountConfig(endpoint: String, key: String, accountName: String)
 
-object CosmosAccountConfig {
+private object CosmosAccountConfig {
   private[spark] val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
@@ -65,7 +65,7 @@ object CosmosAccountConfig {
       if (separatorIndex > 0) {
         url.getHost.substring(0, separatorIndex)
       } else {
-        url.getHost()
+        url.getHost
       }
     },
     helpMessage = "Cosmos DB Account Name")
@@ -84,11 +84,9 @@ object CosmosAccountConfig {
   }
 }
 
-case class CosmosContainerConfig(database: String, container: String)
+private case class CosmosContainerConfig(database: String, container: String)
 
-case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int)
-
-object ItemWriteStrategy extends Enumeration {
+private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
   val ItemOverwrite, ItemAppend = Value
 
@@ -97,15 +95,17 @@ object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-object CosmosWriteConfig {
-  val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
+private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int)
+
+private object CosmosWriteConfig {
+  private val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
     defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
     mandatory = false,
     parseFromStringFunction = itemWriteStrategyAsString =>
       ItemWriteStrategy.withNameOrThrow(itemWriteStrategyAsString),
     helpMessage = "Cosmos DB Item write Strategy: ItemOverwrite (using upsert), ItemAppend (using create, ignore 409)")
 
-  val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
+  private val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
     defaultValue = Option.apply(3),
     parseFromStringFunction = maxRetryAttempt => {
@@ -129,16 +129,16 @@ object CosmosWriteConfig {
   }
 }
 
-object CosmosContainerConfig {
+private object CosmosContainerConfig {
   private[spark] val DATABASE_NAME_KEY = "spark.cosmos.database"
   private[spark] val CONTAINER_NAME_KEY = "spark.cosmos.container"
 
-  val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
+  private val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
     mandatory = true,
     parseFromStringFunction = database => database,
     helpMessage = "Cosmos DB database name")
 
-  val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
+  private val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
     mandatory = true,
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
@@ -159,25 +159,24 @@ object CosmosContainerConfig {
   }
 }
 
-case class CosmosSchemaInferenceConfig(
-                                          inferSchemaSamplingSize: Int,
-                                          inferSchemaEnabled: Boolean,
-                                          inferSchemaQuery: Option[String])
+private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
+                                               inferSchemaEnabled: Boolean,
+                                               inferSchemaQuery: Option[String])
 
-object CosmosSchemaInferenceConfig {
+private object CosmosSchemaInferenceConfig {
     private val DefaultSampleSize: Int = 1000
 
-    val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
+    private val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
         mandatory = false,
         parseFromStringFunction = size => size.toInt,
         helpMessage = "Sampling size to use when inferring schema")
 
-    val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
+    private val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
         mandatory = false,
         parseFromStringFunction = enabled => enabled.toBoolean,
         helpMessage = "Whether schema inference is enabled or should return raw json")
 
-    val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
+    private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
         mandatory = false,
         parseFromStringFunction = query => query,
         helpMessage = "When schema inference is enabled, used as custom query to infer it")
@@ -218,24 +217,25 @@ private object CosmosChangeFeedConfig {
   }
 }
 
-case class CosmosConfigEntry[T](key: String,
-                                mandatory: Boolean,
-                                defaultValue: Option[T] = Option.empty,
-                                parseFromStringFunction: String => T,
-                                helpMessage: String) {
+private case class CosmosConfigEntry[T](key: String,
+                                        mandatory: Boolean,
+                                        defaultValue: Option[T] = Option.empty,
+                                        parseFromStringFunction: String => T,
+                                        helpMessage: String) {
   CosmosConfigEntry.configEntriesDefinitions.put(key, this)
 
   def parse(paramAsString: String) : T = {
     try {
       parseFromStringFunction(paramAsString)
     } catch {
-      case e: Exception => throw new RuntimeException(s"invalid configuration for ${key}:${paramAsString}. Config description: ${helpMessage}",  e)
+      case e: Exception => throw new RuntimeException(
+        s"invalid configuration for $key:$paramAsString. Config description: $helpMessage",  e)
     }
   }
 }
 
 // TODO: moderakh how to merge user config with SparkConf application config?
-object CosmosConfigEntry {
+private object CosmosConfigEntry {
   private val configEntriesDefinitions = new java.util.HashMap[String, CosmosConfigEntry[_]]()
 
   def allConfigNames(): Seq[String] = {
@@ -245,13 +245,16 @@ object CosmosConfigEntry {
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
     // TODO moderakh: where should we handle case sensitivity?
     // we are doing this here per config parsing for now
-    val opt = configuration.map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }.get(configEntry.key.toLowerCase(Locale.ROOT))
+    val opt = configuration
+      .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
+      .get(configEntry.key.toLowerCase(Locale.ROOT))
     if (opt.isDefined) {
       Option.apply(configEntry.parse(opt.get))
     }
     else {
       if (configEntry.mandatory) {
-        throw new RuntimeException(s"mandatory option ${configEntry.key} is missing. Config description: ${configEntry.helpMessage}")
+        throw new RuntimeException(
+          s"mandatory option ${configEntry.key} is missing. Config description: ${configEntry.helpMessage}")
       } else {
         configEntry.defaultValue.orElse(Option.empty)
       }

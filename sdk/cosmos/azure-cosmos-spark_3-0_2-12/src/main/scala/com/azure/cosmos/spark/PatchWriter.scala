@@ -20,39 +20,19 @@ private case class PatchWriter(cosmosContainer: CosmosAsyncContainer) {
       val path = "/" + child.getKey
       val jsonNode = child.getValue
 
-      // TOOD: moderakh support nested object
+      // TODO: moderakh support nested object
       assert(child.getValue.isValueNode)
       child.getValue.getNodeType match {
-        case JsonNodeType.ARRAY => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.BINARY => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.ARRAY => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.BOOLEAN => {
-          cosmosPatchOperations.set(path, jsonNode.asBoolean())
-        }
-        case JsonNodeType.MISSING => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.NULL => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.NUMBER => {
-          cosmosPatchOperations.set(path, jsonNode.asDouble())
-        }
-        case JsonNodeType.OBJECT => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.POJO => {
-          throw new UnsupportedOperationException
-        }
-        case JsonNodeType.STRING => {
-          cosmosPatchOperations.set(path, jsonNode.asText())
-        }
+        case JsonNodeType.ARRAY => throw new UnsupportedOperationException
+        case JsonNodeType.BINARY => throw new UnsupportedOperationException
+        case JsonNodeType.ARRAY => throw new UnsupportedOperationException
+        case JsonNodeType.BOOLEAN =>cosmosPatchOperations.set(path, jsonNode.asBoolean())
+        case JsonNodeType.MISSING => throw new UnsupportedOperationException
+        case JsonNodeType.NULL => throw new UnsupportedOperationException
+        case JsonNodeType.NUMBER => cosmosPatchOperations.set(path, jsonNode.asDouble())
+        case JsonNodeType.OBJECT => throw new UnsupportedOperationException
+        case JsonNodeType.POJO => throw new UnsupportedOperationException
+        case JsonNodeType.STRING => cosmosPatchOperations.set(path, jsonNode.asText())
       }
     }
     cosmosPatchOperations

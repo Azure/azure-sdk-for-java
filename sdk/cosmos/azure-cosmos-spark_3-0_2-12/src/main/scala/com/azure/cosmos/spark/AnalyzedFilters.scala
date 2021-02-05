@@ -11,7 +11,9 @@ import org.apache.spark.sql.sources.Filter
 //  then we can set partitionKeyValue in the CosmosQueryOption
 //  the benefit is that if the partitionKeyValue is set in the CosmosQueryOption
 //  the antlr query parsing support can eliminate the need for query plan fetch from GW
-case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParametrizedQuery,
-                           filtersToBePushedDownToCosmos: Array[Filter],
-                           filtersNotSupportedByCosmos: Array[Filter])
+//  partitionKeyValue would also be the only filter I would consider as an option for
+//  pushing down filters to change feed
+private case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParametrizedQuery,
+                                   filtersToBePushedDownToCosmos: Array[Filter],
+                                   filtersNotSupportedByCosmos: Array[Filter])
 

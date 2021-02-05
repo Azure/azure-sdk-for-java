@@ -5,6 +5,11 @@ package com.azure.cosmos.spark
 
 // cosmos db related constants
 private object CosmosConstants {
+  object Names {
+    val ItemsDataSourceShortName = "cosmos.items"
+    val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
+  }
+
   object StatusCodes {
     val Conflict = 409
     val ServiceUnavailable = 503

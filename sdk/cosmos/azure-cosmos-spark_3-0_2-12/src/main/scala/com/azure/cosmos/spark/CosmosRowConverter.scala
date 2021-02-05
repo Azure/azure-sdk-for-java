@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode, ValueNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -49,9 +49,9 @@ private object CosmosRowConverter
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
 
-        if (row.schema.contains(StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType))){
+        if (row.schema.contains(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))){
             // Special case when the reader read the rawJson
-            val rawJson = row.getAs[String](CosmosTableSchemaInferer.RawJsonBodyAttributeName)
+            val rawJson = row.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
             objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
         }
         else {
@@ -214,11 +214,10 @@ private object CosmosRowConverter
     private def parsePreviousImage(objectNode: ObjectNode): String = {
       getFullFidelityMetadata(objectNode)
         match {
-        case metadataNode: Some[ObjectNode] => {
+        case metadataNode: Some[ObjectNode] =>
           metadataNode.get.get(PreviousImagePropertyName) match {
             case previousImageObjectNode: ObjectNode => Option(previousImageObjectNode).map(o => o.toString).orNull
             case _ => null
-          }
         }
         case _ => null
       }
@@ -226,39 +225,37 @@ private object CosmosRowConverter
 
     private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
       getFullFidelityMetadata(objectNode) match {
-        case metadataNode: Some[ObjectNode] => {
+        case metadataNode: Some[ObjectNode] =>
           metadataNode.get.get(TimeToLiveExpiredPropertyName) match {
             case valueNode: JsonNode =>
               Option(valueNode).fold(false)(v => v.asBoolean(false))
             case _ => false
           }
-        }
         case _ => false
       }
     }
 
     private def parseOperationType(objectNode: ObjectNode): String = {
       getFullFidelityMetadata(objectNode) match {
-        case metadataNode: Some[ObjectNode] => {
+        case metadataNode: Some[ObjectNode] =>
           metadataNode.get.get(OperationTypePropertyName) match {
             case valueNode: JsonNode =>
               Option(valueNode).fold(null: String)(v => v.asText(null))
             case _ => null
           }
-        }
         case _ => null
       }
     }
 
     private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
         schema.fields.map {
-            case StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType, _, _) =>
+            case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString
-            case StructField(CosmosTableSchemaInferer.PreviousRawJsonBodyAttributeName, StringType, _, _) =>
+            case StructField(CosmosTableSchemaInferrer.PreviousRawJsonBodyAttributeName, StringType, _, _) =>
               parsePreviousImage(objectNode)
-            case StructField(CosmosTableSchemaInferer.OperationTypeAttributeName, StringType, _, _) =>
+            case StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType, _, _) =>
               parseOperationType(objectNode)
-            case StructField(CosmosTableSchemaInferer.TtlExpiredAttributeName, BooleanType, _, _) =>
+            case StructField(CosmosTableSchemaInferrer.TtlExpiredAttributeName, BooleanType, _, _) =>
               parseTtlExpired(objectNode)
             case StructField(name, dataType, _, _) =>
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
@@ -305,7 +302,7 @@ private object CosmosRowConverter
         value match {
             case isJsonNumber() => new Timestamp(value.asLong())
             case textNode : TextNode =>
-                parseDateTimefromString(textNode.asText()) match {
+                parseDateTimeFromString(textNode.asText()) match {
                     case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
                     case None => throw new IllegalArgumentException(
                       s"Value '${textNode.asText()} cannot be parsed as Timestamp."
@@ -319,7 +316,7 @@ private object CosmosRowConverter
         value match {
             case isJsonNumber() => new Date(value.asLong())
             case textNode : TextNode =>
-                parseDateTimefromString(textNode.asText()) match {
+                parseDateTimeFromString(textNode.asText()) match {
                     case Some(odt) => Date.valueOf(odt.toLocalDate)
                     case None => throw new IllegalArgumentException(
                       s"Value '${textNode.asText()} cannot be parsed as Date."
@@ -329,7 +326,7 @@ private object CosmosRowConverter
         }
     }
 
-    private def parseDateTimefromString (value: String) : Option[OffsetDateTime] = {
+    private def parseDateTimeFromString (value: String) : Option[OffsetDateTime] = {
         try {
             val odt = OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME) //yyyy-MM-ddTHH:mm:ss+01:00
             Some(odt)

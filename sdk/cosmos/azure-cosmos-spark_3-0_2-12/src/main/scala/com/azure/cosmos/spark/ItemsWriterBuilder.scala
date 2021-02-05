@@ -11,12 +11,20 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosWriterBuilder(userConfig: CaseInsensitiveStringMap,
-                          inputSchema: StructType,
-                          cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private class ItemsWriterBuilder
+(
+  userConfig: CaseInsensitiveStringMap,
+  inputSchema: StructType,
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+)
   extends WriteBuilder
     with CosmosLoggingTrait {
+
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  override def buildForBatch(): BatchWrite = new CosmosBatchWriter(userConfig.asCaseSensitiveMap().asScala.toMap, inputSchema, cosmosClientStateHandle)
+  override def buildForBatch(): BatchWrite =
+    new ItemsBatchWriter(
+      userConfig.asCaseSensitiveMap().asScala.toMap,
+      inputSchema,
+      cosmosClientStateHandle)
 }

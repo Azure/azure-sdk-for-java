@@ -8,7 +8,7 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
 import org.apache.spark.sql.types.StructType
 
-private class CosmosChangeFeedBatch
+private class ChangeFeedBatch
 (
   schema: StructType,
   config: Map[String, String],
@@ -21,11 +21,10 @@ private class CosmosChangeFeedBatch
   override def planInputPartitions(): Array[InputPartition] = {
     // TODO: moderakh use get feed range?
     // for now we are returning one partition hence only one spark task will be created.
-    Array(CosmosInputPartition(FeedRange.forFullRange.toString()))
+    Array(FeedRangeInputPartition(FeedRange.forFullRange.toString))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    CosmosChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
+    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
   }
-
 }

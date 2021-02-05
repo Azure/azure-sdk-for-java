@@ -7,13 +7,19 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.write.{BatchWrite, DataWriterFactory, PhysicalWriteInfo, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
 
-class CosmosBatchWriter(userConfig: Map[String, String], inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private class ItemsBatchWriter
+(
+  userConfig: Map[String, String],
+  inputSchema: StructType,
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+)
   extends BatchWrite
     with CosmosLoggingTrait {
+
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = {
-    new CosmosDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
+    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
   }
 
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {
