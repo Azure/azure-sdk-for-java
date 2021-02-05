@@ -16,11 +16,14 @@ private[spark] object CosmosClientConfiguration {
              config: Map[String, String],
              useEventualConsistency: Boolean): CosmosClientConfiguration = {
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
-    val applicationName = cosmosAccountConfig.applicationName match {
-      case None =>
-        s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
-      case Some(appName) =>
-        s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName} $appName"
+    var applicationName = CosmosConstants.userAgentSuffix
+    val runtimeInfo = runtimeInformation()
+    if (runtimeInfo.isDefined) {
+      applicationName = s"$applicationName ${runtimeInfo.get}"
+    }
+
+    if (cosmosAccountConfig.applicationName.isDefined){
+      applicationName = s"$applicationName ${cosmosAccountConfig.applicationName.get}"
     }
 
     CosmosClientConfiguration(
@@ -29,5 +32,14 @@ private[spark] object CosmosClientConfiguration {
       applicationName,
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency)
+  }
+
+  private[this] def runtimeInformation(): Option[String] = {
+    try{
+      Some(ManagementFactory.getRuntimeMXBean.getName)
+    }
+    catch{
+      case _:Exception => None
+    }
   }
 }
