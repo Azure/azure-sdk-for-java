@@ -1,5 +1,10 @@
 package com.azure.mixedreality.remoterendering.models.internal;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings;
 import com.azure.mixedreality.remoterendering.implementation.models.ConversionInputSettings;
 import com.azure.mixedreality.remoterendering.implementation.models.ConversionOutputSettings;
@@ -13,6 +18,59 @@ import java.time.Duration;
 import java.util.stream.Collectors;
 
 public final class ModelTranslator {
+
+    public static <T, Y> Response<T> fromGenerated(Response<Y> response) {
+        return new Response<T>() {
+
+            private T value = fromGeneratedGeneric(response.getValue());
+
+            @Override
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            @Override
+            public HttpRequest getRequest() {
+                return response.getRequest();
+            }
+
+            @Override
+            public T getValue() {
+                return this.value;
+            }
+        };
+    }
+
+    public static <T> T fromGenerated(AsyncPollResponse<Response<T>, Response<T>> r) {
+        return null;//new AsyncPollResponse<T, T>();
+    }
+
+    private static <T, Y> T fromGeneratedGeneric(Y value) {
+        if (value == null) {
+            return null;
+        }
+        else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
+            return (T)fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Conversion)value);
+        }
+        else if (value instanceof SessionProperties) {
+            return (T)fromGenerated((SessionProperties)value);
+        }
+        else if (value instanceof Error) {
+            return (T)fromGenerated((Error)value);
+        }
+        else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
+            return (T)fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings)value);
+        }
+        else {
+            // throw?
+            return null;
+        }
+    }
 
     public static Conversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
         if (conversion == null) {

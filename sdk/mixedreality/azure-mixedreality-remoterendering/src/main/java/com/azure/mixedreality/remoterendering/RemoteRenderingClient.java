@@ -40,6 +40,10 @@ public final class RemoteRenderingClient {
         return asyncPoller.getSyncPoller();
     }
 
+    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId) {
+        return beginSession(sessionId, new CreateSessionOptions());
+    }
+
     /**
      * Gets properties of a particular rendering session.
      *

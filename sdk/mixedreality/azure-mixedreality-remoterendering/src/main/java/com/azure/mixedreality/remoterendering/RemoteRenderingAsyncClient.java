@@ -10,17 +10,21 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImpl;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionSettings;
+import com.azure.mixedreality.remoterendering.implementation.models.SessionProperties;
 import com.azure.mixedreality.remoterendering.models.*;
 import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.polling.PollerFlux;
 
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
@@ -46,15 +50,27 @@ public final class RemoteRenderingAsyncClient {
      * @return the rendering session.
      */
     public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
-        return new PollerFlux<RenderingSession, RenderingSession>(
+        return beginSessionInternal(sessionId, options, Context.NONE, r -> ModelTranslator.fromGenerated(r.getValue()), s -> s.getStatus());
+    }
+
+    public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId) {
+        return beginSession(sessionId, new CreateSessionOptions());
+    }
+
+    public PollerFlux<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, CreateSessionOptions options, Context context) {
+        return beginSessionInternal(sessionId, options, context, r -> ModelTranslator.fromGenerated(r), s -> s.getValue().getStatus());
+    }
+
+    private <T> PollerFlux<T, T> beginSessionInternal(String sessionId, CreateSessionOptions options, Context context, Function<Response<SessionProperties>, T> mapper, Function<T, SessionStatus> statusgetter) {
+        return new PollerFlux<T, T>(
             options.getPollInterval(),
             pollingContext -> {
-                return impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
+                return impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(mapper);
             },
             pollingContext -> {
-                Mono<RenderingSession> response = impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                Mono<T> response = impl.getSessionWithResponseAsync(accountId, sessionId, context).map(mapper);
                 return response.map(session -> {
-                    final SessionStatus sessionStatus = session.getStatus();
+                    final SessionStatus sessionStatus = statusgetter.apply(session);
                     LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
                     if (sessionStatus == SessionStatus.STARTING) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
@@ -68,19 +84,21 @@ public final class RemoteRenderingAsyncClient {
                     } else {
                         // TODO Assert? Throw?
                     }
-                    return new PollResponse<RenderingSession>(lroStatus, session);
+                    return new PollResponse<T>(lroStatus, session);
                 });
             },
             (pollingContext, pollResponse) -> {
                 // TODO should re-query for a new Session object
-                return impl.stopSessionWithResponseAsync(accountId, sessionId, Context.NONE).then(Mono.just(pollingContext.getLatestResponse().getValue()));
+                return impl.stopSessionWithResponseAsync(accountId, sessionId, context).then(Mono.just(pollingContext.getLatestResponse().getValue()));
             },
             pollingContext -> {
-                PollResponse<RenderingSession> response = pollingContext.getLatestResponse();
+                PollResponse<T> response = pollingContext.getLatestResponse();
                 return Mono.just(response.getValue());
             }
         );
-    };
+    }
+
+
 
     /**
      * Gets properties of a particular rendering session.
@@ -96,6 +114,11 @@ public final class RemoteRenderingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RenderingSession> getSession(String sessionId) {
         return impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RenderingSession>> getSessionWithResponse(String sessionId, Context context) {
+        return impl.getSessionWithResponseAsync(accountId, sessionId, context).map(s -> ModelTranslator.fromGenerated(s));
     }
 
     /**
@@ -115,6 +138,11 @@ public final class RemoteRenderingAsyncClient {
         return impl.updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RenderingSession>> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
+        return impl.updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(s -> ModelTranslator.fromGenerated(s));
+    }
+
     /**
      * Stops a particular rendering session.
      *
@@ -129,6 +157,11 @@ public final class RemoteRenderingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopSession(String sessionId) {
         return impl.stopSessionWithResponseAsync(accountId, sessionId, Context.NONE).then();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopSessionWithResponse(String sessionId, Context context) {
+        return impl.stopSessionWithResponseAsync(accountId, sessionId, context).map(r -> r);
     }
 
     /**
@@ -228,6 +261,11 @@ public final class RemoteRenderingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Conversion> getConversion(String conversionId) {
         return impl.getConversionWithResponseAsync(accountId, conversionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Conversion>> getConversionWithResponse(String conversionId, Context context) {
+        return impl.getConversionWithResponseAsync(accountId, conversionId, context).map(r -> ModelTranslator.fromGenerated(r));
     }
 
     /**
