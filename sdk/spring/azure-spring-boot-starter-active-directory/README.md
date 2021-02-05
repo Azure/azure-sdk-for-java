@@ -19,7 +19,7 @@
 1. Click `New application`.
 ![create-a-new-app-registration-1.png](resource/create-a-new-app-registration-1.png)
 1. Input `Name`. For example: `readme-sample-client`.
-1. (Optional, only required for web application) Input `Redirect URI(optional)`. For example: `http://localhost:8080/login/oauth2/code/azure`.
+1. (Optional, only required for web application) Input `Redirect URI(optional)`: `http://localhost:8080/login/oauth2/code/`.
 1. Click `Register`.
 ![create-a-new-app-registration-2.png](resource/create-a-new-app-registration-2.png)
 1. Copy tenant-id and client-id. We will need it later.
@@ -359,11 +359,7 @@ azure:
         scopes: https://management.core.windows.net/user_impersonation
 ```
 
-* Step 2: Add a new redirect uri. For example: http://localhost:8080/login/oauth2/code/arm
-![add-a-new-redirect-uri-1.png](resource/add-a-new-redirect-uri-1.png)
-![add-a-new-redirect-uri-2.png](resource/add-a-new-redirect-uri-2.png)
-
-* Step 3: Write Java code:
+* Step 2: Write Java code:
 ```java
 @Controller
 public class OnDemandClientController {
