@@ -8,7 +8,15 @@
                 "temp2",
                 "123",
                 "Xabo2448",
-                "12NewPAwX0rd!"
+                "12NewPAwX0rd!",
+                "1234567890",
+                "((***Redacted***by***CredScan***))",
+                "proxyPassword",
+                "pass",
+                "dummyPassword",
+                "P@ssw0rd",
+                "12NewPA$$w0rd!",
+                "Samp1eP@ssw0rd"
             ],
             "_justification": "Secret used by test code, it is fake."
         }
