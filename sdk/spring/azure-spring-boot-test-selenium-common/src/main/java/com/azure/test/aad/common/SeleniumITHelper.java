@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class SeleniumITHelper {
     Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
-    public static String folderName = "selenium";
+    public static String tempFolderName = "temp_selenium";
 
     protected AppRunner app;
     protected WebDriver driver;
@@ -31,11 +31,11 @@ public class SeleniumITHelper {
 
     protected void createDriver() {
         if (driver == null) {
-            String destination = System.getProperty("user.dir");
-            String path = this.getClass().getResource("/" + folderName).getPath();
+            String destination = System.getProperty("user.dir") + tempFolderName;
+            String path = this.getClass().getResource("/selenium").getPath();
             if (path.contains(".jar")) {
                 try {
-                    JarUtil.copyFolderFromJar(folderName, new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
+                    JarUtil.copyFolderFromJar("selenium", new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
                 } catch (IOException e) {
                     logger.error("error copy from jar to folder", e);
                 }
@@ -69,5 +69,10 @@ public class SeleniumITHelper {
     public void destroy() {
         driver.quit();
         app.close();
+        try {
+            FileUtils.deleteDirectory(new File(System.getProperty("user.dir") + File.separator + tempFolderName));
+        } catch (IOException e) {
+            logger.error("error deleteDirectory", e);
+        }
     }
 }
