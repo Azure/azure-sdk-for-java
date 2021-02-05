@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.opentelemetry.exporter.azuremonitor;
 
 import com.azure.core.util.FluxUtil;
@@ -30,10 +33,10 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorExporte
             Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             asyncString.subscribe(value -> {
-                if(value.contains("app-config-exporter-testing") && value.contains("\"responseCode\":\"200\"")) {
+                if (value.contains("app-config-exporter-testing") && value.contains("\"responseCode\":\"200\"")) {
                     exporterCountDown.countDown();
                 }
-                if(value.contains("AppConfig.setKey")) {
+                if (value.contains("AppConfig.setKey")) {
                     exporterCountDown.countDown();
                 }
             });
