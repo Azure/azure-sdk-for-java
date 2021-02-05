@@ -4,7 +4,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-public class ConversionStatus extends ExpandableStringEnum<ConversionStatus> {
+public final class ConversionStatus extends ExpandableStringEnum<ConversionStatus> {
     /** Static value NotStarted for ConversionStatus. */
     public static final ConversionStatus NOT_STARTED = fromString("NotStarted");
 

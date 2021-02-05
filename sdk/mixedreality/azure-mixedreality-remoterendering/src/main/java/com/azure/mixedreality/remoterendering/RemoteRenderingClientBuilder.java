@@ -12,16 +12,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.mixedreality.authentication.MixedRealityStsServiceVersion;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
-public class RemoteRenderingClientBuilder {
+public final class RemoteRenderingClientBuilder {
 
     private MixedRealityRemoteRenderingImplBuilder builder;
     private UUID accountId;

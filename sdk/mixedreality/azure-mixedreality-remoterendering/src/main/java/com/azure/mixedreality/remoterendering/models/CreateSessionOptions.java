@@ -2,7 +2,7 @@ package com.azure.mixedreality.remoterendering.models;
 
 import java.time.Duration;
 
-public class CreateSessionOptions {
+public final class CreateSessionOptions {
 
     private Duration maxLeaseTime = Duration.ofMinutes(10);
     private SessionSize size = SessionSize.STANDARD;

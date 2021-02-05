@@ -2,7 +2,7 @@ package com.azure.mixedreality.remoterendering.models;
 
 import java.time.Duration;
 
-public class ConversionOptions {
+public final class ConversionOptions {
 
     private String inputStorageContainerUri;
     private String inputStorageContainerReadListSas;

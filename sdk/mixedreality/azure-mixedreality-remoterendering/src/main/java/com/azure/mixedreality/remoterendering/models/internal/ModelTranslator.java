@@ -12,7 +12,7 @@ import com.azure.mixedreality.remoterendering.models.*;
 import java.time.Duration;
 import java.util.stream.Collectors;
 
-public class ModelTranslator {
+public final class ModelTranslator {
 
     public static Conversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
         if (conversion == null) {

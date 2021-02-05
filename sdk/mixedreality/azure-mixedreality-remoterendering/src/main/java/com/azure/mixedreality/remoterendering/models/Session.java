@@ -3,7 +3,7 @@ package com.azure.mixedreality.remoterendering.models;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public class Session {
+public final class Session {
     private String id;
     private int arrInspectorPort;
     private int handshakePort;

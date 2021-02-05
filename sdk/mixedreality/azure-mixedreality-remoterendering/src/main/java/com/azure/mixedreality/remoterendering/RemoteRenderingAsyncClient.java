@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
-public class RemoteRenderingAsyncClient {
+public final class RemoteRenderingAsyncClient {
     private final UUID accountId;
     private final MixedRealityRemoteRenderingImpl impl;
 

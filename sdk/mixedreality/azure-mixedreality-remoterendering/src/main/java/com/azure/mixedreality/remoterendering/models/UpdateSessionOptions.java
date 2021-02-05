@@ -2,7 +2,7 @@ package com.azure.mixedreality.remoterendering.models;
 
 import java.time.Duration;
 
-public class UpdateSessionOptions {
+public final class UpdateSessionOptions {
     /*
      * Update to the time the session will run after it reached the 'Ready'
      * state. It has to be bigger than the current value of

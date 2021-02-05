@@ -4,7 +4,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-public class SessionStatus extends ExpandableStringEnum<SessionStatus> {
+public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
     /** Static value Error for SessionStatus. */
     public static final SessionStatus ERROR = fromString("Error");
 

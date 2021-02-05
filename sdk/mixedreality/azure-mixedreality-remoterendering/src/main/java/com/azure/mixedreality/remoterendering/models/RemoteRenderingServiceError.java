@@ -2,7 +2,7 @@ package com.azure.mixedreality.remoterendering.models;
 
 import java.util.List;
 
-public class RemoteRenderingServiceError {
+public final class RemoteRenderingServiceError {
     private String code;
     private String message;
     private String target;

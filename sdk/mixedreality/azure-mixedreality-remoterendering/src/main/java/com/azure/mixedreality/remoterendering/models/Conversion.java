@@ -4,7 +4,7 @@ import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
 
 import java.time.OffsetDateTime;
 
-public class Conversion {
+public final class Conversion {
     private String id;
     private ConversionOptions options;
     private String outputAssetUri;

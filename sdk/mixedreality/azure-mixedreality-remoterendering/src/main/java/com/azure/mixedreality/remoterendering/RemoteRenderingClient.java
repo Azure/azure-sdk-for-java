@@ -14,7 +14,7 @@ import com.azure.mixedreality.remoterendering.models.*;
 import java.util.List;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class)
-public class RemoteRenderingClient {
+public final class RemoteRenderingClient {
     private final RemoteRenderingAsyncClient client;
 
     // package-private constructors only - all instantiation is done with builders
