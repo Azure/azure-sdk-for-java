@@ -1,7 +1,10 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2021-02-05)
 
+### New Features
+
+- Exposed service provider interfaces used to create `HttpClient` instances.
 
 ## 1.4.1 (2021-01-11)
 
