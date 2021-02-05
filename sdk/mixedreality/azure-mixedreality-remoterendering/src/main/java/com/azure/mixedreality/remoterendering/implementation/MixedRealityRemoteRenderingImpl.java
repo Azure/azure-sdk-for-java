@@ -52,16 +52,20 @@ public final class MixedRealityRemoteRenderingImpl {
     /** The proxy service used to perform REST calls. */
     private final MixedRealityRemoteRenderingService service;
 
-    /** server parameter. */
-    private final String host;
+    /**
+     * The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be found at
+     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
+     */
+    private final String endpoint;
 
     /**
-     * Gets server parameter.
+     * Gets The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be found at
+     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
@@ -103,25 +107,27 @@ public final class MixedRealityRemoteRenderingImpl {
     /**
      * Initializes an instance of MixedRealityRemoteRendering client.
      *
-     * @param host server parameter.
+     * @param endpoint The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be
+     *     found at https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
      */
-    MixedRealityRemoteRenderingImpl(String host) {
+    MixedRealityRemoteRenderingImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host);
+                endpoint);
     }
 
     /**
      * Initializes an instance of MixedRealityRemoteRendering client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
+     * @param endpoint The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be
+     *     found at https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
      */
-    MixedRealityRemoteRenderingImpl(HttpPipeline httpPipeline, String host) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    MixedRealityRemoteRenderingImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
@@ -129,12 +135,13 @@ public final class MixedRealityRemoteRenderingImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host server parameter.
+     * @param endpoint The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be
+     *     found at https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
      */
-    MixedRealityRemoteRenderingImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
+    MixedRealityRemoteRenderingImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.host = host;
+        this.endpoint = endpoint;
         this.apiVersion = "2021-01-01-preview";
         this.service =
                 RestProxy.create(
@@ -145,14 +152,14 @@ public final class MixedRealityRemoteRenderingImpl {
      * The interface defining all the services for MixedRealityRemoteRendering to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "MixedRealityRemoteRe")
     private interface MixedRealityRemoteRenderingService {
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CreateConversionResponse> createConversion(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("conversion_id") String conversionId,
@@ -163,7 +170,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetConversionResponse> getConversion(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("conversion_id") String conversionId,
@@ -173,7 +180,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ListConversionsResponse> listConversions(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 Context context);
@@ -182,7 +189,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CreateSessionResponse> createSession(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("session_id") String sessionId,
@@ -193,7 +200,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionProperties>> getSession(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("session_id") String sessionId,
@@ -203,7 +210,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionProperties>> updateSession(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("session_id") String sessionId,
@@ -214,7 +221,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<StopSessionResponse> stopSession(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 @PathParam("session_id") String sessionId,
@@ -224,7 +231,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionsList>> listSessions(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("account_id") UUID accountId,
                 Context context);
@@ -234,7 +241,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ListConversionsNextResponse> listConversionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 Context context);
 
         @Get("{nextLink}")
@@ -242,7 +249,7 @@ public final class MixedRealityRemoteRenderingImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SessionsList>> listSessionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 Context context);
     }
 
@@ -270,7 +277,8 @@ public final class MixedRealityRemoteRenderingImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateConversionResponse> createConversionWithResponseAsync(
             UUID accountId, String conversionId, CreateConversionSettings body, Context context) {
-        return service.createConversion(this.getHost(), this.getApiVersion(), accountId, conversionId, body, context);
+        return service.createConversion(
+                this.getEndpoint(), this.getApiVersion(), accountId, conversionId, body, context);
     }
 
     /**
@@ -289,7 +297,7 @@ public final class MixedRealityRemoteRenderingImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetConversionResponse> getConversionWithResponseAsync(
             UUID accountId, String conversionId, Context context) {
-        return service.getConversion(this.getHost(), this.getApiVersion(), accountId, conversionId, context);
+        return service.getConversion(this.getEndpoint(), this.getApiVersion(), accountId, conversionId, context);
     }
 
     /**
@@ -306,7 +314,7 @@ public final class MixedRealityRemoteRenderingImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsSinglePageAsync(UUID accountId, Context context) {
-        return service.listConversions(this.getHost(), this.getApiVersion(), accountId, context)
+        return service.listConversions(this.getEndpoint(), this.getApiVersion(), accountId, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -335,7 +343,7 @@ public final class MixedRealityRemoteRenderingImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateSessionResponse> createSessionWithResponseAsync(
             UUID accountId, String sessionId, CreateSessionSettings body, Context context) {
-        return service.createSession(this.getHost(), this.getApiVersion(), accountId, sessionId, body, context);
+        return service.createSession(this.getEndpoint(), this.getApiVersion(), accountId, sessionId, body, context);
     }
 
     /**
@@ -354,7 +362,7 @@ public final class MixedRealityRemoteRenderingImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SessionProperties>> getSessionWithResponseAsync(
             UUID accountId, String sessionId, Context context) {
-        return service.getSession(this.getHost(), this.getApiVersion(), accountId, sessionId, context);
+        return service.getSession(this.getEndpoint(), this.getApiVersion(), accountId, sessionId, context);
     }
 
     /**
@@ -374,7 +382,7 @@ public final class MixedRealityRemoteRenderingImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(
             UUID accountId, String sessionId, UpdateSessionSettings body, Context context) {
-        return service.updateSession(this.getHost(), this.getApiVersion(), accountId, sessionId, body, context);
+        return service.updateSession(this.getEndpoint(), this.getApiVersion(), accountId, sessionId, body, context);
     }
 
     /**
@@ -392,7 +400,7 @@ public final class MixedRealityRemoteRenderingImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StopSessionResponse> stopSessionWithResponseAsync(UUID accountId, String sessionId, Context context) {
-        return service.stopSession(this.getHost(), this.getApiVersion(), accountId, sessionId, context);
+        return service.stopSession(this.getEndpoint(), this.getApiVersion(), accountId, sessionId, context);
     }
 
     /**
@@ -407,7 +415,7 @@ public final class MixedRealityRemoteRenderingImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsSinglePageAsync(UUID accountId, Context context) {
-        return service.listSessions(this.getHost(), this.getApiVersion(), accountId, context)
+        return service.listSessions(this.getEndpoint(), this.getApiVersion(), accountId, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -431,7 +439,7 @@ public final class MixedRealityRemoteRenderingImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listConversionsNext(nextLink, this.getHost(), context)
+        return service.listConversionsNext(nextLink, this.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -455,7 +463,7 @@ public final class MixedRealityRemoteRenderingImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listSessionsNext(nextLink, this.getHost(), context)
+        return service.listSessionsNext(nextLink, this.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

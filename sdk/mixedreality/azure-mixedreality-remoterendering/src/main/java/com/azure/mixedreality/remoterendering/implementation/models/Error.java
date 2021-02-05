@@ -28,21 +28,21 @@ public final class Error {
      * An array of details about specific errors that led to this reported
      * error.
      */
-    @JsonProperty(value = "details")
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<Error> details;
 
     /*
      * The target of the particular error (e.g., the name of the property in
      * error).
      */
-    @JsonProperty(value = "target")
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * An object containing more specific information than the current object
      * about the error.
      */
-    @JsonProperty(value = "innerError")
+    @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private Error innerError;
 
     /**
@@ -87,34 +87,12 @@ public final class Error {
     }
 
     /**
-     * Set the details property: An array of details about specific errors that led to this reported error.
-     *
-     * @param details the details value to set.
-     * @return the Error object itself.
-     */
-    public Error setDetails(List<Error> details) {
-        this.details = details;
-        return this;
-    }
-
-    /**
      * Get the target property: The target of the particular error (e.g., the name of the property in error).
      *
      * @return the target value.
      */
     public String getTarget() {
         return this.target;
-    }
-
-    /**
-     * Set the target property: The target of the particular error (e.g., the name of the property in error).
-     *
-     * @param target the target value to set.
-     * @return the Error object itself.
-     */
-    public Error setTarget(String target) {
-        this.target = target;
-        return this;
     }
 
     /**
@@ -125,17 +103,5 @@ public final class Error {
      */
     public Error getInnerError() {
         return this.innerError;
-    }
-
-    /**
-     * Set the innerError property: An object containing more specific information than the current object about the
-     * error.
-     *
-     * @param innerError the innerError value to set.
-     * @return the Error object itself.
-     */
-    public Error setInnerError(Error innerError) {
-        this.innerError = innerError;
-        return this;
     }
 }

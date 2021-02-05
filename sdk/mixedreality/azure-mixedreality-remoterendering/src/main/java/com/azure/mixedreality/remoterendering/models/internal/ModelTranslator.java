@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 public class ModelTranslator {
 
     public static Conversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
+        if (conversion == null) {
+            return null;
+        }
         return new Conversion()
             .setId(conversion.getId())
             .setOptions(fromGenerated(conversion.getSettings()))
@@ -25,6 +28,9 @@ public class ModelTranslator {
     }
 
     public static Session fromGenerated(SessionProperties sessionProperties) {
+        if (sessionProperties == null) {
+            return null;
+        }
         return new Session()
             .setId(sessionProperties.getId())
             .setHandshakePort(sessionProperties.getHandshakePort())
@@ -39,15 +45,21 @@ public class ModelTranslator {
     }
 
     public static RemoteRenderingServiceError fromGenerated(Error error) {
+        if (error == null) {
+            return null;
+        }
         return new RemoteRenderingServiceError()
             .setCode(error.getCode())
             .setMessage(error.getMessage())
             .setTarget(error.getTarget())
-            .setInnerError(fromGenerated(error.getInnerError()))
+            .setInnerError((error.getInnerError() != null) ? fromGenerated(error.getInnerError()) : null)
             .setRootErrors(error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()));
     }
 
     public static ConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
+        if (settings == null) {
+            return null;
+        }
         return new ConversionOptions()
             .inputBlobPrefix(settings.getInputLocation().getBlobPrefix())
             .inputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
@@ -61,6 +73,9 @@ public class ModelTranslator {
     }
 
     public static ConversionSettings toGenerated(ConversionOptions conversionOptions) {
+        if (conversionOptions == null) {
+            return null;
+        }
         return new ConversionSettings(
             new ConversionInputSettings(
             conversionOptions.getInputStorageContainerUri(),
@@ -75,10 +90,16 @@ public class ModelTranslator {
     }
 
     public static UpdateSessionSettings toGenerated(UpdateSessionOptions options) {
+        if (options == null) {
+            return null;
+        }
         return new UpdateSessionSettings((int)options.getMaxLeaseTime().toMinutes());
     }
 
     public static CreateSessionSettings toGenerated(CreateSessionOptions options) {
+        if (options == null) {
+            return null;
+        }
         return new CreateSessionSettings((int)options.getMaxLeaseTime().toMinutes(), com.azure.mixedreality.remoterendering.implementation.models.SessionSize.fromString(options.getSize().toString()));
     }
 }

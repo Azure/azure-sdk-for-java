@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -39,18 +40,22 @@ public final class MixedRealityRemoteRenderingImplBuilder {
     }
 
     /*
-     * server parameter
+     * The endpoint to use e.g.
+     * https://remoterendering.eastus.mixedreality.azure.com a list can be
+     * found at
+     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions
      */
-    private String host;
+    private String endpoint;
 
     /**
-     * Sets server parameter.
+     * Sets The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be found at
+     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the MixedRealityRemoteRenderingImplBuilder.
      */
-    public MixedRealityRemoteRenderingImplBuilder host(String host) {
-        this.host = host;
+    public MixedRealityRemoteRenderingImplBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -190,16 +195,14 @@ public final class MixedRealityRemoteRenderingImplBuilder {
      * @return an instance of MixedRealityRemoteRenderingImpl.
      */
     public MixedRealityRemoteRenderingImpl buildClient() {
-        if (host == null) {
-            this.host = "https://remoterendering.westus2.mixedreality.azure.com";
-        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        MixedRealityRemoteRenderingImpl client = new MixedRealityRemoteRenderingImpl(pipeline, serializerAdapter, host);
+        MixedRealityRemoteRenderingImpl client =
+                new MixedRealityRemoteRenderingImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 
@@ -210,6 +213,9 @@ public final class MixedRealityRemoteRenderingImplBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(

@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SessionProperties {
     /*
-     * The id of the session supplied when the conversion was created.
+     * The id of the session supplied when the sessions was created.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -22,33 +22,33 @@ public final class SessionProperties {
      * The TCP port at which the Azure Remote Rendering Inspector tool is
      * hosted.
      */
-    @JsonProperty(value = "arrInspectorPort")
+    @JsonProperty(value = "arrInspectorPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer arrInspectorPort;
 
     /*
      * The TCP port used for the handshake.
      */
-    @JsonProperty(value = "handshakePort")
+    @JsonProperty(value = "handshakePort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer handshakePort;
 
     /*
      * Amount of time in minutes the session is or has been in Ready state.
      * Time is rounded down to a full minute.
      */
-    @JsonProperty(value = "elapsedTimeMinutes")
+    @JsonProperty(value = "elapsedTimeMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer elapsedTimeMinutes;
 
     /*
      * The hostname under which the rendering session is reachable.
      */
-    @JsonProperty(value = "hostname")
+    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The time in minutes the session will run after reaching the 'Ready'
      * state.
      */
-    @JsonProperty(value = "maxLeaseTimeMinutes")
+    @JsonProperty(value = "maxLeaseTimeMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxLeaseTimeMinutes;
 
     /*
@@ -72,21 +72,21 @@ public final class SessionProperties {
      * The computational power of the rendering session GPU measured in
      * Teraflops.
      */
-    @JsonProperty(value = "teraflops")
+    @JsonProperty(value = "teraflops", access = JsonProperty.Access.WRITE_ONLY)
     private Float teraflops;
 
     /*
      * The error object containing details about the rendering session startup
      * failure.
      */
-    @JsonProperty(value = "error")
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Error error;
 
     /*
      * The time when the rendering session was created. Date and time in ISO
      * 8601 format.
      */
-    @JsonProperty(value = "creationTime")
+    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /**
@@ -107,7 +107,7 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the id property: The id of the session supplied when the conversion was created.
+     * Get the id property: The id of the session supplied when the sessions was created.
      *
      * @return the id value.
      */
@@ -125,34 +125,12 @@ public final class SessionProperties {
     }
 
     /**
-     * Set the arrInspectorPort property: The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
-     *
-     * @param arrInspectorPort the arrInspectorPort value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setArrInspectorPort(Integer arrInspectorPort) {
-        this.arrInspectorPort = arrInspectorPort;
-        return this;
-    }
-
-    /**
      * Get the handshakePort property: The TCP port used for the handshake.
      *
      * @return the handshakePort value.
      */
     public Integer getHandshakePort() {
         return this.handshakePort;
-    }
-
-    /**
-     * Set the handshakePort property: The TCP port used for the handshake.
-     *
-     * @param handshakePort the handshakePort value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setHandshakePort(Integer handshakePort) {
-        this.handshakePort = handshakePort;
-        return this;
     }
 
     /**
@@ -166,18 +144,6 @@ public final class SessionProperties {
     }
 
     /**
-     * Set the elapsedTimeMinutes property: Amount of time in minutes the session is or has been in Ready state. Time is
-     * rounded down to a full minute.
-     *
-     * @param elapsedTimeMinutes the elapsedTimeMinutes value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setElapsedTimeMinutes(Integer elapsedTimeMinutes) {
-        this.elapsedTimeMinutes = elapsedTimeMinutes;
-        return this;
-    }
-
-    /**
      * Get the hostname property: The hostname under which the rendering session is reachable.
      *
      * @return the hostname value.
@@ -187,34 +153,12 @@ public final class SessionProperties {
     }
 
     /**
-     * Set the hostname property: The hostname under which the rendering session is reachable.
-     *
-     * @param hostname the hostname value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setHostname(String hostname) {
-        this.hostname = hostname;
-        return this;
-    }
-
-    /**
      * Get the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
      *
      * @return the maxLeaseTimeMinutes value.
      */
     public Integer getMaxLeaseTimeMinutes() {
         return this.maxLeaseTimeMinutes;
-    }
-
-    /**
-     * Set the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
-     *
-     * @param maxLeaseTimeMinutes the maxLeaseTimeMinutes value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setMaxLeaseTimeMinutes(Integer maxLeaseTimeMinutes) {
-        this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
-        return this;
     }
 
     /**
@@ -248,17 +192,6 @@ public final class SessionProperties {
     }
 
     /**
-     * Set the teraflops property: The computational power of the rendering session GPU measured in Teraflops.
-     *
-     * @param teraflops the teraflops value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setTeraflops(Float teraflops) {
-        this.teraflops = teraflops;
-        return this;
-    }
-
-    /**
      * Get the error property: The error object containing details about the rendering session startup failure.
      *
      * @return the error value.
@@ -268,33 +201,11 @@ public final class SessionProperties {
     }
 
     /**
-     * Set the error property: The error object containing details about the rendering session startup failure.
-     *
-     * @param error the error value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setError(Error error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Get the creationTime property: The time when the rendering session was created. Date and time in ISO 8601 format.
      *
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
-    }
-
-    /**
-     * Set the creationTime property: The time when the rendering session was created. Date and time in ISO 8601 format.
-     *
-     * @param creationTime the creationTime value to set.
-     * @return the SessionProperties object itself.
-     */
-    public SessionProperties setCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
-        return this;
     }
 }

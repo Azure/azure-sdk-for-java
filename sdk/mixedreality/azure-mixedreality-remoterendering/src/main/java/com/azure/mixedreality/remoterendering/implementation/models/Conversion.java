@@ -29,7 +29,7 @@ public final class Conversion {
      * Information about the output of a successful conversion. Only present
      * when the status of the conversion is 'Succeeded'.
      */
-    @JsonProperty(value = "output")
+    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private ConversionOutput output;
 
     /*
@@ -102,18 +102,6 @@ public final class Conversion {
      */
     public ConversionOutput getOutput() {
         return this.output;
-    }
-
-    /**
-     * Set the output property: Information about the output of a successful conversion. Only present when the status of
-     * the conversion is 'Succeeded'.
-     *
-     * @param output the output value to set.
-     * @return the Conversion object itself.
-     */
-    public Conversion setOutput(ConversionOutput output) {
-        this.output = output;
-        return this;
     }
 
     /**
