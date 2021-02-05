@@ -1,5 +1,6 @@
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2021-02-09)
 
+Regenerated with AutoRest & Swagger fixes.
 
 ## 1.0.0-beta.1 (2020-12-08)
 
