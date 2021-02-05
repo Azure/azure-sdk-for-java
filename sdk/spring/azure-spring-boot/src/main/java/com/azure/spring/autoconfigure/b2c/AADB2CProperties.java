@@ -2,18 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import java.net.MalformedURLException;
-import java.util.Map;
-import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
+import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -23,9 +19,6 @@ import org.springframework.validation.annotation.Validated;
 public class AADB2CProperties {
 
     private static final String USER_FLOWS = "user-flows";
-
-    @Autowired
-    private ServerProperties serverProperties;
 
     /**
      * We do not use ${@link String#format(String, Object...)} as it's not real constant, which cannot be referenced in
@@ -69,9 +62,6 @@ public class AADB2CProperties {
     @NotBlank(message = "client secret should not be blank")
     private String clientSecret;
 
-    @URL(message = "reply URL should be valid URL")
-    private String replyUrl;
-
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
@@ -91,23 +81,6 @@ public class AADB2CProperties {
      * Telemetry data will be collected if true, or disable data collection.
      */
     private boolean allowTelemetry = true;
-
-    private String getReplyURLPath(@URL String replyURL) {
-        try {
-            String contextPath = serverProperties.getServlet().getContextPath();
-            if (StringUtils.isEmpty(contextPath)) {
-                return new java.net.URL(replyURL).getPath();
-            }
-            return new java.net.URL(replyURL).getPath().replaceFirst(contextPath, "");
-        } catch (MalformedURLException e) {
-            throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
-        }
-    }
-
-    @NonNull
-    public String getLoginProcessingUrl() {
-        return getReplyURLPath(replyUrl);
-    }
 
     /**
      * UserFlows
@@ -216,14 +189,6 @@ public class AADB2CProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public String getReplyUrl() {
-        return replyUrl;
-    }
-
-    public void setReplyUrl(String replyUrl) {
-        this.replyUrl = replyUrl;
     }
 
     public String getLogoutSuccessUrl() {
