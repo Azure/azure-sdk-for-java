@@ -84,7 +84,7 @@ class LocationVirtualMachineRunCommandImpl extends CreatableUpdatableImpl<Locati
     @Override
     protected Observable<VirtualMachineRunCommandInner> getInnerAsync() {
         VirtualMachineRunCommandsInner client = this.manager().inner().virtualMachineRunCommands();
-        return client.getAsync(this.resourceGroupName, this.vmName, this.runCommandName);
+        return client.getByVirtualMachineAsync(this.resourceGroupName, this.vmName, this.runCommandName);
     }
 
     @Override
@@ -177,7 +177,7 @@ class LocationVirtualMachineRunCommandImpl extends CreatableUpdatableImpl<Locati
     }
 
     @Override
-    public LocationVirtualMachineRunCommandImpl withExistingLocation(String resourceGroupName, String vmName) {
+    public LocationVirtualMachineRunCommandImpl withExistingResourceGroup(String resourceGroupName, String vmName) {
         this.resourceGroupName = resourceGroupName;
         this.vmName = vmName;
         return this;

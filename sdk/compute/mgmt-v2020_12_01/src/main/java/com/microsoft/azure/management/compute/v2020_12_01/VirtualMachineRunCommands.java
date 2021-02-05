@@ -8,8 +8,9 @@
 
 package com.microsoft.azure.management.compute.v2020_12_01;
 
+import com.microsoft.azure.management.compute.v2020_12_01.implementation.RunCommandDocumentBaseInner;
+import com.microsoft.azure.management.compute.v2020_12_01.implementation.RunCommandDocumentInner;
 import rx.Observable;
-import com.microsoft.azure.management.compute.v2020_12_01.LocationVirtualMachineRunCommand;
 import rx.Completable;
 
 /**
@@ -31,7 +32,7 @@ public interface VirtualMachineRunCommands {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<LocationVirtualMachineRunCommand> getAsync(String location, String commandId);
+    Observable<RunCommandDocumentInner> getAsync(String location, String commandId);
 
     /**
      * Lists all available run commands for a subscription in a location.
@@ -40,7 +41,7 @@ public interface VirtualMachineRunCommands {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<LocationVirtualMachineRunCommand> listAsync(final String location);
+    Observable<RunCommandDocumentBaseInner> listAsync(final String location);
 
     /**
      * The operation to delete the run command.

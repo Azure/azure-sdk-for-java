@@ -152,7 +152,7 @@ public interface VirtualMachineScaleSet extends HasInner<VirtualMachineScaleSetI
     /**
      * The entirety of the VirtualMachineScaleSet definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -162,19 +162,19 @@ public interface VirtualMachineScaleSet extends HasInner<VirtualMachineScaleSetI
         /**
          * The first stage of a VirtualMachineScaleSet definition.
          */
-        interface Blank extends WithLocation {
+        interface Blank extends WithResourceGroup {
         }
 
         /**
          * The stage of the virtualmachinescaleset definition allowing to specify Location.
          */
-        interface WithLocation {
+        interface WithResourceGroup {
            /**
             * Specifies resourceGroupName.
             * @param resourceGroupName The name of the resource group
             * @return the next definition stage
             */
-            WithLocation withExistingLocation(String resourceGroupName);
+            WithLocation withExistingResourceGroup(String resourceGroupName);
         }
 
         /**

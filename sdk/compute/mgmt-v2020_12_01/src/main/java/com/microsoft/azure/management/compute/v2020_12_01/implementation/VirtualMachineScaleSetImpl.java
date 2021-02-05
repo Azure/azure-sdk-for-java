@@ -229,7 +229,7 @@ class VirtualMachineScaleSetImpl extends CreatableUpdatableImpl<VirtualMachineSc
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withExistingLocation(String resourceGroupName) {
+    public VirtualMachineScaleSetImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
