@@ -126,9 +126,10 @@ public class EncryptionCrudTest extends TestSuiteBase {
         metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
         metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
         encryptionCosmosAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         encryptionCosmosAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
+        encryptionCosmosAsyncDatabase.rewrapClientEncryptionKey("key2", metadata2).block();
     }
 
     @BeforeClass(groups = "encryption")

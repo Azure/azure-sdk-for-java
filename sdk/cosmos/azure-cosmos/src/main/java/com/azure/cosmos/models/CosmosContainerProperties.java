@@ -267,20 +267,18 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
-     * on items in different regions, in a container in the Azure Cosmos DB service.
+     * Gets the ClientEncryptionPolicy that is used for encrypting item fields
      *
-     * @return ConflictResolutionPolicy
+     * @return ClientEncryptionPolicy
      */
     public ClientEncryptionPolicy getClientEncryptionPolicy() {
         return this.documentCollection.getClientEncryptionPolicy();
     }
 
     /**
-     * Sets the conflictResolutionPolicy that is used for resolving conflicting writes
-     * on items in different regions, in a container in the Azure Cosmos DB service.
+     * Sets the conflictResolutionPolicy that is used for encrypting item field
      *
-     * @param value ConflictResolutionPolicy to be used.
+     * @param value ClientEncryptionPolicy to be used.
      * @return the CosmosContainerProperties.
      */
     public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
