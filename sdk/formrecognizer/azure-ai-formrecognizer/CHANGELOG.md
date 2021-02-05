@@ -4,6 +4,8 @@
 
 ### Breaking Changes
 - Renamed `Appearance`, `Style` and `TextStyle` models to `TextAppearance`, `TextStyle` and `TextStyleName` respectively.
+- Changed the type of `Locale` from `String` to `FormRecognizerLocale` in `RecognizeBusinessCardsOptions`, `RecognizeInvoicesOptions`, and `RecognizeReceiptsOptions`.
+- Changed the type of `Language` from `String` to `FormRecognizerLanguage` in `RecognizeContentOptions`.
 
 ## 3.0.4 (2021-01-14)
 
