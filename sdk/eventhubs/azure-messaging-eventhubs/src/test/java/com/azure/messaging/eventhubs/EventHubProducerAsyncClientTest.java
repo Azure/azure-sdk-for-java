@@ -78,7 +78,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientTest {
@@ -275,7 +275,7 @@ class EventHubProducerAsyncClientTest {
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -303,7 +303,7 @@ class EventHubProducerAsyncClientTest {
             .expectError(IllegalArgumentException.class)
             .verify(Duration.ofSeconds(10));
 
-        verifyZeroInteractions(sendLink);
+        verifyNoInteractions(sendLink);
     }
 
     /**
@@ -366,7 +366,7 @@ class EventHubProducerAsyncClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(3)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -554,7 +554,7 @@ class EventHubProducerAsyncClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -853,7 +853,7 @@ class EventHubProducerAsyncClientTest {
 
         // Verify
         verify(hubConnection, times(1)).dispose();
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -873,7 +873,7 @@ class EventHubProducerAsyncClientTest {
 
         // Verify
         verify(hubConnection, times(1)).dispose();
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -945,9 +945,9 @@ class EventHubProducerAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         verify(sendLink2, times(1)).send(any(Message.class));
-        verifyZeroInteractions(sendLink3);
+        verifyNoInteractions(sendLink3);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -1024,9 +1024,9 @@ class EventHubProducerAsyncClientTest {
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
 
-        verifyZeroInteractions(sendLink2);
-        verifyZeroInteractions(sendLink3);
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(sendLink2);
+        verifyNoInteractions(sendLink3);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -1101,9 +1101,9 @@ class EventHubProducerAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         verify(sendLink2, times(1)).send(any(Message.class));
-        verifyZeroInteractions(sendLink3);
+        verifyNoInteractions(sendLink3);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "
