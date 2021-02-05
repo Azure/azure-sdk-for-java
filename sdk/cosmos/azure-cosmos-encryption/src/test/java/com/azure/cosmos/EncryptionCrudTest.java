@@ -41,7 +41,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EncryptionTest2 extends TestSuiteBase {
+public class EncryptionCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private static final int TIMEOUT = 6000_000;
@@ -52,7 +52,7 @@ public class EncryptionTest2 extends TestSuiteBase {
     private EncryptionKeyWrapMetadata metadata2;
 
     @Factory(dataProvider = "clientBuilders")
-    public EncryptionTest2(CosmosClientBuilder clientBuilder) {
+    public EncryptionCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
