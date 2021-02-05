@@ -71,7 +71,7 @@ public class ReactorHandlerProvider {
 
         // TODO (conniey): See if we this is supported later on.
         if (isCustomEndpointConfigured && (isUserProxyConfigured || isSystemProxyConfigured)) {
-            throw logger.logThrowableAsError(new UnsupportedOperationException(String.format(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "Unable to proxy connection to custom endpoint. Custom endpoint: %s. Proxy settings: %s. "
                     + "Namespace: %s", options.getHostname(), options.getProxyOptions().getProxyAddress(),
                 options.getFullyQualifiedNamespace())));
