@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 
 import java.util.Locale;
@@ -108,9 +109,10 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
             return vaultUri;
         }
 
-        String keyVaultDnsSuffix = azureEnvironment == null
-            ? AzureEnvironment.AZURE.getKeyVaultDnsSuffix()
-            : azureEnvironment.getKeyVaultDnsSuffix();
+        String keyVaultDnsSuffix =
+            (azureEnvironment == null || CoreUtils.isNullOrEmpty(azureEnvironment.getKeyVaultDnsSuffix()))
+                ? AzureEnvironment.AZURE.getKeyVaultDnsSuffix()
+                : azureEnvironment.getKeyVaultDnsSuffix();
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
         return String.format("https://%1$s%2$s", keyVaultName.toLowerCase(Locale.ROOT), keyVaultDnsSuffix);
     }
