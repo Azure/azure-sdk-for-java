@@ -82,8 +82,8 @@ public class AppConfigurationStoreMonitoring {
     public void validateAndInit() {
         if (enabled) {
             Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
-            for (AppConfigurationStoreTrigger select : triggers) {
-                select.validateAndInit();
+            for (AppConfigurationStoreTrigger trigger : triggers) {
+                trigger.validateAndInit();
             }
         }
         Assert.isTrue(cacheExpiration.getSeconds() >= 1, "Minimum Watch time is 1 Second.");

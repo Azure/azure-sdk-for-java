@@ -219,9 +219,9 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             // Setting new ETag values for Watch
             List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
-            for (AppConfigurationStoreTrigger select : store.getMonitoring().getTriggers()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(select.getKey())
-                    .setLabelFilter(select.getLabel());
+            for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
+                SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
+                    .setLabelFilter(trigger.getLabel());
 
                 ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
                     store.getEndpoint());
