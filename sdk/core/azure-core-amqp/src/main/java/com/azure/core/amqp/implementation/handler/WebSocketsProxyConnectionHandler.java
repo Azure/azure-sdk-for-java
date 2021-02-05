@@ -42,9 +42,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
-     *
-     * The hostname of the proxy is exposed in {@link
-     *      *     #getHostname()}
+     * The hostname of the proxy is exposed in {@link #getHostname()}.
      *
      * @param connectionId Identifier for this connection.
      * @param proxyOptions The options to use for proxy.
