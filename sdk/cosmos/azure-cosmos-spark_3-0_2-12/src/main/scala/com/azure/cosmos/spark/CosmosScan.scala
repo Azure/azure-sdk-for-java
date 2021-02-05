@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.CosmosParametrizedQuery
+import com.azure.cosmos.models.{CosmosParametrizedQuery, FeedRange}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
@@ -26,7 +26,7 @@ case class CosmosScan(schema: StructType,
   override def planInputPartitions(): Array[InputPartition] = {
     // TODO: moderakh use get feed range?
     // for now we are returning one partition hence only one spark task will be created.
-    Array(CosmosInputPartition())
+    Array(CosmosInputPartition(FeedRange.forFullRange.toString()))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

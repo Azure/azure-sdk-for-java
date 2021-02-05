@@ -3,9 +3,10 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
+
 import java.net.URL
 import java.util.Locale
-
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -17,12 +18,6 @@ import scala.collection.JavaConverters._
 // TODO moderakh more configs
 //case class ClientConfig()
 //case class CosmosBatchWriteConfig()
-
-case class CosmosAccountConfig(
-    endpoint: String,
-    key: String,
-    applicationName: Option[String],
-    useGatewayMode: Boolean)
 
 object CosmosConfig {
 
@@ -45,8 +40,14 @@ object CosmosConfig {
   }
 }
 
-object CosmosAccountConfig {
-  val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
+private[spark] case class CosmosAccountConfig(
+    endpoint: String,
+    key: String,
+    applicationName: Option[String],
+    useGatewayMode: Boolean)
+
+private[spark] object CosmosAccountConfig {
+  private[spark] val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
       new URL(accountEndpointUri)
@@ -54,9 +55,9 @@ object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Endpoint Uri")
 
-  val CosmosKey = CosmosConfigEntry[String](key = "spark.cosmos.accountKey",
+  private[spark] val CosmosKey = CosmosConfigEntry[String](key = "spark.cosmos.accountKey",
     mandatory = true,
-    parseFromStringFunction = accountEndpointUri => accountEndpointUri,
+    parseFromStringFunction = accountKey => accountKey,
     helpMessage = "Cosmos DB Account Key")
 
   val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
@@ -69,7 +70,7 @@ object CosmosAccountConfig {
         parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
         helpMessage = "Use gateway mode for the client operations")
 
-  def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+  private[spark] def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
@@ -78,6 +79,7 @@ object CosmosAccountConfig {
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
     assert(key.isDefined)
+    assert(accountName.isDefined)
 
     CosmosAccountConfig(
         endpointOpt.get,
@@ -105,25 +107,32 @@ private[spark] object CosmosReadConfig {
 case class CosmosContainerConfig(database: String, container: String)
 
 object CosmosContainerConfig {
-  val databaseName = CosmosConfigEntry[String](key = "spark.cosmos.database",
+  private[spark] val DATABASE_NAME_KEY = "spark.cosmos.database"
+  private[spark] val CONTAINER_NAME_KEY = "spark.cosmos.container"
+
+  val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
     mandatory = true,
     parseFromStringFunction = database => database,
     helpMessage = "Cosmos DB database name")
 
-  val containerName = CosmosConfigEntry[String](key = "spark.cosmos.container",
+  val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
     mandatory = true,
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
-    val databaseOpt = CosmosConfigEntry.parse(cfg, databaseName)
-    val containerOpt = CosmosConfigEntry.parse(cfg, containerName)
+    this.parseCosmosContainerConfig(cfg, None, None)
+  }
 
-    // parsing above already validated this
-    assert(databaseOpt.isDefined)
-    assert(containerOpt.isDefined)
+  def parseCosmosContainerConfig(
+                                cfg: Map[String, String],
+                                databaseName: Option[String],
+                                containerName: Option[String]): CosmosContainerConfig = {
 
-    CosmosContainerConfig(databaseOpt.get, containerOpt.get)
+    val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
+    val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
+
+    CosmosContainerConfig(databaseOpt, containerOpt)
   }
 }
 
@@ -160,6 +169,30 @@ private[spark] object CosmosSchemaInferenceConfig {
             enabled.getOrElse(false),
             query)
     }
+}
+
+private object ChangeFeedModes extends Enumeration {
+  type ChangeFeedMode = Value
+
+  private[spark] val incremental = Value("Incremental")
+  private[spark] val fullFidelity = Value("FullFidelity")
+}
+
+private case class CosmosChangeFeedConfig(changeFeedMode: ChangeFeedMode)
+
+private object CosmosChangeFeedConfig {
+  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.incremental
+
+  private[spark] val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](key = "spark.cosmos.changeFeed.mode",
+    mandatory = false,
+    parseFromStringFunction = changeFeedModeString => ChangeFeedModes.withName(changeFeedModeString),
+    helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
+
+  private[spark] def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
+    val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
+
+    CosmosChangeFeedConfig(changeFeedModeParsed.getOrElse(DefaultChangeFeedMode))
+  }
 }
 
 case class CosmosConfigEntry[T](key: String,

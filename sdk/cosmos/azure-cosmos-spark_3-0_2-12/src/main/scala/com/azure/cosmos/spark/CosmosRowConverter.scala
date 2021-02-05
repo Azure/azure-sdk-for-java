@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode, ValueNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -25,6 +25,11 @@ import org.apache.spark.unsafe.types.UTF8String
 private object CosmosRowConverter
     extends CosmosLoggingTrait {
 
+    private val FullFidelityChangeFeedMetadataPropertyName = "_metadata"
+    private val OperationTypePropertyName = "operationType"
+    private val PreviousImagePropertyName = "previousImage"
+    private val TimeToLiveExpiredPropertyName = "timeToLiveExpired"
+
     // TODO: Expose configuration to handle duplicate fields
     // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
     private val objectMapper = new ObjectMapper()
@@ -44,9 +49,9 @@ private object CosmosRowConverter
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
 
-        if (row.schema.contains(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType))){
+        if (row.schema.contains(StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType))){
             // Special case when the reader read the rawJson
-            val rawJson = row.getAs[String](CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME)
+            val rawJson = row.getAs[String](CosmosTableSchemaInferer.RawJsonBodyAttributeName)
             objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
         }
         else {
@@ -78,6 +83,18 @@ private object CosmosRowConverter
         objectNode
     }
 
+    private def convertToStringKeyMap(input : Any): Map[String, _] = {
+      try {
+        input.asInstanceOf[Map[String, _]]
+      }
+      catch {
+        case _: ClassCastException =>
+          throw new Exception(
+            s"Cannot cast $input into a Json value. MapTypes must have "
+              + s"keys of StringType for conversion Json")
+      }
+    }
+
     // scalastyle:off
     private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
@@ -100,12 +117,20 @@ private object CosmosRowConverter
             case _: StructType => rowTypeRouterToJsonArray(rowData)
             case mapType: MapType =>
                 mapType.keyType match {
-                    case StringType if rowData.isInstanceOf[Map[String, _]] =>
-                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[Map[String, _]])
+                    case StringType if rowData.isInstanceOf[Map[_, _]] =>
+                        val stringKeyMap = convertToStringKeyMap(rowData)
+                        convertSparkMapToObjectNode(
+                          mapType.valueType,
+                          mapType.valueContainsNull,
+                          stringKeyMap)
                     case StringType if rowData.isInstanceOf[UnsafeMapData] =>
-                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[UnsafeMapData])
+                        convertSparkMapToObjectNode(
+                          mapType.valueType,
+                          mapType.valueContainsNull,
+                          rowData.asInstanceOf[UnsafeMapData])
                     case _ =>
-                        throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes must have keys of StringType for conversion Json")
+                        throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes "
+                          + s"must have keys of StringType for conversion Json")
                 }
             case _ =>
                 throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
@@ -173,10 +198,68 @@ private object CosmosRowConverter
         }
     }
 
+    private def getFullFidelityMetadata(objectNode: ObjectNode): Option[ObjectNode] = {
+      if (objectNode == null) {
+        None
+      } else {
+        val metadata = objectNode.get(FullFidelityChangeFeedMetadataPropertyName)
+        if (metadata != null && metadata.isObject) {
+          Some(metadata.asInstanceOf[ObjectNode])
+        } else {
+          None
+        }
+      }
+    }
+
+    private def parsePreviousImage(objectNode: ObjectNode): String = {
+      getFullFidelityMetadata(objectNode)
+        match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(PreviousImagePropertyName) match {
+            case previousImageObjectNode: ObjectNode => Option(previousImageObjectNode).map(o => o.toString).orNull
+            case _ => null
+          }
+        }
+        case _ => null
+      }
+    }
+
+    private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
+      getFullFidelityMetadata(objectNode) match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(TimeToLiveExpiredPropertyName) match {
+            case valueNode: JsonNode =>
+              Option(valueNode).fold(false)(v => v.asBoolean(false))
+            case _ => false
+          }
+        }
+        case _ => false
+      }
+    }
+
+    private def parseOperationType(objectNode: ObjectNode): String = {
+      getFullFidelityMetadata(objectNode) match {
+        case metadataNode: Some[ObjectNode] => {
+          metadataNode.get.get(OperationTypePropertyName) match {
+            case valueNode: JsonNode =>
+              Option(valueNode).fold(null: String)(v => v.asText(null))
+            case _ => null
+          }
+        }
+        case _ => null
+      }
+    }
+
     private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
         schema.fields.map {
-            case StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType, _, _) =>
+            case StructField(CosmosTableSchemaInferer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString
+            case StructField(CosmosTableSchemaInferer.PreviousRawJsonBodyAttributeName, StringType, _, _) =>
+              parsePreviousImage(objectNode)
+            case StructField(CosmosTableSchemaInferer.OperationTypeAttributeName, StringType, _, _) =>
+              parseOperationType(objectNode)
+            case StructField(CosmosTableSchemaInferer.TtlExpiredAttributeName, BooleanType, _, _) =>
+              parseTtlExpired(objectNode)
             case StructField(name, dataType, _, _) =>
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
         }
@@ -224,6 +307,9 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
+                    case None => throw new IllegalArgumentException(
+                      s"Value '${textNode.asText()} cannot be parsed as Timestamp."
+                    )
                 }
             case _ => Timestamp.valueOf(value.asText())
         }
@@ -235,6 +321,9 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Date.valueOf(odt.toLocalDate)
+                    case None => throw new IllegalArgumentException(
+                      s"Value '${textNode.asText()} cannot be parsed as Date."
+                    )
                 }
             case _ => Date.valueOf(value.asText())
         }
