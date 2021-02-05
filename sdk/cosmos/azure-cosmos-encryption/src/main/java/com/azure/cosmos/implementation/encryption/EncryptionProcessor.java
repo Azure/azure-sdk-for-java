@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.encryption;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
 import com.azure.cosmos.encryption.DecryptionContext;
-import com.azure.cosmos.encryption.EncryptionAsyncCosmosClient;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.encryption.Encryptor;
@@ -49,7 +49,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
-    private EncryptionAsyncCosmosClient encryptionCosmosClient;
+    private EncryptionCosmosAsyncClient encryptionCosmosClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
     private EncryptionSettings encryptionSettings;
@@ -57,7 +57,7 @@ public class EncryptionProcessor {
     private ClientEncryptionPolicy clientEncryptionPolicy;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
-                               EncryptionAsyncCosmosClient encryptionCosmosClient) {
+                               EncryptionCosmosAsyncClient encryptionCosmosClient) {
         if (cosmosAsyncContainer == null) {
             throw new IllegalStateException("encryptionCosmosContainer is null");
         }
@@ -204,7 +204,7 @@ public class EncryptionProcessor {
      *
      * @return encryptionCosmosClient
      */
-    public EncryptionAsyncCosmosClient getEncryptionCosmosClient() {
+    public EncryptionCosmosAsyncClient getEncryptionCosmosClient() {
         return encryptionCosmosClient;
     }
 

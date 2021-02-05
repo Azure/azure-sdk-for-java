@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
 import com.azure.cosmos.encryption.DataEncryptionKey;
-import com.azure.cosmos.encryption.EncryptionAsyncCosmosClient;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
 import com.azure.cosmos.implementation.encryption.TestUtils;
@@ -45,7 +45,7 @@ public class EncryptionTest2 extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private static final int TIMEOUT = 6000_000;
-    private EncryptionAsyncCosmosClient encryptionAsyncCosmosClient;
+    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
     private EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase;
     private EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer;
     private EncryptionKeyWrapMetadata metadata1;
@@ -61,10 +61,10 @@ public class EncryptionTest2 extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        encryptionAsyncCosmosClient = EncryptionAsyncCosmosClient.buildEncryptionAsyncClient(this.client,
+        encryptionCosmosAsyncClient = EncryptionCosmosAsyncClient.buildEncryptionCosmosAsyncClient(this.client,
             new TestEncryptionKeyStoreProvider());
         encryptionCosmosAsyncDatabase =
-            encryptionAsyncCosmosClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
+            encryptionCosmosAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
 
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.clientEncryptionKeyId = "key1";

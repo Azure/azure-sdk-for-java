@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionAsyncCosmosClient;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -37,10 +37,10 @@ public class EncryptionCodeSnippet {
             .buildAsyncClient();
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
-        EncryptionAsyncCosmosClient encryptionAsyncCosmosClient =
-            EncryptionAsyncCosmosClient.buildEncryptionAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
+        EncryptionCosmosAsyncClient encryptionCosmosAsyncClient =
+            EncryptionCosmosAsyncClient.buildEncryptionCosmosAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
         EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase =
-            encryptionAsyncCosmosClient.getEncryptedCosmosAsyncDatabase("myDb");
+            encryptionCosmosAsyncClient.getEncryptedCosmosAsyncDatabase("myDb");
         EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer =
             encryptionCosmosAsyncDatabase.getEncryptedCosmosAsyncContainer("myCol");
 

@@ -16,13 +16,13 @@ import reactor.core.publisher.Mono;
 /**
  * CosmosClient with Encryption support.
  */
-public class EncryptionAsyncCosmosClient {
+public class EncryptionCosmosAsyncClient {
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
 
-    EncryptionAsyncCosmosClient(CosmosAsyncClient cosmosAsyncClient,
+    EncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
@@ -111,8 +111,8 @@ public class EncryptionAsyncCosmosClient {
      *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
-    public static EncryptionAsyncCosmosClient buildEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                                                         EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+    public static EncryptionCosmosAsyncClient buildEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+                                                                               EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
         }
@@ -120,7 +120,7 @@ public class EncryptionAsyncCosmosClient {
             throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
         }
 
-        return new EncryptionAsyncCosmosClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+        return new EncryptionCosmosAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 
     /**

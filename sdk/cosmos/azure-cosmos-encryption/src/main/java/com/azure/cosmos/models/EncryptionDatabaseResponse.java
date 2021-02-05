@@ -1,16 +1,16 @@
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.encryption.EncryptionAsyncCosmosClient;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 
 public class EncryptionDatabaseResponse {
 
     private final CosmosDatabaseResponse databaseResponse;
 
-    private final EncryptionAsyncCosmosClient encryptionCosmosClient;
+    private final EncryptionCosmosAsyncClient encryptionCosmosClient;
 
     public EncryptionDatabaseResponse(
         CosmosDatabaseResponse databaseResponse,
-        EncryptionAsyncCosmosClient encryptionCosmosClient) {
+        EncryptionCosmosAsyncClient encryptionCosmosClient) {
         this.databaseResponse = databaseResponse;
         this.encryptionCosmosClient = encryptionCosmosClient;
     }
@@ -19,7 +19,7 @@ public class EncryptionDatabaseResponse {
         return databaseResponse;
     }
 
-    public EncryptionAsyncCosmosClient getEncryptionCosmosClient() {
+    public EncryptionCosmosAsyncClient getEncryptionCosmosClient() {
         return encryptionCosmosClient;
     }
 }

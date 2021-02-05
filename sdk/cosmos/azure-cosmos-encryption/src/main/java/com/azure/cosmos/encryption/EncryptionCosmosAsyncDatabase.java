@@ -24,12 +24,12 @@ public class EncryptionCosmosAsyncDatabase {
 
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
 
-    private EncryptionAsyncCosmosClient encryptionAsyncCosmosClient;
+    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
 
     public EncryptionCosmosAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
-                                         EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
+                                         EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
         this.cosmosAsyncDatabase = cosmosAsyncDatabase;
-        this.encryptionAsyncCosmosClient = encryptionAsyncCosmosClient;
+        this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
     }
 
     /**
@@ -47,7 +47,7 @@ public class EncryptionCosmosAsyncDatabase {
             options).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -71,7 +71,7 @@ public class EncryptionCosmosAsyncDatabase {
             options).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -96,7 +96,7 @@ public class EncryptionCosmosAsyncDatabase {
             throughputProperties).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -118,7 +118,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainer(id, partitionKeyPath).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -139,7 +139,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainer(containerProperties).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -162,7 +162,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainer(containerProperties, throughputProperties).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -188,7 +188,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainerIfNotExists(containerProperties, throughputProperties).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -210,7 +210,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainerIfNotExists(id, partitionKeyPath).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -237,7 +237,7 @@ public class EncryptionCosmosAsyncDatabase {
         return this.cosmosAsyncDatabase.createContainerIfNotExists(id, partitionKeyPath, throughputProperties).map(cosmosContainerResponse -> {
             EncryptionContainerResponse encryptionContainerResponse =
                 new EncryptionContainerResponse(cosmosContainerResponse,
-                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionAsyncCosmosClient));
+                    new EncryptionCosmosAsyncContainer(cosmosAsyncDatabase.getContainer(cosmosContainerResponse.getProperties().getId()), this.encryptionCosmosAsyncClient));
             return encryptionContainerResponse;
         });
     }
@@ -290,7 +290,7 @@ public class EncryptionCosmosAsyncDatabase {
         }
 
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
-            this.encryptionAsyncCosmosClient.getEncryptionKeyStoreProvider();
+            this.encryptionCosmosAsyncClient.getEncryptionKeyStoreProvider();
         try {
             KeyEncryptionKey keyEncryptionKey = KeyEncryptionKey.getOrCreate(encryptionKeyWrapMetadata.name,
                 encryptionKeyWrapMetadata.value, encryptionKeyStoreProvider, false);
@@ -320,7 +320,7 @@ public class EncryptionCosmosAsyncDatabase {
         }
 
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
-            this.encryptionAsyncCosmosClient.getEncryptionKeyStoreProvider();
+            this.encryptionCosmosAsyncClient.getEncryptionKeyStoreProvider();
         try {
             CosmosAsyncClientEncryptionKey clientEncryptionKey =
                 this.cosmosAsyncDatabase.getClientEncryptionKey(clientEncryptionKeyId);
@@ -359,7 +359,7 @@ public class EncryptionCosmosAsyncDatabase {
      * @return container with encryption capabilities
      */
     public EncryptionCosmosAsyncContainer getEncryptedCosmosAsyncContainer(CosmosAsyncContainer container) {
-        return new EncryptionCosmosAsyncContainer(container, this.encryptionAsyncCosmosClient);
+        return new EncryptionCosmosAsyncContainer(container, this.encryptionCosmosAsyncClient);
     }
 
     /**
@@ -370,15 +370,15 @@ public class EncryptionCosmosAsyncDatabase {
      */
     public EncryptionCosmosAsyncContainer getEncryptedCosmosAsyncContainer(String containerId) {
         CosmosAsyncContainer cosmosAsyncContainer = this.cosmosAsyncDatabase.getContainer(containerId);
-        return new EncryptionCosmosAsyncContainer(cosmosAsyncContainer, this.encryptionAsyncCosmosClient);
+        return new EncryptionCosmosAsyncContainer(cosmosAsyncContainer, this.encryptionCosmosAsyncClient);
     }
 
-    EncryptionAsyncCosmosClient getEncryptionAsyncCosmosClient() {
-        return encryptionAsyncCosmosClient;
+    EncryptionCosmosAsyncClient getEncryptionCosmosAsyncClient() {
+        return encryptionCosmosAsyncClient;
     }
 
-    private void setEncryptionAsyncCosmosClient(EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
-        this.encryptionAsyncCosmosClient = encryptionAsyncCosmosClient;
+    private void setEncryptionCosmosAsyncClient(EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
+        this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
     }
 
     /**

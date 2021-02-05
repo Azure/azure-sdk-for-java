@@ -4,10 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionAsyncCosmosClient;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -35,7 +34,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.security.Security;
 import java.time.Duration;
 import java.time.Instant;
@@ -62,7 +60,7 @@ public class Program {
     private static final String databaseId = "samples";
     private static final String containerId = "encryptedContainer";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
-    private static EncryptionAsyncCosmosClient encryptionAsyncCosmosClient = null;
+    private static EncryptionCosmosAsyncClient encryptionCosmosAsyncClient = null;
     private static EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase = null;
     private static EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer = null;
 
@@ -70,8 +68,8 @@ public class Program {
         try {
             //NOTE: Please provide credential information in src/samples/resources/settings.properties
             Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
-            Program.encryptionAsyncCosmosClient = Program.createClientInstance(configuration);
-            Program.initialize(encryptionAsyncCosmosClient, configuration);
+            Program.encryptionCosmosAsyncClient = Program.createClientInstance(configuration);
+            Program.initialize(encryptionCosmosAsyncClient, configuration);
             Program.runDemo(encryptionCosmosAsyncContainer);
         } catch (CosmosException cre) {
             System.out.println(cre.toString());
@@ -81,11 +79,11 @@ public class Program {
             System.out.println("End of demo, press enter key to exit.");
             System.in.read();
             Program.cleanup();
-            encryptionAsyncCosmosClient.close();
+            encryptionCosmosAsyncClient.close();
         }
     }
 
-    private static EncryptionAsyncCosmosClient createClientInstance(Properties configuration) throws MicrosoftDataEncryptionException {
+    private static EncryptionCosmosAsyncClient createClientInstance(Properties configuration) throws MicrosoftDataEncryptionException {
         String endpoint = configuration.getProperty("CosmosEndpointUrl");
         Preconditions.checkNotNull(endpoint, "Please specify a valid endpoint.");
 
@@ -102,7 +100,7 @@ public class Program {
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
         AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
 
-        return EncryptionAsyncCosmosClient.buildEncryptionAsyncClient(asyncClient, encryptionKeyStoreProvider);
+        return EncryptionCosmosAsyncClient.buildEncryptionCosmosAsyncClient(asyncClient, encryptionKeyStoreProvider);
     }
 
     /**
@@ -112,9 +110,9 @@ public class Program {
      * @param properties configuration
      * @throws Exception on failure throws
      */
-    private static void initialize(EncryptionAsyncCosmosClient encryptionAsyncCosmosClient, Properties properties) throws Exception {
-        encryptionAsyncCosmosClient.getCosmosAsyncClient().createDatabaseIfNotExists(Program.databaseId).block();
-        encryptionCosmosAsyncDatabase = encryptionAsyncCosmosClient.getEncryptedCosmosAsyncDatabase(Program.databaseId);
+    private static void initialize(EncryptionCosmosAsyncClient encryptionCosmosAsyncClient, Properties properties) throws Exception {
+        encryptionCosmosAsyncClient.getCosmosAsyncClient().createDatabaseIfNotExists(Program.databaseId).block();
+        encryptionCosmosAsyncDatabase = encryptionCosmosAsyncClient.getEncryptedCosmosAsyncDatabase(Program.databaseId);
 
         // Delete the existing container to prevent create item conflicts.
         try {
@@ -277,7 +275,7 @@ public class Program {
 
     private static void cleanup() {
         try {
-            encryptionAsyncCosmosClient.getCosmosAsyncClient().getDatabase(databaseId).delete().block();
+            encryptionCosmosAsyncClient.getCosmosAsyncClient().getDatabase(databaseId).delete().block();
         } catch (Exception e) {
         }
     }

@@ -44,14 +44,14 @@ public class EncryptionCosmosAsyncContainer {
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactoryCore();
     private final CosmosAsyncContainer container;
     private EncryptionProcessor encryptionProcessor;
-    private EncryptionAsyncCosmosClient encryptionAsyncCosmosClient;
+    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
 
 
     EncryptionCosmosAsyncContainer(CosmosAsyncContainer container,
-                                   EncryptionAsyncCosmosClient encryptionAsyncCosmosClient) {
+                                   EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
         this.container = container;
-        this.encryptionAsyncCosmosClient = encryptionAsyncCosmosClient;
-        this.encryptionProcessor = new EncryptionProcessor(this.container, encryptionAsyncCosmosClient);
+        this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
+        this.encryptionProcessor = new EncryptionProcessor(this.container, encryptionCosmosAsyncClient);
         this.encryptionScheduler = Schedulers.parallel();
         encryptor = null;
     }
