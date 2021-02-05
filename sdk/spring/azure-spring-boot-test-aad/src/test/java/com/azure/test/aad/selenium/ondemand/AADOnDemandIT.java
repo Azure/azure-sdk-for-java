@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.SPRING_RESOURCE_GROUP;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_SUBSCRIPTION_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_ON_DEMAND;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_ON_DEMAND;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
@@ -31,13 +29,6 @@ public class AADOnDemandIT {
 
     @Test
     public void onDemandTest() {
-
-        for (char ch : SPRING_SUBSCRIPTION_ID.toCharArray()) {
-            System.out.print(ch);
-        }
-        for (char ch : SPRING_RESOURCE_GROUP.toCharArray()) {
-            System.out.print(ch);
-        }
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.authorization-clients.arm.scopes",
             "https://management.azure.com/user_impersonation");
