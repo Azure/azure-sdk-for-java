@@ -106,12 +106,17 @@ public final class ModelTranslator {
         if (error == null) {
             return null;
         }
-        return new RemoteRenderingServiceError()
+        var e = new RemoteRenderingServiceError()
             .setCode(error.getCode())
             .setMessage(error.getMessage())
-            .setTarget(error.getTarget())
-            .setInnerError((error.getInnerError() != null) ? fromGenerated(error.getInnerError()) : null)
-            .setRootErrors(error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()));
+            .setTarget(error.getTarget());
+        if (error.getInnerError() != null) {
+            e.setInnerError(fromGenerated(error.getInnerError()));
+        }
+        if (error.getDetails() != null) {
+            e.setRootErrors(error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()));
+        }
+        return e;
     }
 
     public static ConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
