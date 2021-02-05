@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 public class EncryptionCosmosAsyncDatabase {
 
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
-    private CosmosAsyncContainer cosmosAsyncContainer;
 
     private EncryptionAsyncCosmosClient encryptionAsyncCosmosClient;
 
