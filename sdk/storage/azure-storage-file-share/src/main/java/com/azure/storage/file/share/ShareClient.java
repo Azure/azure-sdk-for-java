@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -135,6 +137,7 @@ public class ShareClient {
      *
      * @return Flag indicating existence of the share.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
@@ -150,6 +153,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Flag indicating existence of the share.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = client.existsWithResponse(context);
 
@@ -166,11 +170,12 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.create}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return The {@link ShareInfo information about the share}.
      * @throws ShareStorageException If the share already exists with different metadata
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo create() {
         return createWithResponse(null, null, null, Context.NONE).getValue();
     }
@@ -189,7 +194,7 @@ public class ShareClient {
      * {@codesnippet ShareClient.createWithResponse#map-integer-duration-context.quota}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -202,6 +207,7 @@ public class ShareClient {
      * the allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.createWithResponse(new ShareCreateOptions().setQuotaInGb(quotaInGB)
@@ -217,7 +223,7 @@ public class ShareClient {
      * {@codesnippet ShareClient.createWithResponse#ShareCreateOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param options {@link ShareCreateOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -228,6 +234,7 @@ public class ShareClient {
      * the allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createWithResponse(ShareCreateOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.createWithResponse(options, context);
@@ -244,12 +251,13 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createSnapshot}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @return The {@link ShareSnapshotInfo information about snapshot of share}
      * @throws ShareStorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareSnapshotInfo createSnapshot() {
         return createSnapshotWithResponse(null, null, Context.NONE).getValue();
     }
@@ -264,7 +272,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createSnapshotWithResponse#map-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share will
      * be copied to the snapshot.
@@ -277,6 +285,7 @@ public class ShareClient {
      * in progress for the share
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<ShareSnapshotInfo>> response = client.createSnapshotWithResponse(metadata, context);
@@ -293,10 +302,11 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.delete}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @throws ShareStorageException If the share doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(null, Context.NONE);
     }
@@ -311,7 +321,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -320,6 +330,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         return deleteWithResponse(new ShareDeleteOptions(), timeout, context);
     }
@@ -334,7 +345,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param options {@link ShareDeleteOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -344,6 +355,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -360,11 +372,12 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @return The {@link ShareProperties properties of the share}
      * @throws ShareStorageException If the share doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
@@ -380,7 +393,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -389,6 +402,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         return getPropertiesWithResponse(new ShareGetPropertiesOptions(), timeout, context);
     }
@@ -404,7 +418,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetPropertiesOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -414,6 +428,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareProperties> getPropertiesWithResponse(ShareGetPropertiesOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(options, context);
@@ -430,7 +445,7 @@ public class ShareClient {
      * {@codesnippet ShareClient.setQuota#int}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return The {@link ShareInfo information about the share}
@@ -438,6 +453,7 @@ public class ShareClient {
      * @deprecated Use {@link ShareClient#setProperties(ShareSetPropertiesOptions)}
      */
     @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo setQuota(int quotaInGB) {
         return setQuotaWithResponse(quotaInGB, null, Context.NONE).getValue();
     }
@@ -452,7 +468,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setQuotaWithResponse#int-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -464,6 +480,7 @@ public class ShareClient {
      * @deprecated Use {@link ShareClient#setPropertiesWithResponse(ShareSetPropertiesOptions, Duration, Context)}
      */
     @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Duration timeout, Context context) {
         return setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaInGB), timeout, context);
     }
@@ -476,11 +493,12 @@ public class ShareClient {
      * {@codesnippet ShareClient.setProperties#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param options {@link ShareSetPropertiesOptions}
      * @return The {@link ShareInfo information about the share}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo setProperties(ShareSetPropertiesOptions options) {
         return setPropertiesWithResponse(options, null, Context.NONE).getValue();
     }
@@ -493,7 +511,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param options {@link ShareSetPropertiesOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -501,6 +519,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareInfo information about the share} with response status code
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setPropertiesWithResponse(ShareSetPropertiesOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setPropertiesWithResponse(options, context);
@@ -523,12 +542,13 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.clearMetadata#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return The {@link ShareProperties properties of the share}
      * @throws ShareStorageException If the share doesn't exist or the metadata contains invalid keys
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
@@ -545,7 +565,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -555,6 +575,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         return setMetadataWithResponse(new ShareSetMetadataOptions().setMetadata(metadata), timeout, context);
@@ -572,7 +593,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
      *
      * @param options {@link ShareSetMetadataOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -582,6 +603,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setMetadataWithResponse(ShareSetMetadataOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(options, context);
@@ -598,11 +620,12 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getAccessPolicy}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
      * @throws ShareStorageException If the share doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareSignedIdentifier> getAccessPolicy() {
         return getAccessPolicy(new ShareGetAccessPolicyOptions());
     }
@@ -617,12 +640,13 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetAccessPolicyOptions}
      * @return The stored access policies specified on the queue.
      * @throws ShareStorageException If the share doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareSignedIdentifier> getAccessPolicy(ShareGetAccessPolicyOptions options) {
         return new PagedIterable<>(client.getAccessPolicy(options));
     }
@@ -637,13 +661,14 @@ public class ShareClient {
      * {@codesnippet ShareClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return The {@link ShareInfo information of the share}
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo setAccessPolicy(List<ShareSignedIdentifier> permissions) {
         return setAccessPolicyWithResponse(permissions, null, Context.NONE).getValue();
     }
@@ -658,7 +683,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -670,6 +695,7 @@ public class ShareClient {
      * out, or the share will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions, Duration timeout,
                                                            Context context) {
         return setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setPermissions(permissions), timeout,
@@ -686,7 +712,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareSetAccessPolicyOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -698,6 +724,7 @@ public class ShareClient {
      * out, or the share will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setAccessPolicyWithResponse(ShareSetAccessPolicyOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(options, context);
@@ -714,10 +741,11 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getStatistics}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
      * @return The storage {@link ShareStatistics statistics of the share}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareStatistics getStatistics() {
         return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
@@ -732,7 +760,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -740,6 +768,7 @@ public class ShareClient {
      * @return A response containing the {@link ShareStatistics statistics of the share}
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         return getStatisticsWithResponse(new ShareGetStatisticsOptions(), timeout, context);
     }
@@ -754,7 +783,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetStatisticsOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -763,6 +792,7 @@ public class ShareClient {
      * @return A response containing the {@link ShareStatistics statistics of the share}
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareStatistics> getStatisticsWithResponse(ShareGetStatisticsOptions options, Duration timeout,
         Context context) {
         Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(options, context);
@@ -779,13 +809,14 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectory#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @return A response containing a {@link ShareDirectoryClient} to interact with the created directory.
      * @throws ShareStorageException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, or the parent directory for the new directory doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectory(String directoryName) {
         return createDirectoryWithResponse(directoryName, null, null, null,
             null, Context.NONE).getValue();
@@ -801,7 +832,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param smbProperties The SMB properties of the directory.
@@ -817,6 +848,7 @@ public class ShareClient {
      * name
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryWithResponse(String directoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
@@ -835,7 +867,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createFile#string-long}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file.
@@ -850,6 +882,7 @@ public class ShareClient {
      * </li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileClient createFile(String fileName, long maxSize) {
         return createFileWithResponse(fileName, maxSize, null, null, null,
             null, null, Context.NONE).getValue();
@@ -865,7 +898,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file.
@@ -889,6 +922,7 @@ public class ShareClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, Duration timeout, Context context) {
@@ -906,7 +940,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file.
@@ -931,6 +965,7 @@ public class ShareClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, ShareRequestConditions requestConditions, Duration timeout, Context context) {
@@ -949,11 +984,12 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteDirectory#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @throws ShareStorageException If the share doesn't exist or the directory isn't empty
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDirectory(String directoryName) {
         deleteDirectoryWithResponse(directoryName, null, Context.NONE);
     }
@@ -969,7 +1005,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteDirectoryWithResponse#string-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -979,6 +1015,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist or the directory isn't empty
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteDirectoryWithResponse(directoryName, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -994,11 +1031,12 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFile#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @throws ShareStorageException If the share or the file doesn't exist.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFile(String fileName) {
         deleteFileWithResponse(fileName, null, Context.NONE);
     }
@@ -1013,7 +1051,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1023,6 +1061,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         return this.deleteFileWithResponse(fileName, null, timeout, context);
     }
@@ -1037,7 +1076,7 @@ public class ShareClient {
      * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param requestConditions {@link ShareRequestConditions}
@@ -1048,6 +1087,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, requestConditions, context);
@@ -1065,6 +1105,7 @@ public class ShareClient {
      * @param filePermission The file permission to get/create.
      * @return The file permission key associated with the file permission.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public String createPermission(String filePermission) {
         return createPermissionWithResponse(filePermission, Context.NONE).getValue();
     }
@@ -1081,6 +1122,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains the file permission key associated with the file permission.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> createPermissionWithResponse(String filePermission, Context context) {
         return client.createPermissionWithResponse(filePermission, context).block();
     }
@@ -1095,6 +1137,7 @@ public class ShareClient {
      * @param filePermissionKey The file permission key.
      * @return The file permission associated with the file permission key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public String getPermission(String filePermissionKey) {
         return getPermissionWithResponse(filePermissionKey, Context.NONE).getValue();
     }
@@ -1110,6 +1153,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains th file permission associated with the file permission key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
         return client.getPermissionWithResponse(filePermissionKey, context).block();
     }

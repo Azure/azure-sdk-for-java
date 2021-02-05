@@ -16,12 +16,13 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public final class AnomalyDimensionValuesTest extends AnomalyDimensionValuesTestBase {
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll

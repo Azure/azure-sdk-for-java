@@ -33,17 +33,17 @@ public class AADAccessTokenScopesIT {
                 + "https://manage.office.com/ServiceHealth.Read");
         properties.put(
             "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
+            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.Read.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");

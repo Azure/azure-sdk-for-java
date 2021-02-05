@@ -170,12 +170,6 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-conversion-complete
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-conversion-initial
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration
-        groupId: com.azure.spring
       - name: azure-spring-cloud-sample-cache
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-binder
@@ -187,10 +181,6 @@ extends:
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management-web
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-messaging
         groupId: com.azure.spring

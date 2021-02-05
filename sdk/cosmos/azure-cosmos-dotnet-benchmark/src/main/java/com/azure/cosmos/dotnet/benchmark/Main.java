@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.dotnet.benchmark.operations.InsertBenchmarkOperation;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -25,6 +24,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class Main {
 
@@ -99,7 +99,7 @@ public class Main {
             Utility.traceInformation("");
 
             int opsPerTask = cfg.getItemCount() / taskCount;
-            Function<Void, IBenchmarkOperation> benchmarkFactory =
+            Supplier<IBenchmarkOperation> benchmarkFactory =
                 getBenchmarkFactory(cfg, partitionKeyPath, cosmosClient);
 
             IExecutionStrategy execution = IExecutionStrategy.startNew(cfg, benchmarkFactory);
@@ -167,21 +167,35 @@ public class Main {
                 cosmosClient.close();
             }
         }
-
     }
 
-    private static Function<Void, IBenchmarkOperation> getBenchmarkFactory(
+    private static Supplier<IBenchmarkOperation> getBenchmarkFactory(
         BenchmarkConfig cfg,
         String partitionKeyPath,
         CosmosAsyncClient cosmosClient) throws IOException {
 
         String sampleItem = new String(Files.readAllBytes(Paths.get(cfg.getItemTemplateFile())));
 
-        return (dummy) -> new InsertBenchmarkOperation(
-            cosmosClient,
-            cfg.getDatabase(),
-            cfg.getContainer(),
-            partitionKeyPath,
-            sampleItem);
+        switch (cfg.getOperation())
+        {
+            case InsertWithoutExplicitPKAndId:
+                return () -> new InsertBenchmarkOperation(
+                    cosmosClient,
+                    cfg.getDatabase(),
+                    cfg.getContainer(),
+                    partitionKeyPath,
+                    sampleItem,
+                    false);
+            default:
+                return () -> new InsertBenchmarkOperation(
+                    cosmosClient,
+                    cfg.getDatabase(),
+                    cfg.getContainer(),
+                    partitionKeyPath,
+                    sampleItem,
+                    true);
+        }
+
+
     }
 }

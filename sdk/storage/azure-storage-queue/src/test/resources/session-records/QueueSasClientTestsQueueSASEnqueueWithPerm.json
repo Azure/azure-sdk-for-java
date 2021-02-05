@@ -1,112 +1,112 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm80617c",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c65446b8-e86d-490d-8f35-561bf3119631"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "04afef2c-035b-40aa-9906-0e67afc2b7b3"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a3a3d1-3003-009b-7203-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:05:32 GMT",
-      "x-ms-client-request-id" : "c65446b8-e86d-490d-8f35-561bf3119631"
+      "x-ms-request-id" : "4b850a50-6003-006a-7d54-d2fd81000000",
+      "Date" : "Mon, 14 Dec 2020 20:04:30 GMT",
+      "x-ms-client-request-id" : "04afef2c-035b-40aa-9906-0e67afc2b7b3"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm80617c/messages",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "908debea-1b7c-4e2a-8f78-8fed2580fa68",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ed4b25ab-2db7-4c22-86ca-a7e41c7ed6d1",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a3a3de-3003-009b-7b03-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0f4e9756-a3e8-4055-ab2c-1187d732cd2e</MessageId><InsertionTime>Thu, 04 Jun 2020 00:05:33 GMT</InsertionTime><ExpirationTime>Thu, 11 Jun 2020 00:05:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAkI3W3QM61gE=</PopReceipt><TimeNextVisible>Thu, 04 Jun 2020 00:05:33 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 04 Jun 2020 00:05:32 GMT",
-      "x-ms-client-request-id" : "908debea-1b7c-4e2a-8f78-8fed2580fa68",
+      "x-ms-request-id" : "4b850a54-6003-006a-7e54-d2fd81000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>4c65fb65-6b86-4ce6-8455-fc31c34fc514</MessageId><InsertionTime>Mon, 14 Dec 2020 20:04:31 GMT</InsertionTime><ExpirationTime>Mon, 21 Dec 2020 20:04:31 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAIckUVlTS1gE=</PopReceipt><TimeNextVisible>Mon, 14 Dec 2020 20:04:31 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Mon, 14 Dec 2020 20:04:31 GMT",
+      "x-ms-client-request-id" : "ed4b25ab-2db7-4c22-86ca-a7e41c7ed6d1",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm80617c/messages?sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A04%3A31Z&se=2020-12-15T20%3A04%3A31Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "008e440c-800b-438d-8383-8ad97c4f8724",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "36e41c2c-304e-4fa7-8593-514cf057e88f",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a3a3ea-3003-009b-0403-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>80dfce55-6ea6-4cc7-b75b-f081b549ff65</MessageId><InsertionTime>Thu, 04 Jun 2020 00:05:33 GMT</InsertionTime><ExpirationTime>Thu, 11 Jun 2020 00:05:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAK1753QM61gE=</PopReceipt><TimeNextVisible>Thu, 04 Jun 2020 00:05:33 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 04 Jun 2020 00:05:33 GMT",
-      "x-ms-client-request-id" : "008e440c-800b-438d-8383-8ad97c4f8724",
+      "x-ms-request-id" : "4b850a5a-6003-006a-0354-d2fd81000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>cb802fa5-f238-4157-a6ce-e5c319bb118e</MessageId><InsertionTime>Mon, 14 Dec 2020 20:04:32 GMT</InsertionTime><ExpirationTime>Mon, 21 Dec 2020 20:04:32 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAApWZAVlTS1gE=</PopReceipt><TimeNextVisible>Mon, 14 Dec 2020 20:04:32 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Mon, 14 Dec 2020 20:04:31 GMT",
+      "x-ms-client-request-id" : "36e41c2c-304e-4fa7-8593-514cf057e88f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?numofmessages=2&visibilitytimeout=30&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm80617c/messages?numofmessages=2&visibilitytimeout=30&sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A04%3A31Z&se=2020-12-15T20%3A04%3A31Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1340203d-c14e-4a8a-96eb-f045d47d3161"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4f4f97ac-bc06-4a1e-ab73-5bfee45a73d6"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "37a3a3ee-3003-009b-0703-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0f4e9756-a3e8-4055-ab2c-1187d732cd2e</MessageId><InsertionTime>Thu, 04 Jun 2020 00:05:33 GMT</InsertionTime><ExpirationTime>Thu, 11 Jun 2020 00:05:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA2fvn7wM61gE=</PopReceipt><TimeNextVisible>Thu, 04 Jun 2020 00:06:03 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test</MessageText></QueueMessage><QueueMessage><MessageId>80dfce55-6ea6-4cc7-b75b-f081b549ff65</MessageId><InsertionTime>Thu, 04 Jun 2020 00:05:33 GMT</InsertionTime><ExpirationTime>Thu, 11 Jun 2020 00:05:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA2fvn7wM61gE=</PopReceipt><TimeNextVisible>Thu, 04 Jun 2020 00:06:03 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>sastest</MessageText></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 04 Jun 2020 00:05:33 GMT",
-      "x-ms-client-request-id" : "1340203d-c14e-4a8a-96eb-f045d47d3161",
+      "x-ms-request-id" : "4b850a5b-6003-006a-0454-d2fd81000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>4c65fb65-6b86-4ce6-8455-fc31c34fc514</MessageId><InsertionTime>Mon, 14 Dec 2020 20:04:31 GMT</InsertionTime><ExpirationTime>Mon, 21 Dec 2020 20:04:31 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA5dw1aFTS1gE=</PopReceipt><TimeNextVisible>Mon, 14 Dec 2020 20:05:02 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test</MessageText></QueueMessage><QueueMessage><MessageId>cb802fa5-f238-4157-a6ce-e5c319bb118e</MessageId><InsertionTime>Mon, 14 Dec 2020 20:04:32 GMT</InsertionTime><ExpirationTime>Mon, 21 Dec 2020 20:04:32 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA5dw1aFTS1gE=</PopReceipt><TimeNextVisible>Mon, 14 Dec 2020 20:05:02 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>sastest</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Mon, 14 Dec 2020 20:04:31 GMT",
+      "x-ms-client-request-id" : "4f4f97ac-bc06-4a1e-ab73-5bfee45a73d6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages/0f4e9756-a3e8-4055-ab2c-1187d732cd2e?popreceipt=AgAAAAMAAAAAAAAAkI3W3QM61gE%3D&visibilitytimeout=3600&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm80617c/messages/4c65fb65-6b86-4ce6-8455-fc31c34fc514?popreceipt=AgAAAAMAAAAAAAAAIckUVlTS1gE%3D&visibilitytimeout=3600&sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A04%3A31Z&se=2020-12-15T20%3A04%3A31Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c3f12adf-eb0a-499c-bc82-f4f98b6aa663",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0dfb4f51-2ff7-44ac-8997-c2bb7e7daaf6",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "AuthorizationPermissionMismatch",
       "retry-after" : "0",
       "Content-Length" : "279",
       "StatusCode" : "403",
-      "x-ms-request-id" : "37a3a3f4-3003-009b-0b03-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:37a3a3f4-3003-009b-0b03-3a8ca5000000\nTime:2020-06-04T00:05:33.9126273Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:33 GMT",
-      "x-ms-client-request-id" : "c3f12adf-eb0a-499c-bc82-f4f98b6aa663",
+      "x-ms-request-id" : "4b850a5f-6003-006a-0854-d2fd81000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:4b850a5f-6003-006a-0854-d2fd81000000\nTime:2020-12-14T20:04:32.3868040Z</Message></Error>",
+      "Date" : "Mon, 14 Dec 2020 20:04:31 GMT",
+      "x-ms-client-request-id" : "0dfb4f51-2ff7-44ac-8997-c2bb7e7daaf6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queuesasclienttestsqueuesasenqueuewithperm34108e", "2020-06-04T00:05:33.618419100Z", "2020-06-04T00:05:33.662363Z", "queue59144cc9" ]
+  "variables" : [ "queuesasclienttestsqueuesasenqueuewithperm80617c", "2020-12-14T20:04:31.880567900Z", "2020-12-14T20:04:31.900565400Z", "queue13565605" ]
 }
