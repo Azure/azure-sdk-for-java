@@ -181,7 +181,7 @@ public final class RestProxy implements InvocationHandler {
     /**
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
      * additional context information.
-     * @param method  Service method being called.
+     * @param method Service method being called.
      * @param context Context information about the current service call.
      *
      * @return The updated context containing the span context.
