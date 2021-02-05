@@ -16,7 +16,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeInvoicesOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
-    private String locale;
+    private FormRecognizerLocale locale;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
@@ -88,9 +88,9 @@ public final class RecognizeInvoicesOptions {
      * Get the locale information for the invoice.
      * Supported locales include: en-US.
      *
-     * @return the localeInfo value.
+     * @return the locale value.
      */
-    public String getLocale() {
+    public FormRecognizerLocale getLocale() {
         return locale;
     }
 
@@ -98,10 +98,10 @@ public final class RecognizeInvoicesOptions {
      * Set the locale information for the invoice.
      * Supported locales include: en-US.
      *
-     * @param locale the localeInfo value.
+     * @param locale the locale value to set.
      * @return the updated {@code RecognizeInvoicesOptions} value.
      */
-    public RecognizeInvoicesOptions setLocale(final String locale) {
+    public RecognizeInvoicesOptions setLocale(final FormRecognizerLocale locale) {
         this.locale = locale;
         return this;
     }
