@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This sample code shows how to send {@link EventGridEvent}s to an Event Grid Topic that accepts Event Grid event schema.
- * Refer to https://docs.microsoft.com/en-us/azure/event-grid/event-schema.
+ * This sample code shows how to send {@link EventGridEvent EventGridEvents} to an Event Grid Topic that accepts Event Grid event schema.
+ * Refer to the <a href="https://docs.microsoft.com/en-us/azure/event-grid/event-schema">EventGridEvent schema</a>.
  *
  * @see PublishCloudEventsToTopic for a sample to send a CloudEvent
  */
@@ -28,7 +28,7 @@ public class PublishEventGridEventsToTopic {
 
         // Create a CloudEvent with String data
         String str = "FirstName: John1, LastName: James";
-        EventGridEvent eventJson = new EventGridEvent("com/example/MyApp", "User.Created.Text", str,"0.1");
+        EventGridEvent eventJson = new EventGridEvent("com/example/MyApp", "User.Created.Text", null,"0.1");
         // Create a CloudEvent with Object data
         User newUser = new User("John2", "James");
         EventGridEvent eventModelClass = new EventGridEvent("com/example/MyApp", "User.Created.Object", newUser, "0.1");

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This sample code shows how to send {@link CloudEvent}s to an Event Grid Topic that accepts cloud event schema.
- * Refer to https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema.
+ * This sample code shows how to send {@link CloudEvent CloudEvents} to an Event Grid Topic that accepts cloud event schema.
+ * Refer to the <a href="https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema">CloudEvent schema</a>.
  *
  * @see PublishEventGridEventsToTopic for a sample to send an Event Grid event.
  */
