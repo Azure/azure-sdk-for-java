@@ -32,10 +32,8 @@ import java.util.regex.Pattern;
 public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer";
-//    public static final String AUTHENTICATION_CHALLENGE_REGEX = "(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?";
     public static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
         Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
-//    public static final String AUTHENTICATION_CHALLENGE_PARAMS_REGEX = "(?:(\\w+)=\"([^\"\"]*)\")+";
     public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
         Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
@@ -138,7 +136,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                                            boolean forceTokenRefresh) {
         return cache.getToken(tokenSupplier, forceTokenRefresh)
            .flatMap(token -> {
-               context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+               context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
                return Mono.empty();
            });
     }
