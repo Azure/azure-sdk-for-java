@@ -229,7 +229,7 @@ public final class AzureMonitorExporterBuilder {
      * implementation of OpenTelemetry {@link SpanExporter}.
      *
      * @return An instance of {@link AzureMonitorExporter}.
-     * @throws NullPointerException if the instrumentation key or endpoint is not set.
+     * @throws NullPointerException if the connection string is not set.
      */
     public AzureMonitorExporter buildExporter() {
         if (connectionString == null) {
