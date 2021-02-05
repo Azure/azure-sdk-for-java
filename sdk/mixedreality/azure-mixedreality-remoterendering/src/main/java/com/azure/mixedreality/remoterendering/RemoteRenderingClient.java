@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.models.*;
@@ -96,8 +97,8 @@ public final class RemoteRenderingClient {
      * @return a list of all rendering sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<RenderingSession> listSessions() {
-        return client.listSessions().collectList().block();
+    public PagedIterable<RenderingSession> listSessions() {
+        return new PagedIterable<>(client.listSessions());
     }
 
     /**
@@ -149,7 +150,7 @@ public final class RemoteRenderingClient {
      * @return a list of all conversions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<Conversion> listConversions() {
-        return client.listConversions().collectList().block();
+    public PagedIterable<Conversion> listConversions() {
+        return new PagedIterable<>(client.listConversions());
     }
 }
