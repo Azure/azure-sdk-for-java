@@ -132,7 +132,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
                 sshPublicKey = "ssh-rsa " + publicKeyEncoded;
             } catch (NoSuchAlgorithmException | IOException e) {
-                throw new IllegalStateException("failed to generate ssh key", e);
+                throw new ClientLogger(ResourceManagerTestBase.class)
+                    .logThrowableAsError(new IllegalStateException("failed to generate ssh key", e));
             }
         }
         return sshPublicKey;

@@ -26,7 +26,7 @@ public class WindowsVMDiskEncryptionConfiguration
      *
      * @param keyVaultId the resource ID of the key vault to store the disk encryption key
      * @param vaultUri URI of the key vault data-plane endpoint
-     * @param aadClientId  client ID of an AAD application which has permission to the key vault
+     * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
     public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
@@ -42,7 +42,7 @@ public class WindowsVMDiskEncryptionConfiguration
      * Recommend to use the alternative constructor to provide vaultUri.
      *
      * @param keyVaultId the resource ID of the key vault to store the disk encryption key
-     * @param aadClientId  client ID of an AAD application which has permission to the key vault
+     * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      * @param azureEnvironment Azure environment
      */

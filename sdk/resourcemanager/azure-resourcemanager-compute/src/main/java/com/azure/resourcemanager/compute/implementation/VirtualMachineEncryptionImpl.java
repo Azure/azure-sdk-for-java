@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
-import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.DiskVolumeType;
 import com.azure.resourcemanager.compute.models.LinuxVMDiskEncryptionConfiguration;
