@@ -177,7 +177,7 @@ public class Configuration implements Cloneable {
      * Gets the value of the configuration.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
-     * it will be return. Otherwise, this will attempt to load the value from the environment.
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
      *
      * @param name Name of the configuration.
      * @return Value of the configuration if found, otherwise null.
