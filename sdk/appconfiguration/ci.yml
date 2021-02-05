@@ -34,3 +34,18 @@ extends:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
+      - name: azure-spring-cloud-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudappconfigurationconfig
+      - name: azure-spring-cloud-appconfiguration-config-web
+        groupId: com.azure.spring
+        safeName: azurespringcloudappconfigurationconfigweb
+      - name: azure-spring-cloud-feature-management
+        groupId: com.azure.spring
+        safeName: azurespringcloudfeaturemanagement
+      - name: azure-spring-cloud-feature-management-web
+        groupId: com.azure.spring
+        safeName: azurespringcloudfeaturemanagementweb
+      - name: azure-spring-cloud-starter-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudstarterappconfigurationconfig
