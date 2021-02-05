@@ -162,17 +162,6 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the instrumentation key of the Azure Monitor resource.
-     * @param instrumentationKey The instrumentation key of the Azure Monitor resource.
-     * @return The update {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If the {@code instrumentationKey} is null.
-     */
-    public AzureMonitorExporterBuilder instrumentationKey(String instrumentationKey) {
-        this.instrumentationKey = Objects.requireNonNull(instrumentationKey, "'instrumentationKey' cannot be null.");
-        return this;
-    }
-
-    /**
      * Sets the Azure Monitor service version.
      *
      * @param serviceVersion The Azure Monitor service version.
@@ -243,11 +232,10 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the instrumentation key or endpoint is not set.
      */
     public AzureMonitorExporter buildExporter() {
-        if (connectionString == null && instrumentationKey == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'connectionString' or 'instrumentationKey' "
-                + "must be set."));
+        if (connectionString == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));
         }
-        return new AzureMonitorExporter(buildClient(), instrumentationKey, endpoint);
+        return new AzureMonitorExporter(buildClient(), instrumentationKey);
     }
 
 }
