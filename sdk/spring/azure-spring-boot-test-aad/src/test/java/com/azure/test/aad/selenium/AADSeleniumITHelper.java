@@ -1,7 +1,6 @@
 package com.azure.test.aad.selenium;
 
 import com.azure.test.aad.common.SeleniumITHelper;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -53,17 +52,17 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
     }
 
-    public void logoutTest() {
+    public String logoutTest() {
         driver.get(app.root() + "logout");
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
         String cssSelector = "div[data-test-id='" + username + "']";
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssSelector))).click();
         String id = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[tabindex='0']")))
                         .getAttribute("data-test-id");
-        Assert.assertEquals(username, id);
+        return id;
     }
 
-    public String httpGetWithIncreamentalConsent(String endpoint) {
+    public String httpGetWithIncrementalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
 
         String oauth2AuthorizationUrlFraction = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/"
@@ -71,9 +70,11 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
         String onDemandAuthorizationUrl = driver.getCurrentUrl();
-        Assert.assertTrue(onDemandAuthorizationUrl.contains("https://management.azure.com/user_impersonation"));
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
-        return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
+        return onDemandAuthorizationUrl;
     }
 
+    public String getUsername() {
+        return username;
+    }
 }
