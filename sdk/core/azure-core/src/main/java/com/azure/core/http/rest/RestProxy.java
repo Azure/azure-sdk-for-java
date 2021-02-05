@@ -187,7 +187,7 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        boolean disableTracing =  (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(true);
+        boolean disableTracing =  (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
         if (!TracerProxy.isTracingEnabled() || disableTracing) {
             return context;
         }
