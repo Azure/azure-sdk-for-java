@@ -76,7 +76,7 @@ public final class ResourceGroupsImpl
 
     @Override
     public void deleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        deleteByNameAsync(name).block();
+        deleteByNameAsync(name, forceDeletionResourceTypes).block();
     }
 
     @Override
