@@ -1,0 +1,694 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    },
+    "configurationStores_azconfig_java_name": {
+      "defaultValue": "azconfig-java",
+      "type": "String"
+    },
+    "endpointSuffix": {
+      "defaultValue": ".azconfig.io",
+      "type": "String"
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
+    "sku": {
+      "defaultValue": "Standard",
+      "type": "string",
+      "metadata": {
+        "description": "sku type defined here."
+      }
+    },
+    "storageEndpointSuffix": {
+      "type": "string",
+      "defaultValue": "core.windows.net"
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+      "metadata": {
+        "description": "The tenant ID to which the application and resources belong."
+      }
+    },
+
+    "eventHubName": {
+      "type": "string",
+      "defaultValue": "javaeventhub"
+    },
+    "eventHubNamespaceHostNameSuffix": {
+      "type": "string",
+      "defaultValue": "servicebus.windows.net"
+    },
+    "testApplicationId": {
+      "type": "string",
+      "metadata": {
+        "description": "The client id of the service principal used to run tests."
+      }
+    },
+    "testApplicationSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "The application client secret used to run tests."
+      }
+    },
+    "consumerGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Consumer Group"
+      }
+    }
+  },
+  "variables": {
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
+    "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
+    "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
+    "location": "[resourceGroup().location]",
+
+    "storageApiVersion": "2019-06-01",
+    "keyVaultApiVersion": "2016-10-01",
+    "authorizationApiVersion": "2018-09-01-preview",
+    "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+    "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+    "primaryAccountName": "[concat('prim', parameters('baseName'))]",
+    "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
+    "premiumAccountName": "[concat('prem', parameters('baseName'))]",
+    "versionedAccountName": "[concat('ver', parameters('baseName'))]",
+    "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
+    "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
+    "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
+    "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
+
+    "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
+    "eventHubsApiVersion": "2017-04-01",
+    "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
+    "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
+    "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
+    "consumerGroupName": "[concat('', parameters('consumerGroupName')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2019-10-01",
+      "name": "[variables('uniqueAzConfigName')]",
+      "location":"[resourceGroup().location]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "properties": {
+        "endpoint":"[variables('endpointValue')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id)]",
+      "properties": {
+        "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('contributorRoleId', variables('primaryAccountName')))]",
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('contributorRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('blobDataOwnerRoleId', variables('primaryAccountName')))]",
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('blobDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('primaryAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('primaryAccountName'), '/default')]",
+      "properties": {
+        "containerDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 1
+        }
+      },
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('primaryAccountName'), '/default')]",
+      "properties": {
+        "shareDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 1
+        }
+      },
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
+      "properties": {
+      },
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
+      "properties": {
+      },
+      "dependsOn": [
+        "[variables('primaryAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('secondaryAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('premiumAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Premium_LRS",
+        "tier": "Premium"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('versionedAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('versionedAccountName'), '/default')]",
+      "properties": {
+        "isVersioningEnabled": true
+      },
+      "dependsOn": [
+        "[variables('versionedAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('dataLakeAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "isHnsEnabled": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[concat(variables('dataLakeAccountName'), '/default')]",
+      "properties": {
+        "containerDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 1
+        }
+      },
+      "dependsOn": [
+        "[variables('dataLakeAccountName')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "name": "[variables('premiumFileAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Premium_LRS",
+        "tier": "Premium"
+      },
+      "kind": "FileStorage",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "[variables('keyvaultApiVersion')]",
+      "name": "[variables('keyvaultName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "premium"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "keys": [
+                "get",
+                "list",
+                "update",
+                "create",
+                "import",
+                "delete",
+                "recover",
+                "backup",
+                "restore",
+                "decrypt",
+                "encrypt",
+                "unwrapKey",
+                "wrapKey",
+                "verify",
+                "sign",
+                "purge"
+              ],
+              "secrets": [
+                "get",
+                "list",
+                "set",
+                "delete",
+                "recover",
+                "backup",
+                "restore",
+                "purge"
+              ],
+              "certificates": [
+                "get",
+                "list",
+                "update",
+                "create",
+                "import",
+                "delete",
+                "recover",
+                "backup",
+                "restore",
+                "managecontacts",
+                "manageissuers",
+                "getissuers",
+                "listissuers",
+                "setissuers",
+                "deleteissuers",
+                "purge"
+              ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "enableSoftDelete": false
+      }
+    },
+
+    {
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[variables('eventHubsNamespaceName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 5
+      },
+      "properties": {
+        "zoneRedundant": false,
+        "isAutoInflateEnabled": false,
+        "maximumThroughputUnits": 0,
+        "kafkaEnabled": true
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/', parameters('eventHubName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 5,
+        "status": "Active"
+      },
+      "resources": [
+        {
+          "apiVersion": "2017-04-01",
+          "name": "[parameters('consumerGroupName')]",
+          "type": "consumergroups",
+          "dependsOn": [ "[parameters('eventHubName')]" ],
+          "properties": {
+            "userMetadata": "User Metadata goes here"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/', variables('eventHubsNamespaceKeyName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Send",
+          "Listen",
+          "Manage"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_APPCONFIG_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
+    },
+    "roleDefinitionId": {
+      "type": "string",
+      "value": "[ variables('roleDefinitionId')]"
+    },
+    "PRIMARY_STORAGE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('primaryAccountName')]"
+    },
+    "PRIMARY_STORAGE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "SECONDARY_STORAGE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('secondaryAccountName')]"
+    },
+    "SECONDARY_STORAGE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "BLOB_STORAGE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('secondaryAccountName')]"
+    },
+    "BLOB_STORAGE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "PREMIUM_STORAGE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('premiumAccountName')]"
+    },
+    "PREMIUM_STORAGE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "VERSIONED_STORAGE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('versionedAccountName')]"
+    },
+    "VERSIONED_STORAGE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('versionedAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "AZURE_STORAGE_FILE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('primaryAccountName')]"
+    },
+    "AZURE_STORAGE_FILE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "AZURE_STORAGE_FILE_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+    },
+    "PREMIUM_STORAGE_FILE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('premiumFileAccountName')]"
+    },
+    "PREMIUM_STORAGE_FILE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumFileAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "AZURE_STORAGE_QUEUE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('primaryAccountName')]"
+    },
+    "AZURE_STORAGE_QUEUE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "AZURE_STORAGE_QUEUE_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
+    },
+    "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('dataLakeAccountName')]"
+    },
+    "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
+    },
+    "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "AZURE_STORAGE_FILE_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "KEYVAULT_URL":{
+      "type": "string",
+      "value": "[variables('azureKeyVaultUrl')]"
+    },
+
+    "AZURE_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "AZURE_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "AZURE_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "AZURE_EVENTHUBS_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
+    },
+    "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
+      "type": "string",
+      "value": "[parameters('eventHubName')]"
+    },
+    "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
+      "type": "string",
+      "value": "[concat(variables('eventHubsNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+    },
+    "AZURE_EVENTHUBS_CONSUMER_GROUP_NAME": {
+      "type": "string",
+      "value": "[concat('', parameters('consumerGroupName'))]"
+    }
+  }
+}

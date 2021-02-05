@@ -22,6 +22,7 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
+import reactor.util.context.Context;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,7 +102,9 @@ public final class AzureMonitorExporter implements SpanExporter {
                 logger.verbose("exporting span: {}", span);
                 export(span, telemetryItems);
             }
-            client.export(telemetryItems).subscribe();
+            client.export(telemetryItems)
+                .subscriberContext(Context.of("disable-tracing", true))
+                .subscribe();
             return CompletableResultCode.ofSuccess();
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);

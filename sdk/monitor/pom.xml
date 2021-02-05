@@ -52,6 +52,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>../core/azure-core</module>
         <module>azure-opentelemetry-exporter-azuremonitor</module>
       </modules>
     </profile>

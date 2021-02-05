@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  * Any field may be set to null if no access conditions are desired.
  * <p>
  * Please refer to the request header section
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/append-block>here</a> for more conceptual
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/append-block>here</a> for more conceptual
  * information.
  */
 @Fluent

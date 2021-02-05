@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 public class EventHubsExporterIntegrationTest extends AzureMonitorExporterTestBase {
 
-    private static final String CONNECTION_STRING = System.getenv("EVENT_HUB_CONNECTION_STRING");
-    private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
+    private static final String CONNECTION_STRING = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
+    private static final String STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_BLOB_CONNECTION_STRING");
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
     @Test

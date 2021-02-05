@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -56,7 +58,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * encryption and decryption of the data client side. Note: setting metadata in particular is unsafe and should only be
  * done so with caution.
  * <p> Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
+ * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
  *
  * <p>
@@ -70,7 +72,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * possible in case the associated block/page/append blob contains encrypted data.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
@@ -149,6 +151,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return this.upload(data, parallelTransferOptions, false);
@@ -191,6 +194,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -248,6 +252,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
@@ -288,6 +293,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
@@ -320,6 +326,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return An empty response
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -341,6 +348,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return An empty response
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
@@ -378,6 +386,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
@@ -401,6 +410,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
