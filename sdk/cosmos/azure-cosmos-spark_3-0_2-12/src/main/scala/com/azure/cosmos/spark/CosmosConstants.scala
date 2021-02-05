@@ -7,7 +7,6 @@ package com.azure.cosmos.spark
 private object CosmosConstants {
   val currentVersion = "3.0.1_4.0-3.0.0" // TODO: Define a version format
   val userAgentSuffix = s" SparkConnector/$currentVersion"
-  
   object StatusCodes {
     val Conflict = 409
     val ServiceUnavailable = 503
