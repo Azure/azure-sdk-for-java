@@ -46,24 +46,23 @@ public class ConnectionHandler extends Handler {
     private final Map<String, Object> connectionProperties;
     private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
     private final ConnectionOptions connectionOptions;
-    private final int port;
 
     /**
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
-     * @param hostname Hostname of the AMQP message broker to create a connection to.
      * @param productName The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the AMQP connection.
      */
-    public ConnectionHandler(final String connectionId, final String hostname, final int port,
-        final String productName, final String clientVersion, final ConnectionOptions connectionOptions) {
-        super(connectionId, hostname);
+    public ConnectionHandler(final String connectionId, final String productName, final String clientVersion,
+        final ConnectionOptions connectionOptions) {
+        super(connectionId,
+            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
+
         add(new Handshaker());
 
-        this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
-        this.port = port;
+        this.connectionOptions = connectionOptions;
 
         Objects.requireNonNull(productName, "'product' cannot be null.");
         Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
@@ -97,7 +96,7 @@ public class ConnectionHandler extends Handler {
      * @return The port used to open connection.
      */
     public int getProtocolPort() {
-        return port;
+        return connectionOptions.getPort();
     }
 
     /**
@@ -162,7 +161,8 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.info("onConnectionInit hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
+        logger.info("onConnectionInit hostname[{}], connectionId[{}], amqpHostname[{}]", getHostname(),
+            getConnectionId(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
 

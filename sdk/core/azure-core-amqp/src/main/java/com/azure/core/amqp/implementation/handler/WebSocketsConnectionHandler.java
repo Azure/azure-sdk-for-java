@@ -27,14 +27,13 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * Creates a handler that handles proton-j's connection events using web sockets.
      *
      * @param connectionId Identifier for this connection.
-     * @param hostname Hostname of the AMQP message broker to create a connection to.
      * @param productName The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the connection.
      */
-    public WebSocketsConnectionHandler(final String connectionId, final String hostname, final int port,
-        final String productName, final String clientVersion, final ConnectionOptions connectionOptions) {
-        super(connectionId, hostname, port, productName, clientVersion, connectionOptions);
+    public WebSocketsConnectionHandler(final String connectionId, final String productName, final String clientVersion,
+        final ConnectionOptions connectionOptions) {
+        super(connectionId, productName, clientVersion, connectionOptions);
     }
 
     /**
@@ -47,6 +46,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         final String hostName = event.getConnection().getHostname();
 
+        logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
         webSocket.configure(
             hostName,
