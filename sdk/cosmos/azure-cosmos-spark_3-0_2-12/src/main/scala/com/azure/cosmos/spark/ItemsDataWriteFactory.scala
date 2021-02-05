@@ -24,18 +24,10 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
   private class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
     logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-    private val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
     private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
 
-    // TODO moderakh: this needs to be shared to avoid creating multiple clients
-    private val builder = new CosmosClientBuilder()
-      .key(cosmosAccountConfig.key)
-      .endpoint(cosmosAccountConfig.endpoint)
-      .consistencyLevel(ConsistencyLevel.EVENTUAL)
-
-    SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
-    private val client = builder.buildAsyncClient()
+    private val client = CosmosClientCache(CosmosClientConfiguration(userConfig, useEventualConsistency = true), Some(cosmosClientStateHandle))
 
     private val container = client.getDatabase(cosmosTargetContainerConfig.database)
       .getContainer(cosmosTargetContainerConfig.container)

@@ -64,12 +64,9 @@ class CosmosCatalog
     */
   override def initialize(name: String,
                           options: CaseInsensitiveStringMap): Unit = {
-    val accountConfig = CosmosAccountConfig.parseCosmosAccountConfig(
-      options.asCaseSensitiveMap().asScala.toMap)
-    this.client = new CosmosClientBuilder()
-      .key(accountConfig.key)
-      .endpoint(accountConfig.endpoint)
-      .buildAsyncClient()
+    val config = options.asCaseSensitiveMap().asScala.toMap
+    val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+    this.client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None)
 
     // TODO: moderakh do we need to do config validation here?
     tableOptions = toTableConfig(options)

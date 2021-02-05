@@ -8,13 +8,17 @@ class CosmosConfigSpec extends UnitSpec {
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
-      "spark.cosmos.accountKey" -> "xyz"
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true"
     )
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual "https://localhsot:8081"
     endpointConfig.key shouldEqual "xyz"
+    endpointConfig.applicationName.get shouldEqual "myapp"
+    endpointConfig.useGatewayMode shouldEqual true
   }
 
   it should "validate account endpoint" in {
@@ -49,6 +53,23 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   it should "parse read configuration" in {
+    val userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+  }
+
+  it should "parse read configuration default" in {
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
+
+    config.forceEventualConsistency shouldBe true
+  }
+
+  it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(
       "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
@@ -91,6 +112,5 @@ class CosmosConfigSpec extends UnitSpec {
     config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
     config.maxRetryCount shouldEqual 8
   }
-
   //scalastyle:on multiple.string.literals
 }

@@ -3,8 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosClientBuilder
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -24,20 +23,10 @@ private case class ChangeFeedPartitionReader
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  private val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
-
-  // TODO: moderakh cache the cosmos clients and manage the lifetime of the clients
-  // we shouldn't recreate everytime, causing resource leak, inefficient behaviour
-  private val builder = new CosmosClientBuilder()
-    .endpoint(endpointConfig.endpoint)
-    .key(endpointConfig.key)
-
-  private val metadataCache = cosmosClientStateHandle.value
-
-  SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
-  private val client = builder.buildAsyncClient()
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  private val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
   private val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)

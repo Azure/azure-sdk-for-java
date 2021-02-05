@@ -41,7 +41,12 @@ private object CosmosConfig {
   }
 }
 
-private case class CosmosAccountConfig(endpoint: String, key: String, accountName: String)
+private case class CosmosAccountConfig(
+  endpoint: String,
+  key: String,
+  accountName: String,
+  applicationName: Option[String],
+  useGatewayMode: Boolean)
 
 private object CosmosAccountConfig {
   private[spark] val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
@@ -63,24 +68,58 @@ private object CosmosAccountConfig {
       val url = new URL(accountEndpointUri)
       val separatorIndex = url.getHost.indexOf('.')
       if (separatorIndex > 0) {
-        url.getHost.substring(0, separatorIndex)
+          url.getHost.substring(0, separatorIndex)
       } else {
         url.getHost
       }
     },
     helpMessage = "Cosmos DB Account Name")
 
+  private[spark] val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
+    mandatory = false,
+    parseFromStringFunction = applicationName => applicationName,
+    helpMessage = "Application name")
+
+  private[spark] val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
+    helpMessage = "Use gateway mode for the client operations")
+
   private[spark] def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
+    val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
+    val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
 
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
     assert(key.isDefined)
     assert(accountName.isDefined)
 
-    CosmosAccountConfig(endpointOpt.get, key.get, accountName.get)
+    CosmosAccountConfig(
+      endpointOpt.get,
+      key.get,
+      accountName.get,
+      applicationName,
+      useGatewayMode.get)
+  }
+}
+
+private[spark] case class CosmosReadConfig(forceEventualConsistency: Boolean)
+
+private[spark] object CosmosReadConfig {
+  val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
+    mandatory = false,
+    defaultValue = Some(true),
+    parseFromStringFunction = value => value.toBoolean,
+    helpMessage = "Makes the client use Eventual consistency for read operations")
+
+  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
+    val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+
+    CosmosReadConfig(forceEventualConsistency.get)
   }
 }
 

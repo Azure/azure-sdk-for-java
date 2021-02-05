@@ -58,13 +58,14 @@ private class ItemsTable(val transforms: Array[Transform],
     initializeAndBroadcastCosmosClientStateForContainer()
   private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
   private val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   private val cosmosContainerConfig =
     CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, databaseName, containerName)
   private val tableName = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
-  private val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
-    .key(clientConfig.key)
-    .buildAsyncClient()
+  private val client = CosmosClientCache(
+    CosmosClientConfiguration(effectiveUserConfig,
+      useEventualConsistency = readConfig.forceEventualConsistency), None)
 
   override def name(): String = tableName
 
