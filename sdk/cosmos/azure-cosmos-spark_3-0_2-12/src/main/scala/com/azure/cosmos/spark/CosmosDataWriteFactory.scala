@@ -11,6 +11,7 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
 
+// scalastyle:off multiple.string.literals
 class CosmosDataWriteFactory(userConfig: Map[String, String],
                              inputSchema: StructType,
                              cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
@@ -61,6 +62,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
       }
     }
 
+    // scalastyle:off return
     private def createWithRetry(partitionKeyValue: PartitionKey,
                                 objectNode: ObjectNode): Unit = {
 
@@ -106,6 +108,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
       assert(exceptionOpt.isDefined)
       throw exceptionOpt.get
     }
+    // scalastyle:on return
 
     override def commit(): WriterCommitMessage = {
       new WriterCommitMessage {}
@@ -120,3 +123,4 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
     }
   }
 }
+// scalastyle:on multiple.string.literals
