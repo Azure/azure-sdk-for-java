@@ -35,7 +35,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
 public final class PhoneNumbersClientBuilder {
     private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-communication-administration.properties");
+        CoreUtils.getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -197,8 +197,8 @@ public final class PhoneNumbersClientBuilder {
         if (this.version != null) {
             logger.info("Build client for service version" + this.version.getVersion());
         }
-
-        return new PhoneNumbersClient(this.createPhoneNumberAdminClient(), buildAsyncClient());
+        PhoneNumberAdminClientImpl adminClient = this.createPhoneNumberAdminClient();
+        return new PhoneNumbersClient(adminClient, this.createPhoneNumberAsyncClient(adminClient));
     }
 
     /**

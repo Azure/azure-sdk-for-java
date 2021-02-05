@@ -10,6 +10,9 @@ module com.azure.communication.phonenumbers {
     exports com.azure.communication.phonenumbers;
     exports com.azure.communication.phonenumbers.models;
 
+    opens com.azure.communication.phonenumbers.implementation.models
+        to com.fasterxml.jackson.databind;
     opens com.azure.communication.phonenumbers.models
         to com.fasterxml.jackson.databind;
+        
 }
