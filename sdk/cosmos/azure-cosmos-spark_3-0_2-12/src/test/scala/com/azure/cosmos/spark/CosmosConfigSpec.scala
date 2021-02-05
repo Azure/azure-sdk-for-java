@@ -9,14 +9,16 @@ class CosmosConfigSpec extends UnitSpec {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
       "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.accountConsistency" -> "Strong"
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true"
     )
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual "https://localhsot:8081"
     endpointConfig.key shouldEqual "xyz"
-    endpointConfig.consistency.get shouldEqual "Strong"
+    endpointConfig.applicationName.get shouldEqual "myapp"
+    endpointConfig.useGatewayMode shouldEqual true
   }
 
   it should "validate account endpoint" in {
@@ -50,7 +52,7 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
-    "Read Config Parser" should "parse read configuration" in {
+    "Schema inference Parser" should "parse configuration" in {
         val customQuery = "select * from c"
         val userConfig = Map(
             "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
@@ -63,6 +65,16 @@ class CosmosConfigSpec extends UnitSpec {
         config.inferSchemaSamplingSize shouldEqual 50
         config.inferSchemaEnabled shouldBe false
         config.inferSchemaQuery shouldEqual Some(customQuery)
+    }
+
+    "Read Parser" should "parse configuration" in {
+        val userConfig = Map(
+            "spark.cosmos.read.forceEventualConsistency" -> "false"
+        )
+
+        val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+        config.forceEventualConsistency shouldBe false
     }
   //scalastyle:on multiple.string.literals
 }

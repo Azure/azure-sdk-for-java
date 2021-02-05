@@ -2,43 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.ConsistencyLevel
-import com.azure.cosmos.BridgeInternal
+import java.lang.management.ManagementFactory
 
 private[spark] case class CosmosClientConfiguration (
     endpoint: String,
     key: String,
-    consistencyLevel: ConsistencyLevel)
+    applicationName: String,
+    useGatewayMode: Boolean,
+    useEventualConsistency: Boolean)
 
-private[spark] object CosmosClientConfiguration extends CosmosLoggingTrait {
-    private[spark] def apply(config: Map[String, String]): CosmosClientConfiguration = {
+private[spark] object CosmosClientConfiguration {
+    def apply(
+         config: Map[String, String],
+         useEventualConsistency: Boolean): CosmosClientConfiguration = {
         val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
-        val consistency = cosmosAccountConfig.consistency match {
-            case Some(consistencyAsString) =>
-                parseStringAsConsistencyLevel(consistencyAsString) match {
-                    case Some(parsedConsistency) => parsedConsistency
-                    // Should we throw instead of defaulting to Eventual if the value does not map correctly?
-                    case None => ConsistencyLevel.EVENTUAL
-                }
-            case None => ConsistencyLevel.EVENTUAL
+        val applicationName = cosmosAccountConfig.applicationName match {
+            case None =>
+                s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
+            case Some(appName) =>
+                s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName} $appName"
         }
+
         CosmosClientConfiguration(
             cosmosAccountConfig.endpoint,
             cosmosAccountConfig.key,
-            consistency)
-    }
-
-    private def parseStringAsConsistencyLevel(stringValue: String): Option[ConsistencyLevel] = {
-        try {
-            val result = BridgeInternal.fromServiceSerializedFormat(stringValue)
-            Option(result)
-        }
-        catch {
-            case _: IllegalArgumentException =>
-                logWarning(s"Could not parse Consistency value $stringValue in configuration")
-                // ignore the exception and return the default
-                None
-        }
-
+            applicationName,
+            cosmosAccountConfig.useGatewayMode,
+            useEventualConsistency)
     }
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ConsistencyLevel}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
 import org.apache.spark.broadcast.Broadcast
 
@@ -16,10 +16,18 @@ private[spark] object CosmosClientCache {
         cache.get(cosmosClientConfiguration) match {
             case Some(client) => client
             case None =>
-                val builder = new CosmosClientBuilder()
+                var builder = new CosmosClientBuilder()
                     .key(cosmosClientConfiguration.key)
                     .endpoint(cosmosClientConfiguration.endpoint)
-                    .consistencyLevel(cosmosClientConfiguration.consistencyLevel)
+                    .userAgentSuffix(cosmosClientConfiguration.applicationName)
+
+                if (cosmosClientConfiguration.useEventualConsistency){
+                    builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
+                }
+
+                if (cosmosClientConfiguration.useGatewayMode){
+                    builder = builder.gatewayMode()
+                }
 
                 cosmosClientStateHandle match {
                     case Some(handle) =>

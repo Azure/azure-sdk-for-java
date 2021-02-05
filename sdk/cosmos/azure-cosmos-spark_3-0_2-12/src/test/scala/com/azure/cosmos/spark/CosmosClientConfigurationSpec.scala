@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.ConsistencyLevel
+import java.lang.management.ManagementFactory
 
 class CosmosClientConfigurationSpec extends UnitSpec {
     //scalastyle:off multiple.string.literals
@@ -10,41 +10,35 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     "CosmosClientConfiguration" should "parse configuration" in {
         val userConfig = Map(
             "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
-            "spark.cosmos.accountKey" -> "xyz",
-            "spark.cosmos.accountConsistency" -> "Strong"
-        )
-
-        val configuration = CosmosClientConfiguration(userConfig)
-
-        configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-        configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
-        configuration.consistencyLevel shouldEqual ConsistencyLevel.STRONG
-    }
-
-    it should "use default for consistency" in {
-        val userConfig = Map(
-            "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
             "spark.cosmos.accountKey" -> "xyz"
         )
 
-        val configuration = CosmosClientConfiguration(userConfig)
+        val forceEventual = false
+        val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
         configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
         configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
-        configuration.consistencyLevel shouldEqual ConsistencyLevel.EVENTUAL
+        configuration.useGatewayMode shouldBe false
+        configuration.useEventualConsistency shouldEqual forceEventual
+        configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     }
 
-    it should "use default for consistency if wrong value" in {
+    it should "apply applicationName if specified" in {
+        val myApp = "myApp"
         val userConfig = Map(
             "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
             "spark.cosmos.accountKey" -> "xyz",
-            "spark.cosmos.accountConsistency" -> "NotAConsistency"
+            "spark.cosmos.applicationName" -> myApp,
+            "spark.cosmos.useGatewayMode" -> "true"
         )
 
-        val configuration = CosmosClientConfiguration(userConfig)
+        val forceEventual = true
+        val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
         configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
         configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
-        configuration.consistencyLevel shouldEqual ConsistencyLevel.EVENTUAL
+        configuration.useGatewayMode shouldBe true
+        configuration.useEventualConsistency shouldEqual forceEventual
+        configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName} $myApp"
     }
 }

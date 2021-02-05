@@ -25,7 +25,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
 
     val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
 
-    val client = CosmosClientCache(CosmosClientConfiguration(userConfig), Some(cosmosClientStateHandle))
+    val client = CosmosClientCache(CosmosClientConfiguration(userConfig, useEventualConsistency = true), Some(cosmosClientStateHandle))
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code

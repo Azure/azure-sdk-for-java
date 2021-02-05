@@ -17,40 +17,40 @@ class CosmosClientCacheSpec extends UnitSpec {
     "CosmosClientCache" should "get cached object with same config" in {
         val userConfig = CosmosClientConfiguration(Map(
             "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey,
-            "spark.cosmos.accountConsistency" -> "Strong"
-        ))
+            "spark.cosmos.accountKey" -> cosmosMasterKey
+        ), useEventualConsistency = true)
 
         val client1 = CosmosClientCache(userConfig, None)
         val client2 = CosmosClientCache(userConfig, None)
 
         client2 should be theSameInstanceAs client1
+        CosmosClientCache.purge(userConfig)
     }
 
     it should "return a new instance after purging" in {
         val userConfig = CosmosClientConfiguration(Map(
             "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey,
-            "spark.cosmos.accountConsistency" -> "Strong"
-        ))
+            "spark.cosmos.accountKey" -> cosmosMasterKey
+        ), useEventualConsistency = true)
 
         val client1 = CosmosClientCache(userConfig, None)
         CosmosClientCache.purge(userConfig)
         val client2 = CosmosClientCache(userConfig, None)
 
         client2 shouldNot be theSameInstanceAs client1
+        CosmosClientCache.purge(userConfig)
     }
 
     it should "use state during initialization" in {
         val userConfig = CosmosClientConfiguration(Map(
             "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-            "spark.cosmos.accountKey" -> cosmosMasterKey,
-            "spark.cosmos.accountConsistency" -> "Strong"
-        ))
+            "spark.cosmos.accountKey" -> cosmosMasterKey
+        ), useEventualConsistency = true)
 
         val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
         val client1 = CosmosClientCache(userConfig, Option(broadcast))
         verify(broadcast).value
         client1 shouldBe a[CosmosAsyncClient]
+        CosmosClientCache.purge(userConfig)
     }
 }

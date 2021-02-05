@@ -26,8 +26,8 @@ case class CosmosPartitionReader(config: Map[String, String],
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-
-  val client = CosmosClientCache(CosmosClientConfiguration(config), Some(cosmosClientStateHandle))
+  val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
   val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)
