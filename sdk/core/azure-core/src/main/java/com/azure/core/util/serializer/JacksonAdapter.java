@@ -70,6 +70,7 @@ public class JacksonAdapter implements SerializerAdapter {
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
+    @SuppressWarnings("deprecation")
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
 
@@ -211,6 +212,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
@@ -279,6 +281,7 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @param mapper the object mapper to use.
      */
+    @SuppressWarnings("deprecation")
     private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)

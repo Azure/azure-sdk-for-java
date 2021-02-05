@@ -57,6 +57,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxConverter() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -75,6 +76,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -92,6 +94,7 @@ public class PagedFluxTest {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
