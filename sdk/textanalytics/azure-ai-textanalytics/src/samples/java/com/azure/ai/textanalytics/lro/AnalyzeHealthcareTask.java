@@ -45,7 +45,6 @@ public class AnalyzeHealthcareTask {
             ));
         }
 
-        // Request options: show statistics and model version
         RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
             .setIncludeStatistics(true);
 

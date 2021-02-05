@@ -140,7 +140,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "ES")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.detectLanguageBatchWithResponse(detectLanguageInputs1, requestOptions)
@@ -228,7 +227,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -261,7 +259,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         RecognizeEntitiesOptions requestOptions = new RecognizeEntitiesOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -489,7 +486,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
             new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -526,7 +522,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
             new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         RecognizeLinkedEntitiesOptions requestOptions = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -612,7 +607,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -790,7 +784,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -830,7 +823,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
             .setIncludeOpinionMining(true).setIncludeStatistics(true);
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, options)
@@ -880,7 +872,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "over the past several months."));
         }
 
-        // Request options: show statistics and model version
         RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
             .setIncludeStatistics(true);
 

@@ -42,7 +42,6 @@ public class AnalyzeSentimentBatchDocumentsAsync {
             new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         AnalyzeSentimentOptions requestOptions = new AnalyzeSentimentOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents

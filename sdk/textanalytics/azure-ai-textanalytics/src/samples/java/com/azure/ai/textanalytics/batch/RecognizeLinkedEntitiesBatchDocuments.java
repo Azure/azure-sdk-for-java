@@ -40,7 +40,6 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         RecognizeLinkedEntitiesOptions requestOptions = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         Response<RecognizeLinkedEntitiesResultCollection> linkedEntitiesBatchResultResponse =

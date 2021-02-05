@@ -905,7 +905,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "the past several months."));
         }
 
-        // Request options: show statistics and model version
         RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
             .setIncludeStatistics(true);
 

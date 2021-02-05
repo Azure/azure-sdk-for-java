@@ -40,7 +40,6 @@ public class AnalyzeHealthcareTaskAsync {
                 "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months."));
         }
 
-        // Request options: show statistics and model version
         RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
             .setIncludeStatistics(true);
 

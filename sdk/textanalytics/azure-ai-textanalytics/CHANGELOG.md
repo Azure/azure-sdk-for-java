@@ -1,7 +1,7 @@
 # Release History
 ## 5.1.0-beta.4 (Unreleased)
 ### New features
-- Added new classes, `StringIndexType`, `RecognizeLinkedEntitiesOptions`.
+- Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.
 - Added `StringIndexType` to all `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`,
 `RecognizePiiEntitiesOptions` and the default is `UTF16CODE_UNIT` if null value is passed.
 - Added new API,

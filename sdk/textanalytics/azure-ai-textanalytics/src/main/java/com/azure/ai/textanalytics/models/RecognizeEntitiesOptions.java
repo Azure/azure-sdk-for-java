@@ -53,9 +53,9 @@ public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions 
 
     /**
      * Set the value of {@code stringIndexType}.
+     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
      *
-     * @param stringIndexType It used to set the value of string indexing type. It could be 'TextElements_v8',
-     * 'UNICODE_CODE_POINT', or 'UTF16CODE_UNIT' type.
+     * @param stringIndexType It used to set the value of string indexing type.
      *
      * @return the {@link RecognizeEntitiesOptions} object itself.
      */
