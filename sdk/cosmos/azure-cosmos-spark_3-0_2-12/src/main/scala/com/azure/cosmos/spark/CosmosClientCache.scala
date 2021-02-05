@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ConsistencyLevel}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
 import org.apache.spark.broadcast.Broadcast
+import java.util.ConcurrentModificationException
 
 import scala.collection.concurrent.TrieMap
 
@@ -13,6 +14,26 @@ private[spark] object CosmosClientCache {
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
                            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
+    cache.get(cosmosClientConfiguration) match {
+      case Some(client) => client
+      case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle)
+    }
+  }
+
+  def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
+    cache.get(cosmosClientConfiguration) match {
+      case None => Unit
+      case Some(existingClient) =>
+        cache.remove(cosmosClientConfiguration) match {
+          case None => Unit
+          case Some(_) => existingClient.close()
+        }
+    }
+  }
+
+  private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
+                               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]])
+  : CosmosAsyncClient = synchronized {
     cache.get(cosmosClientConfiguration) match {
       case Some(client) => client
       case None =>
@@ -41,22 +62,10 @@ private[spark] object CosmosClientCache {
         cache.putIfAbsent(cosmosClientConfiguration, client) match {
           case None =>
             client
-          case Some(existingCosmosClient) =>
-            // Reuse the pre-existing one, means a concurrent thread put it first
-            client.close()
-            existingCosmosClient
+          case Some(_) =>
+            throw new ConcurrentModificationException("Should not reach here because its synchronized")
         }
     }
-  }
 
-  def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
-    cache.get(cosmosClientConfiguration) match {
-      case None => Unit
-      case Some(existingClient) =>
-        cache.remove(cosmosClientConfiguration) match {
-          case None => Unit
-          case Some(_) => existingClient.close()
-        }
-    }
   }
 }
