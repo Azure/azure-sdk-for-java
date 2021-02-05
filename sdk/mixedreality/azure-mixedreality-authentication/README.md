@@ -98,6 +98,24 @@ AccessToken token = client.getToken();
 
 See the authentication examples [above](#authenticate-the-client) for more complex authentication scenarios.
 
+#### Using the access token in a Mixed Reality client library
+
+Some Mixed Reality client libraries might accept an access token in place of a credential. For example:
+
+```java
+// getMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
+// a Mixed Reality access token from a web service. The web service would use the
+// MixedRealityStsClient and credentials to obtain an access token to be returned
+// to the client.
+AccessToken accessToken = getMixedRealityAccessTokenFromWebService();
+
+SpatialAnchorsAccount account = new SpatialAnchorsAccount(accountId, accountDomain);
+SpatialAnchorsClient client = new SpatialAnchorsClient(account, accessToken);
+```
+
+Note: The `SpatialAnchorsClient` usage above is hypothetical and may not reflect the actual library. Consult the
+documentation for the client library you're using to determine if and how this might be supported.
+
 ## Troubleshooting
 
 Describe common errors and exceptions, how to "unpack" them if necessary, and include guidance for graceful handling and recovery.
