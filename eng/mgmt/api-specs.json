@@ -324,6 +324,10 @@
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "resourcemover/resource-manager": {
+    "source": "specification/resourcemover/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "search/resource-manager": {
     "source": "specification/search/resource-manager/readme.md",
     "args": "--multiapi --fluent"
