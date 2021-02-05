@@ -152,7 +152,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumbers(String phoneNumber, Context context) {
+    public SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber, Context context) {
         return asyncClient.beginReleasePhoneNumber(phoneNumber).getSyncPoller();
     }
 

@@ -181,10 +181,7 @@ public final class PhoneNumbersAsyncClient {
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
                     pollingContext.setData("searchId", parseIdFromUrl(response.getDeserializedHeaders().getLocation()));
-                    return client.getOperationAsync(pollingContext.getData("operationId"))
-                    .flatMap((PhoneNumberOperation result) -> {
-                        return Mono.just(result);
-                    });
+                    return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -274,10 +271,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
                 .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
-                    return client.getOperationAsync(pollingContext.getData("operationId"))
-                        .flatMap((PhoneNumberOperation result) -> {
-                            return Mono.just(result);
-                        });
+                    return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -322,10 +316,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
                 .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
                     pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
-                    return client.getOperationAsync(pollingContext.getData("operationId"))
-                    .flatMap((PhoneNumberOperation result) -> {
-                        return Mono.just(result);
-                    });
+                    return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -370,10 +361,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
                 .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
                     pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
-                    return client.getOperationAsync(pollingContext.getData("operationId"))
-                    .flatMap((PhoneNumberOperation result) -> {
-                        return Mono.just(result);
-                    });
+                    return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
         };
