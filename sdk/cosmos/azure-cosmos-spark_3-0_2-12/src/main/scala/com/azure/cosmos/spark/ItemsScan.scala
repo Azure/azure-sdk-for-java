@@ -6,10 +6,12 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosParametrizedQuery, FeedRange}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.StructType
 
-case class CosmosScan(schema: StructType,
-                      config: Map[String, String], cosmosQuery: CosmosParametrizedQuery, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private case class ItemsScan(schema: StructType,
+                             config: Map[String, String],
+                             cosmosQuery: CosmosParametrizedQuery,
+                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends Scan
     with Batch
     with CosmosLoggingTrait {
@@ -26,11 +28,11 @@ case class CosmosScan(schema: StructType,
   override def planInputPartitions(): Array[InputPartition] = {
     // TODO: moderakh use get feed range?
     // for now we are returning one partition hence only one spark task will be created.
-    Array(CosmosInputPartition(FeedRange.forFullRange.toString()))
+    Array(FeedRangeInputPartition(FeedRange.forFullRange.toString))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    CosmosScanPartitionReaderFactory(config, schema, cosmosQuery, cosmosClientStateHandle)
+    ItemsScanPartitionReaderFactory(config, schema, cosmosQuery, cosmosClientStateHandle)
   }
 
   override def toBatch: Batch = {

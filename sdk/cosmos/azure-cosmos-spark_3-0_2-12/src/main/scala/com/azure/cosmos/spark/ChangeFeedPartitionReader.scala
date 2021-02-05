@@ -14,7 +14,7 @@ import org.apache.spark.sql.types.StructType
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
 // For now we are creating only one spark partition per physical partition
-private case class CosmosChangeFeedPartitionReader
+private case class ChangeFeedPartitionReader
 (
   config: Map[String, String],
   readSchema: StructType,

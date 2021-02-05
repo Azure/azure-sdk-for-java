@@ -22,7 +22,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode2.put("otherProperty", "text")
         val docs = List[ObjectNode](objectNode, objectNode2)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 2
         schema.fields(0).name shouldBe "id"
         schema.fields(1).name shouldBe "otherProperty"
@@ -35,7 +35,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.putNull("someProperty")
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe NullType
     }
@@ -45,7 +45,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.put("someProperty", true)
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe BooleanType
     }
@@ -55,7 +55,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.set("someProperty", objectNode.binaryNode("test".getBytes()))
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe BinaryType
     }
@@ -82,7 +82,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         val docs = List[ObjectNode](objectNode)
 
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 5
         schema(colName1).dataType shouldBe DoubleType
         schema(colName2).dataType shouldBe FloatType
@@ -100,7 +100,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.set(colName1, arrayObjectNode)
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe ArrayType(StringType)
     }
@@ -117,7 +117,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.put(colName2, colVal2)
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 2
         schema.fields(0).dataType.asInstanceOf[StructType].fields should have size 1
         schema.fields(0).dataType.asInstanceOf[StructType].fields(0).dataType shouldBe StringType
@@ -133,7 +133,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode2.put("id", idVal2)
         val docs = List[ObjectNode](objectNode, objectNode2)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe StringType
     }
@@ -147,7 +147,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode2.put("id", idVal2)
         val docs = List[ObjectNode](objectNode, objectNode2)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe IntegerType
     }
@@ -160,7 +160,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         objectNode.putPOJO(colName, colVal)
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs)
         schema.fields should have size 1
         schema.fields(0).dataType shouldBe StringType
     }

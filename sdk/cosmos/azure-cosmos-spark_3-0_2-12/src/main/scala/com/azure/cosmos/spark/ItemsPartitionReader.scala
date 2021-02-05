@@ -15,26 +15,28 @@ import org.apache.spark.sql.types.StructType
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
 // For now we are creating only one spark partition
-case class CosmosPartitionReader(config: Map[String, String],
-                                 readSchema: StructType,
-                                 cosmosQuery: CosmosParametrizedQuery,
-                                 cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+private case class ItemsPartitionReader
+(
+  config: Map[String, String],
+  readSchema: StructType,
+  cosmosQuery: CosmosParametrizedQuery,
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+)
 // TODO: moderakh query need to change to SqlSpecQuery
 // requires making a serializable wrapper on top of SqlQuerySpec
-
   extends PartitionReader[InternalRow] with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
+  private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  private val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
-  val cosmosAsyncContainer = client
+  private val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)
     .getContainer(containerTargetConfig.container)
 
-  lazy val iterator = cosmosAsyncContainer.queryItems(
-    cosmosQuery.toSqlQuerySpec(),
+  private lazy val iterator = cosmosAsyncContainer.queryItems(
+    cosmosQuery.toSqlQuerySpec,
     new CosmosQueryRequestOptions(),
     classOf[ObjectNode]).toIterable.iterator()
 

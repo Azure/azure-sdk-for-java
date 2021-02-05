@@ -11,6 +11,12 @@ private object CosmosConstants {
   private[this] val currentVersion =
     CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version")
   val userAgentSuffix = s" SparkConnector/$currentVersion"
+
+  object Names {
+    val ItemsDataSourceShortName = "cosmos.items"
+    val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
+  }
+
   object StatusCodes {
     val Conflict = 409
     val ServiceUnavailable = 503

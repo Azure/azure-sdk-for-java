@@ -7,7 +7,7 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, Scan}
 import org.apache.spark.sql.types.StructType
 
-private case class CosmosChangeFeedScan
+private case class ChangeFeedScan
 (
   schema: StructType,
   config: Map[String, String],
@@ -39,6 +39,6 @@ private case class CosmosChangeFeedScan
    *                                       `TableCapability.BATCH_READ`
    */
   override def toBatch: Batch = {
-    new CosmosChangeFeedBatch(schema, config, cosmosClientStateHandle)
+    new ChangeFeedBatch(schema, config, cosmosClientStateHandle)
   }
 }

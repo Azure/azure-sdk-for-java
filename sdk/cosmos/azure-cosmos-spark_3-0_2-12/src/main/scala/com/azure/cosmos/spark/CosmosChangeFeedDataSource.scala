@@ -14,7 +14,7 @@ import java.util
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private class CosmosChangeFeedItemsDataSource
+class CosmosChangeFeedDataSource
   extends DataSourceRegister
     with TableProvider
     with CosmosLoggingTrait {
@@ -28,13 +28,13 @@ private class CosmosChangeFeedItemsDataSource
    * @return StructType inferred schema
    */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    new CosmosChangeFeedTable(Array.empty, options).schema()
+    new ChangeFeedTable(Array.empty, options).schema()
   }
 
   /**
    * Represents the format that this data source provider uses.
    */
-  override def shortName(): String = "cosmos.changeFeed.items"
+  override def shortName(): String = CosmosConstants.Names.ChangeFeedDataSourceShortName
 
   /**
    * Return a `Table` instance with the specified table schema, partitioning and properties
@@ -53,7 +53,7 @@ private class CosmosChangeFeedItemsDataSource
                          partitioning: Array[Transform],
                          properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosChangeFeedTable(
+    new ChangeFeedTable(
       partitioning,
       CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava,
       Option.apply(schema))

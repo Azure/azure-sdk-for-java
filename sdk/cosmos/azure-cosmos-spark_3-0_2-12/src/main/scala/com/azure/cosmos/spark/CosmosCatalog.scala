@@ -52,8 +52,7 @@ class CosmosCatalog
 
   private var catalogName: String = _
   private var client: CosmosAsyncClient = _
-
-  var tableOptions: Map[String, String] = _
+  private var tableOptions: Map[String, String] = _
 
   /**
     * Called to initialize configuration.
@@ -177,8 +176,6 @@ class CosmosCatalog
     }
   }
 
-  class CosmosCatalogException(msg: String) extends RuntimeException(msg)
-
   @throws(classOf[UnsupportedOperationException])
   override def alterNamespace(namespace: Array[String],
                               changes: NamespaceChange*): Unit = {
@@ -189,7 +186,7 @@ class CosmosCatalog
 
   /**
     * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
-    * @param namespace - a multi-part namesp
+    * @param namespace - a multi-part namespace
     * @return true if the namespace was dropped
     */
   @throws(classOf[NoSuchNamespaceException])
@@ -235,9 +232,12 @@ class CosmosCatalog
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
     val containerName = toCosmosContainerName(ident.name())
     getContainerMetadata(ident, databaseName, containerName) // validates that table exists
-    // scalastyle:off null
-    new CosmosTable(Array[Transform](), Some(databaseName), Some(containerName),  tableOptions.asJava, Option.empty)
-    // scalastyle:off on
+    new ItemsTable(
+      Array[Transform](),
+      Some(databaseName),
+      Some(containerName),
+      tableOptions.asJava,
+      Option.empty)
   }
 
   private def getContainerMetadata(ident: Identifier,
@@ -286,8 +286,12 @@ class CosmosCatalog
         .block()
     }
 
-    // TODO: moderakh this needs to be wired up against CosmosTable
-    new CosmosTable(partitions, Some(databaseName), Some(containerName), tableOptions.asJava, Option.apply(schema))
+    new ItemsTable(
+      partitions,
+      Some(databaseName),
+      Some(containerName),
+      tableOptions.asJava,
+      Option.apply(schema))
   }
 
   @throws(classOf[UnsupportedOperationException])
@@ -346,11 +350,11 @@ class CosmosCatalog
     tableIdent
   }
 
-  def toTableConfig(options: CaseInsensitiveStringMap): Map[String, String] = {
+  private def toTableConfig(options: CaseInsensitiveStringMap): Map[String, String] = {
     options.asCaseSensitiveMap().asScala.toMap
   }
 
-  object CosmosContainerProperties {
+  private object CosmosContainerProperties {
     private val partitionKeyPath = "partitionKeyPath"
     private val defaultPartitionKeyPath = "/id"
     def getPartitionKeyPath(properties: Map[String, String]): String = {
@@ -360,9 +364,9 @@ class CosmosCatalog
     // TODO: add support for other container properties, indexing policy?
   }
 
-  object CosmosThroughputProperties {
+  private object CosmosThroughputProperties {
     private val manualThroughputFieldName = "manualThroughput"
-    private val autoscaleMaxThroughputName = "autoscaleMaxThroughput"
+    private val autoScaleMaxThroughputName = "autoScaleMaxThroughput"
 
     def tryGetThroughputProperties(
         properties: Map[String, String]): Option[ThroughputProperties] = {
@@ -374,11 +378,11 @@ class CosmosCatalog
         )
         .orElse(
           properties
-            .get(autoscaleMaxThroughputName)
+            .get(autoScaleMaxThroughputName)
             .map(
-              autoscaleMaxThroughput =>
+              autoScaleMaxThroughput =>
                 ThroughputProperties.createAutoscaledThroughput(
-                  autoscaleMaxThroughput.toInt)
+                  autoScaleMaxThroughput.toInt)
             )
         )
     }
@@ -390,9 +394,9 @@ class CosmosCatalog
       if (manualThroughput != null) {
         props.put(manualThroughputFieldName, manualThroughput.toString)
       } else {
-        val autoscaleMaxThroughput =
+        val autoScaleMaxThroughput =
           throughputProperties.getAutoscaleMaxThroughput
-        props.put(autoscaleMaxThroughputName, autoscaleMaxThroughput.toString)
+        props.put(autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
       }
       props.asScala.toMap
     }

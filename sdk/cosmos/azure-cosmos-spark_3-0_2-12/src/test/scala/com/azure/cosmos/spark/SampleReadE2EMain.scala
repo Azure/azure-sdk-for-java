@@ -50,7 +50,7 @@ object SampleReadE2EMain {
 
       val dfForRaw = spark.read.format("cosmos.items").options(cfgForRaw).load()
       dfForRaw.show(1)
-      val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferer.RawJsonBodyAttributeName)
+      val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
       val mapper = new ObjectMapper();
       mapper.readTree(rawJson);
 

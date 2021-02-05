@@ -11,7 +11,7 @@ import org.apache.spark.sql.sources.{
 
 import scala.collection.mutable.ListBuffer
 
-case class FilterAnalyzer() {
+private case class FilterAnalyzer() {
   // TODO: moderakh it is worth looking at DOM/AST:
   // https://github.com/Azure/azure-cosmos-dotnet-v3/tree/master/Microsoft.Azure.Cosmos/src/SqlObjects
   // https://github.com/Azure/azure-sdk-for-java/pull/17789#discussion_r530574888
@@ -29,7 +29,7 @@ case class FilterAnalyzer() {
       val filterAsCosmosPredicate = new StringBuilder()
       val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
       if (canBePushedDownToCosmos) {
-        if (filtersToBePushedDownToCosmos.size > 0) {
+        if (filtersToBePushedDownToCosmos.nonEmpty) {
           whereClauseBuilder.append(" AND ")
         }
         filtersToBePushedDownToCosmos.append(filter)
@@ -39,7 +39,7 @@ case class FilterAnalyzer() {
       }
     }
 
-    if (whereClauseBuilder.length > 0) {
+    if (whereClauseBuilder.nonEmpty) {
       queryBuilder.append(" WHERE ")
       queryBuilder.append(whereClauseBuilder)
     }
@@ -52,7 +52,7 @@ case class FilterAnalyzer() {
 
   /**
     * Provides Json Field path prefixed by the root. For example: "r['id']
-    * @param sparkFilterColumnName
+    * @param sparkFilterColumnName the column name of the filter
     * @return cosmosFieldpath
     */
   private def canonicalCosmosFieldPath(sparkFilterColumnName: String): String = {
@@ -63,7 +63,7 @@ case class FilterAnalyzer() {
 
   /**
     * Parameter name in the parametrized query: e.g. @param1.
-    * @param paramNumber
+    * @param paramNumber parameter index
     * @return
     */
   private def paramName(paramNumber: Integer): String = {
@@ -188,6 +188,6 @@ case class FilterAnalyzer() {
   }
 }
 
-object FilterAnalyzer {
+private object FilterAnalyzer {
   private val rootName = "r"
 }
