@@ -64,6 +64,7 @@ public class AccessTokenCache {
      */
     public Mono<AccessToken> getToken(Supplier<Mono<AccessToken>> tokenSupplier, boolean forceRefresh) {
         return Mono.defer(retrieveToken(tokenSupplier, forceRefresh))
+            // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
@@ -133,7 +134,6 @@ public class AccessTokenCache {
             } catch (Throwable t) {
                 return Mono.error(t);
             }
-            // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
         };
     }
 
