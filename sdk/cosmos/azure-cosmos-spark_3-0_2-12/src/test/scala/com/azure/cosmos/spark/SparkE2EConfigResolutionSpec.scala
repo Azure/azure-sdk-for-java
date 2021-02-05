@@ -33,8 +33,8 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec with CosmosClient wit
     // scalastyle:on import.grouping
 
     val df = Seq(
-      (26, "Iron atomic number")
-    ).toDF("number", "word")
+      (26, "Iron atomic number", UUID.randomUUID().toString)
+    ).toDF("number", "word", "id")
     df.printSchema()
 
     val options = Map(

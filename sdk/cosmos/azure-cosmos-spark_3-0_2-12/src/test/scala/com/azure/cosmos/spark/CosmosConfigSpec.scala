@@ -52,22 +52,21 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
-  "Schema inference Parser" should "parse configuration" in {
+  it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(
-        "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-        "spark.cosmos.read.inferSchemaEnabled" -> "false",
-        "spark.cosmos.read.inferSchemaQuery" -> customQuery
+      "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
+      "spark.cosmos.read.inferSchemaEnabled" -> "false",
+      "spark.cosmos.read.inferSchemaQuery" -> customQuery
     )
 
     val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
-
     config.inferSchemaSamplingSize shouldEqual 50
     config.inferSchemaEnabled shouldBe false
     config.inferSchemaQuery shouldEqual Some(customQuery)
   }
 
-  "Read Parser" should "parse configuration" in {
+  it should "parse read configuration" in {
     val userConfig = Map(
         "spark.cosmos.read.forceEventualConsistency" -> "false"
     )
@@ -75,6 +74,18 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
+  }
+
+  it should "parse write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "8"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 8
   }
   //scalastyle:on multiple.string.literals
 }

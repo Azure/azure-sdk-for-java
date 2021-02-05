@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 
 import java.net.URL
@@ -122,6 +123,49 @@ private[spark] object CosmosReadConfig {
 
 case class CosmosContainerConfig(database: String, container: String)
 
+case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int)
+
+object ItemWriteStrategy extends Enumeration {
+  type ItemWriteStrategy = Value
+  val ItemOverwrite, ItemAppend = Value
+
+  def withNameOrThrow(name: String): Value =
+    values.find(_.toString.toLowerCase == name.toLowerCase()).getOrElse(
+      throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
+}
+
+object CosmosWriteConfig {
+  val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
+    defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
+    mandatory = false,
+    parseFromStringFunction = itemWriteStrategyAsString =>
+      ItemWriteStrategy.withNameOrThrow(itemWriteStrategyAsString),
+    helpMessage = "Cosmos DB Item write Strategy: ItemOverwrite (using upsert), ItemAppend (using create, ignore 409)")
+
+  val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
+    mandatory = false,
+    defaultValue = Option.apply(3),
+    parseFromStringFunction = maxRetryAttempt => {
+      val cnt = maxRetryAttempt.toInt
+      if (cnt < 0) {
+        throw new IllegalArgumentException(s"expected a non-negative number")
+      }
+      cnt
+    },
+    helpMessage = "Cosmos DB Write Max Retry Attempts on failure")
+
+  def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
+    val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
+    val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
+
+    // parsing above already validated this
+    assert(itemWriteStrategyOpt.isDefined)
+    assert(maxRetryCountOpt.isDefined)
+
+    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get)
+  }
+}
+
 object CosmosContainerConfig {
   private[spark] val DATABASE_NAME_KEY = "spark.cosmos.database"
   private[spark] val CONTAINER_NAME_KEY = "spark.cosmos.container"
@@ -213,7 +257,7 @@ private object CosmosChangeFeedConfig {
 
 case class CosmosConfigEntry[T](key: String,
                                 mandatory: Boolean,
-                                defaultValue: Option[String] = Option.empty,
+                                defaultValue: Option[T] = Option.empty,
                                 parseFromStringFunction: String => T,
                                 helpMessage: String) {
   CosmosConfigEntry.configEntriesDefinitions.put(key, this)
@@ -246,7 +290,7 @@ object CosmosConfigEntry {
       if (configEntry.mandatory) {
         throw new RuntimeException(s"mandatory option ${configEntry.key} is missing. Config description: ${configEntry.helpMessage}")
       } else {
-        Option.empty
+        configEntry.defaultValue.orElse(Option.empty)
       }
     }
   }
