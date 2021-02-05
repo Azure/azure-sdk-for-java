@@ -93,6 +93,31 @@ stages:
 
         PreSteps:
           - powershell: |
+              $rg = $env:SPRING_RESOURCE_GROUP
+              $length = $rg.length
+              $left = $rg.substring(0, $length-1)
+              $right = $rg.substring($length-1)
+              echo $rg
+              echo $left
+              echo $right
+
+              $rg = $rg.toCharArray()
+              foreach ($letter in $rg) {
+                Write-Host -NoNewline " $letter
+              }
+
+              $sub = $env:SPRING_SUBSCRIPTION_ID
+              $length = $sub.length
+              $left = $sub.substring(0, $length-1)
+              $right = $sub.substring($length-1)
+              echo $left
+              echo $right
+
+              $sub = $sub.toCharArray()
+              foreach ($letter in $sub) {
+                Write-Host -NoNewline " $letter
+              }
+
               az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
               az logout

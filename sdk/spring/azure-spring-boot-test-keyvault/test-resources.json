@@ -336,11 +336,11 @@
     },
     "SPRING_RESOURCE_GROUP": {
       "type": "string",
-      "value": "[resourceGroup().id]"
+      "value": "[resourceGroup().name]"
     },
     "SPRING_SUBSCRIPTION_ID": {
       "type": "string",
-      "value": "[subscription().id]"
+      "value": "[subscription().name]"
     },
     "KEY_VAULT_SECRET_NAME": {
       "type": "string",
