@@ -68,10 +68,7 @@ public class Program {
 
     public static void main(String[] args) throws Exception {
         try {
-            // Read the Cosmos endpointUrl and masterKey from configuration.
-            // These values are available from the Azure Management Portal on the Cosmos Account Blade under "Keys".
-            // Keep these values in a safe and secure location. Together they provide administrative access to your
-            // Cosmos account.
+            //NOTE: Please provide credential information in src/samples/resources/settings.properties
             Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
             Program.encryptionAsyncCosmosClient = Program.createClientInstance(configuration);
             Program.initialize(encryptionAsyncCosmosClient, configuration);
