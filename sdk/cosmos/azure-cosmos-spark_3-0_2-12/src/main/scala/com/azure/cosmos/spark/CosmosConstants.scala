@@ -5,8 +5,6 @@ package com.azure.cosmos.spark
 
 // cosmos db related constants
 private object CosmosConstants {
-  val CosmosIdFieldName = "id"
-
   object StatusCodes {
     val Conflict = 409
     val ServiceUnavailable = 503

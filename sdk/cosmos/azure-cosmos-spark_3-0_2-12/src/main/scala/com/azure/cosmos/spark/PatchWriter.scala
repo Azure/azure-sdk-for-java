@@ -64,7 +64,7 @@ private case class PatchWriter(cosmosContainer: CosmosAsyncContainer) {
     val patchOperations = objectNodeToPatch(objectNode)
 
     val batch = TransactionalBatch.createTransactionalBatch(partitionKeyValue)
-    batch.patchItemOperation(objectNode.get(CosmosConstants.CosmosIdFieldName).asText(), patchOperations)
+    batch.patchItemOperation(objectNode.get("id").asText(), patchOperations)
 
     val result = cosmosContainer.executeTransactionalBatch(batch).block()
     result.getStatusCode
