@@ -39,6 +39,7 @@ import reactor.core.publisher.Signal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -446,9 +447,9 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
-        if (ctr != null) {
-            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
+        MethodHandle handle = this.responseConstructorsCache.get(cls);
+        if (handle != null) {
+            return this.responseConstructorsCache.invoke(handle, response, bodyAsObject);
         } else {
             return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
