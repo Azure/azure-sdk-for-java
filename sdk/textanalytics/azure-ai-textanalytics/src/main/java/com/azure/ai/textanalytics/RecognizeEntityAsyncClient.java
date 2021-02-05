@@ -33,6 +33,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -187,14 +188,12 @@ class RecognizeEntityAsyncClient {
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
         String modelVersion = null;
-        Boolean includeStatistics = null;
+        boolean includeStatistics = false;
         StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
         if (options != null) {
             modelVersion = options.getModelVersion();
             includeStatistics = options.isIncludeStatistics();
-            if (options.getStringIndexType() != null) {
-                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
-            }
+            stringIndexType = getNonNullStringIndexType(options.getStringIndexType());
         }
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),

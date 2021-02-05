@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -200,7 +201,7 @@ class RecognizePiiEntityAsyncClient {
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         String modelVersion = null;
-        Boolean includeStatistics = null;
+        boolean includeStatistics = false;
         String domainFilter = null;
         StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
         if (options != null) {
@@ -210,9 +211,7 @@ class RecognizePiiEntityAsyncClient {
             if (domainType != null) {
                 domainFilter = domainType.toString();
             }
-            if (options.getStringIndexType() != null) {
-                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
-            }
+            stringIndexType = getNonNullStringIndexType(options.getStringIndexType());
         }
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),

@@ -174,8 +174,7 @@ class AnalyzeBatchActionsAsyncClient {
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
                                 .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
-                                .setStringIndexType(StringIndexTypeResponse.fromString(
-                                    getNonNullStringIndexType(action.getStringIndexType()).toString())));
+                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -194,8 +193,7 @@ class AnalyzeBatchActionsAsyncClient {
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(StringIndexTypeResponse.fromString(
-                                    getNonNullStringIndexType(action.getStringIndexType()).toString()))
+                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType()))
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
@@ -434,7 +432,9 @@ class AnalyzeBatchActionsAsyncClient {
         return modelVersion == null ? "latest" : modelVersion;
     }
 
-    private StringIndexType getNonNullStringIndexType(StringIndexType stringIndexType) {
-        return stringIndexType == null ? StringIndexType.UTF16CODE_UNIT : stringIndexType;
+    private StringIndexTypeResponse getNonNullStringIndexTypeResponse(StringIndexType stringIndexType) {
+        return StringIndexTypeResponse.fromString(
+            stringIndexType == null ? StringIndexType.UTF16CODE_UNIT.toString()
+                                                      : stringIndexType.toString());
     }
 }

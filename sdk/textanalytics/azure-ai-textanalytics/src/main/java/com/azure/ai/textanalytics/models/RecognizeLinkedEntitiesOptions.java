@@ -27,7 +27,9 @@ public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOp
     }
 
     /**
-     * Set the value of {@code includeStatistics}.
+     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * If set to true, indicates that the service should return document and document batch statistics
+     * with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
@@ -50,8 +52,7 @@ public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOp
     }
 
     /**
-     * Set the value of {@code stringIndexType}. It could be 'TextElements_v8', 'UNICODE_CODE_POINT', or
-     * 'UTF16CODE_UNIT' type.
+     * Set the value of {@code stringIndexType}.
      *
      * @param stringIndexType It used to set the value of string indexing type. It could be 'TextElements_v8',
      * 'UNICODE_CODE_POINT', or 'UTF16CODE_UNIT' type.

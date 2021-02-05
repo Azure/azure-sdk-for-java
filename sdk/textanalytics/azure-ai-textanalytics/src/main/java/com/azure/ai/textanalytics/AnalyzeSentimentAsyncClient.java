@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -206,16 +207,14 @@ class AnalyzeSentimentAsyncClient {
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         String modelVersion = null;
-        Boolean includeStatistics = null;
+        boolean includeStatistics = false;
         Boolean includeOpinionMining = null;
         StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
         if (options != null) {
             modelVersion = options.getModelVersion();
             includeStatistics = options.isIncludeStatistics();
             includeOpinionMining = options.isIncludeOpinionMining();
-            if (options.getStringIndexType() != null) {
-                stringIndexType = StringIndexType.fromString(options.getStringIndexType().toString());
-            }
+            stringIndexType = getNonNullStringIndexType(options.getStringIndexType());
         }
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),

@@ -308,9 +308,10 @@ public final class TextAnalyticsClient {
         if (options != null) {
             modelVersion = options.getModelVersion();
             includeStatistics = options.isIncludeStatistics();
+            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics);
         }
         return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents,
-            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics),
+            recognizeEntitiesOptions,
             context).block();
     }
 
