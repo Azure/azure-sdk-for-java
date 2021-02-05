@@ -834,7 +834,7 @@
       "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/c48dd2ff-f52c-42d7-a9a6-235aa8790aca?api-version=2020-05-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "c48dd2ff-f52c-42d7-a9a6-235aa8790aca",
-      "Body" : "\"https://nfvprodsuppch.blob.core.windows.net/vpnprofileimmutable/49cf007a-4408-4644-a5a6-10193ef737ae/vpnprofile/a50d7b10-95a2-476f-81db-97ab1a88496f/vpnclientconfiguration.zip?sv=2018-03-28&sr=b&sig=Aem3FPZDdIuwefHr3b2mh6RJGniC96bi9Epj29QZ6No%3D&st=2020-07-28T07%3A00%3A19Z&se=2020-07-28T08%3A00%3A19Z&sp=r&fileExtension=.zip\""
+      "Body" : "\"https://nfvprodsuppch.blob.core.windows.net/vpnprofileimmutable/49cf007a-4408-4644-a5a6-10193ef737ae/vpnprofile/a50d7b10-95a2-476f-81db-97ab1a88496f/vpnclientconfiguration.zip?sv=2018-03-28&sr=b&sig=***REMOVED***&st=2020-07-28T07%3A00%3A19Z&se=2020-07-28T08%3A00%3A19Z&sp=r&fileExtension=.zip\""
     }
   }, {
     "Method" : "GET",

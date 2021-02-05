@@ -1,5 +1,6 @@
 parameters:
   ServiceDirectory: ''
+  TestResourceDirectories:
   Artifacts: []
   AdditionalModules: []
   EnvVars: {}
@@ -44,13 +45,23 @@ jobs:
 #      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - template: /eng/common/TestResources/deploy-test-resources.yml
-          parameters:
-            ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-              Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
-            ArmTemplateParameters: $(ArmTemplateParameters)
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/deploy-test-resources.yml
+              parameters:
+                ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                  Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+                ArmTemplateParameters: $(ArmTemplateParameters)
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/deploy-test-resources.yml
+            parameters:
+              ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+              ArmTemplateParameters: $(ArmTemplateParameters)
 
       - ${{ parameters.PreSteps }}
 
@@ -101,10 +112,17 @@ jobs:
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - template: /eng/common/TestResources/remove-test-resources.yml
-          parameters:
-            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/remove-test-resources.yml
+              parameters:
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/remove-test-resources.yml
+            parameters:
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
 
       - template: ../steps/upload-repository-on-failure.yml
 

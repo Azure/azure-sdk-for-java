@@ -86,7 +86,8 @@ class AnalyzeBatchActionsAsyncClient {
         try {
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeBatchActionsOptions(options);
-            final Context finalContext = getNotNullContext(context);
+            final Context finalContext = getNotNullContext(context)
+                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -98,8 +99,7 @@ class AnalyzeBatchActionsAsyncClient {
                 //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.analyzeWithResponseAsync(analyzeBatchInput,
-                        finalContext.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                    service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
                             final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
                                 new AnalyzeBatchActionsOperationDetail();
@@ -126,7 +126,8 @@ class AnalyzeBatchActionsAsyncClient {
         try {
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeBatchActionsOptions(options);
-            final Context finalContext = getNotNullContext(context);
+            final Context finalContext = getNotNullContext(context)
+                                             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -138,8 +139,7 @@ class AnalyzeBatchActionsAsyncClient {
                 //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.analyzeWithResponseAsync(analyzeBatchInput,
-                        finalContext.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                    service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
                             final AnalyzeBatchActionsOperationDetail operationDetail =
                                 new AnalyzeBatchActionsOperationDetail();

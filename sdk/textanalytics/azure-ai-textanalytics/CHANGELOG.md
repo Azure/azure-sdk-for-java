@@ -15,16 +15,34 @@
   Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context)`
   
 ### Breaking changes
+#### Analysis healthcare entities 
+- Replace API 
+  `PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options)` to
+  `PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options)`,
+  `SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context)` to
+  `SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options, Context context)`
+- New overload APIs,
+  `PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<String> documents, String language, AnalyzeHealthcareEntitiesOptions options)`,
+  `SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<String> documents, String language, AnalyzeHealthcareEntitiesOptions options, Context context)`
+- Added `AnalyzeHealthcareEntitiesResultCollection`, `AnalyzeHealthcareEntitiesResult`, `HealthcareEntityRelationType`
+- Removed `HealthcareTaskResult`, `HealthcareEntityRelation`, `HealthcareEntityCollection`, `JobMetadata`, `JobState`
+- Renamed
+  `HealthcareEntityLink` to `EntityDataSource`,
+  `RecognizeHealthcareEntityOptions` to `AnalyzeHealthcareEntitiesOptions`,
+  `RecognizeHealthcareEntitiesResult` to `AnalyzeHealthcareEntitiesResult`,
+  `RecognizeHealthcareEntitiesResultCollection` to `AnalyzeHealthcareEntitiesResultCollection`
+  `TextAnalyticsOperationResult` to `AnalyzeHealthcareEntitiesOperationDetail`
+  
 #### Analyze multiple actions
-- Replace API `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
-  Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options)` to 
-  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
-  beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, 
-  AnalyzeBatchActionsOptions options)`. 
-- New overload API, `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
-  beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, 
-  AnalyzeBatchActionsOptions options)`
-- New class `ExtractKeyPhrasesActionResult`, `RecognizeEntitiesActionResult`, `RecognizePiiEntitiesActionResult`,
+- Replace API 
+  `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options)`to 
+  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options)`,
+  `SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context)`to
+  `SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options, Context context)`
+- Added new overload APIs, 
+  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeBatchActionsOptions options)`,
+  `SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeBatchActionsOptions options)`
+- Added `ExtractKeyPhrasesActionResult`, `RecognizeEntitiesActionResult`, `RecognizePiiEntitiesActionResult`,
   `TextAnalyticsActions`, `TextAnalyticsActionResult`
 - Removed `EntitiesTask`, `KeyPhrasesTask`, `PiiTask`, `TextAnalyticsErrorInformation`
 - Renamed
@@ -35,7 +53,7 @@
   `PiiTaskParameters` to `RecognizePiiEntityOptions`,
   `PiiEntityDomainType` to `PiiEntitiesDomainType`,
   `RecognizePiiEntityOptions` to `RecognizePiiEntitiesOptions`,
-  `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`,
+  `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`
 
 ## 5.0.2 (2021-01-14)
 ### Dependency updates

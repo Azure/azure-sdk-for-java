@@ -6,9 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
@@ -19,15 +19,17 @@ import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -1698,12 +1700,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForSinglePage(),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1715,12 +1717,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1732,7 +1734,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
-            StepVerifier.create(client.beginAnalyzeHealthcare(documents, null))
+            StepVerifier.create(client.beginAnalyzeHealthcareEntities(documents, null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify();
@@ -1746,12 +1748,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
-            // TODO: update the changes in the healthcare PR #18828
-//            PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-//            client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(), options);
-//            syncPoller.waitForCompletion();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            syncPoller.cancelOperation();
+            syncPoller.waitForCompletion();
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 
