@@ -319,16 +319,62 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void flushTimesOut() {
-        SearchIndexingBufferedSender<Integer> batchingClient = getSearchClientBuilder("index")
-            .httpClient(request -> Mono.<HttpResponse>empty().delayElement(Duration.ofSeconds(5)))
-            .<Integer>bufferedSender()
-            .documentKeyRetriever(String::valueOf)
+        SearchIndexingBufferedSender<Map<String,Object>> batchingClient = getSearchClientBuilder("index")
+            .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
+            .<Map<String, Object>>bufferedSender()
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
 
-        batchingClient.addUploadActions(Collections.singletonList(1));
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(1), Context.NONE));
+    }
+
+    /**
+     * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
+     */
+    @Test
+    public void inFlightDocumentsAreRetried() {
+        AtomicInteger callCount = new AtomicInteger(0);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedSender<Map<String,Object>> batchingClient = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                Mono<HttpResponse> response = Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                    createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
+                if (callCount.getAndIncrement() == 0) {
+                    return response.delayElement(Duration.ofSeconds(5));
+                } else {
+                    return response;
+                }
+            })
+            .<Map<String, Object>>bufferedSender()
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .buildSender();
+
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
+
+        // First request is setup to timeout.
+        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+
+        // Second request shouldn't timeout.
+        assertDoesNotThrow(() -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+
+        // Then validate that we have the expected number of requests sent and responded.
+        assertEquals(10, addedCount.get());
+        assertEquals(20, sentCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(10, successCount.get());
     }
 
     /**

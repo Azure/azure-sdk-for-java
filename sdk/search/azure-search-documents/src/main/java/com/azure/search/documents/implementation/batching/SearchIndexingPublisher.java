@@ -68,6 +68,13 @@ public final class SearchIndexingPublisher<T> {
     private final Object actionsMutex = new Object();
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
 
+    /*
+     * This queue keeps track of documents that are currently being sent to the service for indexing. This queue is
+     * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
+     * documents from being lost.
+     */
+    private final LinkedList<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
+
     private final Semaphore processingSemaphore = new Semaphore(1);
 
     volatile AtomicInteger backoffCount = new AtomicInteger();
@@ -126,19 +133,19 @@ public final class SearchIndexingPublisher<T> {
         if (autoFlush && batchAvailableForProcessing()) {
             rescheduleFlush.run();
             logger.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
-            return flush(context, false);
+            return flush(false, false, context);
         }
 
         return Mono.empty();
     }
 
-    public Mono<Void> flush(Context context, boolean awaitLock) {
+    public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
             processingSemaphore.acquireUninterruptibly();
-            return createAndProcessBatch(context)
+            return createAndProcessBatch(isClose, context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else if (processingSemaphore.tryAcquire()) {
-            return createAndProcessBatch(context)
+            return createAndProcessBatch(isClose, context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else {
             logger.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
@@ -146,32 +153,28 @@ public final class SearchIndexingPublisher<T> {
         }
     }
 
-    private Mono<Void> createAndProcessBatch(Context context) {
+    private Mono<Void> createAndProcessBatch(boolean isClose, Context context) {
         final List<TryTrackingIndexAction<T>> batchActions;
         final Set<String> keysInBatch;
         synchronized (actionsMutex) {
             int actionSize = this.actions.size();
-            int size = Math.min(batchActionCount, actionSize);
+            int inFlightActionSize = this.inFlightActions.size();
+            int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
             batchActions = new ArrayList<>(size);
 
-            /*
-             * Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
-             * factor of 1 as that would potentially cause collisions.
-             */
+            // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
+            // factor of 1 as that would potentially cause collisions.
             keysInBatch = new HashSet<>(size * 2);
 
-            int offset = 0;
-            int actionsAdded = 0;
-            while (actionsAdded < size && offset < actionSize) {
-                TryTrackingIndexAction<T> potentialDocumentToAdd = actions.get(offset++ - actionsAdded);
+            // First attempt to fill the batch from documents that were lost in-flight.
+            int inFlightDocumentsAdded = fillFromQueue(batchActions, inFlightActions, size, keysInBatch);
 
-                if (keysInBatch.contains(potentialDocumentToAdd.getKey())) {
-                    continue;
-                }
-
-                keysInBatch.add(potentialDocumentToAdd.getKey());
-                batchActions.add(actions.remove(offset - 1 - actionsAdded));
-                actionsAdded += 1;
+            // If the batch is filled using documents lost in-flight add the remaining back to the queue.
+            if (inFlightDocumentsAdded == size) {
+                reinsertFailedActions(inFlightActions);
+            } else {
+                // Then attempt to fill the batch from documents in the actions queue.
+                fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
             }
         }
 
@@ -189,9 +192,30 @@ public final class SearchIndexingPublisher<T> {
                 handleResponse(batchActions, response);
 
                 return response;
-            }).then(Mono.defer(() -> batchAvailableForProcessing()
-                ? createAndProcessBatch(context)
+            }).then(Mono.defer(() -> (batchAvailableForProcessing() || isClose)
+                ? createAndProcessBatch(isClose, context)
                 : Mono.empty()));
+    }
+
+    private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, List<TryTrackingIndexAction<T>> queue,
+        int requested, Set<String> duplicateKeyTracker) {
+        int offset = 0;
+        int actionsAdded = 0;
+        int queueSize = queue.size();
+
+        while (actionsAdded < requested && offset < queueSize) {
+            TryTrackingIndexAction<T> potentialDocumentToAdd = queue.get(offset++ - actionsAdded);
+
+            if (duplicateKeyTracker.contains(potentialDocumentToAdd.getKey())) {
+                continue;
+            }
+
+            duplicateKeyTracker.add(potentialDocumentToAdd.getKey());
+            batch.add(queue.remove(offset - 1 - actionsAdded));
+            actionsAdded += 1;
+        }
+
+        return actionsAdded;
     }
 
     /*
@@ -215,6 +239,11 @@ public final class SearchIndexingPublisher<T> {
 
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
             response.getValue().getResults(), actions.size(), false))
+            .doOnCancel(() -> {
+                logger.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
+                inFlightActions.addAll(batchActions);
+            })
+            // Handles mixed success responses.
             .onErrorResume(IndexBatchException.class, exception -> Mono.just(
                 new IndexBatchResponse(207, exception.getIndexingResults(), actions.size(), true)))
             .onErrorResume(HttpResponseException.class, exception -> {
@@ -255,7 +284,10 @@ public final class SearchIndexingPublisher<T> {
                 }
 
                 return Mono.just(new IndexBatchResponse(statusCode, null, actions.size(), true));
-            });
+            })
+            // General catch all to allow operation to continue.
+            .onErrorResume(Throwable.class, ignored ->
+                Mono.just(new IndexBatchResponse(0, null, actions.size(), true)));
     }
 
     private void handleResponse(List<TryTrackingIndexAction<T>> actions, IndexBatchResponse batchResponse) {

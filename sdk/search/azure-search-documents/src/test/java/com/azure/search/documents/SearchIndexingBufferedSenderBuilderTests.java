@@ -6,6 +6,7 @@ package com.azure.search.documents;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,27 +16,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SearchIndexingBufferedSenderBuilderTests {
     @Test
     public void invalidFlushWindowThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> options = getBaseOptions();
+        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(NullPointerException.class, () -> options.autoFlushInterval(null));
     }
 
     @Test
     public void invalidBatchSizeThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> options = getBaseOptions();
+        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(IllegalArgumentException.class, () -> options.initialBatchActionCount(0));
         assertThrows(IllegalArgumentException.class, () -> options.initialBatchActionCount(-1));
     }
 
     @Test
     public void invalidMaxRetriesThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> options = getBaseOptions();
+        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(IllegalArgumentException.class, () -> options.maxRetriesPerAction(0));
         assertThrows(IllegalArgumentException.class, () -> options.maxRetriesPerAction(-1));
     }
 
     @Test
     public void invalidRetryDelayThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> options = getBaseOptions();
+        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(NullPointerException.class, () -> options.throttlingDelay(null));
         assertThrows(IllegalArgumentException.class, () -> options.throttlingDelay(Duration.ZERO));
         assertThrows(IllegalArgumentException.class, () -> options.throttlingDelay(Duration.ofMillis(-1)));
@@ -43,7 +44,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
 
     @Test
     public void invalidMaxRetryDelayThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> options = getBaseOptions();
+        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(NullPointerException.class, () -> options.maxThrottlingDelay(null));
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ZERO));
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ofMillis(-1)));
@@ -55,7 +56,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
 //        assertThrows(NullPointerException.class, () -> options.setPayloadTooLargeScaleDown(null));
 //    }
 
-    private SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Integer> getBaseOptions() {
+    private SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> getBaseOptions() {
         return new SearchClientBuilder().bufferedSender();
     }
 }
