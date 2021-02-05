@@ -340,7 +340,7 @@
     },
     "SPRING_SUBSCRIPTION_ID": {
       "type": "string",
-      "value": "[subscription().name]"
+      "value": "[subscription().subscriptionId]"
     },
     "KEY_VAULT_SECRET_NAME": {
       "type": "string",
