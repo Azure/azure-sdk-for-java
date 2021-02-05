@@ -9,15 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
+  <name>Azure Spring Cloud Starter App Configuration Config</name>
 
     <properties>
         <main.basedir>${basedir}/../..</main.basedir>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
         </dependency>
     </dependencies>
 </project>

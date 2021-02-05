@@ -9,9 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-    <name>Spring Cloud Azure Feature Management Web</name>
-    <description>Adds Feature Management into Spring Web</description>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-feature-management-web</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
+  <name>Azure Spring Cloud Feature Management Web</name>
+  <description>Adds Feature Management into Spring Web</description>
 
     <dependencies>
         <dependency>
@@ -33,8 +35,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>spring-cloud-azure-feature-management</artifactId>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-cloud-feature-management</artifactId>
         </dependency>
     </dependencies>
 </project>
