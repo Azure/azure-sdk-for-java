@@ -46,6 +46,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -123,7 +125,9 @@ final class TestUtils {
         "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
         "The patient went for six minutes with minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent.");
 
-    static final List<String> ANALYZE_TASK_INPUTS = asList(CATEGORIZED_ENTITY_INPUTS.get(0), PII_ENTITY_INPUTS.get(0));
+    static final String PII_TASK = "entityRecognitionPiiTasks";
+    static final String ENTITY_TASK = "entityRecognitionTasks";
+    static final String KEY_PHRASES_TASK = "keyPhraseExtractionTasks";
 
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
@@ -757,30 +761,35 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
-    static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(
-        RecognizeEntitiesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+    static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,
+        OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
         RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
         RecognizeEntitiesActionResultPropertiesHelper.setResult(recognizeEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
         return recognizeEntitiesActionResult;
     }
 
-    static RecognizePiiEntitiesActionResult getExpectedRecognizePiiEntitiesActionResult(
-        RecognizePiiEntitiesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+    static RecognizePiiEntitiesActionResult getExpectedRecognizePiiEntitiesActionResult(boolean isError,
+        OffsetDateTime completedAt, RecognizePiiEntitiesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
         RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
         RecognizePiiEntitiesActionResultPropertiesHelper.setResult(recognizePiiEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
         return recognizePiiEntitiesActionResult;
     }
 
-    static ExtractKeyPhrasesActionResult getExpectedExtractKeyPhrasesActionResult(
-        ExtractKeyPhrasesResultCollection resultCollection, OffsetDateTime dateTime, boolean isError) {
+    static ExtractKeyPhrasesActionResult getExpectedExtractKeyPhrasesActionResult(boolean isError,
+        OffsetDateTime completedAt, ExtractKeyPhrasesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
         ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
         ExtractKeyPhrasesActionResultPropertiesHelper.setResult(extractKeyPhrasesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, dateTime);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
         return extractKeyPhrasesActionResult;
     }
 
@@ -867,23 +876,30 @@ final class TestUtils {
         // First Page
         analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false))),
+                false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false))),
+                false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), TIME_NOW, false)))
+                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null)))
         ));
         // Second Page
         startIndex += firstPage;
         analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false))),
+                false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false))),
+                false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), TIME_NOW, false)))
+                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null)))
         ));
         return analyzeBatchActionsResults;
+    }
+
+    /**
+     * Helper method that get a customized TextAnalyticsError.
+     */
+    static TextAnalyticsError getActionError(TextAnalyticsErrorCode errorCode, String taskName, String index) {
+        return new TextAnalyticsError(errorCode, "", "#/tasks/" + taskName + "/" + index);
     }
 
     /**
