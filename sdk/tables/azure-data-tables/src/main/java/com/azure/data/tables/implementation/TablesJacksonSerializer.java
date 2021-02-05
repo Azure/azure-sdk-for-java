@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -75,7 +76,9 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
-        if (type == TableEntityQueryResponse.class) {
+        if (type == TableEntityQueryResponse.class
+            || (type instanceof ParameterizedType) && ((ParameterizedType) type).getRawType() == Map.class) {
+
             return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type,
                 serializerEncoding);
         } else {
@@ -86,15 +89,18 @@ public class TablesJacksonSerializer extends JacksonAdapter {
     @Override
     public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
         throws IOException {
-        if (type == TableEntityQueryResponse.class) {
-            return deserializeTableEntityQueryResponse(inputStream);
+
+        if (type == TableEntityQueryResponse.class
+            || (type instanceof ParameterizedType) && ((ParameterizedType) type).getRawType() == Map.class) {
+
+            return deserializeTableEntityQueryResponse(inputStream, type);
         } else {
             return super.deserialize(inputStream, type, serializerEncoding);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <U> U deserializeTableEntityQueryResponse(InputStream inputStream) throws IOException {
+    private <U> U deserializeTableEntityQueryResponse(InputStream inputStream, Type type) throws IOException {
         String odataMetadata = null;
         List<Map<String, Object>> values = new ArrayList<>();
 
@@ -140,9 +146,13 @@ public class TablesJacksonSerializer extends JacksonAdapter {
             values.add(singleValue);
         }
 
-        return (U) new TableEntityQueryResponse()
-            .setOdataMetadata(odataMetadata)
-            .setValue(values);
+        if (type == TableEntityQueryResponse.class) {
+            return (U) new TableEntityQueryResponse()
+                .setOdataMetadata(odataMetadata)
+                .setValue(values);
+        } else {
+            return (U) singleValue;
+        }
     }
 
     private Map<String, Object> getEntityFieldsAsMap(JsonNode node) throws IOException {
