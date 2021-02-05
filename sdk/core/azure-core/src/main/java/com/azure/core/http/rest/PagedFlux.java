@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * @see Page
  * @see Flux
  */
+@SuppressWarnings("deprecation")
 public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     /**
      * Creates an instance of {@link PagedFlux} that consists of only a single page. This constructor takes a {@code

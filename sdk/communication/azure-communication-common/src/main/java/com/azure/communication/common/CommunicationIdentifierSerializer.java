@@ -3,6 +3,7 @@
 
 package com.azure.communication.common;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 class CommunicationIdentifierSerializer {
@@ -12,37 +13,55 @@ class CommunicationIdentifierSerializer {
      * @return deserialized CommunicationIdentifier
      */
     public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier) {
+        assertSingleType(identifier);
+        String rawId = identifier.getRawId();
 
-        String id = identifier.getId();
-        CommunicationIdentifierKind kind = identifier.getKind();
-
-        if (kind == CommunicationIdentifierKind.COMMUNICATION_USER) {
-            Objects.requireNonNull(id);
-            return new CommunicationUserIdentifier(id);
+        if (identifier.getCommunicationUser() != null) {
+            Objects.requireNonNull(identifier.getCommunicationUser().getId());
+            return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
         }
 
-        if (kind == CommunicationIdentifierKind.CALLING_APPLICATION) {
-            Objects.requireNonNull(id);
-            return new CallingApplicationIdentifier(id);
+        if (identifier.getPhoneNumber() != null) {
+            PhoneNumberIdentifierModel phoneNumberModel = identifier.getPhoneNumber();
+            Objects.requireNonNull(phoneNumberModel.getValue());
+            return new PhoneNumberIdentifier(phoneNumberModel.getValue()).setRawId(rawId);
         }
 
-        if (kind == CommunicationIdentifierKind.PHONE_NUMBER) {
-            Objects.requireNonNull(identifier.getPhoneNumber());
-            Objects.requireNonNull(identifier.getId());
-            return new PhoneNumberIdentifier(identifier.getPhoneNumber()).setId(identifier.getId());
+        if (identifier.getMicrosoftTeamsUser() != null) {
+            MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
+            Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
+            Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
+            Objects.requireNonNull(rawId);
+            return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
+                teamsUserIdentifierModel.isAnonymous())
+                .setRawId(rawId)
+                .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(teamsUserIdentifierModel.getCloud()));
         }
 
-        if (kind == CommunicationIdentifierKind.MICROSOFT_TEAMS_USER) {
-            Objects.requireNonNull(identifier.getMicrosoftTeamsUserId());
-            Objects.requireNonNull(identifier.getCloudEnvironmentModel());
-            Objects.requireNonNull(identifier.getId());
-            return new MicrosoftTeamsUserIdentifier(identifier.getMicrosoftTeamsUserId(), identifier.isAnonymous())
-                .setId(identifier.getId())
-                .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(identifier.getCloudEnvironmentModel()));
+        Objects.requireNonNull(rawId);
+        return new UnknownIdentifier(rawId);
+    }
+
+    private static void assertSingleType(CommunicationIdentifierModel identifier) {
+        CommunicationUserIdentifierModel communicationUser = identifier.getCommunicationUser();
+        PhoneNumberIdentifierModel phoneNumber = identifier.getPhoneNumber();
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = identifier.getMicrosoftTeamsUser();
+
+        ArrayList<String> presentProperties = new ArrayList<String>();
+        if (communicationUser != null) {
+            presentProperties.add(communicationUser.getClass().getName());
+        }
+        if (phoneNumber != null) {
+            presentProperties.add(phoneNumber.getClass().getName());
+        }
+        if (microsoftTeamsUser != null) {
+            presentProperties.add(microsoftTeamsUser.getClass().getName());
         }
 
-        Objects.requireNonNull(id);
-        return new UnknownIdentifier(id);
+        if (presentProperties.size() > 1) {
+            throw new IllegalArgumentException(String.format("Only one of the identifier models in %s should be present.",
+                String.join(", ", presentProperties)));
+        }
     }
 
     /**
@@ -54,39 +73,34 @@ class CommunicationIdentifierSerializer {
      */
     public static CommunicationIdentifierModel serialize(CommunicationIdentifier identifier)
         throws IllegalArgumentException {
+
         if (identifier instanceof CommunicationUserIdentifier) {
             return new CommunicationIdentifierModel()
-                .setKind(CommunicationIdentifierKind.COMMUNICATION_USER)
-                .setId(((CommunicationUserIdentifier) identifier).getId());
-        }
-
-        if (identifier instanceof CallingApplicationIdentifier) {
-            return new CommunicationIdentifierModel()
-                .setKind(CommunicationIdentifierKind.CALLING_APPLICATION)
-                .setId(((CallingApplicationIdentifier) identifier).getId());
+                .setCommunicationUser(
+                    new CommunicationUserIdentifierModel().setId(((CommunicationUserIdentifier) identifier).getId()));
         }
 
         if (identifier instanceof PhoneNumberIdentifier) {
+            PhoneNumberIdentifier phoneNumberIdentifier = (PhoneNumberIdentifier) identifier;
             return new CommunicationIdentifierModel()
-                .setKind(CommunicationIdentifierKind.PHONE_NUMBER)
-                .setPhoneNumber(((PhoneNumberIdentifier) identifier).getPhoneNumber())
-                .setId(identifier.getId());
+                .setRawId(phoneNumberIdentifier.getRawId())
+                .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(phoneNumberIdentifier.getPhoneNumber()));
         }
 
         if (identifier instanceof MicrosoftTeamsUserIdentifier) {
             MicrosoftTeamsUserIdentifier teamsUserIdentifier = (MicrosoftTeamsUserIdentifier) identifier;
             return new CommunicationIdentifierModel()
-                .setKind(CommunicationIdentifierKind.MICROSOFT_TEAMS_USER)
-                .setMicrosoftTeamsUserId(teamsUserIdentifier.getUserId())
-                .setIsAnonymous(teamsUserIdentifier.isAnonymous())
-                .setId(teamsUserIdentifier.getId())
-                .setCloudEnvironmentModel(new CommunicationCloudEnvironmentModel(teamsUserIdentifier.getCloudEnvironment().toString()));
+                .setRawId(teamsUserIdentifier.getRawId())
+                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
+                    .setIsAnonymous(teamsUserIdentifier.isAnonymous())
+                    .setUserId(teamsUserIdentifier.getUserId())
+                    .setCloud(CommunicationCloudEnvironmentModel.fromString(
+                        teamsUserIdentifier.getCloudEnvironment().toString())));
         }
 
         if (identifier instanceof UnknownIdentifier) {
             return new CommunicationIdentifierModel()
-                .setKind(CommunicationIdentifierKind.UNKNOWN)
-                .setId(((UnknownIdentifier) identifier).getId());
+                .setRawId(((UnknownIdentifier) identifier).getId());
         }
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));

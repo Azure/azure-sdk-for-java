@@ -72,7 +72,7 @@ public class AADWebAppConfigurationTest {
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
-                assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
+                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUriTemplate());
                 assertDefaultScopes(azure, "openid", "profile");
             });
     }
