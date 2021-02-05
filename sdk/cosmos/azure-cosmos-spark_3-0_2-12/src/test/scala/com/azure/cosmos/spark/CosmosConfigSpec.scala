@@ -52,6 +52,16 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
+  it should "parse read configuration" in {
+    val userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+  }
+
   it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(
@@ -66,14 +76,22 @@ class CosmosConfigSpec extends UnitSpec {
     config.inferSchemaQuery shouldEqual Some(customQuery)
   }
 
-  it should "parse read configuration" in {
-    val userConfig = Map(
-        "spark.cosmos.read.forceEventualConsistency" -> "false"
-    )
+  it should "provide default schema inference config" in {
+    val userConfig = Map[String, String]()
 
-    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.inferSchemaSamplingSize shouldEqual 1000
+    config.inferSchemaEnabled shouldBe false
+  }
+
+  it should "provide default write config" in {
+    val userConfig = Map[String, String]()
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemOverwrite
+    config.maxRetryCount shouldEqual 3
   }
 
   it should "parse write config" in {
