@@ -381,7 +381,6 @@ public class IdentityClient {
                     refreshTokenParametersBuilder.claims(customClaimRequest);
                 }
 
-
                 return publicClientApplicationAccessor.getValue()
                    .flatMap(pc -> Mono.fromFuture(pc.acquireToken(refreshTokenParametersBuilder.build()))
                                       .map(MsalToken::new));
@@ -571,7 +570,6 @@ public class IdentityClient {
                     parametersBuilder.claims(customClaimRequest);
                     parametersBuilder.forceRefresh(true);
                 }
-
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
@@ -594,12 +592,6 @@ public class IdentityClient {
 
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
-                    }
-
-                    if (request.getClaims() != null) {
-                        ClaimsRequest customClaimRequest = CustomClaimRequest
-                                                               .formatAsClaimsRequest(request.getClaims());
-                        forceParametersBuilder.claims(customClaimRequest);
                     }
                     try {
                         return pc.acquireTokenSilently(forceParametersBuilder.build());
@@ -653,7 +645,6 @@ public class IdentityClient {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
                     parametersBuilder.claims(customClaimRequest);
                 }
-
                 return pc.acquireToken(parametersBuilder.build());
             }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
                 .map(MsalToken::new));

@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -31,8 +32,12 @@ import java.util.regex.Pattern;
 public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer";
-    public static final String AUTHENTICATION_CHALLENGE_REGEX = "(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?";
-    public static final String AUTHENTICATION_CHALLENGE_PARAMS_REGEX = "(?:(\\w+)=\"([^\"\"]*)\")+";
+//    public static final String AUTHENTICATION_CHALLENGE_REGEX = "(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?";
+    public static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
+        Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
+//    public static final String AUTHENTICATION_CHALLENGE_PARAMS_REGEX = "(?:(\\w+)=\"([^\"\"]*)\")+";
+    public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
+        Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String CLAIMS_PARAMETER = "claims";
 
@@ -75,7 +80,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @return A {@link Mono} containing the status, whether the challenge was successfully extracted and handled.
      *  if true then a follow up request needs to be sent authorized with the challenge based bearer token.
      */
-    public Mono<Boolean> onChallengeAsync(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
         if (response.getStatusCode() == 401 && authHeader != null) {
             List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
@@ -84,7 +89,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                     parseChallengeParams(authenticationChallenge.getChallengeParameters());
                 if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
                     String claims = new String(Base64.getUrlDecoder()
-                                                   .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)));
+                        .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
                     return authenticateRequest(context,
                         () -> credential.getToken(new TokenRequestContext()
                                                       .addScopes(scopes).setClaims(claims)), true)
@@ -103,20 +108,20 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
         return onBeforeRequest(context)
-                   .then(next.process())
-                   .flatMap(httpResponse -> {
-                       String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                       if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                           return onChallengeAsync(context, httpResponse).flatMap(retry -> {
-                               if (retry) {
-                                   return nextPolicy.process();
-                               } else {
-                                   return Mono.just(httpResponse);
-                               }
-                           });
-                       }
-                       return Mono.just(httpResponse);
-                   });
+               .then(next.process())
+               .flatMap(httpResponse -> {
+                   String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                   if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                       return onChallenge(context, httpResponse).flatMap(retry -> {
+                           if (retry) {
+                               return nextPolicy.process();
+                           } else {
+                               return Mono.just(httpResponse);
+                           }
+                       });
+                   }
+                   return Mono.just(httpResponse);
+               });
     }
 
     /**
@@ -139,8 +144,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     }
 
     List<AuthenticationChallenge> parseChallenges(String header) {
-        Pattern pattern = Pattern.compile(AUTHENTICATION_CHALLENGE_REGEX);
-        Matcher matcher = pattern.matcher(header);
+        Matcher matcher = AUTHENTICATION_CHALLENGE_PATTERN.matcher(header);
 
         List<AuthenticationChallenge> challenges = new ArrayList<>();
         while (matcher.find()) {
@@ -151,8 +155,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     }
 
     Map<String, String> parseChallengeParams(String challengeParams) {
-        Pattern pattern = Pattern.compile(AUTHENTICATION_CHALLENGE_PARAMS_REGEX);
-        Matcher matcher = pattern.matcher(challengeParams);
+        Matcher matcher = AUTHENTICATION_CHALLENGE_PARAMS_PATTERN.matcher(challengeParams);
 
         Map<String, String> challengeParameters = new HashMap<>();
         while (matcher.find()) {

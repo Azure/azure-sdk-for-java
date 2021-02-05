@@ -3,12 +3,15 @@
 
 package com.azure.core.experimental.implementation;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Represents an Authentication Challenge received in a 401 HTTP response.
  */
+@Immutable
 public class AuthenticationChallenge {
-    private String scheme;
-    private String challengeParameters;
+    private final String scheme;
+    private final String challengeParameters;
 
     /**
      * Constructs an instance of the {@link AuthenticationChallenge}

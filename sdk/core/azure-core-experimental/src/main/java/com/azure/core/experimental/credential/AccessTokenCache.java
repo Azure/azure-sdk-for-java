@@ -11,6 +11,7 @@ import reactor.core.publisher.MonoProcessor;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -23,19 +24,20 @@ public class AccessTokenCache {
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    private final AtomicReference<MonoProcessor<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
+    private final AtomicReference<MonoProcessor<AccessToken>> wip;
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
     private final ClientLogger logger = new ClientLogger(AccessTokenCache.class);
 
     /**
-     * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
+     * Creates an instance of AccessTokenCache with default scheme "Bearer".
      *
      * @param tokenSupplier a method to get a new token
      */
     public AccessTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
+        Objects.requireNonNull(tokenSupplier, "The token supplier cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
@@ -119,7 +121,7 @@ public class AccessTokenCache {
                            }
                        })
                        .doOnError(monoProcessor::onError)
-                       .doOnTerminate(() -> wip.set(null));
+                       .doFinally(ignored -> wip.set(null));
                 } else if (cache != null && !cache.isExpired() && !forceRefresh) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -147,7 +149,7 @@ public class AccessTokenCache {
         }).repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
-    private String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
+    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
         StringBuilder info = new StringBuilder(log);
         if (cache == null) {
             info.append(".");
