@@ -77,7 +77,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeBatchActionsAsyncClient {
-    private static final String REGEX_ACTION_ERROR_TARGET = "#/tasks/(\\w+)/(\\d+)";
+    private static final String REGEX_ACTION_ERROR_TARGET =
+        "#/tasks/(keyPhraseExtractionTasks|entityRecognitionPiiTasks|entityRecognitionTasks)/(\\d+)";
 
     private final ClientLogger logger = new ClientLogger(AnalyzeBatchActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;
