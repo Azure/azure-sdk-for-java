@@ -207,7 +207,7 @@ public class Configuration implements Cloneable {
      * Gets the value of the configuration and converts it with the {@code converter}.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
-     * it will be return. Otherwise, this will attempt to load the value from the environment.
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
      * <p>
      * If no configuration is found the {@code converter} won't be called and null will be returned.
      *
