@@ -103,7 +103,7 @@ public class AnalyzeHealthcareEntitiesAsync {
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
         // .subscribe() will turn this into a synchronous call.
         try {
-            TimeUnit.MINUTES.sleep(20);
+            TimeUnit.MINUTES.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

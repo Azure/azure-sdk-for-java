@@ -310,7 +310,7 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
 For samples on using the production recommended option `RecognizeLinkedEntitiesBatch` see [here][recognize_linked_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [entity linking][named_entity_recognition].
 
-### Recognize healthcare entities
+### Analyze healthcare entities
 Text Analytics for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
 Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. In order to use this 
