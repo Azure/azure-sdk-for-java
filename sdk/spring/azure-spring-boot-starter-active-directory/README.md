@@ -120,7 +120,7 @@ This scenario support visit resource servers in web application.
 
 **System diagram**:
 
-![Web Application Access Resources](resource/web-application-with-function-of-visiting-resource-servers.png)
+![web-application-visiting-resource-servers.png](resource/web-application-visiting-resource-servers.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -218,7 +218,7 @@ This scenario support visit other resource servers in resource servers.
 
 **System diagram**:
 
-![Resource Server Access Other Resources](resource/resource-server-with-function-of-visiting-other-resource-servers(by-OBO-flow).png)
+![resource-server-visiting-other-resource-servers.png](resource/resource-server-visiting-other-resource-servers.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
