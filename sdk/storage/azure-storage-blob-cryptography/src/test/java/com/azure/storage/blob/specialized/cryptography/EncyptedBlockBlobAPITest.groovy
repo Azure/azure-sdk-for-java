@@ -1464,7 +1464,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize as Long).setMaxSingleUploadSizeLong(maxUploadSize as Long)
 
         when:
         bec.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
