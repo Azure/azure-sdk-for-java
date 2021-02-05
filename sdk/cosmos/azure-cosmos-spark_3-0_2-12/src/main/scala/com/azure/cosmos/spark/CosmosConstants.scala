@@ -3,9 +3,13 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.core.util.CoreUtils
+import com.azure.cosmos.implementation.HttpConstants
+
 // cosmos db related constants
 private object CosmosConstants {
-  val currentVersion = "3.0.1_4.0-3.0.0" // TODO: Define a version format
+  private[this] val currentVersion =
+    CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version")
   val userAgentSuffix = s" SparkConnector/$currentVersion"
   object StatusCodes {
     val Conflict = 409

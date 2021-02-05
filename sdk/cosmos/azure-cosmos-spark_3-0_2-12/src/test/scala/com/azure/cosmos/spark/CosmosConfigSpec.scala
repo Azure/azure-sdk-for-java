@@ -62,6 +62,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.forceEventualConsistency shouldBe false
   }
 
+  it should "parse read configuration default" in {
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
+
+    config.forceEventualConsistency shouldBe true
+  }
+
   it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(

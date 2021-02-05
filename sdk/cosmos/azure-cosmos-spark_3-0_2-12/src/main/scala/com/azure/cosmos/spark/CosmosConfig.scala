@@ -82,6 +82,7 @@ private[spark] object CosmosAccountConfig {
 
   private[spark] val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
     mandatory = false,
+    defaultValue = Some(false),
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
@@ -102,7 +103,7 @@ private[spark] object CosmosAccountConfig {
       key.get,
       accountName.get,
       applicationName,
-      useGatewayMode.getOrElse(false))
+      useGatewayMode.get)
   }
 }
 
@@ -111,13 +112,14 @@ private[spark] case class CosmosReadConfig(forceEventualConsistency: Boolean)
 private[spark] object CosmosReadConfig {
   val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
     mandatory = false,
+    defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
 
-    CosmosReadConfig(forceEventualConsistency.getOrElse(true))
+    CosmosReadConfig(forceEventualConsistency.get)
   }
 }
 
