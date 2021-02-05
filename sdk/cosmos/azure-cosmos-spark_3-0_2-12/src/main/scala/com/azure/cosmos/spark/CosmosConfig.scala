@@ -41,11 +41,11 @@ object CosmosConfig {
 }
 
 private[spark] case class CosmosAccountConfig(
-    endpoint: String,
-    key: String,
-    accountName: String,
-    applicationName: Option[String],
-    useGatewayMode: Boolean)
+  endpoint: String,
+  key: String,
+  accountName: String,
+  applicationName: Option[String],
+  useGatewayMode: Boolean)
 
 private[spark] object CosmosAccountConfig {
   private[spark] val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
@@ -97,27 +97,27 @@ private[spark] object CosmosAccountConfig {
     assert(accountName.isDefined)
 
     CosmosAccountConfig(
-        endpointOpt.get,
-        key.get,
-        accountName.get,
-        applicationName,
-        useGatewayMode.getOrElse(false))
+      endpointOpt.get,
+      key.get,
+      accountName.get,
+      applicationName,
+      useGatewayMode.getOrElse(false))
   }
 }
 
 private[spark] case class CosmosReadConfig(forceEventualConsistency: Boolean)
 
 private[spark] object CosmosReadConfig {
-    val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
-        mandatory = false,
-        parseFromStringFunction = value => value.toBoolean,
-        helpMessage = "Makes the client use Eventual consistency for read operations")
+  val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
+    mandatory = false,
+    parseFromStringFunction = value => value.toBoolean,
+    helpMessage = "Makes the client use Eventual consistency for read operations")
 
-    def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
-        val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
+    val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
 
-        CosmosReadConfig(forceEventualConsistency.getOrElse(true))
-    }
+    CosmosReadConfig(forceEventualConsistency.getOrElse(true))
+  }
 }
 
 case class CosmosContainerConfig(database: String, container: String)
