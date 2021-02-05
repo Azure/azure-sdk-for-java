@@ -547,9 +547,9 @@ public final class RestProxy implements InvocationHandler {
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         reactor.util.context.Context context = signal.getContext();
         Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
-        Optional<Boolean> disableTracing = context.getOrEmpty(Tracer.DISABLE_TRACING_KEY);
+        boolean disableTracing = context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false);
 
-        if (!tracingContext.isPresent() || (disableTracing.isPresent() && disableTracing.get())) {
+        if (!tracingContext.isPresent() || disableTracing) {
             return;
         }
 
