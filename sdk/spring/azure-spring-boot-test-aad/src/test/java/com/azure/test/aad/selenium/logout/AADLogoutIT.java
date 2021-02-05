@@ -28,7 +28,7 @@ public class AADLogoutIT {
     public void logoutTest() {
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
         aadSeleniumITHelper.logIn();
-        String logoutUsername = aadSeleniumITHelper.logoutTest();
+        String logoutUsername = aadSeleniumITHelper.logoutAndGetLogoutUsername();
         String loginUsername = aadSeleniumITHelper.getUsername();
         Assert.assertEquals(loginUsername, logoutUsername);
     }

@@ -52,7 +52,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
     }
 
-    public String logoutTest() {
+    public String logoutAndGetLogoutUsername() {
         driver.get(app.root() + "logout");
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
         String cssSelector = "div[data-test-id='" + username + "']";
