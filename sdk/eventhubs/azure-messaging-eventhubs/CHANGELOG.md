@@ -1,7 +1,9 @@
 # Release History
 
-## 5.5.0-beta.1 (Unreleased)
+## 5.5.0 (2021-02-15)
 - Use `BinaryData` in `EventData`.
+- Expose `EventHubsClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs.
 
 ## 5.4.0 (2021-01-14)
 ### New features
