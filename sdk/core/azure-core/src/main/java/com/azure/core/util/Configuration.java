@@ -190,7 +190,7 @@ public class Configuration implements Cloneable {
      * Gets the value of the configuration converted to {@code T}.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
-     * it will be return. Otherwise, this will attempt to load the value from the environment.
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
      * <p>
      * If no configuration is found, the {@code defaultValue} is returned.
      *
