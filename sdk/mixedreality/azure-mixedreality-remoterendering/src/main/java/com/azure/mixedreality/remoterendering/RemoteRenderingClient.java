@@ -34,8 +34,8 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    public SyncPoller<Session, Session> beginSession(String sessionId, CreateSessionOptions options) {
-        PollerFlux<Session, Session> asyncPoller = client.beginSession(sessionId, options);
+    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
+        PollerFlux<RenderingSession, RenderingSession> asyncPoller = client.beginSession(sessionId, options);
         return asyncPoller.getSyncPoller();
     }
 
@@ -51,7 +51,7 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Session getSession(String sessionId) {
+    public RenderingSession getSession(String sessionId) {
         return client.getSession(sessionId).block();
     }
 
@@ -68,7 +68,7 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Session updateSession(String sessionId, UpdateSessionOptions options) {
+    public RenderingSession updateSession(String sessionId, UpdateSessionOptions options) {
         return client.updateSession(sessionId, options).block();
     }
 
@@ -96,7 +96,7 @@ public final class RemoteRenderingClient {
      * @return a list of all rendering sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<Session> listSessions() {
+    public List<RenderingSession> listSessions() {
         return client.listSessions().collectList().block();
     }
 

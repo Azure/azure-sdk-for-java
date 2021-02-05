@@ -4,12 +4,12 @@ import java.time.Duration;
 
 public final class ConversionOptions {
 
-    private String inputStorageContainerUri;
+    private String inputStorageContainerUrl;
     private String inputStorageContainerReadListSas;
     private String inputBlobPrefix;
     private String inputRelativeAssetPath;
 
-    private String outputStorageContainerUri;
+    private String outputStorageContainerUrl;
     private String outputStorageContainerWriteSas;
     private String outputBlobPrefix;
     private String outputAssetFilename;
@@ -33,13 +33,13 @@ public final class ConversionOptions {
 
     // input setters
     /**
-     * Set the inputStorageContainerUri property: The URI of the Azure blob storage container containing the input model.
+     * Set the inputStorageContainerUrl property: The URL of the Azure blob storage container containing the input model.
      *
-     * @param inputStorageContainerUri the inputStorageContainerUri value to set.
+     * @param inputStorageContainerUrl the inputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions inputStorageContainerUri(String inputStorageContainerUri) {
-        this.inputStorageContainerUri = inputStorageContainerUri;
+    public ConversionOptions inputStorageContainerUrl(String inputStorageContainerUrl) {
+        this.inputStorageContainerUrl = inputStorageContainerUrl;
         return this;
     }
 
@@ -82,12 +82,12 @@ public final class ConversionOptions {
 
     // input getters
     /**
-     * Get the inputStorageContainerUri property: The URI of the Azure blob storage container containing the input model.
+     * Get the inputStorageContainerUrl property: The URL of the Azure blob storage container containing the input model.
      *
-     * @return the inputStorageContainerUri value.
+     * @return the inputStorageContainerUrl value.
      */
-    public String getInputStorageContainerUri() {
-        return this.inputStorageContainerUri;
+    public String getInputStorageContainerUrl() {
+        return this.inputStorageContainerUrl;
     }
 
     /**
@@ -123,14 +123,14 @@ public final class ConversionOptions {
 
     // output setters
     /**
-     * Set the storageContainerUri property: The URI of the Azure blob storage container where the result of the
+     * Set the outputStorageContainerUrl property: The URL of the Azure blob storage container where the result of the
      * conversion should be written to.
      *
-     * @param outputStorageContainerUri the outputStorageContainerUri value to set.
+     * @param outputStorageContainerUrl the outputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions outputStorageContainerUri(String outputStorageContainerUri) {
-        this.outputStorageContainerUri = outputStorageContainerUri;
+    public ConversionOptions outputStorageContainerUrl(String outputStorageContainerUrl) {
+        this.outputStorageContainerUrl = outputStorageContainerUrl;
         return this;
     }
 
@@ -173,13 +173,13 @@ public final class ConversionOptions {
 
     // output getters
     /**
-     * Get the outputStorageContainerUri property: The URI of the Azure blob storage container where the result of the
+     * Get the outputStorageContainerUrl property: The URL of the Azure blob storage container where the result of the
      * conversion should be written to.
      *
-     * @return the outputStorageContainerUri value.
+     * @return the outputStorageContainerUrl value.
      */
-    public String getOutputStorageContainerUri() {
-        return this.outputStorageContainerUri;
+    public String getOutputStorageContainerUrl() {
+        return this.outputStorageContainerUrl;
     }
 
     /**

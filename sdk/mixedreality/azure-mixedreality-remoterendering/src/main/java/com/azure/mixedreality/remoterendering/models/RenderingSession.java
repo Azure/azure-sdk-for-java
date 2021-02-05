@@ -3,7 +3,7 @@ package com.azure.mixedreality.remoterendering.models;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public final class Session {
+public final class RenderingSession {
     private String id;
     private int arrInspectorPort;
     private int handshakePort;
@@ -16,57 +16,57 @@ public final class Session {
     private RemoteRenderingServiceError error;
     private OffsetDateTime creationTime;
 
-    public Session setId(String id) {
+    public RenderingSession setId(String id) {
         this.id = id;
         return this;
     }
 
-    public Session setArrInspectorPort(int arrInspectorPort) {
+    public RenderingSession setArrInspectorPort(int arrInspectorPort) {
         this.arrInspectorPort = arrInspectorPort;
         return this;
     }
 
-    public Session setHandshakePort(int handshakePort) {
+    public RenderingSession setHandshakePort(int handshakePort) {
         this.handshakePort = handshakePort;
         return this;
     }
 
-    public Session setElapsedTime(Duration elapsedTime) {
+    public RenderingSession setElapsedTime(Duration elapsedTime) {
         this.elapsedTime = elapsedTime;
         return this;
     }
 
-    public Session setHostname(String hostname) {
+    public RenderingSession setHostname(String hostname) {
         this.hostname = hostname;
         return this;
     }
 
-    public Session setMaxLeaseTime(Duration maxLeaseTime) {
+    public RenderingSession setMaxLeaseTime(Duration maxLeaseTime) {
         this.maxLeaseTime = maxLeaseTime;
         return this;
     }
 
-    public Session setSessionSize(SessionSize sessionSize) {
+    public RenderingSession setSessionSize(SessionSize sessionSize) {
         this.sessionSize = sessionSize;
         return this;
     }
 
-    public Session setSessionStatus(SessionStatus sessionStatus) {
+    public RenderingSession setSessionStatus(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
         return this;
     }
 
-    public Session setTeraflops(float teraflops) {
+    public RenderingSession setTeraflops(float teraflops) {
         this.teraflops = teraflops;
         return this;
     }
 
-    public Session setError(RemoteRenderingServiceError error) {
+    public RenderingSession setError(RemoteRenderingServiceError error) {
         this.error = error;
         return this;
     }
 
-    public Session setCreationTime(OffsetDateTime creationTime) {
+    public RenderingSession setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }

@@ -45,14 +45,14 @@ public final class RemoteRenderingAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    public PollerFlux<Session, Session> beginSession(String sessionId, CreateSessionOptions options) {
-        return new PollerFlux<Session, Session>(
+    public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
+        return new PollerFlux<RenderingSession, RenderingSession>(
             options.getPollInterval(),
             pollingContext -> {
                 return impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
             },
             pollingContext -> {
-                Mono<Session> response = impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                Mono<RenderingSession> response = impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
                 return response.map(session -> {
                     final SessionStatus sessionStatus = session.getStatus();
                     LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
@@ -68,7 +68,7 @@ public final class RemoteRenderingAsyncClient {
                     } else {
                         // TODO Assert? Throw?
                     }
-                    return new PollResponse<Session>(lroStatus, session);
+                    return new PollResponse<RenderingSession>(lroStatus, session);
                 });
             },
             (pollingContext, pollResponse) -> {
@@ -76,7 +76,7 @@ public final class RemoteRenderingAsyncClient {
                 return impl.stopSessionWithResponseAsync(accountId, sessionId, Context.NONE).then(Mono.just(pollingContext.getLatestResponse().getValue()));
             },
             pollingContext -> {
-                PollResponse<Session> response = pollingContext.getLatestResponse();
+                PollResponse<RenderingSession> response = pollingContext.getLatestResponse();
                 return Mono.just(response.getValue());
             }
         );
@@ -94,7 +94,7 @@ public final class RemoteRenderingAsyncClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Session> getSession(String sessionId) {
+    public Mono<RenderingSession> getSession(String sessionId) {
         return impl.getSessionWithResponseAsync(accountId, sessionId, Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
     }
 
@@ -111,7 +111,7 @@ public final class RemoteRenderingAsyncClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Session> updateSession(String sessionId, UpdateSessionOptions options) {
+    public Mono<RenderingSession> updateSession(String sessionId, UpdateSessionOptions options) {
         return impl.updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), Context.NONE).map(s -> ModelTranslator.fromGenerated(s.getValue()));
     }
 
@@ -140,17 +140,17 @@ public final class RemoteRenderingAsyncClient {
      * @return a list of all rendering sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<Session> listSessions() {
-        return new PagedFlux<Session>(
+    public PagedFlux<RenderingSession> listSessions() {
+        return new PagedFlux<RenderingSession>(
             () -> impl.listSessionsSinglePageAsync(accountId, Context.NONE).map(p ->
-                new PagedResponseBase<HttpRequest, Session>(p.getRequest(),
+                new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(sessionProperties -> ModelTranslator.fromGenerated(sessionProperties)).collect(Collectors.toList()),
                     p.getContinuationToken(),
                     null)),
             continuationToken -> impl.listSessionsNextSinglePageAsync(continuationToken, Context.NONE).map(p ->
-                new PagedResponseBase<HttpRequest, Session>(p.getRequest(),
+                new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(sessionProperties -> ModelTranslator.fromGenerated(sessionProperties)).collect(Collectors.toList()),

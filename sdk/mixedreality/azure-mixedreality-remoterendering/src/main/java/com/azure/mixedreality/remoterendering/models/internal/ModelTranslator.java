@@ -21,17 +21,17 @@ public final class ModelTranslator {
         return new Conversion()
             .setId(conversion.getId())
             .setOptions(fromGenerated(conversion.getSettings()))
-            .setOutputAssetUri(conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null)
+            .setOutputAssetUrl(conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null)
             .setError(fromGenerated(conversion.getError()))
             .setConversionStatus(ConversionStatus.fromString(conversion.getStatus().toString()))
             .setCreationTime(conversion.getCreationTime());
     }
 
-    public static Session fromGenerated(SessionProperties sessionProperties) {
+    public static RenderingSession fromGenerated(SessionProperties sessionProperties) {
         if (sessionProperties == null) {
             return null;
         }
-        return new Session()
+        return new RenderingSession()
             .setId(sessionProperties.getId())
             .setHandshakePort(sessionProperties.getHandshakePort())
             .setElapsedTime(Duration.ofMinutes(sessionProperties.getElapsedTimeMinutes()))
@@ -64,11 +64,11 @@ public final class ModelTranslator {
             .inputBlobPrefix(settings.getInputLocation().getBlobPrefix())
             .inputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
             .inputStorageContainerReadListSas(settings.getInputLocation().getStorageContainerReadListSas())
-            .inputStorageContainerUri(settings.getInputLocation().getStorageContainerUri())
+            .inputStorageContainerUrl(settings.getInputLocation().getStorageContainerUri())
 
             .outputAssetFilename(settings.getOutputLocation().getOutputAssetFilename())
             .outputBlobPrefix(settings.getOutputLocation().getBlobPrefix())
-            .outputStorageContainerUri(settings.getOutputLocation().getStorageContainerUri())
+            .outputStorageContainerUrl(settings.getOutputLocation().getStorageContainerUri())
             .outputStorageContainerWriteSas(settings.getOutputLocation().getStorageContainerWriteSas());
     }
 
@@ -78,11 +78,11 @@ public final class ModelTranslator {
         }
         return new ConversionSettings(
             new ConversionInputSettings(
-            conversionOptions.getInputStorageContainerUri(),
+            conversionOptions.getInputStorageContainerUrl(),
             conversionOptions.getInputRelativeAssetPath())
             .setStorageContainerReadListSas(conversionOptions.getInputStorageContainerReadListSas())
             .setBlobPrefix(conversionOptions.getInputBlobPrefix()),
-            new ConversionOutputSettings(conversionOptions.getOutputStorageContainerUri())
+            new ConversionOutputSettings(conversionOptions.getOutputStorageContainerUrl())
                 .setStorageContainerWriteSas(conversionOptions.getOutputStorageContainerWriteSas())
                 .setBlobPrefix(conversionOptions.getOutputBlobPrefix())
                 .setOutputAssetFilename(conversionOptions.getOutputAssetFilename())
