@@ -184,10 +184,7 @@
   },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"IoTCentral\""
-    }
+    "args": "--multiapi --fluent"
   },
   "iothub/resource-manager": {
     "source": "specification/iothub/resource-manager/readme.md",
@@ -367,10 +364,7 @@
   },
   "streamanalytics/resource-manager": {
     "source": "specification/streamanalytics/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"StreamAnalytics\""
-    }
+    "args": "--multiapi --fluent"
   },
   "subscription/resource-manager": {
     "source": "specification/subscription/resource-manager/readme.md",
