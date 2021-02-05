@@ -44,9 +44,9 @@
 Both `web application` and `resource server` support extra function: itself can access other resource servers which are protected by Azure Active Directory. So there are 4 scenarios:
 
 1. Web application.
-1. Web application with function of visiting resource servers.
+1. Web application visiting resource servers.
 1. Resource server.
-1. Resource server with function of visiting other resource servers.
+1. Resource server visiting other resource servers.
 
 The following content will introduce the 4 scenarios one by one.
 
@@ -114,7 +114,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 }
 ```
 
-### Web application with function of visiting resource servers
+### Web application visiting resource servers
 
 This scenario support visit resource servers in web application.
 
@@ -212,7 +212,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
 }
 ```
 
-### Resource server with function of visiting other resource servers
+### Resource server visiting other resource servers
 
 This scenario support visit other resource servers in resource servers.
 
@@ -351,7 +351,7 @@ public class RoleController {
 }
 ```
 
-#### Property example 3: [Incremental consent] in web application with function of visiting resource servers.
+#### Property example 3: [Incremental consent] in Web application visiting resource servers.
 
 * Step 1: Add property in application.yml
 ```yaml
@@ -396,13 +396,13 @@ consented.
 
 ## Examples
 
-### Web application with function of visiting resource servers
+### Web application visiting resource servers
 Please refer to [azure-spring-boot-sample-active-directory-webapp].
 
 ### Resource server
 Please refer to [azure-spring-boot-sample-active-directory-resource-server].
 
-### Resource server with function of visiting other resource servers
+### Resource server visiting other resource servers
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo].
 
 ## Troubleshooting
