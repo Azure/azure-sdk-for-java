@@ -99,7 +99,7 @@ public final class ResourceGroupsImpl
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.manager().serviceClient().getResourceGroups().deleteWithResponseAsync(name).block(),
+            () -> this.manager().serviceClient().getResourceGroups().deleteWithResponseAsync(name, null).block(),
             Function.identity(),
             Void.class,
             null);
