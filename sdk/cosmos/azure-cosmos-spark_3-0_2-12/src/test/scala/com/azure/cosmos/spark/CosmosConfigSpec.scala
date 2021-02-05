@@ -48,19 +48,49 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
-    "Read Config Parser" should "parse read configuration" in {
-        val customQuery = "select * from c"
-        val userConfig = Map(
-            "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-            "spark.cosmos.read.inferSchemaEnabled" -> "false",
-            "spark.cosmos.read.inferSchemaQuery" -> customQuery
-        )
+  it should "parse read configuration" in {
+    val customQuery = "select * from c"
+    val userConfig = Map(
+      "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
+      "spark.cosmos.read.inferSchemaEnabled" -> "false",
+      "spark.cosmos.read.inferSchemaQuery" -> customQuery
+    )
 
-        val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    config.inferSchemaSamplingSize shouldEqual 50
+    config.inferSchemaEnabled shouldBe false
+    config.inferSchemaQuery shouldEqual Some(customQuery)
+  }
 
-        config.inferSchemaSamplingSize shouldEqual 50
-        config.inferSchemaEnabled shouldBe false
-        config.inferSchemaQuery shouldEqual Some(customQuery)
-    }
+  it should "provide default schema inference config" in {
+    val userConfig = Map[String, String]()
+
+    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+
+    config.inferSchemaSamplingSize shouldEqual 1000
+    config.inferSchemaEnabled shouldBe false
+  }
+
+  it should "provide default write config" in {
+    val userConfig = Map[String, String]()
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemOverwrite
+    config.maxRetryCount shouldEqual 3
+  }
+
+  it should "parse write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "8"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 8
+  }
+
   //scalastyle:on multiple.string.literals
 }
