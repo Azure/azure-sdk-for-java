@@ -9,14 +9,13 @@ import com.github.tomakehurst.wiremock.extension.ResponseTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.Response;
 
-import static com.azure.core.http.okhttp.OkHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
+import static com.azure.core.http.okhttp.OkHttpAsyncHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
 
 /**
  * Mock response transformer used to test {@link OkHttpAsyncHttpClient}.
  */
 public class OkHttpAsyncHttpClientResponseTransformer extends ResponseTransformer {
     public static final String NAME = "okhttp-async-http-client-response-transformer";
-    public static final String NULL_REPLACEMENT = "null";
 
     @Override
     public Response transform(Request request, Response response, FileSource fileSource, Parameters parameters) {

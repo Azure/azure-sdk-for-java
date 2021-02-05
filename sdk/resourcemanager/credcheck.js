@@ -19,7 +19,12 @@ function credcheck(dir) {
     redactDict.set(/\\"primaryKey\\":\\"(.*?)\\"/g, '\\"primaryKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryKey\\":\\"(.*?)\\"/g, '\\"secondaryKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secretText\\":\\"(.*?)\\"/g, '\\"secretText\\":\\"***REMOVED***\\"');
-    
+    redactDict.set(/&sig=(.*?)(&|\\")/g, '&sig=***REMOVED***$2');
+    redactDict.set(/\\"DOCKER_REGISTRY_SERVER_PASSWORD\\":\\"(.*?)\\"/g, '\\"DOCKER_REGISTRY_SERVER_PASSWORD\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"ServiceApiKey\\":\\"(.*?)\\"/g, '\\"ServiceApiKey\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"Givex.Password\\":\\"(.*?)\\"/g, '\\"Givex.Password\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"Sendgrid.Password\\":\\"(.*?)\\"/g, '\\"Sendgrid.Password\\":\\"***REMOVED***\\"');
+  
     credcheckRecursive(dir, redactDict);
 }
 

@@ -10,9 +10,8 @@
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "ContainerNotFound",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "Content-Length" : "225",
       "StatusCode" : "404",
       "x-ms-request-id" : "4651eab0-101e-00c1-1c4b-fb51c3000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:4651eab0-101e-00c1-1c4b-fb51c3000000\nTime:2021-02-04T23:11:22.6963838Z</Message></Error>",
@@ -53,9 +52,8 @@
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "ContainerNotFound",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "Content-Length" : "225",
       "StatusCode" : "404",
       "x-ms-request-id" : "4651eab5-101e-00c1-1f4b-fb51c3000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:4651eab5-101e-00c1-1f4b-fb51c3000000\nTime:2021-02-04T23:11:22.8735525Z</Message></Error>",
@@ -95,10 +93,10 @@
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
+
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "ContainerNotFound",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "Content-Length" : "225",
       "StatusCode" : "404",
       "x-ms-request-id" : "4651eabe-101e-00c1-234b-fb51c3000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:4651eabe-101e-00c1-234b-fb51c3000000\nTime:2021-02-04T23:11:23.0537235Z</Message></Error>",
@@ -139,9 +137,8 @@
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "ContainerNotFound",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "Content-Length" : "225",
       "StatusCode" : "404",
       "x-ms-request-id" : "4651ead2-101e-00c1-2c4b-fb51c3000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:4651ead2-101e-00c1-2c4b-fb51c3000000\nTime:2021-02-04T23:11:23.2328945Z</Message></Error>",
@@ -208,6 +205,7 @@
       "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-request-id" : "4651eadc-101e-00c1-334b-fb51c3000000",
