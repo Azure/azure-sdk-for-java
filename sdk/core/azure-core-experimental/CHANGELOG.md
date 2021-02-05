@@ -4,7 +4,7 @@
 
 ### New Features
 
-
+- Added challenge based authentication support via `BearerTokenAuthenticationChallengePolicy` and `AccessTokenCache` classes.
 
 ## 1.0.0-beta.9 (2021-01-11)
 
