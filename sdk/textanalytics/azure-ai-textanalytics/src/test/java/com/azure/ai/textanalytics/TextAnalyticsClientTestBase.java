@@ -48,6 +48,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -88,7 +89,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
-
+    static final String REDACTED = "REDACTED";
+    static InterceptorManager interceptorManagerTestBase;
     Duration durationTestMode;
 
     /**
@@ -101,6 +103,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         } else {
             durationTestMode = DEFAULT_POLL_INTERVAL;
         }
+        interceptorManagerTestBase = interceptorManager;
     }
 
     // Detect Language
@@ -1084,7 +1087,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getName(), actualLinkedEntity.getName());
         assertEquals(expectedLinkedEntity.getDataSource(), actualLinkedEntity.getDataSource());
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
-        assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
+        if (interceptorManagerTestBase.isPlaybackMode()) {
+            assertEquals(REDACTED, actualLinkedEntity.getUrl());
+        } else {
+            assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
+        }
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
         assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
