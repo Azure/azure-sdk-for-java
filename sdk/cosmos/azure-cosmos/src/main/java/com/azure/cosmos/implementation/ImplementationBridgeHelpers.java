@@ -61,7 +61,7 @@ public class ImplementationBridgeHelpers {
 
         public static PartitionKeyAccessor getPartitionKeyAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("PartitionKeyHelper accessor already initialized!");
+                throw new IllegalStateException("PartitionKeyHelper accessor is not initialized!");
             }
 
             return accessor;
