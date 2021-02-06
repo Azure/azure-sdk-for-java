@@ -136,6 +136,7 @@ public class ConfigStore {
      */
     public String[] getLabels(List<String> profiles) {
         if (this.getLabel() == null && profiles.size() > 0) {
+            Collections.reverse(profiles);
             return profiles.toArray(new String[profiles.size()]);
         } else if (!StringUtils.hasText(this.getLabel())) {
             return EMPTY_LABEL_ARRAY;
