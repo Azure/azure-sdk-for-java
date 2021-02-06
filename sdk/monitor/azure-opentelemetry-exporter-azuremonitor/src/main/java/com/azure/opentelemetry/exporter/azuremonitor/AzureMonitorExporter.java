@@ -253,7 +253,9 @@ public final class AzureMonitorExporter implements SpanExporter {
             remoteDependencyData.getProperties().put("statusDescription", description);
         }
 
-        Double samplingPercentage = removeAiSamplingPercentage(attributes);
+        // TODO: sampling will not be supported in this exporter
+        // Sampling cleanup will be done in a separate PR
+        Double samplingPercentage = 100.0;
 
         // for now, only add extra attributes for custom telemetry
         if (stdComponent == null) {
