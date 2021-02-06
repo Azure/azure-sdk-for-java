@@ -12,6 +12,7 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.IoTCentralManager;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.AppTemplateInner;
+import java.util.List;
 
 /**
  * Type representing AppTemplate.
@@ -21,6 +22,16 @@ public interface AppTemplate extends HasInner<AppTemplateInner>, HasManager<IoTC
      * @return the description value.
      */
     String description();
+
+    /**
+     * @return the industry value.
+     */
+    String industry();
+
+    /**
+     * @return the locations value.
+     */
+    List<AppTemplateLocations> locations();
 
     /**
      * @return the manifestId value.
