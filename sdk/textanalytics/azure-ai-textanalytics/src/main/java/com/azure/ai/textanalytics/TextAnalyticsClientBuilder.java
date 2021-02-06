@@ -110,9 +110,9 @@ public final class TextAnalyticsClientBuilder {
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
         headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
+            .set(ECHO_REQUEST_ID_HEADER, "true")
+            .set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**

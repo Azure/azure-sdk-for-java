@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.ClosedFileSystemException;
 import java.nio.file.FileSystem;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
@@ -727,7 +728,8 @@ public final class AzurePath implements Path {
 
         String blobName = this.withoutRoot();
         if (blobName.isEmpty()) {
-            throw new IOException("Cannot get a blob client to a path that only contains the root or is an empty path");
+            throw LoggingUtility.logError(logger, new IOException("Cannot get a blob client to a path that only "
+                + "contains the root or is an empty path"));
         }
 
         return containerClient.getBlobClient(blobName);
@@ -773,10 +775,10 @@ public final class AzurePath implements Path {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 
-    static void ensureFileSystemOpen(Path p) throws IOException {
+    static void ensureFileSystemOpen(Path p) {
         if (!p.getFileSystem().isOpen()) {
             throw LoggingUtility.logError(((AzurePath) p).logger,
-                new IOException("FileSystem for path has been closed. Path: " + p.toString()));
+                new ClosedFileSystemException());
         }
     }
 }

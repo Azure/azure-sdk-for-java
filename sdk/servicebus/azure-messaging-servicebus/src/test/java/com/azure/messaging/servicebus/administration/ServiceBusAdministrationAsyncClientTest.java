@@ -3,9 +3,12 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -15,6 +18,7 @@ import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
+import com.azure.messaging.servicebus.implementation.SubscriptionsImpl;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
@@ -23,11 +27,17 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -49,6 +59,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,6 +70,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -69,6 +81,8 @@ class ServiceBusAdministrationAsyncClientTest {
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
     private EntitiesImpl entitys;
+    @Mock
+    private SubscriptionsImpl subscriptions;
     @Mock
     private ServiceBusManagementSerializer serializer;
     @Mock
@@ -118,6 +132,7 @@ class ServiceBusAdministrationAsyncClientTest {
         when(secondObjectResponse.getRequest()).thenReturn(httpRequest);
 
         when(serviceClient.getEntities()).thenReturn(entitys);
+        when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
 
         client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
     }
@@ -331,6 +346,50 @@ class ServiceBusAdministrationAsyncClientTest {
             .verifyComplete();
     }
 
+    /**
+     * When ServiceBusManagementError is not populated or 'null' in 'ServiceBusManagementErrorException', we get
+     * 'ClientAuthenticationException' with error message.
+     */
+    @ParameterizedTest
+    @MethodSource
+    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessage, ServiceBusManagementError managementError) {
+        // Arrange
+        final String topicName = "topicName";
+        final String subscriptionName = "subscriptionName";
+        final HttpResponse response = mock(HttpResponse.class);
+        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
+            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessage, response, managementError)));
+        when(response.getStatusCode()).thenReturn(HttpStatus.SC_UNAUTHORIZED);
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
+            .verifyErrorMatches(error -> error instanceof ClientAuthenticationException
+                && error.getMessage().equals(errorMessage));
+    }
+
+    /**
+     * When ServiceBusManagementError is populated in 'ServiceBusManagementErrorException' with no Http status code,
+     * we get 'HttpResponseException' with error message.
+     * We should always have Http status code populated but this test is to ensure we do not throw NullPointerException.
+     */
+    @Test
+    void getSubscriptionRuntimePropertiesWithNoStatusCode() {
+        // Arrange
+        final String topicName = "topicName";
+        final String subscriptionName = "subscriptionName";
+        final String message = "Unauthorized access";
+        final HttpResponse response = mock(HttpResponse.class);
+        final ServiceBusManagementError managementError = new ServiceBusManagementError();
+        managementError.setDetail(message);
+
+        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
+            .thenReturn(Mono.error(new ServiceBusManagementErrorException(message, response, managementError)));
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
+            .verifyErrorMatches(error -> error instanceof HttpResponseException);
+    }
+
     @Test
     void listQueues() throws IOException {
         // Arrange
@@ -461,9 +520,15 @@ class ServiceBusAdministrationAsyncClientTest {
             .verifyComplete();
     }
 
+    static Stream<Arguments> getSubscriptionRuntimePropertiesUnauthorised() {
+        return Stream.of(
+            Arguments.of("Unauthorized access", null),
+            Arguments.of("Unauthorized access", new ServiceBusManagementError().setCode(HttpStatus.SC_UNAUTHORIZED).setDetail("Unauthorized access"))
+        );
+    }
+
     /**
      * Gets the corresponding test xml file.
-     *
      * @param fileName Name of the xml file.
      *
      * @return String contents of file.

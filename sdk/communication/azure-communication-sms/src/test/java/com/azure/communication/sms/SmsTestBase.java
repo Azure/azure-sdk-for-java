@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.core.http.HttpHeaders;
@@ -41,17 +41,17 @@ public class SmsTestBase {
         mapper = new ObjectMapper();
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
 
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
 
@@ -67,7 +67,7 @@ public class SmsTestBase {
         return builder;
     }
 
-    public HttpClient getHttpClient(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public HttpClient getHttpClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
@@ -84,7 +84,7 @@ public class SmsTestBase {
 
                 assertNotNull(messageRequest, "No SmsMessageRequest");
                 assertEquals(body, messageRequest.getMessage(), "body incorrect");
-                assertEquals(from.getValue(), messageRequest.getFrom(), "from incorrect");
+                assertEquals(from.getPhoneNumber(), messageRequest.getFrom(), "from incorrect");
                 assertEquals(ENDPOINT, request.getUrl().getHost());
                 assertEquals(PATH, request.getUrl().getPath());
 
@@ -94,12 +94,12 @@ public class SmsTestBase {
                 // values without re-creating the HMAC Policy. We will
                 // just make sure they are present and have values.
                 assertTrue(headers.containsKey("Authorization"));
-                assertTrue(headers.containsKey("User-Agent"));                
+                assertTrue(headers.containsKey("User-Agent"));
                 assertTrue(headers.containsKey("x-ms-content-sha256"));
                 assertNotNull(headers.get("Authorization"));
                 assertNotNull(headers.get("x-ms-content-sha256"));
 
-                Stream<String> numberStream = to.stream().map(n -> n.getValue());
+                Stream<String> numberStream = to.stream().map(n -> n.getPhoneNumber());
                 List<String> numberStrings = numberStream.collect(Collectors.toList());
                 for (String t : messageRequest.getTo()) {
                     if (!numberStrings.contains(t)) {
@@ -146,11 +146,11 @@ public class SmsTestBase {
                     public Mono<String> getBodyAsString(Charset charset) {
                         return Mono.empty();
                     }
-                        
+
                 };
 
                 return Mono.just(response);
             }
         };
-    }  
+    }
 }

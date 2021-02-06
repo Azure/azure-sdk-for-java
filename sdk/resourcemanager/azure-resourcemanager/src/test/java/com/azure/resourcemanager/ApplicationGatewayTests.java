@@ -272,6 +272,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
+        if (skipInPlayback()) {
+            return; // removed pfx
+        }
         new TestApplicationGateway().new PrivateMinimal(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }

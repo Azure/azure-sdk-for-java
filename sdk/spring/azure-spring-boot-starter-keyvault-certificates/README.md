@@ -15,7 +15,11 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
+<<<<<<< HEAD
     <version>3.0.0-beta.2</version>
+=======
+    <version>3.0.0-beta.4</version>
+>>>>>>> 6ab25815c398861f8ad168df061a286406fc82f0
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,9 +59,9 @@ Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
-azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+azure.keyvault.tenant-id=<the ID of your Azure tenant>
+azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
+azure.keyvault.client-secret=<the client secret associated wit the client ID>
 server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
 server.ssl.key-store-type=AzureKeyVault
 ```
@@ -112,9 +116,9 @@ Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
-azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+azure.keyvault.tenant-id=<the ID of your Azure tenant>
+azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
+azure.keyvault.client-secret=<the client secret associated wit the client ID>
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access
@@ -286,7 +290,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-starter-keyvault-certificates
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

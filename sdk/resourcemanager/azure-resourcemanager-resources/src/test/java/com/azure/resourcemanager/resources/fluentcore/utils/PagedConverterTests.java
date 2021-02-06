@@ -4,16 +4,24 @@
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -34,6 +42,8 @@ public class PagedConverterTests {
             .expectNextMatches(p -> p.getValue().size() == 4)
             .expectComplete()
             .verify();
+
+        Assertions.assertEquals(10 * 2, new PagedIterable<>(convertedPagedFlux).stream().count());
     }
 
     @Test
@@ -50,34 +60,126 @@ public class PagedConverterTests {
             .expectNextCount(3 * 2)
             .expectComplete()
             .verify();
+
+        Assertions.assertEquals(3 * 10, new PagedIterable<>(mergedPagedFlux).stream().count());
+    }
+
+    @Test
+    public void testMergePagedFluxContainsEmptyPage() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
+        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> {
+            if (item.equals("base1")) {
+                return mockEmptyPagedFlux();
+            } else {
+                return mockPagedFlux(item + "sub", 0, 10, 4);
+            }
+        });
+        StepVerifier.create(mergedPagedFlux.byPage())
+            .expectSubscription()
+            .expectNextMatches(p -> p.getValue().size() == 4
+                && p.getValue().get(0).equals("base0sub0")
+                && p.getValue().get(p.getValue().size() - 1).equals("base0sub3"))
+            .expectNextMatches(p -> p.getValue().size() == 4)
+            .expectNextMatches(p -> p.getValue().size() == 2)
+            .expectNextCount(3)
+            .expectComplete()
+            .verify();
+
+        Assertions.assertEquals(2 * 10, new PagedIterable<>(mergedPagedFlux).stream().count());
+    }
+
+    @Test
+    public void testMergePagedFluxContainsEmptyPage2() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
+        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> {
+            if (item.equals("base0") || item.equals("base1")) {
+                return mockEmptyPagedFlux();
+            } else {
+                return mockPagedFlux(item + "sub", 0, 10, 4);
+            }
+        });
+        StepVerifier.create(mergedPagedFlux.byPage())
+            .expectSubscription()
+            .expectNextMatches(p -> p.getValue().size() == 4
+                && p.getValue().get(0).equals("base2sub0")
+                && p.getValue().get(p.getValue().size() - 1).equals("base2sub3"))
+            .expectNextMatches(p -> p.getValue().size() == 4)
+            .expectNextMatches(p -> p.getValue().size() == 2)
+            .expectComplete()
+            .verify();
+
+        Assertions.assertEquals(10, new PagedIterable<>(mergedPagedFlux).stream().count());
+    }
+
+    @Test
+    public void testFlatMapPageOnePage() {
+        AtomicInteger pageCount = new AtomicInteger(0);
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4, pageCount);
+        PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
+        PagedIterable<String> pagedIterable = new PagedIterable<>(convertedPagedFlux);
+
+        pagedIterable.stream().findFirst().get();
+
+        Assertions.assertEquals(1, pageCount.get());
+    }
+
+    @Test
+    @Disabled("not working as expected")
+    public void testMergePagedFluxOnePage() {
+        AtomicInteger pageCountRoot = new AtomicInteger(0);
+        AtomicInteger pageCount = new AtomicInteger(0);
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2, pageCountRoot);
+        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4, pageCount));
+        PagedIterable<String> pagedIterable = new PagedIterable<>(mergedPagedFlux);
+
+        pagedIterable.stream().findFirst().get();
+
+        Assertions.assertEquals(1, pageCountRoot.get());
+        Assertions.assertEquals(1, pageCount.get());
+    }
+
+    private static PagedFlux<String> mockEmptyPagedFlux() {
+        PagedResponseBase<Void, String> emptyPage = new PagedResponseBase<>(null, 200, null,
+            Collections.emptyList(), null, null);
+        return new PagedFlux<>(() -> Mono.just(emptyPage),
+            continuationToken -> Mono.empty());
     }
 
     private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize) {
-        Iterator<Integer> iterator = IntStream.range(startInclusive, stopExclusive).iterator();
-        Function<String, PagedResponseBase<Void, String>> nextPage = continuationToken -> {
-            if (continuationToken == null) {
-                throw new IllegalArgumentException();
-            }
+        return mockPagedFlux(prefix, startInclusive, stopExclusive, pageSize, new AtomicInteger(0));
+    }
 
+    private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize, AtomicInteger pageCount) {
+        Iterator<Integer> iterator = IntStream.range(startInclusive, stopExclusive).iterator();
+        Map<String, PagedResponse<String>> pages = new HashMap<>();
+        String currentContinuationToken = prefix;
+        while (iterator.hasNext()) {
             List<String> items = new ArrayList<>();
             Integer possibleNext = null;
             for (int i = 0; i < pageSize; ++i) {
                 if (!iterator.hasNext()) {
                     break;
                 }
-
                 int item = iterator.next();
                 items.add(prefix + item);
                 possibleNext = item + 1;
             }
 
-            if (!continuationToken.equals(prefix) && !items.isEmpty()) {
-                assert continuationToken.equals(items.iterator().next());
+            String newContinuationToken = iterator.hasNext() ? prefix + possibleNext : null;
+            PagedResponse<String> page = new PagedResponseBase<>(null, 200, null,
+                items, newContinuationToken, null);
+            pages.put(currentContinuationToken, page);
+            currentContinuationToken = newContinuationToken;
+        }
+
+        Function<String, PagedResponse<String>> nextPage = continuationToken -> {
+            if (continuationToken == null) {
+                throw new IllegalArgumentException();
             }
 
-            return new PagedResponseBase<>(null, 200, null,
-                items, iterator.hasNext() ? prefix + possibleNext : null,
-                null);
+            pageCount.getAndIncrement();
+
+            return pages.get(continuationToken);
         };
         return new PagedFlux<>(() -> Mono.just(nextPage.apply(prefix)),
             continuationToken -> Mono.just(nextPage.apply(continuationToken)));

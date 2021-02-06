@@ -56,7 +56,6 @@ import java.util.regex.Pattern;
 /**
  * The builder to create Service Bus clients:
  *
- *
  * <p><strong>Clients for sending messages</strong></p>
  * <ul>
  * <li>{@link ServiceBusSenderAsyncClient}</li>

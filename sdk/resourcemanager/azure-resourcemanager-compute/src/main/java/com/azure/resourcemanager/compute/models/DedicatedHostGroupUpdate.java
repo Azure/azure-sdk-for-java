@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Specifies information about the dedicated host group that the dedicated host should be assigned to. Only tags may be
@@ -40,6 +41,23 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      */
     @JsonProperty(value = "properties.hosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> hosts;
+
+    /*
+     * The dedicated host group instance view, which has the list of instance
+     * view of the dedicated hosts under the dedicated host group.
+     */
+    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
+    private DedicatedHostGroupInstanceView instanceView;
+
+    /*
+     * Specifies whether virtual machines or virtual machine scale sets can be
+     * placed automatically on the dedicated host group. Automatic placement
+     * means resources are allocated on dedicated hosts, that are chosen by
+     * Azure, under the dedicated host group. The value is defaulted to 'false'
+     * when not provided. <br><br>Minimum api-version: 2020-06-01.
+     */
+    @JsonProperty(value = "properties.supportAutomaticPlacement")
+    private Boolean supportAutomaticPlacement;
 
     /**
      * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
@@ -95,6 +113,49 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
+     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of the
+     * dedicated hosts under the dedicated host group.
+     *
+     * @return the instanceView value.
+     */
+    public DedicatedHostGroupInstanceView instanceView() {
+        return this.instanceView;
+    }
+
+    /**
+     * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
+     * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @return the supportAutomaticPlacement value.
+     */
+    public Boolean supportAutomaticPlacement() {
+        return this.supportAutomaticPlacement;
+    }
+
+    /**
+     * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
+     * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
+     * @return the DedicatedHostGroupUpdate object itself.
+     */
+    public DedicatedHostGroupUpdate withSupportAutomaticPlacement(Boolean supportAutomaticPlacement) {
+        this.supportAutomaticPlacement = supportAutomaticPlacement;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostGroupUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,6 +165,9 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
         super.validate();
         if (hosts() != null) {
             hosts().forEach(e -> e.validate());
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
         }
     }
 }

@@ -4,21 +4,12 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +18,18 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The CloudEvent model. This represents a cloud event as specified by the CNCF, for sending event based data.
- * @see EventGridPublisherAsyncClient
- * @see EventGridPublisherClient
+ * The CloudEvent model. This represents a cloud event as specified by the
+ * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>
+ *
+ * When you send a CloudEvent to an Event Grid Topic, the topic must be configured to receive the CloudEvent schema.
+ *
+ * For new customers, CloudEvent is generally preferred over {@link EventGridEvent} because the
+ *
+ * <a href="https://docs.microsoft.com/azure/event-grid/cloud-event-schema">CloudEvent schema</a> is supported across
+ * organizations while the <a href="https://docs.microsoft.com/azure/event-grid/event-schema">EventGridEvent schema</a> is not.
+ *
+ * @see EventGridPublisherAsyncClient to send cloud events asynchronously.
+ * @see EventGridPublisherClient to send cloud events.
  **/
 @Fluent
 public final class CloudEvent {
@@ -40,23 +40,38 @@ public final class CloudEvent {
 
     private static final ClientLogger logger = new ClientLogger(CloudEvent.class);
 
-    private boolean parsed = false;
-
-    private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
-        .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
-            .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when/if it
-        .build();                                  // becomes public in core
+    /**
+     * Create an instance of CloudEvent. The source and type are required fields to publish.
+     * @param source a URI identifying the origin of the event. It can't be null or empty.
+     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived". It can't be null or empty.
+     * @param data the payload of this event. Set to null if your event doesn't have the data payload.
+     *             It will be serialized as a String if it's a String, or application/json if it's not a String.
+     * @throws NullPointerException if source or type is {@code null}.
+     */
+    public CloudEvent(String source, String type, Object data) {
+        this(source, type);
+        this.setData(data);
+    }
 
     /**
-     * Create an instance of a CloudEvent. The source and type are required fields to publish.
+     * Create an instance of CloudEvent. The source and type are required fields to publish.
      * @param source a URI identifying the origin of the event.
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
+     * @param data the payload in bytes of this event. It will be serialized to Base64 format.
+     * @param dataContentType the type of the data.
+     * @throws NullPointerException if source or type is {@code null}.
      */
-    public CloudEvent(String source, String type) {
+    public CloudEvent(String source, String type, byte[] data, String dataContentType) {
+        this(source, type);
+        this.setDataBase64(data, dataContentType);
+    }
+
+    private CloudEvent(String source, String type) {
         if (CoreUtils.isNullOrEmpty(source)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
-        } else if (CoreUtils.isNullOrEmpty(type)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("type cannot be null or empty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'source' cannot be null or empty."));
+        }
+        if (CoreUtils.isNullOrEmpty(type)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'type' cannot be null or empty."));
         }
 
         this.cloudEvent = new com.azure.messaging.eventgrid.implementation.models.CloudEvent()
@@ -65,30 +80,16 @@ public final class CloudEvent {
             .setType(type)
             .setSpecversion(SPEC_VERSION);
     }
-
     /**
-     * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
-     * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
+     * Deserialize the {@link CloudEvent} from a JSON string.
+     * @param cloudEventJsonString the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as CloudEvents.
+     * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
+     * @throws IllegalArgumentException if cloudEventJsonString isn't a JSON string for a cloud event or an array of it.
+     * @throws NullPointerException if cloudEventJsonString is {@code null}.
      */
-    public static List<CloudEvent> parse(String json) {
-        return Flux.fromArray(deserializer
-            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
-        )
-            .map(event1 -> {
-                if (event1.getData() != null) {
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    deserializer.serialize(stream, event1.getData());
-                    return new CloudEvent(event1).setData(stream.toByteArray()); // use BinaryData instead?
-                } else { // both null, don't set data and keep null
-                    return new CloudEvent(event1);
-                }
-            })
-            .collectList()
-            .block();
+    public static List<CloudEvent> fromString(String cloudEventJsonString) {
+        return EventGridDeserializer.deserializeCloudEvents(cloudEventJsonString);
     }
 
     /**
@@ -122,131 +123,51 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the data associated with this event. For use in a parsed event only.
-     * @return If the event was parsed from a Json, this method will return the rich
-     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of binary event
-     * data, including data set through {@link CloudEvent#setData(byte[], String)}.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
+     * a String, an Object, or a byte[].
+     * @return A {@link BinaryData} that wraps the this event's data payload.
      */
-    public Object getData() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
+    public BinaryData getData() {
+        if (cloudEvent.getDataBase64() != null) {
+            return BinaryData.fromBytes(cloudEvent.getDataBase64());
         }
-        if (cloudEvent.getDataBase64() != null) { // this means normal data is null
-            return cloudEvent.getDataBase64();
-        }
-        String eventType = SystemEventMappings.canonicalizeEventType(cloudEvent.getType());
-        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
-            // system event
-            return deserializer.deserialize(new ByteArrayInputStream((byte[]) this.cloudEvent.getData()),
-                TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
-        }
-        return cloudEvent.getData();
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event. Note that this is only intended to work on
-     * events with {@code application/json} data and has unspecified results on other media types, such as binary data.
-     * @param clazz the class of the type to deserialize the data into, using a default deserializer.
-     * @param <T>   the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using a default deserializer.
-     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
-     */
-    public <T> T getData(Class<T> clazz) {
-        return getDataAsync(clazz, deserializer).block();
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event. Note that this is only intended to work on
-     * events with {@code application/json} data and has unspecified results on other media types, such as binary data.
-     * @param clazz the class of the type to deserialize the data into, using a default deserializer.
-     * @param <T>   the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using a default deserializer, wrapped asynchronously in a
-     * {@link Mono}.
-     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
-     */
-    public <T> Mono<T> getDataAsync(Class<T> clazz) {
-        return getDataAsync(clazz, deserializer);
-    }
-
-    /**
-     * Deserialize and get the data property from the parsed event. Note that this is only intended to work on
-     * events with {@code application/json} data and has unspecified results on other media types.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using the given deserializer.
-     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
-     */
-    public <T> T getData(Class<T> clazz, JsonSerializer dataDeserializer) {
-        return getDataAsync(clazz, dataDeserializer).block();
-    }
-
-    /**
-     * Deserialize and get the data property from the parsed event. Note that this is only intended to work on
-     * events with {@code application/json} data and has unspecified results on other media types.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using the given deserializer, wrapped asynchronously in a
-     * {@link Mono}.
-     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
-     */
-    public <T> Mono<T> getDataAsync(Class<T> clazz, JsonSerializer dataDeserializer) {
-        if (!parsed) {
-            // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
-            return FluxUtil.monoError(logger, new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
-
-        return dataDeserializer.deserializeAsync(new ByteArrayInputStream((byte[]) this.cloudEvent.getData()),
-            TypeReference.createInstance(clazz));
+        return EventGridDeserializer.getData(cloudEvent.getData());
     }
 
     /**
      * Set the data associated with this event.
-     * @param data the data to set. Should be serializable with the serializer set on the publisher client.
+     * @param data the data to set.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setData(Object data) {
+    CloudEvent setData(Object data) {
         this.cloudEvent.setData(data);
         return this;
     }
 
     /**
-     * Set the data associated with this event, along with a content type URI
-     * @param data            the data to set. Should be serializable by the serializer set on the publisher client.
-     * @param dataContentType a URI identifying the MIME type of the data.
-     *                        For example, if the data was an XML string, the data content type could be
-     *                        {@code "application/xml"}.
+     * Set the Base64 data associated with this event.
+     * @param data the data to set.
+     * @param dataContentType the data content type of the CloudEvent.
+     *
      * @return the cloud event itself.
      */
-    public CloudEvent setData(Object data, String dataContentType) {
-        this.cloudEvent.setData(data);
+    private CloudEvent setDataBase64(byte[] data, String dataContentType) {
+        if (data != null) {
+            byte[] encoded = Base64.getEncoder().encode(data);
+            this.cloudEvent.setDataBase64(encoded);
+            this.cloudEvent.setDatacontenttype(dataContentType);
+        }
+        return this;
+    }
+
+    /**
+     * Set the data content type with this event.
+     * @param dataContentType the data content type to set.
+     * @return the cloud event itself.
+     */
+    public CloudEvent setDataContentType(String dataContentType) {
         this.cloudEvent.setDatacontenttype(dataContentType);
-        return this;
-    }
-
-    /**
-     * Set byte data associated with this event, as well as the content type of the byte data. The data content
-     * type should be a string identifying the media type of the data.
-     * @param data            the data to set.
-     * @param dataContentType the string identifying the media type of the byte data, as a MIME type. A null value will
-     *                        be interpreted as the {@code application/json} type.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent setData(byte[] data, String dataContentType) {
-        this.cloudEvent
-            .setDataBase64(data)
-            .setDatacontenttype(dataContentType);
         return this;
     }
 
@@ -325,14 +246,6 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the spec version that this cloud event adheres to. Note that only CloudEvents spec version 1.0 is supported.
-     * @return the cloud event spec version.
-     */
-    public String getSpecVersion() {
-        return this.cloudEvent.getSpecversion();
-    }
-
-    /**
      * Get a map of the additional user-defined attributes associated with this event.
      * @return the extension attributes as an unmodifiable map.
      */
@@ -344,7 +257,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Add/Overwrite a single extension attribute to the cloud event envelope. The property name will be transformed
+     * Add/Overwrite a single extension attribute to the cloud event. The property name will be transformed
      * to lowercase and must not share a name with any reserved cloud event properties.
      * @param name  the name of the attribute.
      * @param value the value to associate with the name.
@@ -359,9 +272,8 @@ public final class CloudEvent {
         return this;
     }
 
-    private CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
+    CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
         this.cloudEvent = impl;
-        this.parsed = true;
     }
 
     com.azure.messaging.eventgrid.implementation.models.CloudEvent toImpl() {

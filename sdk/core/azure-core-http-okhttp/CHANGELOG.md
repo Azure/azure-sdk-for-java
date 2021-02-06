@@ -1,7 +1,19 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
+
+## 1.5.0 (2021-02-05)
+
+### New Features
+
+- Exposed service provider interfaces used to create `HttpClient` instances.
+
+## 1.4.1 (2021-01-11)
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
 
 ## 1.4.0 (2020-11-24)
 

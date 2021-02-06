@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -117,6 +119,7 @@ public final class QueueServiceAsyncClient {
      * @return The {@link QueueAsyncClient QueueAsyncClient}
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueAsyncClient> createQueue(String queueName) {
         try {
             return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
@@ -136,10 +139,12 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map}
      *
      * @param queueName Name of the queue
-     * @param metadata Metadata to associate with the queue
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
@@ -170,6 +175,7 @@ public final class QueueServiceAsyncClient {
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueue(String queueName) {
         try {
             return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
@@ -191,6 +197,7 @@ public final class QueueServiceAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
             return withContext(context -> deleteQueueWithResponse(queueName, context));
@@ -213,10 +220,11 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @return {@link QueueItem Queues} in the storage account
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueItem> listQueues() {
         try {
             return listQueuesWithOptionalTimeout(null, null, null, Context.NONE);
@@ -238,11 +246,12 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
         try {
             return listQueuesWithOptionalTimeout(null, options, null, Context.NONE);
@@ -301,11 +310,12 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @return Storage account {@link QueueServiceProperties Queue service properties}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceProperties> getProperties() {
         try {
             return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
@@ -325,11 +335,12 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @return A response containing the Storage account {@link QueueServiceProperties Queue service properties}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceProperties>> getPropertiesWithResponse() {
         try {
             return withContext(this::getPropertiesWithResponse);
@@ -364,7 +375,7 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -382,6 +393,7 @@ public final class QueueServiceAsyncClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(QueueServiceProperties properties) {
         try {
             return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
@@ -409,7 +421,7 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -427,6 +439,7 @@ public final class QueueServiceAsyncClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties) {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
@@ -452,10 +465,11 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return The geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceStatistics> getStatistics() {
         try {
             return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
@@ -474,10 +488,11 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return A response containing the geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse() {
         try {
             return withContext(this::getStatisticsWithResponse);
@@ -514,7 +529,7 @@ public final class QueueServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
@@ -523,10 +538,29 @@ public final class QueueServiceAsyncClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
-        return new AccountSasImplUtil(accountSasSignatureValues)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+        return generateAccountSas(accountSasSignatureValues, Context.NONE);
     }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
+     * queues and file shares.</p>
+     * {@codesnippet com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return new AccountSasImplUtil(accountSasSignatureValues)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
 }

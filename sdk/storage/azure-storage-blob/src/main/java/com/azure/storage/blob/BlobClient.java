@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -46,7 +48,7 @@ import java.util.Objects;
  * {@link #getPageBlobClient() getPageBlobClient} to construct a client that allows blob specific operations.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = BlobClientBuilder.class)
@@ -63,7 +65,7 @@ public class BlobClient extends BlobClientBase {
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
     /**
-     * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
+     * If a blob  is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
@@ -146,6 +148,7 @@ public class BlobClient extends BlobClientBase {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(InputStream data, long length) {
         upload(data, length, false);
     }
@@ -161,6 +164,7 @@ public class BlobClient extends BlobClientBase {
      * data provided in the {@link InputStream}.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(InputStream data, long length, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -182,12 +186,14 @@ public class BlobClient extends BlobClientBase {
      * data provided in the {@link InputStream}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -207,6 +213,7 @@ public class BlobClient extends BlobClientBase {
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)}
      */
     @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
         Objects.requireNonNull(options);
         return this.uploadWithResponse(options, options.getTimeout(), context);
@@ -221,6 +228,7 @@ public class BlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options);
@@ -244,6 +252,7 @@ public class BlobClient extends BlobClientBase {
      * @param filePath Path of the file to upload
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, false);
     }
@@ -259,6 +268,7 @@ public class BlobClient extends BlobClientBase {
      * @param overwrite Whether or not to overwrite, should the blob already exist
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         BlobRequestConditions requestConditions = null;
 
@@ -286,12 +296,14 @@ public class BlobClient extends BlobClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
@@ -315,6 +327,7 @@ public class BlobClient extends BlobClientBase {
      * @return Information about the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options, Duration timeout,
         Context context) {
         Mono<Response<BlockBlobItem>> upload =

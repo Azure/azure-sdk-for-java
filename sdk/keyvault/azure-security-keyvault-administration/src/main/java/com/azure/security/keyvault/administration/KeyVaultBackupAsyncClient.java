@@ -113,7 +113,7 @@ public final class KeyVaultBackupAsyncClient {
      * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         return beginBackup(blobStorageUrl, sasToken, getDefaultPollingInterval());
     }
@@ -127,7 +127,7 @@ public final class KeyVaultBackupAsyncClient {
      * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken, Duration pollingInterval) {
         Objects.requireNonNull(blobStorageUrl,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
@@ -269,7 +269,7 @@ public final class KeyVaultBackupAsyncClient {
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken) {
         return beginRestore(backupFolderUrl, sasToken, getDefaultPollingInterval());
     }
@@ -285,7 +285,7 @@ public final class KeyVaultBackupAsyncClient {
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      * @throws NullPointerException if the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken, Duration pollingInterval) {
         Objects.requireNonNull(backupFolderUrl,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
@@ -412,7 +412,7 @@ public final class KeyVaultBackupAsyncClient {
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl, String sasToken) {
         return beginSelectiveRestore(keyName, backupFolderUrl, sasToken, getDefaultPollingInterval());
     }
@@ -431,7 +431,7 @@ public final class KeyVaultBackupAsyncClient {
      * @throws NullPointerException if the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
      * null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl, String sasToken, Duration pollingInterval) {
         Objects.requireNonNull(keyName,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),

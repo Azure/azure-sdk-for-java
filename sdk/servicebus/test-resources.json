@@ -255,6 +255,26 @@
     "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME": {
       "type": "string",
       "value": "[variables('subscriptionSessionName')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME": {
+      "type": "string",
+      "value": "[concat(variables('queueName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME": {
+      "type": "string",
+      "value": "[concat(variables('queueSessionName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME": {
+      "type": "string",
+      "value": "[concat(variables('topicName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME": {
+      "type": "string",
+      "value": "[concat(variables('subscriptionName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SESSION_SUBSCRIPTION_NAME": {
+      "type": "string",
+      "value": "[concat(variables('subscriptionSessionName'), '-0')]"
     }
   }
 }
