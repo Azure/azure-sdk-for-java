@@ -6,8 +6,19 @@ package com.azure.mixedreality.authentication;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.*;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -70,7 +81,7 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder accountDomain(String accountDomain) {
         if (CoreUtils.isNullOrEmpty(accountDomain)) {
-            throw new IllegalArgumentException("'accountDomain' cannot be null or empty.");
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountDomain' cannot be null or empty."));
         }
 
         this.accountDomain = accountDomain;
@@ -83,11 +94,11 @@ public final class MixedRealityStsClientBuilder {
      *
      * @param accountId The Mixed Reality service account identifier. The value is expected to be in UUID format.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
-     * @throws NullPointerException If {@code accountId} is null.
+     * @throws IllegalArgumentException If {@code accountId} is null or empty.
      */
     public MixedRealityStsClientBuilder accountId(String accountId) {
         if (CoreUtils.isNullOrEmpty(accountId)) {
-            throw new IllegalArgumentException("'accountId' cannot be null or empty.");
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountId' cannot be null or empty."));
         }
 
         this.accountId = accountId;

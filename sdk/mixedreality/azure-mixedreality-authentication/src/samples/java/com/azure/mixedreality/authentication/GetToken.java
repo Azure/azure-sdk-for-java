@@ -6,8 +6,6 @@ package com.azure.mixedreality.authentication;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.util.UUID;
-
 public final class GetToken {
     public static void main(String[] args) {
         final String accountDomain = "";
