@@ -42,6 +42,8 @@ public class ConfigStore {
 
     private boolean useFeatureManagement = false;
 
+    private boolean enabled = true;
+
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     public ConfigStore() {
@@ -90,6 +92,14 @@ public class ConfigStore {
 
     public boolean isUseFeatureManagement() {
         return useFeatureManagement;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setUseFeatureManagement(boolean useFeatureManagement) {
