@@ -82,6 +82,11 @@ config = {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.4.0'),
             )
+        },
+        'sdk/spring/azure-spring-boot-test-parent/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.4.0'),
+            )
         }
     }
 }

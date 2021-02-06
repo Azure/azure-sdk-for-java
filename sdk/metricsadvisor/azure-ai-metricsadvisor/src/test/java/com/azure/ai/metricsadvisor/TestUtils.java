@@ -125,6 +125,8 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
 
+    static final long DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS = 60;
+
     private TestUtils() {
     }
 

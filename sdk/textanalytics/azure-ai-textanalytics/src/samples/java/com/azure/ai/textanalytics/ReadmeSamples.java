@@ -3,22 +3,25 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
-import com.azure.ai.textanalytics.models.HealthcareEntityLink;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesTask;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiTask;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -26,13 +29,14 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -191,62 +195,52 @@ public class ReadmeSamples {
                 + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "
                 + "Report Status: Signed Discharge Date: 4/24/2001 ADMISSION DIAGNOSIS: "
                 + "CORONARY ARTERY DISEASE. HISTORY OF PRESENT ILLNESS: "
-                + "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months. "
-                + "The patient had a cardiac catheterization in July of this year revealing total occlusion of the RCA and "
-                + "50% left main disease , with a strong family history of coronary artery disease with a brother dying at "
-                + "the age of 52 from a myocardial infarction and another brother who is status post coronary artery bypass grafting. "
-                + "The patient had a stress echocardiogram done on July , 2001 , which showed no wall motion abnormalities ,"
-                + "but this was a difficult study due to body habitus. The patient went for six minutes with minimal ST depressions "
-                + "in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent. Due to the patient's "
-                + "increased symptoms and family history and history left main disease with total occasional of his RCA was referred "
-                + "for revascularization with open heart surgery."
+                + "The patient is a 54-year-old gentleman with a history of progressive angina over the past"
+                + " several months. The patient had a cardiac catheterization in July of this year revealing total"
+                + " occlusion of the RCA and 50% left main disease , with a strong family history of coronary"
+                + " artery disease with a brother dying at the age of 52 from a myocardial infarction and another"
+                + " brother who is status post coronary artery bypass grafting. The patient had a stress"
+                + " echocardiogram done on July , 2001 , which showed no wall motion abnormalities,"
+                + " but this was a difficult study due to body habitus. The patient went for six minutes with"
+                + " minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain,"
+                + " his anginal equivalent. Due to the patient's increased symptoms and family history and"
+                + " history left main disease with total occasional of his RCA was referred"
+                + " for revascularization with open heart surgery."
         ));
-        RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions().setIncludeStatistics(true);
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+            syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(healthcareTaskResult ->
-            healthcareTaskResult.getResult().forEach(healthcareEntitiesResult -> {
+        syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
+            healthcareEntitiesResult -> {
                 System.out.println("Document entities: ");
-                HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                 AtomicInteger ct = new AtomicInteger();
-                healthcareEntities.forEach(healthcareEntity -> {
-                    System.out.printf("i = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(),
-                        healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getSubcategory(),
-                        healthcareEntity.getConfidenceScore());
-                    List<HealthcareEntityLink> links = healthcareEntity.getDataSourceEntityLinks();
-                    if (links != null) {
-                        links.forEach(healthcareEntityLink ->
-                            System.out.printf("\tHealthcare data source ID: %s, data source: %s.%n",
-                                healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                        ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                        healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                    IterableStream<EntityDataSource> healthcareEntityDataSources =
+                        healthcareEntity.getDataSources();
+                    if (healthcareEntityDataSources != null) {
+                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                            "\t\tEntity ID in data source: %s, data source: %s.%n",
+                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                    }
+                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                        healthcareEntity.getRelatedEntities();
+                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                        relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                            "\t\tRelated entity: %s, relation type: %s.%n",
+                            relatedHealthcareEntity.getText(), entityRelationType));
                     }
                 });
-                healthcareEntities.getEntityRelations().forEach(
-                    healthcareEntityRelation ->
-                        System.out.printf("Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                            healthcareEntityRelation.isBidirectional(),
-                            healthcareEntityRelation.getTargetLink(),
-                            healthcareEntityRelation.getSourceLink(),
-                            healthcareEntityRelation.getRelationType()));
             }));
     }
 
     /**
-     * Code snippet for cancelling a healthcare task.
+     * Code snippet for executing actions in a batch of documents.
      */
-    public void cancelHealthcareTask() {
-        SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelHealthcareTask("{healthcare_task_id}",
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-        PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
-    }
-
-    /**
-     * Code snippet for analyzing tasks in documents.
-     */
-    public void analyzeTasks() {
+    public void analyzeBatchActions() {
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -257,34 +251,42 @@ public class ReadmeSamples {
                     + " www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! The"
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeTasks(documents,
-                new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
-                    .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
-                    .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())),
+
+        SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeBatchActions(documents,
+                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
+                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
+                    .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+                new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(analyzeJobState -> {
-            analyzeJobState.getKeyPhraseExtractionTasks().forEach(taskResult -> {
+        syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+            System.out.println("Key phrases extraction action results:");
+            analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : taskResult) {
-                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                    System.out.println("Extracted phrases:");
-                    extractKeyPhraseResult.getKeyPhrases()
-                        .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                if (!actionResult.isError()) {
+                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
+                        System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                        System.out.println("Extracted phrases:");
+                        extractKeyPhraseResult.getKeyPhrases()
+                            .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                    }
                 }
             });
-            analyzeJobState.getEntityRecognitionPiiTasks().forEach(taskResult -> {
+            System.out.println("PII entities recognition action results:");
+            analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizePiiEntitiesResult entitiesResult : taskResult) {
-                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                    PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
-                    System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
-                    piiEntityCollection.forEach(entity -> System.out.printf(
-                        "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
-                            + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                        entity.getConfidenceScore()));
+                if (!actionResult.isError()) {
+                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {
+                        System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                        PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
+                        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+                        piiEntityCollection.forEach(entity -> System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
+                                + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
+                            entity.getConfidenceScore()));
+                    }
                 }
             });
         });

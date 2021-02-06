@@ -1,14 +1,14 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
-      TestCanary: true
+      Clouds: 'Public,Canary'
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

@@ -1,7 +1,7 @@
 # Release History
 
 ## 5.5.0-beta.1 (Unreleased)
-
+- Use `BinaryData` in `EventData`.
 
 ## 5.4.0 (2021-01-14)
 ### New features
@@ -15,8 +15,8 @@
 
 ## 5.4.0-beta.1 (2020-11-12)
 ### Breaking changes
-- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
- supporting `BinaryData` in `EventData`.
+- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of supporting `BinaryData` in
+  `EventData`.
 
 ## 5.3.1 (2020-10-30)
 ### Bug fixes
