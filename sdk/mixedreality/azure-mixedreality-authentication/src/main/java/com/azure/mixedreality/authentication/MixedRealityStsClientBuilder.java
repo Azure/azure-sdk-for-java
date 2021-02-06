@@ -170,13 +170,13 @@ public final class MixedRealityStsClientBuilder {
             this.pipeline = createHttpPipeline(this.httpClient, authPolicy, this.customPolicies);
         }
 
-        MixedRealityStsServiceVersion version;
+        // MixedRealityStsServiceVersion version;
 
-        if (this.apiVersion != null) {
-            version = this.apiVersion;
-        } else {
-            version = MixedRealityStsServiceVersion.getLatest();
-        }
+        // if (this.apiVersion != null) {
+        //     version = this.apiVersion;
+        // } else {
+        //     version = MixedRealityStsServiceVersion.getLatest();
+        // }
 
         MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
             //.apiVersion(version.getVersion())
