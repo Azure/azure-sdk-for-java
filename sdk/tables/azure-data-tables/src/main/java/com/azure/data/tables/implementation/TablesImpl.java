@@ -68,7 +68,7 @@ public final class TablesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureTableTables")
-    private interface TablesService {
+    public interface TablesService {
         @Get("/Tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

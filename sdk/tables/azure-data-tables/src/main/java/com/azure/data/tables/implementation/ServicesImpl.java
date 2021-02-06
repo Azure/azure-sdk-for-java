@@ -49,7 +49,7 @@ public final class ServicesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureTableServices")
-    private interface ServicesService {
+    public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
