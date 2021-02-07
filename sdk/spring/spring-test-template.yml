@@ -2,22 +2,34 @@ parameters:
   EnvVars: {}
   TestName: ''
   Artifacts: []
-  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  AadOnDemandUserName: ''
+  AadOnDemandUserDisplayName: ''
 
-jobs:
-    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+    - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
         EnvVars: ${{ parameters.EnvVars }}
         TestName: ${{ parameters.TestName }}
-        SubscriptionConfiguration: ${{ parameters.SubscriptionConfiguration }}
+        TestResourceDirectories:
+          - spring/azure-spring-boot-test-cosmos
+          - spring/azure-spring-boot-test-servicebus-jms
+          - spring/azure-spring-cloud-test-eventhubs
+          - spring/azure-spring-boot-test-keyvault
+          - spring/azure-spring-boot-test-storage
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
+        PreSteps:
+            - powershell: |
+                  az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+                  az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+                  az logout
+              displayName: 'Create On-demand test user'
 
-        PostRunSteps:
+        PostSteps:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
@@ -43,3 +55,10 @@ jobs:
               goals: verify
               options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
             env: ${{ parameters.EnvVars }}
+
+          - powershell: |
+                az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+                az ad user delete --id "${{ parameters.AadOnDemandUserName }}"
+                az logout
+            condition: always()
+            displayName: 'Delete On-demand test user'
