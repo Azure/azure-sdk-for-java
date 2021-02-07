@@ -10,11 +10,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public class SeleniumITHelper {
+    Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
     public static String folderName = "webdriver";
 
     protected AppRunner app;
@@ -39,7 +43,11 @@ public class SeleniumITHelper {
                     currentPath = new File(currentPath).getParent();
                 }
             }
-            new File(destination).setExecutable(true);
+            try {
+                Runtime.getRuntime().exec("chmod 777 -R "+ destination);
+            } catch (IOException e) {
+                logger.error("chmod error",e);
+            }
             System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
