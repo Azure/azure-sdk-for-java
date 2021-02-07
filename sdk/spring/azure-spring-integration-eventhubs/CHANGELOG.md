@@ -8,6 +8,7 @@
 
 ## 2.0.0 (2020-12-30)
 ### Breaking Changes
+- Remove the `spring.cloud.azure.credential-file-path` property.
 - Deprecated the `spring.cloud.azure.managed-identity.client-id` property,
   use `spring.cloud.azure.client-id` to set the managed identity id when using Managed Identity.
   
