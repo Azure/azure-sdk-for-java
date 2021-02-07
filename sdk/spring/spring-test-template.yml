@@ -5,6 +5,7 @@ parameters:
   AadOnDemandUserName: ''
   AadOnDemandUserDisplayName: ''
   Clouds: 'Public'
+  TestResourceDirectories: []
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -14,12 +15,7 @@ stages:
         EnvVars: ${{ parameters.EnvVars }}
         TestName: ${{ parameters.TestName }}
         Clouds: ${{ parameters.Clouds }}
-        TestResourceDirectories:
-          - spring/azure-spring-boot-test-cosmos
-          - spring/azure-spring-boot-test-servicebus-jms
-          - spring/azure-spring-cloud-test-eventhubs
-          - spring/azure-spring-boot-test-keyvault
-          - spring/azure-spring-boot-test-storage
+        TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
