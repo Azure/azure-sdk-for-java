@@ -2,6 +2,9 @@
 
 ## 2.1.0-beta.1 (Unreleased)
 
+
+## 2.0.2 (2021-02-05)
+
 ### New Features
 
 - Updates RetryUtil to use RetrySpec.
