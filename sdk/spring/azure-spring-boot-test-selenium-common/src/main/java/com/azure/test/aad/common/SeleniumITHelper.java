@@ -32,7 +32,7 @@ public class SeleniumITHelper {
     protected void createDriver() {
         if (driver == null) {
             String destination = getWebDriverCachePath();
-            setPathExecutableRecursively(destination);
+            setPathExecutableRecursively(new File(destination));
             System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
@@ -72,19 +72,22 @@ public class SeleniumITHelper {
         app.close();
     }
 
-    private void setPathExecutableRecursively(String path) {
-        File file = new File(path);
+    private void setPathExecutableRecursively(File file) {
         if (!file.exists()) {
-            logger.warn("Path " + path + " does not exist!");
+            logger.warn("Path " + file + " does not exist!");
             return;
         }
-        if (!file.setExecutable(true)) {
-            logger.error("Failed to set executable for " + path);
-        }
+
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (null != files && files.length > 0) {
-                setPathExecutableRecursively(file.getAbsolutePath());
+                for (File f : files) {
+                    setPathExecutableRecursively(f);
+                }
+            }
+        }else {
+            if (!file.setExecutable(true)) {
+                logger.error("Failed to set executable for " + file);
             }
         }
     }
