@@ -1,9 +1,10 @@
 parameters:
   EnvVars: {}
-  TestName: ''
+  TestName: 'LiveTestInAzureGlobal'
   Artifacts: []
   AadOnDemandUserName: ''
   AadOnDemandUserDisplayName: ''
+  Clouds: 'Public'
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -12,6 +13,7 @@ stages:
         ServiceDirectory: spring
         EnvVars: ${{ parameters.EnvVars }}
         TestName: ${{ parameters.TestName }}
+        Clouds: ${{ parameters.Clouds }}
         TestResourceDirectories:
           - spring/azure-spring-boot-test-cosmos
           - spring/azure-spring-boot-test-servicebus-jms
