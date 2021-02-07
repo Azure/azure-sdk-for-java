@@ -197,19 +197,15 @@ Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-ur
 
 * Step 3: Write Java code:
 
-Write your own adapter class which extends `WebSecurityConfigurerAdapter`, 
-and `AzureJwtBearerTokenAuthenticationConverter` need to be included.
+Write your own adapter class which extends `AADResourceServerSecurityConfigurerAdapter`.
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CustomServerSecurityConfig extends AADResourceServerSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
-            .oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
-            // Note that AzureJwtBearerTokenAuthenticationConverter need to be included.
+    protected void configure(HttpSecurity http) {
+       super.configure(http);
+       // Do some custom configuration
     }
 }
 ```
