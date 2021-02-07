@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private RemoteRenderingClient client;
 
     private RemoteRenderingClient getClient(HttpClient httpClient) {
         return new RemoteRenderingClientBuilder()
