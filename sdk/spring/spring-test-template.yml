@@ -21,11 +21,7 @@ stages:
           goals: "verify"
         PreSteps:
             - powershell: |
-                  echo ${{ parameters.EnvVars.AAD_TENANT_ID_1 }}
-                  echo ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }}
-                  echo ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
-                  echo ${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}
-                  echo ${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}
+                  az cloud set --name AzureChinaCloud
                   az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
                   az ad user create --user-principal-name "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}" --force-change-password-next-login false
                   az logout
@@ -59,10 +55,7 @@ stages:
             env: ${{ parameters.EnvVars }}
 
           - powershell: |
-                echo ${{ parameters.EnvVars.AAD_TENANT_ID_1 }}
-                echo ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }}
-                echo ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
-                echo ${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}
+                az cloud set --name AzureChinaCloud
                 az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
                 az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
                 az logout
