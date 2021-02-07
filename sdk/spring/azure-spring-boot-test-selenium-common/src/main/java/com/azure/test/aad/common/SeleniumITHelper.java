@@ -39,6 +39,7 @@ public class SeleniumITHelper {
                     currentPath = new File(currentPath).getParent();
                 }
             }
+            new File(destination).setExecutable(true);
             System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
