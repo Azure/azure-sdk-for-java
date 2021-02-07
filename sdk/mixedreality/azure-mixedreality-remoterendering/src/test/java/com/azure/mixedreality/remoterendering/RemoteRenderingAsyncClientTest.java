@@ -2,15 +2,14 @@ package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.mixedreality.remoterendering.models.Conversion;
-import com.azure.mixedreality.remoterendering.models.ConversionOptions;
-import com.azure.mixedreality.remoterendering.models.ConversionStatus;
+import com.azure.mixedreality.remoterendering.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.core.http.HttpClient;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
@@ -43,7 +42,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .outputBlobPrefix("Output")
             .outputStorageContainerWriteSas(getBlobContainerSasToken());
 
-        String conversionId = getRandomId("conversionTest");
+        String conversionId = getRandomId("asyncConversionTest");
 
         var poller = client.beginConversion(conversionId, conversionOptions);
 
@@ -80,5 +79,67 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         });
 
         assertTrue(foundConversion.block());
+    };
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void sessionTest(HttpClient httpClient) {
+        var client = getClient(httpClient);
+
+        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(SessionSize.STANDARD);
+
+        String sessionId = getRandomId("ayncSessionTest");
+
+        var sessionPoller = client.beginSession(sessionId, options);
+
+        var terminalPoller = sessionPoller.map(response -> {
+            var session = response.getValue();
+            assertEquals(sessionId, session.getId());
+            assertNotEquals(SessionStatus.ERROR, session.getStatus());
+            return response;
+        }).filter(response -> {
+            return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS));
+        });
+
+        StepVerifier.create(terminalPoller)
+            .assertNext(response -> {
+                assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+
+                var readyRenderingSession = response.getValue();
+                assertEquals(readyRenderingSession.getStatus(), SessionStatus.READY);
+
+                assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 4);
+                assertNotNull(readyRenderingSession.getHostname());
+                assertNotNull(readyRenderingSession.getArrInspectorPort());
+                assertNotNull(readyRenderingSession.getHostname());
+                assertEquals(readyRenderingSession.getSize(), options.getSize());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getSession(sessionId))
+            .assertNext(session -> {
+                assertEquals(session.getStatus(), SessionStatus.READY);
+                assertNotNull(session.getHostname());
+                assertNotNull(session.getArrInspectorPort());
+                assertNotNull(session.getHostname());
+                assertEquals(session.getSize(), options.getSize());
+            })
+            .verifyComplete();
+
+        UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(5));
+
+        StepVerifier.create(client.updateSession(sessionId, updateOptions))
+            .assertNext(session -> {
+                assertTrue(session.getMaxLeaseTime().toMinutes() == 5);
+            }).verifyComplete();
+
+        var foundSession = client.listSessions().any(session -> {
+            return session.getId().equals(sessionId);
+        });
+
+        assertTrue(foundSession.block());
+
+        client.stopSession(sessionId).block();
     };
 }
