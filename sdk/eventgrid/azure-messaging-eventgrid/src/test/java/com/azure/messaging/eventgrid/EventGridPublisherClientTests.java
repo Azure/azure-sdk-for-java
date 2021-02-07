@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -34,19 +36,19 @@ public class EventGridPublisherClientTests extends TestBase {
     private EventGridPublisherClientBuilder builder;
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENTGRID_ENDPOINT";
+    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting CloudEvents schema events
-    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUD_ENDPOINT";
+    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting custom schema events
     private static final String CUSTOM_ENDPOINT = "AZURE_EVENTGRID_CUSTOM_ENDPOINT";
 
     // Event Grid access key for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENTGRID_KEY";
+    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENT_KEY";
 
     // Event Grid access key for a topic accepting CloudEvents schema events
-    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUD_KEY";
+    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUDEVENT_KEY";
 
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
@@ -92,21 +94,21 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventGridEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
 
     @Test
     public void publishWithSasToken() {
-        String sasToken = EventGridSasCredential.createSas(
+        String sasToken = EventGridSasGenerator.generateSas(
             getEndpoint(EVENTGRID_ENDPOINT),
-            OffsetDateTime.now().plusMinutes(20),
-            getKey(EVENTGRID_KEY)
+            getKey(EVENTGRID_KEY),
+            OffsetDateTime.now().plusMinutes(20)
         );
 
         EventGridPublisherAsyncClient egClient = builder
-            .credential(new EventGridSasCredential(sasToken))
+            .credential(new AzureSasCredential(sasToken))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildAsyncClient();
 
@@ -120,7 +122,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventGridEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -133,13 +135,13 @@ public class EventGridPublisherClientTests extends TestBase {
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
-            .setSubject("Test")
-            .setData(new HashMap<String, String>() {{
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
+            .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
         StepVerifier.create(egClient.sendCloudEventsWithResponse(events))
@@ -161,6 +163,7 @@ public class EventGridPublisherClientTests extends TestBase {
         }
     }
 
+    @Disabled
     @Test
     public void publishCloudEventsCustomSerializer() {
         // Custom Serializer for testData
@@ -177,14 +180,14 @@ public class EventGridPublisherClientTests extends TestBase {
         EventGridPublisherAsyncClient egClient = builder
             .credential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
-            .serializer(customSerializer)
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
+            events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+                new TestData().setName("Hello " + i))
                 .setSubject("Test " + i)
-                .setData(new TestData().setName("Hello " + i)));
+            );
         }
 
         StepVerifier.create(egClient.sendCloudEventsWithResponse(events))
@@ -230,7 +233,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventGridEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -244,14 +247,14 @@ public class EventGridPublisherClientTests extends TestBase {
             .buildClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
-            .setId(UUID.randomUUID().toString())
-            .setSubject("Test")
-            .setData(new HashMap<String, String>() {{
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
+            .setId(UUID.randomUUID().toString())
+            .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
         Response<Void> response = egClient.sendCloudEventsWithResponse(events, Context.NONE);

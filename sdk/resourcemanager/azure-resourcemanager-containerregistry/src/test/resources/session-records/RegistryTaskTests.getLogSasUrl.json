@@ -108,7 +108,7 @@
       "Expires" : "-1",
       "Content-Length" : "224",
       "x-ms-request-id" : "28840e3a-2f3e-4739-bf90-2312d6993d60",
-      "Body" : "{\"logLink\":\"https://wcusmanaged2.blob.core.windows.net/bb9528b4a5344d6ea31936f58e2a60a4-umfpcopv64/logs/da1/rawtext.log?sv=2018-03-28&sr=b&sig=QThd6vpGUvUckzPIQtiLvnRACiu643KOnVVgfwX33x0%3D&se=2020-10-13T04%3A19%3A22Z&sp=r\"}",
+      "Body" : "{\"logLink\":\"https://wcusmanaged2.blob.core.windows.net/bb9528b4a5344d6ea31936f58e2a60a4-umfpcopv64/logs/da1/rawtext.log?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2020-10-13T04%3A19%3A22Z&sp=r\"}",
       "x-ms-client-request-id" : "9fb522c2-4ff4-47fd-8dde-4c927ba566ac",
       "Content-Type" : "application/json; charset=utf-8"
     },
