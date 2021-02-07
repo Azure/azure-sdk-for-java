@@ -9,6 +9,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
 import com.azure.core.util.Context;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -24,8 +26,6 @@ import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -82,16 +82,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
             .map(rb -> {
                 rb.url(request.getUrl());
                 if (request.getHeaders() != null) {
-                    Map<String, String> headers = new HashMap<>();
                     for (HttpHeader hdr : request.getHeaders()) {
-                        if (hdr.getValue() != null) {
-                            headers.put(hdr.getName(), hdr.getValue());
-                        }
+                        // OkHttp allows for headers with multiple values, but it treats them as separate headers,
+                        // therefore, we must call rb.addHeader for each value, using the same key for all of them
+                        hdr.getValuesList().forEach(value -> rb.addHeader(hdr.getName(), value));
                     }
-                    return rb.headers(okhttp3.Headers.of(headers));
-                } else {
-                    return rb.headers(okhttp3.Headers.of(new HashMap<>()));
                 }
+                return rb;
             })
             .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
                 if (request.getHttpMethod() == HttpMethod.GET) {
@@ -183,17 +180,17 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     try {
                         byte[] bytes = body.bytes();
                         body.close();
-                        sink.success(new BufferedOkHttpResponse(response, request, bytes));
+                        sink.success(new OkHttpAsyncBufferedResponse(response, request, bytes));
                     } catch (IOException ex) {
                         // Reading the body bytes may cause an IOException, if it happens propagate it.
                         sink.error(ex);
                     }
                 } else {
                     // Body is null, use the non-buffering response.
-                    sink.success(new OkHttpResponse(response, request));
+                    sink.success(new OkHttpAsyncResponse(response, request));
                 }
             } else {
-                sink.success(new OkHttpResponse(response, request));
+                sink.success(new OkHttpAsyncResponse(response, request));
             }
         }
     }

@@ -94,6 +94,22 @@ public final class ArtifactsClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -229,13 +245,16 @@ public final class ArtifactsClientBuilder {
      * @return an instance of ArtifactsClientImpl.
      */
     private ArtifactsClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2019-06-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint);
+        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

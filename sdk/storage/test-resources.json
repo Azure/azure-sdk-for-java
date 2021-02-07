@@ -298,6 +298,20 @@
             }
         },
         {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('dataLakeAccountName'), '/default')]",
+            "properties": {
+            "containerDeleteRetentionPolicy": {
+                "enabled": true,
+                "days": 1
+            }
+            },
+            "dependsOn": [
+                "[variables('dataLakeAccountName')]"
+            ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('premiumFileAccountName')]",

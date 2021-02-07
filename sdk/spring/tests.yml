@@ -1,10 +1,27 @@
 trigger: none
 
-jobs:
+parameters:
+- name: AadOnDemandUserName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
+- name: AadOnDemandUserDisplayName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)'
+- name: AadOnDemandUserNameChina
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
+
+stages:
     - template: spring-test-template.yml
       parameters:
-        TestName: LiveTestInAzureCloud
-        ScenarioName: AzureCloud
+        AadOnDemandUserName: ${{ parameters.AadOnDemandUserName }}
+        AadOnDemandUserDisplayName: ${{ parameters.AadOnDemandUserDisplayName }}
+        TestResourceDirectories:
+          - spring/azure-spring-boot-test-cosmos
+          - spring/azure-spring-boot-test-servicebus-jms
+          - spring/azure-spring-cloud-test-eventhubs
+          - spring/azure-spring-boot-test-keyvault
+          - spring/azure-spring-boot-test-storage
 
         Artifacts:
           - name: azure-spring-boot-test-application
@@ -34,6 +51,12 @@ jobs:
           - name: azure-spring-boot-test-keyvault
             groupId: com.azure.spring
             safeName: azurespringboottestkeyvault
+          - name: azure-spring-boot-test-keyvault-reactive
+            groupId: com.azure.spring
+            safeName: azurespringboottestkeyvaultreactive
+          - name: azure-spring-boot-test-parent
+            groupId: com.azure.spring
+            safeName: azurespringboottestparent
           - name: azure-spring-boot-test-servicebus-jms
             groupId: com.azure.spring
             safeName: azurespringboottestservicebusjms
@@ -66,12 +89,19 @@ jobs:
           AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
           AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+          AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserName }}
+          AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+          AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
 
     - template: spring-test-template.yml
       parameters:
+        AadOnDemandUserName: ${{ parameters.AadOnDemandUserNameChina }}
+        AadOnDemandUserDisplayName: ${{ parameters.AadOnDemandUserDisplayName }}
         TestName: LiveTestInAzureChina
-        ScenarioName: AzureChinaCloud
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        Clouds: China
+        TestResourceDirectories:
+          - spring/azure-spring-boot-test-aad
         Artifacts:
           - name: azure-spring-boot-test-core
             groupId: com.azure.spring
@@ -96,3 +126,15 @@ jobs:
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role-cn)
           AAD_LOGIN_BASE_URL: https://login.partner.microsoftonline.cn
           AAD_GRAPH_BASE_URL: https://microsoftgraph.chinacloudapi.cn
+          AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
+          AAD_B2C_TENANT: "B2CITTest1"
+          AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+          AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
+          AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
+          AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password-cn)
+          AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id-cn)
+          AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret-cn)
+          AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserName }}
+          AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1-cn)
+          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id-cn)
+          AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret-cn)

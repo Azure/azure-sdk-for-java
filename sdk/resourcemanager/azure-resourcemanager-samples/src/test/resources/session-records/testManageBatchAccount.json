@@ -361,7 +361,7 @@
       "etag" : "W/\"0x8D785B7A88D0C0D\"",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "e23eb396-f9a4-4057-8b79-a9ff087e0421",
-      "Body" : "{\"type\":\"Microsoft.Batch/batchAccounts/applications/versions\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgbamb36e455766b3e592b/providers/Microsoft.Batch/batchAccounts/bab3d0312794f6c020d9/applications/application/versions/app_package\",\"name\":\"app_package\",\"etag\":\"W/\\\"0x8D785B7A88D0C0D\\\"\",\"properties\":{\"storageUrl\":\"https://sa578692325c8dc23b42.blob.core.windows.net/app-application-6f81f68b14ce4f1bb34cdcb8108c081d/app_package?sv=2018-03-28&sr=b&sig=6b3xT6tvVzFY2gnmh6pl7P1h%2BjX24zG78e2Oq%2BIx8Ac%3D&st=2019-12-21T01%3A41%3A54Z&se=2019-12-21T05%3A46%3A54Z&sp=rw\",\"storageUrlExpiry\":\"2019-12-21T05:46:54.9622927Z\",\"state\":\"Pending\"}}"
+      "Body" : "{\"type\":\"Microsoft.Batch/batchAccounts/applications/versions\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgbamb36e455766b3e592b/providers/Microsoft.Batch/batchAccounts/bab3d0312794f6c020d9/applications/application/versions/app_package\",\"name\":\"app_package\",\"etag\":\"W/\\\"0x8D785B7A88D0C0D\\\"\",\"properties\":{\"storageUrl\":\"https://sa578692325c8dc23b42.blob.core.windows.net/app-application-6f81f68b14ce4f1bb34cdcb8108c081d/app_package?sv=2018-03-28&sr=b&sig=***REMOVED***&st=2019-12-21T01%3A41%3A54Z&se=2019-12-21T05%3A46%3A54Z&sp=rw\",\"storageUrlExpiry\":\"2019-12-21T05:46:54.9622927Z\",\"state\":\"Pending\"}}"
     }
   }, {
     "Method" : "POST",

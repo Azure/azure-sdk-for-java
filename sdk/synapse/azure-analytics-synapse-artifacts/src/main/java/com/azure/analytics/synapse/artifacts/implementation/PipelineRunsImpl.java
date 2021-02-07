@@ -12,6 +12,7 @@ import com.azure.analytics.synapse.artifacts.models.RunFilterParameters;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -60,6 +61,7 @@ public final class PipelineRunsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RunFilterParameters filterParameters,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/pipelineruns/{runId}")
@@ -69,6 +71,7 @@ public final class PipelineRunsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/pipelines/{pipelineName}/pipelineruns/{runId}/queryActivityruns")
@@ -80,6 +83,7 @@ public final class PipelineRunsImpl {
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RunFilterParameters filterParameters,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/pipelineruns/{runId}/cancel")
@@ -90,6 +94,7 @@ public final class PipelineRunsImpl {
                 @PathParam("runId") String runId,
                 @QueryParam("isRecursive") Boolean isRecursive,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -105,10 +110,15 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRunsQueryResponse>> queryPipelineRunsByWorkspaceWithResponseAsync(
             RunFilterParameters filterParameters) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.queryPipelineRunsByWorkspace(
-                                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                filterParameters,
+                                accept,
+                                context));
     }
 
     /**
@@ -124,8 +134,9 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRunsQueryResponse>> queryPipelineRunsByWorkspaceWithResponseAsync(
             RunFilterParameters filterParameters, Context context) {
+        final String accept = "application/json";
         return service.queryPipelineRunsByWorkspace(
-                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, accept, context);
     }
 
     /**
@@ -215,9 +226,11 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRun>> getPipelineRunWithResponseAsync(String runId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getPipelineRun(this.client.getEndpoint(), runId, this.client.getApiVersion(), context));
+                        service.getPipelineRun(
+                                this.client.getEndpoint(), runId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -232,7 +245,8 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRun>> getPipelineRunWithResponseAsync(String runId, Context context) {
-        return service.getPipelineRun(this.client.getEndpoint(), runId, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.getPipelineRun(this.client.getEndpoint(), runId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -323,6 +337,7 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityRunsQueryResponse>> queryActivityRunsWithResponseAsync(
             String pipelineName, String runId, RunFilterParameters filterParameters) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.queryActivityRuns(
@@ -331,6 +346,7 @@ public final class PipelineRunsImpl {
                                 runId,
                                 this.client.getApiVersion(),
                                 filterParameters,
+                                accept,
                                 context));
     }
 
@@ -349,8 +365,15 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityRunsQueryResponse>> queryActivityRunsWithResponseAsync(
             String pipelineName, String runId, RunFilterParameters filterParameters, Context context) {
+        final String accept = "application/json";
         return service.queryActivityRuns(
-                this.client.getEndpoint(), pipelineName, runId, this.client.getApiVersion(), filterParameters, context);
+                this.client.getEndpoint(),
+                pipelineName,
+                runId,
+                this.client.getApiVersion(),
+                filterParameters,
+                accept,
+                context);
     }
 
     /**
@@ -451,10 +474,16 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelPipelineRunWithResponseAsync(String runId, Boolean isRecursive) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelPipelineRun(
-                                this.client.getEndpoint(), runId, isRecursive, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                runId,
+                                isRecursive,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -470,8 +499,9 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelPipelineRunWithResponseAsync(String runId, Boolean isRecursive, Context context) {
+        final String accept = "application/json";
         return service.cancelPipelineRun(
-                this.client.getEndpoint(), runId, isRecursive, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), runId, isRecursive, this.client.getApiVersion(), accept, context);
     }
 
     /**
