@@ -5,49 +5,40 @@ package com.azure.test.aad.common;
 
 import com.azure.spring.test.AppRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 public class SeleniumITHelper {
-    Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
-    public static String tempFolderName = "temp_selenium";
+    public static String folderName = "webdriver";
 
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
 
     public SeleniumITHelper(Class<?> appClass, Map<String, String> properties)  {
-        createDriver();
+        createDriver(appClass);
         createAppRunner(appClass, properties);
     }
 
-    protected void createDriver() {
+    protected void createDriver(Class<?> appClass) {
         if (driver == null) {
-            String destination = System.getProperty("user.dir") + tempFolderName;
-            String path = this.getClass().getResource("/selenium").getPath();
-            if (path.contains(".jar")) {
-                try {
-                    JarResourceUtil.copyFolderFromJarResource("selenium", new File(destination),
-                        JarResourceUtil.CopyOption.REPLACE_IF_EXIST);
-                } catch (IOException e) {
-                    logger.error("error copy from jar to folder", e);
-                }
-            } else {
-                try {
-                    FileUtils.copyDirectory(new File(path), new File(destination));
-                } catch (IOException e) {
-                    logger.error("error copy from folder to folder", e);
+            String currentPath = appClass.getClassLoader().getResource(("")).getPath();
+            String sdkSpring = File.separator + "sdk" + File.separator + "spring";
+            String destination = currentPath + File.separator + folderName;
+            while (StringUtils.isNotEmpty(currentPath)) {
+                if (StringUtils.endsWith(currentPath, sdkSpring)) {
+                    destination = currentPath + File.separator + folderName;
+                    break;
+                } else {
+                    currentPath = new File(currentPath).getParent();
                 }
             }
-
             System.setProperty("wdm.cachePath", destination);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
@@ -70,10 +61,5 @@ public class SeleniumITHelper {
     public void destroy() {
         driver.quit();
         app.close();
-        try {
-            FileUtils.deleteDirectory(new File(System.getProperty("user.dir") + File.separator + tempFolderName));
-        } catch (IOException e) {
-            logger.error("error deleteDirectory", e);
-        }
     }
 }
