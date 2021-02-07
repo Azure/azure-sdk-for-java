@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import reactor.test.StepVerifier;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,5 +67,18 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
             })
             .verifyComplete();
+
+        StepVerifier.create(client.getConversion(conversionId))
+            .assertNext(conversion -> {
+                assertEquals(conversion.getStatus(), ConversionStatus.SUCCEEDED);
+                assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
+            })
+            .verifyComplete();
+
+        var foundConversion = client.listConversions().any(conversion -> {
+            return conversion.getId().equals(conversionId);
+        });
+
+        assertTrue(foundConversion.block());
     };
 }
