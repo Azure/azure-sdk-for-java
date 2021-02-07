@@ -17,8 +17,8 @@ import java.io.File;
 import java.util.Map;
 
 public class SeleniumITHelper {
-    Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
-    public static String WEB_DRIVER_FOLDER_NAME = "webdriver";
+    private static Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
+    private static String WEB_DRIVER_FOLDER_NAME = "webdriver";
 
     protected AppRunner app;
     protected WebDriver driver;
@@ -31,9 +31,9 @@ public class SeleniumITHelper {
 
     protected void createDriver() {
         if (driver == null) {
-            String destination = getWebDriverCachePath();
-            setPathExecutableRecursively(new File(destination));
-            System.setProperty("wdm.cachePath", destination);
+            String webDriverCachePath = getWebDriverCachePath();
+            setPathExecutableRecursively(new File(webDriverCachePath));
+            System.setProperty("wdm.cachePath", webDriverCachePath);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
@@ -44,18 +44,12 @@ public class SeleniumITHelper {
     }
 
     private String getWebDriverCachePath() {
-        String currentPath = this.getClass().getResource(("")).getPath();
-        String sdkSpring = File.separator + "sdk" + File.separator + "spring";
-        String destination = currentPath + File.separator + WEB_DRIVER_FOLDER_NAME;
-        while (StringUtils.isNotEmpty(currentPath)) {
-            if (StringUtils.endsWith(currentPath, sdkSpring)) {
-                destination = currentPath + File.separator + WEB_DRIVER_FOLDER_NAME;
-                break;
-            } else {
-                currentPath = new File(currentPath).getParent();
-            }
+        String springPath = this.getClass().getResource(("")).getPath();
+        String springPathSuffix = File.separator + "sdk" + File.separator + "spring";
+        while (StringUtils.isNotEmpty(springPath) && !springPath.endsWith(springPathSuffix)) {
+            springPath = new File(springPath).getParent();
         }
-        return destination;
+        return springPath + File.separator + WEB_DRIVER_FOLDER_NAME;
     }
 
     protected void createAppRunner(Class<?> appClass, Map<String, String> properties) {
@@ -79,13 +73,10 @@ public class SeleniumITHelper {
         }
 
         if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (null != files && files.length > 0) {
-                for (File f : files) {
-                    setPathExecutableRecursively(f);
-                }
+            for (File f : file.listFiles()) {
+                setPathExecutableRecursively(f);
             }
-        }else {
+        } else {
             if (!file.setExecutable(true)) {
                 logger.error("Failed to set executable for " + file);
             }
