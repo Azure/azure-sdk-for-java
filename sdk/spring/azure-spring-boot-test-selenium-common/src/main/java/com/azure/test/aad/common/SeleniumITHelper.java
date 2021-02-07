@@ -35,7 +35,8 @@ public class SeleniumITHelper {
             String path = this.getClass().getResource("/selenium").getPath();
             if (path.contains(".jar")) {
                 try {
-                    JarUtil.copyFolderFromJar("selenium", new File(destination), JarUtil.CopyOption.REPLACE_IF_EXIST);
+                    JarResourceUtil.copyFolderFromJarResource("selenium", new File(destination),
+                        JarResourceUtil.CopyOption.REPLACE_IF_EXIST);
                 } catch (IOException e) {
                     logger.error("error copy from jar to folder", e);
                 }

@@ -14,17 +14,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 
-public class JarUtil {
-    public static final char JAR_SEPARATOR = '/';
+public class JarResourceUtil {
+    public static final char SEPARATOR = '/';
 
-    public static void copyFolderFromJar(String folderName, File destFolder, CopyOption option) throws IOException {
+    public static void copyFolderFromJarResource(String folderName, File destFolder, CopyOption option) throws IOException {
         if (!destFolder.exists())
             destFolder.mkdirs();
 
         byte[] buffer = new byte[1024];
 
         File fullPath = null;
-        String path = JarUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath().trim();
+        String path = JarResourceUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath().trim();
         if (!path.startsWith("file")) {
             path = "file://" + path;
         }
@@ -39,12 +39,12 @@ public class JarUtil {
 
         ZipEntry entry;
         while ((entry = zis.getNextEntry()) != null) {
-            if (!entry.getName().startsWith(folderName + JAR_SEPARATOR))
+            if (!entry.getName().startsWith(folderName + SEPARATOR))
                 continue;
 
             String fileName = entry.getName();
 
-            if (fileName.charAt(fileName.length() - 1) == JAR_SEPARATOR) {
+            if (fileName.charAt(fileName.length() - 1) == SEPARATOR) {
                 File file = new File(destFolder + File.separator + fileName);
                 if (file.isFile()) {
                     file.delete();
