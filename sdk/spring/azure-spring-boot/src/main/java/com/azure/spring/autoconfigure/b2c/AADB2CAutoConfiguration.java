@@ -81,7 +81,7 @@ public class AADB2CAutoConfiguration {
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
                                                         AADB2CAuthorizationRequestResolver resolver) {
-        return new AADB2COidcLoginConfigurer(properties, handler, resolver);
+        return new AADB2COidcLoginConfigurer(handler, resolver);
     }
 
     @PostConstruct
