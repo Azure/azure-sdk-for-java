@@ -282,11 +282,15 @@ public class JacksonAdapter implements SerializerAdapter {
         for (final HttpHeader header : headers) {
             String headerNameLower = header.getName().toLowerCase(Locale.ROOT);
 
-            for (HeaderCollectionHandler headerCollectionHandler : headerCollectionHandlers) {
-                if (!headerCollectionsFirstCharacters.contains(headerNameLower.charAt(0))) {
-                    continue;
-                }
+            /*
+             * Optimization to skip this header as it doesn't begin with any character starting header collections in
+             * the deserialized headers type.
+             */
+            if (!headerCollectionsFirstCharacters.contains(headerNameLower.charAt(0))) {
+                continue;
+            }
 
+            for (HeaderCollectionHandler headerCollectionHandler : headerCollectionHandlers) {
                 if (headerCollectionHandler.headerStartsWithPrefix(headerNameLower)) {
                     headerCollectionHandler.addHeader(header.getName(), header.getValue());
                 }
