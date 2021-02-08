@@ -261,9 +261,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         if (stdComponent == null) {
             addExtraAttributes(remoteDependencyData.getProperties(), attributes);
         }
-        if (samplingPercentage != null) {
-            telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        }
+        telemetryItem.setSampleRate(samplingPercentage.floatValue());
         telemetryItems.add(telemetryItem);
         exportEvents(span, samplingPercentage, telemetryItems);
     }
@@ -412,8 +410,7 @@ public final class AzureMonitorExporter implements SpanExporter {
             requestData.getProperties().put("statusDescription", description);
         }
 
-        Double samplingPercentage = removeAiSamplingPercentage(attributes);
-        samplingPercentage = samplingPercentage == null ? 100.0 : samplingPercentage;
+        Double samplingPercentage = 100.0;
 
         // for now, only add extra attributes for custom telemetry
         if (stdComponent == null) {
