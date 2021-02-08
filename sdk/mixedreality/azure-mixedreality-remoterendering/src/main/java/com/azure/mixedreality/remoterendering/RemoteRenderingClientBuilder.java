@@ -4,14 +4,10 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
@@ -21,9 +17,9 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
 public final class RemoteRenderingClientBuilder {
 
-    private MixedRealityRemoteRenderingImplBuilder builder;
+    private final MixedRealityRemoteRenderingImplBuilder builder;
     private UUID accountId;
-    private MixedRealityStsClientBuilder stsBuilder;
+    private final MixedRealityStsClientBuilder stsBuilder;
     private RemoteRenderingServiceVersion apiVersion;
     private AccessToken accessToken;
     private String endpoint;

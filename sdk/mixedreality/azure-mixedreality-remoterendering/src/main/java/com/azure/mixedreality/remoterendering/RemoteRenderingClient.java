@@ -10,17 +10,13 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.models.*;
-
-import java.util.List;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class)
 public final class RemoteRenderingClient {
     private final RemoteRenderingAsyncClient client;
 
-    // package-private constructors only - all instantiation is done with builders
     RemoteRenderingClient(RemoteRenderingAsyncClient client) {
         this.client = client;
     }
@@ -37,14 +33,17 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
         return client.beginSession(sessionId, options).getSyncPoller();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId) {
         return beginSession(sessionId, new CreateSessionOptions());
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, CreateSessionOptions options, Context context) {
         return client.beginSessionWithResponse(sessionId, options, context).getSyncPoller();
     }
@@ -120,7 +119,7 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all rendering sessions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RenderingSession> listSessions() {
         return new PagedIterable<>(client.listSessions());
     }
@@ -144,10 +143,12 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the conversion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
         return client.beginConversion(conversionId, options).getSyncPoller();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
         return client.beginConversionWithResponse(conversionId, options, context).getSyncPoller();
     }

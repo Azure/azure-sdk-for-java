@@ -25,9 +25,9 @@ public enum RemoteRenderingServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      *
-     * @return the latest {@link com.azure.mixedreality.remoterendering.RemoteRenderingServiceVersion}
+     * @return the latest {@link RemoteRenderingServiceVersion}
      */
-    public static com.azure.mixedreality.remoterendering.RemoteRenderingServiceVersion getLatest() {
+    public static RemoteRenderingServiceVersion getLatest() {
         return V2021_01_01_Preview;
     }
 }
