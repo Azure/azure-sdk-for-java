@@ -88,7 +88,7 @@ public final class PagedConverter {
         return PagedFlux.create(provider);
     }
 
-    private <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+    private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
         return pagedResponse -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
             pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
