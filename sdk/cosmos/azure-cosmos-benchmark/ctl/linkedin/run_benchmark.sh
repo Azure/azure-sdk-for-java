@@ -58,7 +58,7 @@ fi
 
 if [ -z "$ctl_number_of_precreated_documents" ]
 then
-number_of_precreated_documents=100000
+number_of_precreated_documents=1000000
 else
 number_of_precreated_documents=$ctl_number_of_precreated_documents
 fi
@@ -72,7 +72,7 @@ fi
 
 if [ -z "$ctl_max_running_time_duration" ]
 then
-max_running_time_duration=PT10M
+max_running_time_duration=PT24H
 else
 max_running_time_duration=$ctl_max_running_time_duration
 fi

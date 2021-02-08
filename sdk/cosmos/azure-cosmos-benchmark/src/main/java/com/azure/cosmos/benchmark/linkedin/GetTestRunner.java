@@ -51,7 +51,6 @@ public class GetTestRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GetTestRunner.class);
     private static final Duration TERMINATION_WAIT_DURATION = Duration.ofSeconds(60);
-    private static final int ERROR_COUNT_TOLERANCE = 2333; // A random prime
 
     private final Configuration _configuration;
     private final Accessor<Key, JsonNode> _accessor;
@@ -84,10 +83,6 @@ public class GetTestRunner {
         final long runStartTime = System.currentTimeMillis();
         long i = 0;
         for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
-            if (exceedsErrorThreshold()) {
-                return;
-            }
-
             int index = (int) ((i % keys.size()) % Integer.MAX_VALUE);
             final Key key = keys.get(index);
             try {
@@ -116,14 +111,6 @@ public class GetTestRunner {
         }
 
         _executorService.shutdown();
-    }
-
-    private boolean exceedsErrorThreshold() {
-        if (_errorCount.get() > ERROR_COUNT_TOLERANCE) {
-            LOGGER.error("Received {} errors; terminating the run", ERROR_COUNT_TOLERANCE);
-            return true;
-        }
-        return false;
     }
 
     private void runOperation(final Key key) {
