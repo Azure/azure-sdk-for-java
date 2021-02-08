@@ -302,6 +302,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
 
+    @SuppressWarnings("deprecation")
     private static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
@@ -371,6 +372,7 @@ public class JacksonAdapter implements SerializerAdapter {
             values.put(headerName.substring(prefixLength), headerValue);
         }
 
+        @SuppressWarnings("deprecation")
         void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
             /*
              * First check if the deserialized headers type has a public setter.
