@@ -1416,7 +1416,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
         return this.enableThroughputControlGroup(
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughput));
@@ -1430,7 +1430,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
         return this.enableThroughputControlGroup(
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughput, isDefault));
@@ -1443,7 +1443,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
         return this.enableThroughputControlGroup(
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughputThreshold));
@@ -1457,7 +1457,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
         return this.enableThroughputControlGroup(
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughputThreshold, isDefault));
@@ -1477,7 +1477,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputGlobalControlGroup(
         String groupName,
         int targetThroughput,
@@ -1505,7 +1505,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputGlobalControlGroup(
         String groupName,
         int targetThroughput,
@@ -1535,7 +1535,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputGlobalControlGroup(
         String groupName,
         double targetThroughputThreshold,
@@ -1564,7 +1564,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputGlobalControlGroup(
         String groupName,
         double targetThroughputThreshold,

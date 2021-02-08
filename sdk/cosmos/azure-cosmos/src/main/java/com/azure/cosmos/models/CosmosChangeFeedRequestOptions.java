@@ -32,6 +32,7 @@ public final class CosmosChangeFeedRequestOptions {
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
     private boolean isSplitHandlingDisabled;
+    private String throughputControlGroupName;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -381,6 +382,28 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
+        return this;
+    }
+
+    /**
+     * Get the throughput control group name.
+     *
+     * @return The throughput control group name.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosChangeFeedRequestOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
         return this;
     }
 }

@@ -9,7 +9,7 @@ import com.azure.cosmos.util.Beta;
 /**
  * Group configuration which will be used in Throughput control.
  */
-@Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ThroughputControlGroup {
     private final ThroughputControlGroupInternal controlGroupInternal;
 
@@ -22,7 +22,7 @@ public final class ThroughputControlGroup {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.controlGroupInternal.getGroupName();
     }
@@ -35,7 +35,7 @@ public final class ThroughputControlGroup {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.controlGroupInternal.getTargetThroughput();
     }
@@ -48,7 +48,7 @@ public final class ThroughputControlGroup {
      *
      * @return the target throughput threshold.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.controlGroupInternal.getTargetThroughputThreshold();
     }
@@ -60,7 +60,7 @@ public final class ThroughputControlGroup {
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.controlGroupInternal.isDefault();
     }

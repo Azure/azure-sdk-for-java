@@ -173,8 +173,10 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputResponse> resolveThroughputByResourceId(String resourceId) {
-        // TODO: figure out how this work for serveless account
-        // TODO: work item: https://github.com/Azure/azure-sdk-for-java/issues/18776
+        // Note: for serverless account, when we trying to query offers,
+        // we will get 400/0 with error message: Reading or replacing offers is not supported for serverless accounts.
+        // We are not supporting serverless account for throughput control for now. But the protocol may change in future,
+        // use https://github.com/Azure/azure-sdk-for-java/issues/18776 to keep track for possible future work.
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
         return this.client.queryOffers(
                     BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), new CosmosQueryRequestOptions())
@@ -306,12 +308,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(group -> this.resolveThroughputGroupController(group))
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
-                //TODO: Figure out how serverless work
-//                if (this.isOfferNotConfiguredException(throwable)) {
-//                    // Throughput is not configured on container nor database, a good hint the resource does not exists any more
-//                    this.close();
-//                }
-
                 logger.warn("Refresh throughput failed with reason %s", throwable);
                 return Mono.empty();
             })
