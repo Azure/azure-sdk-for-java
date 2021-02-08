@@ -45,6 +45,7 @@ public class AADB2CProperties implements InitializingBean {
 
     /**
      * The name of the b2c tenant.
+     * @deprecated It's recommended to use 'baseUri' instead.
      */
     @Deprecated
     private String tenant;
