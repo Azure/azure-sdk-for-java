@@ -100,7 +100,7 @@ public final class RemoteRenderingClientBuilder {
      * @param accessToken An access token used to access the specified Azure Remote Rendering account
      * @return the RemoteRenderingClientBuilder.
      */
-    public RemoteRenderingClientBuilder credential(AccessToken accessToken) {
+    public RemoteRenderingClientBuilder accessToken(AccessToken accessToken) {
         this.accessToken = accessToken;
         return this;
     }
