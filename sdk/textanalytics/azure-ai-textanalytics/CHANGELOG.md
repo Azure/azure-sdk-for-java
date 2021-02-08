@@ -2,8 +2,12 @@
 ## 5.1.0-beta.4 (Unreleased)
 ### New features
 - Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.
-- Added `StringIndexType` to all `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`,
-`RecognizePiiEntitiesOptions` and the default is `UTF16CODE_UNIT` if null value is passed.
+- A new options to control how the offset and length are calculated by the service. Added `StringIndexType` to all
+  `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`, `RecognizePiiEntitiesOptions`
+  and the default is `UTF16CODE_UNIT` if null value is assigned. For more information, 
+  see [the Text Analytics documentation](https://docs.microsoft.com/azure/cognitive-services/text-analytics/concepts/text-offsets#offsets-in-api-version-31-preview).
+- Added property `length` to `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 
+  `OpinionSentiment`, and `PiiEntity`.
 - Added new API,
   `Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
   Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options)`,
@@ -16,6 +20,11 @@
   
 ### Breaking changes
 #### Analysis healthcare entities 
+- The healthcare entities returned by `beginAnalyzeHealthcareEntities` are now organized as a directed graph where the 
+  edges represent a certain type of healthcare relationship between the source and target entities. Edges are stored
+  in the `relatedEntities` property.
+- The `links` property of `HealthcareEntity` is renamed to `dataSources`, a list of objects representing medical 
+  databases, where each object has `name` and `entityId` properties.
 - Replace API 
   `PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options)` to
   `PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options)`,
@@ -34,6 +43,7 @@
   `TextAnalyticsOperationResult` to `AnalyzeHealthcareEntitiesOperationDetail`
   
 #### Analyze multiple actions
+- The word "action" are used consistently in our names and documentation instead of "task".
 - Replace API 
   `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options)`to 
   `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options)`,

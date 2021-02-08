@@ -107,16 +107,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Detect Language
     @Test
-    abstract void detectLanguagesBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void detectLanguagesBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void detectLanguagesBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void detectLanguagesBatchListCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void detectLanguagesBatchListCountryHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void detectLanguagesBatchListCountryHintWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void detectLanguagesBatchListCountryHintWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void detectLanguagesBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -162,43 +165,53 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesBatchInputSingleError(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesForListWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesForListWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -226,43 +239,52 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -280,71 +302,91 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizePiiEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
     @Test
-    abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForEmptyText(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesEmptyIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForBatchInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesDiacriticsNfc(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeLinkedEntitiesDiacriticsNfd(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -375,35 +417,43 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesBatchWarning(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     // Sentiment
     @Test
     abstract void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -418,55 +468,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -492,6 +557,43 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesEmojiFamily(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Healthcare LRO - Cancellation
 

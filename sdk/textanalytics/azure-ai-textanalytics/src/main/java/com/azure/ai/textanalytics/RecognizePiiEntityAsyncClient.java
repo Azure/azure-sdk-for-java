@@ -3,17 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -154,8 +154,13 @@ class RecognizePiiEntityAsyncClient {
             // Pii entities list
             final List<PiiEntity> piiEntities =
                 documentEntities.getEntities().stream().map(
-                    entity -> new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                        entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
+                    entity -> {
+                        final PiiEntity piiEntity = new PiiEntity(entity.getText(),
+                            EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
+                            entity.getConfidenceScore(), entity.getOffset());
+                        PiiEntityPropertiesHelper.setLength(piiEntity, entity.getLength());
+                        return piiEntity;
+                    })
                     .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
@@ -200,23 +205,13 @@ class RecognizePiiEntityAsyncClient {
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        String modelVersion = null;
-        boolean includeStatistics = false;
-        String domainFilter = null;
-        StringIndexType stringIndexType = StringIndexType.UTF16CODE_UNIT;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-            final PiiEntityDomainType domainType = options.getDomainFilter();
-            if (domainType != null) {
-                domainFilter = domainType.toString();
-            }
-            stringIndexType = getNonNullStringIndexType(options.getStringIndexType());
-        }
+        options = options == null ? new RecognizePiiEntitiesOptions() : options;
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            modelVersion, includeStatistics, domainFilter, stringIndexType,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options.getModelVersion(), options.isIncludeStatistics(),
+            options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
+            getNonNullStringIndexType(options.getStringIndexType()),
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))
                    .doOnSuccess(response -> logger.info(

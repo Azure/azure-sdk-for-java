@@ -116,7 +116,8 @@ final class TestUtils {
         "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
     static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
-    static final String SENTIMENT_OFFSET_INPUT = "The hotel was dark and unclean.";
+    static final String SENTIMENT_OFFSET_INPUT = "The hotel was unclean.";
+    static final String HEALTHCARE_ENTITY_OFFSET_INPUT = "The patient is a 54-year-old";
 
     static final List<String> HEALTHCARE_INPUTS = asList(
         "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",

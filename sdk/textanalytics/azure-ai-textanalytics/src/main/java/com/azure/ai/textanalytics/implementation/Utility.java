@@ -48,6 +48,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -327,11 +328,13 @@ public final class Utility {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new CategorizedEntityCollection(
-                    new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                            entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()
-                        ))
-                        .collect(Collectors.toList())),
+                    new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                        final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
+                            EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
+                            entity.getConfidenceScore(), entity.getOffset());
+                        CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        return categorizedEntity;
+                    }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
                         .map(warning -> {
                             final WarningCodeValue warningCodeValue = warning.getCode();
@@ -448,6 +451,7 @@ public final class Utility {
                         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
+                        HealthcareEntityPropertiesHelper.setLength(healthcareEntity, entity.getLength());
                         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
                             entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
                                 .map(healthcareEntityLink -> {
@@ -550,5 +554,17 @@ public final class Utility {
         com.azure.ai.textanalytics.models.StringIndexType stringIndexType) {
         return stringIndexType == null ? StringIndexType.UTF16CODE_UNIT
                    : StringIndexType.fromString(stringIndexType.toString());
+    }
+
+    /**
+     * Get the non-null {@link Context}. The default value is {@link Context#NONE}.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
+    public static Context getNotNullContext(Context context) {
+        return context == null ? Context.NONE : context;
     }
 }
