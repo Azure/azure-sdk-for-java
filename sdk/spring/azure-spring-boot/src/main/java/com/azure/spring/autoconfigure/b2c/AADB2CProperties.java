@@ -82,6 +82,8 @@ public class AADB2CProperties {
      */
     private boolean allowTelemetry = true;
 
+    private String replyUrl = "{baseUrl}/login/oauth2/code/";
+
     /**
      * UserFlows
      */
@@ -229,5 +231,13 @@ public class AADB2CProperties {
 
     public void setUserNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
+    }
+
+    public String getReplyUrl() {
+        return replyUrl;
+    }
+
+    public void setReplyUrl(String replyUrl) {
+        this.replyUrl = replyUrl;
     }
 }

@@ -143,7 +143,7 @@ public class AADB2CAutoConfiguration {
                                      .clientSecret(properties.getClientSecret())
                                      .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                     .redirectUriTemplate("{baseUrl}/login/oauth2/code/")
+                                     .redirectUriTemplate(properties.getReplyUrl())
                                      .scope(properties.getClientId(), "openid")
                                      .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
                                      .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))

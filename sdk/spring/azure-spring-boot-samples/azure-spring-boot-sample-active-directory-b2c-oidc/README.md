@@ -15,7 +15,7 @@ Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/a
 ### Register your Azure Active Directory B2C application
 
 Follow the guide of [AAD B2C application registry](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-register-applications).
-Please ensure that your b2c applications `Redirect URL` is configured to `http://localhost:8080/login/oauth2/code/`.
+Please ensure that your b2c application's `Redirect URL` is configured to `http://localhost:8080/login/oauth2/code/`.
 
 ### Create user flows
 
