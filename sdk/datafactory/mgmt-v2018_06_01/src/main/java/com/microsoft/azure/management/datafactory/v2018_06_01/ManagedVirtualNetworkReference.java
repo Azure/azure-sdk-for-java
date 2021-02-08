@@ -28,7 +28,6 @@ public class ManagedVirtualNetworkReference {
 
     /**
      * Creates an instance of ManagedVirtualNetworkReference class.
-     * @param referenceName reference ManagedVirtualNetwork name.
      */
     public ManagedVirtualNetworkReference() {
         type = "ManagedVirtualNetworkReference";
