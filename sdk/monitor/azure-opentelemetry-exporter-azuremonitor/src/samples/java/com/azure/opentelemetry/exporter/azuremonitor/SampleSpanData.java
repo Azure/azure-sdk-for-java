@@ -3,18 +3,19 @@
 
 package com.azure.opentelemetry.exporter.azuremonitor;
 
-import io.opentelemetry.common.Attributes;
-import io.opentelemetry.common.ReadableAttributes;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanId;
+import io.opentelemetry.api.trace.TraceId;
+import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.sdk.common.InstrumentationLibraryInfo;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.SpanId;
-import io.opentelemetry.trace.Status;
-import io.opentelemetry.trace.TraceFlags;
-import io.opentelemetry.trace.TraceId;
-import io.opentelemetry.trace.TraceState;
-import io.opentelemetry.trace.attributes.SemanticAttributes;
+import io.opentelemetry.sdk.trace.data.StatusData;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -28,18 +29,18 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class SampleSpanData implements SpanData {
 
     @Override
-    public TraceId getTraceId() {
-        return new TraceId(10L, 2L);
+    public String getTraceId() {
+        return TraceId.fromLongs(10L, 2L);
     }
 
     @Override
-    public SpanId getSpanId() {
-        return new SpanId(1);
+    public String getSpanId() {
+        return SpanId.fromLong(1);
     }
 
     @Override
-    public TraceFlags getTraceFlags() {
-        return null;
+    public boolean isSampled() {
+        return false;
     }
 
     @Override
@@ -48,8 +49,13 @@ public class SampleSpanData implements SpanData {
     }
 
     @Override
-    public SpanId getParentSpanId() {
-        return new SpanId(0);
+    public SpanContext getParentSpanContext() {
+        return null;
+    }
+
+    @Override
+    public String getParentSpanId() {
+        return SpanId.fromLong(0);
     }
 
     @Override
@@ -78,28 +84,28 @@ public class SampleSpanData implements SpanData {
     }
 
     @Override
-    public ReadableAttributes getAttributes() {
-        return Attributes.newBuilder()
-            .setAttribute(SemanticAttributes.HTTP_STATUS_CODE.key(), 200L)
-            .setAttribute(SemanticAttributes.HTTP_URL.key(), "http://localhost")
-            .setAttribute(SemanticAttributes.HTTP_METHOD.key(), "GET")
-            .setAttribute("ai.sampling.percentage", 100.0)
+    public Attributes getAttributes() {
+        return Attributes.builder()
+            .put(SemanticAttributes.HTTP_STATUS_CODE.getKey(), 200L)
+            .put(SemanticAttributes.HTTP_URL.getKey(), "http://localhost")
+            .put(SemanticAttributes.HTTP_METHOD.getKey(), "GET")
+            .put("ai.sampling.percentage", 100.0)
             .build();
     }
 
     @Override
-    public List<SpanData.Event> getEvents() {
+    public List<EventData> getEvents() {
         return new ArrayList<>();
     }
 
     @Override
-    public List<SpanData.Link> getLinks() {
+    public List<LinkData> getLinks() {
         return new ArrayList<>();
     }
 
     @Override
-    public Status getStatus() {
-        return Status.OK;
+    public StatusData getStatus() {
+        return StatusData.ok();
     }
 
     @Override
@@ -108,12 +114,7 @@ public class SampleSpanData implements SpanData {
     }
 
     @Override
-    public boolean getHasRemoteParent() {
-        return false;
-    }
-
-    @Override
-    public boolean getHasEnded() {
+    public boolean hasEnded() {
         return false;
     }
 

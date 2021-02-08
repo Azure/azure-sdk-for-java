@@ -8,18 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/keyvault/
-    exclude:
-      - sdk/keyvault/mgmt
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+      - sdk/keyvault/ci.yml
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/azure-security-keyvault-administration
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-jca
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 pr:
   branches:
@@ -30,18 +25,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/keyvault/
-    exclude:
-      - sdk/keyvault/mgmt
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+      - sdk/keyvault/ci.yml
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/test-resources.json
+      - sdk/keyvault/tests.yml
+      - sdk/keyvault/azure-security-keyvault-administration
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-jca
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

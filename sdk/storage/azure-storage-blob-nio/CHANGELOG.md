@@ -3,6 +3,9 @@
 ## 12.0.0-beta.3 (Unreleased)
 - Added support for FileSystemProvider.checkAccess method
 - Added support for file key on AzureBasicFileAttributes and AzureBlobFileAttributes
+- Added support for SeekableByteChannel
+- When an operation is performed on a closed FileSystem, a ClosedFileSystemException is thrown instead of an IOException
+- Adjusted the required flags for opening an outputstream
 
 ## 12.0.0-beta.2 (2020-08-13)
 - Added checks to ensure file system has not been closed before operating on data

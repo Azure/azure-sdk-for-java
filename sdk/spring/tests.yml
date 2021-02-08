@@ -1,10 +1,27 @@
 trigger: none
 
-jobs:
-    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+parameters:
+- name: AadOnDemandUserName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
+- name: AadOnDemandUserDisplayName
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)'
+- name: AadOnDemandUserNameChina
+  type: string
+  default: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
+
+stages:
+    - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
+        TestResourceDirectories:
+          - spring/azure-spring-boot-test-cosmos
+          - spring/azure-spring-boot-test-servicebus-jms
+          - spring/azure-spring-cloud-test-eventhubs
+          - spring/azure-spring-boot-test-keyvault
+          - spring/azure-spring-boot-test-storage
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
@@ -37,6 +54,12 @@ jobs:
           - name: azure-spring-boot-test-keyvault
             groupId: com.azure.spring
             safeName: azurespringboottestkeyvault
+          - name: azure-spring-boot-test-keyvault-reactive
+            groupId: com.azure.spring
+            safeName: azurespringboottestkeyvaultreactive
+          - name: azure-spring-boot-test-parent
+            groupId: com.azure.spring
+            safeName: azurespringboottestparent
           - name: azure-spring-boot-test-servicebus-jms
             groupId: com.azure.spring
             safeName: azurespringboottestservicebusjms
@@ -69,8 +92,26 @@ jobs:
           AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
           AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+          AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserName }}
+          AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+          AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
 
-        PostRunSteps:
+        PreSteps:
+          - powershell: |
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+              az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+              az logout
+            displayName: 'Create On-demand test user'
+
+        PostSteps:
+          - powershell: |
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+              az ad user delete --id "${{ parameters.AadOnDemandUserName }}"
+              az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+              az logout
+            condition: always()
+            displayName: 'Delete On-demand test user and create again'
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
@@ -117,3 +158,14 @@ jobs:
               AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
               AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
               AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+              AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserName }}
+              AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+              AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+              AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
+
+          - powershell: |
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+              az ad user delete --id "${{ parameters.AadOnDemandUserName }}"
+              az logout
+            condition: always()
+            displayName: 'Delete On-demand test user'
