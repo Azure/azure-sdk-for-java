@@ -28,6 +28,10 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         return defaultProperties;
     }
 
+    public static boolean checkIfChinaCloud() {
+        return AAD_LOGIN_BASE_URL.contains("cn") ? true : false;
+    }
+
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
         this(appClass, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
     }
@@ -56,7 +60,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         String cssSelector = "div[data-test-id='" + username + "']";
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssSelector))).click();
         String id = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[tabindex='0']")))
-                        .getAttribute("data-test-id");
+            .getAttribute("data-test-id");
         return id;
     }
 

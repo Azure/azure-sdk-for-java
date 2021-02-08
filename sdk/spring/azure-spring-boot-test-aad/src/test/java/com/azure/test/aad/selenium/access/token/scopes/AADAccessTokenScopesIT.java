@@ -28,20 +28,19 @@ public class AADAccessTokenScopesIT {
     @Test
     public void testAccessTokenScopes() {
         Map<String, String> properties = createDefaultProperties();
-        properties.put(
-            "azure.activedirectory.authorization-clients.graph.scopes",
+        properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             AAD_GRAPH_BASE_URL + "User.Read, " + AAD_GRAPH_BASE_URL + "Directory.Read.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains(AAD_GRAPH_BASE_URL + "Directory.Read.All"));
+        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains(AAD_GRAPH_BASE_URL + "Directory.Read.All"));
-        Assert.assertTrue(httpResponse.contains(AAD_GRAPH_BASE_URL + "User.Read"));
+        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
+        Assert.assertTrue(httpResponse.contains("User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("notExist");
         Assert.assertNotEquals(httpResponse, "notExist");
@@ -69,15 +68,6 @@ public class AADAccessTokenScopesIT {
         @GetMapping(value = "accessTokenScopes/graph")
         public Set<String> graph(
             @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient authorizedClient) {
-            return Optional.of(authorizedClient)
-                           .map(OAuth2AuthorizedClient::getAccessToken)
-                           .map(OAuth2AccessToken::getScopes)
-                           .orElse(null);
-        }
-
-        @GetMapping(value = "accessTokenScopes/office")
-        public Set<String> office(
-            @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
                            .map(OAuth2AuthorizedClient::getAccessToken)
                            .map(OAuth2AccessToken::getScopes)

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_ON_DEMAND;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_ON_DEMAND;
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.checkIfChinaCloud;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
 public class AADOnDemandIT {
@@ -29,11 +30,12 @@ public class AADOnDemandIT {
 
     @Test
     public void onDemandTest() {
+        String armClientUri = checkIfChinaCloud() ? "https://management.chinacloudapi.cn/"
+            : "https://management.azure.com/";
+        String armClientScope = armClientUri + "user_impersonation";
         Map<String, String> properties = createDefaultProperties();
-        properties.put("azure.activedirectory.authorization-clients.arm.scopes",
-            "https://management.azure.com/user_impersonation");
+        properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
         properties.put("azure.activedirectory.authorization-clients.arm.on-demand", "true");
-        LOGGER.info(AAD_USER_NAME_ON_DEMAND);
 
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_ON_DEMAND, AAD_USER_PASSWORD_ON_DEMAND);
@@ -43,7 +45,7 @@ public class AADOnDemandIT {
         Assert.assertTrue(httpResponse.contains("azure"));
 
         String incrementalConsentUrl = aadSeleniumITHelper.httpGetWithIncrementalConsent("api/arm");
-        Assert.assertTrue(incrementalConsentUrl.contains("https://management.azure.com/user_impersonation"));
+        Assert.assertTrue(incrementalConsentUrl.contains(armClientScope));
 
         httpResponse = aadSeleniumITHelper.httpGet("api/arm");
         Assert.assertTrue(httpResponse.contains("arm"));
