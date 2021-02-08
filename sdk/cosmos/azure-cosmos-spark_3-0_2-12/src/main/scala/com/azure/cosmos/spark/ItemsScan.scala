@@ -3,14 +3,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.{CosmosParametrizedQuery, FeedRange}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, FeedRange}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.StructType
 
 private case class ItemsScan(schema: StructType,
                              config: Map[String, String],
-                             cosmosQuery: CosmosParametrizedQuery,
+                             cosmosQuery: CosmosParameterizedQuery,
                              cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends Scan
     with Batch
