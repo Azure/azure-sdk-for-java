@@ -20,11 +20,15 @@ stages:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
         PreSteps:
-            - powershell: |
+            - script: |
+                  echo 'switch to Azure China'
                   az cloud set --name AzureChinaCloud
+              condition: endsWith(${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}, 'cn')
+              displayName: 'Switch to Azure China Cloud'
+            - powershell: |
+                  az cloud list --output table
                   az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
                   az ad user create --user-principal-name "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}" --force-change-password-next-login false
-                  az logout
               displayName: 'Create On-demand test user'
 
         PostSteps:
@@ -55,8 +59,7 @@ stages:
             env: ${{ parameters.EnvVars }}
 
           - powershell: |
-                az cloud set --name AzureChinaCloud
-                az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
+                az cloud list --output table
                 az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
                 az logout
             condition: always()
