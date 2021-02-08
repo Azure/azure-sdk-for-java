@@ -8,7 +8,6 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -19,7 +18,7 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
-import com.azure.cosmos.implementation.throughputControl.ThroughputResolveLevel;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerFactory;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -35,7 +34,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,13 +51,13 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private static final Duration DEFAULT_THROUGHPUT_REFRESH_INTERVAL = Duration.ofMinutes(15);
     private static final int NO_OFFER_EXCEPTION_STATUS_CODE = HttpConstants.StatusCodes.BADREQUEST;
-    private static final int NO_OFFER_EXCEPTION_SUB_STATUS_CODE = HttpConstants.SubStatusCodes.UNKNOWN;
+    private static final int NO_OFFER_EXCEPTION_SUB_STATUS_CODE = HttpConstants.SubStatusCodes.OFFER_NOT_CONFIGURED;
 
     private final AsyncDocumentClient client;
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
     private final AsyncCache<String, ThroughputGroupControllerBase> groupControllerCache;
-    private final Set<ThroughputControlGroup> groups;
+    private final Set<ThroughputControlGroupInternal> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final CosmosAsyncContainer targetContainer;
@@ -74,7 +72,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     public ThroughputContainerController(
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
-        Set<ThroughputControlGroup> groups,
+        Set<ThroughputControlGroupInternal> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
         checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
@@ -89,7 +87,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.maxContainerThroughput = new AtomicReference<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
-        this.targetContainer = BridgeInternal.getTargetContainerFromThroughputControlGroup(groups.iterator().next());
+        this.targetContainer = groups.iterator().next().getTargetContainer();
         this.client = CosmosBridgeInternal.getContextClient(this.targetContainer);
 
         this.throughputResolveLevel = this.getThroughputResolveLevel(groups);
@@ -97,7 +95,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.cancellationTokenSource = new CancellationTokenSource();
     }
 
-    private ThroughputResolveLevel getThroughputResolveLevel(Set<ThroughputControlGroup> groupConfigs) {
+    private ThroughputResolveLevel getThroughputResolveLevel(Set<ThroughputControlGroupInternal> groupConfigs) {
         if (groupConfigs.stream().anyMatch(groupConfig -> groupConfig.getTargetThroughputThreshold() != null)) {
             // Throughput can be provisioned on container level or database level, will start from container
             return ThroughputResolveLevel.CONTAINER;
@@ -242,7 +240,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             return Mono.empty();
         }
 
-        ThroughputControlGroup group =
+        ThroughputControlGroupInternal group =
             this.groups.stream().filter(groupConfig -> StringUtils.equals(groupName, groupConfig.getGroupName())).findFirst().orElse(null);
         if (group == null) {
             return Mono.empty();
@@ -268,14 +266,14 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .then(Mono.just(this));
     }
 
-    private Mono<ThroughputGroupControllerBase> resolveThroughputGroupController(ThroughputControlGroup group) {
+    private Mono<ThroughputGroupControllerBase> resolveThroughputGroupController(ThroughputControlGroupInternal group) {
         return this.groupControllerCache.getAsync(
             group.getGroupName(),
             null,
             () -> this.createAndInitializeGroupController(group));
     }
 
-    private Mono<ThroughputGroupControllerBase> createAndInitializeGroupController(ThroughputControlGroup group) {
+    private Mono<ThroughputGroupControllerBase> createAndInitializeGroupController(ThroughputControlGroupInternal group) {
         ThroughputGroupControllerBase groupController = ThroughputGroupControllerFactory.createController(
             this.connectionMode,
             this.globalEndpointManager,

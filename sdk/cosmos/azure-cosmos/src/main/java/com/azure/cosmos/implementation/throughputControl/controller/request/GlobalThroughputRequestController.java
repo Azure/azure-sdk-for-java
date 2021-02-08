@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -56,11 +57,13 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
     }
 
     @Override
-    public void renewThroughputUsageCycle(double throughput) {
+    public double renewThroughputUsageCycle(double throughput) {
         this.scheduledThroughput.set(throughput);
-        this.requestThrottlerMapByRegion.values()
+        return this.requestThrottlerMapByRegion.values()
             .stream()
-            .forEach(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughput));
+            .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughput))
+            .max(Comparator.naturalOrder())
+            .get();
     }
 
     @Override

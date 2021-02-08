@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -471,7 +472,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param group Throughput control group going to be enabled.
      */
-    void enableThroughputControlGroup(ThroughputControlGroup group) {
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group cannot be null");
         this.asyncDocumentClient.enableThroughputControlGroup(group);
     }

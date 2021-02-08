@@ -325,6 +325,9 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE = 10003;
+
+        // Client generated offer not configured exception
+        public static final int OFFER_NOT_CONFIGURED = 10004;
     }
 
     public static class HeaderValues {

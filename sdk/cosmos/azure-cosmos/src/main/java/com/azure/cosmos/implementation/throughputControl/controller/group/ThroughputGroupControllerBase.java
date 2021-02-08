@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.throughputControl.controller.group;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -14,7 +13,8 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
-import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
@@ -37,7 +37,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Throughput group controller. Two common tasks across all group controller implementations:
  * 1. Create and initialize request controller based on connection mode
- * 2. Schedule reset throughput uage every 1s.
+ * 2. Schedule reset throughput usage every 1s.
  */
 public abstract class ThroughputGroupControllerBase implements IThroughputController {
     private final static Logger logger = LoggerFactory.getLogger(ThroughputGroupControllerBase.class);
@@ -45,19 +45,19 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
-    private final ThroughputControlGroup group;
+    private final ThroughputControlGroupInternal group;
     private final AtomicReference<Double> groupThroughput;
     private final AtomicInteger maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final AsyncCache<String, IThroughputRequestController> requestControllerAsyncCache;
     private final String targetContainerRid;
 
-    private final CancellationTokenSource cancellationTokenSource;
+    protected final CancellationTokenSource cancellationTokenSource;
 
     public ThroughputGroupControllerBase(
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
-        ThroughputControlGroup group,
+        ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid) {
@@ -88,7 +88,11 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.cancellationTokenSource = new CancellationTokenSource();
     }
 
-    private void calculateGroupThroughput() {
+    public abstract double getClientThroughputShare();
+
+    public abstract void recordThroughputUsage(double loadFactor);
+
+    protected void calculateGroupThroughput() {
         double allocatedThroughput = Double.MAX_VALUE;
         if (this.group.getTargetThroughputThreshold() != null) {
             allocatedThroughput = Math.min(allocatedThroughput, this.maxContainerThroughput.get() * this.group.getTargetThroughputThreshold());
@@ -101,21 +105,14 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.groupThroughput.set(allocatedThroughput);
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Mono<T> init() {
-        return this.resolveRequestController()
-            .doOnSuccess(dummy -> {
-                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribeOn(Schedulers.parallel()).subscribe();
-            })
-            .thenReturn((T)this);
-    }
-
-    private Flux<Void> throughputUsageCycleRenewTask(CancellationToken cancellationToken) {
+    public Flux<Void> throughputUsageCycleRenewTask(CancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
         return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
             .flatMap(t -> this.resolveRequestController())
-            .doOnSuccess(requestController -> requestController.renewThroughputUsageCycle(this.groupThroughput.get()))
+            .doOnSuccess(requestController -> {
+                double clientAllocatedThroughput = this.groupThroughput.get() * this.getClientThroughputShare();
+                this.recordThroughputUsage(requestController.renewThroughputUsageCycle(clientAllocatedThroughput));
+            })
             .onErrorResume(throwable -> {
                 logger.warn("Reset throughput usage failed with reason", throwable);
                 return Mono.empty();
@@ -126,15 +123,17 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     private Mono<IThroughputRequestController> createAndInitializeRequestController() {
         IThroughputRequestController requestController;
+        double clientAllocatedThroughput = this.groupThroughput.get() * this.getClientThroughputShare();
+
         if (this.connectionMode == ConnectionMode.DIRECT) {
             requestController = new PkRangesThroughputRequestController(
                 this.globalEndpointManager,
                 this.partitionKeyRangeCache,
                 this.targetContainerRid,
-                this.groupThroughput.get());
+                clientAllocatedThroughput);
 
         } else if (this.connectionMode == ConnectionMode.GATEWAY) {
-            requestController = new GlobalThroughputRequestController(this.globalEndpointManager, this.groupThroughput.get());
+            requestController = new GlobalThroughputRequestController(this.globalEndpointManager, clientAllocatedThroughput);
         } else {
             throw new IllegalArgumentException(String.format("Connection mode %s is not supported", this.connectionMode));
         }
@@ -210,7 +209,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                 }});
     }
 
-    private Mono<IThroughputRequestController> resolveRequestController() {
+    protected Mono<IThroughputRequestController> resolveRequestController() {
         return this.requestControllerAsyncCache.getAsync(
             this.group.getGroupName(),
             null,

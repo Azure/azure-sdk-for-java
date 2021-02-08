@@ -17,9 +17,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -55,15 +55,20 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     }
 
     @Override
-    public void renewThroughputUsageCycle(double scheduledThroughput) {
+    public double renewThroughputUsageCycle(double scheduledThroughput) {
         this.scheduledThroughput = scheduledThroughput;
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        this.requestThrottlerMapByRegion.values()
-            .forEach(requestThrottlerMapByRegion -> {
-                requestThrottlerMapByRegion
-                    .values()
-                    .forEach(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange));
-            });
+        return this.requestThrottlerMapByRegion.values()
+            .stream()
+            .map(requestThrottlerMapByPkRangeId -> {
+                return requestThrottlerMapByPkRangeId.values()
+                    .stream()
+                    .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
+                    .max(Comparator.naturalOrder())
+                    .get();
+            })
+            .max(Comparator.naturalOrder())
+            .get();
     }
 
     @Override

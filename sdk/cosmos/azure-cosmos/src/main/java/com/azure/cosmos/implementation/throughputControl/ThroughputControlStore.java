@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.throughputControl;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -15,18 +14,16 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.container.EmptyThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.IThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.ThroughputContainerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -85,7 +82,7 @@ public class ThroughputControlStore {
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
     private final GlobalEndpointManager globalEndpointManager;
-    private final ConcurrentHashMap<String, Set<ThroughputControlGroup>> groupMapByContainer;
+    private final ConcurrentHashMap<String, Set<ThroughputControlGroupInternal>> groupMapByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
     public ThroughputControlStore(
@@ -106,25 +103,24 @@ public class ThroughputControlStore {
         this.partitionKeyRangeCache = partitionKeyRangeCache;
     }
 
-    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+    public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group cannot be null");
 
-        String collectionLink = Utils.trimBeginningAndEndingSlashes(
-            BridgeInternal.extractContainerSelfLink(
-                BridgeInternal.getTargetContainerFromThroughputControlGroup(group)));
+        String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
         this.groupMapByContainer.compute(collectionLink, (key, groupSet) -> {
             if (groupSet == null) {
                 groupSet = new HashSet<>();
             }
 
             if (group.isDefault()) {
-                if (groupSet.stream().anyMatch(ThroughputControlGroup::isDefault)) {
+                if (groupSet.stream().anyMatch(ThroughputControlGroupInternal::isDefault)) {
                     throw new IllegalArgumentException("A default group already exists");
                 }
             }
 
             if (!groupSet.add(group)) {
                 logger.warn("Can not add duplicate group");
+                return groupSet;
             }
 
             if (groupSet.size() == 1) {

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.container;
 
-import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 
 /**
  * Represents a throughput container controller.
