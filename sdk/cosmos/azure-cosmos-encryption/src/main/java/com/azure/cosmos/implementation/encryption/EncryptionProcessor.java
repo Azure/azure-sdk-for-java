@@ -5,11 +5,8 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.DecryptionContext;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.EncryptionOptions;
-import com.azure.cosmos.encryption.Encryptor;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -55,6 +52,7 @@ public class EncryptionProcessor {
     private EncryptionSettings encryptionSettings;
     private boolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
+    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 1024;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                EncryptionCosmosAsyncClient encryptionCosmosClient) {
@@ -322,22 +320,6 @@ public class EncryptionProcessor {
         return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
     }
 
-    public static Mono<byte[]> encrypt(
-        byte[] streamPayload,
-        Encryptor encryptor,
-        EncryptionOptions encryptionItemRequestOptions) {
-        return null;
-    }
-
-    public static Mono<Pair<byte[], DecryptionContext>> decrypt(byte[] input, Encryptor encryptor) {
-        return null;
-    }
-
-
-    public static Mono<Pair<ObjectNode, DecryptionContext>> decrypt(ObjectNode itemJObj, Encryptor encryptor) {
-        return null;
-    }
-
     public static Pair<TypeMarker, byte[]> toByteArray(JsonNode jsonNode) {
         try {
             SqlSerializerFactory sqlSerializerFactory = new SqlSerializerFactory();
@@ -354,14 +336,19 @@ public class EncryptionProcessor {
                             sqlSerializerFactory.getDefaultSerializer(0d).serialize(jsonNode.asDouble()));
                     }
                 case STRING:
+                    if (jsonNode.asText().length() > STRING_SIZE_ENCRYPTION_LIMIT) {
+                        LOGGER.error("{} length is greater than allowed encryption string length {}",
+                            jsonNode.asText(), STRING_SIZE_ENCRYPTION_LIMIT);
+                    }
+
                     return Pair.of(TypeMarker.STRING,
-                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.asText()));
+                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.asText()));
                 case OBJECT:
                     return Pair.of(TypeMarker.OBJECT,
-                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.toString()));
+                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.toString()));
                 case ARRAY:
                     return Pair.of(TypeMarker.ARRAY,
-                        SqlSerializerFactory.getOrCreate("varchar", 1000, 0, 0).serialize(jsonNode.toString()));
+                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.toString()));
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
@@ -380,14 +367,17 @@ public class EncryptionProcessor {
                 case DOUBLE:
                     return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
                 case STRING:
-                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
+                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
                 case OBJECT:
-                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
+                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
                 case ARRAY:
-                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar", 2000, 0, 0).deserialize(serializedBytes));
+                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
+                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
             }
         } catch (MicrosoftDataEncryptionException ex) {
-            throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
+            throw new IllegalStateException("Unable to convert byte[] to JSON", ex);
         }
         throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
     }

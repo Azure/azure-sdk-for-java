@@ -25,12 +25,6 @@ class EncryptionExceptionFactory {
                 actualSize, minimumSize), "cipherText");
     }
 
-    static IllegalArgumentException invalidAlgorithmVersion(byte actual, byte expected) {
-        return new InvalidArgumentException(
-            Strings.lenientFormat("Invalid encryption algorithm version; actual: %s, expected: %s.",
-                Bytes.toHex(actual), Bytes.toHex(expected)), "cipherText");
-    }
-
     static RuntimeException invalidAuthenticationTag() {
         return new InvalidArgumentException(
             "Invalid authentication tag in cipher text.",

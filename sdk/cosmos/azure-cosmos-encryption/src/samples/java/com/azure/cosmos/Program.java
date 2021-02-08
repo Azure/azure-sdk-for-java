@@ -152,7 +152,6 @@ public class Program {
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
 
-
         // Create a container with the appropriate partition key definition (we choose the "PurchaseOrderNumber"
         // property
         // here) and throughput (we choose 1000 here).
@@ -258,8 +257,8 @@ public class Program {
         salesOrder.purchaseOrderNumber = "PO18009186470";
         salesOrder.totalDue = 985.01;
         salesOrder.subTotal = 985.01;
-        salesOrder.orderDate = Instant.now().toString();
-        salesOrder.shippedDate = Instant.parse(salesOrder.orderDate).plus(Duration.ofDays(5)).toString();
+        salesOrder.orderDate = Instant.now();
+        salesOrder.shippedDate = salesOrder.orderDate.plus(Duration.ofDays(5));
         salesOrder.freight = 472.3108;
         salesOrder.taxAmount = 12.5838;
         salesOrder.items = new SalesOrder.SalesOrderDetail[1];

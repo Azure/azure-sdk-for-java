@@ -11,8 +11,6 @@ public class CosmosEncryptionAlgorithm {
     /**
      * Authenticated Encryption algorithm based on https://tools.ietf.org/html/draft-mcgrew-aead-aes-cbc-hmac-sha2-05
      */
-    public static final String AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED = "AEAes256CbcHmacSha256Randomized";
-
     public static final String AEAES_256_CBC_HMAC_SHA_256 = "AEAD_AES_256_CBC_HMAC_SHA256";
 }
 

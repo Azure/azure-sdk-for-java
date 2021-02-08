@@ -36,9 +36,4 @@ public class EncryptionModelBridgeInternal {
     public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse response) {
         return response.resourceResponse;
     }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createEncryptionItemResponse(CosmosItemResponse<?> response, T item) {
-        return new EncryptionItemResponse<T>(response, item);
-    }
 }

@@ -5,11 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
-import com.azure.cosmos.implementation.encryption.TestUtils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -130,11 +128,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         encryptionCosmosAsyncDatabase.createClientEncryptionKey("key2",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
         encryptionCosmosAsyncDatabase.rewrapClientEncryptionKey("key2", metadata2).block();
-    }
-
-    @BeforeClass(groups = "encryption")
-    public void beforeClass() {
-        TestUtils.initialized();
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -335,10 +328,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         public double sensitiveDouble;
         @JsonProperty
         public boolean sensitiveBoolean;
-    }
-
-    private DataEncryptionKey createDataEncryptionKey() throws Exception {
-        return TestUtils.createDataEncryptionKey();
     }
 
     class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {

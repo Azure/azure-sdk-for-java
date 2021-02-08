@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
-import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -40,12 +39,11 @@ import java.util.stream.Collectors;
 // TODO: should we test the apis for byte-array (streaming api replacement)?
 public class EncryptionCosmosAsyncContainer {
     private final Scheduler encryptionScheduler;
-    private final Encryptor encryptor;
-    private final CosmosResponseFactory responseFactory = new CosmosResponseFactoryCore();
+    private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();
     private final CosmosAsyncContainer container;
     private EncryptionProcessor encryptionProcessor;
-    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
 
+    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
 
     EncryptionCosmosAsyncContainer(CosmosAsyncContainer container,
                                    EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
@@ -53,7 +51,6 @@ public class EncryptionCosmosAsyncContainer {
         this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
         this.encryptionProcessor = new EncryptionProcessor(this.container, encryptionCosmosAsyncClient);
         this.encryptionScheduler = Schedulers.parallel();
-        encryptor = null;
     }
 
     public EncryptionProcessor getEncryptionProcessor() {
@@ -281,6 +278,18 @@ public class EncryptionCosmosAsyncContainer {
             });
     }
 
+    /**
+     * Get the EncryptionCosmosAsyncClient
+     * @return encrypted cosmosAsyncClient
+     */
+    public EncryptionCosmosAsyncClient getEncryptionCosmosAsyncClient() {
+        return encryptionCosmosAsyncClient;
+    }
+
+    /**
+     * Gets the CosmosAsyncContainer
+     * @return cosmos container
+     */
     public CosmosAsyncContainer getCosmosAsyncContainer() {
         return container;
     }
