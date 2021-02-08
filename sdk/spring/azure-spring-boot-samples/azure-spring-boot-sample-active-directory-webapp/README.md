@@ -13,7 +13,7 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 1. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
 1. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-app.png "Creat secrets")
 1. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/`, check the **Access Tokens** and **ID Tokens** checkboxes, click **configure** button.![Add a platfform](docs/image-add-a-platfform.png "Add a platfform")
-1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.AccessAsUser.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
+1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.Read.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
 1. Similarly, add the following permissions: 
    - **user_impersonation** in **Azure Service Management**,
    - **ActivityFeed.Read**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read** in **Office 365 Management APIs**.![Add permissions](docs/image-add-permissions.png "Add permissions")
@@ -37,7 +37,7 @@ azure:
          graph:
             scopes:
                - https://graph.microsoft.com/User.Read
-               - https://graph.microsoft.com/Directory.AccessAsUser.All
+               - https://graph.microsoft.com/Directory.Read.All
          office:
             scopes:
                - https://manage.office.com/ActivityFeed.Read
