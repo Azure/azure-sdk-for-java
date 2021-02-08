@@ -196,12 +196,16 @@ Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-ur
 ![get-app-id-uri-2.png](resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
+  
+`AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for aad-starter.
+(A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
-Write your own adapter class which extends `AADResourceServerSecurityConfigurerAdapter`.
+(B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
+in the `configure(HttpSecurity http)` function. Here is an example:
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class CustomServerSecurityConfig extends AADResourceServerSecurityConfigurerAdapter {
+public class CustomWebServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) {
        super.configure(http);

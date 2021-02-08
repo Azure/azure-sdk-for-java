@@ -85,7 +85,9 @@ public class AADResourceServerConfiguration {
     @Configuration
     @EnableWebSecurity
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    public static class DefaultWebApiSecurityConfigurerAdapter extends AADResourceServerSecurityConfigurerAdapter {
+    public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+        AADResourceServerWebSecurityConfigurerAdapter {
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
