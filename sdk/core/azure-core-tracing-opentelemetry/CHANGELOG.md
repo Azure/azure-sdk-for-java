@@ -1,6 +1,9 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
+
+
+## 1.0.0-beta.7 (2021-02-05)
 
 ### Dependency Updates
 - Updated versions of `opentelemetry-api` to `0.14.1` version.

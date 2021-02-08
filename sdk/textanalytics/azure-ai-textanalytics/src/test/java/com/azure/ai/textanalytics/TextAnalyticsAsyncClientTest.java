@@ -6,9 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -17,29 +17,37 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.ENTITY_TASK;
+import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASES_TASK;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.PII_TASK;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
+import static com.azure.ai.textanalytics.TestUtils.getActionError;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
@@ -67,6 +75,7 @@ import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
+import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_REQUEST;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1607,12 +1616,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForSinglePage(),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1624,12 +1633,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1641,7 +1650,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
-            StepVerifier.create(client.beginAnalyzeHealthcare(documents, null))
+            StepVerifier.create(client.beginAnalyzeHealthcareEntities(documents, null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify();
@@ -1655,12 +1664,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
-            // TODO: update the changes in the healthcare PR #18828
-//            PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-//            client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(), options);
-//            syncPoller.waitForCompletion();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            syncPoller.cancelOperation();
+            syncPoller.waitForCompletion();
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 
@@ -1680,11 +1688,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                        getRecognizeEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                        getRecognizePiiEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                        getExtractKeyPhrasesResultCollection(), TIME_NOW, false))))),
+                        false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
@@ -1716,5 +1724,62 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchActionsPartialCompletedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(
+                                false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(
+                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchActionsAllFailedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(asList(
+                            getExpectedRecognizeEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, ENTITY_TASK, "0")))),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "1")))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
     }
 }

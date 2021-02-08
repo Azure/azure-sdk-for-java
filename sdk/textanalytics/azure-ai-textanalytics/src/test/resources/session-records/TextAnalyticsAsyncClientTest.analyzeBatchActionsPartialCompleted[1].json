@@ -1,0 +1,528 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4793c0d2-de61-4b5f-90ed-a95001afd210",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "2492",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://centralustiers.cognitiveservices.azure.com/text/analytics/v3.1-preview.3/analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dd3ad4cf-6321-42f1-a09d-809b594ed36e",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 05 Feb 2021 18:18:54 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f2fbedc-9568-4c68-a7c0-a65e747d486d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "1957",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "79c05b28-71c9-49f1-93e4-bc738813c860",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b5bd8bde-71db-4c19-a17d-7df6efef186f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "929",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "17b8dc0a-3c9e-4964-90e1-e44fca3325dc",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "17590f08-62ae-4f45-b98e-eb06d39ca056",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "1765",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "391ea580-2214-43a2-9e57-2f19ff31e50c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "06b9de36-847b-4716-b4fc-2d4ee490ce61",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "1914",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dcc83e0d-8b25-4bf2-82d1-17d25a5f4b1a",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "594adfdd-92c0-43e6-9142-b4e71606c25c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "514",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "034f52b2-fb48-4c7e-9c27-581459541460",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cad5d2e6-5645-420a-8bd9-9eaac9c5c0bf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "124",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8ca108d8-31b0-4589-8089-71b3bdcc07ae",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:32 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "08d7f4d9-f1dc-4bbd-95ea-14a0e80105b2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "158",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "497c644f-c201-4b9c-835d-752908268e84",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:37 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fd89bbc4-021f-4250-b71b-a0624c30fb73",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "468",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "aecc96d2-0d4b-4a37-960a-3fb5b166c450",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:42 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3104b531-c3e1-4260-ba76-d0d91ce1efcc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "114",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b1125056-4545-48aa-9f72-77e718b5e68e",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:47 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "697fb32d-3abc-4a07-93e9-d0eced6d9093",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "304",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1c09fb32-aacd-4fce-bd1f-fdff9805e4e5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ff170a7-25b9-4cbb-adb8-aa4ad70f4ade",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "91",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c951bfe1-7b10-427e-b0f6-9d27c2501ac4",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:19:58 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "60237ff2-cd83-4508-9bd0-d3ea5ad38097",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "530",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "898ca2c6-1f1e-4149-bd3f-2582914f27b3",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "123c25bb-eb22-402e-a27b-5e2eae97c448",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "100",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e9afe933-050f-4565-9c98-642b1127b9e1",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0b957356-6de8-492a-8a03-06e5b5e14be1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "159",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "75336d43-7bc6-4fbe-8936-e4b7b218bb8d",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0b64ff1e-e0b3-456d-8bd6-13a612db2644",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "795",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0e5a5d30-6e9e-4c40-a6f0-ca8b6c1007a9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bf78698f-71c3-48db-ad3a-3c18eb321675",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "96",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "49a9ab01-90ba-4648-80ed-5347b5fffaa4",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:25 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d9edb2f-fa1b-43fe-bbe6-a4aeb5d980b0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "485",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8dc0716b-e1ec-413c-a3b4-3b964aba2692",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:31 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5a5d3a71-be35-4f40-ad3b-2f69de193b3e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "106",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c3f96dd7-53c4-45b2-8552-c8e6a579b5d9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5721147c-f518-45be-9ad6-94c03e953ac5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "144",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "94a5f181-4cdf-492b-bf27-b4b9cfc90ab9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0a4b63a7-4dd4-4c34-b0ed-7c96ceb63fd7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "204",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8105d2c5-9811-46f8-8f3e-4412b7688a3e",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c674e78f-6068-4a0f-94aa-dd8b5a0bed2d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "159",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "24f7f709-ef0c-4994-bc2a-c1f94e5624fe",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b379a64c-6f19-426c-878f-72e0d111045e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "183",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "780deb3c-c244-4bb4-8303-aa3fcffd7e00",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"running\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":1,\"failed\":1,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:20:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "03596261-1ba5-4ef7-b08c-e5ec76d3943e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "209",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dfdd2876-9575-4da2-8ec9-3e531cca07f1",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"partiallySucceeded\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":2,\"failed\":1,\"inProgress\":0,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}},{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.4},{\"text\":\"859-98-0987\",\"category\":\"U.S. Social Security Number (SSN)\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:21:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "86962bac-fec7-49ae-aad7-279a3222560f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "166",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "13a073c8-3222-4780-990d-4f78e6e585eb",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"7a2b1a37-fa48-4509-9b37-14fac638dacf_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\",\"createdDateTime\":\"2021-02-05T18:18:51Z\",\"expirationDateTime\":\"2021-02-06T18:18:51Z\",\"status\":\"partiallySucceeded\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55Z\"},\"completed\":2,\"failed\":1,\"inProgress\":0,\"total\":3,\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}},{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.4},{\"text\":\"859-98-0987\",\"category\":\"U.S. Social Security Number (SSN)\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:18:55.5403668Z\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:21:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

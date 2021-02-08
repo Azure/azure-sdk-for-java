@@ -4,28 +4,36 @@
 package com.azure.test.aad.common;
 
 import com.azure.spring.test.AppRunner;
-import java.util.Map;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Map;
 
 public class SeleniumITHelper {
+    private static Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
+    private static String WEB_DRIVER_FOLDER_NAME = "webdriver";
 
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties)  {
         createDriver();
         createAppRunner(appClass, properties);
     }
 
-
     protected void createDriver() {
         if (driver == null) {
-            System.setProperty("wdm.cachePath", getClass().getClassLoader().getResource("selenium").getPath());
+            String webDriverCachePath = getWebDriverCachePath();
+            setPathExecutableRecursively(new File(webDriverCachePath));
+            System.setProperty("wdm.cachePath", webDriverCachePath);
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
@@ -33,6 +41,15 @@ public class SeleniumITHelper {
             driver = new ChromeDriver(options);
             wait = new WebDriverWait(driver, 10);
         }
+    }
+
+    private String getWebDriverCachePath() {
+        String springPath = this.getClass().getResource(("")).getPath();
+        String springPathSuffix = File.separator + "sdk" + File.separator + "spring";
+        while (StringUtils.isNotEmpty(springPath) && !springPath.endsWith(springPathSuffix)) {
+            springPath = new File(springPath).getParent();
+        }
+        return springPath + File.separator + WEB_DRIVER_FOLDER_NAME;
     }
 
     protected void createAppRunner(Class<?> appClass, Map<String, String> properties) {
@@ -47,5 +64,22 @@ public class SeleniumITHelper {
     public void destroy() {
         driver.quit();
         app.close();
+    }
+
+    private void setPathExecutableRecursively(File file) {
+        if (!file.exists()) {
+            logger.warn("Path " + file + " does not exist!");
+            return;
+        }
+
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                setPathExecutableRecursively(f);
+            }
+        } else {
+            if (!file.setExecutable(true)) {
+                logger.error("Failed to set executable for " + file);
+            }
+        }
     }
 }
