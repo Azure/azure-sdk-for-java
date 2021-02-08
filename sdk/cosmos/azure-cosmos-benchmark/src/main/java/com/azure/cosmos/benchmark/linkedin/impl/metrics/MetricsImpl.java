@@ -35,7 +35,7 @@ public class MetricsImpl implements Metrics {
 
         // The metric prefix is comprised of the Collection name and Operation type
         //      e.g. GET (invitations)
-        final String metricPrefix = String.format("%s (%s)", operationName.toUpperCase(), collectionKey.getCollectionName());
+        final String metricPrefix = String.format("%s %s", operationName.toUpperCase(), collectionKey.getCollectionName());
         _successMeter = metricsRegistry.meter(metricPrefix + " Successful Operations");
         _failureMeter = metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
         _latencyTimer = metricsRegistry.register(metricPrefix + " Latency",
