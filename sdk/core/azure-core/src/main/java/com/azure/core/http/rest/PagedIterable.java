@@ -105,7 +105,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
         private PagedIterableImpl(PagedIterable<T> sourcePageIterable, Function<T, S> mapper) {
-            super(new PagedFlux<>(Mono::empty));
+            super(new PagedFlux<S>(Mono::empty));
             this.source = sourcePageIterable;
             this.mapper = mapper;
             this.pageMapper = page -> new PagedResponseBase<Void, S>(
