@@ -593,10 +593,6 @@ public final class AzureMonitorExporter implements SpanExporter {
         return sb.toString();
     }
 
-    private static Double removeAiSamplingPercentage(Attributes attributes) {
-        return removeAttributeDouble(attributes, "ai.sampling.percentage");
-    }
-
     private static void addExtraAttributes(final Map<String, String> properties, Attributes attributes) {
         attributes.forEach((key, value) ->  {
             String val = getStringValue(key, value);
