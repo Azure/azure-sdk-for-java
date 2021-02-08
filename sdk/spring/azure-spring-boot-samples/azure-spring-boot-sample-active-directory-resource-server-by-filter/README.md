@@ -20,13 +20,13 @@ To run this sample, you'll need:
 - A user account in your Azure AD tenant. This sample will not work with a Personal Microsoft account (formerly Windows Live account). Therefore, if you signed in to the [Azure portal](https://portal.azure.com) with a Microsoft account and have never created a user account in your directory before, you need to do that now.
 - A [client secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret) for the registered application.
 - Configure groups in your Azure AD tenant with your users in that groups, see [how to create groups](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
-- The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Direcory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission.
+- The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Directory.Read.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission.
 
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 #### Note
-- If you are not the admin, you need consent from your admin for the the `Directory.AccessAsUser.All` permission. For details see [Directory Permissions](https://docs.microsoft.com/graph/permissions-reference#directory-permissions)
+- If you are not the admin, you need consent from your admin for the the `Directory.Read.All` permission. For details see [Directory Permissions](https://docs.microsoft.com/graph/permissions-reference#directory-permissions)
 
 ## Examples
 
@@ -60,8 +60,8 @@ As a first step you'll need to:
    - In the **Supported account types** section, select **Accounts in any organizational directory**.
    - Choose **Single-page application(SPA)** as application type.
    - Add `http://localhost:8080` as the `Reply URL` under Redirect URI.
-   - Select **Register** to create the application. ![create the application](docs/application-register.png "create the application")
-   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**. ![add tokens](docs/add_tokens.png "add tokens")
+   - Select **Register** to create the application. ![create the application](docs/register_app_1.png "create the application")![create the application](docs/register_app_2.png "create the application")
+   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**. ![add tokens](docs/authenticate_with_token.png "add tokens")
 1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the application.properties file for this project.
 1. On selecting your application from the the registered applcations you can see **Certificates & secrets** in left navigation pane, go to that page and in the **Client secrets** section, choose **New client secret**:
 
@@ -75,7 +75,7 @@ As a first step you'll need to:
    - Click the **Add a permission** button and then,
    - Ensure that the **Microsoft APIs** tab is selected
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.Read.All**
    - Select the **Add permissions** button ![add permissions](docs/add_permissions.png "add permissions")
    
 1. At this stage permissions are assigned correctly but the client app does not allow interaction. 
