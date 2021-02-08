@@ -4,13 +4,14 @@
 
 ### Setup
 
-Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+> see https://github.com/Azure/autorest.java
 
 ### Generation
+> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
+mvn install
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
@@ -1287,24 +1288,6 @@ directive:
     $.properties.Size["format"] = "int64";
     $.properties.SizeInt = { "type" : "integer" };
     $.required.push("SizeInt");
-```
-
-``` yaml
-directive:
-- from: Block.java
-  where: $
-  transform: >
-    return $.replace('return this.sizeInt;', 'return (int) this.sizeLong;').
-      replace('this.sizeInt = sizeInt;', 'this.sizeLong = size;').
-      replace('public int getSizeInt() {', '@Deprecated  public int getSize() {').
-      replace('public Block setSizeInt(int sizeInt) {', '@Deprecated public Block setSize(int size) {').
-      replace('@JsonProperty(value = "SizeInt", required = true)', '').
-      replace('private int sizeInt;', '').
-      replace('@return the sizeInt value.', '@return the size value.\n     * @deprecated Use {@link #getSizeLong()}').
-      replace('@param sizeInt the sizeInt value to set.', '@param size the size value to set.\n     * @deprecated Use {@link #setSizeLong(long)}').
-      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
-      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
-      replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
 ```
 
 ### /{containerName}/{blob}?comp=query

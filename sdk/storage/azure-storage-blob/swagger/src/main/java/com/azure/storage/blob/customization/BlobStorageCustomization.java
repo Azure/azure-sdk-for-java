@@ -129,24 +129,22 @@ public class BlobStorageCustomization extends Customization {
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
-        // TODO (change Boolean to boolean)
 //        blobContainerItemProperties.getMethod("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)").rename("setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");
+
         MethodCustomization getSizeInt = block.getMethod("getSizeInt")
             .rename("getSize")
-            .addAnnotation("@Deprecated");
-//            .setReturnType("int", "return (int) this.sizeLong; #%s", true);
+            .addAnnotation("@Deprecated")
+            .setReturnType("int", "return (int) this.sizeLong; // return %s;", true);
         getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
 
-
-        MethodCustomization setSizeInt = block.getMethod("setSizeInt");
-        setSizeInt = setSizeInt.rename("setSize");
-        setSizeInt.addAnnotation("@Deprecated");
+        MethodCustomization setSizeInt = block.getMethod("setSizeInt")
+            .rename("setSize")
+            .addAnnotation("@Deprecated")
+            .setReturnType("Block", "return %s.setSizeLong((long) sizeInt);", true);
         setSizeInt.getJavadoc().setDeprecated("Use {@link #setSizeLong(long)}");
-//        setSizeInt.setReturnType("Block", "return %s.setSize((long) sizeInt);", true);
-
 
         ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");
         PropertyCustomization hourMetrics = blobServiceProperties.getProperty("hourMetrics");
@@ -163,13 +161,6 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization cpkInfo = models.getClass("CpkInfo")
             .removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")")
             .addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
-
-//        cpkInfo.addMethod("public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {\t\n" +
-//            "        this.encryptionAlgorithm = encryptionAlgorithm;\t\n" +
-//            "        return this;\t\n" +
-//            "    }");
-
-
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
