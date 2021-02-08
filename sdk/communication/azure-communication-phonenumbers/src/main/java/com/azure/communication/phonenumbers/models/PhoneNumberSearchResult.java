@@ -4,49 +4,49 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The PhoneNumberSearchResult model. */
-@Fluent
+@Immutable
 public final class PhoneNumberSearchResult {
     /*
      * The search id.
      */
-    @JsonProperty(value = "searchId")
+    @JsonProperty(value = "searchId", access = JsonProperty.Access.WRITE_ONLY)
     private String searchId;
 
     /*
      * The phone numbers that are available. Can be fewer than the desired
      * search quantity.
      */
-    @JsonProperty(value = "phoneNumbers")
+    @JsonProperty(value = "phoneNumbers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> phoneNumbers;
 
     /*
      * The phone number's type, e.g. Geographic, or TollFree.
      */
-    @JsonProperty(value = "phoneNumberType")
+    @JsonProperty(value = "phoneNumberType", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Phone number's assignment type.
      */
-    @JsonProperty(value = "assignmentType")
+    @JsonProperty(value = "assignmentType", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
-    @JsonProperty(value = "capabilities")
+    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost")
+    @JsonProperty(value = "cost", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /*
@@ -54,7 +54,7 @@ public final class PhoneNumberSearchResult {
      * on hold. A search result expires in less than 15min, e.g.
      * 2020-11-19T16:31:49.048Z.
      */
-    @JsonProperty(value = "searchExpiresBy")
+    @JsonProperty(value = "searchExpiresBy", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime searchExpiresBy;
 
     /**
@@ -64,17 +64,6 @@ public final class PhoneNumberSearchResult {
      */
     public String getSearchId() {
         return this.searchId;
-    }
-
-    /**
-     * Set the searchId property: The search id.
-     *
-     * @param searchId the searchId value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setSearchId(String searchId) {
-        this.searchId = searchId;
-        return this;
     }
 
     /**
@@ -88,35 +77,12 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the phoneNumbers property: The phone numbers that are available. Can be fewer than the desired search
-     * quantity.
-     *
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setPhoneNumbers(List<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-        return this;
-    }
-
-    /**
      * Get the phoneNumberType property: The phone number's type, e.g. Geographic, or TollFree.
      *
      * @return the phoneNumberType value.
      */
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
-    }
-
-    /**
-     * Set the phoneNumberType property: The phone number's type, e.g. Geographic, or TollFree.
-     *
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
     }
 
     /**
@@ -129,34 +95,12 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the assignmentType property: Phone number's assignment type.
-     *
-     * @param assignmentType the assignmentType value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setAssignmentType(PhoneNumberAssignmentType assignmentType) {
-        this.assignmentType = assignmentType;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
      */
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
-    }
-
-    /**
-     * Set the capabilities property: Capabilities of a phone number.
-     *
-     * @param capabilities the capabilities value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setCapabilities(PhoneNumberCapabilities capabilities) {
-        this.capabilities = capabilities;
-        return this;
     }
 
     /**
@@ -169,17 +113,6 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the cost property: The incurred cost for a single phone number.
-     *
-     * @param cost the cost value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setCost(PhoneNumberCost cost) {
-        this.cost = cost;
-        return this;
-    }
-
-    /**
      * Get the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
      * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
      *
@@ -187,17 +120,5 @@ public final class PhoneNumberSearchResult {
      */
     public OffsetDateTime getSearchExpiresBy() {
         return this.searchExpiresBy;
-    }
-
-    /**
-     * Set the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
-     * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
-     *
-     * @param searchExpiresBy the searchExpiresBy value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setSearchExpiresBy(OffsetDateTime searchExpiresBy) {
-        this.searchExpiresBy = searchExpiresBy;
-        return this;
     }
 }

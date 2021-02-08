@@ -4,61 +4,61 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The AcquiredPhoneNumber model. */
-@Fluent
+@Immutable
 public final class AcquiredPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * String of the E.164 format of the phone number, e.g. +11234567890.
      */
-    @JsonProperty(value = "phoneNumber", required = true)
+    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String phoneNumber;
 
     /*
      * The ISO 3166-2 code of the phone number's country, e.g. US.
      */
-    @JsonProperty(value = "countryCode", required = true)
+    @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /*
      * The phone number's type, e.g. Geographic, TollFree.
      */
-    @JsonProperty(value = "phoneNumberType", required = true)
+    @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Capabilities of a phone number.
      */
-    @JsonProperty(value = "capabilities", required = true)
+    @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned
      * to a person, or to an application.
      */
-    @JsonProperty(value = "assignmentType", required = true)
+    @JsonProperty(value = "assignmentType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * The date and time that the phone number was purchased.
      */
-    @JsonProperty(value = "purchaseDate")
+    @JsonProperty(value = "purchaseDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime purchaseDate;
 
     /*
      * The webhook for receiving incoming events, e.g.
      * https://{{site-name}}.azurewebsites.net/api/updates
      */
-    @JsonProperty(value = "callbackUri")
+    @JsonProperty(value = "callbackUri", access = JsonProperty.Access.WRITE_ONLY)
     private String callbackUri;
 
     /*
@@ -66,13 +66,13 @@ public final class AcquiredPhoneNumber {
      * assigned to. The property is empty if the phone number is assigned to a
      * person.
      */
-    @JsonProperty(value = "applicationId")
+    @JsonProperty(value = "applicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationId;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost")
+    @JsonProperty(value = "cost", access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /**
@@ -85,34 +85,12 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the id property: The id of the phone number, e.g. 11234567890.
-     *
-     * @param id the id value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
      *
      * @return the phoneNumber value.
      */
     public String getPhoneNumber() {
         return this.phoneNumber;
-    }
-
-    /**
-     * Set the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
-     *
-     * @param phoneNumber the phoneNumber value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
     }
 
     /**
@@ -125,17 +103,6 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
-     *
-     * @param countryCode the countryCode value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-        return this;
-    }
-
-    /**
      * Get the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
      *
      * @return the phoneNumberType value.
@@ -145,34 +112,12 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
-     *
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
      */
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
-    }
-
-    /**
-     * Set the capabilities property: Capabilities of a phone number.
-     *
-     * @param capabilities the capabilities value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
-        this.capabilities = capabilities;
-        return this;
     }
 
     /**
@@ -186,35 +131,12 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the assignmentType property: The assignment type of the phone number. A phone number can be assigned to a
-     * person, or to an application.
-     *
-     * @param assignmentType the assignmentType value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
-        this.assignmentType = assignmentType;
-        return this;
-    }
-
-    /**
      * Get the purchaseDate property: The date and time that the phone number was purchased.
      *
      * @return the purchaseDate value.
      */
     public OffsetDateTime getPurchaseDate() {
         return this.purchaseDate;
-    }
-
-    /**
-     * Set the purchaseDate property: The date and time that the phone number was purchased.
-     *
-     * @param purchaseDate the purchaseDate value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setPurchaseDate(OffsetDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
-        return this;
     }
 
     /**
@@ -228,18 +150,6 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the callbackUri property: The webhook for receiving incoming events, e.g.
-     * https://{{site-name}}.azurewebsites.net/api/updates.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
      * Get the applicationId property: The application id of the server application the phone number is assigned to. The
      * property is empty if the phone number is assigned to a person.
      *
@@ -250,34 +160,11 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the applicationId property: The application id of the server application the phone number is assigned to. The
-     * property is empty if the phone number is assigned to a person.
-     *
-     * @param applicationId the applicationId value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-        return this;
-    }
-
-    /**
      * Get the cost property: The incurred cost for a single phone number.
      *
      * @return the cost value.
      */
     public PhoneNumberCost getCost() {
         return this.cost;
-    }
-
-    /**
-     * Set the cost property: The incurred cost for a single phone number.
-     *
-     * @param cost the cost value to set.
-     * @return the AcquiredPhoneNumber object itself.
-     */
-    public AcquiredPhoneNumber setCost(PhoneNumberCost cost) {
-        this.cost = cost;
-        return this;
     }
 }

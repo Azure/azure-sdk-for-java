@@ -4,47 +4,47 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PhoneNumberOperation model. */
-@Fluent
+@Immutable
 public final class PhoneNumberOperation {
     /*
      * Status of operation.
      */
-    @JsonProperty(value = "status", required = true)
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberOperationStatus status;
 
     /*
      * URL for retrieving the result of the operation, if any.
      */
-    @JsonProperty(value = "resourceLocation")
+    @JsonProperty(value = "resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceLocation;
 
     /*
      * The date that the operation was created.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
+    @JsonProperty(value = "createdDateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * The Communication Services error.
      */
-    @JsonProperty(value = "error")
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationError error;
 
     /*
      * Id of operation.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The type of operation, e.g. Search
      */
-    @JsonProperty(value = "operationType", required = true)
+    @JsonProperty(value = "operationType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberOperationType operationType;
 
     /*
@@ -63,34 +63,12 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Set the status property: Status of operation.
-     *
-     * @param status the status value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setStatus(PhoneNumberOperationStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the resourceLocation property: URL for retrieving the result of the operation, if any.
      *
      * @return the resourceLocation value.
      */
     public String getResourceLocation() {
         return this.resourceLocation;
-    }
-
-    /**
-     * Set the resourceLocation property: URL for retrieving the result of the operation, if any.
-     *
-     * @param resourceLocation the resourceLocation value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setResourceLocation(String resourceLocation) {
-        this.resourceLocation = resourceLocation;
-        return this;
     }
 
     /**
@@ -103,34 +81,12 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Set the createdDateTime property: The date that the operation was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-        return this;
-    }
-
-    /**
      * Get the error property: The Communication Services error.
      *
      * @return the error value.
      */
     public CommunicationError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: The Communication Services error.
-     *
-     * @param error the error value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setError(CommunicationError error) {
-        this.error = error;
-        return this;
     }
 
     /**
@@ -143,34 +99,12 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Set the id property: Id of operation.
-     *
-     * @param id the id value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the operationType property: The type of operation, e.g. Search.
      *
      * @return the operationType value.
      */
     public PhoneNumberOperationType getOperationType() {
         return this.operationType;
-    }
-
-    /**
-     * Set the operationType property: The type of operation, e.g. Search.
-     *
-     * @param operationType the operationType value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setOperationType(PhoneNumberOperationType operationType) {
-        this.operationType = operationType;
-        return this;
     }
 
     /**

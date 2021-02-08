@@ -4,28 +4,28 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberCost model. */
-@Fluent
+@Immutable
 public final class PhoneNumberCost {
     /*
      * The cost amount.
      */
-    @JsonProperty(value = "amount")
+    @JsonProperty(value = "amount", access = JsonProperty.Access.WRITE_ONLY)
     private Double amount;
 
     /*
      * The ISO 4217 currency code for the cost amount, e.g. USD.
      */
-    @JsonProperty(value = "currencyCode")
+    @JsonProperty(value = "currencyCode", access = JsonProperty.Access.WRITE_ONLY)
     private String currencyCode;
 
     /*
      * The frequency with which the cost gets billed.
      */
-    @JsonProperty(value = "billingFrequency")
+    @JsonProperty(value = "billingFrequency", access = JsonProperty.Access.WRITE_ONLY)
     private BillingFrequency billingFrequency;
 
     /**
@@ -38,17 +38,6 @@ public final class PhoneNumberCost {
     }
 
     /**
-     * Set the amount property: The cost amount.
-     *
-     * @param amount the amount value to set.
-     * @return the PhoneNumberCost object itself.
-     */
-    public PhoneNumberCost setAmount(Double amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    /**
      * Get the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
      *
      * @return the currencyCode value.
@@ -58,33 +47,11 @@ public final class PhoneNumberCost {
     }
 
     /**
-     * Set the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
-     *
-     * @param currencyCode the currencyCode value to set.
-     * @return the PhoneNumberCost object itself.
-     */
-    public PhoneNumberCost setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-        return this;
-    }
-
-    /**
      * Get the billingFrequency property: The frequency with which the cost gets billed.
      *
      * @return the billingFrequency value.
      */
     public BillingFrequency getBillingFrequency() {
         return this.billingFrequency;
-    }
-
-    /**
-     * Set the billingFrequency property: The frequency with which the cost gets billed.
-     *
-     * @param billingFrequency the billingFrequency value to set.
-     * @return the PhoneNumberCost object itself.
-     */
-    public PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
-        this.billingFrequency = billingFrequency;
-        return this;
     }
 }
