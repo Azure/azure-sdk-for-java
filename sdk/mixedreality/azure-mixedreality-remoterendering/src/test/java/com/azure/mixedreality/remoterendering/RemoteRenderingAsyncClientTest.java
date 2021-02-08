@@ -101,6 +101,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         var poller = client.beginConversion(conversionId, conversionOptions);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
+            // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
             return (error instanceof ErrorResponseException)
                 && error.getMessage().contains("400")
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("storage")
@@ -213,4 +214,23 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         client.stopSession(sessionId).block();
     };
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void failedSessionTest(HttpClient httpClient) {
+        var client = getClient(httpClient);
+        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(SessionSize.STANDARD);
+
+        String sessionId = getRandomId("failedSessionTestAsync");
+
+        var poller = client.beginSession(sessionId, options);
+
+        StepVerifier.create(poller).expectErrorMatches(error -> {
+            // The maxLeaseTimeMinutes value cannot be negative
+            return (error instanceof ErrorResponseException)
+                && error.getMessage().contains("400")
+                && error.getMessage().toLowerCase(Locale.ROOT).contains("lease")
+                && error.getMessage().toLowerCase(Locale.ROOT).contains("negative");
+        }).verify();
+    }
 }
