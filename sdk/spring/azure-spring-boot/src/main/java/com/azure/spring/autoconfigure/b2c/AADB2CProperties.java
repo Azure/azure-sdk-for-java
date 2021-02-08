@@ -3,6 +3,7 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
-public class AADB2CProperties {
+public class AADB2CProperties implements InitializingBean {
 
     private static final String USER_FLOWS = "user-flows";
 
@@ -39,12 +40,6 @@ public class AADB2CProperties {
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
-
-    /**
-     * The name of the b2c tenant.
-     */
-    @NotBlank(message = "tenant name should not be blank")
-    private String tenant;
 
     /**
      * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
@@ -86,6 +81,22 @@ public class AADB2CProperties {
      * Telemetry data will be collected if true, or disable data collection.
      */
     private boolean allowTelemetry = true;
+
+    /**
+     * AAD B2C endpoint base uri.
+     */
+    @NotBlank(message = "baseUri should not be blank")
+    @URL(message = "baseUri should be valid URL")
+    private String baseUri;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        baseUri = addSlash(baseUri);
+    }
+
+    private String addSlash(String uri) {
+        return uri.endsWith("/") ? uri : uri + "/";
+    }
 
     private String getReplyURLPath(@URL String replyURL) {
         try {
@@ -177,12 +188,24 @@ public class AADB2CProperties {
         }
     }
 
-    public String getTenant() {
-        return tenant;
+    public String getBaseUri() {
+        return baseUri;
     }
 
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    /**
+     * Get tenant name according the tenant base uri endpoint.
+     * @return tenant name
+     */
+    public String getTenantName() {
+        String[] uriParts = baseUri.split("/");
+        if (uriParts.length > 2) {
+            return uriParts[2].split("\\.")[0];
+        }
+        return null;
     }
 
     public Boolean getOidcEnabled() {

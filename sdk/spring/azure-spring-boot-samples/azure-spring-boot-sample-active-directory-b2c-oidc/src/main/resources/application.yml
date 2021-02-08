@@ -1,7 +1,7 @@
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name}
+      base-uri: ${your-tenant-endpoint-base-uri}
       oidc-enabled: true
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}

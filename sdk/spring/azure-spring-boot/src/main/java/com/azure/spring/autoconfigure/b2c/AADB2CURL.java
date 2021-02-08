@@ -16,44 +16,35 @@ public final class AADB2CURL {
 
     }
 
-    private static final String AUTHORIZATION_URL_PATTERN =
-            "https://%s.b2clogin.com/%s.onmicrosoft.com/oauth2/v2.0/authorize";
+    private static final String AUTHORIZATION_URL_PATTERN = "%soauth2/v2.0/authorize";
 
-    private static final String TOKEN_URL_PATTERN =
-            "https://%s.b2clogin.com/%s.onmicrosoft.com/oauth2/v2.0/token?p=%s";
+    private static final String TOKEN_URL_PATTERN = "%soauth2/v2.0/token?p=%s";
 
-    private static final String JWKSET_URL_PATTERN =
-            "https://%s.b2clogin.com/%s.onmicrosoft.com/discovery/v2.0/keys?p=%s";
+    private static final String JWKSET_URL_PATTERN = "%sdiscovery/v2.0/keys?p=%s";
 
-    private static final String END_SESSION_URL_PATTERN =
-            "https://%s.b2clogin.com/%s.onmicrosoft.com/oauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
+    private static final String END_SESSION_URL_PATTERN = "%soauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
 
-    public static String getAuthorizationUrl(String tenant) {
-        Assert.hasText(tenant, "tenant should have text.");
-
-        return String.format(AUTHORIZATION_URL_PATTERN, tenant, tenant);
+    public static String getAuthorizationUrl(String baseUri) {
+        return String.format(AUTHORIZATION_URL_PATTERN, baseUri);
     }
 
-    public static String getTokenUrl(String tenant, String userFlow) {
-        Assert.hasText(tenant, "tenant should have text.");
+    public static String getTokenUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return String.format(TOKEN_URL_PATTERN, tenant, tenant, userFlow);
+        return String.format(TOKEN_URL_PATTERN, baseUri, userFlow);
     }
 
-    public static String getJwkSetUrl(String tenant, String userFlow) {
-        Assert.hasText(tenant, "tenant should have text.");
+    public static String getJwkSetUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return String.format(JWKSET_URL_PATTERN, tenant, tenant, userFlow);
+        return String.format(JWKSET_URL_PATTERN, baseUri, userFlow);
     }
 
-    public static String getEndSessionUrl(String tenant, String logoutUrl, String userFlow) {
-        Assert.hasText(tenant, "tenant should have text.");
+    public static String getEndSessionUrl(String baseUri, String logoutUrl, String userFlow) {
         Assert.hasText(logoutUrl, "logoutUrl should have text.");
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return String.format(END_SESSION_URL_PATTERN, tenant, tenant, getEncodedURL(logoutUrl), userFlow);
+        return String.format(END_SESSION_URL_PATTERN, baseUri, getEncodedURL(logoutUrl), userFlow);
     }
 
     private static String getEncodedURL(String url) {

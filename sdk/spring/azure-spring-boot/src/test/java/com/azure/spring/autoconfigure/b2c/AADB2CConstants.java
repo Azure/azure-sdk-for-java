@@ -22,7 +22,7 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGIN_HINT = "fake-login-hint";
 
-    public static final String TEST_TENANT = "fake-tenant";
+    public static final String TEST_BASE_URI = "https://fake-tenant.b2clogin.com/fake-tenant.onmicrosoft.com/";
 
     public static final String TEST_CLIENT_ID = "fake-client-id";
 
@@ -38,7 +38,7 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
 
-    public static final String TENANT = String.format("%s.%s", PREFIX, "tenant");
+    public static final String BASE_URI = String.format("%s.%s", PREFIX, "base-uri");
 
     public static final String TEST_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "name");
 
