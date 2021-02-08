@@ -53,6 +53,7 @@
       </activation>
       <modules>
         <module>azure-messaging-eventgrid</module>
+        <module>azure-messaging-eventgrid-perf</module>
         <module>azure-resourcemanager-eventgrid</module>
         <module>microsoft-azure-eventgrid</module>
       </modules>
