@@ -11,6 +11,8 @@ public class EnvironmentVariable {
     public static final String AAD_B2C_TENANT = System.getenv("AAD_B2C_TENANT");
     public static final String AAD_B2C_USER_EMAIL = System.getenv("AAD_B2C_USER_EMAIL");
     public static final String AAD_B2C_USER_PASSWORD = System.getenv("AAD_B2C_USER_PASSWORD");
+    public static final String AAD_LOGIN_BASE_URL = System.getenv("AAD_LOGIN_BASE_URL");
+    public static final String AAD_GRAPH_BASE_URL = System.getenv("AAD_GRAPH_BASE_URL");
     public static final String AAD_MULTI_TENANT_CLIENT_ID = System.getenv("AAD_MULTI_TENANT_CLIENT_ID");
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = System.getenv("AAD_MULTI_TENANT_CLIENT_SECRET");
     public static final String AAD_SINGLE_TENANT_CLIENT_ID = System.getenv("AAD_SINGLE_TENANT_CLIENT_ID");

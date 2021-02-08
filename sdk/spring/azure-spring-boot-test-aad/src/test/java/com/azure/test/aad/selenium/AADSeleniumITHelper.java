@@ -8,11 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.EnvironmentVariable.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
@@ -27,6 +23,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
         defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
+        defaultProperties.put("azure.activedirectory.base-uri", AAD_LOGIN_BASE_URL);
+        defaultProperties.put("azure.activedirectory.graph-base-uri", AAD_GRAPH_BASE_URL);
         return defaultProperties;
     }
 
@@ -65,7 +63,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     public String httpGetWithIncrementalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
 
-        String oauth2AuthorizationUrlFraction = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/"
+        String oauth2AuthorizationUrlFraction = String.format(AAD_LOGIN_BASE_URL + "%s/oauth2/v2.0/"
             + "authorize?", AAD_TENANT_ID_1);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
