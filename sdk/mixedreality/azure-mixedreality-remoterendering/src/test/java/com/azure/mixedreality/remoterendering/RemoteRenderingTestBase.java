@@ -34,27 +34,21 @@ public class RemoteRenderingTestBase extends TestBase {
     private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_SERVICE_ENDPOINT");
 
     // NOT REAL ACCOUNT DETAILS
-    private final String playbackAccountId = "68321d5a-7978-4ceb-b880-0f49751daae9";
+    private final String playbackAccountId = "d879da79-415d-45f0-b641-1cfec1386ddf";
     private final String playbackAccountDomain = "mixedreality.azure.com";
     private final String playbackAccountKey = "Sanitized";
     private final String playbackStorageAccountName = "sdkTest";
     private final String playbackStorageAccountKey = "Sanitized";
     private final String playbackBlobContainerName = "test";
     private final String playbackBlobContainerSasToken = "Sanitized";
-    private final String playbackServiceEndpoint = "westeurope";
+    private final String playbackServiceEndpoint = "http://localhost:8080";
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         String scope = getServiceEndpoint().replaceFirst("/$", "") + "/.default";
 
-        if (interceptorManager.isPlaybackMode())
-        {
-            // We don't need to test communication with the STS Authentication Library, so in playback
-            // we use a code-path which does not attempt to contact that service.
-            policies.add(new BearerTokenAuthenticationPolicy(r -> Mono.just(new AccessToken("Sanitized", OffsetDateTime.MAX)), scope));
-        }
-        else
+        if (!interceptorManager.isPlaybackMode())
         {
             var stsClient = new MixedRealityStsClientBuilder()
                 .accountId(getAccountId())
