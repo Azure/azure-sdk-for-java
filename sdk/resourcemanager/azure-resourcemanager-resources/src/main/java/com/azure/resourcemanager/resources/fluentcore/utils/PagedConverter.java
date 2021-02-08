@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -24,6 +23,25 @@ import java.util.stream.Collectors;
 public final class PagedConverter {
 
     private PagedConverter() {
+    }
+
+    /**
+     * Applies map transform to elements of PagedFlux.
+     *
+     * @param pagedFlux the input of PagedFlux.
+     * @param mapper the map transform of element T to element S.
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
+     * @return the PagedFlux with elements in PagedResponse transformed.
+     */
+    public <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
+        Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationToken).take(1);
+            return flux.map(mapPagedResponse(mapper));
+        };
+        return PagedFlux.create(provider);
     }
 
     /**
@@ -70,6 +88,15 @@ public final class PagedConverter {
         return PagedFlux.create(provider);
     }
 
+    private <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
+    }
+
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
@@ -84,7 +111,7 @@ public final class PagedConverter {
                 Flux.fromIterable(pagedResponse.getValue())
                         .flatMapSequential(mapper)
                         .collectList()
-                        .map(values -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+                        .map(values -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
                                 pagedResponse.getStatusCode(),
                                 pagedResponse.getHeaders(),
                                 values,
