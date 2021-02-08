@@ -56,7 +56,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param managedIdentity the managed identity.
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
-        this(uri,null,null,managedIdentity);
+        this(uri, null, null, managedIdentity);
     }
 
     /**
@@ -68,7 +68,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param clientSecret the client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
-        this(uri,null, tenantId, clientId, clientSecret);
+        this(uri, null, tenantId, clientId, clientSecret);
     }
 
 
