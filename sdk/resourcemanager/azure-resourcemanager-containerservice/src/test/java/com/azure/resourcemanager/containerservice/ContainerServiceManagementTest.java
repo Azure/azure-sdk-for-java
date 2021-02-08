@@ -47,8 +47,8 @@ public class ContainerServiceManagementTest extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("javaacsrg", 15);
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile);
+        containerServiceManager = buildManager(ContainerServiceManager.class, httpPipeline, profile);
+        resourceManager = containerServiceManager.resourceManager();
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
     }
 

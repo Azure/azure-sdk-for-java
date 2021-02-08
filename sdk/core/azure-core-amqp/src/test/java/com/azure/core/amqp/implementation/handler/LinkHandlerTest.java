@@ -168,6 +168,40 @@ class LinkHandlerTest {
     }
 
     /**
+     * Verifies that a Remote Detach event.
+     */
+    @Test
+    void onLinkRemoteDetach() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(symbol, description);
+
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+        when(link.getSession()).thenReturn(session);
+
+        when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        // Act
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteDetach(event))
+            .expectNext(EndpointState.CLOSED)
+            .expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
+
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
+            })
+            .verify();
+
+        // Assert
+        verify(link).setCondition(errorCondition);
+        verify(link).close();
+
+        verify(session, never()).setCondition(errorCondition);
+        verify(session, never()).close();
+    }
+
+    /**
      * Verifies that an error is propagated if there is an error condition on close.
      */
     @Test

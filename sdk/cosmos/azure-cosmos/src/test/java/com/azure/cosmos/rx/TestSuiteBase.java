@@ -977,6 +977,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithContentResponseOnWriteEnabledAndDisabled() {
+        Object[][] clientBuildersWithDisabledContentResponseOnWrite =
+            clientBuildersWithDirectSession(false, Protocol.TCP);
+        Object[][] clientBuildersWithEnabledContentResponseOnWrite =
+            clientBuildersWithDirectSession(true, Protocol.TCP);
+        int length = clientBuildersWithDisabledContentResponseOnWrite.length
+            + clientBuildersWithEnabledContentResponseOnWrite.length;
+        Object[][] clientBuilders = new Object[length][];
+        int index = 0;
+        for (int i = 0; i < clientBuildersWithDisabledContentResponseOnWrite.length; i++, index++) {
+            clientBuilders[index] = clientBuildersWithDisabledContentResponseOnWrite[i];
+        }
+        for (int i = 0; i < clientBuildersWithEnabledContentResponseOnWrite.length; i++, index++) {
+            clientBuilders[index] = clientBuildersWithEnabledContentResponseOnWrite[i];
+        }
+        return clientBuilders;
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithDirectSession() {
         return clientBuildersWithDirectSession(true, toArray(protocols));
     }

@@ -46,9 +46,7 @@ public class SamplesTestBase extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        azureResourceManager = AzureResourceManager
-            .authenticate(httpPipeline, profile)
-            .withDefaultSubscription();
+        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
         setInternalContext(internalContext, azureResourceManager);
     }
 

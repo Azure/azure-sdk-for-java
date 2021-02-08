@@ -175,7 +175,25 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     }
 
+    @Override
+    public Mono<CosmosContainerProperties> getContainerProperties(String containerName) {
+        return cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .read()
+            .map(CosmosContainerResponse::getProperties);
+    }
+
+    @Override
+    public Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
+                                                                CosmosContainerProperties properties) {
+        return this.cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .replace(properties)
+            .map(CosmosContainerResponse::getProperties);
+    }
+
     /**
+     *
      * Find all items in a given container
      *
      * @param containerName the containerName
@@ -580,7 +598,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        String containerName = domainType.getSimpleName();
+        String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)

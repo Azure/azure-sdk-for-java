@@ -3,15 +3,16 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
-import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,10 +25,12 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt data from documents, recognizing layout information and
- * analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card and invoice data from documents,
+ * recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
@@ -61,7 +64,7 @@ public final class FormRecognizerClient {
      * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
@@ -73,7 +76,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from documents using optical character recognition (OCR)
+     * Recognizes form data from documents using optical character recognition (OCR)
      * and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
@@ -88,7 +91,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
@@ -116,7 +119,7 @@ public final class FormRecognizerClient {
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
@@ -144,7 +147,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
@@ -153,7 +156,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, InputStream form, long length,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
         return client.beginRecognizeCustomForms(modelId, buffer, length,
             recognizeCustomFormsOptions, context).getSyncPoller();
     }
@@ -169,7 +172,7 @@ public final class FormRecognizerClient {
      * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link SyncPoller} that polls the recognize content form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
@@ -184,6 +187,10 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+     *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context}
      *
@@ -193,7 +200,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has
-     * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * failed, or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
@@ -217,7 +224,7 @@ public final class FormRecognizerClient {
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize content operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
@@ -233,6 +240,10 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+     *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context}
      *
@@ -243,7 +254,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize content operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
@@ -251,7 +262,7 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
         long length, RecognizeContentOptions recognizeContentOptions, Context context) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
         return client.beginRecognizeContent(buffer, length, recognizeContentOptions, context).getSyncPoller();
     }
 
@@ -268,7 +279,7 @@ public final class FormRecognizerClient {
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
@@ -294,7 +305,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
@@ -320,7 +331,7 @@ public final class FormRecognizerClient {
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
@@ -348,7 +359,7 @@ public final class FormRecognizerClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
@@ -357,7 +368,220 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length,
         RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(receipt);
         return client.beginRecognizeReceipts(buffer, length, recognizeReceiptsOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Recognizes business card data from document using optical character recognition (OCR) and a prebuilt
+     * business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize business card operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl) {
+        return beginRecognizeBusinessCardsFromUrl(businessCardUrl, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes business card data from documents using optical character recognition (OCR) and a
+     * prebuilt business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize business card operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
+        return client.beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, context)
+                   .getSyncPoller();
+    }
+
+    /**
+     * Recognizes business card data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained business card model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long}
+     *
+     * @param businessCard The data of the business card to recognize business card information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link SyncPoller} that polls the recognize business card operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        InputStream businessCard, long length) {
+        return beginRecognizeBusinessCards(businessCard, length, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes business card data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained business card model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context}
+     *
+     * @param businessCard The data of the business card to recognize business card information from.
+     * @param length The exact length of the data.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
+        Context context) {
+        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length,
+            recognizeBusinessCardsOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Recognizes invoice data from document using optical character recognition (OCR) and a prebuilt invoice trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on an invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string}
+     *
+     * @param invoiceUrl The URL of the invoice document to analyze.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize invoice operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes invoice data from documents using optical character recognition (OCR) and a
+     * prebuilt invoice trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context}
+     *
+     * @param invoiceUrl The source URL to the input invoice document.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing an invoice.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize invoice operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        return client.beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained invoice model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long}
+     *
+     * @param invoice The data of the invoice to recognize invoice related information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link SyncPoller} that polls the recognize invoice operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoice} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(InputStream invoice, long length) {
+        return beginRecognizeInvoices(invoice, length, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR) and a prebuilt
+     * trained invoice model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context}
+     *
+     * @param invoice The data of the invoice to recognize invoice related information from.
+     * @param length The exact length of the data.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the recognize invoice operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoice} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(InputStream invoice, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
+        return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
     }
 }

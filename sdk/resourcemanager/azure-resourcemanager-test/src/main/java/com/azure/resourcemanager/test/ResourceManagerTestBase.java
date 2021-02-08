@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -39,9 +41,11 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
@@ -62,17 +66,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
         ZERO_TENANT,
         ZERO_SUBSCRIPTION,
-        new AzureEnvironment(
-            new HashMap<String, String>() {
-                {
-                    put("managementEndpointUrl", PLAYBACK_URI);
-                    put("resourceManagerEndpointUrl", PLAYBACK_URI);
-                    put("sqlManagementEndpointUrl", PLAYBACK_URI);
-                    put("galleryEndpointUrl", PLAYBACK_URI);
-                    put("activeDirectoryEndpointUrl", PLAYBACK_URI);
-                    put("activeDirectoryResourceId", PLAYBACK_URI);
-                    put("activeDirectoryGraphResourceId", PLAYBACK_URI);
-                }}));
+        new AzureEnvironment(Arrays.stream(AzureEnvironment.Endpoint.values())
+            .collect(Collectors.toMap(AzureEnvironment.Endpoint::identifier, endpoint -> PLAYBACK_URI)))
+    );
     private static final OutputStream EMPTY_OUTPUT_STREAM = new OutputStream() {
         @Override
         public void write(int b) {
@@ -212,19 +208,21 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
-                generateHttpClientWithProxy(null));
+                generateHttpClientWithProxy(null, null));
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
             textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getGraphEndpoint(), PLAYBACK_URI + "/");
+            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);
     }
 
-    private HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions) {
-        NettyAsyncHttpClientBuilder clientBuilder = new NettyAsyncHttpClientBuilder();
+    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions) {
+        if (clientBuilder == null) {
+            clientBuilder = new NettyAsyncHttpClientBuilder();
+        }
         if (proxyOptions != null) {
             clientBuilder.proxy(proxyOptions);
         } else {
@@ -281,10 +279,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
      *
      * @param internalContext the internal runtime context
      * @param objects the manager classes to change internal context
-     * @param <InternalContext> the type of internal context
+     * @param <T> the type of internal context
      * @throws RuntimeException when field cannot be found or set.
      */
-    protected <InternalContext> void setInternalContext(InternalContext internalContext, Object... objects) {
+    protected <T> void setInternalContext(T internalContext, Object... objects) {
         try {
             for (Object obj : objects) {
                 for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
@@ -317,6 +315,33 @@ public abstract class ResourceManagerTestBase extends TestBase {
             field.setAccessible(true);
             return null;
         });
+    }
+
+    /**
+     * Builds the manager with provided http pipeline and profile in general manner.
+     *
+     * @param manager the class of the manager
+     * @param httpPipeline the http pipeline
+     * @param profile the azure profile
+     * @param <T> the type of the manager
+     * @return the manager instance
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
+        try {
+            Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                constructor.setAccessible(true);
+                return null;
+            });
+            return constructor.newInstance(httpPipeline, profile);
+
+        } catch (NoSuchMethodException
+            | IllegalAccessException
+            | InstantiationException
+            | InvocationTargetException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     protected abstract HttpPipeline buildHttpPipeline(

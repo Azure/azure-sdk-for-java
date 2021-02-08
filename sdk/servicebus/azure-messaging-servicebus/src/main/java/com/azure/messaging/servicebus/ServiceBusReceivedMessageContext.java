@@ -1,73 +1,103 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
+
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeferOptions;
 
 import java.util.Objects;
 
 /**
- * Represents the result of a receive message operation with context from Service Bus.
+ * The Service Bus processor message context that holds a received message and additional methods to settle the message.
  */
-public class ServiceBusReceivedMessageContext {
-    private final ServiceBusReceivedMessage message;
-    private final String sessionId;
-    private final Throwable error;
+public final class ServiceBusReceivedMessageContext {
+    private final ServiceBusMessageContext receivedMessageContext;
+    private final ServiceBusReceiverAsyncClient receiverClient;
 
-    /**
-     * Creates an instance where a message was successfully received.
-     *
-     * @param message Message received.
-     */
-    ServiceBusReceivedMessageContext(ServiceBusReceivedMessage message) {
-        this.message = Objects.requireNonNull(message, "'message' cannot be null.");
-        this.sessionId = message.getSessionId();
-        this.error = null;
-    }
-
-    /**
-     * Creates an instance where an error occurred such as session-lock-lost.
-     *
-     * @param sessionId Session id that the error occurred in.
-     * @param error AMQP exception that occurred in session.
-     */
-    ServiceBusReceivedMessageContext(String sessionId, Throwable error) {
-        this.sessionId = Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
-        this.error = Objects.requireNonNull(error, "'error' cannot be null.");
-        this.message = null;
-    }
-
-    /**
-     * Gets the session id of the message or that the error occurred in.
-     *
-     * @return The session id associated with the error or message. {@code null} if there is no session.
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * Gets the throwable that occurred.
-     *
-     * @return The throwable that occurred or {@code null} if there was no error.
-     */
-    public Throwable getThrowable() {
-        return error;
+    ServiceBusReceivedMessageContext(ServiceBusReceiverAsyncClient receiverClient,
+                                     ServiceBusMessageContext receivedMessageContext) {
+        this.receivedMessageContext = Objects.requireNonNull(receivedMessageContext,
+            "'receivedMessageContext' cannot be null");
+        this.receiverClient = Objects.requireNonNull(receiverClient, "'receiverClient' cannot be null");
     }
 
     /**
      * Gets the message received from Service Bus.
      *
-     * @return The message received from Service Bus or {@code null} if an exception occurred.
+     * @return The message received from Service Bus.
      */
     public ServiceBusReceivedMessage getMessage() {
-        return message;
+        return receivedMessageContext.getMessage();
     }
 
     /**
-     * Gets whether or not an error occurred while receiving the next message.
-     *
-     * @return {@code true} if there was an error when receiving the next message; {@code false} otherwise.
+     * Abandons the {@link #getMessage() message} in this context.
      */
-    public boolean hasError() {
-        return error != null;
+    public void abandon() {
+        receiverClient.abandon(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Abandons the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for abandoning the message.
+     */
+    public void abandon(AbandonOptions options) {
+        receiverClient.abandon(receivedMessageContext.getMessage(), options).block();
+    }
+
+    /**
+     * Completes the {@link #getMessage() message} in this context.
+     */
+    public void complete() {
+        receiverClient.complete(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Completes the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for completing the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void complete(CompleteOptions options) {
+        receiverClient.complete(receivedMessageContext.getMessage(), options).block();
+    }
+
+    /**
+     * Defers the {@link #getMessage() message} in this context.
+     */
+    public void defer() {
+        receiverClient.defer(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Defers the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for deferring the message.
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void defer(DeferOptions options) {
+        receiverClient.defer(receivedMessageContext.getMessage(), options).block();
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     */
+    public void deadLetter() {
+        receiverClient.deadLetter(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for dead-lettering the message.
+     *
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void deadLetter(DeadLetterOptions options) {
+        receiverClient.deadLetter(receivedMessageContext.getMessage(), options).block();
     }
 }

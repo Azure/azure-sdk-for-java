@@ -25,15 +25,6 @@ public class EndpointUpdateParameters {
     private Map<String, String> tags;
 
     /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default.
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
      * A directory path on the origin that CDN can use to retrieve content
      * from, e.g. contoso.cloudapp.net/originpath.
      */
@@ -46,6 +37,17 @@ public class EndpointUpdateParameters {
      */
     @JsonProperty(value = "properties.contentTypesToCompress")
     private List<String> contentTypesToCompress;
+
+    /*
+     * The host header value sent to the origin with each request. This
+     * property at Endpoint is only allowed when endpoint uses single origin
+     * and can be overridden by the same property specified at origin.If you
+     * leave this blank, the request hostname determines this value. Azure CDN
+     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
+     * host header value to match the origin hostname by default.
+     */
+    @JsonProperty(value = "properties.originHostHeader")
+    private String originHostHeader;
 
     /*
      * Indicates whether content compression is enabled on CDN. Default value
@@ -91,7 +93,8 @@ public class EndpointUpdateParameters {
     /*
      * Path to a file hosted on the origin which helps accelerate delivery of
      * the dynamic content and calculate the most optimal routes for the CDN.
-     * This is relative to the origin path.
+     * This is relative to the origin path. This property is only relevant when
+     * using a single origin.
      */
     @JsonProperty(value = "properties.probePath")
     private String probePath;
@@ -105,10 +108,29 @@ public class EndpointUpdateParameters {
     private List<GeoFilter> geoFilters;
 
     /*
+     * A reference to the origin group.
+     */
+    @JsonProperty(value = "properties.defaultOriginGroup")
+    private ResourceReference defaultOriginGroup;
+
+    /*
+     * List of keys used to validate the signed URL hashes.
+     */
+    @JsonProperty(value = "properties.urlSigningKeys")
+    private List<UrlSigningKey> urlSigningKeys;
+
+    /*
      * A policy that specifies the delivery rules to be used for an endpoint.
      */
     @JsonProperty(value = "properties.deliveryPolicy")
     private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
+
+    /*
+     * Defines the Web Application Firewall policy for the endpoint (if
+     * applicable)
+     */
+    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
+    private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
     /**
      * Get the tags property: Endpoint tags.
@@ -127,30 +149,6 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default.
-     *
-     * @return the originHostHeader value.
-     */
-    public String originHostHeader() {
-        return this.originHostHeader;
-    }
-
-    /**
-     * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default.
-     *
-     * @param originHostHeader the originHostHeader value to set.
-     * @return the EndpointUpdateParameters object itself.
-     */
-    public EndpointUpdateParameters withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
         return this;
     }
 
@@ -195,6 +193,32 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withContentTypesToCompress(List<String> contentTypesToCompress) {
         this.contentTypesToCompress = contentTypesToCompress;
+        return this;
+    }
+
+    /**
+     * Get the originHostHeader property: The host header value sent to the origin with each request. This property at
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     *
+     * @return the originHostHeader value.
+     */
+    public String originHostHeader() {
+        return this.originHostHeader;
+    }
+
+    /**
+     * Set the originHostHeader property: The host header value sent to the origin with each request. This property at
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     *
+     * @param originHostHeader the originHostHeader value to set.
+     * @return the EndpointUpdateParameters object itself.
+     */
+    public EndpointUpdateParameters withOriginHostHeader(String originHostHeader) {
+        this.originHostHeader = originHostHeader;
         return this;
     }
 
@@ -315,7 +339,8 @@ public class EndpointUpdateParameters {
 
     /**
      * Get the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
-     * content and calculate the most optimal routes for the CDN. This is relative to the origin path.
+     * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
+     * only relevant when using a single origin.
      *
      * @return the probePath value.
      */
@@ -325,7 +350,8 @@ public class EndpointUpdateParameters {
 
     /**
      * Set the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
-     * content and calculate the most optimal routes for the CDN. This is relative to the origin path.
+     * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
+     * only relevant when using a single origin.
      *
      * @param probePath the probePath value to set.
      * @return the EndpointUpdateParameters object itself.
@@ -358,6 +384,46 @@ public class EndpointUpdateParameters {
     }
 
     /**
+     * Get the defaultOriginGroup property: A reference to the origin group.
+     *
+     * @return the defaultOriginGroup value.
+     */
+    public ResourceReference defaultOriginGroup() {
+        return this.defaultOriginGroup;
+    }
+
+    /**
+     * Set the defaultOriginGroup property: A reference to the origin group.
+     *
+     * @param defaultOriginGroup the defaultOriginGroup value to set.
+     * @return the EndpointUpdateParameters object itself.
+     */
+    public EndpointUpdateParameters withDefaultOriginGroup(ResourceReference defaultOriginGroup) {
+        this.defaultOriginGroup = defaultOriginGroup;
+        return this;
+    }
+
+    /**
+     * Get the urlSigningKeys property: List of keys used to validate the signed URL hashes.
+     *
+     * @return the urlSigningKeys value.
+     */
+    public List<UrlSigningKey> urlSigningKeys() {
+        return this.urlSigningKeys;
+    }
+
+    /**
+     * Set the urlSigningKeys property: List of keys used to validate the signed URL hashes.
+     *
+     * @param urlSigningKeys the urlSigningKeys value to set.
+     * @return the EndpointUpdateParameters object itself.
+     */
+    public EndpointUpdateParameters withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
+        this.urlSigningKeys = urlSigningKeys;
+        return this;
+    }
+
+    /**
      * Get the deliveryPolicy property: A policy that specifies the delivery rules to be used for an endpoint.
      *
      * @return the deliveryPolicy value.
@@ -379,6 +445,29 @@ public class EndpointUpdateParameters {
     }
 
     /**
+     * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
+     * (if applicable).
+     *
+     * @return the webApplicationFirewallPolicyLink value.
+     */
+    public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.webApplicationFirewallPolicyLink;
+    }
+
+    /**
+     * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
+     * (if applicable).
+     *
+     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
+     * @return the EndpointUpdateParameters object itself.
+     */
+    public EndpointUpdateParameters withWebApplicationFirewallPolicyLink(
+        EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -387,8 +476,17 @@ public class EndpointUpdateParameters {
         if (geoFilters() != null) {
             geoFilters().forEach(e -> e.validate());
         }
+        if (defaultOriginGroup() != null) {
+            defaultOriginGroup().validate();
+        }
+        if (urlSigningKeys() != null) {
+            urlSigningKeys().forEach(e -> e.validate());
+        }
         if (deliveryPolicy() != null) {
             deliveryPolicy().validate();
+        }
+        if (webApplicationFirewallPolicyLink() != null) {
+            webApplicationFirewallPolicyLink().validate();
         }
     }
 }

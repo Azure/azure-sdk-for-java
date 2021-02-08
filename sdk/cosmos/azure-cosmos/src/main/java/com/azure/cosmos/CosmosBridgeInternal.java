@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.query.Transformer;
@@ -14,11 +13,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -125,7 +119,8 @@ public final class CosmosBridgeInternal {
             .preferredRegions(builder.getPreferredRegions())
             .endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled())
             .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
-            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
+            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled())
+            .clientTelemetryEnabled(builder.isClientTelemetryEnabled());
 
         return copy;
     }

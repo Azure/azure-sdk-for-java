@@ -23,8 +23,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
-import java.security.InvalidParameterException;
-
 /** The implementation for Snapshot and its create and update interfaces. */
 class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, SnapshotImpl, ComputeManager>
     implements Snapshot, Snapshot.Definition, Snapshot.Update {
@@ -331,7 +329,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         } catch (RuntimeException ex) {
             throw logger
                 .logExceptionAsError(
-                    new InvalidParameterException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
+                    new IllegalArgumentException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
         }
     }
 }

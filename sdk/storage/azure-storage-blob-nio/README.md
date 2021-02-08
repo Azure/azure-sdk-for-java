@@ -149,7 +149,7 @@ Please see the docs for `AzureFileSystemProvider` for a full explanation of init
 <!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L43 -->
 ```java
 Map<String, Object> config = new HashMap<>();
-String[] stores = {"<your_container_name", "another_container_name"}; // Any iterable is acceptable
+String stores = "<your_container_name>,<another_container_name>"; // A comma separated list of container names
 config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
 config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, stores);
 FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"), config);
@@ -305,7 +305,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-nio/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-nio/src/samples/README.md
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[docs]: https://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1

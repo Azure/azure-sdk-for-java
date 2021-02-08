@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-02-10/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-04-08/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -26,7 +26,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,DeleteSnapshotsOptionType
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash
 ```
 
 ### Query Parameters
@@ -588,17 +588,17 @@ directive:
     }
 ```
 
-### ShareProperties
+### SharePropertiesInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.ShareProperties.properties.Metadata) {
-        const path = $.ShareItem.properties.Metadata.$ref;
-        $.ShareProperties.properties.Metadata = { "$ref": path };
+    if (!$.SharePropertiesInternal.properties.Metadata) {
+        const path = $.ShareItemInternal.properties.Metadata.$ref;
+        $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
-    $.ShareProperties.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
 ```
 
 ### ShareUsageBytes
@@ -855,6 +855,21 @@ directive:
   where: $.parameters.LeaseIdOptional
   transform: >
     delete $["x-ms-parameter-grouping"];
+```
+
+### Add the ShareFileRangeListDeserializer attribute
+``` yaml
+directive:
+- from: ShareFileRangeList.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class ShareFileRangeList {",
+        "@JsonDeserialize(using = ShareFileRangeListDeserializer.class)\npublic final class ShareFileRangeList {");
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)

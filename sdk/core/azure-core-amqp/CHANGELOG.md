@@ -1,6 +1,48 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (Unreleased)
+
+
+## 2.0.1 (2021-01-11)
+
+### New Features
+
+- Changed connections from sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection to improve performance.
+
+## 2.0.0 (2020-11-30)
+### New Features
+- Added 'AmqpAddress' as a type to support 'AmqpMessageProperties#replyTo' and 'AmqpMessageProperties#to' properties.
+- Added 'AmqpMessageId' as a type to support 'AmqpMessageProperties#correlationId' and 'AmqpMessageProperties#messageId' 
+  properties.
+- Added static methods to instantiate 'AmqpMessageBody' for example 'AmqpMessageBody#fromData(byte[])'.
+
+### Breaking Changes
+- Changed  'AmqpMessageBody' from interface to a class. User can use 'getBodyType()' to know what is the 'AmqpBodyType' 
+  of the message.
+- Changed type of 'correlationId' and 'messageId' in type 'AmqpMessageProperties' from 'String' to 'AmqpMessageId'.
+- Changed type of 'replyTo' and 'to' in type 'AmqpMessageProperties' from 'String' to 'AmqpAddress'.
+- Removed copy constructor for 'AmqpAnnotatedMessage'.
+- Renamed 'AmqpBodyType' to 'AmqpMessageBodyType'.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.11.0`.
+
+## 1.7.0-beta.2 (2020-11-10)
+### New Features
+- Optionally enable idempotency of a send link to send AMQP messages with producer group id, producer owner level and 
+producer sequence number in the message annotations.
+
+## 1.7.0-beta.1 (2020-11-03)
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`.
+
+## 1.6.0 (2020-10-12)
+### New Features
+- Added peer certificate verification options when connecting to an AMQP endpoint.
+### Breaking Changes
+- Removed `BinaryData` type which was used for `AmqpAnnotatedMessage`. 
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`.
 
 ## 1.5.1 (2020-09-10)
 - Add support for SAS when authenticating.

@@ -66,7 +66,7 @@ public class SqlPoolInner extends Resource {
      * Snapshot time to restore.
      */
     @JsonProperty(value = "properties.restorePointInTime")
-    private DateTime restorePointInTime;
+    private String restorePointInTime;
 
     /**
      * What is this?.
@@ -225,7 +225,7 @@ public class SqlPoolInner extends Resource {
      *
      * @return the restorePointInTime value
      */
-    public DateTime restorePointInTime() {
+    public String restorePointInTime() {
         return this.restorePointInTime;
     }
 
@@ -235,7 +235,7 @@ public class SqlPoolInner extends Resource {
      * @param restorePointInTime the restorePointInTime value to set
      * @return the SqlPoolInner object itself.
      */
-    public SqlPoolInner withRestorePointInTime(DateTime restorePointInTime) {
+    public SqlPoolInner withRestorePointInTime(String restorePointInTime) {
         this.restorePointInTime = restorePointInTime;
         return this;
     }

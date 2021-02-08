@@ -120,6 +120,14 @@ public class ComputeNode {
     private Integer runningTasksCount;
 
     /**
+     * The total number of scheduling slots used by currently running Job Tasks
+     * on the Compute Node. This includes Job Manager Tasks and normal Tasks,
+     * but not Job Preparation, Job Release or Start Tasks.
+     */
+    @JsonProperty(value = "runningTaskSlotsCount")
+    private Integer runningTaskSlotsCount;
+
+    /**
      * The total number of Job Tasks which completed successfully (with
      * exitCode 0) on the Compute Node. This includes Job Manager Tasks and
      * normal Tasks, but not Job Preparation, Job Release or Start Tasks.
@@ -426,6 +434,26 @@ public class ComputeNode {
      */
     public ComputeNode withRunningTasksCount(Integer runningTasksCount) {
         this.runningTasksCount = runningTasksCount;
+        return this;
+    }
+
+    /**
+     * Get the runningTaskSlotsCount value.
+     *
+     * @return the runningTaskSlotsCount value
+     */
+    public Integer runningTaskSlotsCount() {
+        return this.runningTaskSlotsCount;
+    }
+
+    /**
+     * Set the runningTaskSlotsCount value.
+     *
+     * @param runningTaskSlotsCount the runningTaskSlotsCount value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withRunningTaskSlotsCount(Integer runningTaskSlotsCount) {
+        this.runningTaskSlotsCount = runningTaskSlotsCount;
         return this;
     }
 

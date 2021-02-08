@@ -4,8 +4,8 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 /**
  * Extended options that may be passed when deleting a share.
@@ -13,7 +13,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 @Fluent
 public class ShareDeleteOptions {
 
-    private DeleteSnapshotsOptionType deleteSnapshotsOptions;
+    private ShareSnapshotsDeleteOptionType deleteSnapshotsOptions;
     private ShareRequestConditions requestConditions;
 
     /**
@@ -33,17 +33,17 @@ public class ShareDeleteOptions {
     }
 
     /**
-     * @return {@link DeleteSnapshotsOptionType}
+     * @return {@link ShareSnapshotsDeleteOptionType}
      */
-    public DeleteSnapshotsOptionType getDeleteSnapshotsOptions() {
+    public ShareSnapshotsDeleteOptionType getDeleteSnapshotsOptions() {
         return deleteSnapshotsOptions;
     }
 
     /**
-     * @param deleteSnapshotsOptions {@link DeleteSnapshotsOptionType}
+     * @param deleteSnapshotsOptions {@link ShareSnapshotsDeleteOptionType}
      * @return The updated options.
      */
-    public ShareDeleteOptions setDeleteSnapshotsOptions(DeleteSnapshotsOptionType deleteSnapshotsOptions) {
+    public ShareDeleteOptions setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType deleteSnapshotsOptions) {
         this.deleteSnapshotsOptions = deleteSnapshotsOptions;
         return this;
     }

@@ -55,7 +55,7 @@ public final class ContainerInstanceManager
      * @param profile the profile to use
      * @return the ContainerInstanceManager
      */
-    public static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ContainerInstanceManager(httpPipeline, profile);
     }
 
@@ -89,9 +89,13 @@ public final class ContainerInstanceManager
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
 
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
-        this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        this.authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        this.networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
+            .authenticate(null, profile);
     }
 
     /** @return the storage manager in container instance manager */

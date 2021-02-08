@@ -29,14 +29,14 @@ public class ClusterInner extends Resource {
     /**
      * The UTC time when the Event Hubs Cluster was created.
      */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private String created;
+    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
+    private String createdAt;
 
     /**
      * The UTC time when the Event Hubs Cluster was last updated.
      */
-    @JsonProperty(value = "properties.updated", access = JsonProperty.Access.WRITE_ONLY)
-    private String updated;
+    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
+    private String updatedAt;
 
     /**
      * The metric ID of the cluster resource. Provided by the service and not
@@ -74,19 +74,19 @@ public class ClusterInner extends Resource {
     /**
      * Get the UTC time when the Event Hubs Cluster was created.
      *
-     * @return the created value
+     * @return the createdAt value
      */
-    public String created() {
-        return this.created;
+    public String createdAt() {
+        return this.createdAt;
     }
 
     /**
      * Get the UTC time when the Event Hubs Cluster was last updated.
      *
-     * @return the updated value
+     * @return the updatedAt value
      */
-    public String updated() {
-        return this.updated;
+    public String updatedAt() {
+        return this.updatedAt;
     }
 
     /**

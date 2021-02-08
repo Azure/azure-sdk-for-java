@@ -1,4 +1,9 @@
 # Release History
+
+## 1.2.1-beta.16 (2020-10-16)
+
+- Demo for training
+
 ## 1.2.1-beta.3 (Unreleased)
 
 

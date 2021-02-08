@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunStatus;
 import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerDescriptor;
+import com.azure.resourcemanager.containerregistry.models.TimerTriggerDescriptor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -138,6 +139,12 @@ public class RunInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.isArchiveEnabled")
     private Boolean isArchiveEnabled;
+
+    /*
+     * The timer trigger that caused the run.
+     */
+    @JsonProperty(value = "properties.timerTrigger")
+    private TimerTriggerDescriptor timerTrigger;
 
     /**
      * Get the runId property: The unique identifier for the run.
@@ -495,6 +502,26 @@ public class RunInner extends ProxyResource {
     }
 
     /**
+     * Get the timerTrigger property: The timer trigger that caused the run.
+     *
+     * @return the timerTrigger value.
+     */
+    public TimerTriggerDescriptor timerTrigger() {
+        return this.timerTrigger;
+    }
+
+    /**
+     * Set the timerTrigger property: The timer trigger that caused the run.
+     *
+     * @param timerTrigger the timerTrigger value to set.
+     * @return the RunInner object itself.
+     */
+    public RunInner withTimerTrigger(TimerTriggerDescriptor timerTrigger) {
+        this.timerTrigger = timerTrigger;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -514,6 +541,9 @@ public class RunInner extends ProxyResource {
         }
         if (agentConfiguration() != null) {
             agentConfiguration().validate();
+        }
+        if (timerTrigger() != null) {
+            timerTrigger().validate();
         }
     }
 }

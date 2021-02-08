@@ -43,11 +43,9 @@ public final class DetectionConfigurationTransforms {
         AnomalyDetectionConfiguration configuration
             = new AnomalyDetectionConfiguration(innerConfiguration.getName());
 
-        PrivateFieldAccessHelper.set(configuration,
-            "id",
+        AnomalyDetectionConfigurationHelper.setId(configuration,
             innerConfiguration.getAnomalyDetectionConfigurationId().toString());
-        PrivateFieldAccessHelper.set(configuration,
-            "metricId",
+        AnomalyDetectionConfigurationHelper.setMetricId(configuration,
             innerConfiguration.getMetricId().toString());
 
         configuration.setDescription(innerConfiguration.getDescription());

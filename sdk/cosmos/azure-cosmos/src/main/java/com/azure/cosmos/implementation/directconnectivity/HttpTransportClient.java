@@ -218,7 +218,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
@@ -257,7 +257,7 @@ public class HttpTransportClient extends TransportClient {
             case Delete:
             case ExecuteJavaScript:
             case Replace:
-            case Update:
+            case Patch:
             case Upsert:
                 return request.getHeaders().get(HttpConstants.HttpHeaders.IF_MATCH);
 
@@ -285,6 +285,7 @@ public class HttpTransportClient extends TransportClient {
         // HttpRequestMessage -> StreamContent -> MemoryStream all get disposed, the original stream will be left open.
         switch (resourceOperation.operationType) {
             case Create:
+            case Batch:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContentAsByteArrayFlux() != null;
@@ -326,9 +327,9 @@ public class HttpTransportClient extends TransportClient {
                 httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
-            case Update:
+            case Patch:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
-                method = new HttpMethod("PATCH");
+                method = HttpMethod.PATCH;
                 assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
@@ -479,6 +480,13 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.ALLOW_TENTATIVE_WRITES, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, CustomHeaders.HttpHeaders.EXCLUDE_SYSTEM_PROPERTIES, request);
+
+        if (resourceOperation.operationType == OperationType.Batch) {
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_REQUEST, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ORDERED, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, request);
+        }
 
         return httpRequestMessage;
     }
@@ -855,15 +863,19 @@ public class HttpTransportClient extends TransportClient {
                                 break;
                             } else {
                                 // Have the request URL in the exception message for debugging purposes.
-                                exception = new GoneException(
+                                GoneException goneExceptionFromService = new GoneException(
                                         String.format(
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         response.headers(),
                                         request.uri());
+                                goneExceptionFromService.setIsBasedOn410ResponseFromService();
 
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
-                                        activityId);
+                                goneExceptionFromService.getResponseHeaders().put(
+                                    HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                    activityId);
+
+                                exception = goneExceptionFromService;
                                 break;
                             }
                         }

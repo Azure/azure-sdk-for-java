@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AnomalyDetectionConfigurationHelper;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +20,21 @@ public final class AnomalyDetectionConfiguration {
     private MetricWholeSeriesDetectionCondition wholeSeriesCondition;
     private final List<MetricSeriesGroupDetectionCondition> seriesGroupConditions;
     private final List<MetricSingleSeriesDetectionCondition> seriesConditions;
+
+    static {
+        AnomalyDetectionConfigurationHelper
+            .setAccessor(new AnomalyDetectionConfigurationHelper.AnomalyDetectionConfigurationAccessor() {
+                @Override
+                public void setId(AnomalyDetectionConfiguration configuration, String id) {
+                    configuration.setId(id);
+                }
+
+                @Override
+                public void setMetricId(AnomalyDetectionConfiguration configuration, String metricId) {
+                    configuration.setMetricId(metricId);
+                }
+            });
+    }
 
     /**
      * Create a new instance of MetricAnomalyDetectionConfiguration.
@@ -213,5 +230,13 @@ public final class AnomalyDetectionConfiguration {
             this.seriesConditions.remove(idx);
         }
         return this;
+    }
+
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
     }
 }

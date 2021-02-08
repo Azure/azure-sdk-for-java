@@ -6,16 +6,23 @@ package com.azure.ai.formrecognizer.implementation;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Utility method class.
@@ -24,6 +31,8 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
+    // default time interval for polling
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }
@@ -56,6 +65,8 @@ public final class Utility {
                         contentType[0] = ContentType.IMAGE_PNG;
                     } else if (isTiff(header)) {
                         contentType[0] = ContentType.IMAGE_TIFF;
+                    } else if (isBmp(header)) {
+                        contentType[0] = ContentType.IMAGE_BMP;
                     }
                     // Got a four bytes matching or not, either way no need to read more byte return false
                     // so that takeWhile can cut the subscription on data
@@ -104,6 +115,10 @@ public final class Utility {
             && header[1] == (byte) 0x4d
             && header[2] == (byte) 0x0
             && header[3] == (byte) 0x2a);
+    }
+
+    private static boolean isBmp(byte[] header) {
+        return (header[0] == (byte) 0x42 && header[1] == (byte) 0x4D);
     }
 
     /**
@@ -206,5 +221,20 @@ public final class Utility {
                     errorResponseException.getValue().getError().getMessage()));
         }
         return throwable;
+    }
+
+    /*
+     * Poller's ACTIVATION operation that takes URL as input.
+     */
+    public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
+        urlActivationOperation(
+        Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
+        return pollingContext -> {
+            try {
+                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 }

@@ -9,18 +9,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,54 +37,40 @@ public class ChatClientTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
-    protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
+    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
 
-    protected ChatClientBuilder getChatClientBuilder(String token) {
+    protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
-        builder.endpoint(ENDPOINT);
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new CommunicationUserCredential(generateRawToken()));
+            builder.credential(new CommunicationTokenCredential(generateRawToken()));
             return builder;
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client)
-                .credential(new CommunicationUserCredential(token));
+            builder.credential(new CommunicationTokenCredential(token));
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder() {
-        try {
-            CommunicationClientCredential credential = new CommunicationClientCredential(CONNSTRING);
-            CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-            builder.endpoint(ENDPOINT)
-                .credential(credential);
-            if (interceptorManager.isPlaybackMode()) {
-                builder.httpClient(interceptorManager.getPlaybackClient());
-                return builder;
-            } else {
-                HttpClient client = new NettyAsyncHttpClientBuilder().build();
-                builder.httpClient(client);
-            }
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
-            return builder;
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder.endpoint(ENDPOINT)
+            .accessKey(ACCESS_KEY)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        return null;
+        return builder;
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
@@ -182,5 +164,9 @@ public class ChatClientTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 }

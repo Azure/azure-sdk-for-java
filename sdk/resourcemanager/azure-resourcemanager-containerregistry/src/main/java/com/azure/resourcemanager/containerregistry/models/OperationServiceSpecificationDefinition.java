@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The definition of Azure Monitoring metrics list. */
+/** The definition of Azure Monitoring list. */
 @Fluent
 public final class OperationServiceSpecificationDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationServiceSpecificationDefinition.class);

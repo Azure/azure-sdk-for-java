@@ -36,18 +36,16 @@ public class RegistryUpdateParameters {
     private Boolean adminUserEnabled;
 
     /*
-     * The parameters of a storage account for the container registry. Only
-     * applicable to Classic SKU. If specified, the storage account must be in
-     * the same physical location as the container registry.
-     */
-    @JsonProperty(value = "properties.storageAccount")
-    private StorageAccountProperties storageAccount;
-
-    /*
      * The network rule set for a container registry.
      */
     @JsonProperty(value = "properties.networkRuleSet")
     private NetworkRuleSet networkRuleSet;
+
+    /*
+     * The policies for a container registry.
+     */
+    @JsonProperty(value = "properties.policies")
+    private Policies policies;
 
     /**
      * Get the tags property: The tags for the container registry.
@@ -110,30 +108,6 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the storageAccount property: The parameters of a storage account for the container registry. Only applicable
-     * to Classic SKU. If specified, the storage account must be in the same physical location as the container
-     * registry.
-     *
-     * @return the storageAccount value.
-     */
-    public StorageAccountProperties storageAccount() {
-        return this.storageAccount;
-    }
-
-    /**
-     * Set the storageAccount property: The parameters of a storage account for the container registry. Only applicable
-     * to Classic SKU. If specified, the storage account must be in the same physical location as the container
-     * registry.
-     *
-     * @param storageAccount the storageAccount value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withStorageAccount(StorageAccountProperties storageAccount) {
-        this.storageAccount = storageAccount;
-        return this;
-    }
-
-    /**
      * Get the networkRuleSet property: The network rule set for a container registry.
      *
      * @return the networkRuleSet value.
@@ -154,6 +128,26 @@ public class RegistryUpdateParameters {
     }
 
     /**
+     * Get the policies property: The policies for a container registry.
+     *
+     * @return the policies value.
+     */
+    public Policies policies() {
+        return this.policies;
+    }
+
+    /**
+     * Set the policies property: The policies for a container registry.
+     *
+     * @param policies the policies value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withPolicies(Policies policies) {
+        this.policies = policies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,11 +156,11 @@ public class RegistryUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
-        if (storageAccount() != null) {
-            storageAccount().validate();
-        }
         if (networkRuleSet() != null) {
             networkRuleSet().validate();
+        }
+        if (policies() != null) {
+            policies().validate();
         }
     }
 }

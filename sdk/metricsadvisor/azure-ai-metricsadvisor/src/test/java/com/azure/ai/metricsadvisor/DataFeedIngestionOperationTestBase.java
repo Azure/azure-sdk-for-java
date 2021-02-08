@@ -13,15 +13,19 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
+
 public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorAdministrationClientTestBase {
     public abstract void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    static final String DATA_FEED_ID = "9860df01-e740-40ec-94a2-6351813552ba";
 
     // Pre-configured test resource.
     protected static class ListIngestionStatusInput {
         static final ListIngestionStatusInput INSTANCE = new ListIngestionStatusInput();
-        final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+        final String dataFeedId = DATA_FEED_ID;
+        final OffsetDateTime startTime = TIME_SERIES_START_TIME;
+        final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
     }
 
@@ -36,7 +40,7 @@ public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorA
     // Pre-configured test resource.
     protected static class GetIngestionProgressInput {
         static final GetIngestionProgressInput INSTANCE = new GetIngestionProgressInput();
-        final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
+        final String dataFeedId = DATA_FEED_ID;
     }
 
     protected void assertListIngestionProgressOutput(DataFeedIngestionProgress ingestionProgress) {
@@ -50,9 +54,9 @@ public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorA
     // Pre-configured test resource.
     protected static class RefreshIngestionInput {
         static final RefreshIngestionInput INSTANCE = new RefreshIngestionInput();
-        final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-03-03T00:00:00Z");
+        final String dataFeedId = DATA_FEED_ID;
+        final OffsetDateTime startTime = TIME_SERIES_START_TIME;
+        final OffsetDateTime endTime = TIME_SERIES_END_TIME;
     }
 
     protected void assertRefreshIngestionInputOutput(Response<Void> response) {

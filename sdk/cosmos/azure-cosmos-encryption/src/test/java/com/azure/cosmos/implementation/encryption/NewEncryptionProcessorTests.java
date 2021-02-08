@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.DecryptionContext;
+import com.azure.cosmos.encryption.DecryptionInfo;
 import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.encryption.TestCommon.TestDoc;
 import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.EncryptionOptions;
@@ -27,8 +30,8 @@ public class NewEncryptionProcessorTests {
     private static EncryptionOptions encryptionOptions;
     private final static String dekId = "dekId";
 
-    @BeforeClass
-    public static void ClassInitilize() {
+    @BeforeClass(groups = "unit")
+    public static void classInitilize() {
         NewEncryptionProcessorTests.encryptionOptions = new EncryptionOptions();
         encryptionOptions
             .setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED)
@@ -67,7 +70,7 @@ public class NewEncryptionProcessorTests {
 
     }
 
-    @Test(enabled = false)
+    @Test(enabled = false, groups = "unit")
     public void InvalidPathToEncrypt() {
         TestCommon.TestDoc testDoc = TestDoc.Create();
 
@@ -88,82 +91,34 @@ public class NewEncryptionProcessorTests {
         }
     }
 
-//        [TestMethod]
-//    public async Task EncryptDecryptPropertyWithNullValue()
-//{
-//    TestDoc testDoc = TestDoc.Create();
-//    testDoc.SensitiveStr = null;
-//
-//    JObject encryptedDoc = await NewEncryptionProcessorTests.VerifyEncryptionSucceeded(testDoc);
-//
-//    JObject decryptedDoc = await EncryptionProcessor.DecryptAsync(
-//    encryptedDoc,
-//    NewEncryptionProcessorTests.mockEncryptor.Object,
-//    new CosmosDiagnosticsContext(),
-//    CancellationToken.None);
-//
-//    NewEncryptionProcessorTests.VerifyDecryptionSucceeded(
-//        decryptedDoc,
-//        testDoc);
-//}
+//    TODO: moderakh add tests
+//    public void EncryptDecryptPropertyWithNullValue() {
+//    }
 
-    @Test
+    @Test(groups = "unit")
     public void ValidateEncryptDecryptDocument() {
         TestCommon.TestDoc testDoc = TestCommon.TestDoc.Create();
 
-        ObjectNode encryptedDoc = NewEncryptionProcessorTests.VerifyEncryptionSucceeded(testDoc);
-        ObjectNode decryptedDoc = EncryptionProcessor.decrypt(
+        ObjectNode encryptedDoc = NewEncryptionProcessorTests.verifyEncryptionSucceeded(testDoc);
+        Pair<ObjectNode, DecryptionContext> resultPair =
+            EncryptionProcessor.decrypt(
             encryptedDoc,
             NewEncryptionProcessorTests.mockEncryptor).block();
 
-        NewEncryptionProcessorTests.VerifyDecryptionSucceeded(
+        ObjectNode decryptedDoc = resultPair.getKey();
+        DecryptionContext decryptionContext = resultPair.getRight();
+
+        NewEncryptionProcessorTests.verifyDecryptionSucceeded(
             decryptedDoc,
-            testDoc);
+            testDoc,
+            decryptionContext);
     }
 
-    //
-//        [TestMethod]
-//    public async Task ValidateDecryptStream()
-//{
-//    TestDoc testDoc = TestDoc.Create();
-//
-//    Stream encryptedStream = await EncryptionProcessor.EncryptAsync(
-//    testDoc.ToStream(),
-//    NewEncryptionProcessorTests.mockEncryptor.Object,
-//    NewEncryptionProcessorTests.encryptionOptions,
-//    new CosmosDiagnosticsContext(),
-//    CancellationToken.None);
-//
-//    Stream decryptedStream = await EncryptionProcessor.DecryptAsync(
-//    encryptedStream,
-//    NewEncryptionProcessorTests.mockEncryptor.Object,
-//    new CosmosDiagnosticsContext(),
-//    CancellationToken.None);
-//
-//    JObject decryptedDoc = EncryptionProcessor.BaseSerializer.FromStream<JObject>(decryptedStream);
-//    NewEncryptionProcessorTests.VerifyDecryptionSucceeded(
-//        decryptedDoc,
-//        testDoc);
-//}
-//
-//        [TestMethod]
-//    public async Task DecryptStreamWithoutEncryptedProperty()
-//{
-//    TestDoc testDoc = TestDoc.Create();
-//    Stream docStream = testDoc.ToStream();
-//
-//    Stream decryptedStream = await EncryptionProcessor.DecryptAsync(
-//    docStream,
-//    NewEncryptionProcessorTests.mockEncryptor.Object,
-//    new CosmosDiagnosticsContext(),
-//    CancellationToken.None);
-//
-//    Assert.IsTrue(decryptedStream.CanSeek);
-//    Assert.AreEqual(0, decryptedStream.Position);
-//    Assert.AreEqual(docStream.Length, decryptedStream.Length);
-//}
-//
-    private static ObjectNode VerifyEncryptionSucceeded(TestCommon.TestDoc testDoc) {
+//    TODO: moderakh add the test
+//    public void validateDecryptStream() {
+//    }
+
+    private static ObjectNode verifyEncryptionSucceeded(TestCommon.TestDoc testDoc) {
         byte[] encryptedStream = EncryptionProcessor.encrypt(
             testDoc.ToStream(),
             NewEncryptionProcessorTests.mockEncryptor,
@@ -197,12 +152,21 @@ public class NewEncryptionProcessorTests {
         return encryptedDoc;
     }
 
-    private static void VerifyDecryptionSucceeded(
+    private static void verifyDecryptionSucceeded(
         ObjectNode decryptedDoc,
-        TestCommon.TestDoc expectedDoc) {
+        TestCommon.TestDoc expectedDoc,
+        DecryptionContext decryptionContext) {
 
         assertThat(decryptedDoc.get("SensitiveStr").textValue()).isEqualTo(expectedDoc.SensitiveStr);
         assertThat(decryptedDoc.get("SensitiveInt").intValue()).isEqualTo(expectedDoc.SensitiveInt);
         assertThat(decryptedDoc.get(Constants.ENCRYPTION_ALGORITHM)).isNull();
+
+        assertThat(decryptionContext).isNotNull();
+        assertThat(decryptionContext.getDecryptionInfoList()).isNotNull();
+        DecryptionInfo decryptionInfo = decryptionContext.getDecryptionInfoList().get(0);
+        assertThat(decryptionInfo.getDataEncryptionKeyId()).isEqualTo(NewEncryptionProcessorTests.dekId);
+        assertThat(decryptionInfo.getPathsDecrypted()).hasSize(TestDoc.PathsToEncrypt.size());
+
+        assertThat(EncryptionTests.TestDoc.PathsToEncrypt.stream().filter(path -> decryptionInfo.getPathsDecrypted().contains(path)).findAny()).isNotPresent();
     }
 }

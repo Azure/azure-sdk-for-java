@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricAnomalyFeedbackHelper;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
@@ -18,6 +19,15 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
     private AnomalyDetectionConfiguration detectionConfiguration;
     private String detectionConfigurationId;
 
+    static {
+        MetricAnomalyFeedbackHelper.setAccessor(new MetricAnomalyFeedbackHelper.MetricAnomalyFeedbackAccessor() {
+            @Override
+            public void setDetectionConfiguration(MetricAnomalyFeedback feedback,
+                                                  AnomalyDetectionConfiguration configuration) {
+                feedback.setDetectionConfiguration(configuration);
+            }
+        });
+    }
     /**
      * Creates an instance of MetricAnomalyFeedback.
      *
@@ -92,5 +102,9 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
      */
     public String getDetectionConfigurationId() {
         return detectionConfigurationId;
+    }
+
+    void setDetectionConfiguration(AnomalyDetectionConfiguration configuration) {
+        this.detectionConfiguration = configuration;
     }
 }

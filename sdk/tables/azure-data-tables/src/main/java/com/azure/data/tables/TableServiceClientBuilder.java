@@ -41,6 +41,7 @@ public class TableServiceClientBuilder {
     private TablesServiceVersion version;
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
+    private TablesSharedKeyCredential tablesSharedKeyCredential;
     private SasTokenCredential sasTokenCredential;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
@@ -72,8 +73,8 @@ public class TableServiceClientBuilder {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            (TablesSharedKeyCredential) tokenCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions,
-            httpLogOptions, httpClient, policies, configuration, logger);
+            tablesSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, httpLogOptions,
+            httpClient, policies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
@@ -139,20 +140,6 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
-     *
-     * @param sasToken The SAS token to use for authenticating requests.
-     * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException if {@code sasToken} is {@code null}.
-     */
-    public TableServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
-        this.tokenCredential = null;
-        return this;
-    }
-
-    /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
@@ -167,6 +154,35 @@ public class TableServiceClientBuilder {
     }
 
     /**
+     * Sets the SAS token used to authorize requests sent to the service.
+     *
+     * @param sasToken The SAS token to use for authenticating requests.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code sasToken} is {@code null}.
+     */
+    public TableServiceClientBuilder sasToken(String sasToken) {
+        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
+        this.tablesSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
+     */
+    public TableServiceClientBuilder credential(TablesSharedKeyCredential credential) {
+        this.tablesSharedKeyCredential = Objects.requireNonNull(credential, "credential cannot be null.");
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
@@ -175,6 +191,8 @@ public class TableServiceClientBuilder {
      */
     public TableServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tablesSharedKeyCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 

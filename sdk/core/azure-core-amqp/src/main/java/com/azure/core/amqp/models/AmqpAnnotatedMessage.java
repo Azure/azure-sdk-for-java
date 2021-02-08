@@ -10,8 +10,9 @@ import java.util.Objects;
 /**
  * The representation of message as defined by AMQP protocol.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
- *     Amqp Message Format.</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+ *     Amqp Message Format</a>
+ * @see AmqpMessageBody
  */
 public final class AmqpAnnotatedMessage {
     private final AmqpMessageBody amqpMessageBody;
@@ -31,31 +32,12 @@ public final class AmqpAnnotatedMessage {
      */
     public AmqpAnnotatedMessage(AmqpMessageBody body) {
         amqpMessageBody = Objects.requireNonNull(body, "'body' cannot be null.");
-
         applicationProperties = new HashMap<>();
         deliveryAnnotations = new HashMap<>();
         messageAnnotations = new HashMap<>();
         footer = new HashMap<>();
         header = new AmqpMessageHeader();
         properties = new AmqpMessageProperties();
-    }
-
-    /**
-     * Creates instance of {@link AmqpAnnotatedMessage} with given {@link AmqpAnnotatedMessage} instance.
-     *
-     * @param message used to create another instance of {@link AmqpAnnotatedMessage}.
-     *
-     * @throws NullPointerException if {@code message} or {@link AmqpAnnotatedMessage#getBody() body} is null.
-     */
-    public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        amqpMessageBody = Objects.requireNonNull(message.getBody(), "'message.body' cannot be null.");
-        applicationProperties = new HashMap<>(message.getApplicationProperties());
-        deliveryAnnotations = new HashMap<>(message.getDeliveryAnnotations());
-        messageAnnotations = new HashMap<>(message.getMessageAnnotations());
-        footer = new HashMap<>(message.getFooter());
-        header = new AmqpMessageHeader(message.getHeader());
-        properties = new AmqpMessageProperties(message.getProperties());
     }
 
     /**
@@ -71,6 +53,7 @@ public final class AmqpAnnotatedMessage {
      * Gets the {@link AmqpMessageBody} of an amqp message.
      *
      * @return the {@link AmqpMessageBody} object.
+     * @see AmqpMessageBody
      */
     public AmqpMessageBody getBody() {
         return amqpMessageBody;

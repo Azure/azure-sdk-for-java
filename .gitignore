@@ -38,6 +38,7 @@ extlib/
 # Azure Tooling #
 node_modules
 packages
+__pycache__
 
 # Eclipse #
 *.pydevproject
@@ -83,3 +84,11 @@ ClientAggregatePom.xml
 
 # Anaconda virtual env
 venv
+
+# NetBeans
+nbproject
+nb-configuration.xml
+
+# Emacs #
+
+#changebundle.txt#

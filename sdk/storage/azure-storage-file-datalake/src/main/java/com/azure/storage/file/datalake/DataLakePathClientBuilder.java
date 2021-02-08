@@ -7,8 +7,10 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -62,11 +64,13 @@ public final class DataLakePathClientBuilder {
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
 
@@ -121,7 +125,7 @@ public final class DataLakePathClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -169,7 +173,7 @@ public final class DataLakePathClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -331,7 +335,12 @@ public final class DataLakePathClientBuilder {
      */
     public DataLakePathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobClientBuilder.addPolicy(pipelinePolicy);
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 
@@ -379,6 +388,19 @@ public final class DataLakePathClientBuilder {
     public DataLakePathClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         blobClientBuilder.retryOptions(retryOptions);
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return the updated DataLakePathClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public DataLakePathClientBuilder clientOptions(ClientOptions clientOptions) {
+        blobClientBuilder.clientOptions(clientOptions);
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 

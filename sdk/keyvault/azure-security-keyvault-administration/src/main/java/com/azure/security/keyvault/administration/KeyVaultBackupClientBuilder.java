@@ -6,8 +6,11 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,6 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -68,6 +72,8 @@ public final class KeyVaultBackupClientBuilder {
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private ClientOptions clientOptions;
+    private KeyVaultAdministrationServiceVersion serviceVersion;
 
     /**
      * Creates a {@link KeyVaultBackupClientBuilder} instance that is able to configure and construct instances of
@@ -119,8 +125,10 @@ public final class KeyVaultBackupClientBuilder {
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
+        serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+
         if (pipeline != null) {
-            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline);
+            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -128,13 +136,22 @@ public final class KeyVaultBackupClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         this.policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -143,7 +160,7 @@ public final class KeyVaultBackupClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline);
+        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -270,6 +287,36 @@ public final class KeyVaultBackupClientBuilder {
 
         this.retryPolicy = retryPolicy;
 
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     */
+    public KeyVaultBackupClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link KeyVaultAdministrationServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param serviceVersion {@link KeyVaultAdministrationServiceVersion} of the service API used when making requests.
+     * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     */
+    public KeyVaultBackupClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 

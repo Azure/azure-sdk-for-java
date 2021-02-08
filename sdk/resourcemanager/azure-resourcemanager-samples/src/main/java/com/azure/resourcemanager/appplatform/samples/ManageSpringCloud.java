@@ -6,22 +6,20 @@ package com.azure.resourcemanager.appplatform.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
-import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -31,21 +29,29 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.util.Base64;
+import java.security.cert.X509Certificate;
 import java.util.Collections;
 
 /**
@@ -71,12 +77,11 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
         final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
         final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
-        final String certOrderName = Utils.randomResourceName(azureResourceManager, "cert", 15);
         final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 15);
         final String certName = Utils.randomResourceName(azureResourceManager, "cert", 15);
 
@@ -187,21 +192,27 @@ public class ManageSpringCloud {
                 .withCNameRecordSet("ssl", gateway.fqdn())
                 .apply();
 
-            System.out.printf("Purchasing a certificate for *.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
-            AppServiceCertificateOrder certificateOrder = azureResourceManager.appServiceCertificateOrders().define(certOrderName)
-                .withExistingResourceGroup(rgName)
-                .withHostName(String.format("*.%s", domainName))
-                .withWildcardSku()
-                .withDomainVerification(domain)
-                .withNewKeyVault(vaultName, region)
-                .withAutoRenew(true)
-                .create();
-            System.out.printf("Purchased certificate: *.%s ...%n", domain.name());
-            Utils.print(certificateOrder);
+            // Please use a trusted certificate for actual use
+            System.out.printf("Generate a self-signed certificate for ssl.%s %n", domainName);
+            allowAllSSL();
+            String cerPassword = Utils.password();
+            String cerPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".cer";
+            String pfxPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".pfx";
+            Utils.createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 
-            System.out.printf("Updating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
-            Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
-            vault.update()
+            byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
+
+            KeyStore store = KeyStore.getInstance("PKCS12");
+            store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
+            String alias = Collections.list(store.aliases()).get(0);
+            String thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
+
+            System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
+
+            System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
+            Vault vault = azureResourceManager.vaults().define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                     .forServicePrincipal(clientId)
                     .allowSecretAllPermissions()
@@ -212,24 +223,9 @@ public class ManageSpringCloud {
                     .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
                     .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
                     .attach()
-                .apply();
-            System.out.printf("Updated key vault %s%n", vault.name());
+                .create();
+            System.out.printf("Created key vault %s%n", vault.name());
             Utils.print(vault);
-
-            Secret secret = vault.secrets().getByName(certOrderName);
-
-            byte[] certificate = Base64.getDecoder().decode(secret.value());
-
-            String thumbprint = secret.tags().get("Thumbprint");
-            if (thumbprint == null || thumbprint.isEmpty()) {
-                KeyStore store = KeyStore.getInstance("PKCS12");
-                store.load(new ByteArrayInputStream(certificate), null);
-                String alias = Collections.list(store.aliases()).get(0);
-                thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
-            }
-
-            System.out.printf("Get certificate: %s%n", secret.value());
-            System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             // upload certificate
             CertificateClient certificateClient = new CertificateClientBuilder()
@@ -240,6 +236,7 @@ public class ManageSpringCloud {
             System.out.printf("Uploading certificate to %s in key vault ...%n", certName);
             certificateClient.importCertificate(
                 new ImportCertificateOptions(certName, certificate)
+                    .setPassword(cerPassword)
                     .setEnabled(true)
             );
 
@@ -322,5 +319,38 @@ public class ManageSpringCloud {
         } finally {
             connection.disconnect();
         }
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] data = new byte[4096];
+            while (true) {
+                int size = inputStream.read(data);
+                if (size > 0) {
+                    outputStream.write(data, 0, size);
+                } else {
+                    return outputStream.toByteArray();
+                }
+            }
+        }
+    }
+
+    private static void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+                public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] certs, String authType) {
+                }
+            }
+        };
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
     }
 }

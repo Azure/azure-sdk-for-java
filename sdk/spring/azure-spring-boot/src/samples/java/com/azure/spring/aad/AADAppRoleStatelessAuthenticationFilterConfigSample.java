@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad;
 
-import com.microsoft.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
+import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

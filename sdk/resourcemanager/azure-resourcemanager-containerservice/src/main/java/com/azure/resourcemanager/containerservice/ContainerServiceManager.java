@@ -49,7 +49,7 @@ public final class ContainerServiceManager
      * @param profile the profile to use
      * @return the ContainerServiceManager
      */
-    public static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ContainerServiceManager(httpPipeline, profile);
     }
 

@@ -16,6 +16,7 @@ import org.apache.avro.io.EncoderFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.SCHEMA_ID_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +40,8 @@ import static org.mockito.Mockito.mock;
  */
 public class SchemaRegistryAvroSerializerTest {
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
-    private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
+    private static final String MOCK_AVRO_SCHEMA_STRING =
+        "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
@@ -65,7 +67,7 @@ public class SchemaRegistryAvroSerializerTest {
             mockRegistryClient, encoder, MOCK_SCHEMA_GROUP, false);
 
         try {
-            ByteArrayOutputStream payload =  new ByteArrayOutputStream();
+            ByteArrayOutputStream payload = new ByteArrayOutputStream();
             serializer.serializeAsync(payload, 1).block();
             ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
             buffer.get(new byte[RECORD_FORMAT_INDICATOR_SIZE]);
@@ -88,12 +90,8 @@ public class SchemaRegistryAvroSerializerTest {
         SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
             mockRegistryClient, encoder, MOCK_SCHEMA_GROUP, false);
 
-        try {
-            serializer.serializeAsync(new ByteArrayOutputStream(), null).block();
-            fail("Serializing null payload failed to throw NullPointerException");
-        } catch (NullPointerException e) {
-            assertTrue(true);
-        }
+        StepVerifier.create(serializer.serializeAsync(new ByteArrayOutputStream(), null))
+            .verifyError(NullPointerException.class);
     }
 
 
@@ -122,7 +120,7 @@ public class SchemaRegistryAvroSerializerTest {
             decoder.getSchemaName(null),
             MOCK_AVRO_SCHEMA_STRING.getBytes());
 
-        assertTrue(registered.getSchema() != null);
+        assertNotNull(registered.getSchema());
 
         SchemaRegistryAsyncClient mockClient = getMockClient();
         Mockito.when(mockClient.getSchema(anyString()))
@@ -131,18 +129,23 @@ public class SchemaRegistryAvroSerializerTest {
         SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
             mockClient, decoder, MOCK_SCHEMA_GROUP, true);
 
-        assertEquals(MOCK_GUID, mockClient.getSchema(MOCK_GUID).block().getSchemaId());
+        StepVerifier.create(mockClient.getSchema(MOCK_GUID))
+            .assertNext(properties -> assertEquals(MOCK_GUID, properties.getSchemaId()))
+            .verifyComplete();
 
-        assertEquals(CONSTANT_PAYLOAD,
-            serializer.deserializeAsync(new ByteArrayInputStream(getPayload()),
-                TypeReference.createInstance(GenericData.Record.class)).block().toString());
+        StepVerifier.create(serializer.deserializeAsync(new ByteArrayInputStream(getPayload()),
+            TypeReference.createInstance(GenericData.Record.class)))
+            .assertNext(record -> assertEquals(CONSTANT_PAYLOAD, record.toString()))
+            .verifyComplete();
     }
 
     @Test
     void testNullPayload() {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
             getMockClient(), new AvroSchemaRegistryUtils(false), MOCK_SCHEMA_GROUP, true);
-        assertNull(deserializer.deserializeAsync(null, null).block());
+
+        StepVerifier.create(deserializer.deserializeAsync(null, null))
+            .verifyComplete();
     }
 
     @Test
@@ -150,29 +153,22 @@ public class SchemaRegistryAvroSerializerTest {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
             getMockClient(), new AvroSchemaRegistryUtils(false), MOCK_SCHEMA_GROUP, true);
 
+        StepVerifier.create(deserializer.deserializeAsync(new ByteArrayInputStream("aaa".getBytes()),
+            TypeReference.createInstance(String.class)))
+            .verifyError(BufferUnderflowException.class);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            deserializer.deserializeAsync(new ByteArrayInputStream("aaa".getBytes()),
-                TypeReference.createInstance(String.class)).block();
-            fail("Too short payload did not throw BufferUnderflowException");
-        } catch (BufferUnderflowException e) {
-            assertTrue(true);
+            out.write(new byte[]{0x00, 0x00, 0x00, 0x00});
+            out.write("aa".getBytes());
+        } catch (IOException e) {
+            fail();
         }
 
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            try {
-                out.write(new byte[] {0x00, 0x00, 0x00, 0x00});
-                out.write("aa".getBytes());
-            } catch (IOException e) {
-                fail();
-            }
+        ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
 
-            ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
-            deserializer.deserializeAsync(stream, TypeReference.createInstance(String.class)).block();
-            fail("Too short payload did not throw BufferUnderflowException");
-        } catch (BufferUnderflowException e) {
-            assertTrue(true);
-        }
+        StepVerifier.create(deserializer.deserializeAsync(stream, TypeReference.createInstance(String.class)))
+            .verifyError(BufferUnderflowException.class);
     }
 
     private SchemaRegistryAsyncClient getMockClient() {
@@ -181,7 +177,7 @@ public class SchemaRegistryAvroSerializerTest {
 
     private byte[] getPayload() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        out.write(new byte[] {0x00, 0x00, 0x00, 0x00});
+        out.write(new byte[]{0x00, 0x00, 0x00, 0x00});
         out.write(ByteBuffer.allocate(SCHEMA_ID_SIZE)
             .put(MOCK_GUID.getBytes(StandardCharsets.UTF_8))
             .array());

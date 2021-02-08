@@ -57,41 +57,41 @@ public final class MetricFeedbackTransforms {
                     anomalyFeedback.getAnomalyDetectionConfigurationId() != null
                     ? anomalyFeedback.getAnomalyDetectionConfigurationId().toString()
                     : null);
-            PrivateFieldAccessHelper.set(((MetricAnomalyFeedback) metricFeedback), "detectionConfiguration",
-                anomalyFeedback.getAnomalyDetectionConfigurationSnapshot() != null
-                ? DetectionConfigurationTransforms.fromInner(anomalyFeedback.getAnomalyDetectionConfigurationSnapshot())
-                : null);
-            PrivateFieldAccessHelper.set(metricFeedback, "feedbackType", FeedbackType.ANOMALY);
+
+            if (anomalyFeedback.getAnomalyDetectionConfigurationSnapshot() != null) {
+                MetricAnomalyFeedbackHelper.setDetectionConfiguration((MetricAnomalyFeedback) metricFeedback,
+                    DetectionConfigurationTransforms
+                        .fromInner(anomalyFeedback.getAnomalyDetectionConfigurationSnapshot()));
+            }
+            MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.ANOMALY);
         } else if (metricFeedbackValue instanceof ChangePointFeedback) {
             final ChangePointFeedback changePointFeedback = (ChangePointFeedback) metricFeedbackValue;
             metricFeedback = new MetricChangePointFeedback(
                 changePointFeedback.getStartTime(),
                 changePointFeedback.getEndTime(),
                 ChangePointValue.fromString(changePointFeedback.getValue().getChangePointValue().toString()));
-            PrivateFieldAccessHelper.set(metricFeedback, "feedbackType", FeedbackType.CHANGE_POINT);
+            MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.CHANGE_POINT);
         } else if (metricFeedbackValue instanceof PeriodFeedback) {
             final PeriodFeedback periodFeedback = (PeriodFeedback) metricFeedbackValue;
             metricFeedback = new MetricPeriodFeedback(
                 PeriodType.fromString(periodFeedback.getValue().getPeriodType().toString()),
                 periodFeedback.getValue().getPeriodValue());
-            PrivateFieldAccessHelper.set(metricFeedback, "feedbackType", FeedbackType.PERIOD);
+            MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.PERIOD);
         } else if (metricFeedbackValue instanceof CommentFeedback) {
             final CommentFeedback commentFeedback = (CommentFeedback) metricFeedbackValue;
             metricFeedback = new MetricCommentFeedback(
                 commentFeedback.getStartTime(),
                 commentFeedback.getEndTime(),
                 commentFeedback.getValue().getCommentValue());
-            PrivateFieldAccessHelper.set(metricFeedback, "feedbackType", FeedbackType.COMMENT);
+            MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.COMMENT);
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown feedback type."));
         }
-        PrivateFieldAccessHelper.set(metricFeedback, "id", metricFeedbackValue.getFeedbackId().toString());
-        PrivateFieldAccessHelper.set(metricFeedback, "metricId", metricFeedbackValue.getMetricId().toString());
-        PrivateFieldAccessHelper.set(metricFeedback, "createdTime", metricFeedbackValue.getCreatedTime());
-        PrivateFieldAccessHelper.set(metricFeedback, "userPrincipal", metricFeedbackValue.getUserPrincipal());
-        PrivateFieldAccessHelper.set(metricFeedback, "dimensionFilter",
-            new DimensionKey(metricFeedbackValue.getDimensionFilter().getDimension()));
-
+        MetricFeedbackHelper.setId(metricFeedback, metricFeedbackValue.getFeedbackId().toString());
+        MetricFeedbackHelper.setMetricId(metricFeedback, metricFeedbackValue.getMetricId().toString());
+        MetricFeedbackHelper.setCreatedTime(metricFeedback, metricFeedbackValue.getCreatedTime());
+        MetricFeedbackHelper.setUserPrincipal(metricFeedback, metricFeedbackValue.getUserPrincipal());
+        metricFeedback.setDimensionFilter(new DimensionKey(metricFeedbackValue.getDimensionFilter().getDimension()));
         return metricFeedback;
     }
 

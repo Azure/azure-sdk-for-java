@@ -15,7 +15,7 @@ public class UtilsTests {
     public void testAttributeCollection() throws Exception {
         Collection<RuntimeStack> runtimeStacks = RuntimeStack.getAll();
         int count = runtimeStacks.size();
-        Assertions.assertTrue(count > 30); // a rough count
+        Assertions.assertTrue(count > 10); // a rough count
 
         RuntimeStack newRuntimeStack = new RuntimeStack("stack", "version"); // new, but not count as pre-defined
 

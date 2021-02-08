@@ -23,6 +23,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private final long timeoutMillis;
 
+    private boolean closed;
     private long lastReadMillis;
     private ScheduledFuture<?> readTimeoutWatcher;
 
@@ -52,10 +53,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        if (readTimeoutWatcher != null && !readTimeoutWatcher.isDone()) {
-            readTimeoutWatcher.cancel(false);
-            readTimeoutWatcher = null;
-        }
+        disposeWatcher();
     }
 
     private void readTimeoutRunnable(ChannelHandlerContext ctx) {
@@ -65,6 +63,18 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
         }
 
         // No progress has been made since the last timeout event, channel has timed out.
-        ctx.fireExceptionCaught(new TimeoutException(String.format(READ_TIMED_OUT_MESSAGE, timeoutMillis)));
+        if (!closed) {
+            disposeWatcher();
+            ctx.fireExceptionCaught(new TimeoutException(String.format(READ_TIMED_OUT_MESSAGE, timeoutMillis)));
+            ctx.close();
+            closed = true;
+        }
+    }
+
+    private void disposeWatcher() {
+        if (readTimeoutWatcher != null && !readTimeoutWatcher.isDone()) {
+            readTimeoutWatcher.cancel(false);
+            readTimeoutWatcher = null;
+        }
     }
 }

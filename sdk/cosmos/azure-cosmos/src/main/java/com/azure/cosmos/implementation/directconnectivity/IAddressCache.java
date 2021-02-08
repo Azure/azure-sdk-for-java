@@ -8,7 +8,16 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 public interface IAddressCache {
+
+    /**
+     * Update the physical address of the {@link PartitionKeyRangeIdentity partition key range identity} associated to the serverKey.
+     *
+     *
+     */
+    void updateAddresses(URI serverKey);
 
     /**
      * Resolves physical addresses by either PartitionKeyRangeIdentity.

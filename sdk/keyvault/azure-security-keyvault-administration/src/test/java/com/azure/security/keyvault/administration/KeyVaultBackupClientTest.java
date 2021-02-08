@@ -13,7 +13,9 @@ import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperatio
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
@@ -42,7 +44,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
-        PollResponse<KeyVaultBackupOperation> backupResponse = backupPoller.waitForCompletion();
+        backupPoller.waitForCompletion();
 
         String backupBlobUri = backupPoller.getFinalResult();
 
@@ -70,12 +72,8 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         backupPoller.waitForCompletion();
 
         // Restore the backup
-        String backupBlobUri = backupPoller.getFinalResult();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller =
-            client.beginRestore(blobStorageUrl, sasToken, folderName);
+        String backupFolderUrl = backupPoller.getFinalResult();
+        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = client.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
 
@@ -104,12 +102,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         backupPoller.waitForCompletion();
 
         // Restore one key from said backup
-        String backupBlobUri = backupPoller.getFinalResult();
-        String[] segments = backupBlobUri.split("/");
-        String folderName = segments[segments.length - 1];
-
+        String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultRestoreOperation, Void> selectiveRestorePoller =
-            client.beginSelectiveRestore("testKey", blobStorageUrl, sasToken, folderName);
+            client.beginSelectiveRestore("testKey", backupFolderUrl, sasToken);
 
         PollResponse<KeyVaultRestoreOperation> response = selectiveRestorePoller.poll();
 

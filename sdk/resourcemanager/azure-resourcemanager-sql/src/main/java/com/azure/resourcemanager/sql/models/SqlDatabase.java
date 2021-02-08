@@ -16,10 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Database. */
 @Fluent
@@ -694,20 +695,27 @@ public interface SqlDatabase
         }
 
         /**
-         * The SQL Database definition to set the edition for database.
+         * The SQL Database definition to set the sku for database.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithEdition<ParentT> {
+        interface WithSku<ParentT> {
             /**
-             * Sets the edition for the SQL Database.
+             * Sets the sku for the SQL Database.
              *
-             * @deprecated use {@link WithEditionDefaults}
-             * @param edition edition to be set for database
+             * @param sku sku to be set for database
              * @return The next stage of the definition
              */
-            @Deprecated
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withEdition(DatabaseEdition edition);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(DatabaseSku sku);
+
+            /**
+             * Sets the sku for the SQL Database.
+             *
+             * @param sku sku/edition to be set for database, all possible capabilities could be found by
+             *     {@link SqlServers#getCapabilitiesByRegion(Region)}
+             * @return The next stage of the definition
+             */
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(Sku sku);
         }
 
         /**
@@ -769,26 +777,6 @@ public interface SqlDatabase
              */
             SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(
                 SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
-
-            /**
-             * Sets a custom sku for the SQL Database.
-             *
-             * @param edition edition to be set for database
-             * @param serviceObjective edition to be set for database
-             * @param capacity capacity of the particular SKU
-             * @return The next stage of the definition
-             */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withCustomEdition(
-                DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity);
-
-            /**
-             * Sets a custom sku for the SQL Database.
-             *
-             * @param sku sku/edition to be set for database, all possible capabilities could be found by
-             *     Sqlservers.getCapabilitiesByRegion(Region)
-             * @return The next stage of the definition
-             */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withCustomEdition(Sku sku);
         }
 
         /**
@@ -815,32 +803,12 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
-             * @deprecated use {@link WithEditionDefaults}
              * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
              *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
              *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withMaxSizeBytes(long maxSizeBytes);
-        }
-
-        /**
-         * The SQL Database definition to set the service level objective.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithServiceObjective<ParentT> {
-            /**
-             * Sets the service level objective for the SQL Database.
-             *
-             * @deprecated use {@link WithEditionDefaults}
-             * @param serviceLevelObjective service level objected for the SQL Database
-             * @return The next stage of the definition.
-             */
-            @Deprecated
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withServiceObjective(
-                ServiceObjectiveName serviceLevelObjective);
         }
 
         /**
@@ -849,8 +817,7 @@ public interface SqlDatabase
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttachAllOptions<ParentT>
-            extends SqlDatabase.DefinitionStages.WithServiceObjective<ParentT>,
-                SqlDatabase.DefinitionStages.WithEdition<ParentT>,
+            extends SqlDatabase.DefinitionStages.WithSku<ParentT>,
                 SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
                 SqlDatabase.DefinitionStages.WithCollation<ParentT>,
                 SqlDatabase.DefinitionStages.WithMaxSizeBytes<ParentT>,
@@ -874,7 +841,6 @@ public interface SqlDatabase
         extends UpdateStages.WithEdition,
             UpdateStages.WithElasticPoolName,
             UpdateStages.WithMaxSizeBytes,
-            UpdateStages.WithServiceObjective,
             Resource.UpdateWithTags<SqlDatabase.Update>,
             Appliable<SqlDatabase> {
     }
@@ -885,14 +851,22 @@ public interface SqlDatabase
         /** The SQL Database definition to set the edition for database. */
         interface WithEdition {
             /**
-             * Sets the edition for the SQL Database.
+             * Sets the sku for the SQL Database.
              *
-             * @deprecated use specific edition instead
-             * @param edition edition to be set for database
-             * @return The next stage of the update.
+             * @param sku sku to be set for database
+             * @return The next stage of the update
              */
-            @Deprecated
-            Update withEdition(DatabaseEdition edition);
+            Update withSku(DatabaseSku sku);
+
+            /**
+             * Sets the sku for the SQL Database.
+             *
+             * @param sku sku/edition to be set for database, all possible capabilities could be found by
+             *     {@link SqlServers#getCapabilitiesByRegion(Region)}
+             * @return The next stage of the update
+             */
+            Update withSku(Sku sku);
+
             /**
              * Sets a "Basic" edition for the SQL Database.
              *
@@ -943,25 +917,6 @@ public interface SqlDatabase
              */
             Update withPremiumEdition(
                 SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
-
-            /**
-             * Sets a custom sku for the SQL Database.
-             *
-             * @param edition edition to be set for database
-             * @param serviceObjective edition to be set for database
-             * @param capacity capacity of the particular SKU
-             * @return The next stage of the definition
-             */
-            Update withCustomEdition(DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity);
-
-            /**
-             * Sets a custom sku for the SQL Database.
-             *
-             * @param sku sku/edition to be set for database, all possible capabilities could be found by
-             *     Sqlservers.getCapabilitiesByRegion(Region)
-             * @return The next stage of the update
-             */
-            Update withCustomEdition(Sku sku);
         }
 
         /** The SQL Database definition to set the Max Size in Bytes for database. */
@@ -969,27 +924,12 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
-             * @deprecated use specific edition instead
              * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
              *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
              *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the update.
              */
-            @Deprecated
             Update withMaxSizeBytes(long maxSizeBytes);
-        }
-
-        /** The SQL Database definition to set the service level objective. */
-        interface WithServiceObjective {
-            /**
-             * Sets the service level objective for the SQL Database.
-             *
-             * @deprecated use specific edition instead
-             * @param serviceLevelObjective service level objected for the SQL Database
-             * @return The next stage of the update.
-             */
-            @Deprecated
-            Update withServiceObjective(ServiceObjectiveName serviceLevelObjective);
         }
 
         /** The SQL Database definition to set the elastic pool for database. */

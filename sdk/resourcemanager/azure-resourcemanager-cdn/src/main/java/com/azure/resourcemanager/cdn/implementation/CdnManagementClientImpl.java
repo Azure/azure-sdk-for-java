@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -30,8 +31,11 @@ import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
 import com.azure.resourcemanager.cdn.fluent.EndpointsClient;
+import com.azure.resourcemanager.cdn.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.OperationsClient;
+import com.azure.resourcemanager.cdn.fluent.OriginGroupsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginsClient;
+import com.azure.resourcemanager.cdn.fluent.PoliciesClient;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.ResourceUsagesClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
@@ -158,6 +162,18 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         return this.origins;
     }
 
+    /** The OriginGroupsClient object to access its operations. */
+    private final OriginGroupsClient originGroups;
+
+    /**
+     * Gets the OriginGroupsClient object to access its operations.
+     *
+     * @return the OriginGroupsClient object.
+     */
+    public OriginGroupsClient getOriginGroups() {
+        return this.originGroups;
+    }
+
     /** The CustomDomainsClient object to access its operations. */
     private final CustomDomainsClient customDomains;
 
@@ -206,6 +222,30 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         return this.edgeNodes;
     }
 
+    /** The PoliciesClient object to access its operations. */
+    private final PoliciesClient policies;
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     *
+     * @return the PoliciesClient object.
+     */
+    public PoliciesClient getPolicies() {
+        return this.policies;
+    }
+
+    /** The ManagedRuleSetsClient object to access its operations. */
+    private final ManagedRuleSetsClient managedRuleSets;
+
+    /**
+     * Gets the ManagedRuleSetsClient object to access its operations.
+     *
+     * @return the ManagedRuleSetsClient object.
+     */
+    public ManagedRuleSetsClient getManagedRuleSets() {
+        return this.managedRuleSets;
+    }
+
     /**
      * Initializes an instance of CdnManagementClient client.
      *
@@ -229,14 +269,17 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-10-12";
+        this.apiVersion = "2020-04-15";
         this.profiles = new ProfilesClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.origins = new OriginsClientImpl(this);
+        this.originGroups = new OriginGroupsClientImpl(this);
         this.customDomains = new CustomDomainsClientImpl(this);
         this.resourceUsages = new ResourceUsagesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.edgeNodes = new EdgeNodesClientImpl(this);
+        this.policies = new PoliciesClientImpl(this);
+        this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
         this.service =
             RestProxy.create(CdnManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -248,7 +291,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClient")
     private interface CdnManagementClientService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Cdn/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -256,9 +299,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -267,9 +311,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -278,6 +323,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ValidateProbeInput validateProbeInput,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -300,6 +346,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
         return FluxUtil
@@ -307,7 +354,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                 context ->
                     service
                         .checkNameAvailability(
-                            this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, context))
+                            this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
 
@@ -332,11 +379,13 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
         context = this.mergeContext(context);
         return service
-            .checkNameAvailability(this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, context);
+            .checkNameAvailability(
+                this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, accept, context);
     }
 
     /**
@@ -418,6 +467,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
         return FluxUtil
@@ -429,6 +479,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                             this.getSubscriptionId(),
                             this.getApiVersion(),
                             checkNameAvailabilityInput,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
@@ -459,6 +510,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CheckNameAvailabilityInput checkNameAvailabilityInput = new CheckNameAvailabilityInput();
         checkNameAvailabilityInput.withName(name);
         context = this.mergeContext(context);
@@ -468,6 +520,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                 this.getSubscriptionId(),
                 this.getApiVersion(),
                 checkNameAvailabilityInput,
+                accept,
                 context);
     }
 
@@ -551,6 +604,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (probeUrl == null) {
             return Mono.error(new IllegalArgumentException("Parameter probeUrl is required and cannot be null."));
         }
+        final String accept = "application/json";
         ValidateProbeInput validateProbeInput = new ValidateProbeInput();
         validateProbeInput.withProbeUrl(probeUrl);
         return FluxUtil
@@ -562,6 +616,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                             this.getSubscriptionId(),
                             this.getApiVersion(),
                             validateProbeInput,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
@@ -592,12 +647,18 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         if (probeUrl == null) {
             return Mono.error(new IllegalArgumentException("Parameter probeUrl is required and cannot be null."));
         }
+        final String accept = "application/json";
         ValidateProbeInput validateProbeInput = new ValidateProbeInput();
         validateProbeInput.withProbeUrl(probeUrl);
         context = this.mergeContext(context);
         return service
             .validateProbe(
-                this.getEndpoint(), this.getSubscriptionId(), this.getApiVersion(), validateProbeInput, context);
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getApiVersion(),
+                validateProbeInput,
+                accept,
+                context);
     }
 
     /**

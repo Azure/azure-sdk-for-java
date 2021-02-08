@@ -199,14 +199,18 @@ public final class WebhooksClientImpl implements WebhooksClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebhookListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventListResult>> listEventsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            Context context);
     }
 
     /**
@@ -245,7 +249,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -298,7 +302,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -416,7 +420,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -482,7 +486,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -724,7 +728,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -777,7 +781,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -983,7 +987,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1049,7 +1053,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1286,7 +1290,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1343,7 +1347,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1465,7 +1469,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1518,7 +1522,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .ping(
@@ -1625,7 +1629,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1678,7 +1682,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .getCallbackConfig(
@@ -1786,7 +1790,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1848,7 +1852,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .listEvents(
@@ -1956,8 +1960,14 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
             .<PagedResponse<WebhookInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1985,9 +1995,15 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2013,8 +2029,14 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.listEventsNext(nextLink, context))
+            .withContext(context -> service.listEventsNext(nextLink, this.client.getEndpoint(), context))
             .<PagedResponse<EventInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2042,9 +2064,15 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
         return service
-            .listEventsNext(nextLink, context)
+            .listEventsNext(nextLink, this.client.getEndpoint(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

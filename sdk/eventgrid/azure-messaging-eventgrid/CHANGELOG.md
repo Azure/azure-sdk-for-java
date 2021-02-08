@@ -1,7 +1,11 @@
 # Release History
 
-## 2.0.0-beta.3 (Unreleased)
+## 2.0.0-beta.4 (Unreleased)
 
+
+## 2.0.0-beta.3 (2020-10-06)
+### New Features
+- Added support for distributed tracing.
 
 ## 2.0.0-beta.2 (2020-09-24)
 Added system event classes for Azure Communication Services under package `com.azure.messaging.eventgrid.systemevents`.

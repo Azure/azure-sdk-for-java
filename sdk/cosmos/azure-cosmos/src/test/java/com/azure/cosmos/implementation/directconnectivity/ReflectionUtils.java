@@ -9,13 +9,15 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.cpu.CpuListener;
-import com.azure.cosmos.implementation.cpu.CpuMonitor;
+import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -162,10 +164,31 @@ public class ReflectionUtils {
     }
 
     public static Future<?> getFuture() {
-        return getStaticField(CpuMonitor.class, "future");
+        return getStaticField(CpuMemoryMonitor.class, "future");
     }
 
-    public static List<WeakReference<CpuListener>> getListeners() {
-        return getStaticField(CpuMonitor.class, "cpuListeners");
+    public static List<WeakReference<CpuMemoryListener>> getListeners() {
+        return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
     }
+
+    public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "gatewayProxy");
+    }
+
+    public static RxStoreModel getRxServerStoreModel(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "storeModel");
+    }
+
+    public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
+        return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
+
+    public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "gatewayProxy");
+    }
+
+    public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "storeModel");
+    }
+
 }

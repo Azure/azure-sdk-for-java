@@ -28,6 +28,20 @@ public final class CustomRegistryCredentials {
     @JsonProperty(value = "password")
     private SecretObject password;
 
+    /*
+     * Indicates the managed identity assigned to the custom credential. If a
+     * user-assigned identity
+     * this value is the Client ID. If a system-assigned identity, the value
+     * will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined
+     * by the runner. This
+     * identity may be used to authenticate to key vault to retrieve
+     * credentials or it may be the only
+     * source of authentication used for accessing the registry.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
     /**
      * Get the username property: The username for logging into the custom registry.
      *
@@ -67,6 +81,34 @@ public final class CustomRegistryCredentials {
      */
     public CustomRegistryCredentials withPassword(SecretObject password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
+     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
+     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
+     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
+     * accessing the registry.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
+     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
+     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
+     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
+     * accessing the registry.
+     *
+     * @param identity the identity value to set.
+     * @return the CustomRegistryCredentials object itself.
+     */
+    public CustomRegistryCredentials withIdentity(String identity) {
+        this.identity = identity;
         return this;
     }
 

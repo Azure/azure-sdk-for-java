@@ -46,7 +46,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(client.getPollDuration()).thenReturn(Duration.ofMillis(10));
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
     }
 
@@ -307,6 +307,17 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     public void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         initializeClient(httpClient, serviceVersion);
         StepVerifier.create(client.beginRecoverDeletedSecret("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+    }
+
+    /**
+     * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        initializeClient(httpClient, serviceVersion);
+        StepVerifier.create(client.beginRecoverDeletedSecret("non-existing", Duration.ofSeconds(1)))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 

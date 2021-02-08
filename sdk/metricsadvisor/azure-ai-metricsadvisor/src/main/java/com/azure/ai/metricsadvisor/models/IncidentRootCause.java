@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseHelper;
+
 import java.util.List;
 
 /**
@@ -11,8 +13,33 @@ import java.util.List;
 public final class IncidentRootCause {
     private DimensionKey seriesKey;
     private List<String> paths;
-    private double confidenceScore;
+    private double contributionScore;
     private String description;
+
+    static {
+        IncidentRootCauseHelper.setAccessor(new IncidentRootCauseHelper.IncidentRootCauseAccessor() {
+            @Override
+            public void setSeriesKey(IncidentRootCause rootCause, DimensionKey seriesKey) {
+                rootCause.setSeriesKey(seriesKey);
+            }
+
+            @Override
+            public void setPaths(IncidentRootCause rootCause, List<String> paths) {
+                rootCause.setPaths(paths);
+
+            }
+
+            @Override
+            public void setContributionScore(IncidentRootCause rootCause, double confidenceScore) {
+                rootCause.setContributionScore(confidenceScore);
+            }
+
+            @Override
+            public void setDescription(IncidentRootCause rootCause, String description) {
+                rootCause.setDescription(description);
+            }
+        });
+    }
 
     /**
      * Get the dimension name and value pair.
@@ -37,12 +64,12 @@ public final class IncidentRootCause {
     }
 
     /**
-     * Get the confidence score value for the returned root cause.
+     * Get the contribution score value for the returned root cause.
      *
      * @return the score value.
      */
-    public double getConfidenceScore() {
-        return this.confidenceScore;
+    public double getContributionScore() {
+        return this.contributionScore;
     }
 
     /**
@@ -52,5 +79,21 @@ public final class IncidentRootCause {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
+    }
+
+    void setPaths(List<String> paths) {
+        this.paths = paths;
+    }
+
+    void setContributionScore(double contributionScore) {
+        this.contributionScore = contributionScore;
+    }
+
+    void setDescription(String description) {
+        this.description = description;
     }
 }

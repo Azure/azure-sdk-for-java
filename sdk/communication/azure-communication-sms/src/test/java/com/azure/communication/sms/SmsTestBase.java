@@ -3,8 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
-import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.core.http.HttpHeaders;
@@ -30,9 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
-
 public class SmsTestBase {
 
     static final String PROTOCOL = "https://";
@@ -45,42 +41,33 @@ public class SmsTestBase {
         mapper = new ObjectMapper();
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
 
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
 
         SmsClientBuilder builder = new SmsClientBuilder();
-        try {
-            CommunicationClientCredential credential = new CommunicationClientCredential(ACCESSKEY);
 
-            builder.endpoint(PROTOCOL + ENDPOINT)
-                .credential(credential)
-                .httpClient(httpClient);
+        builder.endpoint(PROTOCOL + ENDPOINT)
+            .accessKey(ACCESSKEY)
+            .httpClient(httpClient);
 
-            if (policy != null) {
-                builder.addPolicy(policy);
-            }
-        } catch (NoSuchAlgorithmException e) {
-            fail(e.getMessage());
-        } catch (InvalidKeyException e) {
-            fail(e.getMessage());
+        if (policy != null) {
+            builder.addPolicy(policy);
         }
-
-        assertNotNull(builder);
         return builder;
     }
 
-    public HttpClient getHttpClient(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public HttpClient getHttpClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {

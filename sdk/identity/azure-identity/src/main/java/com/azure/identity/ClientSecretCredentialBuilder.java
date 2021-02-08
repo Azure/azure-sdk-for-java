@@ -44,7 +44,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @return An updated instance of this builder.
      */
     ClientSecretCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

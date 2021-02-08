@@ -1,9 +1,34 @@
 parameters:
-  Artifacts: []
-  ArtifactName: 'not-specified'
-  TargetDocRepoOwner: ''
-  TargetDocRepoName: ''
-  EnableIntegrationStage: true
+  - name: DependsOn
+    type: string
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
+  - name: Artifacts
+    type: object
+    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: ArtifactName
+    type: string
+    default: 'not-specified'
+  - name: TargetDocRepoOwner
+    type: string
+    default: ''
+  - name: TargetDocRepoName
+    type: string
+    default: ''
+  - name: EnableIntegrationStage
+    type: boolean
+    default: true
+  - name: WindowsPool
+    type: string
+    default: azsdk-pool-mms-win-2019-general
+  - name: LinuxPool
+    type: string
+    default: azsdk-pool-mms-ubuntu-1804-general  
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -61,13 +86,15 @@ stages:
               vmImage: ubuntu-18.04
 
             steps:
-              - task: PowerShell@2
-                displayName: Prep template pipeline for release
-                condition: and(succeeded(),eq(variables['TestPipeline'],'true'))
-                inputs:
-                  pwsh: true
-                  workingDirectory: $(Build.SourcesDirectory)
-                  filePath: eng/scripts/SetTestPipelineVersion.ps1
+              - ${{if eq(parameters.TestPipeline, 'true')}}:
+                - task: PowerShell@2
+                  displayName: Prep template pipeline for release
+                  condition: succeeded()
+                  inputs:
+                    pwsh: true
+                    workingDirectory: $(Build.SourcesDirectory)
+                    filePath: eng/scripts/SetTestPipelineVersion.ps1
+                    arguments: '-BuildID $(Build.BuildId)'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
@@ -110,7 +137,6 @@ stages:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -159,7 +185,7 @@ stages:
               environment: github
               dependsOn: PublishPackage
               variables:
-                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
                 skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
@@ -177,7 +203,6 @@ stages:
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           PackageRepository: Maven
                           ReleaseSha: $(Build.SourceVersion)
-                          RepoId: Azure/azure-sdk-for-java
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
@@ -187,6 +212,8 @@ stages:
                           DocRepoDestinationPath: 'docs-ref-services/'
                           GHReviewersVariable: 'OwningGHUser'
                           CIConfigs: $(CIConfigs)
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                          SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -250,10 +277,10 @@ stages:
 
                       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                         parameters:
-                          RepoName: azure-sdk-for-java
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration

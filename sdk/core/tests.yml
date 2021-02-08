@@ -11,6 +11,9 @@ jobs:
         - name: azure-core-amqp
           groupId: com.azure
           safeName: azurecoreamqp
+        - name: azure-core-amqp-experimental
+          groupId: com.azure
+          safeName: azurecoreamqpexperimental
         - name: azure-core-experimental
           groupId: com.azure
           safeName: azurecoreexperimental

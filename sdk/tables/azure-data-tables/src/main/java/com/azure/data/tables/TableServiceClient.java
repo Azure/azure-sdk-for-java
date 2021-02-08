@@ -14,6 +14,8 @@ import com.azure.data.tables.models.TableItem;
 
 import java.time.Duration;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
  *
@@ -93,7 +95,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTable(String tableName, Duration timeout) {
-        client.createTable(tableName).block(timeout);
+        blockWithOptionalTimeout(client.createTable(tableName), timeout);
     }
 
     /**
@@ -109,7 +111,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        return client.createTableWithResponse(tableName, context).block(timeout);
+        return blockWithOptionalTimeout(client.createTableWithResponse(tableName, context), timeout);
     }
 
     /**
@@ -133,7 +135,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTableIfNotExists(String tableName, Duration timeout) {
-        client.createTableIfNotExists(tableName).block(timeout);
+        blockWithOptionalTimeout(client.createTableIfNotExists(tableName), timeout);
     }
 
     /**
@@ -148,7 +150,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTableIfNotExistsWithResponse(String tableName, Duration timeout, Context context) {
-        return client.createTableIfNotExistsWithResponse(tableName, context).block(timeout);
+        return blockWithOptionalTimeout(client.createTableIfNotExistsWithResponse(tableName, context), timeout);
     }
 
     /**
@@ -174,7 +176,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName, Duration timeout) {
-        client.deleteTable(tableName).block(timeout);
+        blockWithOptionalTimeout(client.deleteTable(tableName), timeout);
     }
 
     /**
@@ -190,7 +192,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        return client.deleteTableWithResponse(tableName, context).block(timeout);
+        return blockWithOptionalTimeout(client.deleteTableWithResponse(tableName, context), timeout);
     }
 
     /**

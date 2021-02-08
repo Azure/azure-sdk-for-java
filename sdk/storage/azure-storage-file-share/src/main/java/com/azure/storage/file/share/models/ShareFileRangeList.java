@@ -6,6 +6,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "ShareFileRangeList")
 @Fluent
+@JsonDeserialize(using = ShareFileRangeListDeserializer.class)
 public final class ShareFileRangeList {
     /*
      * The ranges property.

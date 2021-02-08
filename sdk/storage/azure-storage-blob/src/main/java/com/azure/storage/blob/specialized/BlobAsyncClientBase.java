@@ -15,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -37,6 +39,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -275,6 +278,30 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Get an async client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerAsyncClient}
+     *
+     * @return {@link BlobContainerAsyncClient}
+     */
+    public BlobContainerAsyncClient getContainerAsyncClient() {
+        return getContainerClientBuilder().buildAsyncClient();
+    }
+
+    final BlobContainerClientBuilder getContainerClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobContainerClientBuilder()
+            .endpoint(this.getBlobUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .customerProvidedKey(encryptionKey)
+            .encryptionScope(this.getEncryptionScope());
+    }
+
+    /**
      * Decodes and gets the blob name.
      *
      * <p><strong>Code Samples</strong></p>
@@ -397,6 +424,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -417,6 +449,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -427,7 +464,8 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob.
+     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in
+     * any metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
@@ -451,6 +489,11 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
@@ -664,6 +707,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -685,6 +731,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -694,7 +743,8 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob.
+     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in
+     * any metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
@@ -713,6 +763,9 @@ public class BlobAsyncClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -960,7 +1013,7 @@ public class BlobAsyncClientBase {
                 downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
                         .setParallelTransferOptions(finalParallelTransferOptions)
                         .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
-                        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
+                        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1014,7 +1067,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRangeGetContentMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1168,7 +1221,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1312,7 +1365,8 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
@@ -1334,7 +1388,8 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
@@ -1402,7 +1457,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobRequestConditions() : options.getRequestConditions();
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            versionId, requestConditions.getTagsConditions(), context)
+            versionId, requestConditions.getTagsConditions(), requestConditions.getLeaseId(), context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for (BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -1465,7 +1520,7 @@ public class BlobAsyncClientBase {
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
-            requestConditions.getTagsConditions(), t, context)
+            requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1500,7 +1555,8 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the blob snapshot.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
      * use {@link #getSnapshotId()} to get the identifier for the snapshot.
@@ -1716,21 +1772,44 @@ public class BlobAsyncClientBase {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, getAccountName(),
+            Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
             getSnapshotId(), getVersionId())
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
+            .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
     /**
      * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1739,12 +1818,30 @@ public class BlobAsyncClientBase {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return generateSas(blobServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
             getSnapshotId(), getVersionId())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     /**

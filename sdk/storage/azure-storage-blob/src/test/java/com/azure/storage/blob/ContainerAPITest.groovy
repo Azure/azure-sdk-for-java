@@ -28,7 +28,9 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.StorageImplUtils
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -909,6 +911,20 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    def "List blobs prefix with comma"() {
+        setup:
+        def prefix = generateBlobName() + ", " + generateBlobName()
+        def b = cc.getBlobClient(prefix).getBlockBlobClient()
+        b.upload(defaultInputStream.get(), defaultData.remaining())
+
+        when:
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix)
+        def blob = cc.listBlobs(options, null).iterator().next()
+
+        then:
+        blob.getName() == prefix
+    }
+
     def "List blobs flat options fail"() {
         when:
         new ListBlobsOptions().setMaxResultsPerPage(0)
@@ -1707,5 +1723,21 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(primaryCredential)
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient()
+
+        when:
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

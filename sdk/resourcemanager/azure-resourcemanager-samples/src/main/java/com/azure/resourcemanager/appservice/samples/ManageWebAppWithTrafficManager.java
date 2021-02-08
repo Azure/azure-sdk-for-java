@@ -106,7 +106,7 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
-            Utils.createCertificate(cerPath, pfxPath, domainName, CERT_PASSWORD, "*." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, CERT_PASSWORD, "*." + domainName, null);
 
             //============================================================
             // Create 3 app service plans in 3 regions

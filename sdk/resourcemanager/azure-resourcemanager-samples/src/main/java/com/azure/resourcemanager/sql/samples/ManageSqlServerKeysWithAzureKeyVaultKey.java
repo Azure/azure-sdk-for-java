@@ -87,9 +87,16 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
 
             ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
+            List<KeyOperation> keyOperations = new ArrayList<>();
+            for (KeyOperation operation : KeyOperation.values()) {
+                if (operation != KeyOperation.IMPORT) {
+                    keyOperations.add(operation);
+                }
+            }
+
             Key keyBundle = vault.keys().define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA_HSM)
-                .withKeyOperations(new ArrayList<>(KeyOperation.values()))
+                .withKeyOperations(keyOperations)
                 .create();
 
             // ============================================================

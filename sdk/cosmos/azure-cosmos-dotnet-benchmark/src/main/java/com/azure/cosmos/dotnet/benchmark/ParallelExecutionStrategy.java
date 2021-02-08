@@ -85,6 +85,10 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
 
                 Summary currentTotalSummary = new Summary();
                 for (IExecutor executor : executors) {
+                    if (executor == null) {
+                        continue;
+                    }
+
                     Summary executorSummary = new Summary(
                         executor.getSuccessOperationCount(),
                         executor.getFailedOperationCount(),

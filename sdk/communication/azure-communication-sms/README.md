@@ -12,7 +12,7 @@ Azure Communication SMS is used to send simple text messages.
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.1</version> 
+  <version>1.0.0-beta.3</version> 
 </dependency>
 ```
 
@@ -30,11 +30,11 @@ Azure Communication SMS is used to send simple text messages.
 To send messages with Azure Communication SMS Service a resource access key is used 
 for authentication. 
 
-SMS messaging uses HMAC authentication with resource access key. This is done via the 
-CommunicationClientCredentials The credentials must be provided to the SMSClientBuilder 
-via the credential() function. Endpoint and httpClient must also be set.
+SMS messaging uses HMAC authentication with resource access key. The access key must be provided
+via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
+functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L26-L51 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L23-L39 -->
 ```java
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -43,25 +43,28 @@ String accessKey = "SECRET";
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-CommunicationClientCredential credential = null;
-try {
-    credential = new CommunicationClientCredential(accessKey);
-} catch (NoSuchAlgorithmException e) {
-    System.out.println(e.getMessage());
-} catch (InvalidKeyException e) {
-    System.out.println(e.getMessage());
-}
-
 // Create a new SmsClientBuilder to instantiate an SmsClient
 SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
 
 // Set the endpoint, access key, and the HttpClient
 smsClientBuilder.endpoint(endpoint)
-    .credential(credential)
+    .accessKey(accessKey)
     .httpClient(httpClient);
 
 // Build a new SmsClient
 SmsClient smsClient = smsClientBuilder.buildClient();
+```
+
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L70 -->
+```java
+// Your can find your connection string from your resource in the Azure Portal
+String connectionString = "<connection_string>";
+
+SmsClient smsClient = new SmsClientBuilder()
+    .connectionString(connectionString)
+    .httpClient(httpClient)
+    .buildClient();
 ```
 
 ## Examples
@@ -72,11 +75,11 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L53-L69 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L41-L57 -->
 ```java
 // Currently Sms services only supports one phone number
-List<PhoneNumber> to = new ArrayList<PhoneNumber>();
-to.add(new PhoneNumber("<to-phone-number>"));
+List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
+to.add(new PhoneNumberIdentifier("<to-phone-number>"));
 
 // SendSmsOptions is an optional field. It can be used
 // to enable a delivery report to the Azure Event Grid
@@ -85,7 +88,7 @@ options.setEnableDeliveryReport(true);
 
 // Send the message and check the response for a message id
 SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"), 
+    new PhoneNumberIdentifier("<leased-phone-number>"), 
     to, 
     "your message",
     options /* Optional */);

@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.converters.SuggestOptionsHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.List;
@@ -89,6 +90,25 @@ public final class SuggestOptions {
      */
     @JsonProperty(value = "")
     private Integer top;
+
+    static {
+        SuggestOptionsHelper.setAccessor(new SuggestOptionsHelper.SuggestOptionsAccessor() {
+            @Override
+            public void setOrderBy(SuggestOptions suggestOptions, List<String> orderBy) {
+                suggestOptions.setOrderBy(orderBy);
+            }
+
+            @Override
+            public void setSearchFields(SuggestOptions suggestOptions, List<String> searchFields) {
+                suggestOptions.setSearchFields(searchFields);
+            }
+
+            @Override
+            public void setSelect(SuggestOptions suggestOptions, List<String> select) {
+                suggestOptions.setSelect(select);
+            }
+        });
+    }
 
     /**
      * Get the filter property: An OData expression that filters the documents
@@ -318,5 +338,33 @@ public final class SuggestOptions {
     public SuggestOptions setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    /**
+     * The private setter to set the orderBy property via {@link SuggestOptionsHelper.SuggestOptionsAccessor}.
+     *
+     * @param orderBy The list of OData $orderby expressions by which to sort the results.
+     */
+    private void setOrderBy(List<String> orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    /**
+     * The private setter to set the searchFields property
+     * via {@link SuggestOptionsHelper.SuggestOptionsAccessor}.
+     *
+     * @param searchFields The list of field names to search for the specified search text.
+     */
+    private void setSearchFields(List<String> searchFields) {
+        this.searchFields = searchFields;
+    }
+
+    /**
+     * The private setter to set the select property via {@link SuggestOptionsHelper.SuggestOptionsAccessor}.
+     *
+     * @param select The list of fields to retrieve.
+     */
+    private void setSelect(List<String> select) {
+        this.select = select;
     }
 }

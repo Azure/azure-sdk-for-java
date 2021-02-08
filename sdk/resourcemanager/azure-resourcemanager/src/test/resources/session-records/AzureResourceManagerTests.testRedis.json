@@ -1,0 +1,2364 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1384a7fc-2e90-4734-be30-c6286ca48379",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:27:23 GMT",
+      "x-ms-correlation-request-id" : "736192b5-3827-4d27-9c0c-e8ea07fb9bb7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062723Z:736192b5-3827-4d27-9c0c-e8ea07fb9bb7",
+      "Expires" : "-1",
+      "Content-Length" : "12",
+      "x-ms-request-id" : "736192b5-3827-4d27-9c0c-e8ea07fb9bb7",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b3d87445-0b47-4d11-9b07-09eff1e4a8b0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:27:23 GMT",
+      "x-ms-correlation-request-id" : "617a488a-1067-4f50-96a2-3f52be49d3ec",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062723Z:617a488a-1067-4f50-96a2-3f52be49d3ec",
+      "Expires" : "-1",
+      "Content-Length" : "12",
+      "x-ms-request-id" : "617a488a-1067-4f50-96a2-3f52be49d3ec",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/redis64963group?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "240e5387-a50a-42ac-b3d3-1df78f414eb5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Fri, 25 Dec 2020 06:27:25 GMT",
+      "x-ms-correlation-request-id" : "1f5655f3-3dea-4373-8e66-cc035eb8d382",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062726Z:1f5655f3-3dea-4373-8e66-cc035eb8d382",
+      "Expires" : "-1",
+      "Content-Length" : "227",
+      "x-ms-request-id" : "1f5655f3-3dea-4373-8e66-cc035eb8d382",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group\",\"name\":\"redis64963group\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c243061f-5452-4805-a245-fe9e903887cf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Fri, 25 Dec 2020 06:27:34 GMT",
+      "x-ms-correlation-request-id" : "0d36742c-20ce-468a-b79e-b937ceebff88",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c243061f-5452-4805-a245-fe9e903887cf",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062734Z:0d36742c-20ce-468a-b79e-b937ceebff88",
+      "Expires" : "-1",
+      "Content-Length" : "739",
+      "x-ms-request-id" : "6862d30f-8ebd-4781-ae6c-e1127ca475cc",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"},\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/redis/redis64963?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7cd94f03-be16-40cc-9844-fa3ed2b13192"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11960",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:28:05 GMT",
+      "x-ms-correlation-request-id" : "75ffe7ee-141e-4fb6-847d-87844744620f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7cd94f03-be16-40cc-9844-fa3ed2b13192",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062805Z:75ffe7ee-141e-4fb6-847d-87844744620f",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "d77f9a8b-8cd9-43e9-9625-38a60fb84638",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a88bac3a-f641-4b07-9f85-446e31270341"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10694",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:28:36 GMT",
+      "x-ms-correlation-request-id" : "11b88ee4-7a58-4f6c-8848-dc3d9a38cbaa",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a88bac3a-f641-4b07-9f85-446e31270341",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062837Z:11b88ee4-7a58-4f6c-8848-dc3d9a38cbaa",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "93948472-9711-4048-8fae-5985eb523a5d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8715ec10-2d4c-4085-9a73-1c28ed2fee42"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9700",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:29:07 GMT",
+      "x-ms-correlation-request-id" : "802f0582-fec8-4b22-a954-0a6032b7d6f0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8715ec10-2d4c-4085-9a73-1c28ed2fee42",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062908Z:802f0582-fec8-4b22-a954-0a6032b7d6f0",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "1a22b8f1-645b-49fb-951d-57918e4f8eee",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0fabf631-3179-4498-9dde-36282f559d6d"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10032",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:29:39 GMT",
+      "x-ms-correlation-request-id" : "ddbb3333-f470-486a-b99f-37ec5866df2f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0fabf631-3179-4498-9dde-36282f559d6d",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T062939Z:ddbb3333-f470-486a-b99f-37ec5866df2f",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "0eee79d0-d076-443a-bc85-40f572f10621",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d4417f6-8f56-4cac-bf08-968f0bf4bf2c"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10216",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:30:09 GMT",
+      "x-ms-correlation-request-id" : "63a1e336-82b7-4a3d-9800-36bdf09bae51",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8d4417f6-8f56-4cac-bf08-968f0bf4bf2c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063010Z:63a1e336-82b7-4a3d-9800-36bdf09bae51",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b05033a2-65bc-43bc-9036-64430c356604",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6815a0fa-7a2d-4a14-9ff1-c041e19b4f7c"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10041",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:30:40 GMT",
+      "x-ms-correlation-request-id" : "3fc25d7b-c5fd-40f4-9a19-46692e200a3e",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "6815a0fa-7a2d-4a14-9ff1-c041e19b4f7c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063041Z:3fc25d7b-c5fd-40f4-9a19-46692e200a3e",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "ed555d67-50fa-4c31-adbc-8e76e443f7e6",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c57643a2-c136-4fa3-a756-a70f42388fea"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10166",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:31:11 GMT",
+      "x-ms-correlation-request-id" : "97a99477-64f8-453e-940d-1e3297a0b099",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c57643a2-c136-4fa3-a756-a70f42388fea",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063112Z:97a99477-64f8-453e-940d-1e3297a0b099",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "370e94a4-c466-43e0-9c8d-fb2999e580e9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "520efe60-2ba6-4c2d-b051-0763c5ed57de"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10037",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:31:43 GMT",
+      "x-ms-correlation-request-id" : "d8b64b47-ccf1-406f-92cd-3e648172d0f4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "520efe60-2ba6-4c2d-b051-0763c5ed57de",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063143Z:d8b64b47-ccf1-406f-92cd-3e648172d0f4",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "5d0b0624-48d7-4ed9-8d1e-85eeffd9494a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93f7b592-84c8-4f73-97ca-f6d202b4a86e"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10162",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:32:14 GMT",
+      "x-ms-correlation-request-id" : "803eb78c-ad6b-4bd7-a7b3-c9b68d4987cf",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "93f7b592-84c8-4f73-97ca-f6d202b4a86e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063214Z:803eb78c-ad6b-4bd7-a7b3-c9b68d4987cf",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "04d30f88-8e36-49be-aa09-d0e788fd477f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c3ba2e4-86cc-4006-a341-0e213881ded4"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10215",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:32:44 GMT",
+      "x-ms-correlation-request-id" : "d2c63607-b122-4dc5-9b63-ed7c7aca82d1",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9c3ba2e4-86cc-4006-a341-0e213881ded4",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063245Z:d2c63607-b122-4dc5-9b63-ed7c7aca82d1",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b4c3118c-e666-4c1b-ab6b-a8dd0d699565",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b8de691c-34b0-4834-925a-f74c5a3c9d60"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10158",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:33:15 GMT",
+      "x-ms-correlation-request-id" : "81db50b6-bc07-48aa-8499-1de5265996b8",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b8de691c-34b0-4834-925a-f74c5a3c9d60",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063316Z:81db50b6-bc07-48aa-8499-1de5265996b8",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "f04ec23c-0432-433e-9382-5af4c4a9d264",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4cfa9260-09b2-4804-9ed2-99b67a5324ab"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10036",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:33:46 GMT",
+      "x-ms-correlation-request-id" : "a4f3e311-e715-46bb-b131-5f8260764223",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4cfa9260-09b2-4804-9ed2-99b67a5324ab",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063347Z:a4f3e311-e715-46bb-b131-5f8260764223",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "569536c4-315a-4611-9d1c-bda5540b32ec",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b6bdeaa5-7464-4490-b1d7-929f38abe0cf"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9982",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:34:18 GMT",
+      "x-ms-correlation-request-id" : "373401da-3fbc-43b0-85a8-33fbf254699f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b6bdeaa5-7464-4490-b1d7-929f38abe0cf",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063418Z:373401da-3fbc-43b0-85a8-33fbf254699f",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "cbb51aed-e7f1-4036-9c02-5409dcacd46f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1955caf-a382-4da2-8840-ae68eb7ab8d3"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10145",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:34:49 GMT",
+      "x-ms-correlation-request-id" : "8bcd1736-09d5-4e33-aaea-e669a685b7b0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "e1955caf-a382-4da2-8840-ae68eb7ab8d3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063449Z:8bcd1736-09d5-4e33-aaea-e669a685b7b0",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "9a7a34c0-e42c-4d14-9820-d8eb8ba3d712",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b39461f-cb00-48d4-b946-829256ec61ae"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:35:19 GMT",
+      "x-ms-correlation-request-id" : "85d34cd8-b4c7-448b-82bc-00a6b0861677",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "1b39461f-cb00-48d4-b946-829256ec61ae",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063520Z:85d34cd8-b4c7-448b-82bc-00a6b0861677",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "5a56d538-1d8d-4e35-a510-73163256b038",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34f01790-9138-4234-9fdb-16e5111182b9"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10035",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:35:50 GMT",
+      "x-ms-correlation-request-id" : "f56e0aad-802c-49e9-97e9-33478902b63b",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "34f01790-9138-4234-9fdb-16e5111182b9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063551Z:f56e0aad-802c-49e9-97e9-33478902b63b",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "366b46d2-05bd-4a84-896a-cfe0541be4ef",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f7f626f-5929-4099-93b2-181579784d01"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9978",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:36:21 GMT",
+      "x-ms-correlation-request-id" : "665878c5-e08e-4427-b78c-3cb24673b8b5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0f7f626f-5929-4099-93b2-181579784d01",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063622Z:665878c5-e08e-4427-b78c-3cb24673b8b5",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "e8f33332-8578-4f33-92df-2591a35b1cfe",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a6545345-df2a-4c8a-94b3-c385f0eaca97"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10142",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:36:53 GMT",
+      "x-ms-correlation-request-id" : "b1026b4c-df30-4f2b-a5fa-592d8da6da24",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a6545345-df2a-4c8a-94b3-c385f0eaca97",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063653Z:b1026b4c-df30-4f2b-a5fa-592d8da6da24",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "cc740ab0-5ddc-476d-8455-8ddb8c99cd4c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "baf8bc16-2dea-4372-882b-9a1dea3b44b7"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9976",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:37:24 GMT",
+      "x-ms-correlation-request-id" : "155b938f-e2ff-4e35-9375-1e6088e3e357",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "baf8bc16-2dea-4372-882b-9a1dea3b44b7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063724Z:155b938f-e2ff-4e35-9375-1e6088e3e357",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "6614de76-736d-4842-9fe3-7eb54914620c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c96d61c7-ba06-46d9-8e55-5f1ca2f9699b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10014",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:37:54 GMT",
+      "x-ms-correlation-request-id" : "d2d7c034-3b9c-4b8a-8487-e3e8490271a5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c96d61c7-ba06-46d9-8e55-5f1ca2f9699b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063755Z:d2d7c034-3b9c-4b8a-8487-e3e8490271a5",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b9913028-bdfe-4e48-90ab-bb8ab9d88526",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fb7c2f3f-fe60-4a30-b49b-7669acf2489d"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10141",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:38:26 GMT",
+      "x-ms-correlation-request-id" : "9d79fab7-e704-4c34-b174-2dbdc83ccc34",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "fb7c2f3f-fe60-4a30-b49b-7669acf2489d",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063826Z:9d79fab7-e704-4c34-b174-2dbdc83ccc34",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "4b7f7d52-e08a-45d5-b68e-3f68c66f1b97",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c70380a-41d9-4a71-a59a-3e64f6043f82"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10188",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:38:57 GMT",
+      "x-ms-correlation-request-id" : "f35cf640-455e-4d06-9bca-d6d4142febb3",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5c70380a-41d9-4a71-a59a-3e64f6043f82",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063857Z:f35cf640-455e-4d06-9bca-d6d4142febb3",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "616f8b34-134c-4eae-9671-e5e38f5db2d3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f93b3621-6c2e-4387-9338-ce7a5babb22a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10033",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:39:27 GMT",
+      "x-ms-correlation-request-id" : "8a95ef2a-4d8c-4d90-9dd6-dee0c316f725",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f93b3621-6c2e-4387-9338-ce7a5babb22a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063927Z:8a95ef2a-4d8c-4d90-9dd6-dee0c316f725",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "7b492e22-6ebd-413c-930a-e0047d638d2c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b8495c3-63b5-4c94-a04d-28edc142e78c"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9971",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:39:58 GMT",
+      "x-ms-correlation-request-id" : "0686d48c-85f9-42a8-8207-9ecb336456a7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9b8495c3-63b5-4c94-a04d-28edc142e78c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T063959Z:0686d48c-85f9-42a8-8207-9ecb336456a7",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b6fe45a4-8362-46f1-b524-f1c2569096e8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ddc4cdaf-c642-46aa-b874-83f5d2865e00"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10150",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:40:30 GMT",
+      "x-ms-correlation-request-id" : "303b4857-08f6-41c3-8d90-64012fa1b200",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ddc4cdaf-c642-46aa-b874-83f5d2865e00",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064030Z:303b4857-08f6-41c3-8d90-64012fa1b200",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "21d39579-fa25-47a1-b41b-241c775e0d68",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4652bc82-33d2-416c-8733-b569e7e85bd8"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:41:00 GMT",
+      "x-ms-correlation-request-id" : "f67a8063-3e6d-47fd-a4dc-86f97bcb1c3b",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4652bc82-33d2-416c-8733-b569e7e85bd8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064101Z:f67a8063-3e6d-47fd-a4dc-86f97bcb1c3b",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "00ec0f35-923f-41fd-8de3-ca9f8d811d26",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f28e276d-150d-4b12-bdd6-ffc740a87490"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10010",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:41:31 GMT",
+      "x-ms-correlation-request-id" : "420a26e0-b1e7-4e06-9428-080f19a89558",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f28e276d-150d-4b12-bdd6-ffc740a87490",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064132Z:420a26e0-b1e7-4e06-9428-080f19a89558",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "9b2f0392-a546-44f6-a14a-c93628e45e08",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e9116d22-2848-47fc-856c-0d9ce03a8382"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9967",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:42:03 GMT",
+      "x-ms-correlation-request-id" : "677dbe41-1734-46c1-afc8-5a925d65b2b4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "e9116d22-2848-47fc-856c-0d9ce03a8382",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064203Z:677dbe41-1734-46c1-afc8-5a925d65b2b4",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "0c98f460-2ed7-44f7-a5d0-b927c0cb1719",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "164b4e85-4cce-4c5d-ba0b-1f216a2a8395"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10148",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:42:33 GMT",
+      "x-ms-correlation-request-id" : "6509351d-6d59-430f-af40-cbb1c2a13425",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "164b4e85-4cce-4c5d-ba0b-1f216a2a8395",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064234Z:6509351d-6d59-430f-af40-cbb1c2a13425",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "5957c48b-2100-4f60-9449-94a82dfd165b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8baaf147-fab8-4cc3-be52-b47c7513eec3"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10009",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:43:04 GMT",
+      "x-ms-correlation-request-id" : "40b71a22-ab6f-45d5-9feb-df776f4d961f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8baaf147-fab8-4cc3-be52-b47c7513eec3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064305Z:40b71a22-ab6f-45d5-9feb-df776f4d961f",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b620b33a-e308-4942-a7f2-af437e74c878",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "67a4f479-213f-4358-b843-757878906c73"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10147",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:43:35 GMT",
+      "x-ms-correlation-request-id" : "0d542a24-b3e8-4e3c-a5dd-0e01f3174e83",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "67a4f479-213f-4358-b843-757878906c73",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064336Z:0d542a24-b3e8-4e3c-a5dd-0e01f3174e83",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "6e6c0c39-61f8-499e-bf60-b75b642fac7f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "899d1e54-44fe-47d0-aa38-cc9bb3adb1a9"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9963",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:06 GMT",
+      "x-ms-correlation-request-id" : "83b137a2-247f-40fe-827f-0ae36dac7130",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "899d1e54-44fe-47d0-aa38-cc9bb3adb1a9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064407Z:83b137a2-247f-40fe-827f-0ae36dac7130",
+      "Expires" : "-1",
+      "Content-Length" : "621",
+      "x-ms-request-id" : "cb5957b9-941b-476a-bce9-f41340140ae7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b99d99a5-a4ea-486a-8b10-5ee6e015bc45",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10146",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:06 GMT",
+      "x-ms-correlation-request-id" : "800d7145-5dff-4cfc-8610-33458d6a0cd2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b99d99a5-a4ea-486a-8b10-5ee6e015bc45",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064407Z:800d7145-5dff-4cfc-8610-33458d6a0cd2",
+      "Expires" : "-1",
+      "Content-Length" : "633",
+      "x-ms-request-id" : "680df9e1-e8c0-43fd-b4eb-c9ea7aa65291",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/Redis?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0b3a2f7d-2518-4969-8a02-016bc674a29c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10186",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:08 GMT",
+      "x-ms-correlation-request-id" : "022ad1b1-ce76-4bce-829f-60f4dfc2d1d2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0b3a2f7d-2518-4969-8a02-016bc674a29c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064408Z:022ad1b1-ce76-4bce-829f-60f4dfc2d1d2",
+      "Expires" : "-1",
+      "Content-Length" : "633",
+      "x-ms-request-id" : "d6230a66-7eb2-453c-bbf2-b46a247df97b",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "40cfdcd9-b928-475f-8a7d-9e4a9879ca84",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:09 GMT",
+      "x-ms-correlation-request-id" : "92694ba0-ec44-4b71-91ce-7ed99619e72f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "40cfdcd9-b928-475f-8a7d-9e4a9879ca84",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064409Z:92694ba0-ec44-4b71-91ce-7ed99619e72f",
+      "Expires" : "-1",
+      "Content-Length" : "621",
+      "x-ms-request-id" : "23c2ed19-1c7c-4c75-944e-2646af929d4a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c2ab2c02-14cd-480c-82c4-d71bc0372095",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10007",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:09 GMT",
+      "x-ms-correlation-request-id" : "04a3210a-d7ea-4669-8ffc-74a08daef19d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c2ab2c02-14cd-480c-82c4-d71bc0372095",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064410Z:04a3210a-d7ea-4669-8ffc-74a08daef19d",
+      "Expires" : "-1",
+      "Content-Length" : "621",
+      "x-ms-request-id" : "0789521a-f55a-41e5-820b-8beb08f51801",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "17729c5a-4d1b-49fd-8699-93181ed2a131",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1164",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:16 GMT",
+      "x-ms-correlation-request-id" : "c696c555-46e3-4577-b27e-538e2d4254de",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "17729c5a-4d1b-49fd-8699-93181ed2a131",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064416Z:c696c555-46e3-4577-b27e-538e2d4254de",
+      "Expires" : "-1",
+      "Content-Length" : "619",
+      "x-ms-request-id" : "82de1efd-a5c3-4005-88c1-15fd29ab72c2",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Standard\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "32df5731-9078-4ac7-bdd6-f0370cbb7144",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9962",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:44:46 GMT",
+      "x-ms-correlation-request-id" : "48771a37-af26-4c7b-ba98-40c1aaeabbd6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "32df5731-9078-4ac7-bdd6-f0370cbb7144",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064447Z:48771a37-af26-4c7b-ba98-40c1aaeabbd6",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "599c9151-9027-4926-ac0c-2d1fb1708969",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "397f4428-381a-4ad1-90b3-84092fe7d7e2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:45:17 GMT",
+      "x-ms-correlation-request-id" : "2227b62e-a44e-4f3f-9ade-482c8470c6e8",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "397f4428-381a-4ad1-90b3-84092fe7d7e2",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064518Z:2227b62e-a44e-4f3f-9ade-482c8470c6e8",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "9511ad5f-ac99-4e3d-8ecd-1b6a8b8d4f94",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c56df13b-0f5c-4e45-b95f-65b6d9ed66c2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:45:48 GMT",
+      "x-ms-correlation-request-id" : "29d32d6d-de79-4f87-a1e7-0a971f928830",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c56df13b-0f5c-4e45-b95f-65b6d9ed66c2",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064548Z:29d32d6d-de79-4f87-a1e7-0a971f928830",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "124e08b3-78ca-4ec1-a2dc-c9adc44963a2",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8415d34-7194-4b26-8603-276769f50cb9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10004",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:46:19 GMT",
+      "x-ms-correlation-request-id" : "9752d746-4dc7-4040-8d34-cef6ea41db3d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a8415d34-7194-4b26-8603-276769f50cb9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064619Z:9752d746-4dc7-4040-8d34-cef6ea41db3d",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "cc10b62b-aa23-42c7-aff9-866d01e17bb1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "946a95c8-ece1-46cb-a889-6c090854eefc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9958",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:46:50 GMT",
+      "x-ms-correlation-request-id" : "b91aea3a-3c48-4791-974b-483c6d12cfe4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "946a95c8-ece1-46cb-a889-6c090854eefc",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064650Z:b91aea3a-3c48-4791-974b-483c6d12cfe4",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "35e0d1e3-2332-4093-809e-d45e7cc44ec9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fad3302c-55dd-4869-bd22-2d1b96af062b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10142",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:47:21 GMT",
+      "x-ms-correlation-request-id" : "e49a32d0-1123-4e0d-860d-28ffeca054c8",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "fad3302c-55dd-4869-bd22-2d1b96af062b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064721Z:e49a32d0-1123-4e0d-860d-28ffeca054c8",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "bd9b4344-4d88-4116-bac1-ba8a6b9a2e6d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c6ab6158-12e1-4a2e-949a-a97fc2dcf08f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:47:51 GMT",
+      "x-ms-correlation-request-id" : "32afadc1-57ca-444e-9a67-c2739b3d8b93",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c6ab6158-12e1-4a2e-949a-a97fc2dcf08f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064751Z:32afadc1-57ca-444e-9a67-c2739b3d8b93",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "3e396ee8-bb8b-4362-a6fa-e75e576780d5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b4b37231-d22a-47b1-a81f-b938b04ea808",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10037",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:48:21 GMT",
+      "x-ms-correlation-request-id" : "a3b1703d-9f1b-4bad-ac2c-4eabd54614cf",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b4b37231-d22a-47b1-a81f-b938b04ea808",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064822Z:a3b1703d-9f1b-4bad-ac2c-4eabd54614cf",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "15f89152-d101-40ca-b4e6-41a4dba4801b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d26bfb9c-2b1a-4014-8daf-a594cf9e7970",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10140",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:48:53 GMT",
+      "x-ms-correlation-request-id" : "c5072eca-abc1-4c72-8e51-4fbdc51bfa69",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d26bfb9c-2b1a-4014-8daf-a594cf9e7970",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064853Z:c5072eca-abc1-4c72-8e51-4fbdc51bfa69",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "7cdba3f0-068c-4093-aefb-e97589a2861c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "abb04efc-1027-4ae8-bb61-8941a1a546f7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10000",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:49:24 GMT",
+      "x-ms-correlation-request-id" : "14ab730e-e67e-4628-9572-8a9ce2a44b1d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "abb04efc-1027-4ae8-bb61-8941a1a546f7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064924Z:14ab730e-e67e-4628-9572-8a9ce2a44b1d",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "107d3571-6aea-44b0-b635-45a7ed7212de",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4b9d1dd2-f398-44fb-8b25-8cc51af3f9fc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9999",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:49:54 GMT",
+      "x-ms-correlation-request-id" : "d777fed4-54ae-46b8-b33e-fe80d4e8f632",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4b9d1dd2-f398-44fb-8b25-8cc51af3f9fc",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T064955Z:d777fed4-54ae-46b8-b33e-fe80d4e8f632",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "e428b71f-baa2-4354-b528-30c5cd73aca0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bc45f63e-0384-44bb-ad9a-975580083886",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10139",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:50:26 GMT",
+      "x-ms-correlation-request-id" : "fa48ac68-85af-49b0-a6f6-73c0b0192915",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "bc45f63e-0384-44bb-ad9a-975580083886",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065026Z:fa48ac68-85af-49b0-a6f6-73c0b0192915",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "4fa8fe50-c44b-428a-b213-46880ef45ae4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8fe767d4-c5bb-4ac9-8f10-16401cf1f8eb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10138",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:50:56 GMT",
+      "x-ms-correlation-request-id" : "9fcd7a3f-ed37-4c46-8afb-f93def1b713a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8fe767d4-c5bb-4ac9-8f10-16401cf1f8eb",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065056Z:9fcd7a3f-ed37-4c46-8afb-f93def1b713a",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "f45e2c00-21af-4c70-a71e-d76185c6c034",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "537f8023-b594-4057-acf2-149818e78bb7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10079",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:51:27 GMT",
+      "x-ms-correlation-request-id" : "9c76b3b1-b74e-47c4-8742-afafdc70d7ce",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "537f8023-b594-4057-acf2-149818e78bb7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065127Z:9c76b3b1-b74e-47c4-8742-afafdc70d7ce",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "fcd2f251-2acf-42ce-878f-c1a0900db2ba",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "67baa716-a2fc-4156-aece-06982f45abbc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9951",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:51:58 GMT",
+      "x-ms-correlation-request-id" : "696378b4-5339-4727-a32d-a4293bb64071",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "67baa716-a2fc-4156-aece-06982f45abbc",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065158Z:696378b4-5339-4727-a32d-a4293bb64071",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "73ab7077-07ef-426e-b7b2-a4790357042f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f1d9f904-ae79-4020-abdb-718d7e554d52",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11982",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:52:29 GMT",
+      "x-ms-correlation-request-id" : "bc354685-93b0-4829-810b-7a8c7ff71399",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f1d9f904-ae79-4020-abdb-718d7e554d52",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065229Z:bc354685-93b0-4829-810b-7a8c7ff71399",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "b6863ef7-4a0d-4af8-bb6d-cc51bd2a5450",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ece99641-39bc-4d3c-9d72-e7cc2149773e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10078",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:53:00 GMT",
+      "x-ms-correlation-request-id" : "d9285d48-fc52-458b-aafb-ab3c2448bc10",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ece99641-39bc-4d3c-9d72-e7cc2149773e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065300Z:d9285d48-fc52-458b-aafb-ab3c2448bc10",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "631e4a9f-46c0-44ad-a82b-dbfeda4e59e4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "582c9300-2468-4c0e-afb2-2a1673c7c0b0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9997",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:53:31 GMT",
+      "x-ms-correlation-request-id" : "3aeb74fd-6444-4e7a-80e2-c0b02490c0b1",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "582c9300-2468-4c0e-afb2-2a1673c7c0b0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065331Z:3aeb74fd-6444-4e7a-80e2-c0b02490c0b1",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "215c7972-e721-40c5-bf8a-2700bfc74033",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "38d1e1b6-e06f-4a26-a75c-18d4bd43e9a4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9949",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:54:02 GMT",
+      "x-ms-correlation-request-id" : "56a87669-bed4-4e73-8d98-d8cb4946926c",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "38d1e1b6-e06f-4a26-a75c-18d4bd43e9a4",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065402Z:56a87669-bed4-4e73-8d98-d8cb4946926c",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "34299c1e-997f-4b63-b1b2-ef6962914166",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5cc0091e-25e9-4273-a8c5-0f157f515957",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11981",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:54:33 GMT",
+      "x-ms-correlation-request-id" : "f17fcbe3-8dfe-4ac6-ae7b-3fb58cb1a3e7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5cc0091e-25e9-4273-a8c5-0f157f515957",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065434Z:f17fcbe3-8dfe-4ac6-ae7b-3fb58cb1a3e7",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "3d88e779-1547-4362-b86e-c3fe6ea9e6d9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee7ca186-4127-4b12-a91a-a47368c68418",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10084",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:55:04 GMT",
+      "x-ms-correlation-request-id" : "1fa2ec07-a6bc-417d-9a8f-312572c0565f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ee7ca186-4127-4b12-a91a-a47368c68418",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065505Z:1fa2ec07-a6bc-417d-9a8f-312572c0565f",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "8b7ac35b-f0b6-43d3-8453-db1d044c4cb0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "030fb1b8-0c63-47ac-ba9c-ce05076893a4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9996",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:55:35 GMT",
+      "x-ms-correlation-request-id" : "b1ff3b16-1cc9-4c85-8ccf-72030a35455e",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "030fb1b8-0c63-47ac-ba9c-ce05076893a4",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065536Z:b1ff3b16-1cc9-4c85-8ccf-72030a35455e",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "8a4dc9e0-4e06-4c75-a777-a2be181be0d5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b2739c57-4001-42cc-aee1-95ae877c2bc3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9948",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:56:07 GMT",
+      "x-ms-correlation-request-id" : "e49e9e5c-52cd-460d-b1c3-068464c026bf",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b2739c57-4001-42cc-aee1-95ae877c2bc3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065607Z:e49e9e5c-52cd-460d-b1c3-068464c026bf",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "4eff484e-456a-4647-8dcf-e3727652d72d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5f4b6c02-4404-4354-bd9f-578c05cddbde",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10083",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:56:37 GMT",
+      "x-ms-correlation-request-id" : "7f1c0d32-ecbe-4b12-aa1c-7c331422012e",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5f4b6c02-4404-4354-bd9f-578c05cddbde",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065638Z:7f1c0d32-ecbe-4b12-aa1c-7c331422012e",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "28f0cd9e-42a8-4db0-9890-add2ebd73059",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b2dd9e3a-cdcb-4508-9f6d-f2462a697fdc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9995",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:57:08 GMT",
+      "x-ms-correlation-request-id" : "5ca041e1-7940-43d6-83d3-1059f7bcbd83",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b2dd9e3a-cdcb-4508-9f6d-f2462a697fdc",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065709Z:5ca041e1-7940-43d6-83d3-1059f7bcbd83",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "x-ms-request-id" : "763ce4d7-6078-4741-885d-36717ef995a1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Scaling\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "347e7694-a4e7-4105-9a39-23ec18e7b9c4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9947",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 06:57:39 GMT",
+      "x-ms-correlation-request-id" : "3b0cdec0-fc0a-4f0f-847d-95466903d75f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "347e7694-a4e7-4105-9a39-23ec18e7b9c4",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065740Z:3b0cdec0-fc0a-4f0f-847d-95466903d75f",
+      "Expires" : "-1",
+      "Content-Length" : "622",
+      "x-ms-request-id" : "fccf001e-a4a2-4ec4-8ccb-1b7409d725a1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963\",\"location\":\"East US\",\"name\":\"redis64963\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{\"mytag\":\"testtag\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":null,\"hostName\":\"redis64963.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/redis64963group/providers/Microsoft.Cache/Redis/redis64963?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66b4559f-f9e0-4da3-bdf9-d000f7d4e3a8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14994",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 06:57:41 GMT",
+      "x-ms-correlation-request-id" : "ba3a9ee2-289a-4ed9-aef4-74df32e51460",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "66b4559f-f9e0-4da3-bdf9-d000f7d4e3a8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065741Z:ba3a9ee2-289a-4ed9-aef4-74df32e51460",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "9f4774c2-d092-45e1-a02a-601f486402c1",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "02709b9b-f5b2-4a19-8846-14c9b836eea1"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9994",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 06:58:12 GMT",
+      "x-ms-correlation-request-id" : "f46e2a1c-3450-4bb3-8099-c59da75fbfeb",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "02709b9b-f5b2-4a19-8846-14c9b836eea1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065812Z:f46e2a1c-3450-4bb3-8099-c59da75fbfeb",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "ab965d41-2e9f-4cfc-8262-4e67bc4a8ed3",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "00b3079d-947c-41d0-a8e8-10ad4ea1e983"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9946",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 06:58:43 GMT",
+      "x-ms-correlation-request-id" : "34834787-1bb1-46e9-8f4a-ac5b96b1550a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "00b3079d-947c-41d0-a8e8-10ad4ea1e983",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065843Z:34834787-1bb1-46e9-8f4a-ac5b96b1550a",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "d65a5993-49d2-4954-b8df-555372d618ac",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1adfabbb-25c1-4ac8-95dd-65bb34665503"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10082",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 06:59:14 GMT",
+      "x-ms-correlation-request-id" : "071200e4-4cea-433a-805b-34ea06f89fe8",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "1adfabbb-25c1-4ac8-95dd-65bb34665503",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065914Z:071200e4-4cea-433a-805b-34ea06f89fe8",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c8fbb73c-b85b-4653-ba3f-75fc0d194ea8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1948a87d-aa4a-4a85-baca-501211a5fce8"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9993",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 06:59:45 GMT",
+      "x-ms-correlation-request-id" : "15946920-6cc2-4d3e-8491-edce94f6e26c",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "1948a87d-aa4a-4a85-baca-501211a5fce8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T065945Z:15946920-6cc2-4d3e-8491-edce94f6e26c",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c39eef32-16a8-4559-a432-8ea31f935c0b",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d21d2c44-f9fe-4326-a2ab-0d366379f403"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9944",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:00:16 GMT",
+      "x-ms-correlation-request-id" : "2a18b67b-99bc-4b75-ab93-318d8cd83274",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d21d2c44-f9fe-4326-a2ab-0d366379f403",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070016Z:2a18b67b-99bc-4b75-ab93-318d8cd83274",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "72aac3f9-21ae-47db-afcb-93d8853a2950",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ac992012-e465-4dc7-9129-89aa21b5dec1"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10086",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:00:47 GMT",
+      "x-ms-correlation-request-id" : "df7382f4-4554-4a8e-9670-f96bb9358135",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ac992012-e465-4dc7-9129-89aa21b5dec1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070047Z:df7382f4-4554-4a8e-9670-f96bb9358135",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "3a5b69b8-cb66-41a8-b0bb-5f652ec02aa9",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4251f41a-103e-4d61-bd22-17dfa8bce6ba"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9992",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:01:18 GMT",
+      "x-ms-correlation-request-id" : "5a553b61-a3a4-4b83-acc8-53d315682b1a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4251f41a-103e-4d61-bd22-17dfa8bce6ba",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070118Z:5a553b61-a3a4-4b83-acc8-53d315682b1a",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "07a258d9-f232-4623-ac4a-e51038b79448",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b37504c-2f8e-4612-b8b7-9a31c3664c46"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9943",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:01:48 GMT",
+      "x-ms-correlation-request-id" : "0b864059-43c0-4d4a-a888-bbccd163652a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7b37504c-2f8e-4612-b8b7-9a31c3664c46",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070149Z:0b864059-43c0-4d4a-a888-bbccd163652a",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36e8e401-f796-4bd5-9a95-2d1490f9475c",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f4777fc6-237e-45f3-a920-0b7872a8105d"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10085",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:02:19 GMT",
+      "x-ms-correlation-request-id" : "a6c966bc-d9ed-49b3-b365-9aff9b17472c",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f4777fc6-237e-45f3-a920-0b7872a8105d",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070220Z:a6c966bc-d9ed-49b3-b365-9aff9b17472c",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5495a5f2-1397-44e4-8a6a-ef2bdd7d3a2e",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7617e715-de5d-4ac5-918c-74a1b6f1499f"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9991",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:02:50 GMT",
+      "x-ms-correlation-request-id" : "678814b1-2b0c-420e-9e05-d7c700ca5f50",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7617e715-de5d-4ac5-918c-74a1b6f1499f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070251Z:678814b1-2b0c-420e-9e05-d7c700ca5f50",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "fa97b7d8-eb52-4c21-b686-70af18fa540d",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "586fc07e-f86f-4983-9719-7b50a98fbdbe"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9942",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:03:21 GMT",
+      "x-ms-correlation-request-id" : "2d1f351f-08f2-4135-aee3-0fc3d35c8060",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "586fc07e-f86f-4983-9719-7b50a98fbdbe",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070322Z:2d1f351f-08f2-4135-aee3-0fc3d35c8060",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "35f0c190-f215-4312-abde-3337f1c22e3c",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "136a259e-6ac6-4ec0-96d4-085681093f0f"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10084",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:03:53 GMT",
+      "x-ms-correlation-request-id" : "41d5dc50-5916-4bcc-ac2e-57bdd7e6004a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "136a259e-6ac6-4ec0-96d4-085681093f0f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070353Z:41d5dc50-5916-4bcc-ac2e-57bdd7e6004a",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "e0274e68-9870-4839-ae49-8fe2f65d9441",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "394903bf-925e-4f76-944b-0ea08d0ba514"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9990",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:04:23 GMT",
+      "x-ms-correlation-request-id" : "eb3ac711-99a7-4c41-a2dd-ab77f44b906a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "394903bf-925e-4f76-944b-0ea08d0ba514",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070424Z:eb3ac711-99a7-4c41-a2dd-ab77f44b906a",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "dd4abd57-6e09-4285-aa24-465995e8948d",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "70dbd682-805d-4cc0-8c15-fd71ee59061b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9941",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:04:54 GMT",
+      "x-ms-correlation-request-id" : "1ea17d86-7442-4f96-9ceb-f52f063fdf7b",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "70dbd682-805d-4cc0-8c15-fd71ee59061b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070455Z:1ea17d86-7442-4f96-9ceb-f52f063fdf7b",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c8e5b5b1-0157-4c38-8617-d6e04db12342",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/9f4774c2-d092-45e1-a02a-601f486402c1?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bebe3a98-eb5b-4291-92b1-1c8faf0864f7"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10086",
+      "StatusCode" : "200",
+      "Date" : "Fri, 25 Dec 2020 07:05:25 GMT",
+      "x-ms-correlation-request-id" : "42ab1783-2312-4afa-94fc-bb955ee556a2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "1baa919d-ca7d-4da0-9666-c988492875a1",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "bebe3a98-eb5b-4291-92b1-1c8faf0864f7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070526Z:42ab1783-2312-4afa-94fc-bb955ee556a2",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "42c4e5b7-bcc3-4729-9c40-696270e73a39"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/redis64963group?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "527b6d3c-534b-4506-8d9f-8947cd4f183e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14994",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Fri, 25 Dec 2020 07:05:30 GMT",
+      "x-ms-correlation-request-id" : "195ba634-c4be-401d-9000-bbd5b8e4eb50",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20201225T070531Z:195ba634-c4be-401d-9000-bbd5b8e4eb50",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "195ba634-c4be-401d-9000-bbd5b8e4eb50",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRURJUzY0OTYzR1JPVVAtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "redis64963" ]
+}

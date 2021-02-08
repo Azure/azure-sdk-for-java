@@ -3,11 +3,13 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
+
+import static com.azure.ai.metricsadvisor.AlertTestBase.ALERT_CONFIG_ID;
 
 public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBase {
     public abstract void listAnomaliesForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
@@ -17,25 +19,25 @@ public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBa
         static final ListAnomaliesForAlertInput INSTANCE = new ListAnomaliesForAlertInput();
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
-        final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
-        final String alertId = "1746b031c00";
+        final String alertConfigurationId = ALERT_CONFIG_ID;
+        final String alertId = "175434e3400";
     }
 
     protected static class ListAnomaliesForAlertOutput {
         static final ListAnomaliesForAlertOutput INSTANCE = new ListAnomaliesForAlertOutput();
-        final int expectedAnomalies = 3;
+        final int expectedAnomalies = 2;
     }
 
-    protected void assertListAnomaliesForAlertOutput(Anomaly anomaly) {
-        Assertions.assertNotNull(anomaly);
-        Assertions.assertNotNull(anomaly.getMetricId());
-        Assertions.assertNotNull(anomaly.getSeverity());
-        Assertions.assertNotNull(anomaly.getStatus());
-        Assertions.assertNotNull(anomaly.getCreatedTime());
-        Assertions.assertNotNull(anomaly.getModifiedTime());
-        Assertions.assertNotNull(anomaly.getTimestamp());
-        Assertions.assertNotNull(anomaly.getDetectionConfigurationId());
-        Assertions.assertNotNull(anomaly.getSeriesKey());
-        Assertions.assertFalse(anomaly.getSeriesKey().asMap().isEmpty());
+    protected void assertListAnomaliesForAlertOutput(DataPointAnomaly dataPointAnomaly) {
+        Assertions.assertNotNull(dataPointAnomaly);
+        Assertions.assertNotNull(dataPointAnomaly.getMetricId());
+        Assertions.assertNotNull(dataPointAnomaly.getSeverity());
+        Assertions.assertNotNull(dataPointAnomaly.getStatus());
+        Assertions.assertNotNull(dataPointAnomaly.getCreatedTime());
+        Assertions.assertNotNull(dataPointAnomaly.getModifiedTime());
+        Assertions.assertNotNull(dataPointAnomaly.getTimestamp());
+        Assertions.assertNotNull(dataPointAnomaly.getDetectionConfigurationId());
+        Assertions.assertNotNull(dataPointAnomaly.getSeriesKey());
+        Assertions.assertFalse(dataPointAnomaly.getSeriesKey().asMap().isEmpty());
     }
 }

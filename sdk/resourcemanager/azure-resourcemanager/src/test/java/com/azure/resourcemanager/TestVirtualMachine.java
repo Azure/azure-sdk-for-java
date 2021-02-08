@@ -35,7 +35,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withAdminUsername("testuser")
                 .withAdminPassword(ResourceManagerTestBase.password())
                 .withNewDataDisk(150)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
 
         resourceStream.doOnSuccess(vm -> future.set(vm));
@@ -54,7 +54,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        resource = resource.update().withSize(VirtualMachineSizeTypes.STANDARD_D3_V2).withNewDataDisk(100).apply();
+        resource = resource.update().withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")).withNewDataDisk(100).apply();
         return resource;
     }
 

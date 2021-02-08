@@ -4,14 +4,13 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /**
- * Sample for listing time series data for a give metric filtered using specific set of dimensions.
+ * Sample for listing time series data for a metric filtered using specific set of dimensions.
  */
 public class ListSeriesDataForMetricSample {
     public static void main(String[] args) {
@@ -26,12 +25,12 @@ public class ListSeriesDataForMetricSample {
 
         advisorClient.listMetricSeriesData(metricId,
             Arrays.asList(new DimensionKey().put("cost", "redmond")),
-            new ListMetricSeriesDataOptions(startTime, endTime))
+            startTime, endTime)
             .forEach(metricSeriesData -> {
                 System.out.println("List of data points for this series:");
-                System.out.println(metricSeriesData.getValueList());
+                System.out.println(metricSeriesData.getMetricValues());
                 System.out.println("Timestamps of the data related to this time series:");
-                System.out.println(metricSeriesData.getTimestampList());
+                System.out.println(metricSeriesData.getTimestamps());
                 System.out.printf("Series Key: %s%n", metricSeriesData.getSeriesKey().asMap());
             });
     }

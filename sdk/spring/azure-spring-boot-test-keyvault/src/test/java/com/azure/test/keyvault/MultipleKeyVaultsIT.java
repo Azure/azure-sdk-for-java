@@ -5,8 +5,8 @@ package com.azure.test.keyvault;
 
 import static org.junit.Assert.assertEquals;
 
-import com.azure.test.management.ClientSecretAccess;
-import com.azure.test.utils.AppRunner;
+import com.azure.spring.test.management.ClientSecretAccess;
+import com.azure.spring.test.AppRunner;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -43,7 +43,7 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-            app.start("dummy");
+            app.start();
             assertEquals(KEY_VAULT1_SECRET_VALUE, app.getProperty(KEY_VAULT1_SECRET_NAME));
         }
     }
@@ -60,7 +60,7 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-            app.start("dummy");
+            app.start();
             assertEquals(KEY_VAULT2_SECRET_VALUE, app.getProperty(KEY_VAULT2_SECRET_NAME));
         }
     }
@@ -83,7 +83,7 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-            app.start("dummy");
+            app.start();
             assertEquals(KEY_VAULT1_COMMON_SECRET_VALUE, app.getProperty(KEY_VAULT_COMMON_SECRET_NAME));
         }
     }
@@ -105,7 +105,7 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-            app.start("dummy");
+            app.start();
             assertEquals(KEY_VAULT1_SECRET_VALUE, app.getProperty(KEY_VAULT1_SECRET_NAME));
             assertEquals(KEY_VAULT2_SECRET_VALUE, app.getProperty(KEY_VAULT2_SECRET_NAME));
         }

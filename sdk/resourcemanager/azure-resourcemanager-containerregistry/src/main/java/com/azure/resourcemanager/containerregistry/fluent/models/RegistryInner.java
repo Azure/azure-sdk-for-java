@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
+import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
@@ -73,6 +74,12 @@ public class RegistryInner extends Resource {
      */
     @JsonProperty(value = "properties.networkRuleSet")
     private NetworkRuleSet networkRuleSet;
+
+    /*
+     * The policies for a container registry.
+     */
+    @JsonProperty(value = "properties.policies")
+    private Policies policies;
 
     /**
      * Get the sku property: The SKU of the container registry.
@@ -194,6 +201,26 @@ public class RegistryInner extends Resource {
     }
 
     /**
+     * Get the policies property: The policies for a container registry.
+     *
+     * @return the policies value.
+     */
+    public Policies policies() {
+        return this.policies;
+    }
+
+    /**
+     * Set the policies property: The policies for a container registry.
+     *
+     * @param policies the policies value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withPolicies(Policies policies) {
+        this.policies = policies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -214,6 +241,9 @@ public class RegistryInner extends Resource {
         }
         if (networkRuleSet() != null) {
             networkRuleSet().validate();
+        }
+        if (policies() != null) {
+            policies().validate();
         }
     }
 }

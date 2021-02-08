@@ -41,7 +41,10 @@ public class Configs {
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
+    private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
+    private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
 
+    private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
@@ -71,6 +74,19 @@ public class Configs {
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
+
+    // SessionTokenMismatchRetryPolicy Constants
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
+        "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS = 5000;
+
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+        "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS = 5;
+
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+        "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -162,6 +178,10 @@ public class Configs {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
 
+    public static int getClientTelemetrySchedulingInSec() {
+        return getJVMConfigAsInt(CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS, DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS);
+    }
+
     public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
         return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
@@ -190,8 +210,30 @@ public class Configs {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
+    public static boolean isClientTelemetryEnabled(boolean defaultValue) {
+        return getJVMConfigAsBoolean(CLIENT_TELEMETRY_ENABLED, defaultValue);
+    }
+
     public static int getAddressRefreshResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS);
+    }
+
+    public static int getSessionTokenMismatchDefaultWaitTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getSessionTokenMismatchInitialBackoffTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getSessionTokenMismatchMaximumBackoffTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
@@ -199,11 +241,24 @@ public class Configs {
         return getIntValue(propValue, defaultValue);
     }
 
+    private static boolean getJVMConfigAsBoolean(String propName, boolean defaultValue) {
+        String propValue = System.getProperty(propName);
+        return getBooleanValue(propValue, defaultValue);
+    }
+
     private static int getIntValue(String val, int defaultValue) {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
             return Integer.valueOf(val);
+        }
+    }
+
+    private static boolean getBooleanValue(String val, boolean defaultValue) {
+        if (StringUtils.isEmpty(val)) {
+            return defaultValue;
+        } else {
+            return Boolean.valueOf(val);
         }
     }
 }

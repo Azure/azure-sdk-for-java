@@ -169,7 +169,11 @@ import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ManagementLock;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.search.models.AdminKeys;
+import com.azure.resourcemanager.search.models.QueryKey;
+import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.Queue;
@@ -220,6 +224,7 @@ import java.nio.file.Files;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -299,17 +304,6 @@ public final class Utils {
      */
     public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
         return authenticated.roleAssignments().manager().internalContext().randomResourceName(prefix, maxLen);
-    }
-
-    /**
-     * Creates a random UUID.
-     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
-     *
-     * @param authenticated the AzureResourceManager.Authenticated instance.
-     * @return the random UUID.
-     */
-    public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
-        return authenticated.roleAssignments().manager().internalContext().randomUuid();
     }
 
     /**
@@ -784,18 +778,18 @@ public final class Utils {
         System.out.println(redisKeys.toString());
     }
 
-//    /**
-//     * Print management lock.
-//     *
-//     * @param lock a management lock
-//     */
-//    public static void print(ManagementLock lock) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("\nLock ID: ").append(lock.id())
-//                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-//                .append("\nLevel: ").append(lock.level());
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print management lock.
+     *
+     * @param lock a management lock
+     */
+    public static void print(ManagementLock lock) {
+        StringBuilder info = new StringBuilder();
+        info.append("\nLock ID: ").append(lock.id())
+                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
+                .append("\nLevel: ").append(lock.level());
+        System.out.println(info.toString());
+    }
 
     /**
      * Print load balancer.
@@ -1559,36 +1553,36 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-//    /**
-//     * Print an Azure Search Service.
-//     *
-//     * @param searchService an Azure Search Service
-//     */
-//    public static void print(SearchService searchService) {
-//        StringBuilder info = new StringBuilder();
-//        AdminKeys adminKeys = searchService.getAdminKeys();
-//        List<QueryKey> queryKeys = searchService.listQueryKeys();
-//
-//        info.append("Azure Search: ").append(searchService.id())
-//                .append("\n\tResource group: ").append(searchService.resourceGroupName())
-//                .append("\n\tRegion: ").append(searchService.region())
-//                .append("\n\tTags: ").append(searchService.tags())
-//                .append("\n\tSku: ").append(searchService.sku().name())
-//                .append("\n\tStatus: ").append(searchService.status())
-//                .append("\n\tProvisioning State: ").append(searchService.provisioningState())
-//                .append("\n\tHosting Mode: ").append(searchService.hostingMode())
-//                .append("\n\tReplicas: ").append(searchService.replicaCount())
-//                .append("\n\tPartitions: ").append(searchService.partitionCount())
-//                .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
-//                .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
-//                .append("\n\tQuery keys:");
-//
-//        for (QueryKey queryKey : queryKeys) {
-//            info.append("\n\t\tKey name: ").append(queryKey.name());
-//            info.append("\n\t\t   Value: ").append(queryKey.key());
-//        }
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print an Azure Search Service.
+     *
+     * @param searchService an Azure Search Service
+     */
+    public static void print(SearchService searchService) {
+        StringBuilder info = new StringBuilder();
+        AdminKeys adminKeys = searchService.getAdminKeys();
+        PagedIterable<QueryKey> queryKeys = searchService.listQueryKeys();
+
+        info.append("Azure Search: ").append(searchService.id())
+                .append("\n\tResource group: ").append(searchService.resourceGroupName())
+                .append("\n\tRegion: ").append(searchService.region())
+                .append("\n\tTags: ").append(searchService.tags())
+                .append("\n\tSku: ").append(searchService.sku().name())
+                .append("\n\tStatus: ").append(searchService.status())
+                .append("\n\tProvisioning State: ").append(searchService.provisioningState())
+                .append("\n\tHosting Mode: ").append(searchService.hostingMode())
+                .append("\n\tReplicas: ").append(searchService.replicaCount())
+                .append("\n\tPartitions: ").append(searchService.partitionCount())
+                .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
+                .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
+                .append("\n\tQuery keys:");
+
+        for (QueryKey queryKey : queryKeys) {
+            info.append("\n\t\tKey name: ").append(queryKey.name());
+            info.append("\n\t\t   Value: ").append(queryKey.key());
+        }
+        System.out.println(info.toString());
+    }
 
     /**
      * Retrieve the secondary service principal client ID.
@@ -1654,11 +1648,12 @@ public final class Utils {
      * @param alias User alias
      * @param password alias password
      * @param cnName domain name
+     * @param dnsName dns name in subject alternate name
      * @throws Exception exceptions from the creation
      * @throws IOException IO Exception
      */
-    public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws IOException {
+    public static void createCertificate(String certPath, String pfxPath, String alias,
+                                         String password, String cnName, String dnsName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1683,6 +1678,12 @@ public final class Utils {
             "-keystore", pfxPath, "-storepass", password, "-validity",
             validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
             "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+        if (dnsName != null) {
+            List<String> args = new ArrayList<>(Arrays.asList(commandArgs));
+            args.add("-ext");
+            args.add("san=dns:" + dnsName);
+            commandArgs = args.toArray(new String[0]);
+        }
         Utils.cmdInvocation(commandArgs, true);
 
         // Create cer file i.e. extract public key from pfx
@@ -2557,7 +2558,6 @@ public final class Utils {
                 .append("\n\tName: ").append(user.name())
                 .append("\n\tMail: ").append(user.mail())
                 .append("\n\tMail Nickname: ").append(user.mailNickname())
-                .append("\n\tSign In Name: ").append(user.signInName())
                 .append("\n\tUser Principal Name: ").append(user.userPrincipalName());
 
         System.out.println(builder.toString());

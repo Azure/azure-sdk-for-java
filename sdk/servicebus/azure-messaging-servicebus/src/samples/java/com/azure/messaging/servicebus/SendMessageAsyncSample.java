@@ -3,9 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
-import java.util.concurrent.TimeUnit;
+import com.azure.core.util.BinaryData;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue.
@@ -36,7 +36,7 @@ public class SendMessageAsyncSample {
             .buildAsyncClient();
 
         // Create a message to send.
-        ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
+        ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello world!"));
 
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred

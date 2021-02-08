@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.util;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
 
 @Documented
 @Retention(RetentionPolicy.CLASS)
@@ -23,7 +23,10 @@ import java.lang.annotation.Target;
  * including removal, regardless of any compatibility expectations set by the containing library version.
  */
 public @interface Beta {
-    String warningText() default "This functionality is in preview and as such is subject to change in non-backwards compatible ways in future releases, including removal, regardless of any compatibility expectations set by the containing library version.";
+
+    String PREVIEW_SUBJECT_TO_CHANGE_WARNING = "Preview API - subject to change in non-backwards compatible way";
+
+    String warningText() default PREVIEW_SUBJECT_TO_CHANGE_WARNING;
 
     /**
      * @return the version number when the annotated API was first introduced to the library as in Beta
@@ -43,6 +46,14 @@ public @interface Beta {
         /** v4.5.1 */
         V4_5_1,
         /** v4.6.0 */
-        V4_6_0
+        V4_6_0,
+        /** v4.7.0 */
+        V4_7_0,
+        /** v4.8.0 */
+        V4_8_0,
+        /** v4.9.0 */
+        V4_9_0,
+        /** v4.11.0 */
+        V4_11_0,
     }
 }

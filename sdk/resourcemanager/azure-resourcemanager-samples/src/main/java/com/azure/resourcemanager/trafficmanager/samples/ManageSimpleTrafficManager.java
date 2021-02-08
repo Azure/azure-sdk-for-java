@@ -79,7 +79,7 @@ public final class ManageSimpleTrafficManager {
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                             .withRootUsername(userName)
                             .withSsh(sshKey)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+                            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
                     creatableVirtualMachines.add(vmDefinition);
                 }
             }

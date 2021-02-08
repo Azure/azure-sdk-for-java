@@ -36,4 +36,12 @@ public enum TablesServiceVersion implements ServiceVersion {
         return V2019_02_02;
     }
 
+    static TablesServiceVersion fromString(String version) {
+        for (TablesServiceVersion value : TablesServiceVersion.values()) {
+            if (value.version.equals(version)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

@@ -60,10 +60,9 @@ public class RedisManagementTest extends ResourceManagerTestBase {
         saName = generateRandomResourceName("javacsmsa", 15);
 
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        redisManager = RedisManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        redisManager = buildManager(RedisManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        resourceManager = redisManager.resourceManager();
     }
 
     @Override

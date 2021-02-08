@@ -37,7 +37,7 @@ public class OperationsInner {
     /** The Retrofit service to perform REST calls. */
     private OperationsService service;
     /** The service client containing this operation class. */
-    private EventHub2018PreviewManagementClientImpl client;
+    private EventHubManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsInner.
@@ -45,7 +45,7 @@ public class OperationsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public OperationsInner(Retrofit retrofit, EventHub2018PreviewManagementClientImpl client) {
+    public OperationsInner(Retrofit retrofit, EventHubManagementClientImpl client) {
         this.service = retrofit.create(OperationsService.class);
         this.client = client;
     }
@@ -145,15 +145,13 @@ public class OperationsInner {
      * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<OperationInner>>> listSinglePageAsync() {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2017-04-01";
+        return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<OperationInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl1<OperationInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -162,9 +160,9 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<OperationInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<OperationInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<OperationInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<OperationInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -250,7 +248,7 @@ public class OperationsInner {
     /**
      * Lists all of the available Event Hub REST API operations.
      *
-    ServiceResponse<PageImpl<OperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<OperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -264,7 +262,7 @@ public class OperationsInner {
                 @Override
                 public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<OperationInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl1<OperationInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -273,9 +271,9 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<OperationInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<OperationInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<OperationInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<OperationInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

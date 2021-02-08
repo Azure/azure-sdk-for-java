@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -57,6 +58,7 @@ final class PartitionBasedLoadBalancer {
     private final AtomicBoolean isLoadBalancerRunning = new AtomicBoolean();
     private final LoadBalancingStrategy loadBalancingStrategy;
     private final AtomicBoolean morePartitionsToClaim = new AtomicBoolean();
+    private final AtomicReference<List<String>> partitionsCache = new AtomicReference<>(new ArrayList<>());
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -122,10 +124,19 @@ final class PartitionBasedLoadBalancer {
         /*
          * Retrieve the list of partition ids from the Event Hub.
          */
-        final Mono<List<String>> partitionsMono = eventHubAsyncClient
-            .getPartitionIds()
-            .timeout(Duration.ofMinutes(1))
-            .collectList();
+        Mono<List<String>> partitionsMono;
+        if (CoreUtils.isNullOrEmpty(partitionsCache.get())) {
+            // Call Event Hubs service to get the partition ids if the cache is empty
+            logger.info("Getting partitions from Event Hubs service for {}", eventHubName);
+            partitionsMono = eventHubAsyncClient
+                .getPartitionIds()
+                .timeout(Duration.ofMinutes(1))
+                .collectList();
+        } else {
+            partitionsMono = Mono.just(partitionsCache.get());
+            // we have the partitions, the client can be closed now
+            closeClient();
+        }
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
@@ -159,10 +170,11 @@ final class PartitionBasedLoadBalancer {
                 throw logger.logExceptionAsError(Exceptions.propagate(
                     new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
             }
-
+            partitionsCache.set(partitionIds);
             int numberOfPartitions = partitionIds.size();
-            logger.info("CheckpointStore returned {} ownership records", partitionOwnershipMap.size());
-            logger.info("Event Hubs service returned {} partitions", numberOfPartitions);
+            logger.info("Number of ownership records {}, number of partitions {}", partitionOwnershipMap.size(),
+                numberOfPartitions);
+
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
@@ -267,6 +279,18 @@ final class PartitionBasedLoadBalancer {
     }
 
     /*
+     * Closes the client used by load balancer to get the partitions.
+     */
+    private void closeClient() {
+        try {
+            // this is an idempotent operation, calling close on an already closed client is just a no-op.
+            this.eventHubAsyncClient.close();
+        } catch (Exception ex) {
+            logger.warning("Failed to close the client", ex);
+        }
+    }
+
+    /*
      * This method renews the ownership of currently owned partitions
      */
     private void renewOwnership(Map<String, PartitionOwnership> partitionOwnershipMap) {
@@ -279,7 +303,7 @@ final class PartitionBasedLoadBalancer {
                     .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()))
-            .subscribe(ignored -> { },
+            .subscribe(partitionPumpManager::verifyPartitionConnection,
                 ex -> {
                     logger.error("Error renewing partition ownership", ex);
                     isLoadBalancerRunning.set(false);

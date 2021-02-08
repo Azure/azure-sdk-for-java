@@ -11,10 +11,11 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -60,6 +61,10 @@ public class SqlPoolReplicationLinksInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolReplicationLinks getByName" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks/{linkId}")
+        Observable<Response<ResponseBody>> getByName(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolReplicationLinks listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -74,7 +79,7 @@ public class SqlPoolReplicationLinksInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ReplicationLinkInner&gt; object if successful.
      */
@@ -195,10 +200,114 @@ public class SqlPoolReplicationLinksInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ReplicationLinkInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ReplicationLinkInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ReplicationLinkInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ReplicationLinkInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ReplicationLinkInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
+                .build(response);
+    }
+
+    /**
+     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param linkId The ID of the replication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ReplicationLinkInner object if successful.
+     */
+    public ReplicationLinkInner getByName(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        return getByNameWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId).toBlocking().single().body();
+    }
+
+    /**
+     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param linkId The ID of the replication link.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ReplicationLinkInner> getByNameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, final ServiceCallback<ReplicationLinkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByNameWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId), serviceCallback);
+    }
+
+    /**
+     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param linkId The ID of the replication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ReplicationLinkInner object
+     */
+    public Observable<ReplicationLinkInner> getByNameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        return getByNameWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId).map(new Func1<ServiceResponse<ReplicationLinkInner>, ReplicationLinkInner>() {
+            @Override
+            public ReplicationLinkInner call(ServiceResponse<ReplicationLinkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param linkId The ID of the replication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ReplicationLinkInner object
+     */
+    public Observable<ServiceResponse<ReplicationLinkInner>> getByNameWithServiceResponseAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (sqlPoolName == null) {
+            throw new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null.");
+        }
+        if (linkId == null) {
+            throw new IllegalArgumentException("Parameter linkId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getByName(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, linkId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ReplicationLinkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ReplicationLinkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ReplicationLinkInner> clientResponse = getByNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ReplicationLinkInner> getByNameDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ReplicationLinkInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ReplicationLinkInner>() { }.getType())
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -208,7 +317,7 @@ public class SqlPoolReplicationLinksInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ReplicationLinkInner&gt; object if successful.
      */
@@ -311,10 +420,10 @@ public class SqlPoolReplicationLinksInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ReplicationLinkInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ReplicationLinkInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ReplicationLinkInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ReplicationLinkInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ReplicationLinkInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

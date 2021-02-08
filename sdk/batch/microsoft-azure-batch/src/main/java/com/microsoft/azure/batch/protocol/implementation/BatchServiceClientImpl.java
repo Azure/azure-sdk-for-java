@@ -290,7 +290,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
     }
 
     protected void initialize() {
-        this.apiVersion = "2020-03-01.11.0";
+        this.apiVersion = "2020-09-01.12.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -313,6 +313,6 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2020-03-01.11.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2020-09-01.12.0");
     }
 }

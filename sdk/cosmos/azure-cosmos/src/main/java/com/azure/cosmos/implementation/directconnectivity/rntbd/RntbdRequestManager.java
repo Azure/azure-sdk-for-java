@@ -52,6 +52,7 @@ import io.netty.util.internal.ThrowableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.util.Map;
@@ -391,10 +392,30 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final SslHandler sslHandler = context.pipeline().get(SslHandler.class);
 
         if (sslHandler != null) {
-            // Netty 4.1.36.Final: SslHandler.closeOutbound must be called before closing the pipeline
-            // This ensures that all SSL engine and ByteBuf resources are released
-            // This is something that does not occur in the call to ChannelPipeline.close that follows
-            sslHandler.closeOutbound();
+
+            try {
+                // Netty 4.1.36.Final: SslHandler.closeOutbound must be called before closing the pipeline
+                // This ensures that all SSL engine and ByteBuf resources are released
+                // This is something that does not occur in the call to ChannelPipeline.close that follows
+                sslHandler.closeOutbound();
+            } catch (Exception exception) {
+
+                // Netty will throw the following exception here if the outbound SSL connection has been closed already
+                // javax.net.ssl.SSLException: SSLEngine closed already
+                // Reducing the noise level here because multiple concurrent closes can happen due to race conditions
+                // and there is no harm in this case
+                if (exception instanceof SSLException) {
+                    logger.debug(
+                        "SslException when attempting to close the outbound SSL connection: ",
+                        exception);
+                } else {
+                    logger.warn(
+                        "Exception when attempting to close the outbound SSL connection: ",
+                        exception);
+
+                    throw exception;
+                }
+            }
         }
 
         context.close(promise);
@@ -738,6 +759,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create CosmosException based on status and sub-status codes
 
+            final String resourceAddress = requestRecord.args().physicalAddress() != null ?
+                requestRecord.args().physicalAddress().toString() : null;
+
             switch (status.code()) {
 
                 case StatusCodes.BADREQUEST:
@@ -770,7 +794,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
-                            cause = new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            GoneException goneExceptionFromService =
+                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneExceptionFromService.setIsBasedOn410ResponseFromService();
+                            cause = goneExceptionFromService;
                             break;
                     }
                     break;
@@ -801,9 +828,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    String resourceAddress = requestRecord.args().physicalAddress() != null ?
-                        requestRecord.args().physicalAddress().toString() : null;
-
                     cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
                     break;
 
@@ -824,9 +848,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = BridgeInternal.createCosmosException(status.code(), error, responseHeaders);
+                    cause = BridgeInternal.createCosmosException(resourceAddress, status.code(), error, responseHeaders);
                     break;
             }
+            BridgeInternal.setResourceAddress(cause, resourceAddress);
 
             requestRecord.completeExceptionally(cause);
         }

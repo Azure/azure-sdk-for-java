@@ -12,6 +12,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.core.management.Region;
@@ -271,8 +272,9 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D1_V2)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
 //                    .withDnsPrefix("dns-ap-" + acsName)
                     .attach()
                 .withDnsPrefix("dns-" + acsName)

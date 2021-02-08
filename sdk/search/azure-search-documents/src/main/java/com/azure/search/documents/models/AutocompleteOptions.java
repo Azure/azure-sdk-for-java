@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.converters.AutocompleteOptionsHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
@@ -77,6 +78,15 @@ public final class AutocompleteOptions {
      */
     @JsonProperty(value = "")
     private Integer top;
+
+    static {
+        AutocompleteOptionsHelper.setAccessor(new AutocompleteOptionsHelper.AutocompleteOptionsAccessor() {
+            @Override
+            public void setSearchFields(AutocompleteOptions autocompleteOptions, List<String> searchFields) {
+                autocompleteOptions.setSearchFields(searchFields);
+            }
+        });
+    }
 
     /**
      * Get the autocompleteMode property: Specifies the mode for Autocomplete.
@@ -278,5 +288,15 @@ public final class AutocompleteOptions {
     public AutocompleteOptions setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    /**
+     * The private setter to set the select property
+     * via {@link AutocompleteOptionsHelper.AutocompleteOptionsAccessor}.
+     *
+     * @param searchFields The list of field names to consider when querying for auto-completed terms.
+     */
+    private void setSearchFields(List<String> searchFields) {
+        this.searchFields = searchFields;
     }
 }

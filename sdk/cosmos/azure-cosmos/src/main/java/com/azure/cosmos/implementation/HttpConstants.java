@@ -249,6 +249,11 @@ public class HttpConstants {
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
 
+        // Batch operations
+        public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
+        public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
+        public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
+        public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
     }
 
     public static class A_IMHeaderValues {
@@ -267,6 +272,9 @@ public class HttpConstants {
     public static class StatusCodes {
         public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
+        // Success
+        public static final int MINIMUM_SUCCESS_STATUSCODE = 200;
+        public static final int MAXIMUM_SUCCESS_STATUSCODE = 299;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
         public static final int BADREQUEST = 400;
@@ -318,5 +326,6 @@ public class HttpConstants {
     public static class HeaderValues {
         public static final String NO_CACHE = "no-cache";
         public static final String PREFER_RETURN_MINIMAL = "return=minimal";
+        public static final String IF_NONE_MATCH_ALL = "*";
     }
 }

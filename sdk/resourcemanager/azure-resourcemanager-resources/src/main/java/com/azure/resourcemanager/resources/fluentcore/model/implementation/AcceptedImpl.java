@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementError;
@@ -32,6 +33,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
@@ -95,7 +97,12 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
             Function<PollResponse<PollResult<InnerT>>, ManagementException> errorOperation = response -> {
                 String errorMessage;
                 ManagementError managementError = null;
+                HttpResponse errorResponse = null;
+                PollResult.Error lroError = response.getValue().getError();
                 if (response.getValue().getError() != null) {
+                    errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(),
+                        lroError.getResponseHeaders(), lroError.getResponseBody());
+
                     errorMessage = response.getValue().getError().getMessage();
                     String errorBody = response.getValue().getError().getResponseBody();
                     if (errorBody != null) {
@@ -120,7 +127,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                     // fallback to default ManagementError
                     managementError = new ManagementError(response.getStatus().toString(), errorMessage);
                 }
-                return new ManagementException(errorMessage, null, managementError);
+                return new ManagementException(errorMessage, errorResponse, managementError);
             };
 
             syncPoller = new SyncPollerImpl<InnerT, T>(this.getPollerFlux().getSyncPoller(),
@@ -307,6 +314,54 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         static final String SUCCEEDED = "Succeeded";
         static final String FAILED = "Failed";
         static final String CANCELED = "Canceled";
+    }
+
+    private static class HttpResponseImpl extends HttpResponse {
+        private final int statusCode;
+        private final byte[] responseBody;
+        private final HttpHeaders httpHeaders;
+
+        HttpResponseImpl(int statusCode, HttpHeaders httpHeaders, String responseBody) {
+            super(null);
+            this.statusCode = statusCode;
+            this.httpHeaders = httpHeaders;
+            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        @Override
+        public String getHeaderValue(String s) {
+            return httpHeaders.getValue(s);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return httpHeaders;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.wrap(responseBody));
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(responseBody);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.just(new String(responseBody, StandardCharsets.UTF_8));
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just(new String(responseBody, charset));
+        }
     }
 
     public static <T, InnerT> Accepted<T> newAccepted(

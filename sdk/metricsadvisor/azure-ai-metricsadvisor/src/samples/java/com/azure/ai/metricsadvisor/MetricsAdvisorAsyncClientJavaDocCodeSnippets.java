@@ -3,23 +3,23 @@
 
 package com.azure.ai.metricsadvisor;
 
+import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.ChangePointValue;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 import com.azure.ai.metricsadvisor.models.MetricChangePointFeedback;
 import com.azure.ai.metricsadvisor.models.MetricCommentFeedback;
@@ -27,8 +27,7 @@ import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.Severity;
-import com.azure.ai.metricsadvisor.models.TimeMode;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedFlux;
@@ -48,7 +47,7 @@ import static com.azure.ai.metricsadvisor.models.FeedbackType.PERIOD;
  * Code snippet for {@link MetricsAdvisorAsyncClient}
  */
 public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
-    MetricsAdvisorAsyncClient metricAdvisorAsyncClient =
+    MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
         new MetricsAdvisorClientBuilder().buildAsyncClient();
 
     /**
@@ -56,7 +55,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
      */
     public void createMetricAdvisorAsyncClient() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation
-        MetricsAdvisorAsyncClient metricAdvisorAdministrationAsyncClient =
+        MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
             new MetricsAdvisorClientBuilder()
                 .credential(new MetricsAdvisorKeyCredential("{subscription_key}", "{api_key}"))
                 .endpoint("{endpoint}")
@@ -73,7 +72,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             .policies(/* add policies */)
             .build();
 
-        MetricsAdvisorAsyncClient metricAdvisorAdministrationAsyncClient =
+        MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
             new MetricsAdvisorClientBuilder()
                 .credential(new MetricsAdvisorKeyCredential("{subscription_key}", "{api_key}"))
                 .endpoint("{endpoint}")
@@ -84,53 +83,52 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link MetricsAdvisorAsyncClient#listMetricSeriesDefinitions(String, ListMetricSeriesDefinitionOptions)}
+     * {@link MetricsAdvisorAsyncClient#listMetricSeriesDefinitions(String, OffsetDateTime, ListMetricSeriesDefinitionOptions)}
      */
     public void listMetricSeriesDefinitions() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions
         String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
-            = new ListMetricSeriesDefinitionOptions(OffsetDateTime.parse("2020-07-10T00:00:00Z"))
+            = new ListMetricSeriesDefinitionOptions()
             .setTop(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("Dim2", Collections.singletonList("Angelfish"));
                 }});
 
-        metricAdvisorAsyncClient.listMetricSeriesDefinitions(metricId, options)
+        metricsAdvisorAsyncClient.listMetricSeriesDefinitions(metricId, activeSince, options)
             .subscribe(metricSeriesDefinition -> {
-                System.out.printf("Metric id for the retrieved series definition : %s%n",
+                System.out.printf("Data Feed Metric id for the retrieved series definition : %s%n",
                     metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesDefinition.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-ListMetricSeriesDefinitionOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions
     }
 
     /**
      * Code snippet for
-     * {@link MetricsAdvisorAsyncClient#listMetricSeriesData(String, List, ListMetricSeriesDataOptions)}
+     * {@link MetricsAdvisorAsyncClient#listMetricSeriesData(String, List, OffsetDateTime, OffsetDateTime)}
      */
     public void listMetricSeriesData() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime
         final String metricId = "2dgfbbbb-41ec-a637-677e77b81455";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
 
-        final ListMetricSeriesDataOptions options = new ListMetricSeriesDataOptions(startTime, endTime)
-            .setTop(10);
         final List<DimensionKey> seriesKeyFilter
             = Arrays.asList(new DimensionKey().put("cost", "redmond"));
 
-        metricAdvisorAsyncClient.listMetricSeriesData(metricId, seriesKeyFilter, options)
+        metricsAdvisorAsyncClient.listMetricSeriesData(metricId, seriesKeyFilter, startTime, endTime)
             .subscribe(metricSeriesData -> {
                 System.out.println("List of data points for this series:");
-                System.out.println(metricSeriesData.getValueList());
+                System.out.println(metricSeriesData.getMetricValues());
                 System.out.println("Timestamps of the data related to this time series:");
-                System.out.println(metricSeriesData.getTimestampList());
+                System.out.println(metricSeriesData.getTimestamps());
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesData.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-ListMetricSeriesDataOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime
     }
 
     /**
@@ -139,7 +137,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     public void listMetricDimensionValues() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String
 
-        metricAdvisorAsyncClient.listMetricDimensionValues("metricId", "dimension1")
+        metricsAdvisorAsyncClient.listMetricDimensionValues("metricId", "dimension1")
             .subscribe(System.out::println);
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String
     }
@@ -150,7 +148,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
      */
     public void listMetricDimensionValuesWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions
-        metricAdvisorAsyncClient.listMetricDimensionValues("metricId", "dimension1",
+        metricsAdvisorAsyncClient.listMetricDimensionValues("metricId", "dimension1",
             new ListMetricDimensionValuesOptions().setDimensionValueToFilter("value1").setTop(3))
             .subscribe(System.out::println);
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions
@@ -166,18 +164,18 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setTop(10);
 
-        metricAdvisorAsyncClient.listIncidentsForAlert(
+        metricsAdvisorAsyncClient.listIncidentsForAlert(
             alertConfigurationId,
             alertId,
             options)
             .subscribe(incident -> {
-                System.out.printf("Metric Id: %s%n", incident.getMetricId());
+                System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());
                 System.out.printf("Detection Configuration Id: %s%n", incident.getDetectionConfigurationId());
-                System.out.printf("Incident Id: %s%n", incident.getId());
-                System.out.printf("Incident Start Time: %s%n", incident.getStartTime());
-                System.out.printf("Incident Severity: %s%n", incident.getSeverity());
-                System.out.printf("Incident Status: %s%n", incident.getStatus());
-                System.out.printf("Root Dimension Key:");
+                System.out.printf("Anomaly Incident Id: %s%n", incident.getId());
+                System.out.printf("Anomaly Incident Start Time: %s%n", incident.getStartTime());
+                System.out.printf("Anomaly Incident AnomalySeverity: %s%n", incident.getSeverity());
+                System.out.printf("Anomaly Incident Status: %s%n", incident.getStatus());
+                System.out.printf("Root DataFeedDimension Key:");
                 DimensionKey rootDimension = incident.getRootDimensionKey();
                 for (Map.Entry<String, String> dimension : rootDimension.asMap().entrySet()) {
                     System.out.printf("DimensionName: %s DimensionValue:%s%n",
@@ -195,16 +193,16 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
 
-        metricAdvisorAsyncClient.listAnomaliesForAlert(
+        metricsAdvisorAsyncClient.listAnomaliesForAlert(
             alertConfigurationId,
             alertId)
             .subscribe(anomaly -> {
-                System.out.printf("Metric Id: %s%n", anomaly.getMetricId());
+                System.out.printf("Data Feed Metric Id: %s%n", anomaly.getMetricId());
                 System.out.printf("Detection Configuration Id: %s%n", anomaly.getDetectionConfigurationId());
-                System.out.printf("Anomaly Created Time: %s%n", anomaly.getCreatedTime());
-                System.out.printf("Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
-                System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
-                System.out.printf("Anomaly Status: %s%n", anomaly.getStatus());
+                System.out.printf("DataPoint Anomaly Created Time: %s%n", anomaly.getCreatedTime());
+                System.out.printf("DataPoint Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
+                System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly Status: %s%n", anomaly.getStatus());
                 System.out.printf("Series Key:");
                 DimensionKey seriesKey = anomaly.getSeriesKey();
                 for (Map.Entry<String, String> dimension : seriesKey.asMap().entrySet()) {
@@ -224,17 +222,17 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final String alertId = "1746b031c00";
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
-        metricAdvisorAsyncClient.listAnomaliesForAlert(
+        metricsAdvisorAsyncClient.listAnomaliesForAlert(
             alertConfigurationId,
             alertId,
             options)
             .subscribe(anomaly -> {
-                System.out.printf("Metric Id: %s%n", anomaly.getMetricId());
+                System.out.printf("Data Feed Metric Id: %s%n", anomaly.getMetricId());
                 System.out.printf("Detection Configuration Id: %s%n", anomaly.getDetectionConfigurationId());
-                System.out.printf("Anomaly Created Time: %s%n", anomaly.getCreatedTime());
-                System.out.printf("Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
-                System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
-                System.out.printf("Anomaly Status: %s%n", anomaly.getStatus());
+                System.out.printf("DataPoint Anomaly Created Time: %s%n", anomaly.getCreatedTime());
+                System.out.printf("DataPoint Anomaly Modified Time: %s%n", anomaly.getModifiedTime());
+                System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly Status: %s%n", anomaly.getStatus());
                 System.out.printf("Series Key:");
                 System.out.println(anomaly.getSeriesKey().asMap());
             });
@@ -242,91 +240,92 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listAlerts(String, ListAlertOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAlerts(String, OffsetDateTime, OffsetDateTime, ListAlertOptions)}.
      */
     public void listAlertForAlertConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-ListAlertOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final TimeMode timeMode = TimeMode.ANOMALY_TIME;
-        final ListAlertOptions options = new ListAlertOptions(startTime, endTime, timeMode)
+        final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
+        final ListAlertOptions options = new ListAlertOptions()
+            .setAlertQueryTimeMode(timeMode)
             .setTop(10);
 
-        metricAdvisorAsyncClient.listAlerts(alertConfigurationId, options)
+        metricsAdvisorAsyncClient.listAlerts(alertConfigurationId, startTime, endTime, options)
             .subscribe(alert -> {
-                System.out.printf("Alert Id: %s%n", alert.getId());
+                System.out.printf("Anomaly Alert Id: %s%n", alert.getId());
                 System.out.printf("Created Time: %s%n", alert.getCreatedTime());
                 System.out.printf("Modified Time: %s%n", alert.getModifiedTime());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-ListAlertOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listValuesOfDimensionWithAnomalies(String, String, ListValuesOfDimensionWithAnomaliesOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listDimensionValuesWithAnomalies(String, String, OffsetDateTime, OffsetDateTime, ListDimensionValuesWithAnomaliesOptions)}.
      */
     public void listValuesOfDimensionWithAnomalies() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final String dimensionName = "Dim1";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final ListValuesOfDimensionWithAnomaliesOptions options
-            = new ListValuesOfDimensionWithAnomaliesOptions(startTime, endTime)
+        final ListDimensionValuesWithAnomaliesOptions options
+            = new ListDimensionValuesWithAnomaliesOptions()
             .setTop(10);
 
-        metricAdvisorAsyncClient.listValuesOfDimensionWithAnomalies(detectionConfigurationId,
+        metricsAdvisorAsyncClient.listDimensionValuesWithAnomalies(detectionConfigurationId,
             dimensionName,
-            options)
+            startTime, endTime, options)
             .subscribe(dimensionValue -> {
-                System.out.printf("Dimension Value: %s%n", dimensionValue);
+                System.out.printf("DataFeedDimension Value: %s%n", dimensionValue);
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentsForDetectionConfiguration(String, ListIncidentsDetectedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions)}.
      */
-    public void listIncidentsForDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration#String-ListIncidentsDetectedOptions
+    public void listIncidentsForDetectionConfig() {
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
-        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions(startTime, endTime)
+        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
             .setTop(1000);
 
-        PagedFlux<Incident> incidentsFlux
-            = metricAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, options);
+        PagedFlux<AnomalyIncident> incidentsFlux
+            = metricsAdvisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options);
 
         incidentsFlux.subscribe(incident -> {
-            System.out.printf("Metric Id: %s%n", incident.getMetricId());
+            System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());
             System.out.printf("Detection Configuration Id: %s%n", incident.getDetectionConfigurationId());
-            System.out.printf("Incident Id: %s%n", incident.getId());
-            System.out.printf("Incident Start Time: %s%n", incident.getStartTime());
-            System.out.printf("Incident Severity: %s%n", incident.getSeverity());
-            System.out.printf("Incident Status: %s%n", incident.getStatus());
-            System.out.printf("Root Dimension Key: %s%n", incident.getRootDimensionKey().asMap());
+            System.out.printf("Anomaly Incident Id: %s%n", incident.getId());
+            System.out.printf("Anomaly Incident Start Time: %s%n", incident.getStartTime());
+            System.out.printf("Anomaly Incident AnomalySeverity: %s%n", incident.getSeverity());
+            System.out.printf("Anomaly Incident Status: %s%n", incident.getStatus());
+            System.out.printf("Root DataFeedDimension Key: %s%n", incident.getRootDimensionKey().asMap());
         });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration#String-ListIncidentsDetectedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomaliesForDetectionConfiguration(String, ListAnomaliesDetectedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListAnomaliesDetectedOptions)}.
      */
     public void listAnomaliesForDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfiguration#String-ListAnomaliesDetectedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverity(Severity.LOW, Severity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+            .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
-        metricAdvisorAsyncClient.listAnomaliesForDetectionConfiguration(detectionConfigurationId,
-            options)
+        metricsAdvisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+                startTime, endTime, options)
             .subscribe(anomaly -> {
-                System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
+                System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", anomaly.getSeverity());
                 System.out.printf("Series Key:");
                 DimensionKey seriesKey = anomaly.getSeriesKey();
                 for (Map.Entry<String, String> dimension : seriesKey.asMap().entrySet()) {
@@ -334,198 +333,197 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                         dimension.getKey(), dimension.getValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfiguration#String-ListAnomaliesDetectedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
     }
 
     /*
-     * Code snippet for {@link MetricsAdvisorAsyncClient#createMetricFeedback(String, MetricFeedback)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#addFeeddback(String, MetricFeedback)}.
      */
     public void createMetricFeedback() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedback#String-MetricFeedback
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final MetricChangePointFeedback metricChangePointFeedback
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
-        metricAdvisorAsyncClient.createMetricFeedback(metricId, metricChangePointFeedback)
+        metricsAdvisorAsyncClient.addFeeddback(metricId, metricChangePointFeedback)
             .subscribe(metricFeedback -> {
                 MetricChangePointFeedback createdMetricChangePointFeedback = (MetricChangePointFeedback) metricFeedback;
-                System.out.printf("Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
-                System.out.printf("Metric feedback change point value: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
+                System.out.printf("Data Feed Metric feedback change point value: %s%n",
                     createdMetricChangePointFeedback.getChangePointValue().toString());
-                System.out.printf("Metric feedback start time: %s%n",
+                System.out.printf("Data Feed Metric feedback start time: %s%n",
                     createdMetricChangePointFeedback.getStartTime());
-                System.out.printf("Metric feedback end time: %s%n",
+                System.out.printf("Data Feed Metric feedback end time: %s%n",
                     createdMetricChangePointFeedback.getEndTime());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedback#String-MetricFeedback
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#createMetricFeedbackWithResponse(String, MetricFeedback)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#addFeedbackWithResponse(String, MetricFeedback)}.
      */
     public void createMetricFeedbackWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedbackWithResponse#String-MetricFeedback
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedbackWithResponse#String-MetricFeedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final MetricChangePointFeedback metricChangePointFeedback
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
-        metricAdvisorAsyncClient.createMetricFeedbackWithResponse(metricId, metricChangePointFeedback)
+        metricsAdvisorAsyncClient.addFeedbackWithResponse(metricId, metricChangePointFeedback)
             .subscribe(metricFeedbackResponse -> {
-                System.out.printf("Metric feedback creation operation status %s%n",
+                System.out.printf("Data Feed Metric feedback creation operation status %s%n",
                     metricFeedbackResponse.getStatusCode());
                 MetricChangePointFeedback createdMetricChangePointFeedback
                     = (MetricChangePointFeedback) metricFeedbackResponse.getValue();
-                System.out.printf("Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
-                System.out.printf("Metric feedback change point value: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
+                System.out.printf("Data Feed Metric feedback change point value: %s%n",
                     createdMetricChangePointFeedback.getChangePointValue().toString());
-                System.out.printf("Metric feedback start time: %s%n",
+                System.out.printf("Data Feed Metric feedback start time: %s%n",
                     createdMetricChangePointFeedback.getStartTime());
-                System.out.printf("Metric feedback end time: %s%n",
+                System.out.printf("Data Feed Metric feedback end time: %s%n",
                     createdMetricChangePointFeedback.getEndTime());
-                System.out.printf("Metric feedback associated dimension filter: %s%n",
+                System.out.printf("Data Feed Metric feedback associated dimension filter: %s%n",
                     createdMetricChangePointFeedback.getDimensionFilter().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.createMetricFeedbackWithResponse#String-MetricFeedback
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedbackWithResponse#String-MetricFeedback
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#getMetricFeedback(String)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#getFeedback(String)}.
      */
     public void getMetricFeedback() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedback#String
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedback#String
 
         final String feedbackId = "8i3h4i4-b804-4ab9-a70f-0da0c89cft3l";
-        metricAdvisorAsyncClient.getMetricFeedback(feedbackId)
+        metricsAdvisorAsyncClient.getFeedback(feedbackId)
             .subscribe(metricFeedback -> {
-                System.out.printf("Metric feedback Id: %s%n", metricFeedback.getId());
-                System.out.printf("Metric feedback associated dimension filter: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", metricFeedback.getId());
+                System.out.printf("Data Feed Metric feedback associated dimension filter: %s%n",
                     metricFeedback.getDimensionFilter().asMap());
 
                 if (PERIOD.equals(metricFeedback.getFeedbackType())) {
                     MetricPeriodFeedback createMetricPeriodFeedback
                         = (MetricPeriodFeedback) metricFeedback;
-                    System.out.printf("Metric feedback type: %s%n",
+                    System.out.printf("Data Feed Metric feedback type: %s%n",
                         createMetricPeriodFeedback.getPeriodType().toString());
-                    System.out.printf("Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %f%n",
                         createMetricPeriodFeedback.getPeriodValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedback#String
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedback#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#getMetricFeedbackWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#getFeedbackWithResponse(String)}.
      */
     public void getMetricFeedbackWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedbackWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedbackWithResponse#String
 
         final String feedbackId = "8i3h4i4-b804-4ab9-a70f-0da0c89cft3l";
-        metricAdvisorAsyncClient.getMetricFeedbackWithResponse(feedbackId)
+        metricsAdvisorAsyncClient.getFeedbackWithResponse(feedbackId)
             .subscribe(metricFeedbackResponse -> {
                 final MetricFeedback metricFeedback = metricFeedbackResponse.getValue();
-                System.out.printf("Metric feedback Id: %s%n", metricFeedback.getId());
-                System.out.printf("Metric feedback associated dimension filter: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", metricFeedback.getId());
+                System.out.printf("Data Feed Metric feedback associated dimension filter: %s%n",
                     metricFeedback.getDimensionFilter().asMap());
 
                 if (PERIOD.equals(metricFeedback.getFeedbackType())) {
                     MetricPeriodFeedback createMetricPeriodFeedback
                         = (MetricPeriodFeedback) metricFeedback;
-                    System.out.printf("Metric feedback type: %s%n",
+                    System.out.printf("Data Feed Metric feedback type: %s%n",
                         createMetricPeriodFeedback.getPeriodType().toString());
-                    System.out.printf("Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %f%n",
                         createMetricPeriodFeedback.getPeriodValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getMetricFeedbackWithResponse#String
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.getFeedbackWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricFeedbacks(String)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listFeedback(String)}.
      */
     public void listMetricFeedbacks() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
-        metricAdvisorAsyncClient.listMetricFeedbacks(metricId)
+        metricsAdvisorAsyncClient.listFeedback(metricId)
             .subscribe(metricFeedback -> {
-                System.out.printf("Metric feedback Id: %s%n", metricFeedback.getId());
-                System.out.printf("Metric feedback associated dimension filter: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", metricFeedback.getId());
+                System.out.printf("Data Feed Metric feedback associated dimension filter: %s%n",
                     metricFeedback.getDimensionFilter().asMap());
 
                 if (PERIOD.equals(metricFeedback.getFeedbackType())) {
                     MetricPeriodFeedback periodFeedback
                         = (MetricPeriodFeedback) metricFeedback;
-                    System.out.printf("Metric feedback type: %s%n",
+                    System.out.printf("Data Feed Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %f%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(metricFeedback.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback
                         = (MetricAnomalyFeedback) metricFeedback;
-                    System.out.printf("Metric feedback anomaly value: %s%n",
+                    System.out.printf("Data Feed Metric feedback anomaly value: %s%n",
                         metricAnomalyFeedback.getAnomalyValue().toString());
-                    System.out.printf("Metric feedback associated detection configuration: %s%n",
+                    System.out.printf("Data Feed Metric feedback associated detection configuration: %s%n",
                         metricAnomalyFeedback.getDetectionConfigurationId());
                 } else if (COMMENT.equals(metricFeedback.getFeedbackType())) {
                     MetricCommentFeedback metricCommentFeedback
                         = (MetricCommentFeedback) metricFeedback;
-                    System.out.printf("Metric feedback comment value: %s%n",
+                    System.out.printf("Data Feed Metric feedback comment value: %s%n",
                         metricCommentFeedback.getComment());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricFeedbacks(String, ListMetricFeedbackOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listFeedback(String, ListMetricFeedbackOptions)}.
      */
     public void listMetricFeedbacksWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String-ListMetricFeedbackOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String-ListMetricFeedbackOptions
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
 
-        metricAdvisorAsyncClient.listMetricFeedbacks(metricId,
+        metricsAdvisorAsyncClient.listFeedback(metricId,
             new ListMetricFeedbackOptions()
                 .setFilter(new ListMetricFeedbackFilter()
                     .setStartTime(startTime)
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                     .setEndTime(endTime)))
             .subscribe(metricFeedback -> {
-                System.out.printf("Metric feedback Id: %s%n", metricFeedback.getId());
-                System.out.printf("Metric feedback associated dimension filter: %s%n",
+                System.out.printf("Data Feed Metric feedback Id: %s%n", metricFeedback.getId());
+                System.out.printf("Data Feed Metric feedback associated dimension filter: %s%n",
                     metricFeedback.getDimensionFilter().asMap());
-                System.out.printf("Metric feedback created time %s%n", metricFeedback.getCreatedTime());
+                System.out.printf("Data Feed Metric feedback created time %s%n", metricFeedback.getCreatedTime());
 
                 if (PERIOD.equals(metricFeedback.getFeedbackType())) {
                     MetricPeriodFeedback periodFeedback
                         = (MetricPeriodFeedback) metricFeedback;
-                    System.out.printf("Metric feedback type: %s%n",
+                    System.out.printf("Data Feed Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %f%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(metricFeedback.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback
                         = (MetricAnomalyFeedback) metricFeedback;
-                    System.out.printf("Metric feedback anomaly value: %s%n",
+                    System.out.printf("Data Feed Metric feedback anomaly value: %s%n",
                         metricAnomalyFeedback.getAnomalyValue().toString());
-                    System.out.printf("Metric feedback associated detection configuration: %s%n",
+                    System.out.printf("Data Feed Metric feedback associated detection configuration: %s%n",
                         metricAnomalyFeedback.getDetectionConfigurationId());
                 } else if (COMMENT.equals(metricFeedback.getFeedbackType())) {
                     MetricCommentFeedback metricCommentFeedback
                         = (MetricCommentFeedback) metricFeedback;
-                    System.out.printf("Metric feedback comment value: %s%n",
+                    System.out.printf("Data Feed Metric feedback comment value: %s%n",
                         metricCommentFeedback.getComment());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricFeedbacks#String-ListMetricFeedbackOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listFeedback#String-ListMetricFeedbackOptions
     }
 
     /**
-<<<<<<< HEAD
      * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentRootCauses(String, String)}.
      */
     public void listIncidentRootCauses() {
@@ -533,33 +531,33 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final String detectionConfigurationId = "c0dddf2539f-b804-4ab9-a70f-0da0c89c76d8";
         final String incidentId = "c5thh0f2539f-b804-4ab9-a70f-0da0c89c456d";
 
-        metricAdvisorAsyncClient.listIncidentRootCauses(detectionConfigurationId, incidentId)
+        metricsAdvisorAsyncClient.listIncidentRootCauses(detectionConfigurationId, incidentId)
             .subscribe(incidentRootCause -> {
                 System.out.printf("Description: %s%n", incidentRootCause.getDescription());
                 System.out.println("Series Key:");
                 System.out.println(incidentRootCause.getSeriesKey().asMap());
                 System.out.printf("Confidence for the detected incident root cause: %.2f%n",
-                    incidentRootCause.getConfidenceScore());
+                    incidentRootCause.getContributionScore());
             });
 
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#String-String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentRootCauses(Incident)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentRootCauses(AnomalyIncident)}.
      */
     public void listIncidentRootCausesWithIncident() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#Incident
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#AnomalyIncident
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListIncidentsDetectedOptions options
-            = new ListIncidentsDetectedOptions(startTime, endTime)
+            = new ListIncidentsDetectedOptions()
             .setTop(10);
 
-        metricAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, options)
+        metricsAdvisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options)
             .flatMap(incident -> {
-                return metricAdvisorAsyncClient.listIncidentRootCauses(incident);
+                return metricsAdvisorAsyncClient.listIncidentRootCauses(incident);
             })
             .subscribe(incidentRootCause -> {
                 System.out.printf("Description: %s%n", incidentRootCause.getDescription());
@@ -567,27 +565,27 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                 System.out.println(incidentRootCause.getSeriesKey().asMap());
             });
 
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#Incident
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentRootCauses#AnomalyIncident
     }
 
-    /*
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricEnrichmentStatus(String, ListMetricEnrichmentStatusOptions)}.
+    /**
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricEnrichmentStatus(String, OffsetDateTime, OffsetDateTime, ListMetricEnrichmentStatusOptions)}.
      */
     public void listMetricEnrichmentStatus() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-ListMetricEnrichmentStatusOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
-        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions(startTime, endTime);
+        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions().setTop(10);
 
-        metricAdvisorAsyncClient.listMetricEnrichmentStatus(metricId, options)
+        metricsAdvisorAsyncClient.listMetricEnrichmentStatus(metricId, startTime, endTime, options)
             .subscribe(enrichmentStatus -> {
-                System.out.printf("Metric enrichment status : %s%n", enrichmentStatus.getStatus());
-                System.out.printf("Metric enrichment status message: %s%n", enrichmentStatus.getMessage());
-                System.out.printf("Metric enrichment status data slice timestamp : %s%n",
+                System.out.printf("Data Feed Metric enrichment status : %s%n", enrichmentStatus.getStatus());
+                System.out.printf("Data Feed Metric enrichment status message: %s%n", enrichmentStatus.getMessage());
+                System.out.printf("Data Feed Metric enrichment status data slice timestamp : %s%n",
                     enrichmentStatus.getTimestamp());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-ListMetricEnrichmentStatusOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions
     }
 
     /**
@@ -603,7 +601,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-12T00:00:00Z");
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = metricAdvisorAsyncClient.listMetricEnrichedSeriesData(Arrays.asList(seriesKey),
+            = metricsAdvisorAsyncClient.listMetricEnrichedSeriesData(Arrays.asList(seriesKey),
             detectionConfigurationId,
             startTime,
             endTime);
@@ -611,15 +609,15 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         enrichedDataFlux.subscribe(enrichedData -> {
             System.out.printf("Series Key %s%n:", enrichedData.getSeriesKey().asMap());
             System.out.println("List of data points for this series");
-            System.out.println(enrichedData.getValueList());
+            System.out.println(enrichedData.getMetricValues());
             System.out.println("Timestamps of the data related to this time series:");
-            System.out.println(enrichedData.getTimestampList());
+            System.out.println(enrichedData.getTimestamps());
             System.out.println("The expected values of the data points calculated by the smart detector:");
-            System.out.println(enrichedData.getExpectedValueList());
+            System.out.println(enrichedData.getExpectedMetricValues());
             System.out.println("The lower boundary values of the data points calculated by smart detector:");
-            System.out.println(enrichedData.getLowerBoundaryList());
+            System.out.println(enrichedData.getLowerBoundaryValues());
             System.out.println("the periods calculated for the data points in the time series:");
-            System.out.println(enrichedData.getPeriodList());
+            System.out.println(enrichedData.getPeriods());
         });
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime
     }

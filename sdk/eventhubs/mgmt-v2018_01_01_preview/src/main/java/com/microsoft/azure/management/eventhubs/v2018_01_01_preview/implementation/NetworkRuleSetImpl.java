@@ -48,6 +48,11 @@ class NetworkRuleSetImpl extends WrapperImpl<NetworkRuleSetInner> implements Net
     }
 
     @Override
+    public Boolean trustedServiceAccessEnabled() {
+        return this.inner().trustedServiceAccessEnabled();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }

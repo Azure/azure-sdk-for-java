@@ -131,11 +131,23 @@ implements IDocumentQueryExecutionContext<T> {
         Map<String, String> requestHeaders = new HashMap<>();
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
-        ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
+        ConsistencyLevel desiredConsistencyLevel = cosmosQueryRequestOptions.getConsistencyLevel() != null ?
+            cosmosQueryRequestOptions.getConsistencyLevel():
+            this.client.getDesiredConsistencyLevelAsync();
+
+        boolean sessionTokenApplicable =
+            desiredConsistencyLevel == ConsistencyLevel.SESSION ||
+                (defaultConsistencyLevel == ConsistencyLevel.SESSION &&
+                    // skip applying the session token when Eventual Consistency is explicitly requested
+                    // on request-level for data plane operations.
+                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // and the session token can be rather large (even run in the 16 KB header length problem
+                    // on the gateway - so not worth sending when not needed
+                    this.resourceTypeEnum == ResourceType.Document);
+
         if (!Strings.isNullOrEmpty(cosmosQueryRequestOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
-            if (defaultConsistencyLevel == ConsistencyLevel.SESSION
-                    || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
+            if (sessionTokenApplicable) {
                 // Query across partitions is not supported today. Master resources (for e.g.,
                 // database)
                 // can span across partitions, whereas server resources (viz: collection,

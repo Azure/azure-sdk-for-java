@@ -7,6 +7,8 @@ package com.azure.resourcemanager.sql.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
@@ -14,12 +16,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.CreateMode;
-import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -76,7 +75,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating a database");
 
             SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName)
-                    .withEdition(DatabaseEdition.BASIC)
+                    .withBasicEdition()
                     .create();
             Utils.print(masterDatabase);
 
@@ -124,10 +123,10 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             List<Region> regions = new ArrayList<>();
 
             regions.add(Region.US_EAST);
-            regions.add(Region.US_SOUTH_CENTRAL);
+            regions.add(Region.US_WEST);
             regions.add(Region.EUROPE_NORTH);
             regions.add(Region.ASIA_SOUTHEAST);
-            regions.add(Region.JAPAN_EAST);
+            regions.add(Region.US_WEST2);
 
             List<Creatable<Network>> creatableNetworks = new ArrayList<>();
 
@@ -161,7 +160,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername(administratorLogin)
                         .withAdminPassword(administratorPassword)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2));
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")));
             }
 
             HashMap<String, String> ipAddresses = new HashMap<>();

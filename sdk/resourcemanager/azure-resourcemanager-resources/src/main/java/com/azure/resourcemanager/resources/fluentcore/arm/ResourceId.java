@@ -3,8 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
-import java.security.InvalidParameterException;
-
 /**
  * Instantiate itself from a resource id, and give easy access to resource information like subscription, resourceGroup,
  * resource name.
@@ -38,7 +36,7 @@ public final class ResourceId {
             // Skip the first '/' if any, and then split using '/'
             String[] splits = (id.startsWith("/")) ? id.substring(1).split("/") : id.split("/");
             if (splits.length % 2 == 1) {
-                throw new InvalidParameterException(badIdErrorText(id));
+                throw new IllegalArgumentException(badIdErrorText(id));
             }
 
             // Save the ID itself
@@ -53,7 +51,7 @@ public final class ResourceId {
 
             // Extract resource type and name
             if (splits.length < 2) {
-                throw new InvalidParameterException(badIdErrorText(id));
+                throw new IllegalArgumentException(badIdErrorText(id));
             } else {
                 this.name = splits[splits.length - 1];
                 this.resourceType = splits[splits.length - 2];
@@ -70,19 +68,19 @@ public final class ResourceId {
 
             // Ensure "subscriptions"
             if (!splits[0].equalsIgnoreCase("subscriptions")) {
-                throw new InvalidParameterException(badIdErrorText(id));
+                throw new IllegalArgumentException(badIdErrorText(id));
             }
             // Extract subscription ID
             this.subscriptionId = splits[1];
             // Ensure "resourceGroups"
             if (splits.length > 2 && !splits[2].equalsIgnoreCase("resourceGroups")) {
-                throw new InvalidParameterException(badIdErrorText(id));
+                throw new IllegalArgumentException(badIdErrorText(id));
             }
             // Extract resource group name
             this.resourceGroupName = splits.length > 3 ? splits[3] : null;
             // Ensure "providers"
             if (splits.length > 4 && !splits[4].equalsIgnoreCase("providers")) {
-                throw new InvalidParameterException(badIdErrorText(id));
+                throw new IllegalArgumentException(badIdErrorText(id));
             }
             // Extract provider namespace
             this.providerNamespace = splits.length > 5 ? splits[5] : null;

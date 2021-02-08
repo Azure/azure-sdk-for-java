@@ -53,11 +53,10 @@ public class NetworkManagementTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         rgName = generateRandomResourceName("javanwmrg", 15);
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        msiManager = MsiManager.authenticate(httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
+        resourceManager = networkManager.resourceManager();
         setInternalContext(internalContext, networkManager);
     }
 

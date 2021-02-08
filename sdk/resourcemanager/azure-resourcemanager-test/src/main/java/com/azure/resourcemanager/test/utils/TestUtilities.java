@@ -5,6 +5,8 @@ package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.http.rest.PagedIterable;
 
+import java.util.Iterator;
+
 /**
  * Common utility functions for the tests.
  */
@@ -34,7 +36,9 @@ public class TestUtilities {
      */
     public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-        for (T ignored : iterable) {
+        Iterator<T> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
             ++res;
         }
         return res;

@@ -3,9 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
@@ -15,12 +12,11 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /**
  * A SharedKey credential that authorizes requests to the Tables service.
  */
-public class TablesSharedKeyCredential implements TokenCredential {
+public class TablesSharedKeyCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKeyLite %s:%s";
     private final String accountName;
     private final String accountKey;
@@ -115,13 +111,5 @@ public class TablesSharedKeyCredential implements TokenCredential {
             }
         }
         return canonicalizedResource.toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        return null;
     }
 }

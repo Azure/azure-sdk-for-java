@@ -56,7 +56,7 @@ public final class ContainerRegistryManager
      * @param profile the profile to use
      * @return the ContainerRegistryManager
      */
-    public static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ContainerRegistryManager(httpPipeline, profile);
     }
 
@@ -95,7 +95,8 @@ public final class ContainerRegistryManager
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
     }
 
     /** @return the availability set resource management API entry point */

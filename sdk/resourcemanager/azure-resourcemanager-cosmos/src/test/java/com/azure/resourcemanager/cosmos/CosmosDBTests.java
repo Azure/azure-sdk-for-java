@@ -64,9 +64,9 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rgcosmosdb", 20);
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        cosmosManager = buildManager(CosmosManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        resourceManager = cosmosManager.resourceManager();
     }
 
     @Override
@@ -88,7 +88,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withMultipleWriteLocationsEnabled(true)
                 .withTag("tag1", "value1")
                 .create();
@@ -202,7 +201,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -227,7 +225,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_WEST)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -279,7 +276,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_EAST2)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 

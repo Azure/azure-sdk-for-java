@@ -21,16 +21,20 @@ import java.util.function.Function;
  */
 public final class SearchIndexingBufferedSenderOptions<T> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
-    private static final int DEFAULT_BATCH_SIZE = 500;
+    private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_WINDOW = Duration.ofSeconds(60);
-    private static final int DEFAULT_DOCUMENT_TRY_LIMIT = 3;
+    private static final int DEFAULT_MAX_RETRIES = 3;
+    private static final Duration DEFAULT_RETRY_DELAY = Duration.ofMillis(800);
+    private static final Duration DEFAULT_MAX_RETRY_DELAY = Duration.ofMinutes(1);
 
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderOptions.class);
 
-    private Boolean autoFlush;
-    private Duration autoFlushWindow;
-    private Integer batchSize;
-    private Integer documentTryLimit;
+    private boolean autoFlush = DEFAULT_AUTO_FLUSH;
+    private Duration autoFlushWindow = DEFAULT_FLUSH_WINDOW;
+    private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
+    private int maxRetries = DEFAULT_MAX_RETRIES;
+    private Duration retryDelay = DEFAULT_RETRY_DELAY;
+    private Duration maxRetryDelay = DEFAULT_MAX_RETRY_DELAY;
 
     private Consumer<IndexAction<T>> onActionAddedConsumer;
     private Consumer<IndexAction<T>> onActionSucceededConsumer;
@@ -40,15 +44,13 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     private Function<T, String> documentKeyRetriever;
 
     /**
-     * Flag determining whether a buffered sender will automatically flush its document batch based on the
-     * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setBatchSize(Integer)}.
-     * <p>
-     * If {@code autoFlush} is null the buffered sender will be set to automatically flush.
+     * Sets the flag determining whether a buffered sender will automatically flush its document batch based on the
+     * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setInitialBatchActionCount(int)}.
      *
      * @param autoFlush Flag determining whether a buffered sender will automatically flush.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
-    public SearchIndexingBufferedSenderOptions<T> setAutoFlush(Boolean autoFlush) {
+    public SearchIndexingBufferedSenderOptions<T> setAutoFlush(boolean autoFlush) {
         this.autoFlush = autoFlush;
         return this;
     }
@@ -59,23 +61,25 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return Flag indicating if the buffered sender will automatically flush.
      */
     public boolean getAutoFlush() {
-        return (autoFlush == null) ? DEFAULT_AUTO_FLUSH : autoFlush;
+        return autoFlush;
     }
 
     /**
-     * Duration between a buffered sender sending documents to be indexed.
+     * Sets the duration between a buffered sender sending documents to be indexed.
      * <p>
      * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
-     * #setBatchSize(Integer)} or by a manual trigger.
+     * #setInitialBatchActionCount(int)} or by a manual trigger.
      * <p>
-     * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(Boolean)} is enabled the buffered sender will
-     * only flush when {@link #setBatchSize(Integer)} is met. If {@code flushWindow} is null a default value of 60
-     * seconds is used.
+     * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(boolean)} is enabled the buffered sender will
+     * only flush when {@link #setInitialBatchActionCount(int)} is met.
      *
      * @param autoFlushWindow Duration between document batches being sent for indexing.
      * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws NullPointerException If {@code autoFlushWindow} is null.
      */
     public SearchIndexingBufferedSenderOptions<T> setAutoFlushWindow(Duration autoFlushWindow) {
+        Objects.requireNonNull(autoFlushWindow, "'autoFlushWindow' cannot be null.");
+
         this.autoFlushWindow = autoFlushWindow;
         return this;
     }
@@ -84,77 +88,143 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * Gets the {@link Duration} that the buffered sender will wait between sending documents to be indexed.
      * <p>
      * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
-     * #setBatchSize(Integer)} or by a manual trigger.
+     * #setInitialBatchActionCount(int)} or by a manual trigger.
      * <p>
-     * If the duration is less than or equal to zero the buffered sender will only flush when {@link #getBatchSize()} is
-     * triggered.
+     * If the duration is less than or equal to zero the buffered sender will only flush when {@link
+     * #getInitialBatchActionCount()} is triggered.
      * <p>
-     * This configuration is only taken into account if {@link #getAutoFlush()} is true or null.
+     * This configuration is only taken into account if {@link #getAutoFlush()} is true.
      *
      * @return The {@link Duration} to wait after the last document has been added to the batch before the batch is
      * flushed.
      */
     public Duration getAutoFlushWindow() {
-        return (autoFlushWindow == null) ? DEFAULT_FLUSH_WINDOW : autoFlushWindow;
+        return autoFlushWindow;
     }
 
     /**
-     * The number of documents before a buffered sender will send the batch to be indexed.
+     * Sets the number of documents before a buffered sender will send the batch to be indexed.
      * <p>
      * This will only trigger a batch to be sent automatically if {@link #autoFlushWindow} is configured. Default value
-     * is {@code 100}.
+     * is {@code 512}.
      *
-     * @param batchSize The number of documents in a batch that will trigger it to be indexed.
+     * @param initialBatchActionCount The number of documents in a batch that will trigger it to be indexed.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    SearchIndexingBufferedSenderOptions<T> setBatchSize(Integer batchSize) {
-        if (batchSize != null && batchSize < 1) {
+    public SearchIndexingBufferedSenderOptions<T> setInitialBatchActionCount(int initialBatchActionCount) {
+        if (initialBatchActionCount < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
         }
-        this.batchSize = batchSize;
+
+        this.initialBatchActionCount = initialBatchActionCount;
         return this;
     }
 
     /**
      * Gets the number of documents required in a batch for it to be flushed.
      * <p>
-     * This configuration is only taken into account if {@link #getAutoFlush()} is true or null.
+     * This configuration is only taken into account if {@link #getAutoFlush()} is true.
      *
      * @return The number of documents required before a flush is triggered.
      */
-    int getBatchSize() {
-        return (batchSize == null) ? DEFAULT_BATCH_SIZE : batchSize;
+    public int getInitialBatchActionCount() {
+        return initialBatchActionCount;
     }
 
     /**
-     * The number of times a document will attempt indexing before it is considered failed.
+     * Sets the number of times a document will retry indexing before it is considered failed.
      * <p>
      * Documents are only retried on retryable status codes.
      * <p>
      * Default value is {@code 3}.
      *
-     * @param documentTryLimit The number of times a document will attempt indexing before it is considered failed.
+     * @param maxRetries The number of times a document will retry indexing before it is considered failed.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code documentTryLimit} is less than one.
      */
-    SearchIndexingBufferedSenderOptions<T> setDocumentTryLimit(Integer documentTryLimit) {
-        if (documentTryLimit != null && documentTryLimit < 1) {
+    public SearchIndexingBufferedSenderOptions<T> setMaxRetries(int maxRetries) {
+        if (maxRetries < 1) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("'documentTryLimit' cannot be less than one."));
+                new IllegalArgumentException("'maxRetries' cannot be less than one."));
         }
 
-        this.documentTryLimit = documentTryLimit;
+        this.maxRetries = maxRetries;
         return this;
     }
 
     /**
-     * Gets the number of times a document will attempt indexing before it is considered failed.
+     * Gets the number of times a document will retry indexing before it is considered failed.
      *
      * @return The number of times a document will attempt indexing.
      */
-    int getDocumentTryLimit() {
-        return (documentTryLimit == null) ? DEFAULT_DOCUMENT_TRY_LIMIT : documentTryLimit;
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+
+    /**
+     * Sets the initial duration that requests will be delayed when the service is throttling.
+     * <p>
+     * Default value is {@code Duration.ofMillis(800)}.
+     *
+     * @param retryDelay The initial duration requests will delay when the service is throttling.
+     * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws IllegalArgumentException If {@code retryDelay.isNegative()} or {@code retryDelay.isZero()} is true.
+     * @throws NullPointerException If {@code retryDelay} is null.
+     */
+    public SearchIndexingBufferedSenderOptions<T> setRetryDelay(Duration retryDelay) {
+        Objects.requireNonNull(retryDelay, "'retryDelay' cannot be null.");
+
+        if (retryDelay.isNegative() || retryDelay.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'retryDelay' cannot be negative or zero."));
+        }
+
+        this.retryDelay = retryDelay;
+        return this;
+    }
+
+    /**
+     * Gets the initial duration that requests will be delayed when the service is throttling.
+     *
+     * @return The initial duration requests will delay when the service is throttling.
+     */
+    public Duration getRetryDelay() {
+        return retryDelay;
+    }
+
+    /**
+     * Sets the maximum duration that requests will be delayed when the service is throttling.
+     * <p>
+     * If {@code maxRetryDelay} is less than {@link #getRetryDelay()} then {@link #getRetryDelay()} will be used as the
+     * maximum delay.
+     * <p>
+     * Default value is {@code Duration.ofMinutes(1)}.
+     *
+     * @param maxRetryDelay The maximum duration requests will delay when the service is throttling.
+     * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws IllegalArgumentException If {@code maxRetryDelay.isNegative()} or {@code maxRetryDelay.isZero()} is
+     * true.
+     * @throws NullPointerException If {@code maxRetryDelay} is null.
+     */
+    public SearchIndexingBufferedSenderOptions<T> setMaxRetryDelay(Duration maxRetryDelay) {
+        Objects.requireNonNull(maxRetryDelay, "'maxRetryDelay' cannot be null.");
+
+        if (maxRetryDelay.isNegative() || maxRetryDelay.isZero()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maxRetryDelay' cannot be negative or zero."));
+        }
+
+        this.maxRetryDelay = maxRetryDelay;
+        return this;
+    }
+
+    /**
+     * Gets the maximum duration that requests will delay when the service is throttling.
+     *
+     * @return The maximum duration requests will delay when the service is throttling.
+     */
+    public Duration getMaxRetryDelay() {
+        return maxRetryDelay;
     }
 
     /**
@@ -179,7 +249,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Callback hook for when a document indexing action has successfully completed indexing.
+     * Sets the callback hook for when a document indexing action has successfully completed indexing.
      *
      * @param onActionSucceededConsumer The {@link Consumer} that is called when a document has been successfully
      * indexing.
@@ -201,7 +271,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Callback hook for when a document indexing action has failed to index and isn't retryable.
+     * Sets the callback hook for when a document indexing action has failed to index and isn't retryable.
      *
      * @param onActionErrorBiConsumer The {@link BiConsumer} that is called when a document has failed to index and
      * isn't retryable.
@@ -223,9 +293,10 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Callback hook for when a document indexing has been sent in a batching request.
+     * Sets the callback hook for when a document indexing has been sent in a batching request.
      *
-     * @param onActionSentConsumer The {@link Consumer} that is called when a document has been sent in a batch request.
+     * @param onActionSentConsumer The {@link Consumer} that is called when a document has been sent in a batch
+     * request.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
     public SearchIndexingBufferedSenderOptions<T> setOnActionSent(Consumer<IndexAction<T>> onActionSentConsumer) {
@@ -243,7 +314,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Function that retrieves the key value from a document.
+     * Sets the function that retrieves the key value from a document.
      * <p>
      * This function must be sent for a buffered sender to be properly constructed. It is used to correlate response
      * values to the originating document.

@@ -126,7 +126,7 @@ public class DeployVirtualMachineUsingARMTemplate {
         final String adminPassword = Utils.password();
         final String osDiskName = Utils.randomResourceName(azureResourceManager, "osdisk-", 24);
 
-        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
+        try (InputStream embeddedTemplate = DeployVirtualMachineUsingARMTemplate.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
 
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode tmp = mapper.readTree(embeddedTemplate);

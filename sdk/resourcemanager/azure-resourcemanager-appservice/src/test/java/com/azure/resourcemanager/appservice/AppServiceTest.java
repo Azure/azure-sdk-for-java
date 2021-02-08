@@ -92,11 +92,11 @@ public class AppServiceTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
-        msiManager = MsiManager.authenticate(httpPipeline, profile);
+
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
+        resourceManager = appServiceManager.resourceManager();
         setInternalContext(internalContext, appServiceManager, msiManager);
 
         // useExistingDomainAndCertificate();

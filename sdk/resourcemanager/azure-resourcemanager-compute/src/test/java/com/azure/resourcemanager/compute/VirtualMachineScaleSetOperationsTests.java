@@ -10,7 +10,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -28,8 +32,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
@@ -44,14 +46,20 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -61,15 +69,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -724,9 +723,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(nicCount > 0);
     }
 
+    /*
+     * Previously name
+     * canCreateTwoRegionalVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfZoneResilientLoadBalancer
+     * but this was too long for some OSes and would cause git checkout to fail.
+     */
     @Test
     public void
-        canCreateTwoRegionalVirtualMachineScaleSetsAndAssociateEachWithDifferentBackendPoolOfZoneResilientLoadBalancer()
+        canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer()
             throws Exception {
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.

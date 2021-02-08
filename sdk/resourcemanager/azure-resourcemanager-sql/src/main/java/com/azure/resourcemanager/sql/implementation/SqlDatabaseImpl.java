@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
+import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
 import com.azure.resourcemanager.sql.models.ImportRequest;
@@ -69,11 +70,11 @@ import java.util.Objects;
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
     implements SqlDatabase,
-        SqlDatabase.SqlDatabaseDefinition<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
+        SqlDatabase.SqlDatabaseDefinition<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<SqlServerImpl>,
         SqlDatabase.Update,
         SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool,
         SqlDatabaseOperations.DefinitionStages.WithStorageKeyAfterElasticPool,
@@ -977,21 +978,6 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
-    public SqlDatabaseImpl withEdition(DatabaseEdition edition) {
-        if (this.innerModel().sku() == null) {
-            this.innerModel().withSku(new Sku());
-        }
-        this.innerModel().sku().withTier(edition.toString());
-        if (this.innerModel().sku().name() == null) {
-            this.innerModel().sku().withName(edition.toString());
-        }
-        this.innerModel().sku().withCapacity(null);
-        this.innerModel().withElasticPoolId(null);
-
-        return this;
-    }
-
-    @Override
     public SqlDatabaseImpl withBasicEdition() {
         return this.withBasicEdition(SqlDatabaseBasicStorage.MAX_2_GB);
     }
@@ -1039,31 +1025,14 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
-    public SqlDatabaseImpl withCustomEdition(Sku sku) {
+    public SqlDatabaseImpl withSku(DatabaseSku sku) {
+        return withSku(sku.toSku());
+    }
+
+    @Override
+    public SqlDatabaseImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
         this.innerModel().withElasticPoolId(null);
-        return this;
-    }
-
-    @Override
-    public SqlDatabaseImpl withCustomEdition(
-        DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
-        Sku sku =
-            new Sku()
-                .withName(serviceObjective.toString())
-                .withTier(edition.toString())
-                .withCapacity(capacity <= 0 ? null : capacity);
-
-        return this.withCustomEdition(sku);
-    }
-
-    @Override
-    public SqlDatabaseImpl withServiceObjective(ServiceObjectiveName serviceLevelObjective) {
-        if (this.innerModel().sku() == null) {
-            this.innerModel().withSku(new Sku());
-        }
-        this.innerModel().sku().withName(serviceLevelObjective.toString());
-        this.innerModel().sku().withCapacity(null);
         return this;
     }
 

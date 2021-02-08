@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.LuceneStandardTokenizer;
 
 /**
@@ -24,7 +23,7 @@ public final class LuceneStandardTokenizerConverter {
             return null;
         }
         LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
-        PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
+        LuceneStandardTokenizerHelper.setODataType(luceneStandardTokenizer, V1_ODATA_TYPE);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);
@@ -40,7 +39,7 @@ public final class LuceneStandardTokenizerConverter {
             return null;
         }
         LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
-        PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
+        LuceneStandardTokenizerHelper.setODataType(luceneStandardTokenizer, V2_ODATA_TYPE);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);
@@ -56,7 +55,7 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
+        String identifier = LuceneStandardTokenizerHelper.getODataType(obj);
         if (V1_ODATA_TYPE.equals(identifier)) {
             return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer(obj.getName())
                 .setMaxTokenLength(obj.getMaxTokenLength());

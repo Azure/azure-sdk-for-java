@@ -52,10 +52,9 @@ public class KeyVaultManagementTest extends ResourceManagerTestBase {
         vaultName = generateRandomResourceName("java-keyvault-", 20);
 
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        resourceManager = keyVaultManager.resourceManager();
     }
 
     @Override

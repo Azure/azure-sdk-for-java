@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyValuePair model. */
+/** Information about the extracted key-value pair. */
 @Fluent
 public final class KeyValuePair {
     /*

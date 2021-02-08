@@ -255,7 +255,8 @@ public class DataLakeFileSystemAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createWithResponse#Map-PublicAccessType}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
@@ -361,7 +362,8 @@ public class DataLakeFileSystemAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
@@ -380,7 +382,8 @@ public class DataLakeFileSystemAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
@@ -513,7 +516,8 @@ public class DataLakeFileSystemAsyncClient {
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
@@ -632,7 +636,8 @@ public class DataLakeFileSystemAsyncClient {
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
@@ -805,20 +810,45 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
-     * to get a user delegation key.
+     * See {@link DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, getAccountName(),
+            Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file system using the specified
+     * {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName())
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
+            .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
     /**
      * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -827,10 +857,28 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return generateSas(dataLakeServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }

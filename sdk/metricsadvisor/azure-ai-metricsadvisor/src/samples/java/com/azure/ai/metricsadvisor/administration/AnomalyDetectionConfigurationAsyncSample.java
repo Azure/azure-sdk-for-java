@@ -37,7 +37,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Create the detection configuration.
         Mono<AnomalyDetectionConfiguration> createDetectionConfigMono
             = advisorAdministrationAsyncClient
-            .createMetricAnomalyDetectionConfiguration(metricId, prepareDetectionConfigurationObject());
+            .createMetricAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
 
         createDetectionConfigMono
             .doOnSubscribe(__ ->
@@ -48,7 +48,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Retrieve the detection configuration that just created.
         Mono<AnomalyDetectionConfiguration> fetchDetectionConfigMono = createDetectionConfigMono
             .flatMap(createdDetectionConfig -> {
-                return advisorAdministrationAsyncClient.getMetricAnomalyDetectionConfiguration(
+                return advisorAdministrationAsyncClient.getMetricAnomalyDetectionConfig(
                     createdDetectionConfig.getId())
                     .doOnSubscribe(__ ->
                         System.out.printf("Fetching detection configuration: %s%n", createdDetectionConfig.getId()))
@@ -64,7 +64,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
             .flatMap(detectionConfig -> {
                 final String detectionConfigId = detectionConfig.getId();
                 detectionConfig = updateDetectionConfigurationObject(detectionConfig);
-                return advisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfiguration(detectionConfig)
+                return advisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfig(detectionConfig)
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating detection configuration: %s%n", detectionConfigId))
                     .doOnSuccess(config ->
@@ -90,7 +90,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
-            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigurations(metricId);
+            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId);
 
         detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
             .blockLast();

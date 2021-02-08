@@ -101,7 +101,7 @@ public final class ManageTrafficManager {
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
-            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName, null);
 
             //============================================================
             // Creates app service in 5 different region

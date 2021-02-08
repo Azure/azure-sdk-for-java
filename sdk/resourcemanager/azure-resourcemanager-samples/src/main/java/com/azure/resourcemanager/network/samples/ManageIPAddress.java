@@ -80,7 +80,7 @@ public final class ManageIPAddress {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Date t2 = new Date();

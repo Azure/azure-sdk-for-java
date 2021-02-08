@@ -164,7 +164,9 @@ public final class TasksClientImpl implements TasksClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TaskListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            Context context);
     }
 
     /**
@@ -198,7 +200,7 @@ public final class TasksClientImpl implements TasksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -255,7 +257,7 @@ public final class TasksClientImpl implements TasksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -377,7 +379,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -430,7 +432,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -545,7 +547,7 @@ public final class TasksClientImpl implements TasksClient {
         } else {
             taskCreateParameters.validate();
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -611,7 +613,7 @@ public final class TasksClientImpl implements TasksClient {
         } else {
             taskCreateParameters.validate();
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -849,7 +851,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -902,7 +904,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1104,7 +1106,7 @@ public final class TasksClientImpl implements TasksClient {
         } else {
             taskUpdateParameters.validate();
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1169,7 +1171,7 @@ public final class TasksClientImpl implements TasksClient {
         } else {
             taskUpdateParameters.validate();
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1399,7 +1401,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1452,7 +1454,7 @@ public final class TasksClientImpl implements TasksClient {
         if (taskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
-        final String apiVersion = "2018-09-01";
+        final String apiVersion = "2019-04-01";
         context = this.client.mergeContext(context);
         return service
             .getDetails(
@@ -1537,8 +1539,14 @@ public final class TasksClientImpl implements TasksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
             .<PagedResponse<TaskInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1566,9 +1574,15 @@ public final class TasksClientImpl implements TasksClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

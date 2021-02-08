@@ -45,8 +45,7 @@ public abstract class CdnManagementTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        cdnManager = CdnManager.authenticate(httpPipeline, profile);
+        cdnManager = buildManager(CdnManager.class, httpPipeline, profile);
+        resourceManager = cdnManager.resourceManager();
     }
 }

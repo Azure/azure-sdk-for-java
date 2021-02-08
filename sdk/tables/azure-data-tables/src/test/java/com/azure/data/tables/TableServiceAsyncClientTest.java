@@ -238,4 +238,16 @@ public class TableServiceAsyncClientTest extends TestBase {
             .expectComplete()
             .verify();
     }
+
+    @Test
+    void serviceGetTableClientAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+
+        TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
+
+        // Act & Assert
+        TablesAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, this.testResourceNamer);
+    }
 }

@@ -12,20 +12,21 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import reactor.util.context.Context;
 
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -89,7 +90,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     /**
      * Method to insert code snippets for {@link CertificateAsyncClient#getCertificatePolicy(String)}
      */
-    public void getCertiificatePolicyCodeSnippets() {
+    public void getCertificatePolicyCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string
         certificateAsyncClient.getCertificatePolicy("certificateName")
@@ -162,7 +163,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}
+     * Method to insert code snippets for
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)},
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map, Duration)} and
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}.
      */
     public void createCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
@@ -179,6 +183,19 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
 
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Duration
+        CertificatePolicy certificatePolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+        Map<String, String> certificateTags = new HashMap<>();
+        certificateTags.put("foo", "bar");
+        certificateAsyncClient.beginCreateCertificate("certificateName", certificatePolicy, true, certificateTags,
+            Duration.ofSeconds(1)).subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Duration
+
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
         CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
@@ -191,6 +208,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
     }
 
+    /**
+     * Method to insert code snippets for
+     * {@link CertificateAsyncClient#getCertificateOperation(String)} and
+     * {@link CertificateAsyncClient#getCertificateOperation(String, Duration)}.
+     */
     public void getCertificateOperation() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String
@@ -202,6 +224,16 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                 System.out.println(pollResponse.getValue().getStatusDetails());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String-Duration
+        certificateAsyncClient.getCertificateOperation("certificateName", Duration.ofSeconds(1))
+            .subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String-Duration
     }
 
     /**
@@ -369,18 +401,28 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginDeleteCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginDeleteCertificate(String)} and
+     * {@link CertificateAsyncClient#beginDeleteCertificate(String, Duration)}.
      */
     public void deleteCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String
         certificateAsyncClient.beginDeleteCertificate("certificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String-Duration
+        certificateAsyncClient.beginDeleteCertificate("certificateName", Duration.ofSeconds(1))
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String-Duration
     }
 
     /**
@@ -450,18 +492,28 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String)} and
+     * {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String, Duration)}.
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String
         certificateAsyncClient.beginRecoverDeletedCertificate("deletedCertificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
             });
-        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String
+
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String-Duration
+        certificateAsyncClient.beginRecoverDeletedCertificate("deletedCertificateName", Duration.ofSeconds(1))
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recover Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
+            });
+        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String-Duration
     }
 
     /**
@@ -570,8 +622,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
-        certificateAsyncClient.setContacts(Arrays.asList(contactToAdd)).subscribe(contact ->
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@example.com");
+        certificateAsyncClient.setContacts(Collections.singletonList(contactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts

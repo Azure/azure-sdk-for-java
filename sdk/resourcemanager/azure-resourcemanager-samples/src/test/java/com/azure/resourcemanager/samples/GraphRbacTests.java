@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class GraphRbacTests extends ResourceManagerTestBase {
-    private AzureResourceManager.Authenticated authenticated;
+    private AzureResourceManager azureResourceManager;
     private AzureProfile profile;
 
     @Test
@@ -34,7 +34,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageUsersGroupsAndRoles.runSample(authenticated, profile));
+        Assertions.assertTrue(ManageUsersGroupsAndRoles.runSample(azureResourceManager, profile));
     }
 
 //    @Test
@@ -49,7 +49,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageServicePrincipalCredentials.runSample(authenticated, profile));
+        Assertions.assertTrue(ManageServicePrincipalCredentials.runSample(azureResourceManager, profile));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        authenticated = AzureResourceManager.authenticate(httpPipeline, profile);
+        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
         this.profile = profile;
     }
 

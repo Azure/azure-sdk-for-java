@@ -54,10 +54,9 @@ public abstract class SqlServerTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        sqlServerManager = buildManager(SqlServerManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        resourceManager = sqlServerManager.resourceManager();
         setInternalContext(internalContext, sqlServerManager);
     }
 

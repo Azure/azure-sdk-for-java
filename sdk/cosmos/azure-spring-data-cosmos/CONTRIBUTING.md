@@ -3,7 +3,7 @@ This instruction is guideline for building and code contribution.
 
 ## Prequisites
 - JDK 1.8 and above
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ## Build from source
 To build the project, run maven commands.

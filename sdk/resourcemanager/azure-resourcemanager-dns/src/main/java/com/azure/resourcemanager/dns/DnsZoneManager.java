@@ -47,7 +47,7 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
      * @param profile the profile to use
      * @return the DnsZoneManager
      */
-    public static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new DnsZoneManager(httpPipeline, profile);
     }
 

@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
+import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -53,7 +54,7 @@ import java.util.Objects;
 public class SqlElasticPoolImpl
     extends ExternalChildResourceImpl<SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer>
     implements SqlElasticPool,
-        SqlElasticPool.SqlElasticPoolDefinition<SqlServer.DefinitionStages.WithCreate>,
+        SqlElasticPool.SqlElasticPoolDefinition<SqlServerImpl>,
         SqlElasticPoolOperations.DefinitionStages.WithCreate,
         SqlElasticPool.Update,
         SqlElasticPoolOperations.SqlElasticPoolOperationsDefinition {
@@ -505,7 +506,13 @@ public class SqlElasticPoolImpl
         return this;
     }
 
-    public SqlElasticPoolImpl withCustomEdition(Sku sku) {
+    @Override
+    public SqlElasticPoolImpl withSku(ElasticPoolSku sku) {
+        return withSku(sku.toSku());
+    }
+
+    @Override
+    public SqlElasticPoolImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
         return this;
     }
@@ -530,32 +537,32 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlElasticPoolImpl withReservedDtu(SqlElasticPoolBasicEDTUs eDTU) {
-        return this.withDtu(eDTU.value());
+        return this.withCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMax(SqlElasticPoolBasicMaxEDTUs eDTU) {
-        return this.withDatabaseDtuMax(eDTU.value());
+        return this.withDatabaseMaxCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMin(SqlElasticPoolBasicMinEDTUs eDTU) {
-        return this.withDatabaseDtuMin(eDTU.value());
+        return this.withDatabaseMinCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withReservedDtu(SqlElasticPoolStandardEDTUs eDTU) {
-        return this.withDtu(eDTU.value());
+        return this.withCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMax(SqlElasticPoolStandardMaxEDTUs eDTU) {
-        return this.withDatabaseDtuMax(eDTU.value());
+        return this.withDatabaseMaxCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMin(SqlElasticPoolStandardMinEDTUs eDTU) {
-        return this.withDatabaseDtuMin(eDTU.value());
+        return this.withDatabaseMinCapacity(eDTU.value());
     }
 
     @Override
@@ -566,17 +573,17 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlElasticPoolImpl withReservedDtu(SqlElasticPoolPremiumEDTUs eDTU) {
-        return this.withDtu(eDTU.value());
+        return this.withCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMax(SqlElasticPoolPremiumMaxEDTUs eDTU) {
-        return this.withDatabaseDtuMax(eDTU.value());
+        return this.withDatabaseMaxCapacity(eDTU.value());
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMin(SqlElasticPoolPremiumMinEDTUs eDTU) {
-        return this.withDatabaseDtuMin(eDTU.value());
+        return this.withDatabaseMinCapacity(eDTU.value());
     }
 
     @Override
@@ -585,29 +592,28 @@ public class SqlElasticPoolImpl
     }
 
     @Override
-    public SqlElasticPoolImpl withDatabaseDtuMin(double databaseDtuMin) {
+    public SqlElasticPoolImpl withDatabaseMinCapacity(double minCapacity) {
         if (this.innerModel().perDatabaseSettings() == null) {
             this.innerModel().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
         }
-        this.innerModel().perDatabaseSettings().withMinCapacity(databaseDtuMin);
+        this.innerModel().perDatabaseSettings().withMinCapacity(minCapacity);
         return this;
     }
 
     @Override
-    public SqlElasticPoolImpl withDatabaseDtuMax(double databaseDtuMax) {
+    public SqlElasticPoolImpl withDatabaseMaxCapacity(double maxCapacity) {
         if (this.innerModel().perDatabaseSettings() == null) {
             this.innerModel().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
         }
-        this.innerModel().perDatabaseSettings().withMaxCapacity(databaseDtuMax);
+        this.innerModel().perDatabaseSettings().withMaxCapacity(maxCapacity);
         return this;
     }
 
-    @Override
-    public SqlElasticPoolImpl withDtu(int dtu) {
+    public SqlElasticPoolImpl withCapacity(int capacity) {
         if (this.innerModel().sku() == null) {
             this.innerModel().withSku(new Sku());
         }
-        this.innerModel().sku().withCapacity(dtu);
+        this.innerModel().sku().withCapacity(capacity);
         return this;
     }
 

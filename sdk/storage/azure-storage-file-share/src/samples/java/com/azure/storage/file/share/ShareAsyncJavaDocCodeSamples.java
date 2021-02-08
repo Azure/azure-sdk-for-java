@@ -2,19 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
-import com.azure.storage.file.share.options.ShareSetQuotaOptions;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -138,6 +141,23 @@ public class ShareAsyncJavaDocCodeSamples {
             () -> System.out.println("Complete creating the share!")
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.metadata
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#createWithResponse(ShareCreateOptions)}
+     */
+    public void createWithResponseOptions() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions
+        shareAsyncClient.createWithResponse(new ShareCreateOptions()
+            .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT)).subscribe(
+                response -> System.out.printf("Creating the share completed with status code %d",
+                    response.getStatusCode()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the share!")
+        );
+        // END: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions
     }
 
     /**
@@ -458,17 +478,29 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#setQuotaWithResponse(ShareSetQuotaOptions)}
+     * Generates a code sample for using {@link ShareAsyncClient#setProperties(ShareSetPropertiesOptions)}
      */
-    public void setQuotaWithResponse2() {
+    public void setProperties() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions
-        shareAsyncClient.setQuotaWithResponse(new ShareSetQuotaOptions(1024)
-            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions
+        shareAsyncClient.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.HOT)
+            .setQuotaInGb(2014))
+            .doOnSuccess(response -> System.out.println("Setting the share access tier completed."));
+        // END: com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#setPropertiesWithResponse(ShareSetPropertiesOptions)}
+     */
+    public void setPropertiesWithResponse() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions
+        shareAsyncClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.HOT)
+            .setQuotaInGb(1024).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(response ->
                 System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode())
             );
-        // END: com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions
+        // END: com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions
     }
 
     /**
@@ -723,5 +755,22 @@ public class ShareAsyncJavaDocCodeSamples {
 
         shareAsyncClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareAsyncClient.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

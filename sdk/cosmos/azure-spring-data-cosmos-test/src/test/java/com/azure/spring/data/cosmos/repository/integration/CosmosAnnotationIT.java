@@ -19,7 +19,7 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.RoleRepository;
+import com.azure.spring.data.cosmos.repository.repository.ReactiveRoleRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -60,7 +60,7 @@ public class CosmosAnnotationIT {
     @Autowired
     private CosmosClientBuilder cosmosClientBuilder;
     @Autowired
-    private RoleRepository repository;
+    private ReactiveRoleRepository repository;
 
     private static CosmosTemplate cosmosTemplate;
     private static CosmosContainerProperties collectionRole;
