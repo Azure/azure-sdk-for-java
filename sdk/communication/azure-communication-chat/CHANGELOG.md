@@ -1,6 +1,14 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
+* Renamed ChatThreadMembers to ChatParticipants
+* Support for CreateChatThreadResult and AddChatParticipantsResult to handle partial errors in batch calls.
+* Added idempotency identifier parameter for chat creation calls.
+* Added support for readreceipts and getparticipants pagination.
+* Message content types : Text, Html
+* Removed priority field (ChatMessage.Priority)
+* Added new model for errors (CommunicationError)
+
 
 ## 1.0.0-beta.3 (2020-11-16)
 Updated `azure-communication-chat` version
