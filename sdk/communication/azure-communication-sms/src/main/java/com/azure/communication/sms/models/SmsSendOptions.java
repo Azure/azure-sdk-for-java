@@ -7,15 +7,15 @@ package com.azure.communication.sms.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendSmsOptions model. */
+/** The SmsSendOptions model. */
 @Fluent
-public final class SendSmsOptions {
+public final class SmsSendOptions {
     /*
      * Enable this flag to receive a delivery report for this message on the
      * Azure Resource EventGrid.
      */
-    @JsonProperty(value = "enableDeliveryReport")
-    private Boolean enableDeliveryReport;
+    @JsonProperty(value = "enableDeliveryReport", required = true)
+    private boolean enableDeliveryReport;
 
     /*
      * Use this field to provide metadata that will then be sent back in the
@@ -30,7 +30,7 @@ public final class SendSmsOptions {
      *
      * @return the enableDeliveryReport value.
      */
-    public Boolean isDeliveryReportEnabled() {
+    public boolean isDeliveryReportEnabled() {
         return this.enableDeliveryReport;
     }
 
@@ -39,9 +39,9 @@ public final class SendSmsOptions {
      * Azure Resource EventGrid.
      *
      * @param enableDeliveryReport the enableDeliveryReport value to set.
-     * @return the SendSmsOptions object itself.
+     * @return the SmsSendOptions object itself.
      */
-    public SendSmsOptions setEnableDeliveryReportEnabled(Boolean enableDeliveryReport) {
+    public SmsSendOptions setDeliveryReportEnabled(boolean enableDeliveryReport) {
         this.enableDeliveryReport = enableDeliveryReport;
         return this;
     }
@@ -61,9 +61,9 @@ public final class SendSmsOptions {
      * Delivery Report.
      *
      * @param tag the tag value to set.
-     * @return the SendSmsOptions object itself.
+     * @return the SmsSendOptions object itself.
      */
-    public SendSmsOptions setTag(String tag) {
+    public SmsSendOptions setTag(String tag) {
         this.tag = tag;
         return this;
     }

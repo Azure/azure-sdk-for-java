@@ -4,20 +4,18 @@
 package com.azure.communication.sms;
 
 
-import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResult;
-import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
+
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
-import java.util.ArrayList;
+
 
 /**
  * Client for sending SMS messages with Azure Communication SMS Services.
@@ -41,7 +39,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResult send(String from, String to, String message) {
+    public SmsSendResult send(String from, String to, String message) {
         return null;
     }
 
@@ -56,8 +54,25 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResult send(String from, String to, String message,
-                                    SendSmsOptions smsOptions) {
+    public SmsSendResult send(String from, String to, String message,
+                                    SmsSendOptions smsOptions) {
+        return null;
+    }
+
+    /**
+     * Sends an SMS message from a phone number that belongs to the authenticated account.
+     *
+     * @param from Number that is sending the message.
+     * @param to The recipient's phone number.
+     * @param message message to send to recipient.
+     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
+     * for this message to the Azure Resource Event Grid.
+     * @param context context to use
+     * @return response for a successful send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SmsSendResult send(String from, String to, String message,
+                              SmsSendOptions smsOptions,Context context) {
         return null;
     }
 
@@ -70,11 +85,12 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SendSmsResult> send(String from, List<String> to, String message) {
+    public PagedIterable<SmsSendResult> send(String from, Iterable<String> to, String message) {
 
 
         return null;
     }
+
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
@@ -84,11 +100,12 @@ public final class SmsClient {
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
+     * @param context sets the context for the call
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SendSmsResult> send(String from, List<String> to, String message,
-                                                   SendSmsOptions smsOptions) {
+    public PagedIterable<SmsSendResult> send(String from, Iterable<String> to, String message,
+                                                        SmsSendOptions smsOptions, Context context ) {
 
 
         return null;

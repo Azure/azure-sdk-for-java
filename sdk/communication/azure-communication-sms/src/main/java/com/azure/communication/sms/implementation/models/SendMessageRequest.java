@@ -4,7 +4,7 @@
 
 package com.azure.communication.sms.implementation.models;
 
-import com.azure.communication.sms.models.SendSmsOptions;
+import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -23,8 +23,8 @@ public final class SendMessageRequest {
      * The recipient's phone number in E.164 format. In this version, a minimum
      * of 1 and upto 100 recipients in the list are supported.
      */
-    @JsonProperty(value = "to", required = true)
-    private List<String> to;
+    @JsonProperty(value = "smsRecipient", required = true)
+    private List<SmsRecipient> smsRecipient;
 
     /*
      * The contents of the message that will be sent to the recipient. The
@@ -36,8 +36,8 @@ public final class SendMessageRequest {
     /*
      * Optional configuration for sending SMS messages.
      */
-    @JsonProperty(value = "sendSmsOptions")
-    private SendSmsOptions sendSmsOptions;
+    @JsonProperty(value = "smsSendOptions")
+    private SmsSendOptions smsSendOptions;
 
     /**
      * Get the from property: The sender's phone number in E.164 format that is owned by the authenticated account.
@@ -60,24 +60,24 @@ public final class SendMessageRequest {
     }
 
     /**
-     * Get the to property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100
-     * recipients in the list are supported.
+     * Get the smsRecipient property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and
+     * upto 100 recipients in the list are supported.
      *
-     * @return the to value.
+     * @return the smsRecipient value.
      */
-    public List<String> getTo() {
-        return this.to;
+    public List<SmsRecipient> getSmsRecipient() {
+        return this.smsRecipient;
     }
 
     /**
-     * Set the to property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100
-     * recipients in the list are supported.
+     * Set the smsRecipient property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and
+     * upto 100 recipients in the list are supported.
      *
-     * @param to the to value to set.
+     * @param smsRecipient the smsRecipient value to set.
      * @return the SendMessageRequest object itself.
      */
-    public SendMessageRequest setTo(List<String> to) {
-        this.to = to;
+    public SendMessageRequest setSmsRecipient(List<SmsRecipient> smsRecipient) {
+        this.smsRecipient = smsRecipient;
         return this;
     }
 
@@ -104,22 +104,22 @@ public final class SendMessageRequest {
     }
 
     /**
-     * Get the sendSmsOptions property: Optional configuration for sending SMS messages.
+     * Get the smsSendOptions property: Optional configuration for sending SMS messages.
      *
-     * @return the sendSmsOptions value.
+     * @return the smsSendOptions value.
      */
-    public SendSmsOptions getSendSmsOptions() {
-        return this.sendSmsOptions;
+    public SmsSendOptions getSmsSendOptions() {
+        return this.smsSendOptions;
     }
 
     /**
-     * Set the sendSmsOptions property: Optional configuration for sending SMS messages.
+     * Set the smsSendOptions property: Optional configuration for sending SMS messages.
      *
-     * @param sendSmsOptions the sendSmsOptions value to set.
+     * @param smsSendOptions the smsSendOptions value to set.
      * @return the SendMessageRequest object itself.
      */
-    public SendMessageRequest setSendSmsOptions(SendSmsOptions sendSmsOptions) {
-        this.sendSmsOptions = sendSmsOptions;
+    public SendMessageRequest setSmsSendOptions(SmsSendOptions smsSendOptions) {
+        this.smsSendOptions = smsSendOptions;
         return this;
     }
 }

@@ -15,12 +15,13 @@ import com.azure.core.http.policy.UserAgentPolicy;
 @ServiceClientBuilder(serviceClients = {AzureCommunicationSMSServiceImpl.class})
 public final class AzureCommunicationSMSServiceImplBuilder {
     /*
-     * The endpoint of the Azure Communication resource.
+     * The communication resource, for example
+     * https://my-resource.communication.azure.com
      */
     private String endpoint;
 
     /**
-     * Sets The endpoint of the Azure Communication resource.
+     * Sets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @param endpoint the endpoint value.
      * @return the AzureCommunicationSMSServiceImplBuilder.

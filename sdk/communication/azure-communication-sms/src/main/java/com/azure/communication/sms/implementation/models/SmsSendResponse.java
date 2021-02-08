@@ -4,33 +4,63 @@
 
 package com.azure.communication.sms.implementation.models;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Contains all response data for the send operation. */
-public final class SmsSendResponse extends ResponseBase<SmsSendHeaders, SendSmsResponse> {
-    /**
-     * Creates an instance of SmsSendResponse.
-     *
-     * @param request the request which resulted in this SmsSendResponse.
-     * @param statusCode the status code of the HTTP response.
-     * @param rawHeaders the raw headers of the HTTP response.
-     * @param value the deserialized value of the HTTP response.
-     * @param headers the deserialized headers of the HTTP response.
+/** The SmsSendResponse model. */
+@Fluent
+public final class SmsSendResponse {
+    /*
+     * The value property.
      */
-    public SmsSendResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            SendSmsResponse value,
-            SmsSendHeaders headers) {
-        super(request, statusCode, rawHeaders, value, headers);
+    @JsonProperty(value = "value", required = true)
+    private List<SmsSendResult> value;
+
+    /*
+     * The nextLink property.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /**
+     * Get the value property: The value property.
+     *
+     * @return the value value.
+     */
+    public List<SmsSendResult> getValue() {
+        return this.value;
     }
 
-    /** @return the deserialized response body. */
-    @Override
-    public SendSmsResponse getValue() {
-        return super.getValue();
+    /**
+     * Set the value property: The value property.
+     *
+     * @param value the value value to set.
+     * @return the SmsSendResponse object itself.
+     */
+    public SmsSendResponse setValue(List<SmsSendResult> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The nextLink property.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The nextLink property.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the SmsSendResponse object itself.
+     */
+    public SmsSendResponse setNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 }

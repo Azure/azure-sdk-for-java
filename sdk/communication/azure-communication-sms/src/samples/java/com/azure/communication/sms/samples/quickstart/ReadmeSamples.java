@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
-import com.azure.communication.sms.models.SendSmsOptions;
+import com.azure.communication.sms.models.SmsSendOptions;
 
-import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -38,7 +38,7 @@ public class ReadmeSamples {
 
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
-            .azureKeyCredential(azureKeyCredential)
+            .credential(azureKeyCredential)
             .httpClient(httpClient);
 
         // Build a new SmsClient
@@ -65,13 +65,13 @@ public class ReadmeSamples {
         String to = "<to-phone-number>";
 
         // to enable a delivery report to the Azure Event Grid
-        SendSmsOptions options = new SendSmsOptions();
-        options.setEnableDeliveryReportEnabled(true);
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
         //addionaly you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag");/* Optional */
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        SendSmsResult response = smsClient.send(
+        SmsSendResult response = smsClient.send(
             "<leased-phone-number>",
             to,
             "your message",
@@ -88,19 +88,20 @@ public class ReadmeSamples {
         toMultiplePhones.add("<to-phone-number2>");
 
         // to enable a delivery report to the Azure Event Grid
-        SendSmsOptions options = new SendSmsOptions();
-        options.setEnableDeliveryReportEnabled(true);
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
         //addionaly you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag");/* Optional */
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        PagedIterable<SendSmsResult> responseMultiplePhones = smsClient.send(
+        PagedIterable<SmsSendResult> responseMultiplePhones = smsClient.send(
             "<leased-phone-number>",
             toMultiplePhones,
             "your message",
-            options /* Optional */);
+            options /* Optional */,
+            null);
 
-        for (SendSmsResult messageResponseItem
+        for (SmsSendResult messageResponseItem
             : responseMultiplePhones) {
             System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
         }

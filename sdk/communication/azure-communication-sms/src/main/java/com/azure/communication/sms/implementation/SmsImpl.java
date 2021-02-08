@@ -5,13 +5,11 @@
 package com.azure.communication.sms.implementation;
 
 import com.azure.communication.sms.implementation.models.SendMessageRequest;
-import com.azure.communication.sms.implementation.models.SmsSendNextResponse;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
-import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -24,6 +22,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
@@ -56,18 +55,16 @@ public final class SmsImpl {
         @Post("/sms")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SmsSendResponse> send(
+        Mono<Response<SmsSendResponse>> send(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") SendMessageRequest sendMessageRequest,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SmsSendNextResponse> sendNext(
+        Mono<Response<SmsSendResponse>> sendNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -75,14 +72,6 @@ public final class SmsImpl {
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
-     *     UUID (GUID), identifier for the request.
-     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
-     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
-     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -90,18 +79,9 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResult>> sendSinglePageAsync(
-            SendMessageRequest sendMessageRequest,
-            String repeatabilityRequestId,
-            String repeatabilityFirstSent,
-            Context context) {
-        return service.send(
-                        this.client.getEndpoint(),
-                        this.client.getApiVersion(),
-                        repeatabilityRequestId,
-                        repeatabilityFirstSent,
-                        sendMessageRequest,
-                        context)
+    public Mono<PagedResponse<SmsSendResult>> sendSinglePageAsync(
+            SendMessageRequest sendMessageRequest, Context context) {
+        return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -110,7 +90,7 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+                                        null));
     }
 
     /**
@@ -124,7 +104,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResult>> sendNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<SmsSendResult>> sendNextSinglePageAsync(String nextLink, Context context) {
         return service.sendNext(nextLink, context)
                 .map(
                         res ->
@@ -134,6 +114,6 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+                                        null));
     }
 }

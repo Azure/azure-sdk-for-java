@@ -34,12 +34,13 @@ SMS messaging uses HMAC authentication with resource access key. The access key 
 via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
 functions respectively.
 
-To send an sms message to a single recipient
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L27-L43 -->
+To create a SmsClient
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L28-L45 -->
 ```java
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-String accessKey = "SECRET";
+//Enter your azureKeyCredential
+AzureKeyCredential azureKeyCredential = null;
 
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -49,7 +50,7 @@ SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
 
 // Set the endpoint, access key, and the HttpClient
 smsClientBuilder.endpoint(endpoint)
-    .accessKey(accessKey)
+    .credential(azureKeyCredential)
     .httpClient(httpClient);
 
 // Build a new SmsClient
@@ -57,7 +58,7 @@ SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L49-L58 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L51-L60 -->
 ```java
 // Create an HttpClient builder of your choice and customize it
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -74,24 +75,23 @@ SmsClient smsClient = new SmsClientBuilder()
 ## Examples
 
 ### Sending a message to a single recipient
-Use the `sendMessage` function to send a new message to a list of phone numbers.
-(Currently SMS Services only supports one phone number).
+Use the `send` function to send a new message to a phone number.
 Once you send the message, you'll receive a response where you can access several
-properties such as the message id with the `response.getMessageId()` function.
+properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L62-L78 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L80 -->
 ```java
 //Send an sms to only one phone number
 String to = "<to-phone-number>";
 
 // to enable a delivery report to the Azure Event Grid
-SendSmsOptions options = new SendSmsOptions();
-options.setEnableDeliveryReport(true);
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
 //addionaly you can ad a tag you wish to identify the messages for this tag.
 options.setTag("Tag");/* Optional */
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-SendSmsResult response = smsClient.send(
+SmsSendResult response = smsClient.send(
     "<leased-phone-number>",
     to,
     "your message",
@@ -100,32 +100,30 @@ SendSmsResult response = smsClient.send(
 System.out.println("MessageId: " + response.getMessageId());
 ```
 ### Sending a message to multiples recipients
-Use the `sendMessage` function to send a new message to a list of phone numbers.
-(Currently SMS Services only supports one phone number).
-Once you send the message, you'll receive a response where you can access several
-properties such as the message id with the `response.getMessageId()` function.
+Use the `send` function to send a new message to a list of phone numbers.
+Once you send the message, you'll receive a PagedIterable response where you can access several
+properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L83-L104 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L87-L107 -->
 ```java
-//Send an sms to multiple phone numbers
-List<String> toMultiplePhones = new ArrayList<String>();
 toMultiplePhones.add("<to-phone-number1>");
 toMultiplePhones.add("<to-phone-number2>");
 
 // to enable a delivery report to the Azure Event Grid
-SendSmsOptions options = new SendSmsOptions();
-options.setEnableDeliveryReport(true);
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
 //addionaly you can ad a tag you wish to identify the messages for this tag.
 options.setTag("Tag");/* Optional */
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-PagedIterable<SendSmsResult> responseMultiplePhones = smsClient.send(
+PagedIterable<SmsSendResult> responseMultiplePhones = smsClient.send(
     "<leased-phone-number>",
     toMultiplePhones,
     "your message",
-    options /* Optional */);
+    options /* Optional */,
+    null);
 
-for (SendSmsResult messageResponseItem
+for (SmsSendResult messageResponseItem
     : responseMultiplePhones) {
     System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
 }

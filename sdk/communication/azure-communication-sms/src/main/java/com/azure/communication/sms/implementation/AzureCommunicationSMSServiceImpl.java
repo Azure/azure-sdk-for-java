@@ -12,11 +12,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 
 /** Initializes a new instance of the AzureCommunicationSMSService type. */
 public final class AzureCommunicationSMSServiceImpl {
-    /** The endpoint of the Azure Communication resource. */
+    /** The communication resource, for example https://my-resource.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets The endpoint of the Azure Communication resource.
+     * Gets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @return the endpoint value.
      */

@@ -5,8 +5,8 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
-import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -45,7 +45,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResult> send(String from, String to, String message) {
+    public Mono<SmsSendResult> send(String from, String to, String message) {
         return null;
     }
 
@@ -60,8 +60,8 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResult> send(String from, String to, String message,
-                                          SendSmsOptions smsOptions) {
+    public Mono<SmsSendResult> send(String from, String to, String message,
+                                          SmsSendOptions smsOptions) {
         return null;
     }
 
@@ -74,7 +74,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResult> send(String from, Iterable<String> to, String message) {
+    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message) {
 
 
         return null;
@@ -87,16 +87,17 @@ public final class SmsAsyncClient {
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
+     * for this message to the Azure Resource Event Grid
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResult> send(String from, Iterable<String> to, String message,
-                                               SendSmsOptions smsOptions, Context context) {
+    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
 
 
         return null;
     }
+
+
 
 
 

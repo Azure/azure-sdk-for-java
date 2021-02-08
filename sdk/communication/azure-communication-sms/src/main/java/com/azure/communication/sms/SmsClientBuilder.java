@@ -3,55 +3,55 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
-
-import com.azure.communication.common.ConnectionString;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ClientOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
+ * SmsClientBuilder that creates CommunicationIdentityAsyncClient and CommunicationIdentityClient.
  */
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
 public final class SmsClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-sms.properties";
 
     private final ClientLogger logger = new ClientLogger(SmsClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
-    private HttpPipeline pipeline;
-    private Configuration configuration = Configuration.getGlobalConfiguration().clone();
-    private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private HttpPipeline pipeline;
+    private Configuration configuration;
+    private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private ClientOptions clientOptions;
-    private AzureKeyCredential azureKeyCredential;
-
+    private RetryPolicy retryPolicy;
 
     /**
      * Set endpoint of the service
@@ -91,68 +91,29 @@ public final class SmsClientBuilder {
     /**
      * Set credential to use
      *
-     * @param accessKey access key for initalizing SmsClientCredential
+     * @param accessKey access key for initalizing CommunicationClientCredential
      * @return SmsClientBuilder
      */
-    private SmsClientBuilder accessKey(String accessKey) {
+    public SmsClientBuilder credential(AzureKeyCredential accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.azureKeyCredential = accessKey;
         return this;
     }
-
-    /**
-     * Set credential to use
-     *
-     * @param azureKeyCredential access key for initalizing SmsClientCredential
-     * @return SmsClientBuilder
-     */
-    public SmsClientBuilder azureKeyCredential(AzureKeyCredential azureKeyCredential) {
-        Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
-        this.azureKeyCredential = azureKeyCredential;
-        this.accessKeyCredential = new CommunicationClientCredential(azureKeyCredential.getKey());
-        return this;
-    }
-
-    /**
-     * Set clientOptions to use
-     *
-     * @param clientOptions  for initalizing SmsClientCredential
-     * @return SmsClientBuilder
-     */
-    public SmsClientBuilder clientOptions(ClientOptions clientOptions) {
-
-        this.clientOptions =clientOptions;
-        return this;
-    }
-
-    /**
-     * Set a retryPolicy to use
-     *
-     * @param retryPolicy set a custom retryPolicy
-     * @return SmsClientBuilder
-     */
-    public SmsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-
-        customPolicies.add(retryPolicy);
-        return this;
-    }
-
-
 
     /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initalizing SmsClientCredential
+     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -203,7 +164,7 @@ public final class SmsClientBuilder {
     }
 
     /**
-     * Sets the {@link SmsClientBuilder} that is used when making API requests.
+     * Sets the {@link SmsServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -211,14 +172,12 @@ public final class SmsClientBuilder {
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link SmsClientBuilder} of the service to be used when making requests.
+     * @param version {@link SmsServiceVersion} of the service to be used when making requests.
      * @return the updated SmsClientBuilder object
      */
-    public SmsClientBuilder serviceVersion(SmsClientBuilder version) {
+    public SmsClientBuilder serviceVersion(SmsServiceVersion version) {
         return this;
     }
-
-
 
     /**
      * Create asynchronous client applying HMACAuthenticationPolicy, UserAgentPolicy,
@@ -242,27 +201,38 @@ public final class SmsClientBuilder {
         return new SmsClient(buildAsyncClient());
     }
 
-    private AzureCommunicationSMSServiceImpl createServiceImpl() {
-        Objects.requireNonNull(endpoint);
+    /**
+     * Allows the user to set a variety of client-related options, such as user-agent string, headers, etc.
+     *
+     * @param clientOptions  object to be applied
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
 
-        if (this.pipeline == null) {
-            Objects.requireNonNull(httpClient);
-        }
+    /**
+     * Sets the retry policy to use (using the RetryPolicy type).
+     *
+     * @param retryPolicy  object to be applied
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+    private AzureCommunicationSMSServiceImpl  createServiceImpl() {
+        Objects.requireNonNull(endpoint);
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            HttpPipelinePolicy[] customPolicyArray = null;
-            if (customPolicies.size() > 0) {
-                customPolicyArray = new HttpPipelinePolicy[customPolicies.size()];
-                customPolicyArray = customPolicies.toArray(customPolicyArray);
-            }
-
             builderPipeline = createHttpPipeline(httpClient,
                 createHttpPipelineAuthPolicy(),
-                customPolicyArray);
+                customPolicies);
         }
 
-        AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
+        AzureCommunicationSMSServiceImplBuilder  clientBuilder = new AzureCommunicationSMSServiceImplBuilder ();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
 
@@ -270,55 +240,46 @@ public final class SmsClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");
-        } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);
-        }
-        else {
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
+        } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
-
     private HttpPipeline createHttpPipeline(HttpClient httpClient,
                                             HttpPipelinePolicy authorizationPolicy,
-                                            HttpPipelinePolicy[] additionalPolicies) {
+                                            List<HttpPipelinePolicy> customPolicies) {
 
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[4];
-        if (additionalPolicies != null) {
-            policies = new HttpPipelinePolicy[4 + additionalPolicies.length];
-            applyAdditionalPolicies(policies, additionalPolicies);
+        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(authorizationPolicy);
+        applyRequiredPolicies(policies);
+
+        if (customPolicies != null && customPolicies.size() > 0) {
+            policies.addAll(customPolicies);
         }
-        policies[0] = authorizationPolicy;
-        applyRequirePolicies(policies);
 
         return new HttpPipelineBuilder()
-            .policies(policies)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
 
-    private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
+    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        policies[1] = new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration);
-        policies[2] = new RetryPolicy();
-        policies[3] = new CookiePolicy();
-    }
-
-    private void applyAdditionalPolicies(HttpPipelinePolicy[] policies,
-                                         HttpPipelinePolicy[] customPolicies) {
-        for (int i = 0; i < customPolicies.length; i++) {
-            policies[4 + i] = customPolicies[i];
-
-        }
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration));
+        policies.add(new RetryPolicy());
+        policies.add(new CookiePolicy());
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
     }
 }

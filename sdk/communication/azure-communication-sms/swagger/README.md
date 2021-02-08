@@ -42,14 +42,14 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true	
 custom-types-subpackage: models
-custom-types: SendSmsResult,SendSmsOptions
+custom-types: SmsSendResultRepeatabilityResult,SmsSendResult,SmsSendOptions
 ```
 
-### Rename SendSmsResponseItem to SenSmsResult
+### Rename SendSmsResponseItem to SmsSendResult
 
 ``` yaml
 directive:
     - rename-model:
-        from: SendSmsResponseItem
-        to: SendSmsResult
+        from: SmsSendResponseItem
+        to: SmsSendResult
 ```
