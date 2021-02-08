@@ -15,11 +15,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-<<<<<<< HEAD
-    <version>3.0.0-beta.2</version>
-=======
     <version>3.0.0-beta.4</version>
->>>>>>> 6ab25815c398861f8ad168df061a286406fc82f0
 </dependency>
 ```
 [//]: # ({x-version-update-end})

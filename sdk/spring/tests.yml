@@ -105,6 +105,11 @@ stages:
             displayName: 'Create On-demand test user'
 
         PostSteps:
+          - powershell: |
+                az ad user delete --id "${{ parameters.AadOnDemandUserName }}"
+                az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+            condition: always()
+            displayName: 'Delete On-demand test user and create again'
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
