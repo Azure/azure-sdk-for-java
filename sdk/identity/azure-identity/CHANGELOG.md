@@ -6,7 +6,7 @@
 - Upgraded `azure-core` dependency to 1.13.0
 - Upgraded `msal4j` dependency to 1.8.1
 
-## 1.2.2 (2021-01-12
+## 1.2.2 (2021-01-12)
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to 1.12.0
