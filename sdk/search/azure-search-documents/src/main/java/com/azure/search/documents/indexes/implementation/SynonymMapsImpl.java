@@ -28,8 +28,9 @@ import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsR
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SynonymMap;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in SynonymMaps. */
 public final class SynonymMapsImpl {
@@ -68,7 +69,7 @@ public final class SynonymMapsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SynonymMap synonymMap,
                 Context context);
 
@@ -82,7 +83,7 @@ public final class SynonymMapsImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
@@ -93,7 +94,7 @@ public final class SynonymMapsImpl {
                 @PathParam("synonymMapName") String synonymMapName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/synonymmaps")
@@ -104,7 +105,7 @@ public final class SynonymMapsImpl {
                 @QueryParam("$select") String select,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/synonymmaps")
@@ -114,7 +115,7 @@ public final class SynonymMapsImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SynonymMap synonymMap,
                 Context context);
     }
@@ -123,7 +124,7 @@ public final class SynonymMapsImpl {
      * Creates a new synonym map or updates a synonym map if it already exists.
      *
      * @param synonymMapName The name of the synonym map to create or update.
-     * @param synonymMap Represents a synonym map definition.
+     * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -255,7 +256,7 @@ public final class SynonymMapsImpl {
     /**
      * Creates a new synonym map.
      *
-     * @param synonymMap Represents a synonym map definition.
+     * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

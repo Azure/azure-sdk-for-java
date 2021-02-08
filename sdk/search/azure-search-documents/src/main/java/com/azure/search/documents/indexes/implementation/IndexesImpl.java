@@ -33,8 +33,9 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexesResul
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndex;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in Indexes. */
 public final class IndexesImpl {
@@ -68,7 +69,7 @@ public final class IndexesImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndex index,
                 Context context);
 
@@ -80,7 +81,7 @@ public final class IndexesImpl {
                 @QueryParam("$select") String select,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/indexes('{indexName}')")
@@ -95,7 +96,7 @@ public final class IndexesImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndex index,
                 Context context);
 
@@ -109,7 +110,7 @@ public final class IndexesImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/indexes('{indexName}')")
@@ -120,7 +121,7 @@ public final class IndexesImpl {
                 @PathParam("indexName") String indexName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/indexes('{indexName}')/search.stats")
@@ -131,7 +132,7 @@ public final class IndexesImpl {
                 @PathParam("indexName") String indexName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/indexes('{indexName}')/search.analyze")
@@ -142,7 +143,7 @@ public final class IndexesImpl {
                 @PathParam("indexName") String indexName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") AnalyzeRequest request,
                 Context context);
     }
@@ -150,7 +151,7 @@ public final class IndexesImpl {
     /**
      * Creates a new search index.
      *
-     * @param index Represents a search index definition, which describes the fields and search behavior of an index.
+     * @param index The definition of the index to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +215,7 @@ public final class IndexesImpl {
      * Creates a new search index or updates an index if it already exists.
      *
      * @param indexName The definition of the index to create or update.
-     * @param index Represents a search index definition, which describes the fields and search behavior of an index.
+     * @param index The definition of the index to create or update.
      * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
      *     index by taking the index offline for at least a few seconds. This temporarily causes indexing and query
      *     requests to fail. Performance and write availability of the index can be impaired for several minutes after
@@ -349,7 +350,7 @@ public final class IndexesImpl {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName The name of the index for which to test an analyzer.
-     * @param request Specifies some text and analysis components used to break that text into tokens.
+     * @param request The text and analyzer or analysis components to test.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
