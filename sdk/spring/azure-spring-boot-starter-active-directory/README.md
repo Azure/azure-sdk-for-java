@@ -1,16 +1,18 @@
 # Azure AD Spring Boot Starter client library for Java
 
-**azure-spring-boot-starter-active-directory** (**aad-starter** for short) supports Oauth 2.0 authentication for a `web application`. It can also protect a `resource server` by validating JWT token. Here `web application` and `resource server` are protected by Azure Active Directory.
+Whether you are building a web API, mobile front end or a good-old fashioned desktop application, identity and access management will always be foundational pieces that are front and center in writing software. Azure offers a great platform to democratize your application development journey, as it not only offers a cloud-base identity service, but also deep integration with the rest of the Azure ecosystem. Spring Security has made it easy to secure your Spring based applications with powerful abstractions and extensible interfaces. However as powerful as the Spring framework can be, it is not tailored to a specific identity provider. The Azure Spring Boot Starter for Azure Active Directory (azure-spring-boot-starter-active-directory or aad-start for short) provides the most optimal way to connect your application to an Azure AD tenant and protect resource APIs with Azure Active Directory. It uses the Oauth 2.0 authentication flow to protect `web applications` and `resource servers`. A web application is any web based application that allows user to login, whereas a resource server will either accept or deny access after validating JWT tokens. We will cover 4 scenarios in this guide:
+1. Accessing a web application.
+1. Web application accessing resource servers.
+1. Accessing a resource server.
+1. Resource server accessing other resource servers.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
-## Getting started
-### Prerequisites
+## Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
-
-### Register the Application in Azure AD
+- Register an Application in Azure AD
 
 * **Create a new App registration**: 
 1. Go to [Azure Portal].
@@ -34,31 +36,16 @@
 1. Copy client-secret. We will need it later.
 ![create-a-new-client-secret-2.png](resource/create-a-new-client-secret-2.png)
 
-
-## Key concepts
-**aad-starter** supports 2 types of web server: Web application and resource server. 
-
-1. `Web application`: Support login by Microsoft account.
-1. `Resource server`: Not support login. Just protect the server by validating the access_token, and if valid, serves the request.
-
-Both `web application` and `resource server` support extra function: itself can access other resource servers which are protected by Azure Active Directory. So there are 4 scenarios:
-
-1. Web application.
-1. Web application visiting resource servers.
-1. Resource server.
-1. Resource server visiting other resource servers.
-
-The following content will introduce the 4 scenarios one by one.
-
+## Getting started
 ### Web application
 
-This scenario support login by Microsoft account, **aad-starter** use [The OAuth 2.0 authorization code grant] to deal with logins.
+
+This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in an user with a Microsoft account. 
 
 **System diagram**:
 
 ![Standalone Web Application](resource/web-application.png)
 
-To use **aad-starter** in this scenario, we need these steps:
 
 * Step 1: Add the following dependencies in you pom.xml.
 
@@ -85,7 +72,7 @@ azure:
     client-secret: xxxxxx-your-client-secret-xxxxxx
 ```
 
-* Step 3: Write Java code:
+* Step 3: Write your Java code:
 
 `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
@@ -109,15 +96,12 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 }
 ```
 
-### Web application visiting resource servers
-
-This scenario support visit resource servers in web application.
+### Web application accessing resource servers
 
 **System diagram**:
 
 ![web-application-visiting-resource-servers.png](resource/web-application-visiting-resource-servers.png)
 
-To use **aad-starter** in this scenario, we need these steps:
 
 * Step 1: Add the following dependencies in you pom.xml.
 
@@ -145,7 +129,7 @@ azure:
 ```
 Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
-* Step 3: Write Java code:
+* Step 3: Write your Java code:
 ```java
 @GetMapping("/graph")
 @ResponseBody
