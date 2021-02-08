@@ -541,18 +541,6 @@ public final class AzureMonitorExporter implements SpanExporter {
         }
     }
 
-    private static Double removeAttributeDouble(Attributes attributes, String attributeName) {
-        Object attributeValue = attributes.get(AttributeKey.stringKey(attributeName));
-        if (attributeValue == null) {
-            return null;
-        } else if (attributeValue instanceof Double) {
-            return (Double) attributeValue;
-        } else {
-            // TODO (srnagar): log debug warning
-            return null;
-        }
-    }
-
     private static String createTarget(URI uriObject) {
         String target = uriObject.getHost();
         if (uriObject.getPort() != 80 && uriObject.getPort() != 443 && uriObject.getPort() != -1) {
