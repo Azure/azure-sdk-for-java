@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
-    private final PagedFlux<T> pagedFlux;
+    //private final PagedFlux<T> pagedFlux;
 
     /**
      * Creates instance given {@link PagedFlux}.
@@ -40,7 +40,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     public PagedIterable(PagedFlux<T> pagedFlux) {
         super(pagedFlux);
-        this.pagedFlux = pagedFlux;
+        //this.pagedFlux = pagedFlux;
     }
 
     /**
