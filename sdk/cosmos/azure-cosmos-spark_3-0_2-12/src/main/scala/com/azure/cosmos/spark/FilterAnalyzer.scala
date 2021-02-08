@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParametrizedQuery
+import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.sql.sources.{
   And, EqualNullSafe, EqualTo, Filter, GreaterThan,
   GreaterThanOrEqual, In, IsNotNull, IsNull, LessThan, LessThanOrEqual, Not, Or,
@@ -45,7 +45,7 @@ private case class FilterAnalyzer() {
     }
 
     AnalyzedFilters(
-      CosmosParametrizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList),
+      CosmosParameterizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList),
       filtersToBePushedDownToCosmos.toArray,
       filtersNotSupportedByCosmos.toArray)
   }

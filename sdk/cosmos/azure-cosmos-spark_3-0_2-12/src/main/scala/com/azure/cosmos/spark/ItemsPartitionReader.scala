@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosClientBuilder
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
-import com.azure.cosmos.models.{CosmosParametrizedQuery, CosmosQueryRequestOptions}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -19,7 +19,7 @@ private case class ItemsPartitionReader
 (
   config: Map[String, String],
   readSchema: StructType,
-  cosmosQuery: CosmosParametrizedQuery,
+  cosmosQuery: CosmosParameterizedQuery,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
 )
 // TODO: moderakh query need to change to SqlSpecQuery
