@@ -319,7 +319,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void flushTimesOut() {
-        SearchIndexingBufferedSender<Map<String,Object>> batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
             .<Map<String, Object>>bufferedSender()
@@ -343,7 +343,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String,Object>> batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 Mono<HttpResponse> response = Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                     createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)));

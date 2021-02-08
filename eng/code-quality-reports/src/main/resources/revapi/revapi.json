@@ -379,6 +379,56 @@
         "code": "java.annotation.attributeValueChanged",
         "new": "class com.azure.search.documents.SearchClientBuilder",
         "justification": "Non-breaking change"
+      },
+      {
+        "code": "java.method.staticMethodAddedToInterface",
+        "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
+        "justification": "Default implementation"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.http.HttpHeader::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New constructor"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.lang.String[])",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.util.List<java.lang.String> com.azure.core.util.Header::getValuesList()",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method com.azure.core.util.polling.SyncPoller<T, U> com.azure.core.util.polling.SyncPoller<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "Default implementation"
       }
     ]
   }

@@ -78,7 +78,7 @@ public interface ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +94,7 @@ public interface ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +109,7 @@ public interface ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,7 +124,7 @@ public interface ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,45 +140,58 @@ public interface ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String forceDeletionResourceTypes);
 
     /**
      * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String forceDeletionResourceTypes);
 
     /**
      * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionResourceTypes);
 
     /**
      * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,7 +199,24 @@ public interface ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String forceDeletionResourceTypes, Context context);
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionResourceTypes);
 
     /**
      * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
@@ -206,6 +236,21 @@ public interface ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String forceDeletionResourceTypes);
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,13 +263,16 @@ public interface ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionResourceTypes The resource types you want to force delete. Currently, only the following is
+     *     supported:
+     *     forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, Context context);
+    void delete(String resourceGroupName, String forceDeletionResourceTypes, Context context);
 
     /**
      * Gets a resource group.
@@ -280,7 +328,7 @@ public interface ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,7 +343,7 @@ public interface ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -309,7 +357,7 @@ public interface ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +371,7 @@ public interface ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -338,7 +386,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -352,7 +400,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -366,7 +414,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -380,7 +428,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -395,7 +443,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,7 +457,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -422,7 +470,7 @@ public interface ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -460,6 +508,16 @@ public interface ResourceGroupsClient {
     /**
      * Gets all the resource groups for a subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resource groups for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceGroupInner> list();
+
+    /**
+     * Gets all the resource groups for a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
      *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
      * @param top The number of results to return. If null is passed, returns all resource groups.
@@ -471,14 +529,4 @@ public interface ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceGroupInner> list(String filter, Integer top, Context context);
-
-    /**
-     * Gets all the resource groups for a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceGroupInner> list();
 }
