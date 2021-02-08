@@ -4,6 +4,9 @@
 - Added support for the 2020-06-12 service version. 
 - Added support to rename a file system.
 - Added support to undelete a file system. 
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
 
 ## 12.4.0 (2021-01-14)
 - GA release
