@@ -34,7 +34,7 @@ public final class PagedConverter {
      * @param <S> return type of PagedFlux.
      * @return the PagedFlux with elements in PagedResponse transformed.
      */
-    public <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
+    public static <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                 ? pagedFlux.byPage().take(1)
