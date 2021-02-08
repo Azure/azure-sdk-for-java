@@ -1,7 +1,5 @@
 package com.azure.mixedreality.remoterendering.models;
 
-import com.azure.mixedreality.remoterendering.models.internal.ModelTranslator;
-
 import java.time.OffsetDateTime;
 
 public final class Conversion {
