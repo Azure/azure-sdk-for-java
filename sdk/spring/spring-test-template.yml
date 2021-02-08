@@ -23,7 +23,7 @@ stages:
             - script: |
                   echo 'switch to Azure China'
                   az cloud set --name AzureChinaCloud
-              condition: endsWith(${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}, 'cn')
+              condition: endsWith('${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}', 'cn')
               displayName: 'Switch to Azure China Cloud'
             - powershell: |
                   az cloud list --output table
@@ -32,6 +32,13 @@ stages:
               displayName: 'Create On-demand test user'
 
         PostSteps:
+          - powershell: |
+                az cloud list --output table
+                az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
+                az ad user create --user-principal-name "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}" --force-change-password-next-login false
+            condition: always()
+            displayName: 'Delete On-demand test user and create again'
+
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
