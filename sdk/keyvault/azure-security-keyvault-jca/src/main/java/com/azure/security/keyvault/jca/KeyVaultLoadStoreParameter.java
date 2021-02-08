@@ -56,7 +56,12 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param managedIdentity the managed identity.
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
-        this(uri, null, null, managedIdentity);
+        this.uri = uri;
+        this.aadAuthenticationUrl = null;
+        this.tenantId = null;
+        this.clientId = null;
+        this.clientSecret = null;
+        this.managedIdentity = managedIdentity;
     }
 
     /**
