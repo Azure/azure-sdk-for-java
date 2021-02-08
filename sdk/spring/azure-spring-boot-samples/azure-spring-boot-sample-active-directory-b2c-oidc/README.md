@@ -24,25 +24,28 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 ## Examples
 ### Configure the sample
 
-#### Application.yml
+#### application.yml
 
-1. Fill in `${your-tenant-endpoint-base-uri}` from **Azure AD B2C** portal `App registrations` blade, select **Endpoints**, copy the base endpoint uri(Global cloud format may looks like
+1. Fill in `${your-tenant-name}` from **Azure AD B2C** portal `Overviews` domain name (format may looks like
+`${your-tenant-name}.onmicrosoft.com`).
+2. If you are using non-global azure cloud environment, you can skip step 1, fill in `${your-tenant-endpoint-base-uri}` from **Azure AD B2C** portal `App registrations` blade, select **Endpoints**, copy the base endpoint uri(Global cloud format may looks like
 `https://{your-tenant-name}.b2clogin.com/{your-tenant-name}.onmicrosoft.com`, China Cloud looks like `https://{your-tenant-name}.b2clogin.cn/{your-tenant-name}.partner.onmschina.cn`).
-2. Select one registered instance under `Applications` from portal, and then:
+3. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
-3. Select `User flows`, and then:
+4. Select `User flows`, and then:
     1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of `sign-in-or-up` user flow.
     2. Fill in the `${your-profile-edit-user-flow}` with the name of `profile-edit` user flow.
     3. Fill in the `${your-password-reset-user-flow}` with the name of `password-reset` user flow.
-4. Replace `${your-reply-url}` to `http://localhost:8080/login/oauth2/code`.
-5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
+5. Replace `${your-reply-url}` to `http://localhost:8080/login/oauth2/code`.
+6. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
 azure:
   activedirectory:
     b2c:
-      base-uri: ${your-tenant-endpoint-base-uri}
+      tenant: ${your-tenant-name} # ❗not tenant id
+      base-uri: ${your-tenant-endpoint-base-uri} # optional if using global cloud environment
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       reply-url: ${your-reply-url} # should be absolute url.
@@ -56,7 +59,7 @@ azure:
         sign-up: ${your-sign-up-user-flow} # optional
 ```
 
-**NOTE**: If you want to run the sample in Azure China, you should add `azure.activedirectory.b2c.base-uri=https://{your-tenant-name}.b2clogin.cn/{your-tenant-name}.partner.onmschina.cn` configuration item.
+**NOTE**: The `tenant` configuration item will be replaced to `base-uri` in a future version.
 
 ### Run with Maven
 ```

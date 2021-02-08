@@ -46,7 +46,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(
     prefix = AADB2CProperties.PREFIX,
     value = {
-        "base-uri",
         "client-id",
         "client-secret",
         "reply-url",

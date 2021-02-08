@@ -5,9 +5,11 @@ package com.azure.spring.autoconfigure.b2c;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
@@ -40,6 +42,12 @@ public class AADB2CProperties implements InitializingBean {
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
+
+    /**
+     * The name of the b2c tenant.
+     */
+    @Deprecated
+    private String tenant;
 
     /**
      * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
@@ -85,16 +93,23 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * AAD B2C endpoint base uri.
      */
-    @NotBlank(message = "baseUri should not be blank")
     @URL(message = "baseUri should be valid URL")
     private String baseUri;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        baseUri = addSlash(baseUri);
+        if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
+            throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+        }
+        // baseUri points to Global env by default
+        if (StringUtils.hasText(tenant)) {
+            baseUri = String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
+        } else {
+            baseUri = addSlash(baseUri);
+        }
     }
 
-    private String addSlash(String uri) {
+    private String addSlash(@URL String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
@@ -104,6 +119,21 @@ public class AADB2CProperties implements InitializingBean {
         } catch (MalformedURLException e) {
             throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
         }
+    }
+
+    /**
+     * Get tenant name according the tenant base uri endpoint.
+     * @return tenant name
+     */
+    public String getTenantName() {
+        if (StringUtils.hasText(tenant)) {
+            return tenant;
+        }
+        String[] uriParts = baseUri.split("/");
+        if (uriParts.length == 4) {
+            return uriParts[2].split("\\.")[0];
+        }
+        return null;
     }
 
     @NonNull
@@ -196,16 +226,15 @@ public class AADB2CProperties implements InitializingBean {
         this.baseUri = baseUri;
     }
 
-    /**
-     * Get tenant name according the tenant base uri endpoint.
-     * @return tenant name
-     */
-    public String getTenantName() {
-        String[] uriParts = baseUri.split("/");
-        if (uriParts.length > 2) {
-            return uriParts[2].split("\\.")[0];
-        }
-        return null;
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
+
+    @DeprecatedConfigurationProperty(
+        reason = "Configuration updated to baseUri",
+        replacement = "azure.activedirectory.b2c.base-uri")
+    public String getTenant() {
+        return tenant;
     }
 
     public Boolean getOidcEnabled() {
