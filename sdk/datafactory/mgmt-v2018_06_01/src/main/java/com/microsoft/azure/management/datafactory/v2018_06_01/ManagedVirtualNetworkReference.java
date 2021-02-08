@@ -11,36 +11,30 @@ package com.microsoft.azure.management.datafactory.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Pipeline reference type.
+ * Managed Virtual Network reference type.
  */
-public class PipelineReference {
+public class ManagedVirtualNetworkReference {
     /**
-     * Pipeline reference type.
+     * Managed Virtual Network reference type.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
 
     /**
-     * Reference pipeline name.
+     * Reference ManagedVirtualNetwork name.
      */
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /**
-     * Reference name.
+     * Creates an instance of ManagedVirtualNetworkReference class.
      */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /**
-     * Creates an instance of PipelineReference class.
-     */
-    public PipelineReference() {
-        type = "PipelineReference";
+    public ManagedVirtualNetworkReference() {
+        type = "ManagedVirtualNetworkReference";
     }
 
     /**
-     * Get pipeline reference type.
+     * Get managed Virtual Network reference type.
      *
      * @return the type value
      */
@@ -49,18 +43,18 @@ public class PipelineReference {
     }
 
     /**
-     * Set pipeline reference type.
+     * Set managed Virtual Network reference type.
      *
      * @param type the type value to set
-     * @return the PipelineReference object itself.
+     * @return the ManagedVirtualNetworkReference object itself.
      */
-    public PipelineReference withType(String type) {
+    public ManagedVirtualNetworkReference withType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get reference pipeline name.
+     * Get reference ManagedVirtualNetwork name.
      *
      * @return the referenceName value
      */
@@ -69,33 +63,13 @@ public class PipelineReference {
     }
 
     /**
-     * Set reference pipeline name.
+     * Set reference ManagedVirtualNetwork name.
      *
      * @param referenceName the referenceName value to set
-     * @return the PipelineReference object itself.
+     * @return the ManagedVirtualNetworkReference object itself.
      */
-    public PipelineReference withReferenceName(String referenceName) {
+    public ManagedVirtualNetworkReference withReferenceName(String referenceName) {
         this.referenceName = referenceName;
-        return this;
-    }
-
-    /**
-     * Get reference name.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set reference name.
-     *
-     * @param name the name value to set
-     * @return the PipelineReference object itself.
-     */
-    public PipelineReference withName(String name) {
-        this.name = name;
         return this;
     }
 
