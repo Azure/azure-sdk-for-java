@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
-
+### Breaking Changes
+- Change the default format of the AAD B2C redirect url to `{BaseUrl}/login/oauth2/code/`.
 
 ## 3.1.0 (2021-01-20)
 
