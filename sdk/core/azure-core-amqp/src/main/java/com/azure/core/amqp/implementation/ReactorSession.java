@@ -99,7 +99,7 @@ public class ReactorSession implements AmqpSession {
 
         this.endpointStates = sessionHandler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], sessionName[{}]: State ", sessionHandler.getConnectionId(),
+                logger.verbose("connectionId[{}], sessionName[{}], state[{}]", sessionHandler.getConnectionId(),
                     sessionName, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })

@@ -32,6 +32,9 @@ public final class AzureMonitorExporterBuilder {
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
+    private String endpoint;
+    private String connectionString;
+    private AzureMonitorExporterServiceVersion serviceVersion;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -52,6 +55,7 @@ public final class AzureMonitorExporterBuilder {
 
         try {
             URL url = new URL(endpoint);
+            this.endpoint = endpoint;
             restServiceClientBuilder.host(url.getProtocol() + "://" + url.getHost());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
@@ -136,7 +140,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * The connection string to use for exporting telemetry events to Azure Monitor.
+     * Sets the connection string to use for exporting telemetry events to Azure Monitor.
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      * @throws NullPointerException If the connection string is {@code null}.
@@ -153,6 +157,18 @@ public final class AzureMonitorExporterBuilder {
         if (endpoint != null) {
             this.endpoint(endpoint);
         }
+        this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Sets the Azure Monitor service version.
+     *
+     * @param serviceVersion The Azure Monitor service version.
+     * @return The update {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitorExporterBuilder serviceVersion(AzureMonitorExporterServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -213,13 +229,13 @@ public final class AzureMonitorExporterBuilder {
      * implementation of OpenTelemetry {@link SpanExporter}.
      *
      * @return An instance of {@link AzureMonitorExporter}.
-     * @throws NullPointerException if the instrumentation key is not set.
+     * @throws NullPointerException if the connection string is not set.
      */
     public AzureMonitorExporter buildExporter() {
         // instrumentationKey is extracted from connectionString, so, if instrumentationKey is null
         // then the error message should read "connectionString cannot be null".
         Objects.requireNonNull(instrumentationKey, "'connectionString' cannot be null");
-        return new AzureMonitorExporter(buildClient(), instrumentationKey);
+        return new AzureMonitorExporter(buildAsyncClient(), instrumentationKey);
     }
 
 }

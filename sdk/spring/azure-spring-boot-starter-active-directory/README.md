@@ -294,7 +294,7 @@ Here are some examples about how to use these properties:
 azure:
   activedirectory:
     base-uri: https://login.partner.microsoftonline.cn
-    graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
+    graph-base-uri: https://microsoftgraph.chinacloudapi.cn
 ```
 
 #### Property example 2: Use `group name` to protect some method in web application.
