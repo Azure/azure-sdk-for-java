@@ -1,44 +1,33 @@
 # Azure AD Spring Boot Starter client library for Java
 
-Whether you are building a web API, mobile front end or a good-old fashioned desktop application, identity and access management will always be foundational pieces that are front and center in writing software. Azure offers a great platform to democratize your application development journey, as it not only offers a cloud-base identity service, but also deep integration with the rest of the Azure ecosystem. Spring Security has made it easy to secure your Spring based applications with powerful abstractions and extensible interfaces. However as powerful as the Spring framework can be, it is not tailored to a specific identity provider. The Azure Spring Boot Starter for Azure Active Directory (azure-spring-boot-starter-active-directory or aad-start for short) provides the most optimal way to connect your application to an Azure AD tenant and protect resource APIs with Azure Active Directory. It uses the Oauth 2.0 authentication flow to protect `web applications` and `resource servers`. A web application is any web based application that allows user to login, whereas a resource server will either accept or deny access after validating JWT tokens. We will cover 4 scenarios in this guide:
+When you are building a web application, identity and access management will always be foundational pieces.
+
+Azure offers a great platform to democratize your application development journey, as it not only offers a cloud-base identity service, but also deep integration with the rest of the Azure ecosystem.
+
+Spring Security has made it easy to secure your Spring based applications with powerful abstractions and extensible interfaces. However, as powerful as the Spring framework can be, it is not tailored to a specific identity provider.
+
+The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provides the most optimal way to connect your `web application` to an Azure Active Directory(AAD for short) tenant and protect `resource server` with AAD. It uses the Oauth 2.0 authentication flow to protect `web applications` and `resource servers`.
+
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+
+## Getting started
+
+### Prerequisites
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Maven](https://maven.apache.org/) 3.0 and above
+- [Register an Application in Azure AD]
+
+## Key concepts
+
+A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 4 scenarios in this guide:
+
 1. Accessing a web application.
 1. Web application accessing resource servers.
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
 
-[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
-
-## Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven](https://maven.apache.org/) 3.0 and above
-- Register an Application in Azure AD
-
-* **Create a new App registration**: 
-1. Go to [Azure Portal].
-1. Click `Azure Active Directory`.
-1. Click `App registrations`.
-1. Click `New application`.
-![create-a-new-app-registration-1.png](resource/create-a-new-app-registration-1.png)
-1. Input `Name`. For example: `readme-sample-client`.
-1. (Optional, only required for web application) Input `Redirect URI(optional)`: `http://localhost:8080/login/oauth2/code/`.
-1. Click `Register`.
-![create-a-new-app-registration-2.png](resource/create-a-new-app-registration-2.png)
-1. Copy tenant-id and client-id. We will need it later.
-![create-a-new-app-registration-3.png.png](resource/create-a-new-app-registration-3.png)
-
-* **Create a client secret key for the application**:
-1. Click `Certificates & secrets`.
-1. Click `New client secret`.
-1. Input `Description`.
-1. Click `Add`.
-![create-a-new-client-secret-1.png](resource/create-a-new-client-secret-1.png)
-1. Copy client-secret. We will need it later.
-![create-a-new-client-secret-2.png](resource/create-a-new-client-secret-2.png)
-
-## Getting started
-### Web application
-
+### Accessing a web application
 
 This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in an user with a Microsoft account. 
 
@@ -142,7 +131,7 @@ public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedC
 Here, `graph` is the client name configured in step 2. OAuth2AuthorizedClient contains access_token. 
 access_token can be used to access resource server.
 
-### Resource server
+### Accessing a resource server
 This scenario not support login. Just protect the server by validating the access_token, and if valid, serves the request.
 
 **System diagram**:
@@ -428,3 +417,4 @@ Please follow [instructions here] to build from source or contribute.
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
+[Register an Application in Azure AD]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
