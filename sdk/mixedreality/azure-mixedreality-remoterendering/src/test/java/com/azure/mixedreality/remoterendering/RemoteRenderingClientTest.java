@@ -26,8 +26,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
             .buildClient();
     }
 
-    //@ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    //@MethodSource("getHttpClients")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
     public void conversionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
 
