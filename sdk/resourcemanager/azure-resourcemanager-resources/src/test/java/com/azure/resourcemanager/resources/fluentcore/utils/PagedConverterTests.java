@@ -34,9 +34,9 @@ public class PagedConverterTests {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
         PagedIterable<String> pagedIterable = new PagedIterable<>(pagedFlux);
 
-        PagedIterable<String> convertedPagedFlux = PagedConverter.mapPage(pagedIterable, item -> item + "#");
+        PagedIterable<String> convertedPagedIterable = PagedConverter.mapPage(pagedIterable, item -> item + "#");
 
-        Iterator<PagedResponse<String>> iteratorByPage = convertedPagedFlux.iterableByPage().iterator();
+        Iterator<PagedResponse<String>> iteratorByPage = convertedPagedIterable.iterableByPage().iterator();
         Assertions.assertTrue(iteratorByPage.hasNext());
         PagedResponse<String> page1 = iteratorByPage.next();
         Assertions.assertEquals(4, page1.getValue().size());
@@ -47,6 +47,15 @@ public class PagedConverterTests {
         Assertions.assertTrue(iteratorByPage.hasNext());
         Assertions.assertEquals(2, iteratorByPage.next().getValue().size());
         Assertions.assertFalse(iteratorByPage.hasNext());
+
+        Iterator<String> iterator = convertedPagedIterable.iterator();
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals("base0#", iterator.next());
+        for (int i = 1; i < 10; ++i) {
+            Assertions.assertTrue(iterator.hasNext());
+            Assertions.assertEquals("base" + i + "#", iterator.next());
+        }
+        Assertions.assertFalse(iterator.hasNext());
     }
 
     @Test
