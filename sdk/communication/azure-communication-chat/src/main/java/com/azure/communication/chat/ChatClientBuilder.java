@@ -26,7 +26,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
-
 /**
  * Builder for creating clients of Azure Communication Service Chat
  */
