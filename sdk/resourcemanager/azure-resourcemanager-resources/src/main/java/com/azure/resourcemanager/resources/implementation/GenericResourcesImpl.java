@@ -44,14 +44,12 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return PagedConverter.mapPage(wrapList(this.manager().serviceClient().getResources().list(),
-                res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return PagedConverter.mapPage(wrapList(this.manager().serviceClient().getResources().listByResourceGroup(groupName),
-                res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
@@ -61,8 +59,9 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return PagedConverter.mapPage(wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName,
-                ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null),
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName,
+                    ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null),
                 res -> (GenericResourceInner) res));
     }
 
@@ -243,13 +242,14 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listAsync() {
-        return PagedConverter.mapPage(wrapPageAsync(this.inner().listAsync(),
+        return wrapPageAsync(PagedConverter.mapPage(this.inner().listAsync(),
                 res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return PagedConverter.mapPage(wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName),
-                res -> (GenericResourceInner) res));
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName),
+            res -> (GenericResourceInner) res));
     }
 }

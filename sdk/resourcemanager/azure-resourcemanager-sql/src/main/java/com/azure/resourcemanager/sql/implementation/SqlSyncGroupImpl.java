@@ -203,7 +203,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public PagedIterable<SqlSyncGroupLogProperty> listLogs(String startTime, String endTime, String type) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
@@ -220,7 +220,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()

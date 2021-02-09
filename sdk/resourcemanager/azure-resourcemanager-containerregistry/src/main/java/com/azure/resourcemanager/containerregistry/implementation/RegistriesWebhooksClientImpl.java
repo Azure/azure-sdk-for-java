@@ -69,9 +69,9 @@ public class RegistriesWebhooksClientImpl implements Registries.WebhooksClient {
     public PagedFlux<Webhook> listAsync(final String resourceGroupName, final String registryName) {
         final WebhooksClient webhooksInner = this.containerRegistryManager.serviceClient().getWebhooks();
 
-        return PagedConverter.mapPage(PagedConverter
+        return PagedConverter
             .flatMapPage(
-                webhooksInner
+                PagedConverter.mapPage(webhooksInner
                     .listAsync(resourceGroupName, registryName),
                         inner -> {
                             if (this.containerRegistry != null) {
