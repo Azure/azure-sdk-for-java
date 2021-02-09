@@ -1,4 +1,4 @@
-# To avoid dependency conflicts between SDK and Spring, when modify or add dependencies,
+# To avoid dependency conflicts between SDK and Spring, when modifying or adding dependencies,
 # make sure the version is same to sdk/spring/scripts/spring_managed_external_dependencies.txt.
 # If your version is different from sdk/spring/scripts/spring_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
@@ -66,8 +66,8 @@ javax.validation:validation-api;2.0.1.Final
 mysql:mysql-connector-java;8.0.22
 net.minidev:json-smart;2.3
 org.apache.ant:ant;1.9.4
-org.apache.avro:avro;1.9.2
-org.apache.avro:avro-maven-plugin;1.9.2
+org.apache.avro:avro;1.10.1
+org.apache.avro:avro-maven-plugin;1.10.1
 org.apache.commons:commons-compress;1.20
 org.apache.commons:commons-lang3;3.10
 org.apache.httpcomponents:httpclient;4.5.13
