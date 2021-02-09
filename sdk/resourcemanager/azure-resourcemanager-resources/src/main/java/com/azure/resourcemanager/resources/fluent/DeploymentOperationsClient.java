@@ -106,6 +106,19 @@ public interface DeploymentOperationsClient {
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName);
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,19 +129,6 @@ public interface DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtScope(
         String scope, String deploymentName, Integer top, Context context);
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName);
 
     /**
      * Gets a deployments operation.
@@ -214,6 +214,18 @@ public interface DeploymentOperationsClient {
      * Gets all deployments operations for a deployment.
      *
      * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName);
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,18 +235,6 @@ public interface DeploymentOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top, Context context);
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName);
 
     /**
      * Gets a deployments operation.
@@ -329,6 +329,19 @@ public interface DeploymentOperationsClient {
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName);
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,19 +352,6 @@ public interface DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
         String groupId, String deploymentName, Integer top, Context context);
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
      * Gets a deployments operation.
@@ -437,6 +437,18 @@ public interface DeploymentOperationsClient {
      * Gets all deployments operations for a deployment.
      *
      * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName);
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -447,18 +459,6 @@ public interface DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(
         String deploymentName, Integer top, Context context);
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName);
 
     /**
      * Gets a deployments operation.
@@ -552,6 +552,19 @@ public interface DeploymentOperationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName);
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -562,17 +575,4 @@ public interface DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listByResourceGroup(
         String resourceGroupName, String deploymentName, Integer top, Context context);
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName);
 }

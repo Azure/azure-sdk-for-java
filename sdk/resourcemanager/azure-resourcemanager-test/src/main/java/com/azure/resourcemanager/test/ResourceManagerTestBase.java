@@ -23,6 +23,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -37,11 +39,18 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivilegedAction;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +105,38 @@ public abstract class ResourceManagerTestBase extends TestBase {
         String password = new ResourceNamer("").randomName("Pa5$", 12);
         new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
         return password;
+    }
+
+    private static String sshPublicKey;
+
+    /**
+     * @return a SSH public key
+     */
+    public static String sshPublicKey() {
+        if (sshPublicKey == null) {
+            try {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+                keyGen.initialize(1024);
+                KeyPair pair = keyGen.generateKeyPair();
+                PublicKey publicKey = pair.getPublic();
+
+                RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+                ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
+                DataOutputStream dos = new DataOutputStream(byteOs);
+                dos.writeInt("ssh-rsa".getBytes().length);
+                dos.write("ssh-rsa".getBytes());
+                dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
+                dos.write(rsaPublicKey.getPublicExponent().toByteArray());
+                dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
+                dos.write(rsaPublicKey.getModulus().toByteArray());
+                String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+                sshPublicKey = "ssh-rsa " + publicKeyEncoded;
+            } catch (NoSuchAlgorithmException | IOException e) {
+                throw new ClientLogger(ResourceManagerTestBase.class)
+                    .logThrowableAsError(new IllegalStateException("failed to generate ssh key", e));
+            }
+        }
+        return sshPublicKey;
     }
 
     protected TokenCredential credentialFromFile() {

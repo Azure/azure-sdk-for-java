@@ -1,0 +1,12 @@
+{
+  "matrix": {
+    "Cosmos": {
+      "Session_Integration": {
+        "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+        "ProfileFlag": "-P integration-test-azure",
+        "Pool": "azsdk-pool-mms-ubuntu-1804-general",
+        "OSVmImage": "MMSUbuntu1804"
+        }
+    }
+  }
+}

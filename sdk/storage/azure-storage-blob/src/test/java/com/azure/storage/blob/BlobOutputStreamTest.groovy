@@ -123,6 +123,27 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    def "BlockBlob output stream buffer reuse"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.KB)
+        def inputStream = new ByteArrayInputStream(data)
+        def buffer = new byte[1024]
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream()
+        for (int i=0; i<10; i++) {
+            inputStream.read(buffer)
+            outputStream.write(buffer)
+        }
+        outputStream.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Requires({ liveMode() })
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
