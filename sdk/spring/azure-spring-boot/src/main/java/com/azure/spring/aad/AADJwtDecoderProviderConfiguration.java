@@ -41,7 +41,9 @@ public class AADJwtDecoderProviderConfiguration {
                 ResponseEntity<Map<String, Object>> response = REST.exchange(request,
                     TYPE_REFERENCE);
                 Map<String, Object> configuration = response.getBody();
-
+                if (configuration == null) {
+                    throw new IllegalArgumentException("The configuration must not be null");
+                }
                 if (configuration.get("jwks_uri") == null) {
                     throw new IllegalArgumentException("The public JWK set URI must not be null");
                 }
