@@ -548,12 +548,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         String key2 = getKey();
 
         // Delete all existing settings in the resource
-        final PagedFlux<ConfigurationSetting> configurationSettingPagedFlux2 = client.listConfigurationSettings(null);
-        for (ConfigurationSetting setting : configurationSettingPagedFlux2.toIterable()) {
-            StepVerifier.create(client.deleteConfigurationSettingWithResponse(setting, false))
-                .assertNext(response -> assertConfigurationEquals(setting, response))
-                .verifyComplete();
-        }
+Mono<Void> deleteAllSettingsMono = client.listConfigurationSettings(null)
+    .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+    .then();
+    
+StepVerifier.create(deleteAllSettingsMono)
+   .verifyComplete();
 
         listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
@@ -1054,4 +1054,3 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyError(HttpResponseException.class));
     }
 }
-
