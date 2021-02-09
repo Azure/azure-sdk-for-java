@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.13.0-beta.1 (Unreleased)
+
+
 ### 4.12.0 (2021-02-09)
 #### New Features
 * Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
