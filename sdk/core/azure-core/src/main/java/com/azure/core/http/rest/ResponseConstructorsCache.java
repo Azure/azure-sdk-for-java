@@ -106,6 +106,15 @@ final class ResponseConstructorsCache {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
                 try {
+                    /*
+                     * From here we have three, possibly more options, to resolve this.
+                     *
+                     * 1) setAccessible to true in the response class (requires doPrivilege).
+                     * 2) Use Java 9+ Module class to add reads in com.azure.core and the SDK library exports to
+                     * com.azure.core for implementation.
+                     * 3) SDK libraries create an accessible MethodHandles.Lookup which com.azure.core can use to spoof
+                     * as the SDK library.
+                     */
                     return lookupToUse.unreflectConstructor(constructor);
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
