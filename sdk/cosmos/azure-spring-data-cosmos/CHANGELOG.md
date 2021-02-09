@@ -1,7 +1,8 @@
 ## Release History
 
-## 3.4.0-beta.1 (Unreleased)
-
+## 3.3.1 (2020-02-09)
+#### Key Bug Fixes
+* Fixed @EnableAuditing can't work with Java Modules.
 
 ### 3.3.0 (2020-01-15)
 #### New Features
