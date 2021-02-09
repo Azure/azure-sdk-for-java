@@ -23,8 +23,8 @@ import java.util.Map;
 public class AADJwtDecoderProviderConfiguration {
 
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
-    private static final RestTemplate restTemplate = new RestTemplate();
-    private static final ParameterizedTypeReference<Map<String, Object>> parameterizedTypeReference =
+    private static final RestTemplate Rest = new RestTemplate();
+    private static final ParameterizedTypeReference<Map<String, Object>> TypeReference =
         new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
@@ -38,8 +38,8 @@ public class AADJwtDecoderProviderConfiguration {
         for (URI uri : uris) {
             try {
                 RequestEntity<Void> request = RequestEntity.get(uri).build();
-                ResponseEntity<Map<String, Object>> response = restTemplate.exchange(request,
-                    parameterizedTypeReference);
+                ResponseEntity<Map<String, Object>> response = Rest.exchange(request,
+                    TypeReference);
                 Map<String, Object> configuration = response.getBody();
 
                 if (configuration.get("jwks_uri") == null) {
@@ -50,8 +50,8 @@ public class AADJwtDecoderProviderConfiguration {
             } catch (IllegalArgumentException e) {
                 throw e;
             } catch (RuntimeException e) {
-                if (!(e instanceof HttpClientErrorException &&
-                    ((HttpClientErrorException) e).getStatusCode().is4xxClientError())) {
+                if (!(e instanceof HttpClientErrorException
+                    && ((HttpClientErrorException) e).getStatusCode().is4xxClientError())) {
                     throw new IllegalArgumentException(errorMessage, e);
                 }
                 // else try another endpoint
