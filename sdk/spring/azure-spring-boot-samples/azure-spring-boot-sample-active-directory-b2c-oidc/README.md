@@ -59,7 +59,7 @@ azure:
         sign-up: ${your-sign-up-user-flow} # optional
 ```
 
-**NOTE**: The `tenant` configuration item will be replaced to `base-uri` in a future version.
+**NOTE**: The `tenant` configuration item will be replaced to `base-uri` in a future version, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect.
 
 ### Run with Maven
 ```

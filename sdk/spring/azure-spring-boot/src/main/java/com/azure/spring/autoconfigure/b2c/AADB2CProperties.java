@@ -103,7 +103,7 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
         // baseUri points to Global env by default
-        if (StringUtils.hasText(tenant)) {
+        if (StringUtils.isEmpty(baseUri) && StringUtils.hasText(tenant)) {
             baseUri = String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
         } else {
             baseUri = addSlash(baseUri);
