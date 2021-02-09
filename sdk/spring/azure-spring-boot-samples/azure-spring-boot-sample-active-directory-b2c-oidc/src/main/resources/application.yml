@@ -5,7 +5,6 @@ azure:
       oidc-enabled: true
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
-      reply-url: ${your-reply-url-from-aad} # should be absolute url.
       logout-success-url: ${your-logout-success-url}
       user-name-attribute-name: ${your-user-name-claim}
       user-flows:
