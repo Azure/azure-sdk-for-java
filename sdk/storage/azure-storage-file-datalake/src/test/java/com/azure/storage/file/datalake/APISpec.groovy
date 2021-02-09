@@ -22,10 +22,14 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.BlobRetentionPolicy
+import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
@@ -589,6 +593,20 @@ class APISpec extends Specification {
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
             response.getHeaders().getValue("Content-Type") == contentType
+    }
+
+    def enableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)))
+
+        sleepIfRecord(30000)
+    }
+
+    def disableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(false)))
+
+        sleepIfRecord(30000)
     }
 
     def setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {

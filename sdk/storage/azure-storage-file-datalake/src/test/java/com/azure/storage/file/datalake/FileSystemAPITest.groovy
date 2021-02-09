@@ -57,9 +57,9 @@ class FileSystemAPITest extends APISpec {
         response.getValue().getMetadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2
-        null  | null   | null   | null
-        "foo" | "bar"  | "fizz" | "buzz"
+        key1      | value1    | key2       | value2
+        null      | null      | null       | null
+        "foo"     | "bar"     | "fizz"     | "buzz"
         "testFoo" | "testBar" | "testFizz" | "testBuzz"
     }
 
@@ -692,7 +692,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             response.getMetadata().containsKey(k)
             response.getMetadata().get(k) == metadata.get(k)
         }
@@ -946,6 +946,122 @@ class FileSystemAPITest extends APISpec {
     }
     // TODO (gapra): Add more get paths tests (Github issue created)
 
+    def "List deleted paths"() {
+        setup:
+        enableSoftDelete()
+
+        def fc1 = fsc.getFileClient(generatePathName())
+        fc1.create(true)
+        fc1.delete()
+
+        when:
+        def deletedBlobs = fsc.listDeletedPaths()
+
+        then:
+        deletedBlobs.size() == 1
+        !deletedBlobs.first().isPrefix()
+        deletedBlobs.first().getName() == fc1.getFileName()
+        deletedBlobs.first().getDeletedOn() != null
+        deletedBlobs.first().getDeletionId() != null
+        deletedBlobs.first().getRemainingRetentionDays() != null
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    def "List deleted paths path"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+        def fc1 = dir.getFileClient(generatePathName()) // Create one file under the path
+        fc1.create(true)
+        fc1.delete()
+
+        def fc2 = fsc.getFileClient() // Create another file not under the path
+        fc2.create()
+        fc2.delete()
+
+        when:
+        def deletedBlobs = fsc.listDeletedPaths(new ListDeletedPathsOptions().setPath(dir.getDirectoryName()), null)
+
+        then:
+        deletedBlobs.size() == 1
+        !deletedBlobs.first().isPrefix()
+        deletedBlobs.first().getName() == dir.getDirectoryName() + "/" + fc1.getFileName()
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    def "List deleted paths error"() {
+        setup:
+        enableSoftDelete()
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.listDeletedPaths()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Restore path"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+        dir.delete()
+
+        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+
+        when:
+        fsc.restorePath(dir.getDirectoryName(), deletionId)
+
+        then:
+        dir.getProperties() != null
+    }
+
+    def "Restore path special characters"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        dir.delete()
+
+        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+
+        when:
+        fsc.restorePath(dir.getDirectoryName(), deletionId)
+
+        then:
+        dir.getProperties() != null
+
+        where:
+        dirName                                                   | _
+        "!'();[]@&%=+\$,#äÄöÖüÜß;"                                | _
+        "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B" | _
+        " my cool directory "                                     | _
+        "directory"
+    }
+
+    def "Restore path error"() {
+        setup:
+        enableSoftDelete()
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.listDeletedPaths()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
     @Unroll
     def "Create URL special chars encoded"() {
         // This test checks that we handle path names with encoded special characters correctly.
@@ -975,12 +1091,12 @@ class FileSystemAPITest extends APISpec {
 
         // Note you cannot use the / character in a path in datalake unless it is to specify an absolute path
         where:
-        name                                                     | _
-        "%E4%B8%AD%E6%96%87"                                     | _
-        "az%5B%5D"                                               | _
-        "hello%20world"                                          | _
-        "hello%26world"                                          | _
-        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"    | _
+        name                                                  | _
+        "%E4%B8%AD%E6%96%87"                                  | _
+        "az%5B%5D"                                            | _
+        "hello%20world"                                       | _
+        "hello%26world"                                       | _
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D" | _
     }
 
     @Unroll
