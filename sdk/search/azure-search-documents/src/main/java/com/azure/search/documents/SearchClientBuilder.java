@@ -17,6 +17,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
@@ -145,10 +146,11 @@ public final class SearchClientBuilder {
      * SearchIndexingBufferedSender SearchIndexingBufferedSenders} and {@link SearchIndexingBufferedAsyncSender
      * SearchIndexingBufferedAsyncSenders}.
      *
+     * @param documentType The {@link TypeReference} representing the document type associated with the sender.
      * @param <T> The type of the document that the buffered sender will use.
      * @return A new instance of {@link SearchIndexingBufferedSenderBuilder}.
      */
-    public <T> SearchIndexingBufferedSenderBuilder<T> bufferedSender() {
+    public <T> SearchIndexingBufferedSenderBuilder<T> bufferedSender(TypeReference<T> documentType) {
         return new SearchIndexingBufferedSenderBuilder<>();
     }
 

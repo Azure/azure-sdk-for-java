@@ -14,6 +14,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.IndexingResult;
 import com.azure.search.documents.models.IndexAction;
@@ -57,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     private static final JacksonAdapter JACKSON_ADAPTER;
+    private static final TypeReference<Map<String, Object>> HOTEL_DOCUMENT_TYPE;
     private static final Function<Map<String, Object>, String> HOTEL_ID_KEY_RETRIEVER;
     private String indexToDelete;
     private SearchClientBuilder clientBuilder;
@@ -66,6 +68,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         adapter.serializer().setAnnotationIntrospector(new IgnoreJacksonWriteOnlyAccess());
 
         JACKSON_ADAPTER = adapter;
+        HOTEL_DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() { };
         HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
 
@@ -95,7 +98,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -120,7 +123,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofMinutes(5))
             .initialBatchActionCount(10)
@@ -143,7 +146,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .initialBatchActionCount(10)
             .autoFlushInterval(Duration.ofSeconds(3))
@@ -166,7 +169,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .buildSender();
 
@@ -188,7 +191,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofMinutes(5))
             .initialBatchActionCount(1000)
@@ -217,7 +220,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchClient client = builder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
             .initialBatchActionCount(10)
@@ -261,7 +264,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         });
 
         SearchClient client = builder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = builder.<Map<String, Object>>bufferedSender()
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = builder.bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
             .initialBatchActionCount(10)
@@ -303,7 +306,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .buildSender();
 
@@ -322,7 +325,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -353,7 +356,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return response;
                 }
             })
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .onActionAdded(ignored -> addedCount.incrementAndGet())
@@ -390,7 +393,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .onActionAdded(options -> addedCount.incrementAndGet())
@@ -428,7 +431,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .onActionAdded(options -> addedCount.incrementAndGet())
@@ -476,7 +479,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 } else {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(10)
@@ -537,7 +540,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 200)));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .buildSender();
 
@@ -574,7 +577,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 200)));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .buildSender();
 
@@ -599,6 +602,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(1, batchingClient.getActions().size());
 
         assertDoesNotThrow((Executable) batchingClient::flush);
+        assertDoesNotThrow((Executable) batchingClient::close);
 
         /*
          * No documents should remain as no duplicate keys exists.
@@ -619,7 +623,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 409))))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .maxRetriesPerAction(10)
@@ -667,7 +671,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
@@ -709,7 +713,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> (callCount.getAndIncrement() < 2)
                 ? Mono.just(new MockHttpResponse(request, 413))
                 : createMockBatchSplittingResponse(request, 1, 1))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
@@ -740,7 +744,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void operationsThrowAfterClientIsClosed(
         Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -783,7 +787,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -809,7 +813,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 } else {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(5)
@@ -854,7 +858,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 } else {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(5)
@@ -901,7 +905,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 201, 200, 201, 200, 200, 200, 201, 201, 200, 201)));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .onActionAdded(options -> addedCount.incrementAndGet())
@@ -932,7 +936,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -953,7 +957,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 503))))
-            .<Map<String, Object>>bufferedSender()
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
@@ -981,7 +985,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 200)));
                 }
-            }).<Map<String, Object>>bufferedSender()
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .buildSender();
