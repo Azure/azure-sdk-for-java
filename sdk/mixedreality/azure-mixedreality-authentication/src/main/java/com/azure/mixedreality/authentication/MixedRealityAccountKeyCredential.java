@@ -16,7 +16,7 @@ class MixedRealityAccountKeyCredential implements TokenCredential {
     private final UUID accountId;
     private final AzureKeyCredential keyCredential;
 
-    public MixedRealityAccountKeyCredential(UUID accountId, AzureKeyCredential keyCredential) {
+    MixedRealityAccountKeyCredential(UUID accountId, AzureKeyCredential keyCredential) {
         this.accountId = accountId;
         this.keyCredential = keyCredential;
     }

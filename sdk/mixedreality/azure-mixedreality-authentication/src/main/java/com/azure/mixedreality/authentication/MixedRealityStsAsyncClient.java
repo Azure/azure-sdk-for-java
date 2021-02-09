@@ -79,7 +79,6 @@ public final class MixedRealityStsAsyncClient {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AccessToken>> getTokenWithResponse(Context context) {
         try {
             TokenRequestOptions requestOptions = new TokenRequestOptions();
@@ -88,16 +87,16 @@ public final class MixedRealityStsAsyncClient {
             return serviceClient.getTokenWithResponseAsync(this.accountId, requestOptions, context
                 .addData(Tracer.AZ_TRACING_NAMESPACE_KEY, MIXED_REALITY_TRACING_NAMESPACE_VALUE))
                 .map(originalResponse -> {
-                   AccessToken accessToken = ToAccessToken(originalResponse.getValue());
-                   return new ResponseBase<>(originalResponse.getRequest(), originalResponse.getStatusCode(),
-                       originalResponse.getHeaders(), accessToken, originalResponse.getDeserializedHeaders());
+                    AccessToken accessToken = toAccessToken(originalResponse.getValue());
+                    return new ResponseBase<>(originalResponse.getRequest(), originalResponse.getStatusCode(),
+                        originalResponse.getHeaders(), accessToken, originalResponse.getDeserializedHeaders());
                 });
         } catch (RuntimeException exception) {
             return monoError(this.logger, exception);
         }
     }
 
-    private static AccessToken ToAccessToken(StsTokenResponseMessage stsTokenResponseMessage) {
+    private static AccessToken toAccessToken(StsTokenResponseMessage stsTokenResponseMessage) {
         String accessToken = stsTokenResponseMessage.getAccessToken();
         OffsetDateTime tokenExpiration = JsonWebToken.retrieveExpiration(accessToken);
 

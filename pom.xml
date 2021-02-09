@@ -73,6 +73,7 @@
 
         <!-- Mixed Reality -->
         <module>sdk/mixedreality/azure-mixedreality-authentication</module>
+        <module>sdk/mixedreality/azure-mixedreality-remoterendering</module>
         
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>

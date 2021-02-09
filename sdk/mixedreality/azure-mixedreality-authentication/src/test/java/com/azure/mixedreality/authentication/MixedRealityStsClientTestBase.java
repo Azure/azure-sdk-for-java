@@ -29,7 +29,7 @@ public class MixedRealityStsClientTestBase extends TestBase {
     private final String playbackAccountKey = "NjgzMjFkNWEtNzk3OC00Y2ViLWI4ODAtMGY0OTc1MWRhYWU5";
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        UUID accountId = getAccountId();
+        String accountId = getAccountId();
         String accountDomain = getAccountDomain();
         AzureKeyCredential keyCredential = getAccountKey();
 
@@ -58,12 +58,12 @@ public class MixedRealityStsClientTestBase extends TestBase {
             : this.accountDomain;
     }
 
-    UUID getAccountId() {
+    String getAccountId() {
         String accountIdValue = interceptorManager.isPlaybackMode()
             ? this.playbackAccountId
             : this.accountId;
 
-        return UUID.fromString(accountIdValue);
+        return accountIdValue;
     }
 
     AzureKeyCredential getAccountKey() {
@@ -74,7 +74,7 @@ public class MixedRealityStsClientTestBase extends TestBase {
         return new AzureKeyCredential(accountKeyValue);
     }
 
-    static TokenCredential constructAccountKeyCredential(UUID accountId, AzureKeyCredential keyCredential) {
-        return new MixedRealityAccountKeyCredential(accountId, keyCredential);
+    static TokenCredential constructAccountKeyCredential(String accountId, AzureKeyCredential keyCredential) {
+        return new MixedRealityAccountKeyCredential(UUID.fromString(accountId), keyCredential);
     }
 }
