@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,8 @@ import java.util.UUID;
 
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
 public final class RemoteRenderingClientBuilder {
+
+    private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
 
     private final MixedRealityRemoteRenderingImplBuilder builder;
     private UUID accountId;
@@ -55,8 +58,12 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder accountId(String accountId) {
+        try {
+            this.accountId = UUID.fromString(accountId);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
+        }
         this.stsBuilder.accountId(accountId);
-        this.accountId = UUID.fromString(accountId);
         return this;
     }
 

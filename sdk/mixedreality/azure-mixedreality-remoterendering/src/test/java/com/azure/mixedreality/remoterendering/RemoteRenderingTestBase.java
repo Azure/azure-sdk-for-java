@@ -76,12 +76,12 @@ public class RemoteRenderingTestBase extends TestBase {
             : this.accountDomain;
     }
 
-    UUID getAccountId() {
+    String getAccountId() {
         String accountIdValue = interceptorManager.isPlaybackMode()
             ? this.playbackAccountId
             : this.accountId;
 
-        return UUID.fromString(accountIdValue);
+        return accountIdValue;
     }
 
     AzureKeyCredential getAccountKey() {
