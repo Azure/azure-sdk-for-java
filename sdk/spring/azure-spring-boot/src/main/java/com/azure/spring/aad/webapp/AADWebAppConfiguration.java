@@ -27,8 +27,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -202,21 +200,5 @@ public class AADWebAppConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
         }
-    }
-
-
-    public static ExchangeFilterFunction conditionalAccessExceptionFilterFunction() {
-        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-                if (clientResponse.statusCode().is4xxClientError()
-                    && clientResponse.headers().header("WWWAuthenticate").get(0) != null) {
-                    String httpHeader = clientResponse.headers().header("WWWAuthenticate").get(0);
-                    if (ConditionalAccessException.isConditionAccessException(httpHeader)) {
-                        return Mono.error(ConditionalAccessException.fromHttpHeader(httpHeader));
-                    }
-                    return Mono.just(clientResponse);
-                }
-                return Mono.just(clientResponse);
-            }
-        );
     }
 }

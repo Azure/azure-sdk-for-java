@@ -62,12 +62,6 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(request, "request cannot be null");
         Assert.notNull(response, "response cannot be null");
-        if (authorizedClient.getClientRegistration().getRegistrationId().equals("azure")) {
-            Map<String, OAuth2AuthorizedClient> authorizedClients = new HashMap<>();
-            authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
-            request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));
-            return;
-        }
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
         request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));

@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.ConditionalAccessException;
 import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -15,6 +14,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -22,6 +22,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -33,7 +35,7 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -106,19 +108,14 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     .map(Throwable::getCause)
                     .filter(e -> e instanceof MsalInteractionRequiredException)
                     .map(e -> (MsalInteractionRequiredException) e)
-                    .map(MsalInteractionRequiredException::claims)
-                    .ifPresent(claims -> {
-                        Map<String, Object> parameters = new HashMap<>();
-                        ServletRequestAttributes attr =
-                            (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-                        HttpServletResponse response = attr.getResponse();
-                        Assert.notNull(response, "HttpServletResponse should not be null.");
-                        response.setStatus(HttpStatus.FORBIDDEN.value());
-                        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
-                        parameters.put(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI, "/oauth2/authorization/azure");
-                        response.addHeader("WWWAuthenticate",
-                            ConditionalAccessException.parametersToHttpHeader(parameters));
-                    });
+                    .ifPresent(
+                        msalInteractionRequiredException -> {
+                            ServletRequestAttributes attr =
+                                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                            HttpServletResponse response = attr.getResponse();
+                            Assert.notNull(response, "HttpServletResponse should not be null.");
+                            replyForbiddenWithWwwAuthenticateHeader(response, msalInteractionRequiredException);
+                        });
             LOGGER.error("Failed to load authorized client.", exception);
         } catch (InterruptedException | ParseException exception) {
             LOGGER.error("Failed to load authorized client.", exception);
@@ -163,5 +160,17 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             }
         }
         return null;
+    }
+
+    void replyForbiddenWithWwwAuthenticateHeader(HttpServletResponse response,
+                                                 MsalInteractionRequiredException exception) {
+        Map<String, Object> parameters = new LinkedHashMap<>();
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
+            exception.claims());
+        parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
+        parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
+            + "provided by the access token");
+        response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters.toString());
     }
 }
