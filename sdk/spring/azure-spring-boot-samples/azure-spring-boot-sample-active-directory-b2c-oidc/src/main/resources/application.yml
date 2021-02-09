@@ -1,9 +1,7 @@
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name} # not tenant id, this is deprecated.
       base-uri: ${your-tenant-authorization-server-base-uri}
-      oidc-enabled: true
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}

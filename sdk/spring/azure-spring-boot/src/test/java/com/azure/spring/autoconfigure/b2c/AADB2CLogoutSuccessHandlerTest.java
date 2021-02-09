@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADB2CLogoutSuccessHandlerTest {
 
-    private static final String BASE_URI = "https://test-tenant.b2clogin.com/test-tenant.onmicrosoft.com";
+    private static final String BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com";
 
     private static final String TEST_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 

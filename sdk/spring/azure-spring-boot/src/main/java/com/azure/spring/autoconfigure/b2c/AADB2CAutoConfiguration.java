@@ -88,11 +88,8 @@ public class AADB2CAutoConfiguration {
         if (properties.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
-            String tenantName = properties.getTenantName();
-            Assert.hasText(tenantName, "tenant name should contains text.");
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADB2CAutoConfiguration.class));
-            events.put(TENANT_NAME, tenantName);
-
+            events.put(TENANT_NAME, properties.getTenant());
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }

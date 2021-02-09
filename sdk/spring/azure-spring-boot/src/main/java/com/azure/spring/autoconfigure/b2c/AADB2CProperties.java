@@ -13,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -40,6 +42,11 @@ public class AADB2CProperties implements InitializingBean {
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
+
+    private static final String BASE_URI_REGEX =
+        "(https://([A-Za-z0-9]{2,}\\.){2}[A-Za-z0-9]{2,}/([A-Za-z0-9]{2,}\\.){2,3}[A-Za-z0-9]{2,}/)";
+
+    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]{2,}\\.)";
 
     /**
      * The name of the b2c tenant.
@@ -95,35 +102,25 @@ public class AADB2CProperties implements InitializingBean {
     private String baseUri;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
         // baseUri points to Global env by default
-        if (StringUtils.isEmpty(baseUri) && StringUtils.hasText(tenant)) {
-            baseUri = String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
+        if (StringUtils.hasText(baseUri) && StringUtils.isEmpty(tenant)) {
+            baseUri = AADB2CURL.addSlash(baseUri);
+            if (!Pattern.compile(BASE_URI_REGEX).matcher(baseUri).matches()) {
+                throw new AADB2CConfigurationException("'baseUri' is invalid.");
+            }
+
+            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
+            if (matcher.find()) {
+                String matched = matcher.group();
+                tenant = matched.substring(0, matched.length() - 2);
+            }
         } else {
-            baseUri = addSlash(baseUri);
+            baseUri = String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
         }
-    }
-
-    private String addSlash(@URL String uri) {
-        return uri.endsWith("/") ? uri : uri + "/";
-    }
-
-    /**
-     * Get tenant name according the tenant base uri endpoint.
-     * @return tenant name
-     */
-    public String getTenantName() {
-        if (StringUtils.hasText(tenant)) {
-            return tenant;
-        }
-        String[] uriParts = baseUri.split("/");
-        if (uriParts.length == 4) {
-            return uriParts[2].split("\\.")[0];
-        }
-        return null;
     }
 
     /**
