@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The implementation for ResourceGroups.
@@ -138,7 +139,7 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedFlux<ResourceGroup> listAsync() {
-        return this.manager().serviceClient().getResourceGroups().listAsync().mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mapPage(this.manager().serviceClient().getResourceGroups().listAsync(), inner -> wrapModel(inner));
     }
 
     @Override

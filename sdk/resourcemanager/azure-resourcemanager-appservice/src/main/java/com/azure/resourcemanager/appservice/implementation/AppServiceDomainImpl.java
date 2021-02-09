@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AppServiceDomain. */
 class AppServiceDomainImpl
@@ -68,13 +69,13 @@ class AppServiceDomainImpl
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         final DomainsClient client = this.manager().serviceClient().getDomains();
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
-            // Step 1: Consent to agreements
-            .mapPage(TldLegalAgreementInner::agreementKey)
+            // Step 1: Consent to agreements,
+            TldLegalAgreementInner::agreementKey)
             .collectList()
             // Step 2: Create domain
             .flatMap(
