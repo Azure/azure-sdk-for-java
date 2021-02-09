@@ -2,29 +2,32 @@
 trigger:
   branches:
     include:
-    - master
-    - hotfix/*
-    - release/*
+      - master
+      - hotfix/*
+      - release/*
   paths:
     include:
-    - sdk/mixedreality/
+      - sdk/mixedreality/
 
 pr:
   branches:
     include:
-    - master
-    - feature/*
-    - hotfix/*
-    - release/*
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
-    - sdk/mixedreality/
+      - sdk/mixedreality/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: mixedreality
-    ArtifactName: packages
+    ServiceDirectory: storage
     Artifacts:
-    - name: Azure.MixedReality.Authentication
-      safeName: AzureMixedRealityAuthentication
+      - name: azure-mixedreality-authentication
+        groupId: com.azure
+        safeName: azuremixedrealityauthentication
+      - name: azure-mixedreality-remoterendering
+        groupId: com.azure
+        safeName: azuremixedrealityremoterendering
