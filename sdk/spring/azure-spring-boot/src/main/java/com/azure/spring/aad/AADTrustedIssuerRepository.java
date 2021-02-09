@@ -47,6 +47,8 @@ public class AADTrustedIssuerRepository {
 
     /**
      * Only the V2 version of Access Token is supported when using Azure AD B2C user flows.
+     * @param tenantName The name of the b2c tenant name.
+     * @param userFlows The all user flows which is created under b2c tenant.
      */
     public void addB2CUserFlowIssuers(String tenantName, UserFlows userFlows) {
         Assert.notNull(tenantName, "tenantName cannot be null.");
