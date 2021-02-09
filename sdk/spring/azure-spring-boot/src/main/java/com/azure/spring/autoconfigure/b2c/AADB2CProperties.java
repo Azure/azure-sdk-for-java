@@ -6,14 +6,12 @@ import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.net.MalformedURLException;
 import java.util.Map;
 
 /**
@@ -26,8 +24,8 @@ public class AADB2CProperties implements InitializingBean {
     private static final String USER_FLOWS = "user-flows";
 
     /**
-     * We do not use ${@link String#format(String, Object...)}
-     * as it's not real constant, which cannot be referenced in annotation.
+     * We do not use ${@link String#format(String, Object...)} as it's not real constant, which cannot be referenced in
+     * annotation.
      */
     public static final String USER_FLOW_PASSWORD_RESET = USER_FLOWS + ".password-reset";
 
@@ -51,8 +49,8 @@ public class AADB2CProperties implements InitializingBean {
     private String tenant;
 
     /**
-     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
-     * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
+     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false, will use Oauth2
+     * ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
      */
     private Boolean oidcEnabled = true;
 
@@ -67,9 +65,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     @NotBlank(message = "client secret should not be blank")
     private String clientSecret;
-
-    @URL(message = "reply URL should be valid URL")
-    private String replyUrl;
 
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
@@ -90,6 +85,8 @@ public class AADB2CProperties implements InitializingBean {
      * Telemetry data will be collected if true, or disable data collection.
      */
     private boolean allowTelemetry = true;
+
+    private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
      * AAD B2C endpoint base uri.
@@ -114,14 +111,6 @@ public class AADB2CProperties implements InitializingBean {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
-    private String getReplyURLPath(@URL String replyURL) {
-        try {
-            return new java.net.URL(replyURL).getPath();
-        } catch (MalformedURLException e) {
-            throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
-        }
-    }
-
     /**
      * Get tenant name according the tenant base uri endpoint.
      * @return tenant name
@@ -135,11 +124,6 @@ public class AADB2CProperties implements InitializingBean {
             return uriParts[2].split("\\.")[0];
         }
         return null;
-    }
-
-    @NonNull
-    public String getLoginProcessingUrl() {
-        return getReplyURLPath(replyUrl);
     }
 
     /**
@@ -262,14 +246,6 @@ public class AADB2CProperties implements InitializingBean {
         this.clientSecret = clientSecret;
     }
 
-    public String getReplyUrl() {
-        return replyUrl;
-    }
-
-    public void setReplyUrl(String replyUrl) {
-        this.replyUrl = replyUrl;
-    }
-
     public String getLogoutSuccessUrl() {
         return logoutSuccessUrl;
     }
@@ -308,5 +284,13 @@ public class AADB2CProperties implements InitializingBean {
 
     public void setUserNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
+    }
+
+    public String getReplyUrl() {
+        return replyUrl;
+    }
+
+    public void setReplyUrl(String replyUrl) {
+        this.replyUrl = replyUrl;
     }
 }

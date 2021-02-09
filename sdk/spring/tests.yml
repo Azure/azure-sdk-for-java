@@ -86,7 +86,7 @@ stages:
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
           AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
           AAD_B2C_TENANT: "B2CITTest1"
-          AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+          AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
           AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
           AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
           AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
@@ -105,6 +105,13 @@ stages:
             displayName: 'Create On-demand test user'
 
         PostSteps:
+          - powershell: |
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
+              az ad user delete --id "${{ parameters.AadOnDemandUserName }}"
+              az ad user create --user-principal-name "${{ parameters.AadOnDemandUserName }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
+              az logout
+            condition: always()
+            displayName: 'Delete On-demand test user and create again'
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
@@ -145,7 +152,7 @@ stages:
               AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
               AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
               AAD_B2C_TENANT: "B2CITTest1"
-              AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+              AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
               AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
               AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
               AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)

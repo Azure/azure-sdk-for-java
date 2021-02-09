@@ -18,6 +18,7 @@ public final class HealthcareEntity {
     private String subcategory;
     private double confidenceScore;
     private int offset;
+    private int length;
     private boolean negated;
     private IterableStream<EntityDataSource> dataSources;
     private Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities;
@@ -47,6 +48,11 @@ public final class HealthcareEntity {
             @Override
             public void setOffset(HealthcareEntity healthcareEntity, int offset) {
                 healthcareEntity.setOffset(offset);
+            }
+
+            @Override
+            public void setLength(HealthcareEntity healthcareEntity, int length) {
+                healthcareEntity.setLength(length);
             }
 
             @Override
@@ -115,6 +121,15 @@ public final class HealthcareEntity {
     }
 
     /**
+     * Get the length of entity text.
+     *
+     * @return The length of entity text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
      * Get the isNegated property: The isNegated property.
      *
      * @return the isNegated value.
@@ -159,6 +174,10 @@ public final class HealthcareEntity {
 
     private void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 
     private void setNegated(boolean negated) {
