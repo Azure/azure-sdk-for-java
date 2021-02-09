@@ -58,7 +58,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 ```
 [//]: # "{x-version-update-end}"
    
-* Step 3: Add properties in application.yml. These values should be got in [prerequisite](###Prerequisites).
+* Step 3: Add properties in application.yml. These values should be got in [prerequisite](#Prerequisites).
 ```yaml
 azure:
   activedirectory:
@@ -97,7 +97,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 
 ![web-application-visiting-resource-servers.png](resource/web-application-visiting-resource-servers.png)
 
-* Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application](###Accessing a web application).
+* Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application](#accessing-a-web-application).
 
 * Step 2: Add the following dependencies in you pom.xml.
 
