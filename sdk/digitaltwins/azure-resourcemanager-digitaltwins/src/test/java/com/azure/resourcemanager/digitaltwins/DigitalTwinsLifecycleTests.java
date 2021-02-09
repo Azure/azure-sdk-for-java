@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DigitalTwinsLifecycleTests extends TestBase {
@@ -94,7 +94,10 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             final String value2 = "Value2";
 
             instance = instance.update()
-                .withTags(Map.of(key1, value1, key2, value2))
+                .withTags(new HashMap<>(){{
+                    put(key1, value1);
+                    put(key2, value2);
+                }})
                 .apply();
 
             Assertions.assertEquals(value1, instance.tags().get(key1));
