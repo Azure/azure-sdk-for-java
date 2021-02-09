@@ -6,13 +6,11 @@ package com.azure.mixedreality.authentication;
 import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MixedRealityStsClientBuilderTests {
     private final String accountDomain = "mixedreality.azure.com";
-    private final UUID accountId = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private final String accountId = "00000000-0000-0000-0000-000000000000";
     private final String accountKey = "00000000-0000-0000-0000-000000000000";
 
     @Test
@@ -60,6 +58,6 @@ public class MixedRealityStsClientBuilderTests {
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> builder.buildClient());
 
-        assertEquals("A credential has not been set.", exception.getMessage());
+        assertEquals("The 'credential' has not been set and is required.", exception.getMessage());
     }
 }
