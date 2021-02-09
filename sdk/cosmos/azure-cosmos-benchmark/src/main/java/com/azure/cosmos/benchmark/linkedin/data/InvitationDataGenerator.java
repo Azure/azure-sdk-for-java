@@ -4,6 +4,7 @@
 package com.azure.cosmos.benchmark.linkedin.data;
 
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -41,23 +42,27 @@ public class InvitationDataGenerator {
     private static final Random RANDOM_GENERATOR = new Random();
     private static final double MEMBER_TO_INVITATION_RATIO = 0.36;
 
-    public InvitationDataGenerator() {
+    private final long _modeledUserCount;
+
+    public InvitationDataGenerator(int documentCount) {
+        Preconditions.checkArgument(documentCount > 0,
+            "The numbers of documents to generate must be > 0");
+        _modeledUserCount = (long) (documentCount * MEMBER_TO_INVITATION_RATIO);
     }
 
     /**
-     * Generates the desired records
+     * Generates the desired batch of records
      *
-     * @param invitationRecordCount Number of records we want to create
-     * @return Map of the record's key to the value
+     * @param invitationRecordCount Number of records we want to create in this invocation
+     * @return Map containing desired count of record key to value entries
      */
     public Map<Key, ObjectNode> generate(int invitationRecordCount) {
-        long userCount = (long) (invitationRecordCount * MEMBER_TO_INVITATION_RATIO);
 
         // Generate the intended number of records
         final Map<Key, ObjectNode> records = new HashMap<>();
         for (int index = 0; index < invitationRecordCount;) {
-            final String inviter = selectUser(userCount);
-            final String invitee = selectUser(userCount);
+            final String inviter = selectUser();
+            final String invitee = selectUser();
             final Key key = new Key(inviter, invitee);
             if (inviter.equals(invitee) || records.containsKey(key)) {
                 continue;
@@ -71,8 +76,8 @@ public class InvitationDataGenerator {
         return records;
     }
 
-    private String selectUser(long userCount) {
-        final long userId = (long) (RANDOM_GENERATOR.nextFloat() * (userCount));
+    private String selectUser() {
+        final long userId = (long) (RANDOM_GENERATOR.nextFloat() * (_modeledUserCount));
         return String.valueOf(userId);
     }
 
