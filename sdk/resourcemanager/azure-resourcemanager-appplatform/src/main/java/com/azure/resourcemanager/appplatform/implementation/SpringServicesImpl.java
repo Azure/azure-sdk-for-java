@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 public class SpringServicesImpl
     extends GroupableResourcesImpl<
@@ -75,7 +76,7 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<SpringService> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listByResourceGroupAsync(resourceGroupName), this::wrapModel);
     }
 
     @Override
@@ -90,6 +91,6 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<SpringService> listAsync() {
-        return inner().listAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(), this::wrapModel);
     }
 }

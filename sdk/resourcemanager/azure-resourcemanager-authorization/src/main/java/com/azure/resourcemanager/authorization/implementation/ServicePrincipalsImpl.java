@@ -13,6 +13,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
@@ -31,7 +32,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listAsync() {
-        return inner().listServicePrincipalAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listServicePrincipalAsync(), this::wrapModel);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listByFilterAsync(String filter) {
-        return inner().listServicePrincipalAsync(null, null, null, null, filter, null, null, null, null)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listServicePrincipalAsync(null, null, null, null, filter, null, null, null, null),
+            this::wrapModel);
     }
 }

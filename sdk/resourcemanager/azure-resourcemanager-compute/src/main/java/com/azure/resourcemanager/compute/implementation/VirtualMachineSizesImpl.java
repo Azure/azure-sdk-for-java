@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for {@link VirtualMachineSizes}. */
 class VirtualMachineSizesImpl
@@ -46,6 +47,6 @@ class VirtualMachineSizesImpl
 
     @Override
     public PagedFlux<VirtualMachineSize> listByRegionAsync(String regionName) {
-        return innerCollection.listAsync(regionName).mapPage(VirtualMachineSizeImpl::new);
+        return PagedConverter.mapPage(innerCollection.listAsync(regionName), VirtualMachineSizeImpl::new);
     }
 }
