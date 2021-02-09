@@ -139,7 +139,7 @@ public final class FormTrainingAsyncClient {
      * @throws FormRecognizerException If training fails and a model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
         return beginTraining(trainingFilesUrl, useTrainingLabels, null);
@@ -169,7 +169,7 @@ public final class FormTrainingAsyncClient {
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels, TrainingOptions trainingOptions) {
         return beginTraining(trainingFilesUrl, useTrainingLabels, trainingOptions,
@@ -377,7 +377,7 @@ public final class FormTrainingAsyncClient {
      * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId}, {@code target} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
         return beginCopyModel(modelId, target, null);
@@ -409,7 +409,7 @@ public final class FormTrainingAsyncClient {
      * is created.
      * @throws NullPointerException If {@code modelId}, {@code target} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval) {
         return beginCopyModel(modelId, target, pollInterval, Context.NONE);

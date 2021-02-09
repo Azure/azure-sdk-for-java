@@ -2050,7 +2050,7 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PagedFlux<ModelInfo> listCustomModelsAsync() {
         return new PagedFlux<>(
                 () -> listCustomModelsSinglePageAsync(), nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
@@ -2065,7 +2065,7 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PagedFlux<ModelInfo> listCustomModelsAsync(Context context) {
         return new PagedFlux<>(
                 () -> listCustomModelsSinglePageAsync(context),
@@ -2079,7 +2079,7 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PagedIterable<ModelInfo> listCustomModels() {
         return new PagedIterable<>(listCustomModelsAsync());
     }
@@ -2093,7 +2093,7 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PagedIterable<ModelInfo> listCustomModels(Context context) {
         return new PagedIterable<>(listCustomModelsAsync(context));
     }
