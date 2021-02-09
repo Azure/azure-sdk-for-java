@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Server Key operations. */
 public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlServerKey>
@@ -110,12 +111,11 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
     @Override
     public PagedFlux<SqlServerKey> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
         final SqlServerKeyOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getServerKeys()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 serverKeyInner ->
                     new SqlServerKeyImpl(
                         resourceGroupName,
@@ -144,12 +144,11 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
     @Override
     public PagedFlux<SqlServerKey> listBySqlServerAsync(final SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getServerKeys()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
                 serverKeyInner ->
                     new SqlServerKeyImpl(
                         serverKeyInner.name(), (SqlServerImpl) sqlServer, serverKeyInner, sqlServer.manager()));
