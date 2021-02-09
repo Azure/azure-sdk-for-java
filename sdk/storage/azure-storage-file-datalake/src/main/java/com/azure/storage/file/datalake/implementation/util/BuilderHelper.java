@@ -24,6 +24,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -191,5 +192,16 @@ public final class BuilderHelper {
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
+    }
+
+    /**
+     * Gets a BlobUserAgentModificationPolicy with the correct clientName and clientVersion.
+     *
+     * @return {@link BlobUserAgentModificationPolicy}
+     */
+    public static BlobUserAgentModificationPolicy getBlobUserAgentModificationPolicy() {
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        return new BlobUserAgentModificationPolicy(clientName, clientVersion);
     }
 }

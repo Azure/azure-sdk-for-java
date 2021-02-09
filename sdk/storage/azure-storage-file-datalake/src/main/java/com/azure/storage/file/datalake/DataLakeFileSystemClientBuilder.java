@@ -79,6 +79,7 @@ public class DataLakeFileSystemClientBuilder {
     public DataLakeFileSystemClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
+        blobContainerClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**

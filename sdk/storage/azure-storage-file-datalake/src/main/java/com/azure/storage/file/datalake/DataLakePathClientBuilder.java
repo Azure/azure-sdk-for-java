@@ -83,6 +83,7 @@ public final class DataLakePathClientBuilder {
     public DataLakePathClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
+        blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**

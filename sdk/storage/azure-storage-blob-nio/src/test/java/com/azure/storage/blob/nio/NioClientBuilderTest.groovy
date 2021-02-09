@@ -90,7 +90,6 @@ class NioClientBuilderTest extends Specification {
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
             foundPolicy |= (pipeline.getPolicy(i) instanceof BlobUserAgentModificationPolicy)
 
-
         then:
         foundPolicy
         StepVerifier.create(pipeline.send(request(resource.blobClient.getBlobUrl())))
