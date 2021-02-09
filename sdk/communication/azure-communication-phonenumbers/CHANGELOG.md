@@ -4,3 +4,9 @@
 ### Added
 - Added PhoneNumbersClient and PhoneNumbersAsyncClient (originally was part of the azure-communication-aministration package).
 - Added support for Azure Active Directory Authentication.
+
+### Breaking Changes
+- PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the README.md
+- PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the README.md
+
+
