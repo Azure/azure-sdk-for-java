@@ -65,10 +65,13 @@ public final class SparkJobDefinitionsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<SparkJobDefinitionsListResponse>> getSparkJobDefinitionsByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/sparkJobDefinitions/{sparkJobDefinitionName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<SparkJobDefinitionResource>> createOrUpdateSparkJobDefinition(
                 @HostParam("endpoint") String endpoint,
@@ -76,6 +79,7 @@ public final class SparkJobDefinitionsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") SparkJobDefinitionResource sparkJobDefinition,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/sparkJobDefinitions/{sparkJobDefinitionName}")
@@ -86,15 +90,17 @@ public final class SparkJobDefinitionsImpl {
                 @PathParam("sparkJobDefinitionName") String sparkJobDefinitionName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/sparkJobDefinitions/{sparkJobDefinitionName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteSparkJobDefinition(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sparkJobDefinitionName") String sparkJobDefinitionName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sparkJobDefinitions/{sparkJobDefinitionName}/execute")
@@ -104,6 +110,7 @@ public final class SparkJobDefinitionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sparkJobDefinitionName") String sparkJobDefinitionName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sparkJobDefinitions/{sparkJobDefinitionName}/rename")
@@ -114,6 +121,7 @@ public final class SparkJobDefinitionsImpl {
                 @PathParam("sparkJobDefinitionName") String sparkJobDefinitionName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/debugSparkJobDefinition")
@@ -123,6 +131,7 @@ public final class SparkJobDefinitionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SparkJobDefinitionResource sparkJobDefinitionAzureResource,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -131,6 +140,7 @@ public final class SparkJobDefinitionsImpl {
         Mono<Response<SparkJobDefinitionsListResponse>> getSparkJobDefinitionsByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -143,10 +153,11 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getSparkJobDefinitionsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -170,8 +181,9 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceSinglePageAsync(
             Context context) {
+        final String accept = "application/json";
         return service.getSparkJobDefinitionsByWorkspace(
-                        this.client.getEndpoint(), this.client.getApiVersion(), context)
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -254,6 +266,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobDefinitionResource>> createOrUpdateSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateSparkJobDefinition(
@@ -262,6 +275,7 @@ public final class SparkJobDefinitionsImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 sparkJobDefinition,
+                                accept,
                                 context));
     }
 
@@ -284,12 +298,14 @@ public final class SparkJobDefinitionsImpl {
             SparkJobDefinitionResource sparkJobDefinition,
             String ifMatch,
             Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateSparkJobDefinition(
                 this.client.getEndpoint(),
                 sparkJobDefinitionName,
                 this.client.getApiVersion(),
                 ifMatch,
                 sparkJobDefinition,
+                accept,
                 context);
     }
 
@@ -448,6 +464,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobDefinitionResource>> getSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkJobDefinition(
@@ -455,6 +472,7 @@ public final class SparkJobDefinitionsImpl {
                                 sparkJobDefinitionName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -473,8 +491,14 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobDefinitionResource>> getSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getSparkJobDefinition(
-                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(),
+                sparkJobDefinitionName,
+                this.client.getApiVersion(),
+                ifNoneMatch,
+                accept,
+                context);
     }
 
     /**
@@ -611,12 +635,14 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteSparkJobDefinition(
                                 this.client.getEndpoint(),
                                 sparkJobDefinitionName,
                                 this.client.getApiVersion(),
+                                accept,
                                 context));
     }
 
@@ -633,8 +659,9 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, Context context) {
+        final String accept = "application/json";
         return service.deleteSparkJobDefinition(
-                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -707,12 +734,14 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> executeSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.executeSparkJobDefinition(
                                 this.client.getEndpoint(),
                                 sparkJobDefinitionName,
                                 this.client.getApiVersion(),
+                                accept,
                                 context));
     }
 
@@ -729,8 +758,9 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> executeSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, Context context) {
+        final String accept = "application/json";
         return service.executeSparkJobDefinition(
-                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -821,6 +851,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameSparkJobDefinition(
@@ -828,6 +859,7 @@ public final class SparkJobDefinitionsImpl {
                                 sparkJobDefinitionName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -845,8 +877,14 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkJobDefinitionWithResponseAsync(
             String sparkJobDefinitionName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameSparkJobDefinition(
-                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(),
+                sparkJobDefinitionName,
+                this.client.getApiVersion(),
+                request,
+                accept,
+                context);
     }
 
     /**
@@ -926,12 +964,14 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> debugSparkJobDefinitionWithResponseAsync(
             SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.debugSparkJobDefinition(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 sparkJobDefinitionAzureResource,
+                                accept,
                                 context));
     }
 
@@ -948,8 +988,13 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> debugSparkJobDefinitionWithResponseAsync(
             SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
+        final String accept = "application/json";
         return service.debugSparkJobDefinition(
-                this.client.getEndpoint(), this.client.getApiVersion(), sparkJobDefinitionAzureResource, context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                sparkJobDefinitionAzureResource,
+                accept,
+                context);
     }
 
     /**
@@ -1041,10 +1086,11 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceNextSinglePageAsync(
             String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getSparkJobDefinitionsByWorkspaceNext(
-                                        nextLink, this.client.getEndpoint(), context))
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1069,7 +1115,8 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getSparkJobDefinitionsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getSparkJobDefinitionsByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

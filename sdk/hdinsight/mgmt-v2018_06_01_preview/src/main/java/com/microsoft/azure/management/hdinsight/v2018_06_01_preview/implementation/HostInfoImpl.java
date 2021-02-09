@@ -24,6 +24,16 @@ class HostInfoImpl extends WrapperImpl<HostInfoInner> implements HostInfo {
     }
 
     @Override
+    public String effectiveDiskEncryptionKeyUrl() {
+        return this.inner().effectiveDiskEncryptionKeyUrl();
+    }
+
+    @Override
+    public String fqdn() {
+        return this.inner().fqdn();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
     }

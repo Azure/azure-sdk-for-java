@@ -3,8 +3,9 @@
 ## Key concepts
 
 This code sample demonstrates how to use the Spring Cloud Stream binder for 
-Azure Service Bus queue. The sample app exposes a RESTful API to receive string message.
-Then message is sent through Azure Service Bus to a `sink` which simply logs the message.
+Azure Service Bus queue. The sample app has two operating modes.
+One way is to expose a Restful API to receive string message, another way is to automatically provide string messages.
+These messages are published to a service bus queue. The sample will also consume messages from the same service bus queue.
 
 ## Getting started
 
@@ -18,9 +19,12 @@ completed before the run.
 
 ### Create Azure resources
 
-We have several ways to config the Spring Cloud Stream Binder for Azure
-Event Hub. You can choose anyone of them.
+We have several ways to config the Spring Cloud Stream Binder for Service
+Bus Queue. You can choose anyone of them.
 
+>[!Important]
+>
+>  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
 
 #### Method 1: Connection string based usage
 
@@ -36,10 +40,15 @@ Event Hub. You can choose anyone of them.
             connection-string: [servicebus-namespace-connection-string] 
         stream:
           bindings: 
-            input: 
+            consume-in-0: 
               destination: [servicebus-queue-name]
-            output:
+            supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
+          function:
+            definition: consume;supply;
+          poller:
+            fixed-delay: 1000
+            initial-delay: 0
     ```
 
 #### Method 2: Service principal based usage
@@ -49,6 +58,10 @@ Event Hub. You can choose anyone of them.
 
 1.  Create Azure Service Bus namespace and queue.
         Please see [how to create][create-service-bus].
+
+1.  Add Role Assignment for Service Bus. See
+    [Service principal for Azure resources with Service Bus][role-assignment]
+    to add role assignment for Service Bus. Assign `Contributor` role for service bus.
     
 1.  Update [application-sp.yaml][application-sp.yaml].
     ```yaml
@@ -63,12 +76,16 @@ Event Hub. You can choose anyone of them.
             namespace: [servicebus-namespace]
         stream:
           bindings:
-            input:
+            consume-in-0:
               destination: [servicebus-queue-name]
-            output:
+            supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
+          function:
+            definition: consume;supply;
+          poller:
+            fixed-delay: 1000
+            initial-delay: 0
     ```
-        
 #### Method 3: MSI credential based usage
 
 ##### Set up managed identity
@@ -100,10 +117,15 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             namespace: [servicebus-namespace]
         stream:
           bindings:
-            input:
+            consume-in-0:
               destination: [servicebus-queue-name]
-            output:
+            supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
+          function:
+            definition: consume;supply;
+          poller:
+            fixed-delay: 1000
+            initial-delay: 0
     ```
     > We should specify `spring.profiles.active=mi` to run the Spring Boot application. 
       For App Service, please add a configuration entry for this.

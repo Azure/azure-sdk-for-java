@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -9,11 +10,18 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import reactor.core.publisher.Mono;
 
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY =
@@ -22,11 +30,11 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-    
-    protected static final String PHONE_NUMBER = 
+
+    protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
     protected static final String COUNTRY_CODE =
-        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");   
+        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
         Configuration.getGlobalConfiguration().get("AREA_CODE", "619");
     protected static final String LOCALE =
@@ -85,7 +93,26 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
-        
+
+        return builder;
+    }
+
+    protected PhoneNumberClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        builder
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new FakeCredentials());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
         return builder;
     }
 
@@ -102,5 +129,11 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
 
     protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
     }
 }

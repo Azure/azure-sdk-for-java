@@ -1,10 +1,10 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       TimeoutInMinutes: 240
-      MaxParallel: 6
+      MaxParallel: 7
       ServiceDirectory: keyvault
       Artifacts:
         - name: azure-security-keyvault-certificates

@@ -112,7 +112,7 @@ public final class Receipt {
                     transactionTime = new TypedFormField<>(formField, LocalTime.class);
                     break;
                 case "Items":
-                    receiptItems = Collections.unmodifiableList(toReceiptItems(formField));
+                    receiptItems = toReceiptItems(formField);
                     break;
                 default:
                     break;
