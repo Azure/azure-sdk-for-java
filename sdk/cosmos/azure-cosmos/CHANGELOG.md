@@ -1,11 +1,11 @@
 ## Release History
 
-## 4.12.0 (2021-02-09)
+### 4.12.0 (2021-02-09)
 #### New Features
 * Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
 * Added changeFeed pull model beta API.
-* Added query continuation token splitProof.
-* Added query plan cache.
+* Added support for resuming query from a pre split continuation token after partition split.
+* Optimized query execution time by caching query plan.
 
 #### Key Bug Fixes
 * Fixed telemetry deserialization issue.

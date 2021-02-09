@@ -1,8 +1,11 @@
 ## Release History
 
-## 3.3.1 (2020-02-09)
+### 3.4.0 (2020-02-09)
+#### New Features
+* Updated azure-cosmos version to 4.12.0.
+
 #### Key Bug Fixes
-* Fixed @EnableAuditing can't work with Java Modules.
+* Fixed `@EnableAuditing` for Java 11 modules.
 
 ### 3.3.0 (2020-01-15)
 #### New Features
