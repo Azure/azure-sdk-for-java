@@ -145,9 +145,9 @@ public class AADB2CAutoConfiguration {
                                      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                      .redirectUriTemplate(properties.getReplyUrl())
                                      .scope(properties.getClientId(), "openid")
-                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenantName()))
+                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenantName(), userFlow))
+                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenantName(), userFlow))
                                      .userNameAttributeName(properties.getUserNameAttributeName())
                                      .clientName(userFlow)
                                      .build();
