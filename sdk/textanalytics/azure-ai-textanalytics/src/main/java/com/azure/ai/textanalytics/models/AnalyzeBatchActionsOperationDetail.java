@@ -134,25 +134,25 @@ public final class AnalyzeBatchActionsOperationDetail {
     /**
      * Gets the created time of an action.
      *
-     * @return the created time of a action.
+     * @return the created time of an action.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * Gets the expiration time of a action.
+     * Gets the expiration time of an action.
      *
-     * @return the expiration time of a action.
+     * @return the expiration time of an action.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
     }
 
     /**
-     * Gets the last updated time of a action.
+     * Gets the last updated time of an action.
      *
-     * @return the last updated time of a action.
+     * @return the last updated time of an action.
      */
     public OffsetDateTime getLastModifiedAt() {
         return lastModifiedAt;

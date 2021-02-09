@@ -62,7 +62,7 @@ public class AnalyzeBatchActionsAsync {
             new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeBatchActionsOperationDetail operationResult = result.getValue();
-                System.out.printf("Action display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
+                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d, failed actions: %d, total actions: %d%n",
                     operationResult.getDisplayName(), operationResult.getActionsSucceeded(),
                     operationResult.getActionsInProgress(), operationResult.getActionsFailed(), operationResult.getActionsInTotal());
                 return result.getFinalResult();
@@ -136,7 +136,7 @@ public class AnalyzeBatchActionsAsync {
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
         // .subscribe() will turn this into a synchronous call.
         try {
-            TimeUnit.MINUTES.sleep(20);
+            TimeUnit.MINUTES.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

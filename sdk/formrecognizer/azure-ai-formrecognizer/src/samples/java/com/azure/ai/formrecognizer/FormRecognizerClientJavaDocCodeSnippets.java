@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
@@ -340,7 +341,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String receiptUrl = "{receipt_url}";
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
-                .setLocale("en-US")
+                .setLocale(FormRecognizerLocale.EN_US)
                 .setPollInterval(Duration.ofSeconds(5))
                 .setFieldElementsIncluded(true), Context.NONE)
             .getFinalResult()
@@ -478,7 +479,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 new RecognizeReceiptsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(includeFieldElements)
-                    .setLocale("en-US")
+                    .setLocale(FormRecognizerLocale.EN_US)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
@@ -572,7 +573,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 if (jobTitles != null) {
                     if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                         List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                        jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                        jobTitlesItems.forEach(jobTitlesItem -> {
                             if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                 String jobTitle = jobTitlesItem.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -630,7 +631,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 if (jobTitles != null) {
                     if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                         List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                        jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                        jobTitlesItems.forEach(jobTitlesItem -> {
                             if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                 String jobTitle = jobTitlesItem.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -688,7 +689,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                            jobTitlesItems.forEach(jobTitlesItem -> {
                                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                     String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -756,7 +757,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 if (jobTitles != null) {
                     if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                         List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                        jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                        jobTitlesItems.forEach(jobTitlesItem -> {
                             if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                 String jobTitle = jobTitlesItem.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",

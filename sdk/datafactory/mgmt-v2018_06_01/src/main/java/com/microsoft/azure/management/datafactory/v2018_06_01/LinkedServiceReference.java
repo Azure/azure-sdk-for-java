@@ -35,7 +35,6 @@ public class LinkedServiceReference {
 
     /**
      * Creates an instance of LinkedServiceReference class.
-     * @param referenceName reference LinkedService name.
      */
     public LinkedServiceReference() {
         type = "LinkedServiceReference";
