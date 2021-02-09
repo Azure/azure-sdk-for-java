@@ -46,7 +46,7 @@ import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
-import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
+import com.azure.ai.metricsadvisor.models.ListAnomalyDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
@@ -870,10 +870,10 @@ public class MetricsAdvisorAsyncClient {
     }
 
     /**
-     * Fetch the values of a dimension that have anomalies.
+     * Fetch dimension values that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -887,21 +887,21 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code options} or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listDimensionValuesWithAnomalies(
+    public PagedFlux<String> listAnomalyDimensionValues(
         String detectionConfigurationId,
         String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options) {
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
+                    listAnomalyDimensionValuesSinglePageAsync(detectionConfigurationId,
                         dimensionName,
                         startTime,
                         endTime,
                         options,
                         context)),
                 continuationToken ->
-                    withContext(context -> listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
+                    withContext(context -> listAnomalyDimensionValuesNextPageAsync(continuationToken,
                         dimensionName,
                         startTime,
                         endTime,
@@ -912,20 +912,20 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<String> listDimensionValuesWithAnomalies(
+    PagedFlux<String> listAnomalyDimensionValues(
         String detectionConfigurationId,
         String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
         Context context) {
         return new PagedFlux<>(() ->
-            listDimensionValuesWithAnomaliesSinglePageAsync(detectionConfigurationId,
+            listAnomalyDimensionValuesSinglePageAsync(detectionConfigurationId,
                 dimensionName,
                 startTime,
                 endTime,
                 options,
                 context),
             continuationToken ->
-                listDimensionValuesWithAnomaliesNextPageAsync(continuationToken,
+                listAnomalyDimensionValuesNextPageAsync(continuationToken,
                     dimensionName,
                     startTime,
                     endTime,
@@ -933,10 +933,10 @@ public class MetricsAdvisorAsyncClient {
                     context));
     }
 
-    private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesSinglePageAsync(
+    private Mono<PagedResponse<String>> listAnomalyDimensionValuesSinglePageAsync(
         String detectionConfigurationId,
         String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
         Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
         Objects.requireNonNull(dimensionName, "'dimensionName' is required.");
@@ -948,7 +948,7 @@ public class MetricsAdvisorAsyncClient {
         query.setStartTime(startTime);
         query.setEndTime(endTime);
         if (options == null) {
-            options = new ListDimensionValuesWithAnomaliesOptions();
+            options = new ListAnomalyDimensionValuesOptions();
         }
         if (options.getDimensionToFilter() != null) {
             query.setDimensionFilter(new DimensionGroupIdentity()
@@ -967,10 +967,10 @@ public class MetricsAdvisorAsyncClient {
             .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error));
     }
 
-    private Mono<PagedResponse<String>> listDimensionValuesWithAnomaliesNextPageAsync(
+    private Mono<PagedResponse<String>> listAnomalyDimensionValuesNextPageAsync(
         String nextPageLink,
         String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListDimensionValuesWithAnomaliesOptions options,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();

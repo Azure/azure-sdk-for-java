@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
@@ -30,6 +29,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -45,7 +46,6 @@ import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -67,6 +67,8 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -157,7 +159,8 @@ class Transforms {
             return null;
         }
         return new BlobContainerListDetails()
-            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
+            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
+            .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted());
     }
 
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
@@ -240,6 +243,8 @@ class Transforms {
         }
         return new FileSystemItem()
             .setName(blobContainerItem.getName())
+            .setDeleted(blobContainerItem.isDeleted())
+            .setVersion(blobContainerItem.getVersion())
             .setMetadata(blobContainerItem.getMetadata())
             .setProperties(Transforms.toFileSystemItemProperties(blobContainerItem.getProperties()));
     }
@@ -551,5 +556,21 @@ class Transforms {
                 .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
         }
 
+    }
+
+//    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+//        if (options == null) {
+//            return null;
+//        }
+//        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
+//            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
+//    }
+
+    static UndeleteBlobContainerOptions toBlobContainerUndeleteOptions(FileSystemUndeleteOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new UndeleteBlobContainerOptions(options.getDeletedFileSystemName(),
+            options.getDeletedFileSystemVersion()).setDestinationContainerName(options.getDestinationFileSystemName());
     }
 }

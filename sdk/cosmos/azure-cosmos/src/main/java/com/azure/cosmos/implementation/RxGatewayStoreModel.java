@@ -456,13 +456,13 @@ class RxGatewayStoreModel implements RxStoreModel {
                         !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+            if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
             return; // Only apply the session token in case of session consistency and when resource is not a master resource
         }
 
@@ -472,5 +472,18 @@ class RxGatewayStoreModel implements RxStoreModel {
         if (!Strings.isNullOrEmpty(sessionToken)) {
             headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
         }
+    }
+
+    private static boolean isMasterOperation(ResourceType resourceType, OperationType operationType) {
+        // Stored procedures, trigger, and user defined functions CRUD operations are done on
+        // master so they do not require the session token.
+        // Stored procedures execute is not a master operation
+        return ReplicatedResourceClientUtils.isMasterResource(resourceType) ||
+            isStoredProcedureMasterOperation(resourceType, operationType) ||
+            operationType == OperationType.QueryPlan;
+    }
+
+    private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
+        return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
     }
 }

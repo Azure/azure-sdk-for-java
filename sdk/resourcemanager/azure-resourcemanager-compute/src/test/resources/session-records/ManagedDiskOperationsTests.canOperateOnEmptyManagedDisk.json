@@ -319,7 +319,7 @@
       "Expires" : "-1",
       "Content-Length" : "426",
       "x-ms-request-id" : "6d46759e-22ae-4164-8042-f4c4a5720810",
-      "Body" : "{\r\n  \"startTime\": \"2020-12-24T07:57:02.4497654+00:00\",\r\n  \"endTime\": \"2020-12-24T07:57:02.9810322+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-pl0jzgtcszgw.z24.blob.storage.azure.net/txdp2tl3lj2c/abcd?sv=2018-03-28&sr=b&si=c5e9aafe-3182-4b61-98ff-7a0819b8b033&sig=IWXL4ZqH8ToD3oAPm52BvJdMbTl5HqNDYVIrNVdOIdc%3D\"\r\n}\r\n  },\r\n  \"name\": \"211abe5b-09e0-490f-891f-fbbcbde11920\"\r\n}",
+      "Body" : "{\r\n  \"startTime\": \"2020-12-24T07:57:02.4497654+00:00\",\r\n  \"endTime\": \"2020-12-24T07:57:02.9810322+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-pl0jzgtcszgw.z24.blob.storage.azure.net/txdp2tl3lj2c/abcd?sv=2018-03-28&sr=b&si=c5e9aafe-3182-4b61-98ff-7a0819b8b033&sig=***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"211abe5b-09e0-490f-891f-fbbcbde11920\"\r\n}",
       "x-ms-client-request-id" : "534db52a-f8e7-46fb-a3f9-c71073c8f951",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -348,7 +348,7 @@
       "Expires" : "-1",
       "Content-Length" : "201",
       "x-ms-request-id" : "b98be352-4d2c-4ba3-b11e-bf8acf30ecc4",
-      "Body" : "{\r\n  \"accessSAS\": \"https://md-pl0jzgtcszgw.z24.blob.storage.azure.net/txdp2tl3lj2c/abcd?sv=2018-03-28&sr=b&si=c5e9aafe-3182-4b61-98ff-7a0819b8b033&sig=IWXL4ZqH8ToD3oAPm52BvJdMbTl5HqNDYVIrNVdOIdc%3D\"\r\n}",
+      "Body" : "{\r\n  \"accessSAS\": \"https://md-pl0jzgtcszgw.z24.blob.storage.azure.net/txdp2tl3lj2c/abcd?sv=2018-03-28&sr=b&si=c5e9aafe-3182-4b61-98ff-7a0819b8b033&sig=***REMOVED***\"\r\n}",
       "x-ms-client-request-id" : "e1c9d6f5-5dcc-42a6-af0b-722e2363ea2f",
       "Content-Type" : "application/json; charset=utf-8"
     },
