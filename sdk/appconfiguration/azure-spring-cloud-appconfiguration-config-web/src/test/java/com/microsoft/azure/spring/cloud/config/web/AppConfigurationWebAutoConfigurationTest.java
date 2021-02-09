@@ -67,6 +67,13 @@ public class AppConfigurationWebAutoConfigurationTest {
     }
 
     @Test
+    public void busRefresh() {
+        contextRunner
+            .run(context -> assertThat(context)
+                .hasBean("appConfigurationBusRefreshEndpoint"));
+    }
+
+    @Test
     public void fullRefresh() {
         contextRunner
             .run(context -> {
@@ -74,6 +81,8 @@ public class AppConfigurationWebAutoConfigurationTest {
                     .hasBean("configListener");
                 assertThat(context)
                     .hasBean("appConfigurationRefreshEndpoint");
+                assertThat(context)
+                    .hasBean("appConfigurationBusRefreshEndpoint");
             });
     }
 }
