@@ -293,9 +293,9 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos_org.apache.spark:spark-sql_2.12;3.0.1
 cosmos_org.apache.spark:spark-hive_2.12;3.0.1
 cosmos_org.scala-lang:scala-library;2.12.10
+cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 
 # Cosmos Spark connector tests only
-cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 cosmos_org.scalatest:scalatest_2.12;3.2.2
 cosmos_org.scalatest:scalatest-flatspec_2.12;3.2.3
 cosmos_org.scalactic:scalactic_2.12;3.2.3
