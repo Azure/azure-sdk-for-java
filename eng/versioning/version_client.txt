@@ -82,7 +82,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.4.0;1.5.0-beta.1
 com.azure:azure-messaging-servicebus;7.0.1;7.1.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-opentelemetry-exporter-azuremonitor;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-search-documents;11.1.3;11.2.0-beta.4
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
