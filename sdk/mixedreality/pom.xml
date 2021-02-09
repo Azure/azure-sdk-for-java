@@ -14,6 +14,7 @@
       <id>coverage</id>
       <modules>
         <module>azure-mixedreality-authentication</module>
+        <module>azure-mixedreality-remoterendering</module>
       </modules>
       <dependencies>
         <dependency>
@@ -51,6 +52,7 @@
       </activation>
       <modules>
         <module>azure-mixedreality-authentication</module>
+        <module>azure-mixedreality-remoterendering</module>
       </modules>
     </profile>
   </profiles>
