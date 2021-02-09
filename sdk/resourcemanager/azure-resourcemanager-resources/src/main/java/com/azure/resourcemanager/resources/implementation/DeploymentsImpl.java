@@ -37,8 +37,8 @@ public final class DeploymentsImpl
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().serviceClient().getDeployments()
-            .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
+        return PagedConverter.mapPage(this.manager().serviceClient().getDeployments()
+            .listByResourceGroup(groupName), inner -> createFluentModel(inner));
     }
 
     @Override
@@ -125,7 +125,7 @@ public final class DeploymentsImpl
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
         final DeploymentsClient client = this.manager().serviceClient().getDeployments();
-        return client.listByResourceGroupAsync(resourceGroupName)
-            .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
+        return PagedConverter.mapPage(client.listByResourceGroupAsync(resourceGroupName),
+            deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }
 }

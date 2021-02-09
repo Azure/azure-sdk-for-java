@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for GalleryImages. */
 public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implements GalleryImages {
@@ -41,12 +42,12 @@ public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implemen
 
     @Override
     public PagedFlux<GalleryImage> listByGalleryAsync(final String resourceGroupName, final String galleryName) {
-        return innerModel().listByGalleryAsync(resourceGroupName, galleryName).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel().listByGalleryAsync(resourceGroupName, galleryName), this::wrapModel);
     }
 
     @Override
     public PagedIterable<GalleryImage> listByGallery(String resourceGroupName, String galleryName) {
-        return innerModel().listByGallery(resourceGroupName, galleryName).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel().listByGallery(resourceGroupName, galleryName), this::wrapModel);
     }
 
     @Override
