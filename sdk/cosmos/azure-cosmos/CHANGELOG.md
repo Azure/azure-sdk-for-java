@@ -5,7 +5,7 @@
 * Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
 * Added changeFeed pull model beta API.
 * Added support for resuming query from a pre split continuation token after partition split.
-* Optimized query execution time by caching query plan.
+* Optimized query execution time by caching query plan for single partition queries with filters and orderby.
 
 #### Key Bug Fixes
 * Fixed telemetry deserialization issue.
