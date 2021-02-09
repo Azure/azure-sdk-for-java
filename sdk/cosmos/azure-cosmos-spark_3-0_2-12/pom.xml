@@ -45,6 +45,18 @@
       <version>4.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-scala-extensions_2.12</artifactId>
+      <version>0.8.0</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
     <!-- Test -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -187,6 +199,7 @@
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.0.1]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+                <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.4.0]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
@@ -299,7 +312,7 @@
                   <excludes>
                     <exclude>com.azure.cosmos.spark.*</exclude>
                     <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
-                    <exclude>com.azure.cosmos.models.CosmosParametrizedQuery</exclude>
+                    <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
                   </excludes>
                 </relocation>
                 <relocation>
