@@ -16,7 +16,7 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
-- [Register an Application in Azure AD]
+- [Register an application in Azure Portal][register_an_application_in_portal]
 
 ## Key concepts
 
@@ -36,7 +36,13 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 ![Standalone Web Application](resource/web-application.png)
 
 
-* Step 1: Add the following dependencies in you pom.xml.
+* Step 1: Make sure `redirect URI` has been set to `{application-base-uri}/login/oauth2/code/`, for 
+example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot be omitted.
+
+![web-application-set-redirect-uri-1.png](resource/web-application-set-redirect-uri-1.png)
+![web-application-set-redirect-uri-2.png](resource/web-application-set-redirect-uri-2.png)
+
+* Step 2: Add the following dependencies in you pom.xml.
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -52,7 +58,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 ```
 [//]: # "{x-version-update-end}"
    
-* Step 2: Add properties in application.yml:
+* Step 3: Add properties in application.yml. These values should be got in [prerequisite](###Prerequisites).
 ```yaml
 azure:
   activedirectory:
@@ -61,7 +67,7 @@ azure:
     client-secret: xxxxxx-your-client-secret-xxxxxx
 ```
 
-* Step 3: Write your Java code:
+* Step 4: Write your Java code:
 
 `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
@@ -91,8 +97,9 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 
 ![web-application-visiting-resource-servers.png](resource/web-application-visiting-resource-servers.png)
 
+* Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application](###Accessing a web application).
 
-* Step 1: Add the following dependencies in you pom.xml.
+* Step 2: Add the following dependencies in you pom.xml.
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -108,17 +115,20 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 ```
 [//]: # "{x-version-update-end}"
 
-* Step 2: Add properties in application.yml:
+* Step 3: Add properties in application.yml:
 ```yaml
 azure:
   activedirectory:
+    tenant-id: xxxxxx-your-tenant-id-xxxxxx
+    client-id: xxxxxx-your-client-id-xxxxxx
+    client-secret: xxxxxx-your-client-secret-xxxxxx
     authorization-clients:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
 ```
 Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
-* Step 3: Write your Java code:
+* Step 4: Write your Java code:
 ```java
 @GetMapping("/graph")
 @ResponseBody
@@ -417,4 +427,4 @@ Please follow [instructions here] to build from source or contribute.
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
-[Register an Application in Azure AD]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
+[register_an_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
