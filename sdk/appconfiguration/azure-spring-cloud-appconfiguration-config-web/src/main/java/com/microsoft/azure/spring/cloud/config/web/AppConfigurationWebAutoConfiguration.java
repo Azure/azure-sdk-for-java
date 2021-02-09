@@ -2,11 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.web;
 
-import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.web.pullrefresh.AppConfigurationEventListener;
-import com.microsoft.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint;
-import com.microsoft.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEventListener;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
@@ -15,9 +11,16 @@ import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.web.pullrefresh.AppConfigurationEventListener;
+import com.microsoft.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint;
+import com.microsoft.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEventListener;
+
 @Configuration
 @EnableConfigurationProperties(AppConfigurationProperties.class)
 @RemoteApplicationEventScan
+@ConditionalOnBean(AppConfigurationRefresh.class)
 public class AppConfigurationWebAutoConfiguration {
 
     // Refresh from appconfiguration-refresh
@@ -31,12 +34,10 @@ public class AppConfigurationWebAutoConfiguration {
     // Pull based Refresh
 
     @Configuration
-    @ConditionalOnClass(
-        name = {
-            "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
-            "org.springframework.cloud.endpoint.RefreshEndpoint"
-        }
-    )
+    @ConditionalOnClass(name = {
+        "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+        "org.springframework.cloud.endpoint.RefreshEndpoint"
+    })
     public static class AppConfigurationPushRefreshConfiguration {
 
         @Bean

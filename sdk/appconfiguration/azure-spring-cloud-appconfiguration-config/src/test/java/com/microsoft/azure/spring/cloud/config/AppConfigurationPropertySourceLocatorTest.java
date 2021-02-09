@@ -118,6 +118,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getConnectionString()).thenReturn(TEST_CONN_STRING);
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
         when(configStoreMock.getPrefix()).thenReturn(null);
+        when(configStoreMock.isEnabled()).thenReturn(true);
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(false);
@@ -373,6 +374,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(env.getActiveProfiles()).thenReturn(array);
         String[] labels = {""};
         when(configStore.getLabels(Mockito.any())).thenReturn(labels);
+        when(configStore.isEnabled()).thenReturn(true);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(new Date());

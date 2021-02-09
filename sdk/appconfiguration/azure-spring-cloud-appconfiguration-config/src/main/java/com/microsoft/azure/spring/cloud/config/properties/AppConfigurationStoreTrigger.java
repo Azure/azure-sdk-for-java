@@ -3,13 +3,18 @@
 package com.microsoft.azure.spring.cloud.config.properties;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.util.Assert;
 
 public class AppConfigurationStoreTrigger {
 
+    @NotNull
     private String key;
 
     private String label;
+    
+    private static final String EMPTY_LABEL = "\0";
 
     /**
      * @return the key
@@ -29,7 +34,7 @@ public class AppConfigurationStoreTrigger {
      * @return the label
      */
     public String getLabel() {
-        return label;
+        return mapLabel(label);
     }
 
     /**
@@ -50,5 +55,12 @@ public class AppConfigurationStoreTrigger {
             return key + "/";
         }
         return key + "/" + label;
+    }
+    
+    private String mapLabel(String label) {
+        if (label == null || label.equals("")) {
+            return EMPTY_LABEL;
+        }
+        return label.trim();
     }
 }

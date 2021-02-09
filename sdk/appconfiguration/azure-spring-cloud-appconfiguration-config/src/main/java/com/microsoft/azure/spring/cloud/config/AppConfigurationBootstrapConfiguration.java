@@ -38,7 +38,7 @@ public class AppConfigurationBootstrapConfiguration {
         List<ConfigStore> stores = properties.getStores();
 
         for (ConfigStore store : stores) {
-            if (StringUtils.hasText(store.getEndpoint()) && StringUtils.hasText(store.getConnectionString())) {
+            if (store.isEnabled() && StringUtils.hasText(store.getEndpoint()) && StringUtils.hasText(store.getConnectionString())) {
                 pool.put(store.getEndpoint(), new Connection(store.getConnectionString()));
             } else if (StringUtils.hasText(store.getEndpoint())) {
                 AppConfigManagedIdentityProperties msiProps = properties.getManagedIdentity();
