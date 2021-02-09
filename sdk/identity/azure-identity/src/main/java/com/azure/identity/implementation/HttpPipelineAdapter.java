@@ -12,7 +12,6 @@ import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +44,7 @@ class HttpPipelineAdapter implements IHttpClient {
                         .body(body)
                         .statusCode(response.getStatusCode());
                     httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                        h -> Collections.singletonList(h.getValue()))));
+                        HttpHeader::getValuesList)));
                     return httpResponse;
                 })
                 // if no body
@@ -53,7 +52,7 @@ class HttpPipelineAdapter implements IHttpClient {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .statusCode(response.getStatusCode());
                     httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                        h -> Collections.singletonList(h.getValue()))));
+                        HttpHeader::getValuesList)));
                     return Mono.just(httpResponse);
                 })))
             .block();

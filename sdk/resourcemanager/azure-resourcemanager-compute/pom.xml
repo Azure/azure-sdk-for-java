@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -167,6 +167,8 @@
               <argLine>
                 <!-- tests fail without these exports. -->
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
+                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
+                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
 
                 --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED

@@ -250,7 +250,7 @@ public class ReadmeSamples {
             if (jobTitles != null) {
                 if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                     List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                    jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                    jobTitlesItems.forEach(jobTitlesItem -> {
                         if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                             String jobTitle = jobTitlesItem.getValue().asString();
                             System.out.printf("Job Title: %s, confidence: %.2f%n",

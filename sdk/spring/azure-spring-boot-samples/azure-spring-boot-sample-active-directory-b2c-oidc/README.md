@@ -15,7 +15,7 @@ Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/a
 ### Register your Azure Active Directory B2C application
 
 Follow the guide of [AAD B2C application registry](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-register-applications).
-Please make sure that your b2c application `reply URL` contains `http://localhost:8080/login/oauth2/code`.
+Please ensure that your b2c application's `Redirect URL` is configured to `http://localhost:8080/login/oauth2/code/`.
 
 ### Create user flows
 
@@ -35,8 +35,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
     1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of `sign-in-or-up` user flow.
     2. Fill in the `${your-profile-edit-user-flow}` with the name of `profile-edit` user flow.
     3. Fill in the `${your-password-reset-user-flow}` with the name of `password-reset` user flow.
-4. Replace `${your-reply-url}` to `http://localhost:8080/login/oauth2/code`.
-5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
+4. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
 azure:
@@ -45,18 +44,15 @@ azure:
       tenant: ${your-tenant-name} # ❗not tenant id
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
-      reply-url: ${your-reply-url} # should be absolute url.
       logout-success-url: ${your-logout-success-url}
       user-name-attribute-name: ${your-user-name-claim}
       user-flows:
         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
         profile-edit: ${your-profile-edit-user-flow}      # optional
         password-reset: ${your-password-reset-user-flow}  # optional
+        sign-in: ${your-sign-in-user-flow} # optional  
+        sign-up: ${your-sign-up-user-flow} # optional
 ```
-
-#### Templates greeting.html and home.html
-1. Fill in the `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` from the portal `User flows`.
-Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
 ```

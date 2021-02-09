@@ -66,6 +66,22 @@ public final class AccessControlClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AccessControlClientBuilder.
+     */
+    public AccessControlClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -201,13 +217,16 @@ public final class AccessControlClientBuilder {
      * @return an instance of AccessControlClientImpl.
      */
     private AccessControlClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2020-08-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AccessControlClientImpl client = new AccessControlClientImpl(pipeline, serializerAdapter, endpoint);
+        AccessControlClientImpl client = new AccessControlClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

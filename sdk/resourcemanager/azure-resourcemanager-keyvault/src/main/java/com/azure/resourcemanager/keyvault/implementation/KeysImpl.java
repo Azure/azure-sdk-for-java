@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Vaults and its parent interfaces. */
 class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implements Keys {
@@ -92,7 +93,7 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
 
     @Override
     public PagedFlux<Key> listAsync() {
-        return inner.listPropertiesOfKeys().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner.listPropertiesOfKeys(), this::wrapModel);
     }
 
     @Override
