@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
-import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +24,14 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
@@ -39,8 +40,6 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String SPRING_APP_NAME_PROP = "spring.application.name";
 
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
-
-    private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
     
     private static final String PATH_SPLITTER = "/";
 
@@ -79,11 +78,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             return null;
         }
 
-        ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-
-        if (configLoaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+        if (configLoaded.get()) {
             return null;
         }
+
+        ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
 
         String applicationName = this.properties.getName();
         if (!StringUtils.hasText(applicationName)) {
