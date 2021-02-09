@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2021-02-08)
 * Renamed ChatThreadMembers to ChatParticipants
 * Support for CreateChatThreadResult and AddChatParticipantsResult to handle partial errors in batch calls.
 * Added idempotency identifier parameter for chat creation calls.
