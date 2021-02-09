@@ -23,14 +23,14 @@ protocol=Tcp
 
 if [ -z "$ctl_database" ]
 then
-database_name="testdb"
+database_name="linkedInTestDB"
 else
 database_name=$ctl_database
 fi
 
 if [ -z "$ctl_collection" ]
 then
-collection_name="testCol"
+collection_name="linkedInTestCollection"
 else
 collection_name=$ctl_collection
 fi
