@@ -6,6 +6,7 @@ package com.azure.storage.blob.batch
 import com.azure.core.http.*
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.CoreUtils
+import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -52,6 +53,30 @@ class BuilderTest extends Specification {
         then:
         foundPolicy
         StepVerifier.create(pipeline.send(request(serviceClient.getAccountUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    def "Construct from container client BlobUserAgentModificationPolicy"() {
+        setup:
+        def containerClient = new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .containerName("containerName")
+            .credential(credentials)
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .buildClient()
+
+        when:
+        def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
+        def pipeline = batchClient.client.client.getHttpPipeline()
+        def foundPolicy = false
+        for (int i = 0; i < pipeline.getPolicyCount(); i++)
+            foundPolicy |= (pipeline.getPolicy(i) instanceof BlobUserAgentModificationPolicy)
+
+
+        then:
+        foundPolicy
+        StepVerifier.create(pipeline.send(request(containerClient.getBlobContainerUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
     }
