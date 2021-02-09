@@ -14,7 +14,7 @@ Maven dependency for the Azure Synapse Spark client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-synapse-spark</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

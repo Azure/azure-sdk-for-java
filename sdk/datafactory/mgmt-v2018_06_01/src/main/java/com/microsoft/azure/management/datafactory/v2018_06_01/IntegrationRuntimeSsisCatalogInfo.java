@@ -49,6 +49,13 @@ public class IntegrationRuntimeSsisCatalogInfo {
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
 
     /**
+     * The dual standby pair name of Azure-SSIS Integration Runtimes to support
+     * SSISDB failover.
+     */
+    @JsonProperty(value = "dualStandbyPairName")
+    private String dualStandbyPairName;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -145,6 +152,26 @@ public class IntegrationRuntimeSsisCatalogInfo {
      */
     public IntegrationRuntimeSsisCatalogInfo withCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
         this.catalogPricingTier = catalogPricingTier;
+        return this;
+    }
+
+    /**
+     * Get the dual standby pair name of Azure-SSIS Integration Runtimes to support SSISDB failover.
+     *
+     * @return the dualStandbyPairName value
+     */
+    public String dualStandbyPairName() {
+        return this.dualStandbyPairName;
+    }
+
+    /**
+     * Set the dual standby pair name of Azure-SSIS Integration Runtimes to support SSISDB failover.
+     *
+     * @param dualStandbyPairName the dualStandbyPairName value to set
+     * @return the IntegrationRuntimeSsisCatalogInfo object itself.
+     */
+    public IntegrationRuntimeSsisCatalogInfo withDualStandbyPairName(String dualStandbyPairName) {
+        this.dualStandbyPairName = dualStandbyPairName;
         return this;
     }
 

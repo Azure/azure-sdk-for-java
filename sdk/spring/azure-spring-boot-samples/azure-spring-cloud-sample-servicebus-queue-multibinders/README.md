@@ -2,11 +2,10 @@
 
 ## Key concepts
 This code sample demonstrates how to use the Spring Cloud Stream Binder for 
-multiple Azure Service Bus namespaces.
-In this sample you will bind to two Service Bus namespaces separately through 
-two queue binders.
-The sample app exposes RESTful APIs to receive string message.
-Then message is sent through Azure Service Bus to a `sink` which simply logs the message.
+multiple Azure Service Bus namespaces. In this sample you will bind to two Service Bus namespaces separately through 
+two queue binders.The sample app has two operating modes. One way is to expose a Restful API to receive string message,
+another way is to automatically provide string messages. These messages are published to a service bus.
+The sample will also consume messages from the same service bus.
 
 ## Getting started
 
@@ -42,14 +41,14 @@ is completed before the run.
       cloud:
         stream:
           bindings:
-            input:
+            consume1-in-0:
               destination: [servicebus-queue-1-name]
-            output:
+            supply1-out-0:
               destination: [servicebus-queue-1-name-same-as-above]
-            input1:
+            consume2-in-0:
               binder: servicebus-2
               destination: [servicebus-queue-2-name]
-            output1:
+            supply2-out-0:
               binder: servicebus-2
               destination: [servicebus-queue-2-name-same-as-above]
     
@@ -71,7 +70,15 @@ is completed before the run.
                   cloud:
                     azure:
                       servicebus:
-                        connection-string: [servicebus-namespace-2-connection-string]         
+                        connection-string: [servicebus-namespace-2-connection-string]
+    
+          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
+          function:
+            definition: consume1;supply1;consume2;supply2;
+          poller:
+            initial-delay: 0
+            fixed-delay: 1000
+
     ```
 
 > The **defaultCandidate** configuration item:
@@ -80,26 +87,30 @@ default binder, or can be used only when explicitly referenced. This
 allows adding binder configurations without interfering with the default
 processing.
 
+>[!Important]
+>
+>  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
+
 1.  Run the `mvn clean spring-boot:run` in the root of the code sample
     to get the app running.
 
 1.  Send a POST request to test the default binder
 
-        $ curl -X POST http://localhost:8080/messages?message=hello
-
-1.  Verify in your app’s logs that a similar message was posted:
-
-        [1] New message received: 'hello'
-        [1] Message 'hello' successfully checkpointed
-
-1.  Send another POST request to test the other binder
-
         $ curl -X POST http://localhost:8080/messages1?message=hello
 
 1.  Verify in your app’s logs that a similar message was posted:
 
-        [2] New message received: 'hello'
-        [2] Message 'hello' successfully checkpointed
+        [1] New message1 received: 'hello'
+        [1] Message1 'hello' successfully checkpointed
+
+1.  Send another POST request to test the other binder
+
+        $ curl -X POST http://localhost:8080/messages2?message=hello
+
+1.  Verify in your app’s logs that a similar message was posted:
+
+        [2] New message2 received: 'hello'
+        [2] Message2 'hello' successfully checkpointed
 
 6.  Delete the resources on [Azure Portal][azure-portal]
     to avoid unexpected charges.

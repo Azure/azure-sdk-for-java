@@ -216,7 +216,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer,
-            RetryUtil.getRetryPolicy(retryOptions));
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions);
     }
 }

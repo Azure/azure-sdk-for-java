@@ -24,6 +24,7 @@ import com.azure.perf.test.core.PerfStressProgram;
 public class App {
     public static void main(String[] args) {
         PerfStressProgram.run(
-            new Class<?>[]{AutocompleteTest.class, IndexDocumentsTest.class, SearchDocumentsTest.class, SuggestTest.class}, args);
+            new Class<?>[]{AutocompleteTest.class, IndexDocumentsTest.class, SearchDocumentsTest.class,
+                SuggestTest.class}, args);
     }
 }

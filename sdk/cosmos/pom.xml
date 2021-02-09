@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 
@@ -59,6 +59,7 @@
       <modules>
         <module>azure-cosmos</module>
         <module>azure-cosmos-benchmark</module>
+        <module>azure-cosmos-dotnet-benchmark</module>
         <module>azure-cosmos-encryption</module>
         <module>azure-spring-data-cosmos</module>
         <module>azure-spring-data-cosmos-test</module>

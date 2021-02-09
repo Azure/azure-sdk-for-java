@@ -22,7 +22,6 @@ public final class ChatMessageConverter {
         ChatMessage chatMessage = new ChatMessage()
             .setId(obj.getId())
             .setType(obj.getType())
-            .setPriority(obj.getPriority())
             .setVersion(obj.getVersion())
             .setContent(obj.getContent())
             .setCreatedOn(obj.getCreatedOn())

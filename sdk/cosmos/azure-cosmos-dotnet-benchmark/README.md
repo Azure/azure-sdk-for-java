@@ -63,7 +63,9 @@ Copyright (C) 2019 CosmosBenchmark
 
   --partitionKeyPath     Container partition key path
 
-  -pl                   Degree of parallism
+  -pl                    Degree of parallism
+  
+  -w                     Workload name
 
   --itemTemplateFile     Item template
 
