@@ -3,6 +3,7 @@
 ## 1.4.1 (2020-02-15)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.5.0`.
+- Update `azure-storage-blob` dependency to `12.10.0`.
 
 ## 1.4.0 (2021-01-14)
 ### Dependency Updates
