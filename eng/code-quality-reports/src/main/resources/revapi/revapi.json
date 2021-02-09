@@ -422,6 +422,11 @@
       },
       {
         "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setClaims(java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
         "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getClaims()",
         "justification": "New method"
       },
