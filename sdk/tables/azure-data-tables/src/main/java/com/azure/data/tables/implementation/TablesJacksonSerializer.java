@@ -95,7 +95,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
             return deserializeTableEntityQueryResponse(inputStream);
         } else if (inputStream != null
-            &&(type instanceof ParameterizedType)
+            && (type instanceof ParameterizedType)
             && ((ParameterizedType) type).getRawType() == Map.class) {
 
             return deserializeTableEntity(inputStream);
