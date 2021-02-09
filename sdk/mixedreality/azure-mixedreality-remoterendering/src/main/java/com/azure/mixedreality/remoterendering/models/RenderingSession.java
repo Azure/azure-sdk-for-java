@@ -10,8 +10,8 @@ public final class RenderingSession {
     private Duration elapsedTime;
     private String hostname;
     private Duration maxLeaseTime;
-    private SessionSize sessionSize;
-    private SessionStatus sessionStatus;
+    private RenderingSessionSize sessionSize;
+    private RenderingSessionStatus sessionStatus;
     private float teraflops;
     private RemoteRenderingServiceError error;
     private OffsetDateTime creationTime;
@@ -46,12 +46,12 @@ public final class RenderingSession {
         return this;
     }
 
-    public RenderingSession setSessionSize(SessionSize sessionSize) {
+    public RenderingSession setSessionSize(RenderingSessionSize sessionSize) {
         this.sessionSize = sessionSize;
         return this;
     }
 
-    public RenderingSession setSessionStatus(SessionStatus sessionStatus) {
+    public RenderingSession setSessionStatus(RenderingSessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
         return this;
     }
@@ -135,7 +135,7 @@ public final class RenderingSession {
      *
      * @return the size value.
      */
-    public SessionSize getSize() {
+    public RenderingSessionSize getSize() {
         return this.sessionSize;
     }
 
@@ -145,7 +145,7 @@ public final class RenderingSession {
      *
      * @return the status value.
      */
-    public SessionStatus getStatus() {
+    public RenderingSessionStatus getStatus() {
         return this.sessionStatus;
     }
 

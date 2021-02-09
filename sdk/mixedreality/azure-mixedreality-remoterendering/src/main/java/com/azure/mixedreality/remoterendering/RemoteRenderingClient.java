@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -34,17 +35,17 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
+    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options) {
         return client.beginSession(sessionId, options).getSyncPoller();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId) {
-        return beginSession(sessionId, new CreateSessionOptions());
+        return beginSession(sessionId, new BeginSessionOptions());
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, CreateSessionOptions options, Context context) {
+    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, BeginSessionOptions options, Context context) {
         return client.beginSessionWithResponse(sessionId, options, context).getSyncPoller();
     }
 
@@ -124,6 +125,11 @@ public final class RemoteRenderingClient {
         return new PagedIterable<>(client.listSessions());
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RenderingSession> listSessions(Context context) {
+        return new PagedIterable<>(client.listSessions(context));
+    }
+
     /**
      * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
      * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
@@ -186,4 +192,10 @@ public final class RemoteRenderingClient {
     public PagedIterable<Conversion> listConversions() {
         return new PagedIterable<>(client.listConversions());
     }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Conversion> listConversions(Context context) {
+        return new PagedIterable<>(client.listConversions(context));
+    }
+
 }

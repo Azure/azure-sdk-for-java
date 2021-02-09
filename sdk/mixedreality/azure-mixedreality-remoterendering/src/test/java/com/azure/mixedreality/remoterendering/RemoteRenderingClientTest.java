@@ -129,7 +129,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
-        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(SessionSize.STANDARD);
+        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("sessionTest");
 
@@ -173,7 +173,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
-        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(SessionSize.STANDARD);
+        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTest");
 

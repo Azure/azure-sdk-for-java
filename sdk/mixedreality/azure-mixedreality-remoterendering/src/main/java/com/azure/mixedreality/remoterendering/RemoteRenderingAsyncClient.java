@@ -57,36 +57,36 @@ public final class RemoteRenderingAsyncClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId, CreateSessionOptions options) {
+    public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options) {
         return beginSessionInternal(sessionId, options, Context.NONE, r -> ModelTranslator.fromGenerated(r.getValue()), RenderingSession::getStatus);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<RenderingSession, RenderingSession> beginSession(String sessionId) {
-        return beginSession(sessionId, new CreateSessionOptions());
+        return beginSession(sessionId, new BeginSessionOptions());
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, CreateSessionOptions options, Context context) {
+    PollerFlux<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, BeginSessionOptions options, Context context) {
         return beginSessionInternal(sessionId, options, context, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
     }
 
-    private <T> PollerFlux<T, T> beginSessionInternal(String sessionId, CreateSessionOptions options, Context context, Function<Response<SessionProperties>, T> mapper, Function<T, SessionStatus> statusgetter) {
+    private <T> PollerFlux<T, T> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context, Function<Response<SessionProperties>, T> mapper, Function<T, RenderingSessionStatus> statusgetter) {
         return new PollerFlux<>(
-            options.getPollInterval(),
+            Duration.ofSeconds(10),
             pollingContext -> impl.createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(mapper),
             pollingContext -> {
                 Mono<T> response = impl.getSessionWithResponseAsync(accountId, sessionId, context).map(mapper);
                 return response.map(session -> {
-                    final SessionStatus sessionStatus = statusgetter.apply(session);
+                    final RenderingSessionStatus sessionStatus = statusgetter.apply(session);
                     LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                    if (sessionStatus == SessionStatus.STARTING) {
+                    if (sessionStatus == RenderingSessionStatus.STARTING) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                    } else if (sessionStatus == SessionStatus.ERROR) {
+                    } else if (sessionStatus == RenderingSessionStatus.ERROR) {
                         lroStatus = LongRunningOperationStatus.FAILED;
-                    } else if (sessionStatus == SessionStatus.READY) {
+                    } else if (sessionStatus == RenderingSessionStatus.READY) {
                         lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    } else if (sessionStatus == SessionStatus.STOPPED) {
+                    } else if (sessionStatus == RenderingSessionStatus.STOPPED) {
                         // TODO Check semantics of STOPPED and USER_CANCELLED is close enough.
                         lroStatus = LongRunningOperationStatus.USER_CANCELLED;
                     } else {
@@ -122,7 +122,12 @@ public final class RemoteRenderingAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RenderingSession>> getSessionWithResponse(String sessionId, Context context) {
+    public Mono<Response<RenderingSession>> getSessionWithResponse(String sessionId) {
+        return getSessionWithResponse(sessionId, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RenderingSession>> getSessionWithResponse(String sessionId, Context context) {
         return impl.getSessionWithResponseAsync(accountId, sessionId, context).map(ModelTranslator::fromGenerated);
     }
 
@@ -144,7 +149,12 @@ public final class RemoteRenderingAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RenderingSession>> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
+    public Mono<Response<RenderingSession>> updateSessionWithResponse(String sessionId, UpdateSessionOptions options) {
+        return updateSessionWithResponse(sessionId, options, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RenderingSession>> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
         return impl.updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(ModelTranslator::fromGenerated);
     }
 
@@ -165,7 +175,12 @@ public final class RemoteRenderingAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopSessionWithResponse(String sessionId, Context context) {
+    public Mono<Response<Void>> stopSessionWithResponse(String sessionId) {
+        return stopSessionWithResponse(sessionId, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> stopSessionWithResponse(String sessionId, Context context) {
         return impl.stopSessionWithResponseAsync(accountId, sessionId, context).map(r -> r);
     }
 
@@ -179,15 +194,20 @@ public final class RemoteRenderingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RenderingSession> listSessions() {
+        return listSessions(Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RenderingSession> listSessions(Context context) {
         return new PagedFlux<>(
-            () -> impl.listSessionsSinglePageAsync(accountId, Context.NONE).map(p ->
+            () -> impl.listSessionsSinglePageAsync(accountId, context).map(p ->
                 new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
                     p.getContinuationToken(),
                     null)),
-            continuationToken -> impl.listSessionsNextSinglePageAsync(continuationToken, Context.NONE).map(p ->
+            continuationToken -> impl.listSessionsNextSinglePageAsync(continuationToken, context).map(p ->
                 new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
@@ -221,13 +241,18 @@ public final class RemoteRenderingAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
+    PollerFlux<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options) {
+        return beginConversionWithResponse(conversionId, options, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
         return beginConversionInternal(conversionId, options, context, ModelTranslator::fromGenerated, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
     }
 
     private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, ConversionOptions options, Context context, Function<CreateConversionResponse, T> mapper, Function<GetConversionResponse, T> mapper2, Function<T, ConversionStatus> statusgetter) {
         return new PollerFlux<>(
-            options.getPollInterval(),
+            Duration.ofSeconds(10),
             pollingContext -> impl.createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(mapper),
             pollingContext -> {
                 Mono<T> response = impl.getConversionWithResponseAsync(accountId, conversionId, context).map(mapper2);
@@ -274,7 +299,12 @@ public final class RemoteRenderingAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Conversion>> getConversionWithResponse(String conversionId, Context context) {
+    public Mono<Response<Conversion>> getConversionWithResponse(String conversionId) {
+        return getConversionWithResponse(conversionId, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Conversion>> getConversionWithResponse(String conversionId, Context context) {
         return impl.getConversionWithResponseAsync(accountId, conversionId, context).map(ModelTranslator::fromGenerated);
     }
 
@@ -288,15 +318,20 @@ public final class RemoteRenderingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Conversion> listConversions() {
+        return listConversions(Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<Conversion> listConversions(Context context) {
         return new PagedFlux<>(
-            () -> impl.listConversionsSinglePageAsync(accountId, Context.NONE).map(p ->
+            () -> impl.listConversionsSinglePageAsync(accountId, context).map(p ->
                 new PagedResponseBase<HttpRequest, Conversion>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
                     p.getContinuationToken(),
                     null)),
-            continuationToken -> impl.listConversionsNextSinglePageAsync(continuationToken, Context.NONE).map(p ->
+            continuationToken -> impl.listConversionsNextSinglePageAsync(continuationToken, context).map(p ->
                 new PagedResponseBase<HttpRequest, Conversion>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
@@ -386,8 +421,8 @@ public final class RemoteRenderingAsyncClient {
                 .setElapsedTime(Duration.ofMinutes(sessionProperties.getElapsedTimeMinutes()))
                 .setHostname(sessionProperties.getHostname())
                 .setMaxLeaseTime(Duration.ofMinutes(sessionProperties.getMaxLeaseTimeMinutes()))
-                .setSessionSize(SessionSize.fromString(sessionProperties.getSize().toString()))
-                .setSessionStatus(SessionStatus.fromString(sessionProperties.getStatus().toString()))
+                .setSessionSize(RenderingSessionSize.fromString(sessionProperties.getSize().toString()))
+                .setSessionStatus(RenderingSessionStatus.fromString(sessionProperties.getStatus().toString()))
                 .setTeraflops(sessionProperties.getTeraflops())
                 .setError(fromGenerated(sessionProperties.getError()))
                 .setCreationTime(sessionProperties.getCreationTime());
@@ -445,7 +480,7 @@ public final class RemoteRenderingAsyncClient {
             return new UpdateSessionSettings((int)options.getMaxLeaseTime().toMinutes());
         }
 
-        private static CreateSessionSettings toGenerated(CreateSessionOptions options) {
+        private static CreateSessionSettings toGenerated(BeginSessionOptions options) {
             if (options == null) {
                 return null;
             }

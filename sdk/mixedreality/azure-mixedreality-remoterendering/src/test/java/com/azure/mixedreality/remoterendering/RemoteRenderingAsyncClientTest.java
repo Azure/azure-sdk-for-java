@@ -1,6 +1,5 @@
 package com.azure.mixedreality.remoterendering;
 
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
 import com.azure.mixedreality.remoterendering.models.*;
@@ -12,8 +11,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,7 +155,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     public void sessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
 
-        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(SessionSize.STANDARD);
+        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("ayncSessionTest");
 
@@ -167,7 +164,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         var terminalPoller = sessionPoller.map(response -> {
             var session = response.getValue();
             assertEquals(sessionId, session.getId());
-            assertNotEquals(SessionStatus.ERROR, session.getStatus());
+            assertNotEquals(RenderingSessionStatus.ERROR, session.getStatus());
             return response;
         }).filter(response -> {
             return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
@@ -179,7 +176,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
                 var readyRenderingSession = response.getValue();
-                assertEquals(readyRenderingSession.getStatus(), SessionStatus.READY);
+                assertEquals(readyRenderingSession.getStatus(), RenderingSessionStatus.READY);
 
                 assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 4);
                 assertNotNull(readyRenderingSession.getHostname());
@@ -191,7 +188,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         StepVerifier.create(client.getSession(sessionId))
             .assertNext(session -> {
-                assertEquals(session.getStatus(), SessionStatus.READY);
+                assertEquals(session.getStatus(), RenderingSessionStatus.READY);
                 assertNotNull(session.getHostname());
                 assertNotNull(session.getArrInspectorPort());
                 assertNotNull(session.getHostname());
@@ -219,7 +216,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         var client = getClient(httpClient);
-        CreateSessionOptions options = new CreateSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(SessionSize.STANDARD);
+        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTestAsync");
 

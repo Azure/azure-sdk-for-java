@@ -54,9 +54,9 @@ public final class RemoteRenderingClientBuilder {
      * @param accountId the accountId value.
      * @return the RemoteRenderingClientBuilder.
      */
-    public RemoteRenderingClientBuilder accountId(UUID accountId) {
-        this.accountId = accountId;
+    public RemoteRenderingClientBuilder accountId(String accountId) {
         this.stsBuilder.accountId(accountId);
+        this.accountId = UUID.fromString(accountId);
         return this;
     }
 

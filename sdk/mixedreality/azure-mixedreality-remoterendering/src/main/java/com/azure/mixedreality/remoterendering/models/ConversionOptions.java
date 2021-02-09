@@ -14,22 +14,6 @@ public final class ConversionOptions {
     private String outputBlobPrefix;
     private String outputAssetFilename;
 
-    private Duration pollInterval = Duration.ofSeconds(10);
-
-    /**
-     * Get the polling interval to use during long-running beginConversion operations.
-     * @return The current polling interval.
-     */
-    public Duration getPollInterval() { return this.pollInterval; }
-
-    /**
-     * Set the polling interval to use during long-running beginConversion operations.
-     * @param pollInterval The new period to use for polling.
-     */
-    public void pollInterval(Duration pollInterval) {
-        this.pollInterval = pollInterval;
-    }
-
 
     // input setters
     /**
