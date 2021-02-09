@@ -27,6 +27,12 @@ public class ClusterIdentityUserAssignedIdentitiesValue {
     private String clientId;
 
     /**
+     * The tenant id of user assigned identity.
+     */
+    @JsonProperty(value = "tenantId")
+    private String tenantId;
+
+    /**
      * Get the principal id of user assigned identity.
      *
      * @return the principalId value
@@ -42,6 +48,26 @@ public class ClusterIdentityUserAssignedIdentitiesValue {
      */
     public String clientId() {
         return this.clientId;
+    }
+
+    /**
+     * Get the tenant id of user assigned identity.
+     *
+     * @return the tenantId value
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenant id of user assigned identity.
+     *
+     * @param tenantId the tenantId value to set
+     * @return the ClusterIdentityUserAssignedIdentitiesValue object itself.
+     */
+    public ClusterIdentityUserAssignedIdentitiesValue withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
     }
 
 }

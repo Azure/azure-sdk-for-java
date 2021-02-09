@@ -13,6 +13,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Users and its parent interfaces. */
 public class ActiveDirectoryUsersImpl
@@ -108,7 +109,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listByFilterAsync(String filter) {
-        return inner().listUserAsync(null, null, null, null, filter, null, null, null, null)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listUserAsync(null, null, null, null, filter, null, null, null, null),
+            this::wrapModel);
     }
 }

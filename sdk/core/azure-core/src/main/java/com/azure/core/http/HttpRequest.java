@@ -152,7 +152,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setHeader(String name, String value) {
-        headers.put(name, value);
+        headers.set(name, value);
         return this;
     }
 
@@ -184,7 +184,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        headers.put("Content-Length", String.valueOf(content.length));
+        headers.set("Content-Length", String.valueOf(content.length));
         return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
     }
 

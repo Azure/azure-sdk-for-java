@@ -97,7 +97,7 @@ public final class PlaybackClient implements HttpClient {
                         rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
                     }
                 }
-                headers.put(pair.getKey(), rawHeader);
+                headers.set(pair.getKey(), rawHeader);
             }
         }
 
@@ -148,7 +148,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             if (bytes.length > 0) {
-                headers.put("Content-Length", String.valueOf(bytes.length));
+                headers.set("Content-Length", String.valueOf(bytes.length));
             }
         }
 

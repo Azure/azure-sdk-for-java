@@ -17,7 +17,7 @@ public final class RecognizeBusinessCardsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
-    private String locale;
+    private FormRecognizerLocale locale;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -85,24 +85,24 @@ public final class RecognizeBusinessCardsOptions {
     }
 
     /**
-     * Get the locale value. For supported locales, see
-     * <a>https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-receipts#supported-locales</a>
+     * Get the locale value.
+     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
      * @return the locale value.
      */
-    public String getLocale() {
+    public FormRecognizerLocale getLocale() {
         return locale;
     }
 
     /**
-     * Set the locale value. For supported locales, see
-     * <a>https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-receipts#supported-locales</a>
+     * Set the locale value.
+     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
-     * @param locale the locale value.
+     * @param locale the locale value to set.
      *
      * @return the locale value.
      */
-    public RecognizeBusinessCardsOptions setLocale(final String locale) {
+    public RecognizeBusinessCardsOptions setLocale(final FormRecognizerLocale locale) {
         this.locale = locale;
         return this;
     }

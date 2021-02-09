@@ -1,29 +1,16 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
       Artifacts:
-        - name: azure-spring-cloud-test-appconfiguration-config
-          groupId: com.azure.spring
-          safeName: azurespringcloudtestappconfigurationconfig
-      TimeoutInMinutes: 90
+        - name: azure-data-appconfiguration
+          groupId: com.azure
+          safeName: azuredataappconfiguration
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-      PostRunSteps:
-        - script: |
-            python --version
-            python -m pip install setuptools termcolor in_place
-            python sdk/spring/scripts/replace_util.py --module appconfiguration --log debug --color false
-          displayName: 'Run replace_util.py'
-        - task: Maven@3
-          displayName: 'Run tests again.'
-          inputs:
-            mavenPomFile: pom.xml
-            goals: clean verify
-            options: '-Dgpg.skip -Dmaven.wagon.http.pool=false -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
