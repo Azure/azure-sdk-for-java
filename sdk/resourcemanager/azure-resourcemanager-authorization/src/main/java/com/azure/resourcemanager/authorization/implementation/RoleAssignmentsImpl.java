@@ -12,6 +12,7 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
@@ -51,7 +52,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedFlux<RoleAssignment> listByScopeAsync(String scope) {
-        return inner().listForScopeAsync(scope, null).mapPage(roleAssignmentInner -> wrapModel(roleAssignmentInner));
+        return PagedConverter.mapPage(inner().listForScopeAsync(scope, null), roleAssignmentInner -> wrapModel(roleAssignmentInner));
     }
 
     @Override
