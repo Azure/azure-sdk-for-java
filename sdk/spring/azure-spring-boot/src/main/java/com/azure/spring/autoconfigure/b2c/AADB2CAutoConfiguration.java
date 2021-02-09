@@ -49,7 +49,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
         "tenant-name",
         "client-id",
         "client-secret",
-        "reply-url",
         AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
     }
 )
@@ -82,7 +81,7 @@ public class AADB2CAutoConfiguration {
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
                                                         AADB2CAuthorizationRequestResolver resolver) {
-        return new AADB2COidcLoginConfigurer(properties, handler, resolver);
+        return new AADB2COidcLoginConfigurer(handler, resolver);
     }
 
     @PostConstruct
@@ -98,16 +97,15 @@ public class AADB2CAutoConfiguration {
         }
     }
 
-
     /**
      * Automatic configuration class of AADB2COidc
      */
     @Configuration
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
     @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX,
-        value = "oidc-enabled",
-        havingValue = "true",
-        matchIfMissing = true)
+                           value = "oidc-enabled",
+                           havingValue = "true",
+                           matchIfMissing = true)
     public static class AADB2COidcAutoConfiguration {
 
         private final AADB2CProperties properties;
@@ -147,9 +145,9 @@ public class AADB2CAutoConfiguration {
                                      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                      .redirectUriTemplate(properties.getReplyUrl())
                                      .scope(properties.getClientId(), "openid")
-                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenantName()))
-                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenantName(), userFlow))
-                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenantName(), userFlow))
+                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
+                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
+                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
                                      .userNameAttributeName(properties.getUserNameAttributeName())
                                      .clientName(userFlow)
                                      .build();

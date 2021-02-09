@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.AADTrustedIssuerRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.azure.spring.aad.webapi.AADResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
+import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -13,11 +15,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class AADResourceServerConfigurationTest {
 
@@ -80,7 +77,7 @@ public class AADResourceServerConfigurationTest {
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
-                    .getBean(DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter.class);
+                    .getBean(AADResourceServerConfiguration.DefaultAADResourceServerWebSecurityConfigurerAdapter.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
     }

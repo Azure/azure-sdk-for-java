@@ -196,20 +196,20 @@ Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-ur
 ![get-app-id-uri-2.png](resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
+  
+`AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
+(A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
-Write your own adapter class which extends `WebSecurityConfigurerAdapter`, 
-and `AzureJwtBearerTokenAuthenticationConverter` need to be included.
+(B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
+in the `configure(HttpSecurity http)` function. Here is an example:
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CustomWebServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
-            .oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
-            // Note that AzureJwtBearerTokenAuthenticationConverter need to be included.
+    protected void configure(HttpSecurity http) {
+       super.configure(http);
+       // Do some custom configuration
     }
 }
 ```
@@ -294,7 +294,7 @@ Here are some examples about how to use these properties:
 azure:
   activedirectory:
     base-uri: https://login.partner.microsoftonline.cn
-    graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
+    graph-base-uri: https://microsoftgraph.chinacloudapi.cn
 ```
 
 #### Property example 2: Use `group name` to protect some method in web application.

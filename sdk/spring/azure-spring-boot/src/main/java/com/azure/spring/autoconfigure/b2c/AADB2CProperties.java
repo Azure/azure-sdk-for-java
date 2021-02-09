@@ -2,18 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-
-import java.net.MalformedURLException;
-import java.util.Map;
-import javax.validation.constraints.NotBlank;
-
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
+import java.net.MalformedURLException;
+import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -92,9 +90,6 @@ public class AADB2CProperties {
     @NotBlank(message = "client secret should not be blank")
     private String clientSecret;
 
-    @URL(message = "reply URL should be valid URL")
-    private String replyUrl;
-
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
@@ -115,18 +110,7 @@ public class AADB2CProperties {
      */
     private boolean allowTelemetry = true;
 
-    private String getReplyURLPath(@URL String replyURL) {
-        try {
-            return new java.net.URL(replyURL).getPath();
-        } catch (MalformedURLException e) {
-            throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
-        }
-    }
-
-    @NonNull
-    public String getLoginProcessingUrl() {
-        return getReplyURLPath(replyUrl);
-    }
+    private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
      * UserFlows
@@ -237,14 +221,6 @@ public class AADB2CProperties {
         this.clientSecret = clientSecret;
     }
 
-    public String getReplyUrl() {
-        return replyUrl;
-    }
-
-    public void setReplyUrl(String replyUrl) {
-        this.replyUrl = replyUrl;
-    }
-
     public String getLogoutSuccessUrl() {
         return logoutSuccessUrl;
     }
@@ -283,6 +259,14 @@ public class AADB2CProperties {
 
     public void setUserNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
+    }
+
+    public String getReplyUrl() {
+        return replyUrl;
+    }
+
+    public void setReplyUrl(String replyUrl) {
+        this.replyUrl = replyUrl;
     }
 
     public String getAppIdUri() {

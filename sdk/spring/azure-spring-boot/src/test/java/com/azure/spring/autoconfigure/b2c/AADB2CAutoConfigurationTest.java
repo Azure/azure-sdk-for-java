@@ -46,7 +46,6 @@ public class AADB2CAutoConfigurationTest {
             assertThat(properties.getTenantName()).isEqualTo(AADB2CConstants.TEST_TENANT_NAME);
             assertThat(properties.getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(AADB2CConstants.TEST_CLIENT_SECRET);
-            assertThat(properties.getReplyUrl()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
             assertThat(properties.getUserNameAttributeName()).isEqualTo(AADB2CConstants.TEST_ATTRIBUTE_NAME);
 
             final String signUpOrSignIn = properties.getUserFlows().getSignUpOrSignIn();

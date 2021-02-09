@@ -62,7 +62,6 @@ public class AADB2CAuthorizationRequestResolverTest {
             assertThat(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.PROMPT)).isEqualTo(AADB2CConstants.TEST_PROMPT);
             assertThat(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.LOGIN_HINT)).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);
             assertThat(resolver.resolve(request).getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
-            assertThat(resolver.resolve(request).getRedirectUri()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
             assertThat(resolver.resolve(request).getGrantType()).isEqualTo(AuthorizationGrantType.AUTHORIZATION_CODE);
             assertThat(resolver.resolve(request).getScopes()).contains("openid", AADB2CConstants.TEST_CLIENT_ID);
         });

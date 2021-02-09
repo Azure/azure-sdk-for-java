@@ -90,17 +90,14 @@ public class AADResourceServerConfiguration {
      * bean to override it.
      */
     @Configuration
-    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
-    public static class DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter extends
-        WebSecurityConfigurerAdapter {
+    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+        AADResourceServerWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
-                .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
+            super.configure(http);
         }
     }
 }
