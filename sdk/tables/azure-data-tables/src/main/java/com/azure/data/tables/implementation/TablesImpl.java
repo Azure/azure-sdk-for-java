@@ -71,7 +71,7 @@ public final class TablesImpl {
     public interface TablesService {
         @Get("/Tables")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
         Mono<TablesQueryResponse> query(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
