@@ -32,8 +32,7 @@ stages:
       # Java 7 was removed from the hosted agents via https://github.com/actions/virtual-environments/issues/2446.
       # Step copied from https://github.com/actions/virtual-environments/pull/2633/files#diff-38b50849f7a1c5a5f1b413356b0eb9517ed6aa31ba1c97afc1e0c07e62735f33
       - script: |
-          apt-get -y install zulu-7-azure-jdk=\*
-          echo "JAVA_HOME_7_X64=/usr/lib/jvm/zulu-7-azure-amd64" | tee -a /etc/environment
+          sudo apt-get -y install zulu-7-azure-jdk=\*
         condition: eq(variables['JavaVersion'], '1.7')
 
       - task: Maven@3
@@ -43,7 +42,8 @@ stages:
           goals: 'compile'
           options: '$(BuildOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
+          javaHomeOption: path
+          jdkDirectory: '/usr/lib/jvm/zulu-7-azure-amd64'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
