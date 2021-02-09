@@ -22,6 +22,7 @@ import org.junit.jupiter.api.TestInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DigitalTwinsLifecycleTests extends TestBase {
@@ -63,7 +64,7 @@ public class DigitalTwinsLifecycleTests extends TestBase {
                     .digitalTwins().list();
 
                 for (DigitalTwinsDescription digitalTwin : allDigitalTwins) {
-                    if (digitalTwin.name().equals(DEFAULT_INSTANCE_NAME)){
+                    if (digitalTwin.name().equals(DEFAULT_INSTANCE_NAME)) {
                         digitalTwinsManager.digitalTwins().deleteById(digitalTwin.id());
                         break;
                     }
@@ -93,11 +94,11 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             final String key2 = "Key2";
             final String value2 = "Value2";
 
+            Map<String, String> tags = new HashMap<>();
+            tags.put(key1, value1);
+            tags.put(key2, value2);
             instance = instance.update()
-                .withTags(new HashMap<>(){{
-                    put(key1, value1);
-                    put(key2, value2);
-                }})
+                .withTags(tags)
                 .apply();
 
             Assertions.assertEquals(value1, instance.tags().get(key1));
