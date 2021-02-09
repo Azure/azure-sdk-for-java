@@ -40,6 +40,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String SPRING_APP_NAME_PROP = "spring.application.name";
 
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
+
+    private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
     
     private static final String PATH_SPLITTER = "/";
 
@@ -78,11 +80,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             return null;
         }
 
-        if (configLoaded.get()) {
+        ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
+        if (configLoaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
         }
-
-        ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
 
         String applicationName = this.properties.getName();
         if (!StringUtils.hasText(applicationName)) {
