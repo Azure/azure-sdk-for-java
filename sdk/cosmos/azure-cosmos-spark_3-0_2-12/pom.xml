@@ -49,6 +49,12 @@
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-scala-extensions_2.12</artifactId>
       <version>0.8.0</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test -->
