@@ -67,7 +67,7 @@ public final class PhoneNumbersImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "PhoneNumberAdminClie")
     private interface PhoneNumbersService {
-        @Post("/availablePhoneNumbers/countries/{countryCode}/~search")
+        @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbers(
@@ -86,7 +86,7 @@ public final class PhoneNumbersImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/availablePhoneNumbers/~purchase")
+        @Post("/availablePhoneNumbers/:purchase")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbers(
@@ -172,7 +172,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +192,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -209,7 +211,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +236,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -258,7 +262,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,7 +278,8 @@ public final class PhoneNumbersImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param body Represents a phone number search request to reserve some phone numbers.
+     * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
+     *     held for a following purchase.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -287,13 +293,13 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberSearchResult>> getSearchResultWithResponseAsync(String searchId) {
@@ -304,14 +310,14 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberSearchResult>> getSearchResultWithResponseAsync(String searchId, Context context) {
@@ -319,13 +325,13 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberSearchResult> getSearchResultAsync(String searchId) {
@@ -341,14 +347,14 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberSearchResult> getSearchResultAsync(String searchId, Context context) {
@@ -364,13 +370,13 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumberSearchResult getSearchResult(String searchId) {
@@ -378,14 +384,14 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Gets phone number search by search id.
+     * Gets a phone number search result by search id.
      *
      * @param searchId The search Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return phone number search by search id.
+     * @return a phone number search result by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumberSearchResult getSearchResult(String searchId, Context context) {
@@ -697,7 +703,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -714,7 +720,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -729,7 +735,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -751,7 +757,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -774,7 +780,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -788,7 +794,7 @@ public final class PhoneNumbersImpl {
     /**
      * Gets the details of the given acquired phone number.
      *
-     * @param phoneNumber The acquired phone number whose details are to be fetched, e.g. +11234567890.
+     * @param phoneNumber The acquired phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

@@ -17,12 +17,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 @ServiceClientBuilder(serviceClients = {PhoneNumberAdminClientImpl.class})
 public final class PhoneNumberAdminClientImplBuilder {
     /*
-     * The endpoint of the Azure Communication resource.
+     * The communication resource, for example
+     * https://resourcename.communication.azure.com
      */
     private String endpoint;
 
     /**
-     * Sets The endpoint of the Azure Communication resource.
+     * Sets The communication resource, for example https://resourcename.communication.azure.com.
      *
      * @param endpoint the endpoint value.
      * @return the PhoneNumberAdminClientImplBuilder.

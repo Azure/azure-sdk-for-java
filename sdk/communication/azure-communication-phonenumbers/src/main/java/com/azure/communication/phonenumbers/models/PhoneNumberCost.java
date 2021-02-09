@@ -13,19 +13,19 @@ public final class PhoneNumberCost {
     /*
      * The cost amount.
      */
-    @JsonProperty(value = "amount", access = JsonProperty.Access.WRITE_ONLY)
-    private Double amount;
+    @JsonProperty(value = "amount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private double amount;
 
     /*
      * The ISO 4217 currency code for the cost amount, e.g. USD.
      */
-    @JsonProperty(value = "currencyCode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "currencyCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String currencyCode;
 
     /*
      * The frequency with which the cost gets billed.
      */
-    @JsonProperty(value = "billingFrequency", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "billingFrequency", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private BillingFrequency billingFrequency;
 
     /**
@@ -33,7 +33,7 @@ public final class PhoneNumberCost {
      *
      * @return the amount value.
      */
-    public Double getAmount() {
+    public double getAmount() {
         return this.amount;
     }
 

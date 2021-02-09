@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumberSearchRequest {
     /*
-     * The type of phone numbers to search for, e.g. Geographic, or TollFree.
+     * The type of phone numbers to search for, e.g. geographic, or tollFree.
      */
     @JsonProperty(value = "phoneNumberType", required = true)
     private PhoneNumberType phoneNumberType;
@@ -36,13 +36,13 @@ public final class PhoneNumberSearchRequest {
     private String areaCode;
 
     /*
-     * The quantity of phone numbers in the search. Should be at least 1.
+     * The quantity of desired phone numbers. The default value is 1.
      */
     @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /**
-     * Get the phoneNumberType property: The type of phone numbers to search for, e.g. Geographic, or TollFree.
+     * Get the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, or tollFree.
      *
      * @return the phoneNumberType value.
      */
@@ -51,7 +51,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the phoneNumberType property: The type of phone numbers to search for, e.g. Geographic, or TollFree.
+     * Set the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, or tollFree.
      *
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumberSearchRequest object itself.
@@ -124,7 +124,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Get the quantity property: The quantity of phone numbers in the search. Should be at least 1.
+     * Get the quantity property: The quantity of desired phone numbers. The default value is 1.
      *
      * @return the quantity value.
      */
@@ -133,7 +133,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the quantity property: The quantity of phone numbers in the search. Should be at least 1.
+     * Set the quantity property: The quantity of desired phone numbers. The default value is 1.
      *
      * @param quantity the quantity value to set.
      * @return the PhoneNumberSearchRequest object itself.

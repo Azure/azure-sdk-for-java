@@ -15,32 +15,32 @@ public final class PhoneNumberSearchResult {
     /*
      * The search id.
      */
-    @JsonProperty(value = "searchId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "searchId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String searchId;
 
     /*
      * The phone numbers that are available. Can be fewer than the desired
      * search quantity.
      */
-    @JsonProperty(value = "phoneNumbers", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "phoneNumbers", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<String> phoneNumbers;
 
     /*
-     * The phone number's type, e.g. Geographic, or TollFree.
+     * The phone number's type, e.g. geographic, or tollFree.
      */
-    @JsonProperty(value = "phoneNumberType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Phone number's assignment type.
      */
-    @JsonProperty(value = "assignmentType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "assignmentType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
@@ -77,7 +77,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. Geographic, or TollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic, or tollFree.
      *
      * @return the phoneNumberType value.
      */

@@ -109,8 +109,6 @@ public class ReadmeSamples {
 
     /**
      * Search for available phone numbers and purchase phone numbers
-     *
-     * @return void
      */
     public void searchAvailablePhoneNumbersandPurchasePhoneNumbers() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
@@ -139,8 +137,6 @@ public class ReadmeSamples {
 
     /**
      * Release acquired phone number
-     *
-     * @return void
      */
     public void releasePhoneNumber() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
@@ -154,16 +150,16 @@ public class ReadmeSamples {
      *
      * @return the updated acquired phone number
      */
-    public void updatePhoneNumberCapabilities() {
+    public AcquiredPhoneNumber updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
         PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest();
-            capabilitiesRequest
-                .setCalling(PhoneNumberCapabilityValue.INBOUND)
-                .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
-        AcquiredPhoneNumber phoneNumber = 
-            phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
+        capabilitiesRequest
+            .setCalling(PhoneNumberCapabilityValue.INBOUND)
+            .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
+        AcquiredPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
         
         System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
         System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
+        return phoneNumber;
     }
 }

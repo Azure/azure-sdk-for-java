@@ -14,11 +14,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the PhoneNumberAdminClient type. */
 public final class PhoneNumberAdminClientImpl {
-    /** The endpoint of the Azure Communication resource. */
+    /** The communication resource, for example https://resourcename.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets The endpoint of the Azure Communication resource.
+     * Gets The communication resource, for example https://resourcename.communication.azure.com.
      *
      * @return the endpoint value.
      */
