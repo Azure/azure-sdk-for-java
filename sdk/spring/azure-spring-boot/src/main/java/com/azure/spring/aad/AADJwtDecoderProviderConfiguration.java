@@ -23,8 +23,8 @@ import java.util.Map;
 public class AADJwtDecoderProviderConfiguration {
 
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
-    private static final RestTemplate Rest = new RestTemplate();
-    private static final ParameterizedTypeReference<Map<String, Object>> TypeReference =
+    private static final RestTemplate REST = new RestTemplate();
+    private static final ParameterizedTypeReference<Map<String, Object>> TYPE_REFERENCE =
         new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
@@ -38,8 +38,8 @@ public class AADJwtDecoderProviderConfiguration {
         for (URI uri : uris) {
             try {
                 RequestEntity<Void> request = RequestEntity.get(uri).build();
-                ResponseEntity<Map<String, Object>> response = Rest.exchange(request,
-                    TypeReference);
+                ResponseEntity<Map<String, Object>> response = REST.exchange(request,
+                    TYPE_REFERENCE);
                 Map<String, Object> configuration = response.getBody();
 
                 if (configuration.get("jwks_uri") == null) {
