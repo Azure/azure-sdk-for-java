@@ -49,7 +49,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
         "tenant",
         "client-id",
         "client-secret",
-        "reply-url",
         AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
     }
 )
@@ -82,7 +81,7 @@ public class AADB2CAutoConfiguration {
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
                                                         AADB2CAuthorizationRequestResolver resolver) {
-        return new AADB2COidcLoginConfigurer(properties, handler, resolver);
+        return new AADB2COidcLoginConfigurer(handler, resolver);
     }
 
     @PostConstruct
@@ -140,18 +139,18 @@ public class AADB2CAutoConfiguration {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
-                .clientId(properties.getClientId())
-                .clientSecret(properties.getClientSecret())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate(properties.getReplyUrl())
-                .scope(properties.getClientId(), "openid")
-                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
-                .userNameAttributeName(properties.getUserNameAttributeName())
-                .clientName(userFlow)
-                .build();
+                                     .clientId(properties.getClientId())
+                                     .clientSecret(properties.getClientSecret())
+                                     .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
+                                     .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                     .redirectUriTemplate(properties.getReplyUrl())
+                                     .scope(properties.getClientId(), "openid")
+                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
+                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
+                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                                     .userNameAttributeName(properties.getUserNameAttributeName())
+                                     .clientName(userFlow)
+                                     .build();
         }
     }
 }

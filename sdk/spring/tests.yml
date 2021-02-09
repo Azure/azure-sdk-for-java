@@ -86,7 +86,7 @@ stages:
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
           AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
           AAD_B2C_TENANT: "B2CITTest1"
-          AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+          AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
           AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
           AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
           AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
@@ -152,7 +152,7 @@ stages:
               AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
               AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
               AAD_B2C_TENANT: "B2CITTest1"
-              AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+              AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
               AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
               AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
               AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
