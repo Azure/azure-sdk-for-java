@@ -1,8 +1,8 @@
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name} # ❗not tenant id
-      base-uri: ${your-tenant-endpoint-base-uri} # optional if using global cloud environment
+      tenant: ${your-tenant-name} # not tenant id, this is deprecated.
+      base-uri: ${your-tenant-authorization-server-base-uri}
       oidc-enabled: true
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}

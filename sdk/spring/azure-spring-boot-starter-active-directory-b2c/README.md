@@ -69,7 +69,7 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |
    | `azure.activedirectory.b2c.reply-url` | The reply URL of a registered application. It's the same as the **Redirect URI** configured on Azure Portal.|   
    | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.base-uri` | The base URI of tenant cloud environment endpoint, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
+   | `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
    | `azure.activedirectory.b2c.user-flows.signUpOrSignIn` | The name of the **sign up and sign in** user flow. |
    | `azure.activedirectory.b2c.user-flows.profileEdit` | The name of the **profile editing** user flow. |
    | `azure.activedirectory.b2c.user-flows.passwordReset` | The name of the **password reset** user flow. |
