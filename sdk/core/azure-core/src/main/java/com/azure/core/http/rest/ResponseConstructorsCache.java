@@ -32,6 +32,12 @@ final class ResponseConstructorsCache {
         + "without decoded headers.";
     private static final String INVALID_HANDLE_MESSAGE = "Response constructor with expected parameters not found.";
 
+    // This lookup is specific to the com.azure.core module, specifically this class.
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+
+    // Convenience pointer to the com.azure.core module.
+    private static final Module CORE_MODULE = ResponseConstructorsCache.class.getModule();
+
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
     private final Map<Class<?>, MethodHandle> cache = new ConcurrentHashMap<>();
 
@@ -65,6 +71,34 @@ final class ResponseConstructorsCache {
      * found.
      */
     private MethodHandle locateResponseConstructor(Class<?> responseClass) {
+        /*
+         * If we were able to write this using Java 9+ code.
+         *
+         * First check if the response class's module is exported to all unnamed modules. If it is we will use
+         * MethodHandles.publicLookup() which is meant for creating MethodHandle instances for publicly accessible
+         * classes.
+         */
+        MethodHandles.Lookup lookupToUse;
+        if (responseClass.getModule().isExported("")) {
+            lookupToUse = MethodHandles.publicLookup();
+        } else {
+            /*
+             * Otherwise we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and more
+             * specifically, is tied to this class (ResponseConstructorsCache). But, in order to use this lookup we
+             * need to ensure that the com.azure.core module reads the response class's module as the lookup won't
+             * have permissions necessary to create the MethodHandle instance without it.
+             */
+            lookupToUse = LOOKUP;
+
+            if (!CORE_MODULE.canRead(responseClass.getModule())) {
+                CORE_MODULE.addReads(responseClass.getModule());
+            }
+        }
+
+        /*
+         * Now that we have the MethodHandles.Lookup to create our method handle instance we will begin searching for
+         * the most specific handle we can use the create the response class (as mentioned in the method Javadocs).
+         */
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
@@ -72,6 +106,7 @@ final class ResponseConstructorsCache {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
                 try {
+
                     return MethodHandles.lookup().unreflectConstructor(constructor);
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
