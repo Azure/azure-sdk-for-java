@@ -67,15 +67,11 @@ public class ChatClientTestBase extends TestBase {
         }
     }
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("id")
-        .add("token");
-        
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("id")
+            .add("token");
 
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
+            String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -116,12 +112,8 @@ public class ChatClientTestBase extends TestBase {
         assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-<<<<<<< HEAD
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
-=======
-    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorException> expectedExceptionType,
-            int expectedStatusCode) {
->>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
+    static void assertRestException(Runnable exceptionThrower,
+            Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -142,14 +134,9 @@ public class ChatClientTestBase extends TestBase {
         assertRestException(exception, ErrorException.class, expectedStatusCode);
     }
 
-<<<<<<< HEAD
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
-        assertTrue(expectedExceptionType.isAssignableFrom(exception.getClass()));
-=======
-    static void assertRestException(Throwable exception, Class<? extends ErrorException> expectedExceptionType,
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
             int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
->>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
+        assertTrue(expectedExceptionType.isAssignableFrom(exception.getClass()));
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
@@ -181,15 +168,10 @@ public class ChatClientTestBase extends TestBase {
         return idToken.serialize();
     }
 
-<<<<<<< HEAD
-    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
-        for (ChatParticipant participant: participantList) {
+    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList,
+            String participantId) {
+        for (ChatParticipant participant : participantList) {
             if (participant.getUser().getId().equals(participantId)) {
-=======
-    protected boolean checkMembersListContainsMemberId(List<ChatThreadMember> memberList, String memberId) {
-        for (ChatThreadMember member : memberList) {
-            if (member.getUser().getId().equals(memberId)) {
->>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
                 return true;
             }
         }
@@ -197,13 +179,9 @@ public class ChatClientTestBase extends TestBase {
         return false;
     }
 
-<<<<<<< HEAD
-    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList, String messageId) {
-        for (ChatMessageReadReceipt receipt: receiptList) {
-=======
-    protected boolean checkReadReceiptListContainsMessageId(List<ReadReceipt> receiptList, String messageId) {
-        for (ReadReceipt receipt : receiptList) {
->>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
+    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList,
+            String messageId) {
+        for (ChatMessageReadReceipt receipt : receiptList) {
             if (receipt.getChatMessageId().equals(messageId)) {
                 return true;
             }
