@@ -4,8 +4,6 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -22,6 +20,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -164,7 +163,7 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> Utils.parse(metadataJson,
+        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
             AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
@@ -173,6 +172,15 @@ public class ClientTelemetry {
             logger.info("Unable to get azure vm metadata");
             return Mono.empty();
         }).subscribe();
+    }
+
+    private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
+        try {
+            return OBJECT_MAPPER.readValue(itemResponseBodyAsString, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
+        }
     }
 
     private void clearDataForNextRun() {

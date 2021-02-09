@@ -3,16 +3,16 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.LinkedEntityMatchPropertiesHelper;
 
 /**
  * The {@link LinkedEntityMatch} model.
  */
-@Immutable
 public final class LinkedEntityMatch {
     private final String text;
     private final double confidenceScore;
     private final int offset;
+    private int length;
 
     /**
      * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
@@ -41,6 +41,10 @@ public final class LinkedEntityMatch {
         this.confidenceScore = confidenceScore;
     }
 
+    static {
+        LinkedEntityMatchPropertiesHelper.setAccessor((entity, length) -> entity.setLength(length));
+    }
+
     /**
      * Get the linked entity match text property: linked entity text as appears in the request.
      *
@@ -67,5 +71,18 @@ public final class LinkedEntityMatch {
      */
     public int getOffset() {
         return offset;
+    }
+
+    /**
+     * Get the length of entity text.
+     *
+     * @return The length of entity text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

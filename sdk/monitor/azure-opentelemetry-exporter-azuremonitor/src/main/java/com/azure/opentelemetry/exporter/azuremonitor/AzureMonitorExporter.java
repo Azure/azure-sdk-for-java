@@ -5,6 +5,7 @@ package com.azure.opentelemetry.exporter.azuremonitor;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.ContextTagKeys;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.MonitorBase;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.RemoteDependencyData;
@@ -22,6 +23,7 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
+import reactor.util.context.Context;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,7 +72,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         SQL_DB_SYSTEMS = Collections.unmodifiableSet(dbSystems);
     }
 
-    private final MonitorExporterClient client;
+    private final MonitorExporterAsyncClient client;
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporter.class);
     private final String instrumentationKey;
     private final String telemetryItemNamePrefix;
@@ -82,7 +84,7 @@ public final class AzureMonitorExporter implements SpanExporter {
      * @param client The client used to send data to Azure Monitor.
      * @param instrumentationKey The instrumentation key of Application Insights resource.
      */
-    AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey) {
+    AzureMonitorExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
         String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");
@@ -101,7 +103,9 @@ public final class AzureMonitorExporter implements SpanExporter {
                 logger.verbose("exporting span: {}", span);
                 export(span, telemetryItems);
             }
-            client.export(telemetryItems);
+            client.export(telemetryItems)
+                .subscriberContext(Context.of(Tracer.DISABLE_TRACING_KEY, true))
+                .subscribe();
             return CompletableResultCode.ofSuccess();
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
@@ -249,15 +253,15 @@ public final class AzureMonitorExporter implements SpanExporter {
             remoteDependencyData.getProperties().put("statusDescription", description);
         }
 
-        Double samplingPercentage = removeAiSamplingPercentage(attributes);
+        // TODO: sampling will not be supported in this exporter
+        // Sampling cleanup will be done in a separate PR
+        Double samplingPercentage = 100.0;
 
         // for now, only add extra attributes for custom telemetry
         if (stdComponent == null) {
             addExtraAttributes(remoteDependencyData.getProperties(), attributes);
         }
-        if (samplingPercentage != null) {
-            telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        }
+        telemetryItem.setSampleRate(samplingPercentage.floatValue());
         telemetryItems.add(telemetryItem);
         exportEvents(span, samplingPercentage, telemetryItems);
     }
@@ -349,6 +353,7 @@ public final class AzureMonitorExporter implements SpanExporter {
         addLinks(requestData.getProperties(), span.getLinks());
         Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
 
+        requestData.setResponseCode("200");
         if (httpStatusCode != null) {
             requestData.setResponseCode(Long.toString(httpStatusCode));
         }
@@ -405,7 +410,7 @@ public final class AzureMonitorExporter implements SpanExporter {
             requestData.getProperties().put("statusDescription", description);
         }
 
-        Double samplingPercentage = removeAiSamplingPercentage(attributes);
+        Double samplingPercentage = 100.0;
 
         // for now, only add extra attributes for custom telemetry
         if (stdComponent == null) {
@@ -536,18 +541,6 @@ public final class AzureMonitorExporter implements SpanExporter {
         }
     }
 
-    private static Double removeAttributeDouble(Attributes attributes, String attributeName) {
-        Object attributeValue = attributes.get(AttributeKey.stringKey(attributeName));
-        if (attributeValue == null) {
-            return null;
-        } else if (attributeValue instanceof Double) {
-            return (Double) attributeValue;
-        } else {
-            // TODO (srnagar): log debug warning
-            return null;
-        }
-    }
-
     private static String createTarget(URI uriObject) {
         String target = uriObject.getHost();
         if (uriObject.getPort() != 80 && uriObject.getPort() != 443 && uriObject.getPort() != -1) {
@@ -586,10 +579,6 @@ public final class AzureMonitorExporter implements SpanExporter {
         }
         sb.append(values.get(values.size() - 1));
         return sb.toString();
-    }
-
-    private static Double removeAiSamplingPercentage(Attributes attributes) {
-        return removeAttributeDouble(attributes, "ai.sampling.percentage");
     }
 
     private static void addExtraAttributes(final Map<String, String> properties, Attributes attributes) {

@@ -78,14 +78,16 @@ public final class ManagedPrivateEndpointsClientImpl {
      * Initializes an instance of ManagedPrivateEndpointsClient client.
      *
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ManagedPrivateEndpointsClientImpl(String endpoint) {
+    public ManagedPrivateEndpointsClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -93,9 +95,10 @@ public final class ManagedPrivateEndpointsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ManagedPrivateEndpointsClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    public ManagedPrivateEndpointsClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -104,13 +107,14 @@ public final class ManagedPrivateEndpointsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
     public ManagedPrivateEndpointsClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-06-01-preview";
+        this.apiVersion = apiVersion;
         this.managedPrivateEndpoints = new ManagedPrivateEndpointsImpl(this);
     }
 }

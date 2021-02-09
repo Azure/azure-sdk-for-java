@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/recognition/pii?showStats=false&stringIndexType=Utf16CodeUnit",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee8458b8-9800-4c64-bbb9-f604b0de7872",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "730",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
+      "apim-request-id" : "d1255fd9-fdc2-4a7e-bd90-7c2fa4dd867b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"redactedText\":\"!@#%%\",\"id\":\"0\",\"entities\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
+      "Date" : "Fri, 05 Feb 2021 04:38:30 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
