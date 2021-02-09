@@ -14,6 +14,7 @@ import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.LongNode;
@@ -38,6 +39,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -240,21 +242,11 @@ public class EncryptionProcessor {
                 JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
                 // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
-                if (propertyValueHolder != null) {
-                    itemJObj.remove(propertyName);
-
+                if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
                     Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
                         this).flatMap(settings -> {
-                        byte[] cipherText;
-                        byte[] cipherTextWithTypeMarker;
                         try {
-                            Pair<TypeMarker, byte[]> typeMarkerPair = toByteArray(propertyValueHolder);
-                            cipherText =
-                                settings.getAeadAes256CbcHmac256EncryptionAlgorithm().encrypt(typeMarkerPair.getRight());
-                            cipherTextWithTypeMarker = new byte[cipherText.length + 1];
-                            cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
-                            System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
-                            itemJObj.put(propertyName, cipherTextWithTypeMarker);
+                            encryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
                         } catch (MicrosoftDataEncryptionException ex) {
                             return Mono.error(ex);
                         }
@@ -266,6 +258,73 @@ public class EncryptionProcessor {
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
             return listMono.flatMap(ignoreVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
         }));
+    }
+
+    public void encryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException {
+
+        if (propertyValueHolder.isObject()) {
+            for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> child = it.next();
+                if (child.getValue().isObject() || child.getValue().isArray()) {
+                    encryptAndSerializeProperty(encryptionSettings, (ObjectNode) propertyValueHolder,
+                        child.getValue(), propertyName);
+                } else if (!child.getValue().isNull()) {
+                    encryptAndSerializeValue(encryptionSettings, (ObjectNode) propertyValueHolder, child.getValue(),
+                        child.getKey());
+                }
+            }
+        } else if (propertyValueHolder.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                    JsonNode nodeInArray = arrayIterator.next();
+                    if (nodeInArray.isArray()) {
+                        encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null,
+                            nodeInArray, StringUtils.EMPTY);
+                    } else {
+                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                            Map.Entry<String, JsonNode> child = it.next();
+                            if (child.getValue().isObject() || child.getValue().isArray()) {
+                                encryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
+                                    child.getValue(), propertyName);
+                            } else if (!child.getValue().isNull()) {
+                                encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                    child.getKey());
+                            }
+                        }
+                    }
+                }
+            } else {
+                List<byte[]> encryptedArray = new ArrayList<>();
+                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
+                    encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(),
+                        StringUtils.EMPTY));
+                }
+                arrayNode.removeAll();
+                for (byte[] encryptedValue : encryptedArray) {
+                    arrayNode.add(encryptedValue);
+                }
+            }
+        } else {
+            encryptAndSerializeValue(encryptionSettings, objectNode, propertyValueHolder, propertyName);
+        }
+    }
+
+    public byte[] encryptAndSerializeValue(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+                                           JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException {
+        byte[] cipherText;
+        byte[] cipherTextWithTypeMarker;
+        Pair<TypeMarker, byte[]> typeMarkerPair = toByteArray(propertyValueHolder);
+        cipherText =
+            encryptionSettings.getAeadAes256CbcHmac256EncryptionAlgorithm().encrypt(typeMarkerPair.getRight());
+        cipherTextWithTypeMarker = new byte[cipherText.length + 1];
+        cipherTextWithTypeMarker[0] = (byte) typeMarkerPair.getLeft().getValue();
+        System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
+        if (objectNode != null && !objectNode.isNull()) {
+            objectNode.put(propertyName, cipherTextWithTypeMarker);
+        }
+        return cipherTextWithTypeMarker;
     }
 
     public Mono<byte[]> decrypt(byte[] input) {
@@ -290,22 +349,13 @@ public class EncryptionProcessor {
             JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
             // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
-            if (propertyValueHolder != null) {
-                itemJObj.remove(propertyName);
+            if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
+                // itemJObj.remove(propertyName);
 
                 Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
                     this).flatMap(settings -> {
-                    byte[] cipherText;
-                    byte[] cipherTextWithTypeMarker;
                     try {
-
-                        cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
-                        cipherText = new byte[cipherTextWithTypeMarker.length - 1];
-                        System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,
-                            cipherTextWithTypeMarker.length - 1);
-                        byte[] plainText = settings.getAeadAes256CbcHmac256EncryptionAlgorithm().decrypt(cipherText);
-                        itemJObj.set(propertyName, toJsonNode(plainText,
-                            TypeMarker.valueOf(cipherTextWithTypeMarker[0]).get()));
+                        decryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
                     } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
                         return Mono.error(ex);
                     } catch (IOException e) {
@@ -318,6 +368,76 @@ public class EncryptionProcessor {
         }
         Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
         return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+    }
+
+    public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
+
+        if (propertyValueHolder.isObject()) {
+            for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> child = it.next();
+                if (child.getValue().isObject()) {
+                    decryptAndSerializeProperty(encryptionSettings, (ObjectNode) propertyValueHolder,
+                        child.getValue(), propertyName);
+                } else if (!child.getValue().isNull()) {
+                    decryptAndSerializeValue(encryptionSettings, (ObjectNode) propertyValueHolder, child.getValue(),
+                        child.getKey());
+                }
+            }
+        } else if (propertyValueHolder.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                    JsonNode nodeInArray = arrayIterator.next();
+                    if (nodeInArray.isArray()) {
+                        decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null,
+                            nodeInArray, StringUtils.EMPTY);
+                    } else {
+                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                            Map.Entry<String, JsonNode> child = it.next();
+                            if (child.getValue().isObject() || child.getValue().isArray()) {
+                                decryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
+                                    child.getValue(), propertyName);
+                            } else if (!child.getValue().isNull()) {
+                                decryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                    child.getKey());
+                            }
+                        }
+                    }
+                }
+            } else {
+                List<JsonNode> decryptedArray = new ArrayList<>();
+                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
+                    decryptedArray.add(decryptAndSerializeValue(encryptionSettings, null, it.next(),
+                        StringUtils.EMPTY));
+                }
+                arrayNode.removeAll();
+                for (JsonNode encryptedValue : decryptedArray) {
+                    arrayNode.add(encryptedValue);
+                }
+            }
+
+        } else {
+            decryptAndSerializeValue(encryptionSettings, objectNode, propertyValueHolder, propertyName);
+        }
+    }
+
+    public JsonNode decryptAndSerializeValue(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+                                             JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
+        byte[] cipherText;
+        byte[] cipherTextWithTypeMarker;
+
+        cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
+        cipherText = new byte[cipherTextWithTypeMarker.length - 1];
+        System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,
+            cipherTextWithTypeMarker.length - 1);
+        byte[] plainText = encryptionSettings.getAeadAes256CbcHmac256EncryptionAlgorithm().decrypt(cipherText);
+        if (objectNode != null && !objectNode.isNull()) {
+            objectNode.set(propertyName, toJsonNode(plainText,
+                TypeMarker.valueOf(cipherTextWithTypeMarker[0]).get()));
+        }
+        return toJsonNode(plainText,
+            TypeMarker.valueOf(cipherTextWithTypeMarker[0]).get());
     }
 
     public static Pair<TypeMarker, byte[]> toByteArray(JsonNode jsonNode) {
