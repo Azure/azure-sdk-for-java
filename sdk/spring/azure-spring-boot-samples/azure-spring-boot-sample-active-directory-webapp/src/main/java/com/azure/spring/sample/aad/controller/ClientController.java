@@ -20,26 +20,28 @@ public class ClientController {
     public String index(
         Model model,
         OAuth2AuthenticationToken authentication,
-        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient
+        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient azureClient
     ) {
         model.addAttribute("userName", authentication.getName());
-        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+        model.addAttribute("clientName", azureClient.getClientRegistration().getClientName());
         return "index";
     }
 
     @GetMapping("/graph")
     @ResponseBody
     public String graph(
-        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient
+        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient
     ) {
-        return toJsonString(oAuth2AuthorizedClient);
+        // toJsonString() is just a demo.
+        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
+        return toJsonString(graphClient);
     }
 
     @GetMapping("/office")
     @ResponseBody
     public String office(
-        @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient oAuth2AuthorizedClient
+        @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient officeClient
     ) {
-        return toJsonString(oAuth2AuthorizedClient);
+        return toJsonString(officeClient);
     }
 }

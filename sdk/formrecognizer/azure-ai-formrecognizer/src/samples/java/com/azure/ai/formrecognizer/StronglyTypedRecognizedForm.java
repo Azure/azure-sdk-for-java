@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -38,7 +39,7 @@ public class StronglyTypedRecognizedForm {
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl,
                 new RecognizeReceiptsOptions()
-                    .setLocale("en-US"),
+                    .setLocale(FormRecognizerLocale.EN_US),
                 Context.NONE);
 
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();

@@ -44,6 +44,12 @@ public class ManagedIntegrationRuntime extends IntegrationRuntimeInner {
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /**
+     * Managed Virtual Network reference.
+     */
+    @JsonProperty(value = "managedVirtualNetwork")
+    private ManagedVirtualNetworkReference managedVirtualNetwork;
+
+    /**
      * Get integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'.
      *
      * @return the state value
@@ -89,6 +95,26 @@ public class ManagedIntegrationRuntime extends IntegrationRuntimeInner {
      */
     public ManagedIntegrationRuntime withSsisProperties(IntegrationRuntimeSsisProperties ssisProperties) {
         this.ssisProperties = ssisProperties;
+        return this;
+    }
+
+    /**
+     * Get managed Virtual Network reference.
+     *
+     * @return the managedVirtualNetwork value
+     */
+    public ManagedVirtualNetworkReference managedVirtualNetwork() {
+        return this.managedVirtualNetwork;
+    }
+
+    /**
+     * Set managed Virtual Network reference.
+     *
+     * @param managedVirtualNetwork the managedVirtualNetwork value to set
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime withManagedVirtualNetwork(ManagedVirtualNetworkReference managedVirtualNetwork) {
+        this.managedVirtualNetwork = managedVirtualNetwork;
         return this;
     }
 

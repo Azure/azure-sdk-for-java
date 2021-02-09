@@ -3,7 +3,13 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.UserAgentUtil;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -18,8 +24,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
@@ -36,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,51 +52,63 @@ public class ConnectionHandlerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setApplicationId(APPLICATION_ID);
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
-    private ConnectionHandler handler;
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
     @Captor
     private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
+    @Mock
+    private TokenCredential tokenCredential;
+    @Mock
+    private Scheduler scheduler;
+
+    private ConnectionOptions connectionOptions;
+    private ConnectionHandler handler;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS);
+
+        this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+        this.handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions);
     }
 
     @AfterEach
     public void teardown() {
+        if (handler != null) {
+            handler.close();
+        }
+
         Mockito.framework().clearInlineMocks();
         argumentCaptor = null;
     }
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            null, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            CONNECTION_ID, null, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            CONNECTION_ID, HOSTNAME, null, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            CONNECTION_ID, HOSTNAME, PRODUCT, null, VERIFY_MODE, CLIENT_OPTIONS));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null, CLIENT_OPTIONS));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
-            CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, PRODUCT,
+            CLIENT_VERSION, connectionOptions));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null,
+            CLIENT_VERSION, connectionOptions));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, PRODUCT,
+            null, connectionOptions));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, PRODUCT,
+            CLIENT_VERSION, null));
     }
 
     @Test
     void applicationIdNotSet() {
         // Arrange
-        final ClientOptions options = new ClientOptions();
+        final ClientOptions clientOptions = new ClientOptions();
         final String expected = UserAgentUtil.toUserAgentString(null, PRODUCT, CLIENT_VERSION, null);
+        final ConnectionOptions options = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
-            VERIFY_MODE, options);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, options);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -99,12 +118,12 @@ public class ConnectionHandlerTest {
     @Test
     void applicationIdSet() {
         // Arrange
-        final ClientOptions options = new ClientOptions().setApplicationId("my-application-id");
-        final String expected = UserAgentUtil.toUserAgentString(options.getApplicationId(), PRODUCT, CLIENT_VERSION, null);
+        final String expected = UserAgentUtil.toUserAgentString(CLIENT_OPTIONS.getApplicationId(), PRODUCT,
+            CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
-            VERIFY_MODE, options);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION,
+            connectionOptions);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -166,7 +185,6 @@ public class ConnectionHandlerTest {
     @Test
     void onConnectionInit() {
         // Arrange
-        final String expectedHostname = String.join(":", HOSTNAME, String.valueOf(AMQPS_PORT));
         final Map<String, Object> expectedProperties = new HashMap<>(handler.getConnectionProperties());
         final Connection connection = mock(Connection.class);
         final Event event = mock(Event.class);
@@ -176,9 +194,9 @@ public class ConnectionHandlerTest {
         handler.onConnectionInit(event);
 
         // Assert
-        verify(connection, times(1)).setHostname(expectedHostname);
-        verify(connection, times(1)).setContainer(CONNECTION_ID);
-        verify(connection, times(1)).open();
+        verify(connection).setHostname(HOSTNAME);
+        verify(connection).setContainer(CONNECTION_ID);
+        verify(connection).open();
 
         verify(connection).setProperties(argumentCaptor.capture());
         Map<Symbol, Object> actualProperties = argumentCaptor.getValue();

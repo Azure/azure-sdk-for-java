@@ -9,6 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.BigDataPoolResourceInfoListR
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -53,7 +54,10 @@ public final class BigDataPoolsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<BigDataPoolResourceInfoListResult>> list(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/bigDataPools/{bigDataPoolName}")
         @ExpectedResponses({200})
@@ -62,6 +66,7 @@ public final class BigDataPoolsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("bigDataPoolName") String bigDataPoolName,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -74,8 +79,9 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfoListResult>> listWithResponseAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -89,7 +95,8 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfoListResult>> listWithResponseAsync(Context context) {
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -171,9 +178,15 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfo>> getWithResponseAsync(String bigDataPoolName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.get(this.client.getEndpoint(), this.client.getApiVersion(), bigDataPoolName, context));
+                        service.get(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                bigDataPoolName,
+                                accept,
+                                context));
     }
 
     /**
@@ -188,7 +201,8 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfo>> getWithResponseAsync(String bigDataPoolName, Context context) {
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), bigDataPoolName, context);
+        final String accept = "application/json";
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), bigDataPoolName, accept, context);
     }
 
     /**
