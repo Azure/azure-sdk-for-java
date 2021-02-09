@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
@@ -193,24 +194,40 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     @Override
-    public void addEvent(String eventName, Map<String, ?> attributes, Instant timestamp) {
+    public void addEvent(String eventName, Map<String, Object> attributes, Instant timestamp) {
         Span currentSpan = Span.current();
         if (currentSpan == null) {
-            logger.warning("Failed to find a span to start an event with.");
+            logger.info("Failed to find a starting span to associate an event with.");
             return;
         }
-        currentSpan.addEvent(eventName, convertToAttributes(attributes), timestamp);
+
+        currentSpan.addEvent(
+            eventName,
+            attributes == null ? Attributes.empty() : convertToAttributes(attributes),
+            timestamp
+        );
     }
 
-    private Attributes convertToAttributes(Map<String, ?> attributes) {
+    /**
+     * Maps span/event properties to OpenTelemetry attributes.
+     *
+     * @param attributes the attributes provided by the client SDK's.
+     * @return the OpenTelemetry typed {@Link Attributes}.
+     */
+    private Attributes convertToAttributes(Map<String, Object> attributes) {
+        AttributesBuilder attributesBuilder = Attributes.builder();
         attributes.forEach((key, value) -> {
             if (value instanceof Boolean) {
-                Attributes otelAttributes = Attributes.builder().put(key, (boolean) value).build();
+                attributesBuilder.put(key, (boolean) value);
             } else if (value instanceof String) {
-                // convert to string attr
+                attributesBuilder.put(key, String.valueOf(value));
+            } else if (value instanceof Double) {
+                attributesBuilder.put(key, (Double) value);
+            } else if (value instanceof Long) {
+                attributesBuilder.put(key, (Long) value);
             }
         });
-        return null;
+        return attributesBuilder.build();
     }
 
     /**
@@ -220,7 +237,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param context The {@link Context} containing the {@link SpanContext}.
-     *
      * @return The returned {@link Span} and the scope in a {@link Context} object.
      */
     private Context startScopedSpan(String spanName, Context context) {
@@ -247,7 +263,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param spanContext The remote parent context of the returned Span.
-     *
      * @return A {@link Span} with parent being the remote {@link Span} designated by the {@link SpanContext}.
      */
     private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
@@ -263,7 +278,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * text and returns in a {@link Context} object.
      *
      * @param span The current tracing span.
-     *
      * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the current span.
      */
     private static Context setContextData(Span span) {
@@ -305,7 +319,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param context The context containing the span and the span name.
-     *
      * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
      */
     private SpanBuilder getSpanBuilder(String spanName, Context context) {
@@ -329,7 +342,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @param defaultValue the value to return in data not found.
      * @param clazz clazz the type of raw class to find data for.
      * @param context The context containing the specified key.
-     *
      * @return The T type of raw class object
      */
     @SuppressWarnings("unchecked")

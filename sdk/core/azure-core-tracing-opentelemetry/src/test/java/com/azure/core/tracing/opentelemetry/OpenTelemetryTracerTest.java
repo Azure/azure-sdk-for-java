@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -167,7 +168,7 @@ public class OpenTelemetryTracerTest {
         // verify span attributes
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
 
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -190,7 +191,7 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
 
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -225,7 +226,7 @@ public class OpenTelemetryTracerTest {
         expectedAttributeMap.put(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE);
         expectedAttributeMap.put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -451,12 +452,84 @@ public class OpenTelemetryTracerTest {
         assertEquals(spanContext, invalidSpanContext);
     }
 
-    // Add event tests
-    // Add event -> check span data
-    // Add timed event
-    // Check attributes
-    // Timeunit value ? / Attributes max size / Data payload?
-    // No normalization / will not create a span out if out of the span time?
+    @Test
+    public void addEventWithNonNullEventName() {
+        // Arrange
+        final String eventName = "event-0";
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+    }
+
+    @Test
+    public void addEventWithAttributes() {
+        // Arrange
+        final String eventName = "event-0";
+        Map<String, Object> eventAttrs = new HashMap<String, Object>() {{
+            put("attr1", "value1");
+            put("attr2", true);
+            put("attr3", 1L);
+            put("attr4", 1.0);
+            // put("attr5", new double[] {1.0, 2.0, 3.0});
+            // add support for accepting varargs
+        }};
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, eventAttrs, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+        Attributes attributes = eventData.get(0).getAttributes();
+        assertEquals(4, attributes.size());
+        verifySpanAttributes(eventAttrs, attributes);
+    }
+
+    @Test
+    public void addEventWithTimeSpecification() {
+        // Arrange
+        final String eventName = "event-0";
+        Instant eventTime = Instant.parse("2021-01-01T18:35:24.00Z");
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, eventTime);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+        assertEquals(TimeUnit.SECONDS.toNanos(eventTime.getEpochSecond()) + eventTime.getNano(),
+            eventData.get(0).getEpochNanos());
+    }
+
+    @Test
+    public void addEventAfterSpanEnd() {
+        // Arrange
+        final String eventName = "event-0";
+
+        // Act
+        parentSpan.end();
+        openTelemetryTracer.addEvent(eventName, null, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        // no event associated once span has ended and the user tries to add an event.
+        assertEquals(0, eventData.size());
+    }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {
         assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
@@ -491,8 +564,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
-    private static void verifySpanAttributes(Attributes actualAttributeMap,
-        Map<String, Object> expectedMap) {
+    private static void verifySpanAttributes(Map<String, Object> expectedMap, Attributes actualAttributeMap) {
         actualAttributeMap.forEach((attributeKey, attributeValue) ->
             assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue));
     }

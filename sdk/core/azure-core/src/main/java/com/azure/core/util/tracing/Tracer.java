@@ -246,6 +246,6 @@ public interface Tracer {
      * @param attributes the additional attributes to be set for the event.
      * @param timestamp The instant, in UTC, at which the event will be associated to the span.
      */
-    default void addEvent(String name, Map<String, ?> attributes, Instant timestamp) {
+    default void addEvent(String name, Map<String, Object> attributes, Instant timestamp) {
     }
 }
