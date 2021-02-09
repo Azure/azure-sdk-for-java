@@ -3,14 +3,12 @@
 package com.azure.spring.aad.webapi.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
-
-import java.util.List;
-import java.util.function.Predicate;
-
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
+
+import java.util.function.Predicate;
 
 /**
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value

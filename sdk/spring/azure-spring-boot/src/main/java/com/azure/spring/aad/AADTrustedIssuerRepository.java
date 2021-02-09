@@ -62,9 +62,9 @@ public class AADTrustedIssuerRepository {
         }
     }
 
-    private void creatB2CUserFlowIssuer(String tenantName, String UserFlowName) {
+    private void creatB2CUserFlowIssuer(String tenantName, String userFlowName) {
         trustedIssuers.add(String
-            .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, UserFlowName));
+            .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, userFlowName));
     }
 
     public List<String> getTrustedIssuers() {

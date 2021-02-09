@@ -27,13 +27,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    private AADTrustedIssuerRepository trustedIssuers;
+    private final AADTrustedIssuerRepository trustedIssuers;
 
-    private int connectTimeout;
+    private final int connectTimeout;
 
-    private int readTimeout;
+    private final int readTimeout;
 
-    private int sizeLimit;
+    private final int sizeLimit;
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
