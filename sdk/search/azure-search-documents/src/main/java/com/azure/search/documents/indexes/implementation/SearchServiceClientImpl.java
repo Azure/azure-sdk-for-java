@@ -29,9 +29,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
-import reactor.core.publisher.Mono;
-
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the SearchServiceClient type. */
 public final class SearchServiceClientImpl {

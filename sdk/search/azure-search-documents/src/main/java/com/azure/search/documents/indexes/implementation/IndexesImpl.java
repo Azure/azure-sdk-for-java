@@ -33,9 +33,8 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexesResul
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndex;
-import reactor.core.publisher.Mono;
-
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Indexes. */
 public final class IndexesImpl {

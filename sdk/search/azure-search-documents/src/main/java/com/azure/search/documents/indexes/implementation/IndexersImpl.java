@@ -29,9 +29,8 @@ import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import reactor.core.publisher.Mono;
-
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Indexers. */
 public final class IndexersImpl {
