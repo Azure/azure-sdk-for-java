@@ -57,6 +57,8 @@ import com.microsoft.azure.management.appservice.v2020_09_01.implementation.Vnet
 import com.microsoft.azure.management.appservice.v2020_09_01.implementation.VnetGatewayInner;
 import com.microsoft.azure.management.appservice.v2020_09_01.WebJob;
 
+import java.io.InputStream;
+
 /**
  * Type representing WebApps.
  */
