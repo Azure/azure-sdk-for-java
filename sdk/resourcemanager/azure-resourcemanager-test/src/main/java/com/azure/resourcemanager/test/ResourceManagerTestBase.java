@@ -123,8 +123,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
                 ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
                 DataOutputStream dos = new DataOutputStream(byteOs);
-                dos.writeInt("ssh-rsa".getBytes().length);
-                dos.write("ssh-rsa".getBytes());
+                dos.writeInt("ssh-rsa".getBytes(StandardCharsets.UTF_8).length);
+                dos.write("ssh-rsa".getBytes(StandardCharsets.UTF_8));
                 dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
                 dos.write(rsaPublicKey.getPublicExponent().toByteArray());
                 dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
@@ -133,7 +133,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 sshPublicKey = "ssh-rsa " + publicKeyEncoded;
             } catch (NoSuchAlgorithmException | IOException e) {
                 throw new ClientLogger(ResourceManagerTestBase.class)
-                    .logThrowableAsError(new IllegalStateException("failed to generate ssh key", e));
+                    .logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
             }
         }
         return sshPublicKey;

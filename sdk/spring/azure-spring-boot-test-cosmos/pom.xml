@@ -42,6 +42,13 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
+      <version>1.0.3</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

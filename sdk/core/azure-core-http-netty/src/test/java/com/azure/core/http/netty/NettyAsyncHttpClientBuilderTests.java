@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -125,7 +124,8 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWithConnectionProvider() {
-        ConnectionProvider connectionProvider = bootstrap -> {
+        ConnectionProvider connectionProvider = (transportConfig, connectionObserver, supplier,
+            addressResolverGroup) -> {
             throw new UnsupportedOperationException("Bad connection provider");
         };
 
@@ -184,7 +184,7 @@ public class NettyAsyncHttpClientBuilderTests {
          */
         String rawNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
@@ -286,7 +286,7 @@ public class NettyAsyncHttpClientBuilderTests {
         String rawJavaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
         String rawEnvNonProxyHosts = String.join(",", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
@@ -347,9 +347,8 @@ public class NettyAsyncHttpClientBuilderTests {
         boolean isAuthenticated) {
         TestProxyValidator validator = new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated);
 
-        return HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
-            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
-                (connectionObserver, channel) -> channel.pipeline().addFirst("TestProxyHandler", validator))));
+        return HttpClient.create().doOnChannelInit((connectionObserver, channel, socketAddress) ->
+            channel.pipeline().addFirst("TestProxyHandler", validator));
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {

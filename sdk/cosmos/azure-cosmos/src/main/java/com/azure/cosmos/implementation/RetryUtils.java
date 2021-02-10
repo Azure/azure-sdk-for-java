@@ -38,6 +38,12 @@ public class RetryUtils {
                 if (s.backOffTime != null) {
                     policy.incrementRetry();
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis())).flux();
+
+//                    if (s.backOffTime.isNegative() || s.backOffTime.isZero()) {
+//                        return Flux.just(0L);
+//                    }
+//
+//                    return Mono.delay(s.backOffTime).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
                 } else {
@@ -116,7 +122,7 @@ public class RetryUtils {
                 } else {
                     return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
-                            .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
+                            .delaySubscription(shouldRetryResult.backOffTime);
                 }
             });
         };
@@ -168,12 +174,13 @@ public class RetryUtils {
             stopStopWatch(stopwatch);
             logger.info("Failed inBackoffAlternateCallback with {}, proceeding with retry. Time taken: {}ms",
                     e.toString(), stopwatch.getTime());
+
             Duration backoffTime = shouldRetryResult.backOffTime.toMillis() > stopwatch.getTime()
-                    ? Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() - stopwatch.getTime())
-                    : Duration.ZERO;
+                ? Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() - stopwatch.getTime())
+                : Duration.ZERO;
             return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, shouldRetryResult,
-                    minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
-                    .delaySubscription(Flux.just(0L).delayElements(Duration.ofMillis(backoffTime.toMillis())));
+                minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
+                .delaySubscription(Flux.just(0L).delayElements(Duration.ofMillis(backoffTime.toMillis())));
         };
     }
 

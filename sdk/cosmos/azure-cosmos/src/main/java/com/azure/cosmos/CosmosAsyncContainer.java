@@ -746,7 +746,7 @@ public class CosmosAsyncContainer {
 
         final BulkProcessingOptions<TContext> bulkProcessingOptions = bulkOptions;
 
-        return Flux.deferWithContext(context -> {
+        return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, bulkProcessingOptions);
 
             return executor.execute();

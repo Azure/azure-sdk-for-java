@@ -98,7 +98,7 @@ public class EventProcessorClientAggregateEventsSample {
      */
     private static Mono<Void> generateEvents(AtomicBoolean isRunning) {
         final Logger logger = LoggerFactory.getLogger("Producer");
-        final Scheduler scheduler = Schedulers.elastic();
+        final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration operationTimeout = Duration.ofSeconds(5);
         final String[] machineIds = new String[]{"2A", "9B", "6C"};
         final Random random = new Random();

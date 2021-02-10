@@ -3,9 +3,9 @@
 
 
 module com.azure.cosmos {
-
     requires transitive com.azure.core;
 
+    requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires io.netty.transport;
     requires io.netty.handler;
@@ -18,6 +18,8 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
+    requires reactor.netty.core;
+    requires reactor.netty.http;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
@@ -27,7 +29,7 @@ module com.azure.cosmos {
     requires java.logging;
 	requires HdrHistogram;
 
-	// public API surface area
+    // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;

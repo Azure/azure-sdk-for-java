@@ -49,12 +49,12 @@ public class JdkAsyncHttpClientTests {
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
-                WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+            WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
         server.stubFor(WireMock.get("/long").willReturn(WireMock.aResponse().withBody(LONG_BODY)));
         server.stubFor(WireMock.get("/error")
-                .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
+            .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
         server.stubFor(
-                WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+            WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
         server.start();
     }
 
@@ -83,8 +83,9 @@ public class JdkAsyncHttpClientTests {
         response.getBodyAsByteArray().block();
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
-                .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
-                .verifyError(IllegalStateException.class);
+            .expectNextCount(
+                0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
+            .verifyError(IllegalStateException.class);
 
     }
 
@@ -92,8 +93,8 @@ public class JdkAsyncHttpClientTests {
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse("/error");
         StepVerifier.create(response.getBodyAsString())
-                .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
-                .verifyComplete();
+            .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
+            .verifyComplete();
         Assertions.assertEquals(500, response.getStatusCode());
     }
 
@@ -106,26 +107,27 @@ public class JdkAsyncHttpClientTests {
         stepVerifierOptions.initialRequest(0);
         //
         StepVerifier.create(response.getBody(), stepVerifierOptions)
-                .expectNextCount(0)
-                .thenRequest(1)
-                .expectNextCount(1)
-                .thenRequest(3)
-                .expectNextCount(3)
-                .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
-                .expectNextCount(1507)
-                .verifyComplete();
+            .expectNextCount(0)
+            .thenRequest(1)
+            .expectNextCount(1)
+            .thenRequest(3)
+            .expectNextCount(3)
+            .thenRequest(
+                Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
+            .expectNextCount(1507)
+            .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .setHeader("Content-Length", "123")
-                .setBody(Flux.error(new RuntimeException("boo")));
+            .setHeader("Content-Length", "123")
+            .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
-                .verify();
+            .expectErrorMessage("boo")
+            .verify();
     }
 
     @Test
@@ -134,20 +136,19 @@ public class JdkAsyncHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
-                .setBody(Flux.just(contentChunk)
-                        .repeat(repetitions)
-                        .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-                        .concatWith(Flux.error(new RuntimeException("boo"))));
+            .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
+            .setBody(Flux.just(contentChunk)
+                .repeat(repetitions)
+                .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+                .concatWith(Flux.error(new RuntimeException("boo"))));
+
         StepVerifier.create(client.send(request))
-                // .awaitDone(10, TimeUnit.SECONDS)
-                .expectErrorMessage("boo")
-                .verify();
+            .expectErrorMessage("boo")
+            .verify(Duration.ofSeconds(10));
     }
 
     @Test
-    public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
-            throws IOException, InterruptedException {
+    public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
             CountDownLatch latch = new CountDownLatch(1);
             AtomicReference<Socket> sock = new AtomicReference<>();
@@ -174,7 +175,7 @@ public class JdkAsyncHttpClientTests {
                     socket.close();
                     return 1;
                 })
-                    .subscribeOn(Schedulers.elastic())
+                    .subscribeOn(Schedulers.boundedElastic())
                     .subscribe();
                 //
                 latch.await();
@@ -197,42 +198,28 @@ public class JdkAsyncHttpClientTests {
     @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
-        long t = System.currentTimeMillis();
         int numRequests = 100; // 100 = 1GB of data read
-        long timeoutSeconds = 60;
         HttpClient client = HttpClient.createDefault();
-        byte[] expectedDigest = digest(LONG_BODY);
+        byte[] expectedDigest = digest();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
-                .parallel(10)
-                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
-                    MessageDigest md = md5Digest();
-                    return response.getBody()
-                            .doOnNext(md::update)
-                            .map(bb -> new NumberedByteBuffer(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
-                                    md.digest(), "wrong digest!"));
-                }))
-                .sequential()
-                // enable the doOnNext call to see request numbers and thread names
-                // .doOnNext(g -> System.out.println(g.n + " " +
-                // Thread.currentThread().getName()))
-                .map(nbb -> (long) nbb.bb.limit())
-                .reduce(Long::sum)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+            .parallel(10)
+            .runOn(Schedulers.newBoundedElastic(30, 1024, "io"))
+            .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
+                MessageDigest md = md5Digest();
+                return response.getBody()
+                    .doOnNext(md::update)
+                    .map(bb -> new NumberedByteBuffer(n, bb))
+                    .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
+                        md.digest(), "wrong digest!"));
+            }))
+            .map(nbb -> (long) nbb.bb.limit())
+            .reduce(Long::sum);
 
         StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-                .verifyComplete();
-//
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+            .expectNext((long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
     }
 
     private static MessageDigest md5Digest() {
@@ -243,9 +230,9 @@ public class JdkAsyncHttpClientTests {
         }
     }
 
-    private static byte[] digest(String s) throws NoSuchAlgorithmException {
+    private static byte[] digest() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(s.getBytes(StandardCharsets.UTF_8));
+        md.update(JdkAsyncHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
         return md.digest();
     }
 

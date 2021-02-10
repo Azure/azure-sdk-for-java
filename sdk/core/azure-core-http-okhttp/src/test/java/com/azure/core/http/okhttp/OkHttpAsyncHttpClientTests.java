@@ -94,7 +94,8 @@ public class OkHttpAsyncHttpClientTests {
         response.getBodyAsByteArray().block();
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
-            .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
+            .expectNextCount(
+                0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
             .verifyError(IllegalStateException.class);
 
     }
@@ -180,7 +181,7 @@ public class OkHttpAsyncHttpClientTests {
                     // kill the socket with HTTP response body incomplete
                     socket.close();
                     return 1;
-                }).subscribeOn(Schedulers.elastic()).subscribe();
+                }).subscribeOn(Schedulers.boundedElastic()).subscribe();
                 //
                 latch.await();
                 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
@@ -205,38 +206,26 @@ public class OkHttpAsyncHttpClientTests {
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = HttpClient.createDefault();
-        byte[] expectedDigest = digest(LONG_BODY);
+        byte[] expectedDigest = digest();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
-            .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+            .runOn(Schedulers.newBoundedElastic(30, 1024, "io"))
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
                     .doOnNext(md::update)
                     .map(bb -> new NumberedByteBuffer(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
                     .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
                         md.digest(), "wrong digest!"));
             }))
-            .sequential()
-            // enable the doOnNext call to see request numbers and thread names
-            // .doOnNext(g -> System.out.println(g.n + " " +
-            // Thread.currentThread().getName()))
             .map(nbb -> (long) nbb.bb.limit())
-            .reduce(Long::sum)
-            .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-            .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+            .reduce(Long::sum);
 
         StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-            .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-            .verifyComplete();
-//
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+            .expectNext((long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -279,9 +268,9 @@ public class OkHttpAsyncHttpClientTests {
         }
     }
 
-    private static byte[] digest(String s) throws NoSuchAlgorithmException {
+    private static byte[] digest() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(s.getBytes(StandardCharsets.UTF_8));
+        md.update(LONG_BODY.getBytes(StandardCharsets.UTF_8));
         return md.digest();
     }
 

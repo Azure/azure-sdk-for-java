@@ -62,7 +62,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.netty.from-existing-http-client
         // Creates a reactor-netty client with netty logging enabled.
         reactor.netty.http.client.HttpClient baseHttpClient = reactor.netty.http.client.HttpClient.create()
-            .tcpConfiguration(tcp -> tcp.wiretap(TcpClient.class.getName(), LogLevel.INFO));
+            .wiretap(TcpClient.class.getName(), LogLevel.INFO);
         // Create an HttpClient based on above reactor-netty client and configure EventLoop count.
         HttpClient client = new NettyAsyncHttpClientBuilder(baseHttpClient)
             .eventLoopGroup(new NioEventLoopGroup(5))
