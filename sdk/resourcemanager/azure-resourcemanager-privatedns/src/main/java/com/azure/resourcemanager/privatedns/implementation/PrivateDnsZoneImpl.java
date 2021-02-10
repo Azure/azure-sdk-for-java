@@ -31,6 +31,7 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 import java.io.IOException;
+import java.util.Map;
 
 /** Implementation for {@link PrivateDnsZone}. */
 class PrivateDnsZoneImpl
@@ -47,9 +48,9 @@ class PrivateDnsZoneImpl
     private PrivateDnsRecordSetsImpl recordSets;
     private VirtualNetworkLinksImpl virtualNetworkLinks;
     private final ETagState etagState = new ETagState();
-    private final ClientLogger logger = new ClientLogger(PrivateDnsZoneImpl.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-    private String innerCopy;
+    private final ClientLogger logger = new ClientLogger(PrivateDnsZoneImpl.class);
+    private String tagsCopy;
 
     PrivateDnsZoneImpl(String name, final PrivateZoneInner innerModel, final PrivateDnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -394,8 +395,9 @@ class PrivateDnsZoneImpl
     @Override
     public Mono<PrivateDnsZone> createResourceAsync() {
         if (!isInCreateMode()) {
-            String innerStr = serializeInner(this.innerModel());
-            if (innerStr.equals(innerCopy)) {
+            String serializedTags = serializeTags(this.innerModel().tags());
+            // only skip update when it is implicit etag and no tags changed
+            if (serializedTags.equals(tagsCopy) && isImplicitEtag()) {
                 return Mono.just(this);
             }
         }
@@ -409,7 +411,7 @@ class PrivateDnsZoneImpl
             .map(innerToFluentMap(this))
             .map(privateDnsZone -> {
                 etagState.clear();
-                innerCopy = serializeInner(privateDnsZone.innerModel());
+                tagsCopy = serializeTags(privateDnsZone.tags());
                 return privateDnsZone;
             });
     }
@@ -419,7 +421,6 @@ class PrivateDnsZoneImpl
         return Mono.just(true).map(ignored -> {
             recordSets.clear();
             virtualNetworkLinks.clear();
-            innerCopy = null;
             return ignored;
         }).then();
     }
@@ -429,7 +430,7 @@ class PrivateDnsZoneImpl
         return super.refreshAsync().map(privateDnsZone -> {
             PrivateDnsZoneImpl impl = (PrivateDnsZoneImpl) privateDnsZone;
             impl.initRecordSets();
-            innerCopy = serializeInner(privateDnsZone.innerModel());
+            tagsCopy = serializeTags(privateDnsZone.tags());
             return impl;
         });
     }
@@ -473,15 +474,16 @@ class PrivateDnsZoneImpl
             });
     }
 
-    private String serializeInner(PrivateZoneInner innerObj) {
+    private String serializeTags(Map<String, String> tags) {
         try {
-            String etag = innerObj.etag();
-            innerObj.withEtag(etagState.ifMatchValueOnUpdate(etag));
-            String serializedInner = serializerAdapter.serialize(innerObj, SerializerEncoding.JSON);
-            innerObj.withEtag(etag);
-            return serializedInner;
+            return serializerAdapter.serialize(tags, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         }
+    }
+
+    private boolean isImplicitEtag() {
+        String etag = etagState.ifMatchValueOnUpdate(this.innerModel().etag());
+        return etag != null && etag.equals(this.innerModel().etag());
     }
 }
