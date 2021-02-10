@@ -2,11 +2,9 @@
 
 The administration package previously provided capabilities for User and Token Management and for Phone Number Administration.
 
-Now, User and Token Management capabilities have been moved to `azure-communication-identity`.
-Phone Number Administration has been moved to `azure-communication-phonenumbers`.
+Now, User and Token Management capabilities have been moved to `azure.communication.identity`.
+Phone Number Administration has been moved to `azure.communication.phonenumbers`.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][product_docs]
 ## Getting started
 
 ### Prerequisites
@@ -56,8 +54,5 @@ Check out other client libraries for Azure communication service
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-administration
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-administration/src
-
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-administration%2FREADME.png)
