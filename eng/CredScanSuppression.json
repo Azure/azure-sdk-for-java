@@ -21,53 +21,8 @@
             "_justification": "Secret used by test code, it is fake."
         },
         {
-            "file": [
-                "sdk\\cosmos\\azure-cosmos\\target\\test-classes\\client.jks", 
-                "sdk\\cosmos\\azure-cosmos\\target\\test-classes\\server.jks",
-                "sdk\\spring\\azure-spring-boot\\src\test\resources\nopwdcert.pfx", 
-                "sdk\\spring\\azure-spring-boot\\src\test\resources\testkeyvault.pfx"
-            ],
+            "file":"sdk\\cosmos\\azure-cosmos\\target\\test-classes\\client.jks",
             "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\azure-security-keyvault-certificates\\src\\test\\resources\\pemCert.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\p256key.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\p256keynew.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\p384keynew.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\p521keynew.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\SECP256key.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\keyvault\\microsoft-azure-keyvault-cryptography\\src\\test\\resources\\secp256keynew.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\identity\\azure-identity\\src\\test\\resources\\cert-chain.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\identity\\azure-identity\\src\\test\\resources\\key.pem",
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\identity\\azure-identity\\src\\test\\resources\\keyStore.pfx",
-            "_justification": "Fake file used by test code."
-        }      
+        }    
     ]
 }
