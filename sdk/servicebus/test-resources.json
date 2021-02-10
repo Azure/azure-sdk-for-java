@@ -274,7 +274,7 @@
     },
     "AZURE_SERVICEBUS_SAMPLE_SESSION_SUBSCRIPTION_NAME": {
       "type": "string",
-      "value": "[concat(variables('subscriptionSessionName'), '-0')]"
+      "value": "[variables('subscriptionSessionName')]"
     }
   }
 }

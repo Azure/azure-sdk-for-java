@@ -1,7 +1,19 @@
 ## Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.13.0-beta.1 (Unreleased)
 
+
+### 4.12.0 (2021-02-09)
+#### New Features
+* Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
+* Added changeFeed pull model beta API.
+* Added support for resuming query from a pre split continuation token after partition split.
+* Optimized query execution time by caching query plan for single partition queries with filters and orderby.
+
+#### Key Bug Fixes
+* Fixed telemetry deserialization issue.
+* Skip session token for query plan, trigger and UDF.
+* Improved session timeout 404/1002 exception handling.
 
 ### 4.11.0 (2021-01-15)
 #### New Features

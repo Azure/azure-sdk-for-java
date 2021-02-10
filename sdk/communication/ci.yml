@@ -38,3 +38,6 @@ extends:
       - name: azure-communication-administration
         groupId: com.azure
         safeName: azurecommunicationadministration
+      - name: azure-communication-identity
+        groupId: com.azure
+        safeName: azurecommunicationidentity

@@ -68,12 +68,12 @@ public class FunctionAppsImpl
 
     @Override
     public PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name) {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getWebApps()
-            .listFunctions(resourceGroupName, name)
-            .mapPage(FunctionEnvelopeImpl::new);
+            .listFunctions(resourceGroupName, name),
+            FunctionEnvelopeImpl::new);
     }
 
     @Override
