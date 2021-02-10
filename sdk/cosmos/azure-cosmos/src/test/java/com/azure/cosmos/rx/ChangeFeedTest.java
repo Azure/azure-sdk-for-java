@@ -415,7 +415,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         return new Range<>(maxInclusiveRange.getMin(), max, true, false);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         ArrayList<Range<String>> ranges = new ArrayList<>();
