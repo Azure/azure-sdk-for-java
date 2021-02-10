@@ -75,7 +75,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         if (running.compareAndSet(false, true)) {
             try {
                 for (ConfigStore configStore : configStores) {
-                    if (StateHolder.getLoadState(configStore.getEndpoint()) && configStore.getMonitoring().isEnabled()
+                    if (StateHolder.getLoadState(configStore.getEndpoint()) && configStore.isEnabled() && configStore.getMonitoring().isEnabled()
                         && refresh(configStore)) {
                         // Only one refresh Event needs to be call to update all of the
                         // stores, not one for each.

@@ -42,6 +42,8 @@ public class ConfigStore {
 
     private boolean useFeatureManagement = false;
 
+    private boolean enabled = true;
+
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     public ConfigStore() {
@@ -92,6 +94,14 @@ public class ConfigStore {
         return useFeatureManagement;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void setUseFeatureManagement(boolean useFeatureManagement) {
         this.useFeatureManagement = useFeatureManagement;
     }
@@ -136,6 +146,7 @@ public class ConfigStore {
      */
     public String[] getLabels(List<String> profiles) {
         if (this.getLabel() == null && profiles.size() > 0) {
+            Collections.reverse(profiles);
             return profiles.toArray(new String[profiles.size()]);
         } else if (!StringUtils.hasText(this.getLabel())) {
             return EMPTY_LABEL_ARRAY;

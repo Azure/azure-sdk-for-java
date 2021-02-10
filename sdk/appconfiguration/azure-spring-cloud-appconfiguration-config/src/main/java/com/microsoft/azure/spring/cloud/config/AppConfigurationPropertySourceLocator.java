@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -42,7 +44,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
 
     private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
-    
+
     private static final String PATH_SPLITTER = "/";
 
     private final AppConfigurationProperties properties;
@@ -76,6 +78,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     @Override
     public PropertySource<?> locate(Environment environment) {
+        LOGGER.error(environment.getProperty("spring.jmx.default-domain"));
         if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
@@ -99,9 +102,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
-            if (startup.get() || StateHolder.getLoadState(configStore.getEndpoint())) {
+            if (configStore.isEnabled() && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                     !configStoreIterator.hasNext());
+            } else if (!configStore.isEnabled() && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
+                LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
@@ -134,8 +139,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
          * Will generate these contexts: /application/, /application_dev/, /foo/, /foo_dev/
          */
         List<String> contexts = new ArrayList<>();
-        contexts.addAll(generateContexts(this.properties.getDefaultContext(), profiles, store));
-        contexts.addAll(generateContexts(applicationName, profiles, store));
+        contexts.addAll(generateContexts(this.properties.getDefaultContext(), store));
+        contexts.addAll(generateContexts(applicationName, store));
 
         // There is only one Feature Set for all AppConfigurationPropertySources
         FeatureSet featureSet = new FeatureSet();
@@ -171,7 +176,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         sourceList.forEach(composite::addPropertySource);
     }
 
-    private List<String> generateContexts(String applicationName, List<String> profiles, ConfigStore configStore) {
+    private List<String> generateContexts(String applicationName, ConfigStore configStore) {
         List<String> result = new ArrayList<>();
         if (!StringUtils.hasText(applicationName)) {
             return result; // Ignore null or empty application name
@@ -211,7 +216,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
         try {
             String[] labels = store.getLabels(profiles);
-            
+
             for (String label : labels) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
@@ -226,6 +231,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
             // Setting new ETag values for Watch
             List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
                     .setLabelFilter(trigger.getLabel());
