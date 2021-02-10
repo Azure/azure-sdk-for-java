@@ -7,11 +7,9 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/appconfiguration/
-    exclude:
-      - sdk/appconfiguration/mgmt-v2019_02_01_preview
-      - sdk/appconfiguration/mgmt-v2019_10_01
-      - sdk/appconfiguration/mgmt-v2019_11_01_preview
+      - sdk/appconfiguration/ci.yml
+      - sdk/appconfiguration/pom.xml
+      - sdk/appconfiguration/azure-data-appconfiguration
 
 pr:
   branches:
@@ -22,11 +20,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/appconfiguration/
-    exclude:
-      - sdk/appconfiguration/mgmt-v2019_02_01_preview
-      - sdk/appconfiguration/mgmt-v2019_10_01
-      - sdk/appconfiguration/mgmt-v2019_11_01_preview
+      - sdk/appconfiguration/ci.yml
+      - sdk/appconfiguration/pom.xml
+      - sdk/appconfiguration/test-resources.json
+      - sdk/appconfiguration/tests.yml
+      - sdk/appconfiguration/azure-data-appconfiguration
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -36,22 +34,3 @@ extends:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
-      - name: azure-spring-cloud-appconfiguration-config
-        groupId: com.azure.spring
-        safeName: azurespringcloudappconfigurationconfig
-      - name: azure-spring-cloud-appconfiguration-config-web
-        groupId: com.azure.spring
-        safeName: azurespringcloudappconfigurationconfigweb
-      - name: azure-spring-cloud-feature-management
-        groupId: com.azure.spring
-        safeName: azurespringcloudfeaturemanagement
-      - name: azure-spring-cloud-feature-management-web
-        groupId: com.azure.spring
-        safeName: azurespringcloudfeaturemanagementweb
-      - name: azure-spring-cloud-starter-appconfiguration-config
-        groupId: com.azure.spring
-        safeName: azurespringcloudstarterappconfigurationconfig
-    AdditionalModules:
-      - name: azure-spring-cloud-test-appconfiguration-config
-        groupId: com.azure.spring
-        safeName: azurespringcloudtestappconfigurationconfig

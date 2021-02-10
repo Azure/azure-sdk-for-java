@@ -5,7 +5,9 @@ package com.azure.search.documents;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SuggestOptions;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -16,8 +18,11 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This class is used to help construct valid OData filter expressions, like the kind used by {@link
- * SearchOptions#setFilter(String)} by automatically replacing, quoting, and escaping string parameters.
+ * This class is used to help construct valid OData filter expressions by automatically replacing, quoting, and escaping
+ * string parameters.
+ * <p>
+ * The constructed OData filter expression is used by {@link AutocompleteOptions#setFilter(String)}, {@link
+ * SearchOptions#setFilter(String)}, and {@link SuggestOptions#setFilter(String)}.
  * <p>
  * For more information, see <a href="https://docs.microsoft.com/azure/search/search-filters">Filters in Azure Cognitive
  * Search</a>.

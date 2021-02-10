@@ -19,16 +19,26 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
+import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
+import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +46,22 @@ import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 public final class Utility {
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
-        new TypeReference<Map<String, Object>>() { };
+        new TypeReference<Map<String, Object>>() {
+        };
 
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().put("return-client-request-id", "true");
+
+    /*
+     * Representation of the Multi-Status HTTP response code.
+     */
+    private static final int MULTI_STATUS_CODE = 207;
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -56,6 +74,7 @@ public final class Utility {
 
     /**
      * Helper class to initialize the SerializerAdapter.
+     *
      * @return The SerializeAdapter instance.
      */
     public static SerializerAdapter initializeSerializerAdapter() {
@@ -69,7 +88,7 @@ public final class Utility {
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
         Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential credential,
-        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,  HttpClient httpClient) {
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -119,6 +138,30 @@ public final class Utility {
     public static Stream<IndexAction<?>> createDocumentActions(Iterable<?> documents, IndexActionType actionType) {
         return StreamSupport.stream(documents.spliterator(), false)
             .map(document -> new IndexAction<>().setActionType(actionType).setDocument(document));
+    }
+
+    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context, ClientLogger logger) {
+        try {
+            return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
+                .onErrorMap(MappingUtils::exceptionMapper)
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public static SearchIndexClientImpl buildRestClient(String endpoint, String indexName, HttpPipeline httpPipeline,
+        SerializerAdapter adapter) {
+        return new SearchIndexClientImplBuilder()
+            .endpoint(endpoint)
+            .indexName(indexName)
+            .pipeline(httpPipeline)
+            .serializerAdapter(adapter)
+            .buildClient();
     }
 
     private Utility() {

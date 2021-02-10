@@ -9,16 +9,15 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 
 ### Configure web app
 1. Search for and select your tenant in **Azure Active Directory**.
-2. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
-3. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
-4. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-app.png "Creat secrets")
-5. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/azure`, check the **Access Tokens** and **ID Tokens** checkboxes, click **configure** button.![Add a platfform](docs/image-add-a-platfform.png "Add a platfform")
-6. Under **webapp** application, select **Authentication** -> **Add URI**, you need to add redirect URIs of `http://localhost:8080/login/oauth2/code/arm`. ![App add url](docs/image-app-add-url.png "App add url")
-7. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.AccessAsUser.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
-8. Similarly, add the following permissions: 
+1. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
+1. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
+1. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-app.png "Creat secrets")
+1. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/`, check the **Access Tokens** and **ID Tokens** checkboxes, click **configure** button.![Add a platfform](docs/image-add-a-platfform.png "Add a platfform")
+1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.AccessAsUser.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
+1. Similarly, add the following permissions: 
    - **user_impersonation** in **Azure Service Management**,
    - **ActivityFeed.Read**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read** in **Office 365 Management APIs**.![Add permissions](docs/image-add-permissions.png "Add permissions")
-9. click **Grant admin consent for...**.![Grant permission](docs/image-grant-permission.png "Grant permission")
+1. click **Grant admin consent for...**.![Grant permission](docs/image-grant-permission.png "Grant permission")
 11. Manually remove the admin consent for **user_impersonation**.(Easy to see incremental authorization.)![Final](docs/image-final.png "Final")
 
 See [Register app], [Grant scoped permission] for more information about web app.

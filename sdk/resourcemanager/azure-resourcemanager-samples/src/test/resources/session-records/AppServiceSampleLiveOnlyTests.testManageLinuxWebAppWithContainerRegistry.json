@@ -643,7 +643,7 @@
       "etag" : "\"1D5BA0FEF001495\"",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "1723b9a5-5723-4f69-a6f1-3072c7085322",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr553133629/providers/Microsoft.Web/sites/webappe9a35893a1b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"PORT\":\"8080\",\"DOCKER_REGISTRY_SERVER_PASSWORD\":\"zyOmbSFO2cXmKHdQEGd2fsRbi/obSGqh\",\"DOCKER_REGISTRY_SERVER_URL\":\"http://acrsampled2735291d.azurecr.io\",\"DOCKER_REGISTRY_SERVER_USERNAME\":\"acrsampled2735291d\",\"DOCKER_CUSTOM_IMAGE_NAME\":\"acrsampled2735291d.azurecr.io/samples/tomcat-private:latest\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr553133629/providers/Microsoft.Web/sites/webappe9a35893a1b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"PORT\":\"8080\",\"DOCKER_REGISTRY_SERVER_PASSWORD\":\"***REMOVED***\",\"DOCKER_REGISTRY_SERVER_URL\":\"http://acrsampled2735291d.azurecr.io\",\"DOCKER_REGISTRY_SERVER_USERNAME\":\"acrsampled2735291d\",\"DOCKER_CUSTOM_IMAGE_NAME\":\"acrsampled2735291d.azurecr.io/samples/tomcat-private:latest\"}}"
     }
   }, {
     "Method" : "GET",
@@ -700,7 +700,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "f84e2d18-f6de-4285-9f59-ccf2caf9fdda",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr553133629/providers/Microsoft.Web/sites/webappe9a35893a1b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"PORT\":\"8080\",\"DOCKER_REGISTRY_SERVER_PASSWORD\":\"zyOmbSFO2cXmKHdQEGd2fsRbi/obSGqh\",\"DOCKER_REGISTRY_SERVER_URL\":\"http://acrsampled2735291d.azurecr.io\",\"DOCKER_REGISTRY_SERVER_USERNAME\":\"acrsampled2735291d\",\"DOCKER_CUSTOM_IMAGE_NAME\":\"acrsampled2735291d.azurecr.io/samples/tomcat-private:latest\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr553133629/providers/Microsoft.Web/sites/webappe9a35893a1b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"PORT\":\"8080\",\"DOCKER_REGISTRY_SERVER_PASSWORD\":\"***REMOVED***\",\"DOCKER_REGISTRY_SERVER_URL\":\"http://acrsampled2735291d.azurecr.io\",\"DOCKER_REGISTRY_SERVER_USERNAME\":\"acrsampled2735291d\",\"DOCKER_CUSTOM_IMAGE_NAME\":\"acrsampled2735291d.azurecr.io/samples/tomcat-private:latest\"}}"
     }
   }, {
     "Method" : "GET",

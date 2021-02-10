@@ -33,52 +33,7 @@ config = {
         }
     },
     'spring': {
-        'sdk/spring/azure-spring-boot-test-core/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-aad/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-aad-obo/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-application/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-cosmos/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-keyvault/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-boot-test-storage/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
-            )
-        },
-        'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
+        'sdk/spring/azure-spring-boot-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
