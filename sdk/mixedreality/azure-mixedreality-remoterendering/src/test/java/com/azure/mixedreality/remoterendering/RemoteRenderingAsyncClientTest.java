@@ -209,7 +209,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         assertTrue(foundSession.block());
 
-        client.stopSession(sessionId).block();
+        client.endSession(sessionId).block();
     };
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

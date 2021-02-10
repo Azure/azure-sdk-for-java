@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -103,13 +102,13 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopSession(String sessionId) {
-        client.stopSession(sessionId).block();
+    public void endSession(String sessionId) {
+        client.endSession(sessionId).block();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopSessionWithResponse(String sessionId, Context context) {
-        return client.stopSessionWithResponse(sessionId, context).block();
+    public Response<Void> endSessionWithResponse(String sessionId, Context context) {
+        return client.endSessionWithResponse(sessionId, context).block();
     }
 
     /**
