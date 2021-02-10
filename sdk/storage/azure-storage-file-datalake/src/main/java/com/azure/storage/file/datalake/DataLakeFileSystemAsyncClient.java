@@ -17,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -102,6 +101,7 @@ public class DataLakeFileSystemAsyncClient {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
+            .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
         this.serviceVersion = serviceVersion;
@@ -131,10 +131,8 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(fileName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), fileName,
-            blockBlobAsyncClient);
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), fileName, blockBlobAsyncClient);
     }
 
     /**
@@ -156,10 +154,8 @@ public class DataLakeFileSystemAsyncClient {
 
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
-            blockBlobAsyncClient);
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
     }
 
     /**
@@ -179,12 +175,21 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureDataLakeStorage.getUrl();
+    }
+
+    /**
      * Gets the URL of the file system represented by this client.
      *
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return azureDataLakeStorage.getUrl();
+        return azureDataLakeStorage.getUrl() + "/" + fileSystemName;
     }
 
     /**

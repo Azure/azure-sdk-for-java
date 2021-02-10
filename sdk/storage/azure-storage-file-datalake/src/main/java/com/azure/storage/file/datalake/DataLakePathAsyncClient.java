@@ -117,6 +117,8 @@ public class DataLakePathAsyncClient {
         this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
+            .fileSystem(fileSystemName)
+            .path(pathName)
             .version(serviceVersion.getVersion())
             .buildClient();
         this.serviceVersion = serviceVersion;
@@ -125,6 +127,8 @@ public class DataLakePathAsyncClient {
         this.blobDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(blobUrl)
+            .fileSystem(fileSystemName)
+            .path(pathName)
             .version(serviceVersion.getVersion())
             .buildClient();
 
@@ -145,6 +149,7 @@ public class DataLakePathAsyncClient {
         this.fileSystemDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(fileSystemUrl)
+            .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
     }

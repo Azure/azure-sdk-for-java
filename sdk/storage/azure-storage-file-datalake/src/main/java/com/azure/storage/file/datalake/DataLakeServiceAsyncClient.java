@@ -20,8 +20,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
@@ -111,11 +109,8 @@ public class DataLakeServiceAsyncClient {
         if (CoreUtils.isNullOrEmpty(fileSystemName)) {
             fileSystemName = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
-        return new DataLakeFileSystemAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getAccountUrl(), Utility.urlEncode(Utility.urlDecode(fileSystemName)))
-                .toString(), getServiceVersion(), getAccountName(), fileSystemName,
-            blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
-        );
+        return new DataLakeFileSystemAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName));
     }
 
     /**
