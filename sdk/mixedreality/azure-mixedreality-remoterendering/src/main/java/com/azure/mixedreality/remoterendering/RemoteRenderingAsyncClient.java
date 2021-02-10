@@ -349,7 +349,7 @@ public final class RemoteRenderingAsyncClient {
             if (response == null) {
                 return null;
             }
-            return new Response<>() {
+            return new Response<T>() {
 
                 private final T value = fromGeneratedGeneric(response.getValue());
 

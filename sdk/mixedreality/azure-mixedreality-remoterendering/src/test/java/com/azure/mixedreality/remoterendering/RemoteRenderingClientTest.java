@@ -29,7 +29,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void conversionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingClient client = getClient(httpClient);
 
         ConversionOptions conversionOptions = new ConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())

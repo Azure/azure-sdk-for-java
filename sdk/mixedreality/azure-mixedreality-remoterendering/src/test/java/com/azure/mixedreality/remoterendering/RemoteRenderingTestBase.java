@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
 
@@ -50,7 +51,7 @@ public class RemoteRenderingTestBase extends TestBase {
 
         if (!interceptorManager.isPlaybackMode())
         {
-            var stsClient = new MixedRealityStsClientBuilder()
+            MixedRealityStsAsyncClient stsClient = new MixedRealityStsClientBuilder()
                 .accountId(getAccountId())
                 .accountDomain(getAccountDomain())
                 .credential(getAccountKey())

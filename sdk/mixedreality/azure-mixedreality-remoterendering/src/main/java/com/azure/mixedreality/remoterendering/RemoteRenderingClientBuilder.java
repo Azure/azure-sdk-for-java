@@ -9,6 +9,7 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
@@ -40,7 +41,7 @@ public final class RemoteRenderingClientBuilder {
         String scope = this.endpoint.replaceFirst("/$", "") + "/.default";
         if (accessToken == null)
         {
-            var stsClient = stsBuilder.buildAsyncClient();
+            MixedRealityStsAsyncClient stsClient = stsBuilder.buildAsyncClient();
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
         }
         else
