@@ -43,10 +43,7 @@ public class AADB2CProperties implements InitializingBean {
 
     public static final String PREFIX = "azure.activedirectory.b2c";
 
-    private static final String BASE_URI_REGEX =
-        "(https://([A-Za-z0-9]{2,}\\.){2}[A-Za-z0-9]{2,}/([A-Za-z0-9]{2,}\\.){2,3}[A-Za-z0-9]{2,}/)";
-
-    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]{2,}\\.)";
+    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 
     /**
      * The name of the b2c tenant.
@@ -105,21 +102,6 @@ public class AADB2CProperties implements InitializingBean {
     public void afterPropertiesSet() {
         if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
-        }
-        // baseUri points to Global env by default
-        if (StringUtils.hasText(baseUri) && StringUtils.isEmpty(tenant)) {
-            baseUri = AADB2CURL.addSlash(baseUri);
-            if (!Pattern.compile(BASE_URI_REGEX).matcher(baseUri).matches()) {
-                throw new AADB2CConfigurationException("'baseUri' is invalid.");
-            }
-
-            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
-            if (matcher.find()) {
-                String matched = matcher.group();
-                tenant = matched.substring(0, matched.length() - 2);
-            }
-        } else {
-            baseUri = String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
         }
     }
 
@@ -201,6 +183,10 @@ public class AADB2CProperties implements InitializingBean {
     }
 
     public String getBaseUri() {
+        // baseUri is empty and points to Global env by default
+        if (StringUtils.hasText(tenant) && StringUtils.isEmpty(baseUri)) {
+            return String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
+        }
         return baseUri;
     }
 
@@ -216,6 +202,14 @@ public class AADB2CProperties implements InitializingBean {
         reason = "Configuration updated to baseUri",
         replacement = "azure.activedirectory.b2c.base-uri")
     public String getTenant() {
+        if (StringUtils.hasText(baseUri)) {
+            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
+            if (matcher.find()) {
+                String matched = matcher.group();
+                return matched.substring(0, matched.length() - 1);
+            }
+            throw new AADB2CConfigurationException("Unable to resolve the 'tenant' name.");
+        }
         return tenant;
     }
 

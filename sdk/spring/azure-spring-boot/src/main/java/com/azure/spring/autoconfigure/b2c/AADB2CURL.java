@@ -26,26 +26,26 @@ public final class AADB2CURL {
     private static final String END_SESSION_URL_PATTERN = "oauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
 
     public static String getAuthorizationUrl(String baseUri) {
-        return baseUri + AUTHORIZATION_URL_PATTERN;
+        return addSlash(baseUri) + AUTHORIZATION_URL_PATTERN;
     }
 
     public static String getTokenUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return baseUri + TOKEN_URL_PATTERN + userFlow;
+        return addSlash(baseUri) + TOKEN_URL_PATTERN + userFlow;
     }
 
     public static String getJwkSetUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return baseUri + JWKSET_URL_PATTERN + userFlow;
+        return addSlash(baseUri) + JWKSET_URL_PATTERN + userFlow;
     }
 
     public static String getEndSessionUrl(String baseUri, String logoutUrl, String userFlow) {
         Assert.hasText(logoutUrl, "logoutUrl should have text.");
         Assert.hasText(userFlow, "user flow should have text.");
 
-        return baseUri + String.format(END_SESSION_URL_PATTERN, getEncodedURL(logoutUrl), userFlow);
+        return addSlash(baseUri) + String.format(END_SESSION_URL_PATTERN, getEncodedURL(logoutUrl), userFlow);
     }
 
     private static String getEncodedURL(String url) {
@@ -58,7 +58,7 @@ public final class AADB2CURL {
         }
     }
 
-    public static String addSlash(@URL String uri) {
+    private static String addSlash(@URL String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 }
