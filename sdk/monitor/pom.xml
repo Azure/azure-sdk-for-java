@@ -13,14 +13,14 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>microsoft-opentelemetry-exporter-azuremonitor</module>
+        <module>azure-monitor-opentelemetry-exporter</module>
       </modules>
 
       <dependencies>
         <dependency>
-          <groupId>com.microsoft</groupId>
-          <artifactId>microsoft-opentelemetry-exporter-azuremonitor</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;current} -->
+          <groupId>com.azure</groupId>
+          <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
         </dependency>
       </dependencies>
 
@@ -52,7 +52,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>microsoft-opentelemetry-exporter-azuremonitor</module>
+        <module>azure-monitor-opentelemetry-exporter</module>
       </modules>
     </profile>
   </profiles>
