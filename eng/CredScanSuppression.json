@@ -21,7 +21,11 @@
             "_justification": "Secret used by test code, it is fake."
         },
         {
-            "file": "sdk\\cosmos\\azure-cosmos\\src\\test\\resources\\client.jks",
+            "file": [
+                "sdk\\cosmos\\azure-cosmos\\src\\test\\resources\\client.jks", 
+                "sdk\\spring\\azure-spring-boot\\src\test\resources\nopwdcert.pfx", 
+                "sdk\\spring\\azure-spring-boot\\src\test\resources\testkeyvault.pfx"
+            ],
             "_justification": "Fake file used by test code."
         },
         {
