@@ -213,6 +213,17 @@
         </configuration>
       </plugin>
 
+      <!-- This plugin overrides the suppressionsLocation to a library specific path. -->
+      <!-- This is a proof of concept showing how we can decentralize Checkstyle suppressions while retaining -->
+      <!-- the centralized Checkstyle's configuration -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <configuration>
+          <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
