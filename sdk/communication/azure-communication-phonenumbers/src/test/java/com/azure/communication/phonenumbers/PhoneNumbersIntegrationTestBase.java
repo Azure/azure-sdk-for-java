@@ -3,6 +3,12 @@
 package com.azure.communication.phonenumbers;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
@@ -12,6 +18,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import reactor.core.publisher.Mono;
@@ -23,13 +30,21 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-
-    protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
+
+    protected static final String PHONE_NUMBER =
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
+    
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
+        new StringJoiner("\":\"|\"", "\"", "\":\"")
+            .add("id")
+            .add("phoneNumber");
+
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
+        Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -43,14 +58,15 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             .accessKey(ENV_ACCESS_KEY);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
-
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
@@ -61,7 +77,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             .connectionString(CONNECTION_STRING);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
@@ -80,7 +98,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
@@ -94,5 +114,16 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
+        }
+
+        return content;
     }
 }
