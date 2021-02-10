@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -43,6 +41,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
 
+    private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
+
     private static final String PATH_SPLITTER = "/";
 
     private final AppConfigurationProperties properties;
@@ -58,6 +58,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
+
+    private static AtomicBoolean configLoaded = new AtomicBoolean(false);
 
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
@@ -80,6 +82,9 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
+        if (configLoaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+            return null;
+        }
 
         String applicationName = this.properties.getName();
         if (!StringUtils.hasText(applicationName)) {
@@ -104,6 +109,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
+        configLoaded.set(true);
         startup.set(false);
         return composite;
     }
