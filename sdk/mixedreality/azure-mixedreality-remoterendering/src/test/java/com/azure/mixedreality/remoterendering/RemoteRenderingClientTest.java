@@ -1,6 +1,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
 import com.azure.mixedreality.remoterendering.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,9 +43,9 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("conversionTest");
 
-        var conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<Conversion, Conversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
 
-        var conversion0 = conversionPoller.poll().getValue();
+        Conversion conversion0 = conversionPoller.poll().getValue();
 
         assertEquals(conversionId, conversion0.getId());
         assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion0.getOptions().getInputRelativeAssetPath());
@@ -54,7 +55,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertEquals(conversionId, conversion.getId());
         assertNotEquals(ConversionStatus.FAILED, conversion.getStatus());
 
-        var conversion2 = conversionPoller.waitForCompletion().getValue();
+        Conversion conversion2 = conversionPoller.waitForCompletion().getValue();
 
         assertEquals(conversionId, conversion2.getId());
         assertEquals(ConversionStatus.SUCCEEDED, conversion2.getStatus());
@@ -75,7 +76,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedConversionNoAccessTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
         ConversionOptions conversionOptions = new ConversionOptions()
@@ -99,7 +100,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingClient client = getClient(httpClient);
 
         ConversionOptions conversionOptions = new ConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
@@ -112,9 +113,9 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAsset");
 
-        var conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<Conversion, Conversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
 
-        var conversion = conversionPoller.waitForCompletion().getValue();
+        Conversion conversion = conversionPoller.waitForCompletion().getValue();
 
         assertEquals(conversionId, conversion.getId());
 
@@ -128,14 +129,14 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("sessionTest");
 
-        var sessionPoller = client.beginSession(sessionId, options);
+        SyncPoller<RenderingSession, RenderingSession> sessionPoller = client.beginSession(sessionId, options);
 
-        var session0 = sessionPoller.poll().getValue();
+        RenderingSession session0 = sessionPoller.poll().getValue();
 
         assertEquals(options.getSize(), session0.getSize());
         assertEquals(sessionId, session0.getId());
@@ -173,7 +174,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTest");

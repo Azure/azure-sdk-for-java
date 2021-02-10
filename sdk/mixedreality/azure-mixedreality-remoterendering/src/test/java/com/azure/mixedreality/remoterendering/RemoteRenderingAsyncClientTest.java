@@ -1,12 +1,16 @@
 package com.azure.mixedreality.remoterendering;
 
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
 import com.azure.mixedreality.remoterendering.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.core.http.HttpClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -30,7 +34,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void conversionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingAsyncClient client = getClient(httpClient);
 
         ConversionOptions conversionOptions = new ConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
@@ -43,10 +47,10 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("asyncConversionTest");
 
-        var poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
 
-        var terminalPoller = poller.map(response -> {
-            var conversion = response.getValue();
+        Flux<AsyncPollResponse<Conversion, Conversion>> terminalPoller = poller.map(response -> {
+            Conversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(ConversionStatus.FAILED, conversion.getStatus());
@@ -60,7 +64,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(response -> {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-                var conversion = response.getValue();
+                Conversion conversion = response.getValue();
                 assertEquals(conversion.getStatus(), ConversionStatus.SUCCEEDED);
                 assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
             })
@@ -73,7 +77,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             })
             .verifyComplete();
 
-        var foundConversion = client.listConversions().any(conversion -> {
+        Mono<Boolean> foundConversion = client.listConversions().any(conversion -> {
             return conversion.getId().equals(conversionId);
         });
 
@@ -83,7 +87,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedConversionNoAccessTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingAsyncClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
         ConversionOptions conversionOptions = new ConversionOptions()
@@ -95,7 +99,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionNoAccessAsync");
 
-        var poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
@@ -109,7 +113,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingAsyncClient client = getClient(httpClient);
 
         ConversionOptions conversionOptions = new ConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
@@ -122,10 +126,10 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAssetAsync");
 
-        var poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
 
-        var terminalPoller = poller.map(response -> {
-            var conversion = response.getValue();
+        Flux<AsyncPollResponse<Conversion, Conversion>> terminalPoller = poller.map(response -> {
+            Conversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(ConversionStatus.SUCCEEDED, conversion.getStatus());
@@ -139,7 +143,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(response -> {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.FAILED);
 
-                var conversion = response.getValue();
+                Conversion conversion = response.getValue();
 
                 assertEquals(ConversionStatus.FAILED, conversion.getStatus());
                 assertNotNull(conversion.getError());
@@ -153,16 +157,16 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingAsyncClient client = getClient(httpClient);
 
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("ayncSessionTest");
 
-        var sessionPoller = client.beginSession(sessionId, options);
+        PollerFlux<RenderingSession, RenderingSession> sessionPoller = client.beginSession(sessionId, options);
 
-        var terminalPoller = sessionPoller.map(response -> {
-            var session = response.getValue();
+        Flux<AsyncPollResponse<RenderingSession, RenderingSession>> terminalPoller = sessionPoller.map(response -> {
+            RenderingSession session = response.getValue();
             assertEquals(sessionId, session.getId());
             assertNotEquals(RenderingSessionStatus.ERROR, session.getStatus());
             return response;
@@ -175,7 +179,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(response -> {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-                var readyRenderingSession = response.getValue();
+                RenderingSession readyRenderingSession = response.getValue();
                 assertEquals(readyRenderingSession.getStatus(), RenderingSessionStatus.READY);
 
                 assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 4);
@@ -203,7 +207,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 assertTrue(session.getMaxLeaseTime().toMinutes() == 5);
             }).verifyComplete();
 
-        var foundSession = client.listSessions().any(session -> {
+        Mono<Boolean> foundSession = client.listSessions().any(session -> {
             return session.getId().equals(sessionId);
         });
 
@@ -215,12 +219,12 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
-        var client = getClient(httpClient);
+        RemoteRenderingAsyncClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTestAsync");
 
-        var poller = client.beginSession(sessionId, options);
+        PollerFlux<RenderingSession, RenderingSession> poller = client.beginSession(sessionId, options);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // The maxLeaseTimeMinutes value cannot be negative
