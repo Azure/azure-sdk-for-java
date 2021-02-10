@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0-beta.2 (2021-09-02)
+## 3.1.0-beta.2 (2021-02-10)
 
 ### Breaking Changes
 - Renamed `Appearance`, `Style` and `TextStyle` models to `TextAppearance`, `TextStyle` and `TextStyleName` respectively.
