@@ -148,8 +148,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertEquals(updatedSession.getMaxLeaseTime().toMinutes(), 5);
 
         RenderingSession readyRenderingSession = sessionPoller.getFinalResult();
-        // TODO Could this still be 4 minute?
-        assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 5);
+        assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4) || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
         assertNotNull(readyRenderingSession.getArrInspectorPort());
         assertNotNull(readyRenderingSession.getHostname());
@@ -167,6 +166,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         });
 
         assertTrue(foundSession.get());
+
+        client.endSession(sessionId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -170,17 +170,17 @@ public final class RemoteRenderingAsyncClient {
      * @return nothing on completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopSession(String sessionId) {
+    public Mono<Void> endSession(String sessionId) {
         return impl.stopSessionWithResponseAsync(accountId, sessionId, Context.NONE).then();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopSessionWithResponse(String sessionId) {
-        return stopSessionWithResponse(sessionId, Context.NONE);
+    public Mono<Response<Void>> endSessionWithResponse(String sessionId) {
+        return endSessionWithResponse(sessionId, Context.NONE);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> stopSessionWithResponse(String sessionId, Context context) {
+    Mono<Response<Void>> endSessionWithResponse(String sessionId, Context context) {
         return impl.stopSessionWithResponseAsync(accountId, sessionId, context).map(r -> r);
     }
 
