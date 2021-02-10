@@ -51,7 +51,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 .and()
-            .addFilterBefore(handleConditionalAccessFilter(),WebAsyncManagerIntegrationFilter.class);
+            .addFilterBefore(handleConditionalAccessFilter(), WebAsyncManagerIntegrationFilter.class);
         // @formatter:off
     }
 
@@ -77,7 +77,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         return new AADOAuth2AuthorizationRequestResolver(this.repo);
     }
 
-    protected AADHandleConditionalAccessFilter handleConditionalAccessFilter(){
+    protected AADHandleConditionalAccessFilter handleConditionalAccessFilter() {
         return new AADHandleConditionalAccessFilter();
     }
 }
