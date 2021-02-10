@@ -23,9 +23,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Handle the specified exception.
+ * Handle the {@link WebClientResponseException} in On-Behalf-Of flow.
+ *
+ * <p>
+ * User carries token to access webapi or other resources, but the server requires higher privileges,so user need to
+ * carries the claims field(returned by Azure Security) re-acquire token.
+ *
+ * <p>
+ * On-Behalf-Of allows you to exchange an access token that your API received for an access token to another API. For
+ * better understanding On-Behalf-Of, the reference documentation can help us. See the <a
+ * href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">Microsoftidentity
+ * platform and OAuth 2.0 On-Behalf-Of flow</a>
+ *
+ * <p>
+ * Conditional Access is the tool used by Azure Active Directory to bring signals together, to make decisions, and
+ * enforce organizational policies. The reference documentation is
+ * <a href="https://docs.microsoft.com/en-us/azure/active-directory/conditional-access">Azure AD Conditional Access
+ * documentation</a>
  */
-public class ExceptionHandlerFilter extends OncePerRequestFilter {
+public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
@@ -40,7 +56,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
                         .map(Throwable::getCause)
                         .filter(e -> e instanceof WebClientResponseException)
                         .map(e -> (WebClientResponseException) e)
-                        .filter(ExceptionHandlerFilter::isConditionalAccessExceptionFromObo)
+                        .filter(AADHandleConditionalAccessFilter::isConditionalAccessExceptionFromObo)
                         .orElse(null);
             if (webClientResponseException != null) {
                 handleConditionalAccess(webClientResponseException, request, response);
@@ -62,20 +78,20 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     static void handleConditionalAccess(WebClientResponseException exception, HttpServletRequest request,
                                         HttpServletResponse response) {
-        Map<String, String> parameters =
+        Map<String, String> authParameters =
             Optional.of(exception)
                     .map(WebClientResponseException::getHeaders)
                     .map(httpHeaders -> httpHeaders.get(HttpHeaders.WWW_AUTHENTICATE))
                     .map(list -> list.get(0))
-                    .map(ExceptionHandlerFilter::parseAuthParameters)
+                    .map(AADHandleConditionalAccessFilter::parseAuthParameters)
                     .orElse(null);
         request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
-            parameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
+            authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
         response.setStatus(302);
         try {
             response.sendRedirect(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI);
         } catch (IOException e) {
-            LOGGER.error("Failed to load authorized client.", exception);
+            LOGGER.error("Failed to redirect at this response.", exception);
         }
     }
 
