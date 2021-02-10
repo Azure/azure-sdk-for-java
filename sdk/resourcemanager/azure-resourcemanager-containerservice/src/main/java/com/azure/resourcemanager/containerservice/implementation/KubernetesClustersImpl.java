@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for KubernetesClusters. */
 public class KubernetesClustersImpl
@@ -39,7 +40,7 @@ public class KubernetesClustersImpl
 
     @Override
     public PagedFlux<KubernetesCluster> listAsync() {
-        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
+        return PagedConverter.mapPage(this.inner().listAsync(), inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
     }
 
     @Override

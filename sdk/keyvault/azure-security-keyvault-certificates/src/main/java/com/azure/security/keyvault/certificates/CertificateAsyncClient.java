@@ -130,6 +130,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return beginCreateCertificate(certificateName, policy, isEnabled, tags, getDefaultPollingInterval());
     }
@@ -152,6 +153,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             activationOperation(certificateName, policy, isEnabled, tags),
@@ -267,6 +269,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         return getCertificateOperation(certificateName, getDefaultPollingInterval());
     }
@@ -285,6 +288,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             (pollingContext) -> Mono.empty(),
@@ -490,7 +494,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link DeletedCertificate deleted certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         return beginDeleteCertificate(certificateName, getDefaultPollingInterval());
     }
@@ -512,7 +516,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link DeletedCertificate deleted certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             activationOperation(certificateName),
@@ -693,7 +697,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultCertificate recovered certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
         return beginRecoverDeletedCertificate(certificateName, getDefaultPollingInterval());
     }
@@ -715,7 +719,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultCertificate recovered certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             recoverActivationOperation(certificateName),

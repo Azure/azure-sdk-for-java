@@ -79,7 +79,7 @@ public final class SparkSession {
     private SparkServicePlugin plugin;
 
     /*
-     * The error information.
+     * The errorInfo property.
      */
     @JsonProperty(value = "errorInfo")
     private List<SparkServiceError> errors;
@@ -341,7 +341,7 @@ public final class SparkSession {
     }
 
     /**
-     * Get the errors property: The error information.
+     * Get the errors property: The errorInfo property.
      *
      * @return the errors value.
      */
@@ -350,7 +350,7 @@ public final class SparkSession {
     }
 
     /**
-     * Set the errors property: The error information.
+     * Set the errors property: The errorInfo property.
      *
      * @param errors the errors value to set.
      * @return the SparkSession object itself.

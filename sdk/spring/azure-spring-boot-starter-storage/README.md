@@ -11,12 +11,12 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-starter-storage;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-storage;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-storage</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

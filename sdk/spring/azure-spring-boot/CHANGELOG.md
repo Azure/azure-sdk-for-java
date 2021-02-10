@@ -3,6 +3,11 @@
 ## 3.2.0-beta.1 (Unreleased)
 
 
+## 3.1.0 (2021-01-20)
+### Breaking Changes
+- Exposed `userNameAttributeName` to configure the user's name.
+- Deprecated `tenant` configuration item, add `base-uri` item to support multi-cloud environments.
+
 ## 3.0.0 (2020-12-30)
 ### Breaking Changes
 - Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.

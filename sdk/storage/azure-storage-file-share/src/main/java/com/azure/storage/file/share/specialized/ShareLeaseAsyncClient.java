@@ -37,7 +37,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * <p>View {@link ShareLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-file">Azure Docs</a>.
+ * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-file">Azure Docs</a>.
  *
  * @see ShareLeaseClientBuilder
  */
