@@ -473,13 +473,13 @@ public class OpenTelemetryTracerTest {
         // Arrange
         final String eventName = "event-0";
         Map<String, Object> eventAttrs = new HashMap<String, Object>() {{
-            put("attr1", "value1");
-            put("attr2", true);
-            put("attr3", 1L);
-            put("attr4", 1.0);
-            // put("attr5", new double[] {1.0, 2.0, 3.0});
-            // add support for accepting varargs
-        }};
+                put("attr1", "value1");
+                put("attr2", true);
+                put("attr3", 1L);
+                put("attr4", 1.0);
+                // put("attr5", new double[] {1.0, 2.0, 3.0});
+                // add support for accepting varargs?
+            }};
 
         // Act
         openTelemetryTracer.addEvent(eventName, eventAttrs, null);

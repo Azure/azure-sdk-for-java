@@ -238,7 +238,7 @@ public interface Tracer {
     }
 
     /**
-     *  Adds an event to the current span with for the provided {@code timestamp} & {@code attributes}.
+     *  Adds an event to the current span with for the provided {@code timestamp} and {@code attributes}.
      *  <p>This API does not provide any normalization if provided timestamps are out of range of the current
      *  span timeline</p>
      *
