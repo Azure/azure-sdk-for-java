@@ -48,6 +48,20 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhoneNumberWithAAD(HttpClient httpClient) {
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        StepVerifier.create(
+            this.getClientWithManagedIdentity(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber)
+            )
+            .assertNext((AcquiredPhoneNumber number) -> {
+                assertEquals(phoneNumber, number.getPhoneNumber());
+                assertEquals(COUNTRY_CODE, number.getCountryCode());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhoneNumberWithResponse(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
@@ -211,6 +225,11 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     private PhoneNumbersAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
+    }
+
+    private PhoneNumbersAsyncClient getClientWithManagedIdentity(HttpClient httpClient, String testName) {
+        PhoneNumbersClientBuilder builder = super.getClientBuilderUsingManagedIdentity(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
 

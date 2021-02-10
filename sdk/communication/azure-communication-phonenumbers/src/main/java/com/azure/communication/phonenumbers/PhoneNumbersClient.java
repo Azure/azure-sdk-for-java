@@ -41,6 +41,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AcquiredPhoneNumber getPhoneNumber(String phoneNumber) {
@@ -54,6 +55,7 @@ public final class PhoneNumbersClient {
      *                    as %2B.
      * @param context A {@link Context} representing the request context.
      * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcquiredPhoneNumber> getPhoneNumberWithResponse(String phoneNumber, Context context) {
@@ -80,14 +82,15 @@ public final class PhoneNumbersClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param update {@link PhoneNumberUpdateRequest} specifying updates to an acquired phone number.
+     * @param updateRequest {@link PhoneNumberUpdateRequest} specifying updates to an acquired phone number.
      * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
+     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest update) {
+    public AcquiredPhoneNumber updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
         Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-        Objects.requireNonNull(update, "'update' cannot be null.");
-        return client.updateAsync(phoneNumber, update).block();
+        Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
+        return client.updateAsync(phoneNumber, updateRequest).block();
     }
 
     /**
@@ -95,16 +98,17 @@ public final class PhoneNumbersClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param update Update to an acquired phone number.
+     * @param updateRequest Update request to an acquired phone number.
      * @param context A {@link Context} representing the request context.
      * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
+     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest update, Context context) {
+    public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest updateRequest, Context context) {
         Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-        Objects.requireNonNull(update, "'update' cannot be null.");
+        Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
         context = context == null ? Context.NONE : context;
-        return client.updateWithResponseAsync(phoneNumber, update, context).block();
+        return client.updateWithResponseAsync(phoneNumber, updateRequest, context).block();
     }
 
     /**
@@ -117,6 +121,7 @@ public final class PhoneNumbersClient {
      * @param searchRequest The search request
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with the reservation result
+     * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
@@ -133,6 +138,7 @@ public final class PhoneNumbersClient {
      * @param searchId ID of the search
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object.
+     * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId, Context context) {
@@ -150,6 +156,7 @@ public final class PhoneNumbersClient {
      *                    as %2B.
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber, Context context) {
@@ -166,6 +173,7 @@ public final class PhoneNumbersClient {
      * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object
+     * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {

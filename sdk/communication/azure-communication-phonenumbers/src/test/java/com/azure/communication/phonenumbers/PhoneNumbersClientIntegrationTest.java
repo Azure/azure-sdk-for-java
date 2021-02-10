@@ -43,6 +43,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhoneNumberWithAAD(HttpClient httpClient) {
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        AcquiredPhoneNumber number = this.getClientWithManagedIdentity(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber);
+        assertEquals(phoneNumber, number.getPhoneNumber());
+        assertEquals(COUNTRY_CODE, number.getCountryCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhoneNumberWithResponse(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         Response<AcquiredPhoneNumber> response = this.getClientWithConnectionString(httpClient, "getPhoneNumberWithResponseSync")
@@ -161,6 +170,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     
     private PhoneNumbersClient getClientWithConnectionString(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildClient();
+    }
+    
+    private PhoneNumbersClient getClientWithManagedIdentity(HttpClient httpClient, String testName) {
+        PhoneNumbersClientBuilder builder = super.getClientBuilderUsingManagedIdentity(httpClient);
         return addLoggingPolicy(builder, testName).buildClient();
     }
 

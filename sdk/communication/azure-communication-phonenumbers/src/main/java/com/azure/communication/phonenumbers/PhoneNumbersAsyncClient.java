@@ -56,6 +56,7 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcquiredPhoneNumber> getPhoneNumber(String phoneNumber) {
@@ -72,6 +73,7 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcquiredPhoneNumber>> getPhoneNumberWithResponse(String phoneNumber) {
@@ -102,16 +104,16 @@ public final class PhoneNumbersAsyncClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param update Update to an acquired phone number.
-     * @return A {@link Mono} containing
-     * a {@link AcquiredPhoneNumber} representing the acquired phone number
+     * @param updateRequest Update request to an acquired phone number.
+     * @return A {@link Mono} containing a {@link AcquiredPhoneNumber} representing the acquired phone number
+     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest update) {
+    public Mono<AcquiredPhoneNumber> updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            Objects.requireNonNull(update, "'update' cannot be null.");
-            return client.updateAsync(phoneNumber, update);
+            Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
+            return client.updateAsync(phoneNumber, updateRequest);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -123,17 +125,17 @@ public final class PhoneNumbersAsyncClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param update Update to an acquired phone number.
-     * @return A {@link Mono} containing
-     * a {@link AcquiredPhoneNumber} representing the acquired phone number
+     * @param updateRequest Update request to an acquired phone number.
+     * @return A {@link Mono} containing a {@link AcquiredPhoneNumber} representing the acquired phone number
+     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcquiredPhoneNumber>> 
-        updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest update) {
+        updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            Objects.requireNonNull(update, "'update' cannot be null.");
-            return client.updateWithResponseAsync(phoneNumber, update);
+            Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
+            return client.updateWithResponseAsync(phoneNumber, updateRequest);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -146,6 +148,7 @@ public final class PhoneNumbersAsyncClient {
      * @param searchRequest {@link PhoneNumberSearchRequest} specifying the search request
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the reservation result
+     * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
@@ -188,9 +191,10 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private String parseIdFromUrl(String url) {
+        Objects.requireNonNull(url, "'url' cannot be null.");
         String[] items = url.split("/");
         String id = items[items.length - 1];
-        return id.substring(0, id.indexOf("?"));
+        return id.substring(0, Math.min(id.indexOf("?"), id.length()));
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
@@ -242,6 +246,7 @@ public final class PhoneNumbersAsyncClient {
      *
      * @param searchId ID of the search
      * @return A {@link PollerFlux} object.
+     * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId) {
@@ -282,11 +287,10 @@ public final class PhoneNumbersAsyncClient {
      *
      * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
      * operation is complete.
-     *
-     *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @return A {@link PollerFlux} object.
+     * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber) {
@@ -327,7 +331,8 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
-     * @return A {@link PollerFlux} object
+     * @return A {@link PollerFlux} object.
+     * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 

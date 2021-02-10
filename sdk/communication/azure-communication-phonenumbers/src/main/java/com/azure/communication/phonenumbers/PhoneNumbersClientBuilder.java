@@ -20,6 +20,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -49,6 +50,7 @@ public final class PhoneNumbersClientBuilder {
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private Configuration configuration;
+    private ClientOptions clientOptions;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     /**
@@ -166,6 +168,18 @@ public final class PhoneNumbersClientBuilder {
      */
     public PhoneNumbersClientBuilder addPolicy(HttpPipelinePolicy policy) {
         this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public PhoneNumbersClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 
@@ -304,6 +318,7 @@ public final class PhoneNumbersClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policyList.toArray(new HttpPipelinePolicy[0]))
             .httpClient(this.httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 
