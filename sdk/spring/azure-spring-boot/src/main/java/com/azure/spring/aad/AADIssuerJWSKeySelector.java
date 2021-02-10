@@ -50,17 +50,15 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
         if (trustedIssuers.getTrustedIssuers().contains(iss)) {
-            List<? extends Key> keys;
             if (selectors.containsKey(iss)) {
-                keys = selectors.get(iss).selectJWSKeys(header, context);
-                return keys;
+                return selectors.get(iss).selectJWSKeys(header, context);
             }
             try {
-                keys = fromIssuer(iss).selectJWSKeys(header, context);
+                selectors.put(iss, fromIssuer(iss));
+                return selectors.get(iss).selectJWSKeys(header, context);
             } catch (Exception ex) {
                 throw new KeySourceException("The issuer: '" + iss + "' were unable to create a Key Source.", ex);
             }
-            return keys;
         }
         throw new IllegalArgumentException("The issuer: '" + iss + "' is not registered in trusted issuer repository,"
             + " so cannot create JWSKeySelector.");

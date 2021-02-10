@@ -3,22 +3,26 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.b2c.AADB2CProperties.UserFlows;
+import org.apache.commons.lang.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 /**
  * A tenant id is used to construct the trusted issuer repository.
  */
 public class AADTrustedIssuerRepository {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADTrustedIssuerRepository.class);
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
@@ -40,31 +44,31 @@ public class AADTrustedIssuerRepository {
                      .collect(Collectors.toList());
     }
 
-    public void addB2CIssuer(String tenantName) {
-        Assert.notNull(tenantName, "tenantName cannot be null.");
-        trustedIssuers.add(String.format("https://%s.b2clogin.com/%s/v2.0/", tenantName, tenantId));
+    public void addB2CIssuer(String baseUri) {
+        Assert.notNull(baseUri, "tenantName cannot be null.");
+        trustedIssuers.add(String.format(ResolveBaseUri(baseUri) + "/%s/v2.0/", tenantId));
     }
 
     /**
      * Only the V2 version of Access Token is supported when using Azure AD B2C user flows.
-     * @param tenantName The name of the b2c tenant name.
+     *
+     * @param baseUri The base uri is the domain part of the endpoint.
      * @param userFlows The all user flows which is created under b2c tenant.
      */
-    public void addB2CUserFlowIssuers(String tenantName, UserFlows userFlows) {
-        Assert.notNull(tenantName, "tenantName cannot be null.");
+    public void addB2CUserFlowIssuers(String baseUri, UserFlows userFlows) {
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        creatB2CUserFlowIssuer(tenantName, userFlows.getSignUpOrSignIn());
+        String resolveBaseUri = ResolveBaseUri(baseUri);
+        creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getSignUpOrSignIn());
         if (!StringUtils.isEmpty(userFlows.getProfileEdit())) {
-            creatB2CUserFlowIssuer(tenantName, userFlows.getProfileEdit());
+            creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getProfileEdit());
         }
         if (!StringUtils.isEmpty(userFlows.getPasswordReset())) {
-            creatB2CUserFlowIssuer(tenantName, userFlows.getPasswordReset());
+            creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getPasswordReset());
         }
     }
 
-    private void creatB2CUserFlowIssuer(String tenantName, String userFlowName) {
-        trustedIssuers.add(String
-            .format("https://%s.b2clogin.com/tfp/%s/%s/v2.0/", tenantName, tenantId, userFlowName));
+    private void creatB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
+        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId, userFlowName));
     }
 
     public List<String> getTrustedIssuers() {
@@ -79,4 +83,14 @@ public class AADTrustedIssuerRepository {
             .addAll(Arrays.stream(issuers).collect(Collectors.toSet()));
     }
 
+    private String ResolveBaseUri(String baseUri) {
+        Assert.notNull(baseUri, "baseUri cannot be null");
+        try {
+            URI uri = new URI(baseUri);
+            return uri.getScheme() + "://" + uri.getHost();
+        } catch (URISyntaxException e) {
+            LOGGER.error("Resolve the base uri exception.");
+            throw new RuntimeException("Resolve the base uri:'" + baseUri + "' exception.");
+        }
+    }
 }
