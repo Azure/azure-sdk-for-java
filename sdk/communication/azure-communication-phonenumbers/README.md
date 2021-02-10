@@ -1,8 +1,8 @@
 # Azure Communication Phone Numbers client library for Java
 
-The phone numbers package provides capabilities for Phone Number Management.
+The phone numbers package provides capabilities for phone number management.
 
-Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, PSTN inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
+Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, calling inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -27,7 +27,6 @@ Acquired phone numbers can come with many capabilities, depending on the country
 ```
 
 ## Key concepts
-
 
 ### Initializing Phone Number Client
 The PhoneNumberClientBuilder is enabled to use Azure Active Directory Authentication
@@ -70,13 +69,13 @@ Phone numbers come in two types; Geographic and Toll-Free. Geographic phone plan
 
 ### Searching and Purchasing and Releasing numbers
 
-Phone numbers search can be search through the search creation API by providing an area code, the quantity of phone numbers, the application type, phone number type, and the capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, then the phone numbers will become available to others. If the search is purchased, then the phone numbers are acquired for the Azure resources.
+Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are acquired for the Azure resources.
 
-Phone Numbers can also be released using the release API.
+Phone numbers can also be released using the release API.
 
-### Configuring / Assigning numbers
+### Updating Phone Number Configuration
 
-Phone numbers can be assigned to a callback URL via the update number API. As part of the update, you will need an acquired phone number, a callback URL and an application id.
+Phone numbers can be configured to a callback URL via the update number API. As part of the update, you will need an acquired phone number, a callback URL and an application id.
 
 ## Examples
 
@@ -119,7 +118,7 @@ System.out.println("Sample Callback Uri: " + phoneNumber.getCallbackUri());
 The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below.
 
 ### Search for Available Phone Numbers
-Search for available phone numbers by providing the area code, assignment type, phone number capabilities, phone number type, and quantities. Note that for toll-free phone number type, providing the area code is optional. The result of the search can then be used to purchase the numbers.
+Search for available phone numbers by providing the area code, assignment type, phone number capabilities, phone number type, and quantity. The result of the search can then be used to purchase the numbers. Note that for the toll-free phone number type, providing the area code is optional.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L115-L131-->
 ```java
@@ -143,7 +142,7 @@ System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
 ```
 
 ### Purchase Phone Numbers
-The result of searching for phone numbers is a `PhoneNumberSearchResult`. This can be used to view numbers details and purchase  numbers by passing in the `searchId` to the purchase number API.
+The result of searching for phone numbers is a `PhoneNumberSearchResult`. This can be used to get the numbers' details and purchase numbers by passing in the `searchId` to the purchase number API.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L133-L135 -->
 ```java
@@ -153,7 +152,7 @@ System.out.println("Purchase phone numbers is complete: " + purchaseResponse.get
 ```
 
 ### Release Phone Number
-Release acquired phone numbers.
+Releases an acquired phone number.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L143-L145 -->
 ```java
@@ -163,7 +162,7 @@ System.out.println("Release phone number is complete: " + releaseResponse.getSta
 ```
 
 ### Updating Phone Number Capabilities
-Update Phone Number Capabilities for Calling and SMS to one of: 
+Updates Phone Number Capabilities for Calling and SMS to one of: 
 - `PhoneNumberCapabilityValue.NONE`
 - `PhoneNumberCapabilityValue.INBOUND`
 - `PhoneNumberCapabilityValue.OUTBOUND`

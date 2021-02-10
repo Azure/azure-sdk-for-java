@@ -60,12 +60,10 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcquiredPhoneNumber> getPhoneNumber(String phoneNumber) {
-        try {
-            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            return client.getByNumberAsync(phoneNumber);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        if (Objects.isNull(phoneNumber)) {
+            return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
+        return client.getByNumberAsync(phoneNumber);
     }
 
     /**
@@ -77,12 +75,10 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcquiredPhoneNumber>> getPhoneNumberWithResponse(String phoneNumber) {
-        try {
-            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            return client.getByNumberWithResponseAsync(phoneNumber);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        if (Objects.isNull(phoneNumber)) {
+            return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
+        return client.getByNumberWithResponseAsync(phoneNumber);
     }
 
     /**

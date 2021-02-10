@@ -202,6 +202,62 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest).setPollInterval(Duration.ofSeconds(1));
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhoneNumberNullNumber(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "getPhoneNumberNullNumber").getPhoneNumber(null)
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhoneNumberWithResponseNullNumber(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "getPhoneNumberWithResponseNullNumber").getPhoneNumberWithResponse(null)
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updatePhoneNumberNullNumber(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "updatePhoneNumberNullNumber").updatePhoneNumber(null, new PhoneNumberUpdateRequest())
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updatePhoneNumberNullNumberWithResponse(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "updatePhoneNumberNullNumberWithResponse").updatePhoneNumber(null, new PhoneNumberUpdateRequest())
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginSearchAvailablePhoneNumbersNullCountryCode(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbersNullCountryCode")
+                .beginSearchAvailablePhoneNumbers(null, new PhoneNumberSearchRequest())
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesNullPhoneNumber(HttpClient httpClient) {
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesNullPhoneNumber")
+                .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilitiesRequest())
+            )
+            .verifyError();
+    }
+
     private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
         return this.getClientWithConnectionString(httpClient, testName)
             .beginPurchasePhoneNumbers(searchId).setPollInterval(Duration.ofSeconds(1));
