@@ -2,38 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.7.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
-    <relativePath/> <!-- lookup parent from repository -->
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-test-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-parent;current} -->
+    <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
-  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-test-eventhubs</artifactId>
   <version>1.0.0</version>  <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-eventhubs;current} -->
 
   <name>azure-spring-cloud-test-eventhubs</name>
   <description>EventHubs Test project for Spring Cloud</description>
-
-  <properties>
-    <java.version>1.8</java.version>
-    <skipSpringITs>true</skipSpringITs>
-  </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -78,14 +61,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <configuration>
-          <skipITs>${skipSpringITs}</skipITs>
         </configuration>
       </plugin>
     </plugins>

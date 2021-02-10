@@ -37,7 +37,7 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any
 # dependencies may or may not have versions. Unfortunately, there are still version tags azure sdk client libraries
 # which means these files have to be "sort of" scanned.
-$SpringSampleParents = ("spring-boot-starter-parent")
+$SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 

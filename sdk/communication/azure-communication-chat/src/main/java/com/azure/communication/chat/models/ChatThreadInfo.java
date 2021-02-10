@@ -8,30 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ChatThreadInfo model. */
+/** Summary information of a chat thread. */
 @Fluent
 public final class ChatThreadInfo {
     /*
      * Chat thread id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Chat thread topic.
      */
-    @JsonProperty(value = "topic")
+    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
-     * Flag if a chat thread is soft deleted.
+     * The timestamp when the chat thread was deleted. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "isDeleted")
-    private Boolean isDeleted;
+    @JsonProperty(value = "deletedOn")
+    private OffsetDateTime deletedOn;
 
     /*
      * The timestamp when the last message arrived at the server. The timestamp
-     * is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "lastMessageReceivedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastMessageReceivedOn;
@@ -43,6 +44,17 @@ public final class ChatThreadInfo {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Set the id property: Chat thread id.
+     *
+     * @param id the id value to set.
+     * @return the ChatThreadInfo object itself.
+     */
+    public ChatThreadInfo setId(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -66,28 +78,30 @@ public final class ChatThreadInfo {
     }
 
     /**
-     * Get the isDeleted property: Flag if a chat thread is soft deleted.
+     * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return the isDeleted value.
+     * @return the deletedOn value.
      */
-    public Boolean isDeleted() {
-        return this.isDeleted;
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
     }
 
     /**
-     * Set the isDeleted property: Flag if a chat thread is soft deleted.
+     * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @param isDeleted the isDeleted value to set.
+     * @param deletedOn the deletedOn value to set.
      * @return the ChatThreadInfo object itself.
      */
-    public ChatThreadInfo setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public ChatThreadInfo setDeletedOn(OffsetDateTime deletedOn) {
+        this.deletedOn = deletedOn;
         return this;
     }
 
     /**
      * Get the lastMessageReceivedOn property: The timestamp when the last message arrived at the server. The timestamp
-     * is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the lastMessageReceivedOn value.
      */

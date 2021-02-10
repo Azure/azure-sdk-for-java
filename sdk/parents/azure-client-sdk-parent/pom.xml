@@ -110,46 +110,26 @@
   </properties>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
+      <!-- This plugin configures the bas requirements for compilation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <showWarnings>true</showWarnings>
-          <failOnWarning>true</failOnWarning>
-        </configuration>
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
-          </dependency>
-        </dependencies>
-        <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
-          <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <linkXRef>true</linkXRef>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -165,38 +145,6 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs</artifactId>
-            <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-          </dependency>
-        </dependencies>
-        <configuration>
-          <effort>max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-          <failOnError>true</failOnError>
-          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-
-          <!-- Enable this plugin when issues documented are fixed -->
-          <!--          <plugins>-->
-          <!--            <plugin>-->
-          <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
-          <!--              <artifactId>findsecbugs-plugin</artifactId>-->
-          <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
-          <!--            </plugin>-->
-          <!--          </plugins>-->
-          <includeTests>false</includeTests>
-          <fork>true</fork>
-        </configuration>
         <executions>
           <execution>
             <phase>verify</phase>
@@ -228,13 +176,6 @@
             <goals>
               <goal>jar</goal>
             </goals>
-            <configuration>
-              <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <failOnError>true</failOnError>
-              <failOnWarnings>true</failOnWarnings>
-              <doclint>all</doclint>
-              <quiet>true</quiet>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -379,28 +320,6 @@
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfigurationFiles>
-            <configurationFile>
-              <resource>revapi/revapi.json</resource>
-            </configurationFile>
-          </analysisConfigurationFiles>
-          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>true</checkDependencies>
-          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-java</artifactId>
-            <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <goals>
@@ -469,6 +388,112 @@
 
     <pluginManagement>
       <plugins>
+        <!-- This plugin configures the bas requirements for compilation -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <configuration>
+            <showWarnings>true</showWarnings>
+            <failOnWarning>true</failOnWarning>
+            <compilerArgs combine.children="append" combine.self="append">
+              <!-- Turn off annotation processing -->
+              <arg>-proc:none</arg>
+
+              <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+              <arg>-Xlint:cast</arg>
+              <arg>-Xlint:classfile</arg>
+              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+              <arg>-Xlint:dep-ann</arg>
+              <arg>-Xlint:divzero</arg>
+              <arg>-Xlint:empty</arg>
+              <arg>-Xlint:fallthrough</arg>
+              <arg>-Xlint:finally</arg>
+              <arg>-Xlint:options</arg>
+              <arg>-Xlint:overrides</arg>
+              <arg>-Xlint:path</arg>
+              <!-- <arg>-Xlint:processing</arg> -->
+              <arg>-Xlint:rawtypes</arg>
+              <!-- <arg>-Xlint:serial</arg> -->
+              <arg>-Xlint:static</arg>
+              <arg>-Xlint:try</arg>
+              <arg>-Xlint:unchecked</arg>
+              <arg>-Xlint:varargs</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans checkstyle issues in the code -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>8.37</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+            <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <propertyExpansion>samedir=</propertyExpansion>
+            <encoding>UTF-8</encoding>
+            <consoleOutput>true</consoleOutput>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <linkXRef>true</linkXRef>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans reports spotbugs in the code -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <effort>max</effort>
+            <threshold>Low</threshold>
+            <xmlOutput>true</xmlOutput>
+            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+            <fork>true</fork>
+            <failOnError>true</failOnError>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>false</includeTests>
+
+            <!-- Enable this plugin when issues documented are fixed -->
+            <!--          <plugins>-->
+            <!--            <plugin>-->
+            <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
+            <!--              <artifactId>findsecbugs-plugin</artifactId>-->
+            <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
+            <!--            </plugin>-->
+            <!--          </plugins>-->
+          </configuration>
+        </plugin>
+
+        <!-- This plugin generates Javadocs -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -660,47 +685,11 @@
             <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
             <quiet>true</quiet>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-          <dependencies>
-            <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-            </dependency>
-            <dependency>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs</artifactId>
-              <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-            </dependency>
-          </dependencies>
-          <configuration>
-            <effort>max</effort>
-            <threshold>Low</threshold>
-            <xmlOutput>true</xmlOutput>
-            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-            <failOnError>true</failOnError>
-            <fork>true</fork>
-            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-            <includeTests>false</includeTests>
+            <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
         </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-          <configuration>
-            <failsOnError>true</failsOnError>
-            <failOnViolation>true</failOnViolation>
-          </configuration>
-        </plugin>
-
+        <!-- This plugin runs tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -710,10 +699,40 @@
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+              <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
           </configuration>
+        </plugin>
+
+        <!-- Checks public surface area for breaking changes. -->
+        <plugin>
+          <groupId>org.revapi</groupId>
+          <artifactId>revapi-maven-plugin</artifactId>
+          <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <configuration>
+            <analysisConfigurationFiles>
+              <configurationFile>
+                <resource>revapi/revapi.json</resource>
+              </configurationFile>
+            </analysisConfigurationFiles>
+            <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+            <checkDependencies>true</checkDependencies>
+            <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-java</artifactId>
+              <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -735,31 +754,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-        <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
-          <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <linkXRef>true</linkXRef>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
             <reports>
               <report>checkstyle</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>checkstyle-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -768,17 +768,6 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <effort>max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-          <failOnError>true</failOnError>
-          <fork>true</fork>
-          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-          <includeTests>false</includeTests>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -791,52 +780,7 @@
               <report>javadoc</report>
             </reports>
           </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-            <configuration>
-              <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
-                  So, path for aggregate reports have to be defined relative to parent pom -->
-              <additionalOptions>-maxLineLength 120
-                -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
-                -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-digitaltwins-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
-                -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-changefeed/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
-                -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
-              </additionalOptions>
-              <doclint>all</doclint>
-            </configuration>
-          </reportSet>
         </reportSets>
-        <configuration>
-          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
-               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
-               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
-          <failOnWarnings>false</failOnWarnings>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -862,25 +806,12 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
-          <analysisConfigurationFiles>
-            <configurationFile>
-              <resource>revapi/revapi.json</resource>
-            </configurationFile>
-          </analysisConfigurationFiles>
-          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>false</checkDependencies>
-          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <reportSets>
           <reportSet>
             <reports>
               <report>report</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <inherited>false</inherited>
-            <reports>
-              <report>report-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -901,12 +832,6 @@
         <maven.compiler.target>8</maven.compiler.target>
       </properties>
       <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -919,30 +844,6 @@
               <excludes>
                 <exclude>module-info.java</exclude>
               </excludes>
-              <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
-              </compilerArgs>
             </configuration>
           </plugin>
           <!-- Avoid errors from module-info -->
@@ -954,7 +855,6 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -970,7 +870,6 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -984,12 +883,6 @@
         <jdk>[11,)</jdk>
       </activation>
       <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -997,32 +890,9 @@
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <testRelease>11</testRelease>
-              <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
+              <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-                <arg>-Xlint:-requires-transitive-automatic
-                </arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
             <executions>
@@ -1110,7 +980,6 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -1380,7 +1249,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1404,7 +1272,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1429,7 +1296,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1453,7 +1319,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1478,7 +1343,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1503,7 +1367,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1528,7 +1391,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1553,7 +1415,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -1578,7 +1439,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>

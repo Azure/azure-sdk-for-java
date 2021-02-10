@@ -71,9 +71,8 @@ public class RegistriesWebhooksClientImpl implements Registries.WebhooksClient {
 
         return PagedConverter
             .flatMapPage(
-                webhooksInner
-                    .listAsync(resourceGroupName, registryName)
-                    .mapPage(
+                PagedConverter.mapPage(webhooksInner
+                    .listAsync(resourceGroupName, registryName),
                         inner -> {
                             if (this.containerRegistry != null) {
                                 return new WebhookImpl(

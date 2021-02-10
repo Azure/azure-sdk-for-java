@@ -31,7 +31,7 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class LinkHandlerTest {
@@ -110,7 +110,7 @@ class LinkHandlerTest {
         handler.onLinkLocalClose(event);
 
         // Assert
-        verifyZeroInteractions(session);
+        verifyNoInteractions(session);
     }
 
     /**
