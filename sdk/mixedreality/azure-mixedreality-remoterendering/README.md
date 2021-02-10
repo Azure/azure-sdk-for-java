@@ -1,94 +1,362 @@
-# README.md template
+# Azure Remote Rendering client library for Java
 
-Use the guidelines in each section of this template to ensure consistency and readability of your README. The README resides in your package's GitHub repository at the root of its directory within the repo. It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com. 
+Azure Remote Rendering (ARR) is a service that enables you to render high-quality, interactive 3D content in the cloud and stream it in real time to devices, such as the HoloLens 2.
 
-**Title**: The H1 of your README should be in the format: `# [Product Name] client library for [Language]`
+This SDK offers functionality to convert assets to the format expected by the runtime, and also to manage
+the lifetime of remote rendering sessions.
 
-* All headings, including the H1, should use **sentence-style capitalization**. Refer to the [Microsoft Style Guide][style-guide-msft].
-* Example: `# Azure Batch client library for Python`
+> NOTE: Once a session is running, a client application will connect to it using one of the "runtime SDKs".
+> These SDKs are designed to best support the needs of an interactive application doing 3d rendering.
+> They are available in ([.net](https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering)
+> or ([C++](https://docs.microsoft.com/cpp/api/remote-rendering/)).
 
-**Introduction**: The introduction appears directly under the title (H1) of your README.
-
-* **DO NOT** use an "Introduction" or "Overview" heading (H2) for this section.
-* First sentence: **Describe the service** briefly. You can usually use the first line of the service's docs landing page for this (Example: [Cosmos DB docs landing page](https://docs.microsoft.com/azure/cosmos-db/)).
-* Next, add a **bulleted list** of the **most common tasks** supported by the package or library, prefaced with "Use the client library for [Product Name] to:". Then, provide code snippets for these tasks in the [Examples](#examples) section later in the document. Keep the task list short but include those tasks most developers need to perform with your package.
-
-> TIP: Your README should be as **brief** as possible but **no more brief** than necessary to get a developer new to Azure, the service, or the package up and running quickly. Keep it brief, but include everything a developer needs to make their first API call successfully.
+[Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
 
 ## Getting started
 
-This section should include everything a developer needs to do to install and create their first client connection *very quickly*.
-
 ### Install the package
 
-First, provide instruction for obtaining and installing the package or library. This section might include only a single line of code, like `pip install package-name`, but should enable a developer to successfully install the package from NuGet, pip, npm, Maven, or even cloning a GitHub repository.
+Install the Azure Mixed Reality ARR client library for Java using one of the following methods.
 
-Include a **Prerequisites** line after the install command that details any requirements that must be satisfied before a developer can [authenticate](#authenticate-the-client) and test all of the snippets in the [Examples](#examples) section. For example, for Cosmos DB:
+From Visual Studio Package Manager:
 
-**Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Python 3.6+](https://www.python.org/downloads/) to use this package.
+```powershell
+Install-Package Azure.MixedReality.RemoteRendering -AllowPrereleaseVersions
+```
+
+From .NET CLI
+
+```dotnetcli
+dotnet add package Azure.MixedReality.RemoteRendering --version 1.0.0-beta.1 
+```
+
+Add a package reference:
+
+```xml
+<PackageReference Include="Azure.MixedReality.RemoteRendering" Version="1.0.0-beta.1" />
+```
+
+### Prerequisites
+
+You will need an [Azure subscription](https://azure.microsoft.com/free/) and an [Azure Remote Rendering account](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account) to use this package.
 
 ### Authenticate the client
 
-If your library requires authentication for use, such as for Azure services, include instructions and example code needed for initializing and authenticating.
+Constructing a remote rendering client requires an authenticated account, and a remote rendering endpoint.
+A RemoteRenderingAccount object is constructed from an accountId and an account domain.
+For an account created in the eastus region, the account domain will have the form "eastus.mixedreality.azure.com".
+There are several different forms of authentication:
 
-For example, include details on obtaining an account key and endpoint URI, setting environment variables for each, and initializing the client object.
+- Account Key authentication
+  - Account keys enable you to get started quickly with using Azure Remote Rendering. But before you deploy your application
+    to production, we recommend that you update your app to use Azure AD authentication.
+- Azure Active Directory (AD) token authentication
+  - If you're building an enterprise application and your company is using Azure AD as its identity system, you can use
+    user-based Azure AD authentication in your app. You then grant access to your Azure Remote Rendering accounts by using
+    your existing Azure AD security groups. You can also grant access directly to users in your organization.
+  - Otherwise, we recommend that you obtain Azure AD tokens from a web service that supports your app. We recommend this
+    method for production applications because it allows you to avoid embedding the credentials for access to Azure Spatial
+    Anchors in your client application.
+
+See [here](https://docs.microsoft.com/azure/remote-rendering/how-tos/authentication) for detailed instructions and information.
+
+In all the following examples, the client is constructed with a `remoteRenderingEndpoint` Uri object.
+The available endpoints correspond to regions, and the choice of endpoint determines the region in which the service performs its work.
+An example is `https://remoterendering.eastus2.mixedreality.azure.com`.
+
+> NOTE: For converting assets, it is preferable to pick a region close to the storage containing the assets.
+
+> NOTE: For rendering, it is strongly recommended that you pick the closest region to the devices using the service. 
+> The time taken to communicate with the server impacts the quality of the experience.
+
+#### Authenticating with account key authentication
+
+Use the `AccountKeyCredential` object to use an account identifier and account key to authenticate:
+
+```csharp Snippet:CreateAClient
+RemoteRenderingAccount account = new RemoteRenderingAccount(accountId, accountDomain);
+AzureKeyCredential accountKeyCredential = new AzureKeyCredential(accountKey);
+
+RemoteRenderingClient client = new RemoteRenderingClient(remoteRenderingEndpoint, account, accountKeyCredential);
+```
+
+#### Authenticating with an AAD client secret
+
+Use the `ClientSecretCredential` object to perform client secret authentication.
+
+```csharp Snippet:CreateAClientWithAAD
+RemoteRenderingAccount account = new RemoteRenderingAccount(accountId, accountDomain);
+
+TokenCredential credential = new ClientSecretCredential(tenantId, clientId, clientSecret, new TokenCredentialOptions
+{
+    AuthorityHost = new Uri($"https://login.microsoftonline.com/{tenantId}")
+});
+
+RemoteRenderingClient client = new RemoteRenderingClient(remoteRenderingEndpoint, account, credential);
+```
+
+#### Authenticating a user using device code authentication
+
+Use the `DeviceCodeCredential` object to perform device code authentication.
+
+```csharp Snippet:CreateAClientWithDeviceCode
+RemoteRenderingAccount account = new RemoteRenderingAccount(accountId, accountDomain);
+
+Task deviceCodeCallback(DeviceCodeInfo deviceCodeInfo, CancellationToken cancellationToken)
+{
+    Debug.WriteLine(deviceCodeInfo.Message);
+    Console.WriteLine(deviceCodeInfo.Message);
+    return Task.FromResult(0);
+}
+
+TokenCredential credential = new DeviceCodeCredential(deviceCodeCallback, tenantId, clientId, new TokenCredentialOptions
+{
+    AuthorityHost = new Uri($"https://login.microsoftonline.com/{tenantId}"),
+});
+
+RemoteRenderingClient client = new RemoteRenderingClient(remoteRenderingEndpoint, account, credential);
+```
+
+See [here](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Device-Code-Flow) for more
+information about using device code authentication flow.
+
+#### Interactive authentication with DefaultAzureCredential
+
+Use the `DefaultAzureCredential` object with `includeInteractiveCredentials: true` to use default interactive authentication
+flow:
+
+```csharp Snippet:CreateAClientWithAzureCredential
+RemoteRenderingAccount account = new RemoteRenderingAccount(accountId, accountDomain);
+TokenCredential credential = new DefaultAzureCredential(includeInteractiveCredentials: true);
+
+RemoteRenderingClient client = new RemoteRenderingClient(remoteRenderingEndpoint, account, credential);
+```
+
+#### Authenticating with a static access token
+
+You can pass a Mixed Reality access token as an `AccessToken` previously retrieved from the
+[Mixed Reality STS service](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/mixedreality/Azure.MixedReality.Authentication)
+to be used with a Mixed Reality client library:
+
+```csharp Snippet:CreateAClientWithStaticAccessToken
+RemoteRenderingAccount account = new RemoteRenderingAccount(accountId, accountDomain);
+
+// GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
+// a Mixed Reality access token from a web service. The web service would use the
+// MixedRealityStsClient and credentials to obtain an access token to be returned
+// to the client.
+AccessToken accessToken = GetMixedRealityAccessTokenFromWebService();
+
+RemoteRenderingClient client = new RemoteRenderingClient(remoteRenderingEndpoint, account, accessToken);
+```
 
 ## Key concepts
 
-The *Key concepts* section should describe the functionality of the main classes. Point out the most important and useful classes in the package (with links to their reference pages) and explain how those classes work together. Feel free to use bulleted lists, tables, code blocks, or even diagrams for clarity.
+### RemoteRenderingClient
+
+The `RemoteRenderingClient` is the client library used to access the RemoteRenderingService.
+It provides methods to create and manage asset conversions and rendering sessions.
 
 ## Examples
 
-Include code snippets and short descriptions for each task you listed in the [Introduction](#introduction) (the bulleted list). Briefly explain each operation, but include enough clarity to explain complex or otherwise tricky operations.
+- [Convert a simple asset](#convert-a-simple-asset)
+- [Convert a more complex asset](#convert-a-more-complex-asset)
+- [Get the output when an asset conversion has finished](#get-the-output-when-an-asset-conversion-has-finished)
+- [List conversions](#list-conversions)
+- [Create a session](#create-a-session)
+- [Extend the lease time of a session](#extend-the-lease-time-of-a-session)
+- [List sessions](#list-sessions)
+- [Stop a session](#stop-a-session)
 
-If possible, use the same example snippets that your in-code documentation uses. For example, use the snippets in your `examples.py` that Sphinx ingests via its [literalinclude](https://www.sphinx-doc.org/en/1.5/markup/code.html?highlight=code%20examples#includes) directive. The `examples.py` file containing the snippets should reside alongside your package's code, and should be tested in an automated fashion.
+### Convert a simple asset
 
-Each example in the *Examples* section starts with an H3 that describes the example. At the top of this section, just under the *Examples* H2, add a bulleted list linking to each example H3. Each example should deep-link to the types and/or members used in the example.
+We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
+The following snippet describes how to request that "box.fbx", found at the root of the blob container at the given URI, gets converted.
 
-* [Create the thing](#create-the-thing)
-* [Get the thing](#get-the-thing)
-* [List the things](#list-the-things)
+```csharp Snippet:StartAnAssetConversion
+    AssetConversionInputOptions inputOptions = new AssetConversionInputOptions(storageUri, "box.fbx");
+    AssetConversionOutputOptions outputOptions = new AssetConversionOutputOptions(storageUri);
+    AssetConversionOptions conversionOptions = new AssetConversionOptions(inputOptions, outputOptions);
 
-### Create the thing
+    // A randomly generated GUID is a good choice for a conversionId.
+    string conversionId = Guid.NewGuid().ToString();
 
-Use the `create_thing` method to create a Thing reference; this method does not make a network call. To persist the Thing in the service, call `Thing.save`.
-
-```Python
-thing = client.create_thing(id, name)
-thing.save()
+    AssetConversionOperation conversionOperation = client.StartConversion(conversionId, conversionOptions);
 ```
 
-### Get the thing
+The output files will be placed beside the input asset.
 
-The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
+### Convert a more complex asset
 
-```Python
-thing = client.get_thing(id)
+Assets can reference other files, and blob containers can contain files belonging to many different assets.
+In this example, we show how prefixes can be used to organize your blobs and how to convert an asset to take account of that organization.
+Assume that the blob container at `inputStorageUri` contains many files, including "Bicycle/bicycle.gltf", "Bicycle/bicycle.bin" and "Bicycle/saddleTexture.jpg".
+(So the prefix "Bicycle" is acting very like a folder.)
+We want to convert the gltf so that it has access to the other files which share the prefix, without requiring the conversion service to access any other files.
+To keep things tidy, we also want the output files to be written to a different storage container and given a common prefix: "ConvertedBicycle".
+The code is as follows:
+
+```csharp Snippet:StartAComplexAssetConversion
+    AssetConversionInputOptions input = new AssetConversionInputOptions(inputStorageUri, "bicycle.gltf")
+    {
+        BlobPrefix = "Bicycle"
+    };
+    AssetConversionOutputOptions output = new AssetConversionOutputOptions(outputStorageUri)
+    {
+        BlobPrefix = "ConvertedBicycle"
+    };
+    AssetConversionOptions conversionOptions = new AssetConversionOptions(inputOptions, outputOptions);
+
+    string conversionId = Guid.NewGuid().ToString();
+
+    AssetConversionOperation conversionOperation = client.StartConversion(conversionId, conversionOptions);
 ```
 
-### List the things
+> NOTE: when a prefix is given in the input options, then the input file parameter is assumed to be relative to that prefix.
+> The same applies to the output file parameter in output options.
 
-Use `list_things` to get one or more Thing objects from the service. If there are no Things available, a `404` exception is thrown (see [Troubleshooting](#troubleshooting) for details on handling exceptions).
+### Get the output when an asset conversion has finished
 
-```Python
-things = client.list_things()
+Converting an asset can take anywhere from seconds to hours.
+This code uses an existing conversionOperation and polls regularly until the conversion has finished or failed.
+The default polling period is 10 seconds.
+Note that a conversionOperation can be constructed from the conversionId of an existing conversion and a client.
+
+```csharp Snippet:QueryConversionStatus
+    AssetConversion conversion = conversionOperation.WaitForCompletionAsync().Result;
+    if (conversion.Status == AssetConversionStatus.Succeeded)
+    {
+        Console.WriteLine($"Conversion succeeded: Output written to {conversion.Output.OutputAssetUri}");
+    }
+    else if (conversion.Status == AssetConversionStatus.Failed)
+    {
+        Console.WriteLine($"Conversion failed: {conversion.Error.Code} {conversion.Error.Message}");
+    }
+```
+
+### List conversions
+
+You can get information about your conversions using the `getConversions` method.
+This method may return conversions which have yet to start, conversions which are running and conversions which have finished.
+In this example, we just list the output URIs of successful conversions started in the last day.
+
+```csharp Snippet:ListConversions
+    foreach (var conversion in client.GetConversions())
+    {
+        if ((conversion.Status == AssetConversionStatus.Succeeded) && (conversion.CreatedOn > DateTimeOffset.Now.AddDays(-1)))
+        {
+            Console.WriteLine($"output asset URI: {conversion.Output.OutputAssetUri}");
+        }
+    }
+```
+
+### Create a session
+
+We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
+The following snippet describes how to request that a new rendering session be started.
+
+```csharp Snippet:CreateASession
+    RenderingSessionOptions options = new RenderingSessionOptions(TimeSpan.FromMinutes(30), RenderingServerSize.Standard);
+
+    // A randomly generated GUID is a good choice for a sessionId.
+    string sessionId = Guid.NewGuid().ToString();
+
+    StartRenderingSessionOperation startSessionOperation = client.StartSession(sessionId, options);
+
+    RenderingSession newSession = startSessionOperation.WaitForCompletionAsync().Result;
+    if (newSession.Status == RenderingSessionStatus.Ready)
+    {
+        Console.WriteLine($"Session {sessionId} is ready.");
+    }
+    else if (newSession.Status == RenderingSessionStatus.Error)
+    {
+        Console.WriteLine($"Session {sessionId} encountered an error: {newSession.Error.Code} {newSession.Error.Message}");
+    }
+```
+
+### Extend the lease time of a session
+
+If a session is approaching its maximum lease time, but you want to keep it alive, you will need to make a call to increase
+its maximum lease time.
+This example shows how to query the current properties and then extend the lease if it will expire soon.
+
+> NOTE: The runtime SDKs also offer this functionality, and in many typical scenarios, you would use them to
+> extend the session lease.
+
+```csharp Snippet:UpdateSession
+    RenderingSession currentSession = client.GetSession(sessionId);
+
+    if (currentSession.MaxLeaseTime - DateTimeOffset.Now.Subtract(currentSession.CreatedOn.Value) < TimeSpan.FromMinutes(2))
+    {
+        TimeSpan newLeaseTime = currentSession.MaxLeaseTime.Value.Add(TimeSpan.FromMinutes(30));
+
+        UpdateSessionOptions longerLeaseSettings = new UpdateSessionOptions(newLeaseTime);
+
+        client.UpdateSession(sessionId, longerLeaseSettings);
+    }
+```
+
+### List sessions
+
+You can get information about your sessions using the `getSessions` method.
+This method may return sessions which have yet to start and sessions which are ready.
+
+```csharp Snippet:ListSessions
+    foreach (var properties in client.GetSessions())
+    {
+        if (properties.Status == RenderingSessionStatus.Starting)
+        {
+            Console.WriteLine($"Session \"{properties.SessionId}\" is starting.");
+        }
+        else if (properties.Status == RenderingSessionStatus.Ready)
+        {
+            Console.WriteLine($"Session \"{properties.SessionId}\" is ready at host {properties.Host}");
+        }
+    }
+```
+
+### Stop a session
+
+The following code will stop a running session with given id.
+
+```csharp Snippet:StopSession
+    client.StopSession(sessionId);
 ```
 
 ## Troubleshooting
 
-Describe common errors and exceptions, how to "unpack" them if necessary, and include guidance for graceful handling and recovery.
+For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page](https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot) for remote rendering at docs.microsoft.com.
 
-Provide information to help developers avoid throttling or other service-enforced errors they might encounter. For example, provide guidance and examples for using retry or connection policies in the API.
+The client methods will throw exceptions if the request cannot be made.
+However, in the case of both conversions and sessions, the requests can succeed but the requested operation may not be successful.
+In this case, no exception will be thrown, but the returned objects can be inspected to understand what happened.
 
-If the package or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
+If the asset in a conversion is invalid, the conversion operation will return an AssetConversion object
+with a Failed status and carrying a RemoteRenderingServiceError with details.
+Once the conversion service is able to process the file, a &lt;assetName&gt;.result.json file will be written to the output container.
+If the input asset is invalid, then that file will contain a more detailed description of the problem.
+
+Similarly, sometimes when a session is requested, the session ends up in an error state.
+The startSessionOperation method will return a RenderingSession object, but that object will have an Error status and carry a
+RemoteRenderingServiceError with details.
 
 ## Next steps
 
-* Provide a link to additional code examples, ideally to those sitting alongside the README in the package's `/samples` directory.
-* If appropriate, point users to other packages that might be useful.
-* If you think there's a good chance that developers might stumble across your package in error (because they're searching for specific functionality and mistakenly think the package provides that functionality), point them to the packages they might be looking for.
+- Read the [Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
+- Learn about the runtime SDKs:
+  - .NET: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering
+  - C++: https://docs.microsoft.com/cpp/api/remote-rendering/
 
-<!-- LINKS -->
-[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
+## Contributing
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
+Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+For details, visit [https://cla.microsoft.com](https://cla.microsoft.com).
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the
+PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this
+once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
+[opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
