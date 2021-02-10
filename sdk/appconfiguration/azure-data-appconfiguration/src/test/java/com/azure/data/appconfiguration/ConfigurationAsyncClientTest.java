@@ -544,16 +544,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        String key = getKey();
-        String key2 = getKey();
+        final String key = getKey();
+        final String key2 = getKey();
 
         // Delete all existing settings in the resource
-Mono<Void> deleteAllSettingsMono = client.listConfigurationSettings(null)
-    .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
-    .then();
-    
-StepVerifier.create(deleteAllSettingsMono)
-   .verifyComplete();
+        StepVerifier.create(
+            client.listConfigurationSettings(null)
+                .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                .then())
+            .verifyComplete();
 
         listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
