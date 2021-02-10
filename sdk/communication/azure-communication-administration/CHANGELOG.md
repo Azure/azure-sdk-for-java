@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
+### Breaking Changes 
+- PhoneNumbersClient and PhoneNumbersAsyncClient is moved to a new package, `azure.communication.phonenumbers`.
 
 ## 1.0.0-beta.4 (Skipped)
 ### Added
@@ -8,7 +10,6 @@
 
 ### Breaking Changes
 - CommunicationIdentityClient and CommunicationIdentityAsyncClient is moved to a new package, `azure.communication.identity`.
-- PhoneNumbersClient and PhoneNumbersAsyncClient is moved to a new package, `azure.communication.phonenumbers`.
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added

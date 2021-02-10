@@ -28,6 +28,13 @@ override-client-name: PhoneNumberAdminClient
 custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
+java: true
+output-folder: ..\
+license-header: MICROSOFT_MIT_SMALL
+namespace: com.azure.communication.phonenumbers
+generate-client-as-impl: true
+sync-methods: all
+context-client-method-parameter: true
 ```
 
 ### Add readonly attribute to AcquiredPhoneNumber properties
@@ -87,15 +94,4 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
-```
-
-``` yaml
-java: true
-output-folder: ..\
-license-header: MICROSOFT_MIT_SMALL
-namespace: com.azure.communication.phonenumbers
-generate-client-as-impl: true
-custom-types-subpackage: models
-sync-methods: all
-context-client-method-parameter: true
 ```

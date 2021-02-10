@@ -3,7 +3,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/:search?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -23,7 +23,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -42,7 +42,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -61,7 +61,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -80,7 +80,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -99,7 +99,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -118,7 +118,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -137,7 +137,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/searchResults/78d05030-0d1a-498f-876a-124adb561229?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
