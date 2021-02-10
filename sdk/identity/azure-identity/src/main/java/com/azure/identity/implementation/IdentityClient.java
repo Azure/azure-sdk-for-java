@@ -26,19 +26,7 @@ import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.RefreshTokenParameters;
-import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.*;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
@@ -196,8 +184,14 @@ public class IdentityClient {
                     }
                 } else {
                     InputStream pfxCertificateStream = getCertificateInputStream();
-                    credential = ClientCredentialFactory.createFromCertificate(
+                    try {
+                        credential = ClientCredentialFactory.createFromCertificate(
                             pfxCertificateStream, certificatePassword);
+                    } finally {
+                        if (pfxCertificateStream != null) {
+                            pfxCertificateStream.close();
+                        }
+                    }
                 }
             } catch (IOException | GeneralSecurityException e) {
                 throw logger.logExceptionAsError(new RuntimeException(
@@ -690,6 +684,7 @@ public class IdentityClient {
         }
         InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
                                                      .scopes(new HashSet<>(request.getScopes()))
+                                                     .prompt(Prompt.SELECT_ACCOUNT)
                                                      .build();
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
                                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
