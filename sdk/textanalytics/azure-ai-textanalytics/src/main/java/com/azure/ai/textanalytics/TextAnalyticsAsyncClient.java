@@ -4,10 +4,11 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -15,17 +16,19 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.StringIndexType;
+import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
@@ -80,7 +83,7 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
-    final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
+    final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
     final AnalyzeBatchActionsAsyncClient analyzeBatchActionsAsyncClient;
 
     /**
@@ -104,7 +107,7 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
-        this.analyzeHealthcareAsyncClient = new AnalyzeHealthcareAsyncClient(service);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
         this.analyzeBatchActionsAsyncClient = new AnalyzeBatchActionsAsyncClient(service);
     }
 
@@ -383,6 +386,40 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        final RecognizeEntitiesOptions recognizeEntitiesOptions = new RecognizeEntitiesOptions();
+        String modelVersion = null;
+        boolean includeStatistics = false;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+        }
+        return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents,
+            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a list of {@link TextDocumentInput document}. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link RecognizeEntitiesResultCollection options} to configure the scoring model for
+     * documents, show statistics, and {@link StringIndexType}.
+     *
+     * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }
 
@@ -658,9 +695,45 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeLinkedEntitiesResultCollection>>
-        recognizeLinkedEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents,
-            TextAnalyticsRequestOptions options) {
+    public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        final RecognizeLinkedEntitiesOptions recognizeLinkedEntitiesOptions = new RecognizeLinkedEntitiesOptions();
+        String modelVersion = null;
+        boolean includeStatistics = false;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+        }
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents,
+            recognizeLinkedEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link RecognizeLinkedEntitiesOptions options} to configure the scoring model for documents,
+     * show statistics, and {@link StringIndexType}.
+     *
+     * @return A {@link Mono} contains a {@link Response} which contains a
+     * {@link RecognizeLinkedEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents, options);
     }
 
@@ -1019,8 +1092,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Analyze healthcare entities, entity linking, and entity relations in a list of
-     * {@link TextDocumentInput document} with provided request options.
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link String documents} with provided request options.
      *
      * Note: In order to use this functionality, request to access public preview is required.
      * Azure Active Directory (AAD) is not currently supported. For more information see
@@ -1028,28 +1101,68 @@ public final class TextAnalyticsAsyncClient {
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
-     * <p>Analyze healthcare entities, entity linking, and entity relations in a list of
-     * {@link TextDocumentInput document} and provided request options to
-     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
-     * received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
-     * when analyzing healthcare task.
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
+     * when analyzing healthcare entities.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a {@link PagedFlux} of {@link HealthcareTaskResult}.
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(
-        Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options) {
-        return analyzeHealthcareAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
+            AnalyzeHealthcareEntitiesOptions options) {
+        return beginAnalyzeHealthcareEntities(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
+    }
+
+    /**
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link TextDocumentInput documents} with provided request options.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p>Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
+     * when analyzing healthcare entities.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
+            AnalyzeHealthcareEntitiesOptions options) {
+        return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
     }
 
     /**

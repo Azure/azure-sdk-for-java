@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for Galleries. */
 public class GalleriesImpl
@@ -65,7 +66,7 @@ public class GalleriesImpl
 
     @Override
     public PagedFlux<Gallery> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listByResourceGroupAsync(resourceGroupName), this::wrapModel);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class GalleriesImpl
 
     @Override
     public PagedFlux<Gallery> listAsync() {
-        return inner().listAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(), this::wrapModel);
     }
 
     @Override

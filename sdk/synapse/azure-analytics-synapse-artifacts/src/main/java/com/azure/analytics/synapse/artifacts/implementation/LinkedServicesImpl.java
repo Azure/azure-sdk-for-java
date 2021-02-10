@@ -63,7 +63,10 @@ public final class LinkedServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<LinkedServiceListResponse>> getLinkedServicesByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/linkedservices/{linkedServiceName}")
         @ExpectedResponses({200, 202})
@@ -74,6 +77,7 @@ public final class LinkedServicesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") LinkedServiceResource linkedService,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/linkedservices/{linkedServiceName}")
@@ -84,6 +88,7 @@ public final class LinkedServicesImpl {
                 @PathParam("linkedServiceName") String linkedServiceName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/linkedservices/{linkedServiceName}")
@@ -93,6 +98,7 @@ public final class LinkedServicesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("linkedServiceName") String linkedServiceName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/linkedservices/{linkedServiceName}/rename")
@@ -103,6 +109,7 @@ public final class LinkedServicesImpl {
                 @PathParam("linkedServiceName") String linkedServiceName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -111,6 +118,7 @@ public final class LinkedServicesImpl {
         Mono<Response<LinkedServiceListResponse>> getLinkedServicesByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -123,10 +131,11 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getLinkedServicesByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -149,7 +158,9 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceSinglePageAsync(Context context) {
-        return service.getLinkedServicesByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getLinkedServicesByWorkspace(
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -232,6 +243,7 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponseAsync(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateLinkedService(
@@ -240,6 +252,7 @@ public final class LinkedServicesImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 linkedService,
+                                accept,
                                 context));
     }
 
@@ -259,12 +272,14 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponseAsync(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateLinkedService(
                 this.client.getEndpoint(),
                 linkedServiceName,
                 this.client.getApiVersion(),
                 ifMatch,
                 linkedService,
+                accept,
                 context);
     }
 
@@ -414,6 +429,7 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> getLinkedServiceWithResponseAsync(
             String linkedServiceName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLinkedService(
@@ -421,6 +437,7 @@ public final class LinkedServicesImpl {
                                 linkedServiceName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -439,8 +456,14 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> getLinkedServiceWithResponseAsync(
             String linkedServiceName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getLinkedService(
-                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(),
+                linkedServiceName,
+                this.client.getApiVersion(),
+                ifNoneMatch,
+                accept,
+                context);
     }
 
     /**
@@ -576,10 +599,15 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLinkedServiceWithResponseAsync(String linkedServiceName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteLinkedService(
-                                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                linkedServiceName,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -594,8 +622,9 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLinkedServiceWithResponseAsync(String linkedServiceName, Context context) {
+        final String accept = "application/json";
         return service.deleteLinkedService(
-                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -669,6 +698,7 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameLinkedServiceWithResponseAsync(
             String linkedServiceName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameLinkedService(
@@ -676,6 +706,7 @@ public final class LinkedServicesImpl {
                                 linkedServiceName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -693,8 +724,9 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameLinkedServiceWithResponseAsync(
             String linkedServiceName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameLinkedService(
-                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), linkedServiceName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -773,9 +805,11 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getLinkedServicesByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                                service.getLinkedServicesByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -800,7 +834,8 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getLinkedServicesByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getLinkedServicesByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

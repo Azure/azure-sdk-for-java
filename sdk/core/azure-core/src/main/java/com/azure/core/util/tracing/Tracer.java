@@ -68,6 +68,11 @@ public interface Tracer {
     String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
 
     /**
+     * Key for {@link Context} which disables tracing for the request associated with the current context.
+     */
+    String DISABLE_TRACING_KEY = "disable-tracing";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span

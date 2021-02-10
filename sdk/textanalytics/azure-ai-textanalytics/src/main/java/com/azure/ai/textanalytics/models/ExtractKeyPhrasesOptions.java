@@ -25,7 +25,9 @@ public final class ExtractKeyPhrasesOptions extends TextAnalyticsRequestOptions 
     }
 
     /**
-     * Set the value of {@code includeStatistics}.
+     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * If set to true, indicates that the service should return document and document batch statistics
+     * with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
