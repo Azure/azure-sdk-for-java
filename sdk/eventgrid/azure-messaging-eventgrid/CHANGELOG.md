@@ -15,7 +15,6 @@
 - Update `azure-core` dependency to `1.13.0`.
 - Update `azure-core-http-netty` dependency to `1.8.0`.
 - Remove dependency on `azure-core-serializer-json-jackson`.
-- Removed dependency on `commons-io`.
 
 ## 2.0.0-beta.3 (2020-10-06)
 ### New Features
