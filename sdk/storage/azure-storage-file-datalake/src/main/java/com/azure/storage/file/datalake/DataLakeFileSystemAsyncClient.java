@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -22,9 +21,8 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -82,7 +80,7 @@ public class DataLakeFileSystemAsyncClient {
     private static final String ROOT_DIRECTORY_NAME = "";
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
-    private final DataLakeStorageClientImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -101,11 +99,11 @@ public class DataLakeFileSystemAsyncClient {
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient) {
-        this.azureDataLakeStorage = new DataLakeStorageClientBuilder()
+        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -450,26 +448,19 @@ public class DataLakeFileSystemAsyncClient {
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
         Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, options, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+            marker -> listPathsSegment(marker, options, timeout);
 
         return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
     }
 
-    private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,
+    private Mono<PagedResponse<Path>> listPathsSegment(String marker,
         ListPathsOptions options, Duration timeout) {
         options = options == null ? new ListPathsOptions() : options;
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(),
-                options.isUserPrincipalNameReturned(), null, null, Context.NONE), timeout);
+            this.azureDataLakeStorage.getFileSystems().listPathsSinglePageAsync(options.isRecursive(), null, null,
+                marker, options.getPath(), options.getMaxResults(),
+                options.isUserPrincipalNameReturned(),  Context.NONE), timeout);
     }
 
     /**

@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The Path model.
- */
+/** The Path model. */
+@JacksonXmlRootElement(localName = "Path")
 @Fluent
 public final class Path {
     /*
@@ -33,7 +33,7 @@ public final class Path {
     /*
      * The eTag property.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /*

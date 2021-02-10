@@ -7,23 +7,15 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for PathResourceType.
- */
+/** Defines values for PathResourceType. */
 public enum PathResourceType {
-    /**
-     * Enum value directory.
-     */
+    /** Enum value directory. */
     DIRECTORY("directory"),
 
-    /**
-     * Enum value file.
-     */
+    /** Enum value file. */
     FILE("file");
 
-    /**
-     * The actual serialized value for a PathResourceType instance.
-     */
+    /** The actual serialized value for a PathResourceType instance. */
     private final String value;
 
     PathResourceType(String value) {

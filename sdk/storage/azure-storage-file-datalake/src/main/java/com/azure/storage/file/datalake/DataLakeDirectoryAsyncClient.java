@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,7 +20,6 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -561,25 +559,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
         Integer maxResults, Duration timeout) {
         Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout);
 
         return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
     }
 
-    private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
+    private Mono<PagedResponse<Path>> listPathsSegment(String marker, boolean recursive,
         boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
-                null, Context.NONE), timeout);
+            this.fileSystemDataLakeStorage.getFileSystems().listPathsSinglePageAsync(
+                recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned,
+                Context.NONE), timeout);
     }
 
     /**
