@@ -9,14 +9,15 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "19ms",
-      "MS-CV" : "MpoEUdWfi0G5uU68Rx2PsQ.0",
+      "X-Processing-Time" : "13ms",
+      "MS-CV" : "k91PSHGr7keO8+OQeDCD1w.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0JT0UYAAAAAAf8reHUZhkRbc1OKW9bo64WVZSMzBFREdFMDQwOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0fNAiYAAAAABMD7kEqm8BSbX8QdrKVWQ/WVZSMzBFREdFMDMxOQA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "201",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-eef0-7cec-2a7a-5b3a0d00007a\"}}",
-      "Date" : "Fri, 29 Jan 2021 16:51:48 GMT",
-      "x-ms-client-request-id" : "023b17c8-2891-405f-94c3-2765afd435bd",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-27e0-0a8b-2e7c-5b3a0d000108\"}}",
+      "Date" : "Tue, 09 Feb 2021 18:12:12 GMT",
+      "x-ms-client-request-id" : "afbdb1c8-a945-4cbb-99fe-e00bc7cfb36f",
+      "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -30,20 +31,21 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "19ms",
-      "MS-CV" : "oikV5SQtIk+QibPoeWzNFQ.0",
+      "X-Processing-Time" : "12ms",
+      "MS-CV" : "DnOJstO3WUWwF9bGovLxQw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0JT0UYAAAAAD8uTK1p8zjQYZPqoZk1aB3WVZSMzBFREdFMDMwNgA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0fNAiYAAAAACGkeo3qxfmQJhDSBQRmX28WVZSMzBFREdFMDQxOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "201",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-eef0-7d1f-2e7c-5b3a0d00008d\"}}",
-      "Date" : "Fri, 29 Jan 2021 16:51:48 GMT",
-      "x-ms-client-request-id" : "385d70e0-da13-4e83-afd1-e46d6e5cf271",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-27e0-0abf-2a7a-5b3a0d000052\"}}",
+      "Date" : "Tue, 09 Feb 2021 18:12:11 GMT",
+      "x-ms-client-request-id" : "8804a4c5-7464-49ee-820b-b835f64d06d4",
+      "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-eef0-7cec-2a7a-5b3a0d00007a/:issueAccessToken?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-27e0-0a8b-2e7c-5b3a0d000108/:issueAccessToken?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -51,14 +53,15 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "109ms",
-      "MS-CV" : "2WbJE88kX0WCLuP6Q60yMg.0",
+      "X-Processing-Time" : "92ms",
+      "MS-CV" : "5ebBOZDOe0ak618kZvyd9w.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0JT0UYAAAAAAO1DK9yoIsSK55yIWypS1wWVZSMzBFREdFMDQwOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0fNAiYAAAAAApl79i0PAjQqaEHo3RvPK8WVZSMzBFREdFMDMxOQA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "200",
-      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2021-01-30T16:51:48.2998902+00:00\"}",
-      "Date" : "Fri, 29 Jan 2021 16:51:49 GMT",
-      "x-ms-client-request-id" : "15bae483-2083-488b-aaef-3baccd77e86e",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2021-02-10T18:12:11.7392719+00:00\"}",
+      "Date" : "Tue, 09 Feb 2021 18:12:12 GMT",
+      "x-ms-client-request-id" : "5494b3e4-f4a4-4294-ba47-dbd899f14129",
+      "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
