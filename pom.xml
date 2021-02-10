@@ -303,6 +303,10 @@
                     <title>Azure Mixed Reality Authentication</title>
                     <packages>com.azure.mixedreality.authentication*</packages>
                   </group>
+                  <group>
+                    <title>Azure Mixed Reality RemoteRendering</title>
+                    <packages>com.azure.mixedreality.remoterendering*</packages>
+                  </group>
                 </groups>
                 <links>
                   <link>https://docs.oracle.com/javase/8/docs/api/</link>
