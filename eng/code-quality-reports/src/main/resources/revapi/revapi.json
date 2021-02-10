@@ -376,6 +376,11 @@
         "justification": "Default interface method"
       },
       {
+        "code": "java.annotation.attributeValueChanged",
+        "new": "class com.azure.search.documents.SearchClientBuilder",
+        "justification": "Non-breaking change"
+      },
+      {
         "code": "java.method.staticMethodAddedToInterface",
         "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
         "justification": "Default implementation"
