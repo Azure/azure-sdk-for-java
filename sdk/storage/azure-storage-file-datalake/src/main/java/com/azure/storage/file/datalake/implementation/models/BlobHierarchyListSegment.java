@@ -6,12 +6,15 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 
 /**
  * The BlobHierarchyListSegment model.
  */
 @Fluent
+@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)
 public final class BlobHierarchyListSegment {
     /*
      * The blobPrefixes property.

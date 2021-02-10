@@ -16,7 +16,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -27,11 +26,9 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathDeletedItem;
+import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -95,6 +92,7 @@ public class DataLakeFileSystemAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
+    private final DataLakeStorageClientImpl blobDataLakeStorage;
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -118,6 +116,14 @@ public class DataLakeFileSystemAsyncClient {
             .url(url)
             .version(serviceVersion.getVersion())
             .build();
+
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
+        this.blobDataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(blobUrl)
+            .version(serviceVersion.getVersion())
+            .build();
+
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -548,9 +554,12 @@ public class DataLakeFileSystemAsyncClient {
     private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
         ListDeletedPathsOptions options, Duration timeout) {
         options = options == null ? new ListDeletedPathsOptions() : options;
+        if (options.getMaxResults() == 0) {
+            options.setMaxResults(10);
+        }
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureDataLakeStorage.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(
+            this.blobDataLakeStorage.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(
                 null, options.getPath(), marker, options.getMaxResults(),
                 null, ListBlobsShowOnly.DELETED, null, null, Context.NONE), timeout);
     }

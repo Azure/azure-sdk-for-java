@@ -11,6 +11,7 @@ import spock.lang.Unroll
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.stream.Collectors
 
 class FileSystemAPITest extends APISpec {
 
@@ -948,6 +949,7 @@ class FileSystemAPITest extends APISpec {
 
     def "List deleted paths"() {
         setup:
+        System.out.println(new PathDeletedItem("foo", false, "bar", OffsetDateTime.now(), 5).isPrefix())
         enableSoftDelete()
 
         def fc1 = fsc.getFileClient(generatePathName())
@@ -955,15 +957,15 @@ class FileSystemAPITest extends APISpec {
         fc1.delete()
 
         when:
-        def deletedBlobs = fsc.listDeletedPaths()
+        List<PathDeletedItem> deletedBlobs = fsc.listDeletedPaths().stream().collect(Collectors.toList())
 
         then:
         deletedBlobs.size() == 1
-        !deletedBlobs.first().isPrefix()
-        deletedBlobs.first().getName() == fc1.getFileName()
-        deletedBlobs.first().getDeletedOn() != null
-        deletedBlobs.first().getDeletionId() != null
-        deletedBlobs.first().getRemainingRetentionDays() != null
+        !deletedBlobs.get(0).isPrefix()
+        deletedBlobs.get(0).getName() == fc1.getFileName()
+        deletedBlobs.get(0).getDeletedOn() != null
+        deletedBlobs.get(0).getDeletionId() != null
+        deletedBlobs.get(0).getRemainingRetentionDays() != null
 
         cleanup:
         disableSoftDelete()
@@ -979,7 +981,7 @@ class FileSystemAPITest extends APISpec {
         fc1.create(true)
         fc1.delete()
 
-        def fc2 = fsc.getFileClient() // Create another file not under the path
+        def fc2 = fsc.getFileClient(generatePathName()) // Create another file not under the path
         fc2.create()
         fc2.delete()
 
@@ -1002,7 +1004,7 @@ class FileSystemAPITest extends APISpec {
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
 
         when:
-        fsc.listDeletedPaths()
+        fsc.listDeletedPaths().last()
 
         then:
         thrown(DataLakeStorageException)
@@ -1046,7 +1048,7 @@ class FileSystemAPITest extends APISpec {
         "!'();[]@&%=+\$,#äÄöÖüÜß;"                                | _
         "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B" | _
         " my cool directory "                                     | _
-        "directory"
+        "directory"                                               | _
     }
 
     def "Restore path error"() {

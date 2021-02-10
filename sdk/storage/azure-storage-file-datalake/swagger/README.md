@@ -17,7 +17,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-02-10/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8eda1f7bad86c6e638a84df5976a1f740072a269/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-06-12/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -133,6 +133,64 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{filesystem}/{path}?comp=expiry"].put
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+### Adds FileSystem parameter to /{filesystem}?restype=container&comp=list&hierarchy
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}?restype=container&comp=list&hierarchy"]
+  transform: >
+    let param = $.get.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        $.get.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### ListBlobsHierarchySegmentResponse
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ListBlobsHierarchySegmentResponse
+  transform: >
+    if (!$.required.includes("Prefix")) {
+      $.required.push("Prefix");
+      $.required.push("Marker");
+      $.required.push("MaxResults");
+      $.required.push("Delimiter");
+      $.required.push("NextMarker");
+    }
+```
+
+### Add the CustomHierarchicalListingDeserializer attribute
+``` yaml
+directive:
+- from: BlobHierarchyListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class BlobHierarchyListSegment {",
+        "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=undelete"].patch
   transform: >
     let param = $.parameters[0];
     if (!param["$ref"].endsWith("FileSystem")) {

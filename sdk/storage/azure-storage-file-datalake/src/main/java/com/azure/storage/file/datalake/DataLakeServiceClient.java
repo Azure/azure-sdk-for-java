@@ -299,8 +299,9 @@ public class DataLakeServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(DataLakeServiceProperties properties, Duration timeout,
         Context context) {
-        return blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
-                timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+        blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
+                timeout, context), logger);
     }
 
     /**

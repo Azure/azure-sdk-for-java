@@ -51,7 +51,7 @@ public final class ListBlobsHierarchySegmentResponse {
     /*
      * The segment property.
      */
-    @JsonProperty(value = "Segment", required = true)
+    @JsonProperty(value = "Blobs", required = true) // TODO: Fix generator to do this automatically
     private BlobHierarchyListSegment segment;
 
     /*

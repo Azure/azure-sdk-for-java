@@ -99,7 +99,7 @@ public final class FileSystemsImpl {
         @Get("{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker, @QueryParam("maxResults") Integer maxResults, @QueryParam("include") String include, @QueryParam("showonly") ListBlobsShowOnly showonly, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(@PathParam("filesystem") String fileSystem, @HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker, @QueryParam("maxResults") Integer maxResults, @QueryParam("include") String include, @QueryParam("showonly") ListBlobsShowOnly showonly, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -311,7 +311,7 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = null;
-        return service.listBlobHierarchySegment(this.client.getUrl(), prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(this.client.getFileSystem(), this.client.getUrl(), prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -334,6 +334,6 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listBlobHierarchySegment(this.client.getUrl(), prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(this.client.getFileSystem(), this.client.getUrl(), prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 }

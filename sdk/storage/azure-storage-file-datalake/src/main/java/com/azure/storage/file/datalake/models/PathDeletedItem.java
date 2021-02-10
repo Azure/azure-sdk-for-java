@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.implementation.models;
+package com.azure.storage.file.datalake.models;
 
 import java.time.OffsetDateTime;
 
@@ -28,6 +28,7 @@ public class PathDeletedItem {
     public PathDeletedItem(String name, boolean isPrefix, String deletionId, OffsetDateTime deletedOn,
         Integer remainingRetentionDays) {
         this.name = name;
+        this.isPrefix = isPrefix;
         this.deletionId = deletionId;
         this.deletedOn = deletedOn;
         this.remainingRetentionDays = remainingRetentionDays;
