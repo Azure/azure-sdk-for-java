@@ -4,6 +4,10 @@ package com.azure.resourcemanager.privatedns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
 import com.azure.resourcemanager.privatedns.fluent.models.PrivateZoneInner;
 import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
@@ -26,6 +30,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
+import java.io.IOException;
+
 /** Implementation for {@link PrivateDnsZone}. */
 class PrivateDnsZoneImpl
     extends GroupableResourceImpl<PrivateDnsZone, PrivateZoneInner, PrivateDnsZoneImpl, PrivateDnsZoneManager>
@@ -41,6 +47,9 @@ class PrivateDnsZoneImpl
     private PrivateDnsRecordSetsImpl recordSets;
     private VirtualNetworkLinksImpl virtualNetworkLinks;
     private final ETagState etagState = new ETagState();
+    private final ClientLogger logger = new ClientLogger(PrivateDnsZoneImpl.class);
+    private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+    private String innerCopy;
 
     PrivateDnsZoneImpl(String name, final PrivateZoneInner innerModel, final PrivateDnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -384,6 +393,12 @@ class PrivateDnsZoneImpl
 
     @Override
     public Mono<PrivateDnsZone> createResourceAsync() {
+        if (!isInCreateMode()) {
+            String innerStr = serializeInner(this.innerModel());
+            if (innerStr.equals(innerCopy)) {
+                return Mono.just(this);
+            }
+        }
         return manager().serviceClient().getPrivateZones()
             .createOrUpdateAsync(
                 resourceGroupName(),
@@ -394,6 +409,7 @@ class PrivateDnsZoneImpl
             .map(innerToFluentMap(this))
             .map(privateDnsZone -> {
                 etagState.clear();
+                innerCopy = serializeInner(privateDnsZone.innerModel());
                 return privateDnsZone;
             });
     }
@@ -403,6 +419,7 @@ class PrivateDnsZoneImpl
         return Mono.just(true).map(ignored -> {
             recordSets.clear();
             virtualNetworkLinks.clear();
+            innerCopy = null;
             return ignored;
         }).then();
     }
@@ -412,6 +429,7 @@ class PrivateDnsZoneImpl
         return super.refreshAsync().map(privateDnsZone -> {
             PrivateDnsZoneImpl impl = (PrivateDnsZoneImpl) privateDnsZone;
             impl.initRecordSets();
+            innerCopy = serializeInner(privateDnsZone.innerModel());
             return impl;
         });
     }
@@ -453,5 +471,17 @@ class PrivateDnsZoneImpl
                         return recordSet;
                 }
             });
+    }
+
+    private String serializeInner(PrivateZoneInner innerObj) {
+        try {
+            String etag = innerObj.etag();
+            innerObj.withEtag(etagState.ifMatchValueOnUpdate(etag));
+            String serializedInner = serializerAdapter.serialize(innerObj, SerializerEncoding.JSON);
+            innerObj.withEtag(etag);
+            return serializedInner;
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 }

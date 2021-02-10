@@ -35,7 +35,7 @@ function readProjSpecs(modules) {
         // skip graphrbac as it moves to MSGraph now
         if (key == 'graphrbac') {
             return;
-		}
+        }
         if (modules.includes(mappings[key].dir)) {
             var val = getCurrentApiVersion(mappings[key].args);
             if (val !== undefined) {
