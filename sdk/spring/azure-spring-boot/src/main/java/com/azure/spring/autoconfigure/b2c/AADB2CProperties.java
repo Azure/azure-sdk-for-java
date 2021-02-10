@@ -198,6 +198,11 @@ public class AADB2CProperties implements InitializingBean {
         this.tenant = tenant;
     }
 
+    /**
+     * Get tenant name for Telemetry
+     * @return tenant name
+     * @throws AADB2CConfigurationException resolve tenant name failed
+     */
     @DeprecatedConfigurationProperty(
         reason = "Configuration updated to baseUri",
         replacement = "azure.activedirectory.b2c.base-uri")
