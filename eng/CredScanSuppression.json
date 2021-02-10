@@ -22,14 +22,11 @@
         },
         {
             "file": [
-                "sdk\\cosmos\\azure-cosmos\\src\\test\\resources\\client.jks", 
+                "sdk\\cosmos\\azure-cosmos\\target\\test-classes\\client.jks", 
+                "sdk\\cosmos\\azure-cosmos\\target\\test-classes\\server.jks",
                 "sdk\\spring\\azure-spring-boot\\src\test\resources\nopwdcert.pfx", 
                 "sdk\\spring\\azure-spring-boot\\src\test\resources\testkeyvault.pfx"
             ],
-            "_justification": "Fake file used by test code."
-        },
-        {
-            "file": "sdk\\cosmos\\azure-cosmos\\src\\test\\resources\\server.jks",
             "_justification": "Fake file used by test code."
         },
         {
