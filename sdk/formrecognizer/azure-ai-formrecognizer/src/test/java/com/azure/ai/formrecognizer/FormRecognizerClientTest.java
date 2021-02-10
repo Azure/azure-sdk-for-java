@@ -51,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
@@ -1412,8 +1413,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
-                // since none of the models have a name
-                assertEquals(recognizedForm.getFormType(), "custom:");
+                if (recognizedForm.getFormType().equals("custom:" + createdModel1.getModelId())
+                    || recognizedForm.getFormType().equals("custom:" + createdModel.getModelId())) {
+                    assertTrue(true);
+                } else {
+                    fail();
+                }
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
                 // check formtype set on submodel

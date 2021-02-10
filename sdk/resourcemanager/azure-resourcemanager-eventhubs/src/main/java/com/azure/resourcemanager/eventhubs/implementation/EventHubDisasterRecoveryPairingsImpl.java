@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link EventHubDisasterRecoveryPairings}.
@@ -77,16 +78,16 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(
         String resourceGroupName, String namespaceName) {
-        return innerModel()
-            .list(resourceGroupName, namespaceName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .list(resourceGroupName, namespaceName),
+            this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(
         String resourceGroupName, String namespaceName) {
-        return this.innerModel().listAsync(resourceGroupName, namespaceName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.innerModel().listAsync(resourceGroupName, namespaceName),
+            this::wrapModel);
     }
 
     @Override

@@ -25,10 +25,13 @@ public final class ChatMessageConverter {
             .setVersion(obj.getVersion())
             .setContent(obj.getContent())
             .setCreatedOn(obj.getCreatedOn())
-            .setSender(new CommunicationUserIdentifier(obj.getSenderId()))
             .setDeletedOn(obj.getDeletedOn())
             .setEditedOn(obj.getEditedOn())
             .setSenderDisplayName(obj.getSenderDisplayName());
+
+        if (obj.getSenderId() != null && !obj.getSenderId().isEmpty()) {
+            chatMessage.setSender(new CommunicationUserIdentifier(obj.getSenderId()));
+        }
 
         return chatMessage;
     }

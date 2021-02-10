@@ -13,6 +13,9 @@ stages:
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
+      - name: azure-communication-identity
+        groupId: com.azure
+        safeName: azurecommunicationidentity
     ServiceDirectory: communication
     PostSteps:
       - task: Maven@3
