@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.5 (Unreleased)
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (Skipped)
 ### Added
 - Added support for Azure Active Directory Authentication.
 
