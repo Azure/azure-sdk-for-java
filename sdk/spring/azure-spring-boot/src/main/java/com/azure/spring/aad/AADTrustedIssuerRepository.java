@@ -46,7 +46,7 @@ public class AADTrustedIssuerRepository {
 
     public void addB2CIssuer(String baseUri) {
         Assert.notNull(baseUri, "tenantName cannot be null.");
-        trustedIssuers.add(String.format(ResolveBaseUri(baseUri) + "/%s/v2.0/", tenantId));
+        trustedIssuers.add(String.format(resolveBaseUri(baseUri) + "/%s/v2.0/", tenantId));
     }
 
     /**
@@ -57,7 +57,7 @@ public class AADTrustedIssuerRepository {
      */
     public void addB2CUserFlowIssuers(String baseUri, UserFlows userFlows) {
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        String resolveBaseUri = ResolveBaseUri(baseUri);
+        String resolveBaseUri = resolveBaseUri(baseUri);
         creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getSignUpOrSignIn());
         if (!StringUtils.isEmpty(userFlows.getProfileEdit())) {
             creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getProfileEdit());
@@ -83,7 +83,7 @@ public class AADTrustedIssuerRepository {
             .addAll(Arrays.stream(issuers).collect(Collectors.toSet()));
     }
 
-    private String ResolveBaseUri(String baseUri) {
+    private String resolveBaseUri(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null");
         try {
             URI uri = new URI(baseUri);
