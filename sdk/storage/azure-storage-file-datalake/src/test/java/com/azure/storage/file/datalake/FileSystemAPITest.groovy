@@ -1008,6 +1008,9 @@ class FileSystemAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException)
+
+        cleanup:
+        disableSoftDelete()
     }
 
     def "Restore path"() {
@@ -1025,12 +1028,17 @@ class FileSystemAPITest extends APISpec {
 
         then:
         dir.getProperties() != null
+
+        cleanup:
+        disableSoftDelete()
     }
 
+    @Unroll
     def "Restore path special characters"() {
         setup:
         enableSoftDelete()
 
+        dirName = URLEncoder.encode(dirName)
         def dir = fsc.getDirectoryClient(dirName)
         dir.create()
         dir.delete()
@@ -1038,10 +1046,13 @@ class FileSystemAPITest extends APISpec {
         def deletionId = fsc.listDeletedPaths().first().getDeletionId()
 
         when:
-        fsc.restorePath(dir.getDirectoryName(), deletionId)
+        fsc.restorePath(URLEncoder.encode(dir.getDirectoryName()), deletionId)
 
         then:
         dir.getProperties() != null
+
+        cleanup:
+        disableSoftDelete()
 
         where:
         dirName                                                   | _
@@ -1058,10 +1069,13 @@ class FileSystemAPITest extends APISpec {
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
 
         when:
-        fsc.listDeletedPaths()
+        fsc.restorePath("foo", "bar")
 
         then:
         thrown(DataLakeStorageException)
+
+        cleanup:
+        disableSoftDelete()
     }
 
     @Unroll

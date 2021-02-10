@@ -92,7 +92,7 @@ public class DataLakeFileSystemAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
-    private final DataLakeStorageClientImpl blobDataLakeStorage;
+    private final DataLakeStorageClientImpl blobDataLakeStorageFs;
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -118,7 +118,7 @@ public class DataLakeFileSystemAsyncClient {
             .build();
 
         String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
-        this.blobDataLakeStorage = new DataLakeStorageClientBuilder()
+        this.blobDataLakeStorageFs = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
             .url(blobUrl)
             .version(serviceVersion.getVersion())
@@ -559,7 +559,7 @@ public class DataLakeFileSystemAsyncClient {
         }
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.blobDataLakeStorage.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(
+            this.blobDataLakeStorageFs.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(
                 null, options.getPath(), marker, options.getMaxResults(),
                 null, ListBlobsShowOnly.DELETED, null, null, Context.NONE), timeout);
     }
@@ -856,8 +856,16 @@ public class DataLakeFileSystemAsyncClient {
         Objects.requireNonNull(deletionId);
 
         context = context == null ? Context.NONE : context;
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(blobDataLakeStorageFs.getUrl(), "blob", "dfs");
+        blobUrl = StorageImplUtils.appendToUrlPath(blobUrl, deletedPath).toString();
+        DataLakeStorageClientImpl blobDataLakeStoragePath = new DataLakeStorageClientBuilder()
+            .pipeline(blobDataLakeStorageFs.getHttpPipeline())
+            .url(blobUrl)
+            .version(serviceVersion.getVersion())
+            .build();
+
         // Initial rest call
-        return this.azureDataLakeStorage.paths().undeleteWithRestResponseAsync(null,
+        return blobDataLakeStoragePath.paths().undeleteWithRestResponseAsync(null,
             String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             /*

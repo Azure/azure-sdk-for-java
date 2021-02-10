@@ -190,7 +190,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=undelete"].patch
+  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=undelete"].put
   transform: >
     let param = $.parameters[0];
     if (!param["$ref"].endsWith("FileSystem")) {

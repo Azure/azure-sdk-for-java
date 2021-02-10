@@ -144,7 +144,7 @@ public final class PathsImpl {
         @Put("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsUndeleteResponse> undelete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<PathsUndeleteResponse> undelete(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -953,7 +953,7 @@ public final class PathsImpl {
         final String undeleteSource = null;
         final String requestId = null;
         final String comp = "undelete";
-        return service.undelete(this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
+        return service.undelete(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -969,6 +969,6 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsUndeleteResponse> undeleteWithRestResponseAsync(Integer timeout, String undeleteSource, String requestId, Context context) {
         final String comp = "undelete";
-        return service.undelete(this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
+        return service.undelete(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
     }
 }

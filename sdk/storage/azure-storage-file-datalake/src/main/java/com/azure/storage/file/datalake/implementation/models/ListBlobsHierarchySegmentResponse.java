@@ -27,37 +27,37 @@ public final class ListBlobsHierarchySegmentResponse {
     /*
      * The prefix property.
      */
-    @JsonProperty(value = "Prefix")
+    @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
      * The marker property.
      */
-    @JsonProperty(value = "Marker")
+    @JsonProperty(value = "Marker", required = true)
     private String marker;
 
     /*
      * The maxResults property.
      */
-    @JsonProperty(value = "MaxResults")
-    private Integer maxResults;
+    @JsonProperty(value = "MaxResults", required = true)
+    private int maxResults;
 
     /*
      * The delimiter property.
      */
-    @JsonProperty(value = "Delimiter")
+    @JsonProperty(value = "Delimiter", required = true)
     private String delimiter;
 
     /*
      * The segment property.
      */
-    @JsonProperty(value = "Blobs", required = true) // TODO: Fix generator to do this automatically
+    @JsonProperty(value = "Blobs", required = true) // TODO: Why is the generator setting this to segment instead of blobs?
     private BlobHierarchyListSegment segment;
 
     /*
      * The nextMarker property.
      */
-    @JsonProperty(value = "NextMarker")
+    @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
@@ -145,7 +145,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the maxResults value.
      */
-    public Integer getMaxResults() {
+    public int getMaxResults() {
         return this.maxResults;
     }
 
@@ -155,7 +155,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse setMaxResults(Integer maxResults) {
+    public ListBlobsHierarchySegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
