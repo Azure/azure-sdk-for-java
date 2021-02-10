@@ -1,0 +1,90 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "14ms",
+      "MS-CV" : "SNPWtY9S1EaMIF0M3vEs8g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0swsjYAAAAADSJCz4wNKSSY9xKLPvgPsZWVZSMzBFREdFMDQwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "201",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-28c7-5b1f-a175-5b3a0d0002f9\"}}",
+      "Date" : "Tue, 09 Feb 2021 22:24:51 GMT",
+      "x-ms-client-request-id" : "b523d501-f559-4744-8456-aff4f06fb53c",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "13ms",
+      "MS-CV" : "VRjPKHM6CkKH5Vx+sSDY9A.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0tAsjYAAAAADSa8vWfBIDRpKPKcUd0fsJWVZSMzBFREdFMDQxNAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "201",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-28c7-5b55-a175-5b3a0d0002fa\"}}",
+      "Date" : "Tue, 09 Feb 2021 22:24:51 GMT",
+      "x-ms-client-request-id" : "a1e6a7d9-7820-489a-b5a2-0bcb1c9e5c1b",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000008-28c7-5b1f-a175-5b3a0d0002f9/:issueAccessToken?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "88ms",
+      "MS-CV" : "2zTYplWj0E+1euat8mwVKg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0tAsjYAAAAAB/AiZkppC2TJd1XsFD8f+ZWVZSMzBFREdFMDQwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "200",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2021-02-10T22:24:51.1830852+00:00\"}",
+      "Date" : "Tue, 09 Feb 2021 22:24:51 GMT",
+      "x-ms-client-request-id" : "195c801d-091f-46b0-9451-7320881e0e2b",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/chat/threads/19:00000000000000000000000000000000@thread.v2?api-version=2020-11-01-preview3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3, 2021-01-27-preview4",
+      "X-Processing-Time" : "310ms",
+      "MS-CV" : "LtmXT8OqaUi2VVB7TL5ppw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0tAsjYAAAAACoBMNeS2fhRIY6jSp5BS9pWVZSMzBFREdFMDQxNAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "404",
+      "Body" : "{\r\n  \"Error\": {\r\n    \"Code\": \"NotFound\",\r\n    \"Message\": \"The specified thread id was not found.\",\r\n    \"Details\": []\r\n  }\r\n}",
+      "Date" : "Tue, 09 Feb 2021 22:24:52 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

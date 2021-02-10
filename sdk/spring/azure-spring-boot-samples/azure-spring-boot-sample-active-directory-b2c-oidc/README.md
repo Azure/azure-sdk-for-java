@@ -24,10 +24,13 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 ## Examples
 ### Configure the sample
 
-#### Application.yml
+#### application.yml
 
-1. Fill in `${your-tenant-name}` from **Azure AD B2C** portal `Overviews` domain name (format may looks like
-`${your-tenant-name}.onmicrosoft.com`).
+1. Fill in `${your-tenant-authorization-server-base-uri}` from **Azure AD B2C** portal `App registrations` blade, select **Endpoints**, copy the base endpoint uri(Global cloud format may looks like
+`https://{your-tenant-name}.b2clogin.com/{your-tenant-name}.onmicrosoft.com`, China Cloud looks like `https://{your-tenant-name}.b2clogin.cn/{your-tenant-name}.partner.onmschina.cn`). 
+
+    **NOTE**: The `azure.activedirectory.b2c.tenant` has been deprecated. Please `use azure.activedirectory.b2c.base-uri` instead.
+
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
@@ -41,7 +44,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name} # ❗not tenant id
+      base-uri: ${your-tenant-authorization-server-base-uri}
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}
@@ -53,6 +56,8 @@ azure:
         sign-in: ${your-sign-in-user-flow} # optional  
         sign-up: ${your-sign-up-user-flow} # optional
 ```
+
+**NOTE**: If both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect.
 
 ### Run with Maven
 ```

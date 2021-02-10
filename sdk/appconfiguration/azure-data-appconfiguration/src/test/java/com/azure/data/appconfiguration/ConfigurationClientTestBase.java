@@ -265,6 +265,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
+    @Test
+    public abstract void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
     void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");

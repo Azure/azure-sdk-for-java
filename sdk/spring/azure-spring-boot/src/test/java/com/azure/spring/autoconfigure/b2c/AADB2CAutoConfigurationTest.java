@@ -7,18 +7,17 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADB2CAutoConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
         .withPropertyValues(
-            String.format("%s=%s", AADB2CConstants.TENANT_NAME, AADB2CConstants.TEST_TENANT_NAME),
+            String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
-            String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
             String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
             String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
             String.format("%s=%s", AADB2CConstants.SIGN_UP, AADB2CConstants.TEST_SIGN_UP_NAME),
@@ -43,7 +42,6 @@ public class AADB2CAutoConfigurationTest {
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
             assertThat(properties).isNotNull();
-            assertThat(properties.getTenantName()).isEqualTo(AADB2CConstants.TEST_TENANT_NAME);
             assertThat(properties.getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(AADB2CConstants.TEST_CLIENT_SECRET);
             assertThat(properties.getUserNameAttributeName()).isEqualTo(AADB2CConstants.TEST_ATTRIBUTE_NAME);

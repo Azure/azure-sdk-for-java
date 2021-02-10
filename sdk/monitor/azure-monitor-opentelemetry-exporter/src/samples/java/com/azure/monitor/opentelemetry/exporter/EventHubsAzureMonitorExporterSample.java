@@ -49,12 +49,8 @@ public class EventHubsAzureMonitorExporterSample {
             .connectionString("{connection-string}")
             .buildExporter();
 
-        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
-        openTelemetry
-            .getTracerManagement()
-            .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
-
-        return openTelemetry.getTracer("Sample");
+        OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
+        return OpenTelemetrySdk.get().getTracer("Sample");
     }
 
     /**

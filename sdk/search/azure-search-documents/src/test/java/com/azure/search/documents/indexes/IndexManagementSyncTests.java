@@ -116,16 +116,18 @@ public class IndexManagementSyncTests extends SearchTestBase {
         String indexName = HOTEL_INDEX_NAME;
         SearchIndex index = new SearchIndex(indexName)
             .setFields(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(false));
-        String expectedMessage = String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
+        String expectedMessage = String.format("Found 0 key fields in index '%s'. "
             + "Each index must have exactly one key field.", indexName);
 
         try {
             client.createIndex(index);
             fail("createOrUpdateIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            assertEquals(HttpResponseException.class, ex.getClass());
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ((HttpResponseException) ex).getResponse().getStatusCode());
-            assertTrue(ex.getMessage().contains(expectedMessage));
+        } catch (HttpResponseException ex) {
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
+            assertTrue(ex.getMessage().contains(expectedMessage), () -> String.format("Expected exception to contain "
+                + "message '%s' but the message was '%s'.", expectedMessage, ex.getMessage()));
+        } catch (Throwable throwable) {
+            fail("Expected HttpResponseException to be thrown.", throwable);
         }
     }
 

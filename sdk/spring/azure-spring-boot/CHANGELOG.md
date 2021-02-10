@@ -6,8 +6,7 @@
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes
 - Exposed `userNameAttributeName` to configure the user's name.
-- Change `tenant` to `tenant-name` in the configuration file.
-
+- Deprecated `tenant` configuration item, add `base-uri` item to support multi-cloud environments.
 
 ## 3.0.0 (2020-12-30)
 ### Breaking Changes

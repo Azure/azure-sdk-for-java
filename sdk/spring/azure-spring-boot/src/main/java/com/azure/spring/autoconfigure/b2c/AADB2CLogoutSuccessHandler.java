@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Get the url of successful logout and handle the navigation on logout.
@@ -27,7 +28,7 @@ public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         final String userFlow = properties.getUserFlows().getSignUpOrSignIn();
         final String logoutSuccessUrl = properties.getLogoutSuccessUrl();
 
-        return AADB2CURL.getEndSessionUrl(properties.getTenantName(), logoutSuccessUrl, userFlow);
+        return AADB2CURL.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);
     }
 
     @Override

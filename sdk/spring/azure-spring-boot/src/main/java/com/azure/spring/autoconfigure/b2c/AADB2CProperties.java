@@ -4,20 +4,25 @@ package com.azure.spring.autoconfigure.b2c;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
-public class AADB2CProperties {
+public class AADB2CProperties implements InitializingBean {
 
     private static final String USER_FLOWS = "user-flows";
 
@@ -39,11 +44,14 @@ public class AADB2CProperties {
 
     public static final String PREFIX = "azure.activedirectory.b2c";
 
+    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
+
     /**
-     * The name of the b2c tenant name.
+     * The name of the b2c tenant.
+     * @deprecated It's recommended to use 'baseUri' instead.
      */
-    @NotBlank(message = "tenant name should not be blank")
-    private String tenantName;
+    @Deprecated
+    private String tenant;
 
     /**
      * The name of the b2c tenant id.
@@ -110,6 +118,19 @@ public class AADB2CProperties {
     private boolean allowTelemetry = true;
 
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
+
+    /**
+     * AAD B2C endpoint base uri.
+     */
+    @URL(message = "baseUri should be valid URL")
+    private String baseUri;
+
+    @Override
+    public void afterPropertiesSet() {
+        if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
+            throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+        }
+    }
 
     /**
      * UserFlows
@@ -188,12 +209,40 @@ public class AADB2CProperties {
         }
     }
 
-    public String getTenantName() {
-        return tenantName;
+    public String getBaseUri() {
+        // baseUri is empty and points to Global env by default
+        if (StringUtils.hasText(tenant) && StringUtils.isEmpty(baseUri)) {
+            return String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
+        }
+        return baseUri;
     }
 
-    public void setTenantName(String tenantName) {
-        this.tenantName = tenantName;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
+
+    /**
+     * Get tenant name for Telemetry
+     * @return tenant name
+     * @throws AADB2CConfigurationException resolve tenant name failed
+     */
+    @DeprecatedConfigurationProperty(
+        reason = "Configuration updated to baseUri",
+        replacement = "azure.activedirectory.b2c.base-uri")
+    public String getTenant() {
+        if (StringUtils.hasText(baseUri)) {
+            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
+            if (matcher.find()) {
+                String matched = matcher.group();
+                return matched.substring(0, matched.length() - 1);
+            }
+            throw new AADB2CConfigurationException("Unable to resolve the 'tenant' name.");
+        }
+        return tenant;
     }
 
     public Boolean getOidcEnabled() {
