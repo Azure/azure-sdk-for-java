@@ -17,7 +17,7 @@ public final class FileSystemList {
     /*
      * The filesystems property.
      */
-    @JsonProperty("FileSystem")
+    @JsonProperty(value = "filesystems")
     private List<FileSystem> filesystems = new ArrayList<>();
 
     /**

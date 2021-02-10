@@ -39,6 +39,22 @@ public class DataLakeStorageCustomization extends Customization {
 
         ClassCustomization servicesImpl = implementation.getClass("ServicesImpl");
         modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("listFileSystems"));
+
+        PackageCustomization implementationModels = customization.getPackage("com.azure.storage.file.datalake.implementation.models");
+        ClassCustomization fileSystemList = implementationModels.getClass("FileSystemList");
+        fileSystemList.getProperty("filesystems")
+            .removeAnnotation("@JsonProperty(\"FileSystem\")")
+            .addAnnotation("@JsonProperty(value = \"filesystems\")");
+
+        ClassCustomization path = implementationModels.getClass("Path");
+        path.getProperty("eTag")
+            .removeAnnotation("@JsonProperty(value = \"eTag\")")
+            .addAnnotation("@JsonProperty(value = \"etag\")");
+
+        ClassCustomization pathList = implementationModels.getClass("PathList");
+        pathList.getProperty("paths")
+            .removeAnnotation("@JsonProperty(\"Path\")")
+            .addAnnotation("@JsonProperty(value = \"paths\")");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
