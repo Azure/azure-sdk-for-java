@@ -850,12 +850,12 @@ public class LROPollerTests {
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                httpPipeline,
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
-                new Context("key1", "value1"));
+                    httpPipeline,
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
+                    new Context("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
                 .blockLast()
