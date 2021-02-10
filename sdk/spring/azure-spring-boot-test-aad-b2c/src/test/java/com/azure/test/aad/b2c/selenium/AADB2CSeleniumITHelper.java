@@ -5,7 +5,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_BASE_URI;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_EMAIL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_PASSWORD;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
@@ -15,16 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     private String userEmail;
     private String userPassword;
+    private boolean isAzureChina;
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
-        defaultProperteis.put("azure.activedirectory.b2c.tenant", AAD_B2C_TENANT);
+        defaultProperteis.put("azure.activedirectory.b2c.base-uri", AAD_B2C_BASE_URI);
         defaultProperteis.put("azure.activedirectory.b2c.client-id", AAD_B2C_CLIENT_ID);
         defaultProperteis.put("azure.activedirectory.b2c.client-secret", AAD_B2C_CLIENT_SECRET);
         defaultProperteis.put("azure.activedirectory.b2c.reply-url", AAD_B2C_REPLY_URL);
@@ -32,6 +34,8 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
             .put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
         defaultProperteis
             .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        defaultProperteis
+            .put("logging.level.root", "DEBUG");
         return defaultProperteis;
     }
 
@@ -43,16 +47,29 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     public void logIn() {
         driver.get(app.root());
-        wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
+        try {
+            wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
+        } catch (TimeoutException e) {
+            wait.until(presenceOfElementLocated(By.id("logonIdentifier"))).sendKeys(userEmail);
+            isAzureChina = true;
+        }
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
-        wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).sendKeys(Keys.ENTER);
+        if (!isAzureChina) {
+            wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).sendKeys(Keys.ENTER);
+        } else {
+            wait.until(presenceOfElementLocated(By.id("next"))).sendKeys(Keys.ENTER);
+        }
         manualRedirection();
     }
 
     public void profileEditJobTitle(String newJobTitle) {
         wait.until(presenceOfElementLocated(By.id("profileEdit"))).click();
         changeJobTile(newJobTitle);
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+        if (!isAzureChina) {
+            wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+        } else {
+            wait.until(presenceOfElementLocated(By.id("continue"))).sendKeys(Keys.ENTER);
+        }
         manualRedirection();
     }
 
@@ -99,6 +116,10 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getSignInButtonText() {
-        return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).getText();
+        if (!isAzureChina) {
+            return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).getText();
+        } else {
+            return wait.until(ExpectedConditions.elementToBeClickable(By.id("next"))).getText();
+        }
     }
 }
