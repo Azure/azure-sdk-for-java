@@ -10,13 +10,16 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -40,12 +43,12 @@ public final class EventGridPublisherAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
+    private final ObjectSerializer eventDataSerializer;
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter,
-                                  EventGridServiceVersion serviceVersion) {
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
+        ObjectSerializer eventDataSerializer) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
-            .serializerAdapter(serializerAdapter)
             .buildClient();
 
         // currently the service version is hardcoded into the Impl client, but once another service version gets
@@ -53,6 +56,7 @@ public final class EventGridPublisherAsyncClient {
         this.serviceVersion = serviceVersion;
 
         this.hostname = hostname;
+        this.eventDataSerializer = eventDataSerializer;
     }
 
     /**
@@ -67,20 +71,29 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given EventGrid events to the set topic or domain.
      * @param events the EventGrid events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendEvents(Iterable<EventGridEvent> events) {
+    public Mono<Void> sendEventGridEvents(Iterable<EventGridEvent> events) {
+        return withContext(context -> sendEventGridEvents(events, context));
+    }
+
+    Mono<Void> sendEventGridEvents(Iterable<EventGridEvent> events, Context context) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
-        return withContext(context -> sendEvents(events, context));
-    }
-
-    Mono<Void> sendEvents(Iterable<EventGridEvent> events, Context context) {
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(EventGridEvent::toImpl)
+            .map(event -> {
+                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = event.toImpl();
+                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eventDataSerializer.serialize(bos, event.getData());
+                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
+                }
+                return internalEvent;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -90,21 +103,30 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given cloud events to the set topic or domain.
      * @param events the cloud events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCloudEvents(Iterable<CloudEvent> events) {
-        if (events == null) {
-            return monoError(logger, new NullPointerException("'events' cannot be null."));
-        }
         return withContext(context -> sendCloudEvents(events, context));
     }
 
     Mono<Void> sendCloudEvents(Iterable<CloudEvent> events, Context context) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
-            .map(CloudEvent::toImpl)
+            .map(event -> {
+                com.azure.messaging.eventgrid.implementation.models.CloudEvent internalEvent = event.toImpl();
+                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eventDataSerializer.serialize(bos, event.getData());
+                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
+                }
+                return internalEvent;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -114,7 +136,8 @@ public final class EventGridPublisherAsyncClient {
      * Publishes the given custom events to the set topic or domain.
      * @param events the custom events to publish.
      *
-     * @return the completion.
+     * @return A {@link Mono} that completes when the events are sent to the service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCustomEvents(Iterable<Object> events) {
@@ -125,6 +148,9 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Void> sendCustomEvents(Iterable<Object> events, Context context) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .collectList()
@@ -137,16 +163,20 @@ public final class EventGridPublisherAsyncClient {
      * @param events the EventGrid events to publish.
      *
      * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events) {
+    public Mono<Response<Void>> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
-        return withContext(context -> sendEventsWithResponse(events, context));
+        return withContext(context -> sendEventGridEventsWithResponse(events, context));
     }
 
-    Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+    Mono<Response<Void>> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
@@ -160,6 +190,7 @@ public final class EventGridPublisherAsyncClient {
      * @param events the cloud events to publish.
      *
      * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events) {
@@ -170,6 +201,9 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
@@ -184,6 +218,7 @@ public final class EventGridPublisherAsyncClient {
      * @param events the custom events to publish.
      *
      * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events) {
@@ -194,6 +229,9 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .collectList()

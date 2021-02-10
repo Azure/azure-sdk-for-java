@@ -35,7 +35,6 @@ public class DatasetReference {
 
     /**
      * Creates an instance of DatasetReference class.
-     * @param referenceName reference dataset name.
      */
     public DatasetReference() {
         type = "DatasetReference";

@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -29,55 +30,54 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Creates an AMQP connection using sockets and the default AMQP protocol port 5671.
+ * Creates an AMQP connection using sockets.
  */
 public class ConnectionHandler extends Handler {
+    public static final int AMQPS_PORT = 5671;
+
     static final Symbol PRODUCT = Symbol.valueOf("product");
     static final Symbol VERSION = Symbol.valueOf("version");
     static final Symbol PLATFORM = Symbol.valueOf("platform");
     static final Symbol FRAMEWORK = Symbol.valueOf("framework");
     static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
-    static final int AMQPS_PORT = 5671;
     static final int MAX_FRAME_SIZE = 65536;
 
     private final Map<String, Object> connectionProperties;
     private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
-    private final SslDomain.VerifyMode verifyMode;
+    private final ConnectionOptions connectionOptions;
 
     /**
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
-     * @param hostname Hostname of the AMQP message broker to create a connection to.
-     * @param product The name of the product this connection handler is created for.
+     * @param productName The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
-     * @param clientOptions provided by user.
+     * @param connectionOptions Options used when creating the AMQP connection.
      */
-    public ConnectionHandler(final String connectionId, final String hostname, final String product,
-        final String clientVersion, final SslDomain.VerifyMode verifyMode, final ClientOptions clientOptions) {
-        super(connectionId, hostname);
+    public ConnectionHandler(final String connectionId, final String productName, final String clientVersion,
+        final ConnectionOptions connectionOptions) {
+        super(connectionId,
+            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
 
         add(new Handshaker());
 
-        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
-        Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        Objects.requireNonNull(product, "'product' cannot be null.");
-        Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
-        Objects.requireNonNull(verifyMode, "'verifyMode' cannot be null.");
-        Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        this.connectionOptions = connectionOptions;
 
-        this.verifyMode = Objects.requireNonNull(verifyMode, "'verifyMode' cannot be null");
+        Objects.requireNonNull(productName, "'product' cannot be null.");
+        Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
+
         this.connectionProperties = new HashMap<>();
-        this.connectionProperties.put(PRODUCT.toString(), product);
+        this.connectionProperties.put(PRODUCT.toString(), productName);
         this.connectionProperties.put(VERSION.toString(), clientVersion);
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
+        final ClientOptions clientOptions = connectionOptions.getClientOptions();
         final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
             ? clientOptions.getApplicationId()
             : null;
-        String userAgent = UserAgentUtil.toUserAgentString(applicationId, product, clientVersion, null);
+        String userAgent = UserAgentUtil.toUserAgentString(applicationId, productName, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 
@@ -96,7 +96,7 @@ public class ConnectionHandler extends Handler {
      * @return The port used to open connection.
      */
     public int getProtocolPort() {
-        return AMQPS_PORT;
+        return connectionOptions.getPort();
     }
 
     /**
@@ -108,10 +108,17 @@ public class ConnectionHandler extends Handler {
         return MAX_FRAME_SIZE;
     }
 
+    /**
+     * Configures the SSL transport layer for the connection based on the {@link ConnectionOptions#getSslVerifyMode()}.
+     *
+     * @param event The proton-j event.
+     * @param transport Transport to add layers to.
+     */
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
+        final SslDomain.VerifyMode verifyMode = connectionOptions.getSslVerifyMode();
         final SSLContext defaultSslContext;
 
         if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
@@ -129,7 +136,10 @@ public class ConnectionHandler extends Handler {
             final StrictTlsContextSpi serviceProvider = new StrictTlsContextSpi(defaultSslContext);
             final SSLContext context = new StrictTlsContext(serviceProvider, defaultSslContext.getProvider(),
                 defaultSslContext.getProtocol());
-            final SslPeerDetails peerDetails = Proton.sslPeerDetails(getHostname(), getProtocolPort());
+
+            final String theHostname = getHostname();
+            final int theProtocol = getProtocolPort();
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(theHostname, theProtocol);
 
             sslDomain.setSslContext(context);
             transport.ssl(sslDomain, peerDetails);
@@ -151,12 +161,14 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.info("onConnectionInit hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
+        logger.info("onConnectionInit hostname[{}], connectionId[{}], amqpHostname[{}]", getHostname(),
+            getConnectionId(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
-        final String hostName = getHostname() + ":" + getProtocolPort();
 
-        connection.setHostname(hostName);
+        // Set the hostname of the AMQP message broker. This may be different from the actual underlying transport
+        // in the case we are using an intermediary to connect to Event Hubs.
+        connection.setHostname(connectionOptions.getFullyQualifiedNamespace());
         connection.setContainer(getConnectionId());
 
         final Map<Symbol, Object> properties = new HashMap<>();

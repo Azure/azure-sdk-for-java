@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRoleDefinition;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -57,6 +58,7 @@ public final class RoleDefinitionsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("isBuiltIn") Boolean isBuiltIn,
                 @QueryParam("scope") String scope,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/roleDefinitions/{roleDefinitionId}")
@@ -66,13 +68,17 @@ public final class RoleDefinitionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("roleDefinitionId") String roleDefinitionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/rbacScopes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<List<String>>> listScopes(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -88,10 +94,16 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<SynapseRoleDefinition>>> listRoleDefinitionsWithResponseAsync(
             Boolean isBuiltIn, String scope) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.listRoleDefinitions(
-                                this.client.getEndpoint(), this.client.getApiVersion(), isBuiltIn, scope, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                isBuiltIn,
+                                scope,
+                                accept,
+                                context));
     }
 
     /**
@@ -108,8 +120,9 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<SynapseRoleDefinition>>> listRoleDefinitionsWithResponseAsync(
             Boolean isBuiltIn, String scope, Context context) {
+        final String accept = "application/json, text/json";
         return service.listRoleDefinitions(
-                this.client.getEndpoint(), this.client.getApiVersion(), isBuiltIn, scope, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), isBuiltIn, scope, accept, context);
     }
 
     /**
@@ -239,10 +252,15 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynapseRoleDefinition>> getRoleDefinitionByIdWithResponseAsync(String roleDefinitionId) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.getRoleDefinitionById(
-                                this.client.getEndpoint(), this.client.getApiVersion(), roleDefinitionId, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                roleDefinitionId,
+                                accept,
+                                context));
     }
 
     /**
@@ -258,8 +276,9 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynapseRoleDefinition>> getRoleDefinitionByIdWithResponseAsync(
             String roleDefinitionId, Context context) {
+        final String accept = "application/json, text/json";
         return service.getRoleDefinitionById(
-                this.client.getEndpoint(), this.client.getApiVersion(), roleDefinitionId, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), roleDefinitionId, accept, context);
     }
 
     /**
@@ -345,8 +364,9 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listScopesWithResponseAsync() {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
-                context -> service.listScopes(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                context -> service.listScopes(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -360,7 +380,8 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listScopesWithResponseAsync(Context context) {
-        return service.listScopes(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        final String accept = "application/json, text/json";
+        return service.listScopes(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

@@ -7,8 +7,8 @@ import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultPrope
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import java.security.Principal;
-import java.util.Collections;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,9 @@ public class AADLogoutIT {
     public void logoutTest() {
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
         aadSeleniumITHelper.logIn();
-        aadSeleniumITHelper.logoutTest();
+        String logoutUsername = aadSeleniumITHelper.logoutAndGetLogoutUsername();
+        String loginUsername = aadSeleniumITHelper.getUsername();
+        Assert.assertEquals(loginUsername, logoutUsername);
     }
 
     @After

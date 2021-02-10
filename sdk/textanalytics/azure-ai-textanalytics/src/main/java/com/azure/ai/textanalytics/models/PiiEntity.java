@@ -3,12 +3,11 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 
 /**
  * The {@link PiiEntity} model.
  */
-@Immutable
 public final class PiiEntity {
     /*
      * PiiEntity text as appears in the request.
@@ -35,6 +34,8 @@ public final class PiiEntity {
      */
     private final int offset;
 
+    private int length;
+
     /**
      * Creates a {@link PiiEntity} model that describes entity.
      * @param text The entity text as appears in the request.
@@ -49,6 +50,10 @@ public final class PiiEntity {
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
         this.offset = offset;
+    }
+
+    static {
+        PiiEntityPropertiesHelper.setAccessor((entity, length) -> entity.setLength(length));
     }
 
     /**
@@ -94,5 +99,18 @@ public final class PiiEntity {
      */
     public int getOffset() {
         return this.offset;
+    }
+
+    /**
+     * Get the length of entity text.
+     *
+     * @return The length of entity text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }
