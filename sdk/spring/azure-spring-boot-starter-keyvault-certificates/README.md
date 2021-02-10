@@ -175,6 +175,7 @@ keys, secrets and certificates.
 Then if you are using `RestTemplate` use the code below as a starting
 point:
 
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaClientSample.java#L21-L41 -->
 ```java
 @Bean
 public RestTemplate restTemplate() throws Exception {
@@ -213,6 +214,7 @@ keys, secrets and certificates.
 
 If you are using `RestTemplate` use code similar to the example below.
 
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L19-L38 -->
 ```java
 @Bean
 public RestTemplate restTemplate() throws Exception {
