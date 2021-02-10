@@ -13,7 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Group configuration which will be used in Throughput control.
  */
-@Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroup {
     private final ThroughputControlMode controlMode;
     private final String groupName;
@@ -53,7 +53,7 @@ public class ThroughputControlGroup {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.groupName;
     }
@@ -75,7 +75,7 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.targetThroughput;
     }
@@ -88,7 +88,7 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput threshold.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
@@ -100,7 +100,7 @@ public class ThroughputControlGroup {
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
     }

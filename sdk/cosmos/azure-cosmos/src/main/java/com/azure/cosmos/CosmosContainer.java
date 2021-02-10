@@ -731,7 +731,7 @@ public class CosmosContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
         return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput);
     }
@@ -744,7 +744,7 @@ public class CosmosContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
         return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput, isDefault);
     }
@@ -756,7 +756,7 @@ public class CosmosContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
         return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold);
     }
@@ -769,7 +769,7 @@ public class CosmosContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
         return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, isDefault);
     }

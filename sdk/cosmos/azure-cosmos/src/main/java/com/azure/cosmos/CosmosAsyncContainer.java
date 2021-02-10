@@ -1416,7 +1416,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
         return this.enableThroughputLocalControlGroup(groupName, targetThroughput, false);
     }
@@ -1429,7 +1429,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
         return this.enableThroughputControlGroup(groupName, targetThroughput, null, ThroughputControlMode.LOCAL, isDefault);
     }
@@ -1441,7 +1441,7 @@ public class CosmosAsyncContainer {
      *
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
         return this.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, false);
     }
@@ -1453,7 +1453,7 @@ public class CosmosAsyncContainer {
      * @param isDefault Flag to indicate whether this group will be used as default.
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
         return this.enableThroughputControlGroup(groupName, null, targetThroughputThreshold, ThroughputControlMode.LOCAL, isDefault);
     }
