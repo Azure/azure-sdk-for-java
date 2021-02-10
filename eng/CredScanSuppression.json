@@ -71,13 +71,6 @@
         {
             "file": "sdk\\identity\\azure-identity\\src\\test\\resources\\keyStore.pfx",
             "_justification": "Fake file used by test code."
-        },
-        {    
-            "hash": [
-                "OEa4VAspaTQ2eneu8p5RBs/1rF4uyq9rQo3E/EYBieU=",
-                ""
-            ],
-            "_justification": "Random token used by test code, it is fake."
-        }        
+        }      
     ]
 }
