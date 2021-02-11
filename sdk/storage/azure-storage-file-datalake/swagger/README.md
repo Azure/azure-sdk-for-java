@@ -186,6 +186,18 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
+### Change the xml name for ListBlobsHierarchySegmentResponse segment attribute
+``` yaml
+directive:
+- from: ListBlobsHierarchySegmentResponse.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "@JsonProperty(value = \"Segment\", required = true)",
+        "@JsonProperty(value = \"Blobs\", required = true)");
+```
+
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?comp=undelete
 ``` yaml
 directive:
