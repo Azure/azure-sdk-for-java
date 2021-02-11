@@ -16,6 +16,7 @@ jobs:
     pool:
       vmImage: 'windows-2019'
     steps:
+    # Put cred scan step before install and build packages to avoid the tool scans generated folder like /target.
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
       displayName: 'Run CredScan'
       inputs:
