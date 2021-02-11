@@ -7,7 +7,7 @@ package com.azure.mixedreality.authentication.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StsTokenResponseMessage model. */
+/** Represents a token response message from the STS service. */
 @Fluent
 public final class StsTokenResponseMessage {
     /*

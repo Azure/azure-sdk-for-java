@@ -8,7 +8,7 @@ You can update the codegen by either running the following commands or by runnin
 
 ```bash
 cd sdk/mixedreality/azure-mixedreality-authentication/swagger
-autorest autorest.md --java --v4 --use=@autorest/java@4.0.2
+autorest autorest.md --java --v4 --use=@autorest/java@4.0.11
 ```
 
 ### Code generation settings
