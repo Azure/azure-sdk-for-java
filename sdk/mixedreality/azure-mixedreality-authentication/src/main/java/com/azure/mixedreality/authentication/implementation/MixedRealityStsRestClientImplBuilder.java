@@ -54,6 +54,22 @@ public final class MixedRealityStsRestClientImplBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the MixedRealityStsRestClientImplBuilder.
+     */
+    public MixedRealityStsRestClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -176,13 +192,17 @@ public final class MixedRealityStsRestClientImplBuilder {
         if (host == null) {
             this.host = "https://sts.mixedreality.azure.com";
         }
+        if (apiVersion == null) {
+            this.apiVersion = "2019-02-28-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        MixedRealityStsRestClientImpl client = new MixedRealityStsRestClientImpl(pipeline, serializerAdapter, host);
+        MixedRealityStsRestClientImpl client =
+                new MixedRealityStsRestClientImpl(pipeline, serializerAdapter, host, apiVersion);
         return client;
     }
 
