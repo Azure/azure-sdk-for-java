@@ -44,11 +44,10 @@ class CommunicationIdentifierSerializer {
             Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
-            CommunicationCloudEnvironment cloudEnvironment = new CommunicationCloudEnvironment(teamsUserIdentifierModel.getCloud().toString());
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
                 teamsUserIdentifierModel.isAnonymous())
                 .setRawId(rawId)
-                .setCloudEnvironment(cloudEnvironment);
+                .setCloudEnvironment(new CommunicationCloudEnvironment(teamsUserIdentifierModel.getCloud().toString()));
         }
         Objects.requireNonNull(rawId);
         return new UnknownIdentifier(rawId);
