@@ -17,24 +17,25 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
-    public ThroughputControlGroupConfigurationTests(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder);
-        this.subscriberValidationTimeout = TIMEOUT;
-    }
-
-    @Test(groups = { "emulator" })
-    public void validateMultipleDefaultGroups() {
-        container.enableThroughputLocalControlGroup("group-1", 10, true);
-
-        assertThatThrownBy(() -> container.enableThroughputLocalControlGroup("group-2", 10, true))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("A default group already exists");
-    }
-
-    @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
-    public void before_ThroughputControlGroupConfigurationTests() {
-        client = getClientBuilder().buildAsyncClient();
-        container = getSharedMultiPartitionCosmosContainer(client);
-    }
+    // TODO: reenable when enable enableThroughputLocalControlGroup public API
+//    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+//    public ThroughputControlGroupConfigurationTests(CosmosClientBuilder clientBuilder) {
+//        super(clientBuilder);
+//        this.subscriberValidationTimeout = TIMEOUT;
+//    }
+//
+//    @Test(groups = { "emulator" })
+//    public void validateMultipleDefaultGroups() {
+//        container.enableThroughputLocalControlGroup("group-1", 10, true);
+//
+//        assertThatThrownBy(() -> container.enableThroughputLocalControlGroup("group-2", 10, true))
+//            .isInstanceOf(IllegalArgumentException.class)
+//            .hasMessage("A default group already exists");
+//    }
+//
+//    @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
+//    public void before_ThroughputControlGroupConfigurationTests() {
+//        client = getClientBuilder().buildAsyncClient();
+//        container = getSharedMultiPartitionCosmosContainer(client);
+//    }
 }
