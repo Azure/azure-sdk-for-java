@@ -108,9 +108,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
-        return this.resolveDatabaseResourceId()
-            .flatMap(controller -> this.resolveContainerResourceId())
-            .flatMap(controller -> this.resolveContainerMaxThroughput())
+        return this.resolveContainerMaxThroughput()
             .flatMap(controller -> this.createAndInitializeGroupControllers())
             .doOnSuccess(controller -> {
                 Schedulers.parallel().schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
@@ -118,27 +116,39 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .thenReturn((T) this);
     }
 
-    private Mono<ThroughputContainerController> resolveDatabaseResourceId() {
+    private Mono<String> resolveDatabaseResourceId() {
         return this.targetContainer.getDatabase().read()
             .flatMap(response -> {
                 this.targetDatabaseRid = response.getProperties().getResourceId();
-                return Mono.just(this);
+                return Mono.just(this.targetDatabaseRid);
             });
     }
 
-    private Mono<ThroughputContainerController> resolveContainerResourceId() {
+    private Mono<String> resolveContainerResourceId() {
         return this.targetContainer.read()
             .flatMap(response -> {
                 this.targetContainerRid = response.getProperties().getResourceId();
-                return Mono.just(this);
+                return Mono.just(this.targetContainerRid);
             });
+    }
+
+    private Mono<ThroughputResponse> resolveDatabaseThroughput() {
+        return Mono.justOrEmpty(this.targetDatabaseRid)
+            .switchIfEmpty(this.resolveDatabaseResourceId())
+            .flatMap(databaseRid -> this.resolveThroughputByResourceId(databaseRid));
+    }
+
+    private Mono<ThroughputResponse> resolveContainerThroughput() {
+        return Mono.justOrEmpty(this.targetContainerRid)
+            .switchIfEmpty(this.resolveContainerResourceId())
+            .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid));
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
         return Mono.just(this.throughputResolveLevel) // TODO: ---> test whether it works without defer
             .flatMap(throughputResolveLevel -> {
                 if (throughputResolveLevel == ThroughputResolveLevel.CONTAINER) {
-                    return this.resolveThroughputByResourceId(this.targetContainerRid)
+                    return this.resolveContainerThroughput()
                         .onErrorResume(throwable -> {
                             if (this.isOfferNotConfiguredException(throwable)) {
                                 this.throughputResolveLevel = ThroughputResolveLevel.DATABASE;
@@ -147,7 +157,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                             return Mono.error(throwable);
                         });
                 } else if (throughputResolveLevel == ThroughputResolveLevel.DATABASE) {
-                    return this.resolveThroughputByResourceId(this.targetDatabaseRid)
+                    return this.resolveDatabaseThroughput()
                         .onErrorResume(throwable -> {
                             if (this.isOfferNotConfiguredException(throwable)) {
                                 this.throughputResolveLevel = ThroughputResolveLevel.CONTAINER;
@@ -215,17 +225,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         checkNotNull(request, "Request can not be null");
         checkNotNull(originalRequestMono, "Original request mono can not be null");
 
-        return Mono.just(request)
-            .flatMap(request1 -> {
-                if (request1.getThroughputControlGroupName() == null) {
-                    return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
-                }
-                else {
-                    return this.getOrCreateThroughputGroupController(request.getThroughputControlGroupName())
-                        .defaultIfEmpty(new Utils.ValueHolder<>(this.defaultGroupController));
-
-                }
-            })
+        return this.getOrCreateThroughputGroupController(request.getThroughputControlGroupName())
             .flatMap(groupController -> {
                 if (groupController.v != null) {
                     return groupController.v.processRequest(request, originalRequestMono);
@@ -238,18 +238,20 @@ public class ThroughputContainerController implements IThroughputContainerContro
     // TODO: a better way to handle throughput control group enabled after the container initialization
     private Mono<Utils.ValueHolder<ThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
 
+        // If there is no control group defined, using the default group controller
         if (StringUtils.isEmpty(groupName)) {
-            return Mono.empty();
+            return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
         }
 
-        ThroughputControlGroupInternal group =
-            this.groups.stream().filter(groupConfig -> StringUtils.equals(groupName, groupConfig.getGroupName())).findFirst().orElse(null);
-        if (group == null) {
-            return Mono.empty();
+        for (ThroughputControlGroupInternal group : this.groups) {
+            if (StringUtils.equals(groupName, group.getGroupName())) {
+                return this.resolveThroughputGroupController(group)
+                    .map(Utils.ValueHolder::new);
+            }
         }
 
-        return this.resolveThroughputGroupController(group)
-            .map(Utils.ValueHolder::new);
+        // If the request is associated with a group not enabled, will fall back to the default one.
+        return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
     }
 
     public String getTargetContainerRid() {

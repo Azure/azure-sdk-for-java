@@ -61,13 +61,14 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         return this.requestThrottlerMapByRegion.values()
             .stream()
             .map(requestThrottlerMapByPkRangeId -> {
+                // return the max throughput usage among all pkRanges
                 return requestThrottlerMapByPkRangeId.values()
                     .stream()
                     .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
                     .max(Comparator.naturalOrder())
                     .get();
             })
-            .max(Comparator.naturalOrder())
+            .max(Comparator.naturalOrder())// return the max throughput usage among all regions
             .get();
     }
 
@@ -92,23 +93,23 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
         return this.getPartitionKeyRanges(RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES)
-            .flatMap(pkRanges -> {
+            .doOnSuccess(pkRanges -> {
                 this.pkRanges = pkRanges;
-                return this.createRequestThrottlers();
+                this.createRequestThrottlers();
             })
             .then(Mono.just((T)this));
     }
 
-    private Mono<Void> createRequestThrottlers() {
+    private void createRequestThrottlers() {
         // create request throttlers by region
-        return Flux.fromIterable(this.globalEndpointManager.getReadEndpoints())
-            .flatMap(endpoint -> this.getOrCreateRegionRequestThrottlers(endpoint))
-            .then();
+        for (URI endpoint : this.globalEndpointManager.getReadEndpoints()) {
+            this.getOrCreateRegionRequestThrottlers(endpoint);
+        }
     }
 
-    private Mono<ConcurrentHashMap<String, ThroughputRequestThrottler>> getOrCreateRegionRequestThrottlers(URI endpoint) {
+    private ConcurrentHashMap<String, ThroughputRequestThrottler> getOrCreateRegionRequestThrottlers(URI endpoint) {
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        return Mono.just(this.requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> {
+        return this.requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> {
             ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerPerPkRange =
                 new ConcurrentHashMap<>();
 
@@ -117,7 +118,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
             }
 
             return requestThrottlerPerPkRange;
-        }));
+        });
     }
 
     @Override
@@ -125,19 +126,19 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
 
         // If we reach here, it means we should find the mapping pkRange
-        return this.getOrCreateRegionRequestThrottlers(this.globalEndpointManager.resolveServiceEndpoint(request))
-            .flatMap(regionRequestThrottlers -> Mono.just(regionRequestThrottlers.get(resolvedPkRange.getId())))
-            .flatMap(requestThrottler -> {
-                if (requestThrottler != null) {
-                    return requestThrottler.processRequest(request, nextRequestMono);
-                } else {
-                    logger.warn(
-                        "Can not find matching request throttler to process request {} with pkRangeId {}",
-                        request.getActivityId(),
-                        resolvedPkRange.getId());
-                    return nextRequestMono;
-                }
-            });
+        ThroughputRequestThrottler requestThrottler =
+            this.getOrCreateRegionRequestThrottlers(this.globalEndpointManager.resolveServiceEndpoint(request))
+                .get(resolvedPkRange);
+
+        if (requestThrottler != null) {
+            return requestThrottler.processRequest(request, nextRequestMono);
+        } else {
+            logger.warn(
+                "Can not find matching request throttler to process request {} with pkRangeId {}",
+                request.getActivityId(),
+                resolvedPkRange.getId());
+            return nextRequestMono;
+        }
     }
 
     private double calculateThroughputPerPkRange() {

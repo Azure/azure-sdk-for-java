@@ -159,39 +159,48 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     }
 
     @Override
-    public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
+    public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         return this.resolveRequestController()
             .flatMap(requestController -> {
                 if (requestController.canHandleRequest(request)) {
-                    return Mono.just(requestController);
-                } else {
-                    // We can not find the matching pkRange, it is because either the group control is out of sync
-                    // or the request has staled info.
-                    // We will handle the first scenario by creating a new request controller,
-                    // while for second scenario, we will go to the original request mono, which will eventually get exception from server
-                    return this.shouldUpdateRequestController(request)
-                        .flatMap(shouldUpdate -> {
-                            if (shouldUpdate) {
-                                requestController.close().subscribeOn(Schedulers.parallel()).subscribe();
-                                this.refreshRequestController();
-                                return this.resolveRequestController();
+                    return requestController.processRequest(request, originalRequestMono)
+                        .doOnError(throwable -> this.handleException(throwable));
+                }
+
+                // We can not find the matching pkRange, it is because either the group control is out of sync
+                // or the request has staled info.
+                // We will handle the first scenario by creating a new request controller,
+                // while for second scenario, we will go to the original request mono, which will eventually get exception from server
+                return this.updateControllerAndRetry(requestController, request, originalRequestMono);
+            });
+    }
+
+    private <T> Mono<T> updateControllerAndRetry(
+        IThroughputRequestController currentRequestController,
+        RxDocumentServiceRequest request,
+        Mono<T> nextRequestMono) {
+
+        return this.shouldUpdateRequestController(request)
+            .flatMap(shouldUpdate -> {
+                if (shouldUpdate) {
+                    currentRequestController.close().subscribeOn(Schedulers.parallel()).subscribe();
+                    this.refreshRequestController();
+                    return this.resolveRequestController()
+                        .flatMap(updatedController -> {
+                            if (updatedController.canHandleRequest(request)) {
+                                return updatedController.processRequest(request, nextRequestMono)
+                                    .doOnError(throwable -> this.handleException(throwable));
                             } else {
-                                return Mono.just(requestController);
+                                // If we reach here and still can not handle the request, it should mean the request has staled info
+                                // and the request will fail by server
+                                logger.warn(
+                                    "Can not find request controller to handle request {} with pkRangeId {}",
+                                    request.getActivityId(),
+                                    request.requestContext.resolvedPartitionKeyRange.getId());
+                                return nextRequestMono;
                             }
                         });
-                }
-            })
-            .flatMap(requestController -> {
-                if (requestController.canHandleRequest(request)) {
-                    return requestController.processRequest(request, nextRequestMono)
-                        .doOnError(throwable -> this.handleException(throwable));
                 } else {
-                    // If we reach here and still can not handle the request, it should mean the request has staled info
-                    // and the request will fail by server
-                    logger.warn(
-                        "Can not find request controller to handle request {} with pkRangeId {}",
-                        request.getActivityId(),
-                        request.requestContext.resolvedPartitionKeyRange.getId());
                     return nextRequestMono;
                 }
             });

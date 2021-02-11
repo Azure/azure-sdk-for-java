@@ -137,7 +137,7 @@ public class ThroughputControlStore {
         checkNotNull(originalRequestMono, "originalRequestMono can not be null");
 
         // Currently, we will only target two resource types.
-        // If in the future we find other useful scenarios for throughput control, add more more resource type here.
+        // If in the future we find other useful scenarios for throughput control, add more resource type here.
         if (request.getResourceType() != ResourceType.Document && request.getResourceType() != ResourceType.StoredProcedure) {
             return originalRequestMono;
         }
@@ -146,38 +146,46 @@ public class ThroughputControlStore {
         return this.resolveContainerController(collectionLink)
             .flatMap(containerController -> {
                 if (containerController.canHandleRequest(request)) {
-                    return Mono.just(containerController);
+                    return containerController.processRequest(request, originalRequestMono);
                 }
 
                 // Unable to find container controller to handle the request,
                 // It is caused by control store out of sync or the request has staled info.
                 // We will handle the first scenario by creating a new container controller,
                 // while fall back to original request Mono for the second scenario.
-                return this.shouldRefreshContainerController(collectionLink, request)
-                    .flatMap(shouldRefresh -> {
-                        if (shouldRefresh) {
-                            containerController.close().subscribeOn(Schedulers.parallel()).subscribe();
-                            this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
-                            return this.resolveContainerController(collectionLink);
-                        }
+                return this.updateControllerAndRetry(containerController, collectionLink, request, originalRequestMono);
+            });
+    }
 
-                        // The container container controller is up to date, the request has staled info, will let the request pass
-                        return Mono.just(containerController);
-                    });
-            })
-            .flatMap(containerController -> {
-                if (containerController.canHandleRequest(request)) {
-                    return containerController.processRequest(request, originalRequestMono)
-                        .doOnError(throwable -> this.handleException(request, containerController, throwable));
-                } else {
-                    // still can not handle the request
-                    logger.warn(
-                        "Can not find container controller to process request {} with collectionRid {} ",
-                        request.getActivityId(),
-                        request.requestContext.resolvedCollectionRid);
+    private <T> Mono<T> updateControllerAndRetry(
+        IThroughputContainerController currentContainerController,
+        String collectionLink,
+        RxDocumentServiceRequest request,
+        Mono<T> originalRequestMono) {
 
-                    return originalRequestMono;
+        return this.shouldRefreshContainerController(collectionLink, request)
+            .flatMap(shouldRefresh -> {
+                if (shouldRefresh) {
+                    currentContainerController.close().subscribeOn(Schedulers.parallel()).subscribe();
+                    this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
+                    return this.resolveContainerController(collectionLink)
+                        .flatMap(updatedContainerController -> {
+                            if (updatedContainerController.canHandleRequest(request)) {
+                                return updatedContainerController.processRequest(request, originalRequestMono)
+                                    .doOnError(throwable -> this.handleException(request, updatedContainerController, throwable));
+                            } else {
+                                // still can not handle the request
+                                logger.warn(
+                                    "Can not find container controller to process request {} with collectionRid {} ",
+                                    request.getActivityId(),
+                                    request.requestContext.resolvedCollectionRid);
+
+                                return originalRequestMono;
+                            }
+                        });
                 }
+
+                return originalRequestMono;
             });
     }
 
