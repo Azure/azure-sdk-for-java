@@ -30,7 +30,7 @@ public class ThroughputGroupLocalController extends ThroughputGroupControllerBas
     public <T> Mono<T> init() {
         return this.resolveRequestController()
             .doOnSuccess(dummy -> {
-                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribeOn(Schedulers.parallel()).subscribe();
+                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
             })
             .thenReturn((T)this);
     }

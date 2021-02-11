@@ -41,7 +41,6 @@ public class ThroughputRequestThrottler {
     public double renewThroughputUsageCycle(double scheduledThroughput) {
         try {
             this.throughputWriteLock.lock();
-
             double throughputUsagePercentage = (this.scheduledThroughput.get() - this.availableThroughput.get()) / this.scheduledThroughput.get();
             this.scheduledThroughput.set(scheduledThroughput);
             this.updateAvailableThroughput();
@@ -52,10 +51,10 @@ public class ThroughputRequestThrottler {
         }
     }
 
-    private void updateAvailableThroughput() {
+    private double updateAvailableThroughput() {
         // The base rule is: If RU is overused during the current cycle, the over used part will be deducted from the next cyclle
         // If RU is not fully utilized during the current cycle, it will be voided.
-        this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
+        return this.availableThroughput.accumulateAndGet(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {

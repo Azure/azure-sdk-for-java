@@ -222,8 +222,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 }
                 else {
                     return this.getOrCreateThroughputGroupController(request.getThroughputControlGroupName())
-                        .defaultIfEmpty(this.defaultGroupController)
-                        .map(Utils.ValueHolder::new);
+                        .defaultIfEmpty(new Utils.ValueHolder<>(this.defaultGroupController));
+
                 }
             })
             .flatMap(groupController -> {
@@ -236,7 +236,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     // TODO: a better way to handle throughput control group enabled after the container initialization
-    private Mono<ThroughputGroupControllerBase> getOrCreateThroughputGroupController(String groupName) {
+    private Mono<Utils.ValueHolder<ThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
 
         if (StringUtils.isEmpty(groupName)) {
             return Mono.empty();
@@ -248,7 +248,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
             return Mono.empty();
         }
 
-        return this.resolveThroughputGroupController(group);
+        return this.resolveThroughputGroupController(group)
+            .map(Utils.ValueHolder::new);
     }
 
     public String getTargetContainerRid() {

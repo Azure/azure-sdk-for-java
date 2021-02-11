@@ -62,8 +62,8 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
             })
             .flatMap(dummy -> this.resolveRequestController())
             .doOnSuccess(dummy -> {
-                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribeOn(Schedulers.parallel()).subscribe();
-                this.calculateClientThroughputShareTask(this.cancellationTokenSource.getToken()).subscribeOn(Schedulers.parallel()).subscribe();
+                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
+                this.calculateClientThroughputShareTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
             })
             .thenReturn((T)this);
     }

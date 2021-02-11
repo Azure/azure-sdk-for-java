@@ -114,7 +114,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                 this.recordThroughputUsage(requestController.renewThroughputUsageCycle(clientAllocatedThroughput));
             })
             .onErrorResume(throwable -> {
-                logger.warn("Reset throughput usage failed with reason", throwable);
+                logger.warn("Reset throughput usage failed with reason ", throwable);
                 return Mono.empty();
             })
             .then()
