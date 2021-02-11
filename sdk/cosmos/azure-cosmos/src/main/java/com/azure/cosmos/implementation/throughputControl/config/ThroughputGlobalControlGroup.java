@@ -30,7 +30,7 @@ public class ThroughputGlobalControlGroup extends ThroughputControlGroupInternal
         this.globalControlContainer = globalControlContainer;
         this.controlItemRenewInterval = controlItemRenewInterval != null ? controlItemRenewInterval : DEFAULT_CONTROL_ITEM_RENEW_INTERVAL;
         this.controlItemExpireInterval =
-            controlItemExpireInterval != null ? controlItemExpireInterval : Duration.ofSeconds(2 * this.controlItemRenewInterval.toSeconds());
+            controlItemExpireInterval != null ? controlItemExpireInterval : Duration.ofSeconds(2 * this.controlItemRenewInterval.getSeconds());
     }
 
     public CosmosAsyncContainer getGlobalControlContainer() {
