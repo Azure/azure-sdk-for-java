@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetpropserror0serviceapitestgetpropserrordd747215cf736?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23ccb341-4f23-46b1-b946-b54413f20138"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8CED67997BCBC",
+      "Last-Modified" : "Thu, 11 Feb 2021 21:46:23 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3494413a-701e-008a-12bf-001611000000",
+      "Date" : "Thu, 11 Feb 2021 21:46:23 GMT",
+      "x-ms-client-request-id" : "23ccb341-4f23-46b1-b946-b54413f20138"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "17d836b9-e284-4750-9851-cb5bad3a0bac"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "476",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "ddf4f5d7-f01e-00b2-80bf-00a279000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:ddf4f5d7-f01e-00b2-80bf-00a279000000\nTime:2021-02-11T21:46:24.3374036Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account sachinssoftdeleteeuap11.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 11 Feb 2021 21:46:23 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsgetpropserror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fbc611ae-6470-402a-9921-7555490f30bb"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "349444c0-701e-008a-31bf-001611000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sachinssoftdeleteeuap11.blob.core.windows.net/\"><Prefix>jtfsgetpropserror</Prefix><Containers><Container><Name>jtfsgetpropserror0serviceapitestgetpropserrordd747215cf736</Name><Properties><Last-Modified>Thu, 11 Feb 2021 21:46:23 GMT</Last-Modified><Etag>\"0x8D8CED67997BCBC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 11 Feb 2021 21:46:24 GMT",
+      "x-ms-client-request-id" : "fbc611ae-6470-402a-9921-7555490f30bb",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetpropserror0serviceapitestgetpropserrordd747215cf736?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d3ce1599-c1ec-4688-be42-199adfb2eabe"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "349445a2-701e-008a-5cbf-001611000000",
+      "Date" : "Thu, 11 Feb 2021 21:46:25 GMT",
+      "x-ms-client-request-id" : "d3ce1599-c1ec-4688-be42-199adfb2eabe"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsgetpropserror0serviceapitestgetpropserrordd747215cf736" ]
+}
