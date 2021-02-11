@@ -20,7 +20,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -69,37 +68,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         AcquiredPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumber(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        PhoneNumberUpdateRequest request = new PhoneNumberUpdateRequest();
-        request.setApplicationId("testApplicationId");
-        request.setCallbackUri("testCallbackUri");
-        AcquiredPhoneNumber number = this.getClientWithConnectionString(httpClient, "updatePhoneNumberSync").updatePhoneNumber(phoneNumber, request);
-        assertEquals(phoneNumber, number.getPhoneNumber());
-        assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertEquals("testCallbackUri", number.getCallbackUri());
-        assertNotNull(number.getApplicationId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        PhoneNumberUpdateRequest request = new PhoneNumberUpdateRequest();
-        request.setApplicationId("testApplicationId");
-        request.setCallbackUri("testCallbackUri");
-        Response<AcquiredPhoneNumber> response = 
-            this.getClientWithConnectionString(httpClient, "updatePhoneNumberWithResponseSync").updatePhoneNumberWithResponse(phoneNumber, request, Context.NONE);
-        AcquiredPhoneNumber number = response.getValue();
-        assertEquals(200, response.getStatusCode());
-        assertEquals(phoneNumber, number.getPhoneNumber());
-        assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertEquals("testCallbackUri", number.getCallbackUri());
-        assertNotNull(number.getApplicationId());
     }
 
     @ParameterizedTest

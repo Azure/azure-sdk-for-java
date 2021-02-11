@@ -11,6 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumbersPurchasePhoneNumbersHeaders {
     /*
+     * The operation-id property.
+     */
+    @JsonProperty(value = "operation-id")
+    private String operationId;
+
+    /*
+     * The purchase-id property.
+     */
+    @JsonProperty(value = "purchase-id")
+    private String purchaseId;
+
+    /*
      * The Operation-Location property.
      */
     @JsonProperty(value = "Operation-Location")
@@ -21,6 +33,46 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    /**
+     * Get the operationId property: The operation-id property.
+     *
+     * @return the operationId value.
+     */
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: The operation-id property.
+     *
+     * @param operationId the operationId value to set.
+     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     */
+    public PhoneNumbersPurchasePhoneNumbersHeaders setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
+
+    /**
+     * Get the purchaseId property: The purchase-id property.
+     *
+     * @return the purchaseId value.
+     */
+    public String getPurchaseId() {
+        return this.purchaseId;
+    }
+
+    /**
+     * Set the purchaseId property: The purchase-id property.
+     *
+     * @param purchaseId the purchaseId value to set.
+     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     */
+    public PhoneNumbersPurchasePhoneNumbersHeaders setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
+        return this;
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.

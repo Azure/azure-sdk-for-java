@@ -11,6 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumbersReleasePhoneNumberHeaders {
     /*
+     * The release-id property.
+     */
+    @JsonProperty(value = "release-id")
+    private String releaseId;
+
+    /*
+     * The operation-id property.
+     */
+    @JsonProperty(value = "operation-id")
+    private String operationId;
+
+    /*
      * The Operation-Location property.
      */
     @JsonProperty(value = "Operation-Location")
@@ -21,6 +33,46 @@ public final class PhoneNumbersReleasePhoneNumberHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    /**
+     * Get the releaseId property: The release-id property.
+     *
+     * @return the releaseId value.
+     */
+    public String getReleaseId() {
+        return this.releaseId;
+    }
+
+    /**
+     * Set the releaseId property: The release-id property.
+     *
+     * @param releaseId the releaseId value to set.
+     * @return the PhoneNumbersReleasePhoneNumberHeaders object itself.
+     */
+    public PhoneNumbersReleasePhoneNumberHeaders setReleaseId(String releaseId) {
+        this.releaseId = releaseId;
+        return this;
+    }
+
+    /**
+     * Get the operationId property: The operation-id property.
+     *
+     * @return the operationId value.
+     */
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: The operation-id property.
+     *
+     * @param operationId the operationId value to set.
+     * @return the PhoneNumbersReleasePhoneNumberHeaders object itself.
+     */
+    public PhoneNumbersReleasePhoneNumberHeaders setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.

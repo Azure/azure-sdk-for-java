@@ -11,6 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
     /*
+     * The operation-id property.
+     */
+    @JsonProperty(value = "operation-id")
+    private String operationId;
+
+    /*
+     * The search-id property.
+     */
+    @JsonProperty(value = "search-id")
+    private String searchId;
+
+    /*
      * The Operation-Location property.
      */
     @JsonProperty(value = "Operation-Location")
@@ -21,6 +33,46 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    /**
+     * Get the operationId property: The operation-id property.
+     *
+     * @return the operationId value.
+     */
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: The operation-id property.
+     *
+     * @param operationId the operationId value to set.
+     * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
+     */
+    public PhoneNumbersSearchAvailablePhoneNumbersHeaders setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
+
+    /**
+     * Get the searchId property: The search-id property.
+     *
+     * @return the searchId value.
+     */
+    public String getSearchId() {
+        return this.searchId;
+    }
+
+    /**
+     * Set the searchId property: The search-id property.
+     *
+     * @param searchId the searchId value to set.
+     * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
+     */
+    public PhoneNumbersSearchAvailablePhoneNumbersHeaders setSearchId(String searchId) {
+        this.searchId = searchId;
+        return this;
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.

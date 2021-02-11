@@ -46,7 +46,7 @@ public final class PhoneNumberSearchResult {
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /*
@@ -54,7 +54,7 @@ public final class PhoneNumberSearchResult {
      * on hold. A search result expires in less than 15min, e.g.
      * 2020-11-19T16:31:49.048Z.
      */
-    @JsonProperty(value = "searchExpiresBy", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "searchExpiresBy", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime searchExpiresBy;
 
     /**

@@ -15,7 +15,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -96,48 +95,6 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Update an acquired phone number.
-     *
-     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
-     *                    as %2B.
-     * @param updateRequest Update request to an acquired phone number.
-     * @return A {@link Mono} containing a {@link AcquiredPhoneNumber} representing the acquired phone number
-     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
-        try {
-            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
-            return client.updateAsync(phoneNumber, updateRequest);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-
-    /**
-     * Update an acquired phone number with response.
-     *
-     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
-     *                    as %2B.
-     * @param updateRequest Update request to an acquired phone number.
-     * @return A {@link Mono} containing a {@link AcquiredPhoneNumber} representing the acquired phone number
-     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> 
-        updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
-        try {
-            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
-            return client.updateWithResponseAsync(phoneNumber, updateRequest);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Starts the search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
@@ -178,19 +135,12 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.searchAvailablePhoneNumbersWithResponseAsync(countryCode, searchRequest, contextValue)
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
-                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
-                    pollingContext.setData("searchId", parseIdFromUrl(response.getDeserializedHeaders().getLocation()));
+                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                    pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
                     return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
         };
-    }
-
-    private String parseIdFromUrl(String url) {
-        Objects.requireNonNull(url, "'url' cannot be null.");
-        String[] items = url.split("/");
-        String id = items[items.length - 1];
-        return id.substring(0, Math.min(id.indexOf("?"), id.length()));
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
@@ -271,7 +221,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
                 .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
-                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
@@ -315,7 +265,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
                 .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
-                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });
@@ -361,7 +311,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
                 .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
-                    pollingContext.setData("operationId", parseIdFromUrl(response.getDeserializedHeaders().getOperationLocation()));
+                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     return client.getOperationAsync(pollingContext.getData("operationId"));
                 });
             });

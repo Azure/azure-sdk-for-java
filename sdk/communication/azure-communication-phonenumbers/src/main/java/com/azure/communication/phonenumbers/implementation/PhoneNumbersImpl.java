@@ -7,6 +7,7 @@ package com.azure.communication.phonenumbers.implementation;
 import com.azure.communication.phonenumbers.implementation.models.AcquiredPhoneNumbers;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
@@ -16,7 +17,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesReques
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -98,7 +98,7 @@ public final class PhoneNumbersImpl {
         @Get("/phoneNumbers/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberOperation>> getOperation(
+        Mono<PhoneNumbersGetOperationResponse> getOperation(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
@@ -129,16 +129,6 @@ public final class PhoneNumbersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("phoneNumber") String phoneNumber,
                 @QueryParam("api-version") String apiVersion,
-                Context context);
-
-        @Patch("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcquiredPhoneNumber>> update(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("phoneNumber") String phoneNumber,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") PhoneNumberUpdateRequest body,
                 Context context);
 
         @Get("/phoneNumbers")
@@ -516,7 +506,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberOperation>> getOperationWithResponseAsync(String operationId) {
+    public Mono<PhoneNumbersGetOperationResponse> getOperationWithResponseAsync(String operationId) {
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
@@ -534,7 +524,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberOperation>> getOperationWithResponseAsync(String operationId, Context context) {
+    public Mono<PhoneNumbersGetOperationResponse> getOperationWithResponseAsync(String operationId, Context context) {
         return service.getOperation(this.client.getEndpoint(), operationId, this.client.getApiVersion(), context);
     }
 
@@ -551,7 +541,7 @@ public final class PhoneNumbersImpl {
     public Mono<PhoneNumberOperation> getOperationAsync(String operationId) {
         return getOperationWithResponseAsync(operationId)
                 .flatMap(
-                        (Response<PhoneNumberOperation> res) -> {
+                        (PhoneNumbersGetOperationResponse res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -574,7 +564,7 @@ public final class PhoneNumbersImpl {
     public Mono<PhoneNumberOperation> getOperationAsync(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context)
                 .flatMap(
-                        (Response<PhoneNumberOperation> res) -> {
+                        (PhoneNumbersGetOperationResponse res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -895,120 +885,6 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releasePhoneNumber(String phoneNumber, Context context) {
         releasePhoneNumberAsync(phoneNumber, context).block();
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> updateWithResponseAsync(
-            String phoneNumber, PhoneNumberUpdateRequest body) {
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body, context));
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> updateWithResponseAsync(
-            String phoneNumber, PhoneNumberUpdateRequest body, Context context) {
-        return service.update(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body, context);
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updateAsync(String phoneNumber, PhoneNumberUpdateRequest body) {
-        return updateWithResponseAsync(phoneNumber, body)
-                .flatMap(
-                        (Response<AcquiredPhoneNumber> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updateAsync(String phoneNumber, PhoneNumberUpdateRequest body, Context context) {
-        return updateWithResponseAsync(phoneNumber, body, context)
-                .flatMap(
-                        (Response<AcquiredPhoneNumber> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber update(String phoneNumber, PhoneNumberUpdateRequest body) {
-        return updateAsync(phoneNumber, body).block();
-    }
-
-    /**
-     * Updates the configuration of a phone number.
-     *
-     * @param phoneNumber Phone number to be updated, e.g. +11234567890.
-     * @param body Property updates for a phone number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an acquired phone number.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber update(String phoneNumber, PhoneNumberUpdateRequest body, Context context) {
-        return updateAsync(phoneNumber, body, context).block();
     }
 
     /**

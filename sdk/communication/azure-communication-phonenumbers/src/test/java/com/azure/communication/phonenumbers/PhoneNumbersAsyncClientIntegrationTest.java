@@ -22,7 +22,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -84,46 +83,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         .assertNext((AcquiredPhoneNumber number) -> {
             assertNotNull(number.getPhoneNumber());
             assertEquals(COUNTRY_CODE, number.getCountryCode());
-        })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumber(HttpClient httpClient) {
-        PhoneNumberUpdateRequest request = new PhoneNumberUpdateRequest();
-        request.setApplicationId("testApplicationId");
-        request.setCallbackUri("testCallbackUri");
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "updatePhoneNumber").updatePhoneNumber(phoneNumber, request)
-        )
-        .assertNext((AcquiredPhoneNumber number) -> {
-            assertEquals(phoneNumber, number.getPhoneNumber());
-            assertEquals(COUNTRY_CODE, number.getCountryCode());
-            assertEquals("testCallbackUri", number.getCallbackUri());
-            assertNotNull(number.getApplicationId());
-        })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumberWithResponse(HttpClient httpClient) {
-        PhoneNumberUpdateRequest request = new PhoneNumberUpdateRequest();
-        request.setApplicationId("testApplicationId");
-        request.setCallbackUri("testCallbackUri");
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "updatePhoneNumberWithResponse").updatePhoneNumberWithResponse(phoneNumber, request)
-        )
-        .assertNext((Response<AcquiredPhoneNumber> response) -> {
-            AcquiredPhoneNumber number = response.getValue();
-            assertEquals(200, response.getStatusCode());
-            assertEquals(phoneNumber, number.getPhoneNumber());
-            assertEquals(COUNTRY_CODE, number.getCountryCode());
-            assertEquals("testCallbackUri", number.getCallbackUri());
-            assertNotNull(number.getApplicationId());
         })
             .verifyComplete();
     }
@@ -219,25 +178,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             )
             .verifyError();
     }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumberNullNumber(HttpClient httpClient) {
-        StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "updatePhoneNumberNullNumber").updatePhoneNumber(null, new PhoneNumberUpdateRequest())
-            )
-            .verifyError();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumberNullNumberWithResponse(HttpClient httpClient) {
-        StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "updatePhoneNumberNullNumberWithResponse").updatePhoneNumber(null, new PhoneNumberUpdateRequest())
-            )
-            .verifyError();
-    }
-
+    
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginSearchAvailablePhoneNumbersNullCountryCode(HttpClient httpClient) {

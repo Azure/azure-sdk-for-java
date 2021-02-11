@@ -11,6 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumbersUpdateCapabilitiesHeaders {
     /*
+     * The capabilities-id property.
+     */
+    @JsonProperty(value = "capabilities-id")
+    private String capabilitiesId;
+
+    /*
+     * The operation-id property.
+     */
+    @JsonProperty(value = "operation-id")
+    private String operationId;
+
+    /*
      * The Operation-Location property.
      */
     @JsonProperty(value = "Operation-Location")
@@ -21,6 +33,46 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    /**
+     * Get the capabilitiesId property: The capabilities-id property.
+     *
+     * @return the capabilitiesId value.
+     */
+    public String getCapabilitiesId() {
+        return this.capabilitiesId;
+    }
+
+    /**
+     * Set the capabilitiesId property: The capabilities-id property.
+     *
+     * @param capabilitiesId the capabilitiesId value to set.
+     * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
+     */
+    public PhoneNumbersUpdateCapabilitiesHeaders setCapabilitiesId(String capabilitiesId) {
+        this.capabilitiesId = capabilitiesId;
+        return this;
+    }
+
+    /**
+     * Get the operationId property: The operation-id property.
+     *
+     * @return the operationId value.
+     */
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: The operation-id property.
+     *
+     * @param operationId the operationId value to set.
+     * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
+     */
+    public PhoneNumbersUpdateCapabilitiesHeaders setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.

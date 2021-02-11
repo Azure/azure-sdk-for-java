@@ -12,7 +12,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -89,22 +88,6 @@ public class ReadmeSamples {
         System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
         System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
         return phoneNumbers;
-    }
-
-    /**
-     * Update an acquired phone number.
-     *
-     * @return all acquired phone number.
-     */
-    public AcquiredPhoneNumber updatePhoneNumber() {
-        PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PhoneNumberUpdateRequest request = new PhoneNumberUpdateRequest()
-            .setApplicationId("sampleApplicationId")
-            .setCallbackUri("sampleCallbackUri");
-        AcquiredPhoneNumber phoneNumber = phoneNumberClient.updatePhoneNumber("+18001234567", request);
-        System.out.println("Updated Application Id: " + phoneNumber.getApplicationId());
-        System.out.println("Sample Callback Uri: " + phoneNumber.getCallbackUri());
-        return phoneNumber;
     }
 
     /**

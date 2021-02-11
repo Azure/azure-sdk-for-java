@@ -11,7 +11,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesReques
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
-import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -74,41 +73,6 @@ public final class PhoneNumbersClient {
     public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Context context) {
         context = context == null ? Context.NONE : context;
         return client.listPhoneNumbers(null, null, context);
-    }
-
-
-    /**
-     * Update an acquired phone number.
-     *
-     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
-     *                    as %2B.
-     * @param updateRequest {@link PhoneNumberUpdateRequest} specifying updates to an acquired phone number.
-     * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
-     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest updateRequest) {
-        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-        Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
-        return client.updateAsync(phoneNumber, updateRequest).block();
-    }
-
-    /**
-     * Update an acquired phone number with response.
-     *
-     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
-     *                    as %2B.
-     * @param updateRequest Update request to an acquired phone number.
-     * @param context A {@link Context} representing the request context.
-     * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
-     * @throws NullPointerException if {@code phoneNumber} or {@code updateRequest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest updateRequest, Context context) {
-        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-        Objects.requireNonNull(updateRequest, "'updateRequest' cannot be null.");
-        context = context == null ? Context.NONE : context;
-        return client.updateWithResponseAsync(phoneNumber, updateRequest, context).block();
     }
 
     /**
