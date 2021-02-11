@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.0-beta.2 (Unreleased)
+
+
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
 - Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
