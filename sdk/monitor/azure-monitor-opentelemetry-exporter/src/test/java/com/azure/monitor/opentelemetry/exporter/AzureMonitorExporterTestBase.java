@@ -8,6 +8,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -31,8 +32,16 @@ public class AzureMonitorExporterTestBase extends TestBase {
             .connectionString(System.getenv("AZURE_MONITOR_CONNECTION_STRING"))
             .addPolicy(validator)
             .buildExporter();
-        OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
-        return OpenTelemetrySdk.get().getTracer("Sample");
+
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
+
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+
+        return openTelemetrySdk.getTracer("Sample");
     }
 
 
