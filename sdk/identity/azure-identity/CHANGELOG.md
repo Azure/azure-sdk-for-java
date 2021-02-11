@@ -2,7 +2,7 @@
 
 ## 1.3.0-beta.1 (2020-02-10)
 
-- ### New Features
+### New Features
 - Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
 
 ### Dependency Updates
