@@ -51,10 +51,10 @@ public class ThroughputRequestThrottler {
         }
     }
 
-    private double updateAvailableThroughput() {
+    private void updateAvailableThroughput() {
         // The base rule is: If RU is overused during the current cycle, the over used part will be deducted from the next cyclle
         // If RU is not fully utilized during the current cycle, it will be voided.
-        return this.availableThroughput.accumulateAndGet(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
+        this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {

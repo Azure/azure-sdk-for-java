@@ -89,7 +89,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(group.getGroupName()); // since can not find the match group, will fall back to the default one
+        requestOptions.setThroughputControlGroupName(group.getGroupName());
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
@@ -97,14 +97,11 @@ public class ThroughputControlTests extends TestSuiteBase {
             createItemResponse.getDiagnostics().toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-        // second request to group-1. which will get throttled
+        // second request to same group. which will get throttled
         CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(operationType, createdItem, group.getGroupName());
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
-
-
-        Thread.sleep(7000);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
