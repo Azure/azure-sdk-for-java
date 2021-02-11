@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
 public final class MixedRealityStsClientBuilder {
-    private static final String APP_CONFIG_PROPERTIES = "azure-mixedreality-authentication.properties";
+    private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -385,7 +385,7 @@ public final class MixedRealityStsClientBuilder {
      * @return The default {@link UserAgentPolicy} for the module.
      */
     private UserAgentPolicy getUserAgentPolicy() {
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
+        Map<String, String> properties = CoreUtils.getProperties(MIXED_REALITY_STS_PROPERTIES);
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");

@@ -153,3 +153,5 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [package]: https://search.maven.org/artifact/com.azure/azure-mixedreality-authentication
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/mixedreality/azure-mixedreality-authentication
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)
