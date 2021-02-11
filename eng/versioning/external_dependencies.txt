@@ -15,9 +15,9 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.11.3
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.11.3
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.11.3
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.11.3
-com.github.spotbugs:spotbugs;4.0.0-beta3
-com.github.spotbugs:spotbugs-annotations;4.0.2
-com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
+com.github.spotbugs:spotbugs;4.2.0
+com.github.spotbugs:spotbugs-annotations;4.2.0
+com.github.spotbugs:spotbugs-maven-plugin;4.2.0
 com.google.code.gson:gson;2.8.6
 com.google.guava:guava;29.0-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
