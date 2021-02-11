@@ -3,17 +3,17 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.AspectSentimentPropertiesHelper;
 
 /**
  * The {@link AspectSentiment} model.
  */
-@Immutable
 public final class AspectSentiment {
     private final String text;
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
     private final int offset;
+    private int length;
 
     /**
      * Create an {@link AspectSentiment} model that describes aspect.
@@ -30,6 +30,10 @@ public final class AspectSentiment {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.offset = offset;
+    }
+
+    static {
+        AspectSentimentPropertiesHelper.setAccessor((aspectSentiment, length) -> aspectSentiment.setLength(length));
     }
 
     /**
@@ -51,7 +55,6 @@ public final class AspectSentiment {
         return sentiment;
     }
 
-
     /**
      * Get the aspect text offset from the start of document.
      *
@@ -59,6 +62,15 @@ public final class AspectSentiment {
      */
     public int getOffset() {
         return offset;
+    }
+
+    /**
+     * Get the length of aspect text.
+     *
+     * @return The length of aspect text.
+     */
+    public int getLength() {
+        return length;
     }
 
     /**
@@ -70,5 +82,9 @@ public final class AspectSentiment {
      */
     public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

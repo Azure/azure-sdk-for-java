@@ -8,6 +8,8 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
@@ -49,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
@@ -552,7 +555,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         testingContainerUrlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("de"),
+                    new RecognizeContentOptions().setPollInterval(durationTestMode)
+                        .setLanguage(FormRecognizerLanguage.DE),
                     Context.NONE);
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
@@ -569,8 +573,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException exception
                 = assertThrows(HttpResponseException.class,
                     () -> client.beginRecognizeContentFromUrl(sourceUrl,
-                        new RecognizeContentOptions().setPollInterval(durationTestMode).setLanguage("language"),
-                        Context.NONE));
+                        new RecognizeContentOptions().setPollInterval(durationTestMode)
+                            .setLanguage(FormRecognizerLanguage.fromString("language")), Context.NONE));
             assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(), "NotSupportedLanguage");
         }, CONTENT_GERMAN_PDF);
     }
@@ -784,12 +788,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
                     new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
             trainingPoller.waitForCompletion();
-
+            String modelId = trainingPoller.getFinalResult().getModelId();
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
+                modelId, data, dataLength, new RecognizeCustomFormsOptions()
                     .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
-            validateMultiPageDataLabeled(syncPoller.getFinalResult());
+            validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
         }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1109,12 +1113,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
                     new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
             trainingPoller.waitForCompletion();
-
+            String modelId = trainingPoller.getFinalResult().getModelId();
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
+                    modelId, fileUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
-            validateMultiPageDataLabeled(syncPoller.getFinalResult());
+            validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
         }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1409,8 +1413,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
-                // since none of the models have a name
-                assertEquals(recognizedForm.getFormType(), "custom:");
+                if (recognizedForm.getFormType().equals("custom:" + createdModel1.getModelId())
+                    || recognizedForm.getFormType().equals("custom:" + createdModel.getModelId())) {
+                    assertTrue(true);
+                } else {
+                    fail();
+                }
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
                 // check formtype set on submodel
@@ -1755,7 +1763,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             client.beginRecognizeReceipts(
                 getContentDetectionFileData(filePath),
                 dataLength,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("en-US"),
+                new RecognizeReceiptsOptions().setPollInterval(durationTestMode)
+                    .setLocale(FormRecognizerLocale.EN_US),
                 Context.NONE);
             validateNetworkCallRecord("locale", "en-US");
 
@@ -1979,7 +1988,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             client.beginRecognizeInvoices(
                 getContentDetectionFileData(filePath),
                 dataLength,
-                new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"),
+                new RecognizeInvoicesOptions().setPollInterval(durationTestMode)
+                    .setLocale(FormRecognizerLocale.EN_US),
                 Context.NONE);
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);

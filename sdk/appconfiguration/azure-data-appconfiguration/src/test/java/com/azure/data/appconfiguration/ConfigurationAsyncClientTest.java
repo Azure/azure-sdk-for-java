@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -22,10 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import java.net.HttpURLConnection;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,6 +25,17 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
+
+import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
@@ -539,15 +542,35 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        final String key = getKey();
+        final String key2 = getKey();
 
-        SettingSelector settingSelector = new SettingSelector();
-        settingSelector.setKeyFilter("prodDBConnection");
-        com.azure.core.util.Context context = new com.azure.core.util.Context(SettingFields.KEY, SettingFields.VALUE);
+        // Delete all existing settings in the resource
+        StepVerifier.create(
+            client.listConfigurationSettings(null)
+                .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                .then())
+            .verifyComplete();
 
-        StepVerifier.create(client.listConfigurationSettings(null, context))
-            .verifyError();
+        listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
+            List<ConfigurationSetting> selected = new ArrayList<>();
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.listConfigurationSettings(null))
+                .consumeNextWith(selected::add)
+                .consumeNextWith(selected::add)
+                .verifyComplete();
+            assertEquals(2, selected.size());
+            return selected;
+        });
     }
 
     /**
@@ -722,16 +745,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> validateListRevisions(original, response))
                 .verifyComplete();
 
-        SettingSelector settingSelector = new SettingSelector();
-        settingSelector.setKeyFilter("prodDBConnection");
-        com.azure.core.util.Context context = new com.azure.core.util.Context("key", "value");
-
-        StepVerifier.create(client.listRevisions(settingSelector, context))
-            .verifyError();
-
-        StepVerifier.create(client.listRevisionsFirstPage(null, context).then(client.listRevisionsNextPage(connectionString, context)))
-            .verifyError();
-
+        // Verifies that we have revision list size greater than 0. The count number of revision changes.
+        assertTrue(client.listRevisions(null).toStream().collect(Collectors.toList()).size() > 0);
     }
 
     /**
@@ -1038,4 +1053,3 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyError(HttpResponseException.class));
     }
 }
-

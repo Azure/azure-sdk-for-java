@@ -1043,10 +1043,7 @@ public class JsonWebKey {
     }
 
     private boolean isValidOctet() {
-        if (k != null) {
-            return true;
-        }
-        return false;
+        return k != null;
     }
 
     private boolean isValidRsa() {

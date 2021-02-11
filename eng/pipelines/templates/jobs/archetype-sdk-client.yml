@@ -181,6 +181,8 @@ jobs:
       name: ${{ parameters.LinuxPool }}
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
@@ -348,7 +350,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: -Pcoverage
@@ -410,7 +412,7 @@ jobs:
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml

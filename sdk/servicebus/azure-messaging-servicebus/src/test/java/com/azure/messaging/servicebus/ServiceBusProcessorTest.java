@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -336,7 +337,8 @@ public class ServiceBusProcessorTest {
     public void testProcessorWithTracingEnabled() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
+        final int numberOfTimes = 5;
+        final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
 
@@ -357,7 +359,7 @@ public class ServiceBusProcessorTest {
         );
         Flux<ServiceBusMessageContext> messageFlux =
             Flux.create(emitter -> {
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < numberOfTimes; i++) {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
@@ -372,7 +374,7 @@ public class ServiceBusProcessorTest {
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
 
         AtomicInteger messageId = new AtomicInteger();
-        CountDownLatch countDownLatch = new CountDownLatch(5);
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -382,13 +384,16 @@ public class ServiceBusProcessorTest {
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setTracerProvider(tracerProvider));
 
         serviceBusProcessorClient.start();
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
 
         assertTrue(success, "Failed to receive all expected messages");
-        verify(tracer, times(5)).extractContext(eq(diagnosticId), any());
-        verify(tracer, times(5)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
-        verify(tracer, times(5)).end(eq("success"), isNull(), any());
+        verify(tracer, times(numberOfTimes)).extractContext(eq(diagnosticId), any());
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+
+        // This is one less because the processEvent is called before the end span call, so it is possible for
+        // to reach this line without calling it the 5th time yet. (Timing issue.)
+        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
 
     }
 

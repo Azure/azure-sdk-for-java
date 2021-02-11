@@ -15,6 +15,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -68,6 +69,7 @@ public final class SparkSessionsImpl {
                 @QueryParam("from") Integer from,
                 @QueryParam("size") Integer size,
                 @QueryParam("detailed") Boolean detailed,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sessions")
@@ -79,6 +81,7 @@ public final class SparkSessionsImpl {
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @QueryParam("detailed") Boolean detailed,
                 @BodyParam("application/json") SparkSessionOptions sparkSessionOptions,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/sessions/{sessionId}")
@@ -90,6 +93,7 @@ public final class SparkSessionsImpl {
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @QueryParam("detailed") Boolean detailed,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/sessions/{sessionId}")
@@ -120,6 +124,7 @@ public final class SparkSessionsImpl {
                 @HostParam("livyApiVersion") String livyApiVersion,
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sessions/{sessionId}/statements")
@@ -131,6 +136,7 @@ public final class SparkSessionsImpl {
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @BodyParam("application/json") SparkStatementOptions sparkStatementOptions,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/sessions/{sessionId}/statements/{statementId}")
@@ -142,6 +148,7 @@ public final class SparkSessionsImpl {
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @PathParam("statementId") int statementId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sessions/{sessionId}/statements/{statementId}/cancel")
@@ -153,6 +160,7 @@ public final class SparkSessionsImpl {
                 @HostParam("sparkPoolName") String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @PathParam("statementId") int statementId,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -170,6 +178,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSessionCollection>> getSparkSessionsWithResponseAsync(
             Integer from, Integer size, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkSessions(
@@ -179,6 +188,7 @@ public final class SparkSessionsImpl {
                                 from,
                                 size,
                                 detailed,
+                                accept,
                                 context));
     }
 
@@ -197,6 +207,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSessionCollection>> getSparkSessionsWithResponseAsync(
             Integer from, Integer size, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.getSparkSessions(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
@@ -204,6 +215,7 @@ public final class SparkSessionsImpl {
                 from,
                 size,
                 detailed,
+                accept,
                 context);
     }
 
@@ -342,6 +354,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> createSparkSessionWithResponseAsync(
             SparkSessionOptions sparkSessionOptions, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createSparkSession(
@@ -350,6 +363,7 @@ public final class SparkSessionsImpl {
                                 this.client.getSparkPoolName(),
                                 detailed,
                                 sparkSessionOptions,
+                                accept,
                                 context));
     }
 
@@ -367,12 +381,14 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> createSparkSessionWithResponseAsync(
             SparkSessionOptions sparkSessionOptions, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.createSparkSession(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 detailed,
                 sparkSessionOptions,
+                accept,
                 context);
     }
 
@@ -506,6 +522,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> getSparkSessionWithResponseAsync(int sessionId, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkSession(
@@ -514,6 +531,7 @@ public final class SparkSessionsImpl {
                                 this.client.getSparkPoolName(),
                                 sessionId,
                                 detailed,
+                                accept,
                                 context));
     }
 
@@ -531,12 +549,14 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> getSparkSessionWithResponseAsync(
             int sessionId, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.getSparkSession(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 sessionId,
                 detailed,
+                accept,
                 context);
     }
 
@@ -864,6 +884,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCollection>> getSparkStatementsWithResponseAsync(int sessionId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkStatements(
@@ -871,6 +892,7 @@ public final class SparkSessionsImpl {
                                 this.client.getLivyApiVersion(),
                                 this.client.getSparkPoolName(),
                                 sessionId,
+                                accept,
                                 context));
     }
 
@@ -887,11 +909,13 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCollection>> getSparkStatementsWithResponseAsync(
             int sessionId, Context context) {
+        final String accept = "application/json";
         return service.getSparkStatements(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 sessionId,
+                accept,
                 context);
     }
 
@@ -982,6 +1006,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> createSparkStatementWithResponseAsync(
             int sessionId, SparkStatementOptions sparkStatementOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createSparkStatement(
@@ -990,6 +1015,7 @@ public final class SparkSessionsImpl {
                                 this.client.getSparkPoolName(),
                                 sessionId,
                                 sparkStatementOptions,
+                                accept,
                                 context));
     }
 
@@ -1007,12 +1033,14 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> createSparkStatementWithResponseAsync(
             int sessionId, SparkStatementOptions sparkStatementOptions, Context context) {
+        final String accept = "application/json";
         return service.createSparkStatement(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 sessionId,
                 sparkStatementOptions,
+                accept,
                 context);
     }
 
@@ -1108,6 +1136,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> getSparkStatementWithResponseAsync(int sessionId, int statementId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkStatement(
@@ -1116,6 +1145,7 @@ public final class SparkSessionsImpl {
                                 this.client.getSparkPoolName(),
                                 sessionId,
                                 statementId,
+                                accept,
                                 context));
     }
 
@@ -1133,12 +1163,14 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> getSparkStatementWithResponseAsync(
             int sessionId, int statementId, Context context) {
+        final String accept = "application/json";
         return service.getSparkStatement(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 sessionId,
                 statementId,
+                accept,
                 context);
     }
 
@@ -1233,6 +1265,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCancellationResult>> cancelSparkStatementWithResponseAsync(
             int sessionId, int statementId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelSparkStatement(
@@ -1241,6 +1274,7 @@ public final class SparkSessionsImpl {
                                 this.client.getSparkPoolName(),
                                 sessionId,
                                 statementId,
+                                accept,
                                 context));
     }
 
@@ -1258,12 +1292,14 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCancellationResult>> cancelSparkStatementWithResponseAsync(
             int sessionId, int statementId, Context context) {
+        final String accept = "application/json";
         return service.cancelSparkStatement(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 sessionId,
                 statementId,
+                accept,
                 context);
     }
 

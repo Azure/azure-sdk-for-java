@@ -18,6 +18,7 @@ import com.azure.resourcemanager.cdn.models.Operation;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link CdnProfiles}.
@@ -76,20 +77,20 @@ public final class CdnProfilesImpl
 
     @Override
     public PagedIterable<Operation> listOperations() {
-        return this.manager().serviceClient().getOperations().list()
-            .mapPage(Operation::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getOperations().list(),
+            Operation::new);
     }
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return this.manager().serviceClient().getResourceUsages().list()
-            .mapPage(ResourceUsage::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getResourceUsages().list(),
+            ResourceUsage::new);
     }
 
     @Override
     public PagedIterable<EdgeNode> listEdgeNodes() {
-        return this.manager().serviceClient().getEdgeNodes().list()
-            .mapPage(EdgeNode::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEdgeNodes().list(),
+            EdgeNode::new);
     }
 
     @Override

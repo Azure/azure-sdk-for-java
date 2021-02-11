@@ -14,6 +14,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<
@@ -34,7 +37,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return inner().listApplicationAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listApplicationAsync(), this::wrapModel);
     }
 
     @Override
@@ -67,7 +70,15 @@ public class ActiveDirectoryApplicationsImpl
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
         return listByFilterAsync(String.format("displayName eq '%s'", trimmed))
             .singleOrEmpty()
-            .switchIfEmpty(listByFilterAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty());
+            .switchIfEmpty(Mono.defer(() -> {
+                try {
+                    UUID.fromString(trimmed);
+                } catch (IllegalArgumentException e) {
+                    // abort if name does not look like an application ID
+                    return Mono.empty();
+                }
+                return listByFilterAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+            }));
     }
 
     @Override
@@ -102,7 +113,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
-        return inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null),
+            this::wrapModel);
     }
 }
