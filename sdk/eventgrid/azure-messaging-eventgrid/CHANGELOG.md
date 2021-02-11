@@ -1,5 +1,8 @@
 # Release History
 
+## 2.0.0-beta.5 (Unreleased)
+
+
 ## 2.0.0-beta.4 (2020-02-10)
 ### Breaking changes
 - `CloudEvent` constructor now accepts parameter "data". Removed `setData()`.
