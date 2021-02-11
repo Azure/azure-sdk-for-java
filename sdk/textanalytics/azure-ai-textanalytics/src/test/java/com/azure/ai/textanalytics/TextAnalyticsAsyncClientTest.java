@@ -1950,7 +1950,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                         Collections.singletonList(new TextDocumentInput("0", document)),
-                    new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
+                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
                                      .getSyncPoller();
                 syncPoller.waitForCompletion();
                 PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
@@ -2241,7 +2241,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
                 syncPoller = client.beginAnalyzeBatchActions(documents, tasks,
-                new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false,

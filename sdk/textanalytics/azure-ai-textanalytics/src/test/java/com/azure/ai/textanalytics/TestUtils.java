@@ -681,7 +681,7 @@ final class TestUtils {
         return new RecognizePiiEntitiesResultCollection(
             asList(
                 new RecognizePiiEntitiesResult("0", null, null,
-                new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
+                    new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
                     "I had a wonderful trip to Seattle last week.", null)),
                 new RecognizePiiEntitiesResult("1", null, null,
                     new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),

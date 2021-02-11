@@ -1863,7 +1863,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                               PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)),
-                    new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT),
+                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT),
                     Context.NONE);
                 syncPoller.waitForCompletion();
                 PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollection
@@ -2137,7 +2137,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
                 syncPoller = client.beginAnalyzeBatchActions(documents, tasks,
-                new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
+                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
