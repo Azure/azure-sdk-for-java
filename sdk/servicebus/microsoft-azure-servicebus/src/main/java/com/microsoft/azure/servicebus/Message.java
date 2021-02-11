@@ -195,7 +195,12 @@ public final class Message implements Serializable, IMessage {
 
     @Override
     public Instant getExpiresAtUtc() {
-        return this.enqueuedTimeUtc.plus(this.timeToLive);
+    	if (this.timeToLive == null) {
+    		return Instant.MAX; // It will never expire
+    	}
+    	else {
+    		return this.enqueuedTimeUtc.plus(this.timeToLive);
+    	}
     }
 
     @Override
