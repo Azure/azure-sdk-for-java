@@ -23,7 +23,7 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ search for your resource. On the overview page of your resource, you will find t
 right corner.
 
 ### Creating exporter for Azure Monitor
-<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L26-L28 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L32-L34 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
@@ -47,17 +47,40 @@ AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
 
 #### Exporting span data
 
-The following example shows how to export a collection of available [Spans][span_data] to Azure Monitor through the
+The following example shows how to export a trace data to Azure Monitor through the
  `AzureMonitorExporter`
 
-<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L35-L40 -->
+##### Setup OpenTelemetry Tracer to work with Azure Monitor exporter
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L42-L49 -->
 ```java
-AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+// Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
+// This should be done just once when application starts up
+AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildExporter();
 
-CompletableResultCode resultCode = azureMonitorExporter.export(getSpanDataCollection());
-System.out.println(resultCode.isSuccess());
+OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
+Tracer tracer = OpenTelemetrySdk.get().getTracer("Sample");
+```
+
+##### Create spans
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L51-L64 -->
+
+```java
+// Make service calls by adding new parent spans
+ConfigurationClient client = new ConfigurationClientBuilder()
+    .connectionString("{app-config-connection-string}")
+    .buildClient();
+
+Span span = tracer.spanBuilder("user-parent-span").startSpan();
+final Scope scope = span.makeCurrent();
+try {
+    // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+    client.setConfigurationSetting("hello", "text", "World");
+} finally {
+    span.end();
+    scope.close();
+}
 ```
 
 ## Key concepts

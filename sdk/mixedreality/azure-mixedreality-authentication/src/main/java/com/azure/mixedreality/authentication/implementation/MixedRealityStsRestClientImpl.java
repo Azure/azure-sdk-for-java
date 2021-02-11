@@ -83,7 +83,11 @@ public final class MixedRealityStsRestClientImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of MixedRealityStsRestClient client. */
+    /**
+     * Initializes an instance of MixedRealityStsRestClient client.
+     *
+     * @param host server parameter.
+     */
     MixedRealityStsRestClientImpl(String host) {
         this(
                 new HttpPipelineBuilder()
@@ -97,6 +101,7 @@ public final class MixedRealityStsRestClientImpl {
      * Initializes an instance of MixedRealityStsRestClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param host server parameter.
      */
     MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, String host) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
@@ -107,6 +112,7 @@ public final class MixedRealityStsRestClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param host server parameter.
      */
     MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
@@ -133,6 +139,7 @@ public final class MixedRealityStsRestClientImpl {
                 @PathParam("accountId") UUID accountId,
                 @HeaderParam("X-MRC-CV") String clientRequestId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -150,11 +157,12 @@ public final class MixedRealityStsRestClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetTokenResponse> getTokenWithResponseAsync(
             UUID accountId, TokenRequestOptions tokenRequestOptions, Context context) {
+        final String accept = "application/json";
         String clientRequestIdInternal = null;
         if (tokenRequestOptions != null) {
             clientRequestIdInternal = tokenRequestOptions.getClientRequestId();
         }
         String clientRequestId = clientRequestIdInternal;
-        return service.getToken(this.getHost(), accountId, clientRequestId, this.getApiVersion(), context);
+        return service.getToken(this.getHost(), accountId, clientRequestId, this.getApiVersion(), accept, context);
     }
 }
