@@ -11,15 +11,19 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  private case class UpsertParameterTest(itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
+  private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(itemWriteStrategy = ItemOverwrite),
-    UpsertParameterTest(itemWriteStrategy = ItemAppend)
+//    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemOverwrite),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemOverwrite),
+
+
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemOverwrite),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemAppend)
   )
 
-  for (UpsertParameterTest(itemWriteStrategy, hasId) <- upsertParameterTest) {
-    it should s"support itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in {
+  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId) <- upsertParameterTest) {
+    it should s"support bulkEnabled = ${bulkEnabled} itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in  {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -33,7 +37,9 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
-        "spark.cosmos.write.strategy" -> itemWriteStrategy.toString)
+        "spark.cosmos.write.strategy" -> itemWriteStrategy.toString,
+        "spark.cosmos.write.bulkEnabled" -> bulkEnabled.toString
+      )
 
       val newSpark = getSpark()
 
