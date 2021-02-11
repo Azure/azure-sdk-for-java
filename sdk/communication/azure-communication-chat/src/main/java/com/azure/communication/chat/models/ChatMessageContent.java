@@ -4,6 +4,7 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

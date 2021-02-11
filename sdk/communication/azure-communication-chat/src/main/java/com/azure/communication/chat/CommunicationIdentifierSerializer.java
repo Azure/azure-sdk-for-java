@@ -1,10 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.common;
+package com.azure.communication.chat;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.chat.models.CommunicationCloudEnvironment;
+import com.azure.communication.chat.models.CommunicationIdentifier;
+import com.azure.communication.chat.models.CommunicationUserIdentifier;
+import com.azure.communication.chat.models.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.chat.models.PhoneNumberIdentifier;
+import com.azure.communication.chat.models.UnknownIdentifier;
 
 class CommunicationIdentifierSerializer {
     /**

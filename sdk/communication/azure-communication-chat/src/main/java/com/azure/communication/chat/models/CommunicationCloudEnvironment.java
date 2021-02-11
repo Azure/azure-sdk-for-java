@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.chat.models;
 
 import java.util.Objects;
+
+import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
 
 /**
  * The cloud that the identifier belongs to.
@@ -23,7 +25,7 @@ public class CommunicationCloudEnvironment {
         this.environmentValue = environmentValue;
     }
 
-    static CommunicationCloudEnvironment fromModel(CommunicationCloudEnvironmentModel environmentModel) {
+    public static CommunicationCloudEnvironment fromModel(CommunicationCloudEnvironmentModel environmentModel) {
         return new CommunicationCloudEnvironment(environmentModel.toString());
     }
 
