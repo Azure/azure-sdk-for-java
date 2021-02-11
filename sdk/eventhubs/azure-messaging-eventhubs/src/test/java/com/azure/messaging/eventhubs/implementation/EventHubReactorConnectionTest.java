@@ -54,6 +54,9 @@ public class EventHubReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
 
+    private static String product;
+    private static String clientVersion;
+
     @Mock
     private Reactor reactor;
     @Mock
@@ -78,8 +81,6 @@ public class EventHubReactorConnectionTest {
     private Record record;
 
     private ConnectionOptions connectionOptions;
-    private static String product;
-    private static String clientVersion;
 
     @BeforeAll
     public static void init() {
@@ -90,21 +91,22 @@ public class EventHubReactorConnectionTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, product,
-            clientVersion, SslDomain.VerifyMode.VERIFY_PEER_NAME, CLIENT_OPTIONS);
-
         MockitoAnnotations.initMocks(this);
 
+        final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
+        this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
+            scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+
+        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, product, clientVersion,
+            connectionOptions);
+
         when(reactor.selectable()).thenReturn(selectable);
-        when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(), connectionHandler))
+        when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
+            connectionHandler))
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
         when(reactor.attachments()).thenReturn(record);
-
-        final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
-        connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
-            scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -115,8 +117,7 @@ public class EventHubReactorConnectionTest {
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
             reactorDispatcher, Duration.ofSeconds(20));
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
-            clientVersion, SslDomain.VerifyMode.VERIFY_PEER_NAME, CLIENT_OPTIONS))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, product, clientVersion, connectionOptions))
             .thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);

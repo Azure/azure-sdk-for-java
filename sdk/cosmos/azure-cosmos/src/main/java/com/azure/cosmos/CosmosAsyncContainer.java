@@ -495,7 +495,7 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
@@ -577,17 +577,19 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.queryMetrics(response),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
                 useEtagAsContinuation,
-                isNoChangesResponse);
+                isNoChangesResponse,
+                response.getCosmosDiagnostics()                                                     );
 
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                classType))
-                     .collect(Collectors.toList())), response.getResponseHeaders(),
+                                                                                                             classType))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
-            isNoChangesResponse);
+            isNoChangesResponse,
+            response.getCosmosDiagnostics());
     }
 
     private <T> T transform(Object object, Class<T> classType) {

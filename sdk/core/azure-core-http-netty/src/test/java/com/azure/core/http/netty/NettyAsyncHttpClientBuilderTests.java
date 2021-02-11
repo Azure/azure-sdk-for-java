@@ -188,8 +188,8 @@ public class NettyAsyncHttpClientBuilderTests {
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[]{
-            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+        String[] requestUrlsWithProxying = new String[] {
+            "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*
@@ -290,8 +290,8 @@ public class NettyAsyncHttpClientBuilderTests {
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[]{
-            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+        String[] requestUrlsWithProxying = new String[] {
+            "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*
@@ -342,6 +342,7 @@ public class NettyAsyncHttpClientBuilderTests {
         return arguments.stream();
     }
 
+    @SuppressWarnings("deprecation")
     private static HttpClient nettyHttpClientWithProxyValidation(boolean shouldHaveProxy, ProxyOptions.Type proxyType,
         boolean isAuthenticated) {
         TestProxyValidator validator = new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated);

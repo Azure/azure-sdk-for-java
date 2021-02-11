@@ -28,9 +28,7 @@ steps:
         Write-Error "The emulator is not installed where expected at '$Emulator'"
         return
       }
-
       $process = Start-Process $Emulator -ArgumentList "/getstatus" -PassThru -Wait
-
       switch ($process.ExitCode) {
         1 {
           Write-Host "The emulator is already starting"
@@ -48,12 +46,13 @@ steps:
           return
         }
       }
-
       $argumentList = ""
       if (-not [string]::IsNullOrEmpty("${{ parameters.StartParameters }}")) {
           $argumentList += , "${{ parameters.StartParameters }}"
+      } else {
+        # Use the default params if none provided
+        $argumentList = "/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication"
       }
-
       Write-Host "Starting emulator process: $Emulator $argumentList"
       $process=Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru
       Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
@@ -71,10 +70,8 @@ steps:
           $result -eq "Running"
         }
       }
-
       do {
         $process = Start-Process $Emulator -ArgumentList "/getstatus" -PassThru -Wait
-
         switch ($process.ExitCode) {
           1 {
             Write-Host "The emulator is starting"
@@ -91,10 +88,8 @@ steps:
             Write-Host "Unrecognized exit code $process.ExitCode"
           }
         }
-
         Start-Sleep -Seconds 5
       }
       until ($complete.Invoke())
-
       Write-Error "The emulator failed to reach Running status within ${Timeout} seconds"
     displayName: Start Cosmos DB Emulator
