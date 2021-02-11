@@ -80,8 +80,10 @@ public final class MixedRealityStsClientBuilder {
      * @throws IllegalArgumentException If {@code accountDomain} is null or empty.
      */
     public MixedRealityStsClientBuilder accountDomain(String accountDomain) {
-        if (CoreUtils.isNullOrEmpty(accountDomain)) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountDomain' cannot be null or empty."));
+        Objects.requireNonNull(accountDomain, "'accountDomain' cannot be null.");
+
+        if (accountDomain.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
         }
 
         this.accountDomain = accountDomain;
@@ -97,8 +99,10 @@ public final class MixedRealityStsClientBuilder {
      * @throws IllegalArgumentException If {@code accountId} is null or empty.
      */
     public MixedRealityStsClientBuilder accountId(String accountId) {
-        if (CoreUtils.isNullOrEmpty(accountId)) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountId' cannot be null or empty."));
+        Objects.requireNonNull(accountId, "'accountId' cannot be null.");
+
+        if (accountId.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'accountId' cannot be an empty string."));
         }
 
         this.accountId = accountId;
