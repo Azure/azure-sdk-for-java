@@ -3,8 +3,7 @@
 
 module com.azure.mixedreality.remoterendering {
     requires transitive com.azure.core;
-    requires azure.mixedreality.authentication;
-    requires rt;
+    requires com.azure.mixedreality.authentication;
 
     opens com.azure.mixedreality.remoterendering.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 
