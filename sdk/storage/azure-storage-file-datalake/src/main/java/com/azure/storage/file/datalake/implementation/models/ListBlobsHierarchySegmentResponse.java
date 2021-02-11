@@ -51,7 +51,7 @@ public final class ListBlobsHierarchySegmentResponse {
     /*
      * The segment property.
      */
-    @JsonProperty(value = "Blobs", required = true) // TODO: Why is the generator setting this to segment instead of blobs?
+    @JsonProperty(value = "Blobs", required = true)
     private BlobHierarchyListSegment segment;
 
     /*
