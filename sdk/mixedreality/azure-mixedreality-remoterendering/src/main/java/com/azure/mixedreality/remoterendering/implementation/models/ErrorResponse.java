@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorResponse model. */
+/** The error response containing details of why the request failed. */
 @Fluent
 public final class ErrorResponse {
     /*

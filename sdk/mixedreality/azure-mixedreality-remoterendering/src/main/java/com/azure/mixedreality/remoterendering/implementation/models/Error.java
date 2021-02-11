@@ -9,17 +9,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Error model. */
+/** The error object containing details of why the request failed. */
 @Fluent
 public final class Error {
     /*
-     * Error code
+     * Error code.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * A human-readable representation of the error
+     * A human-readable representation of the error.
      */
     @JsonProperty(value = "message", required = true)
     private String message;

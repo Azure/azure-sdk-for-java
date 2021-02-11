@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -16,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+/** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
 public final class RemoteRenderingClientBuilder {
 
@@ -28,15 +32,24 @@ public final class RemoteRenderingClientBuilder {
     private AccessToken accessToken;
     private String endpoint;
 
+    /** Constructs a new RemoteRenderingClientBuilder instance. */
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
         stsBuilder = new MixedRealityStsClientBuilder();
     }
 
+    /** Builds and returns a RemoteRenderingClient instance from the provided parameters.
+     *
+     * @return the RemoteRenderingClient instance.
+     */
     public RemoteRenderingClient buildClient() {
         return new RemoteRenderingClient(buildAsyncClient());
     }
 
+    /** Builds and returns a RemoteRenderingAsyncClient instance from the provided parameters.
+     *
+     * @return the RemoteRenderingAsyncClient instance.
+     */
     public RemoteRenderingAsyncClient buildAsyncClient() {
         String scope = this.endpoint.replaceFirst("/$", "") + "/.default";
         if (accessToken == null)

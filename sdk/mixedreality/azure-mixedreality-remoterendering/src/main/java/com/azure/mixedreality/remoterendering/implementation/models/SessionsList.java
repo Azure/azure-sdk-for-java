@@ -20,8 +20,9 @@ public final class SessionsList {
     private List<SessionProperties> sessions;
 
     /*
-     * If more rendering sessions are available this link with the same
-     * authentication header can be used to retrieve further values
+     * If more rendering sessions are available this field will contain a URL
+     * where the next batch of sessions can be requested. This URL will need
+     * the same authentication as all calls to the Azure Remote Rendering API.
      */
     @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
@@ -46,8 +47,9 @@ public final class SessionsList {
     }
 
     /**
-     * Get the nextLink property: If more rendering sessions are available this link with the same authentication header
-     * can be used to retrieve further values.
+     * Get the nextLink property: If more rendering sessions are available this field will contain a URL where the next
+     * batch of sessions can be requested. This URL will need the same authentication as all calls to the Azure Remote
+     * Rendering API.
      *
      * @return the nextLink value.
      */

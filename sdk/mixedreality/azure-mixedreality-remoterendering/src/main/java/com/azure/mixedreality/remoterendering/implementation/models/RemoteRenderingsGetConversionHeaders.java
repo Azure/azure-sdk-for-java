@@ -7,9 +7,9 @@ package com.azure.mixedreality.remoterendering.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GetConversionHeaders model. */
+/** The RemoteRenderingsGetConversionHeaders model. */
 @Fluent
-public final class GetConversionHeaders {
+public final class RemoteRenderingsGetConversionHeaders {
     /*
      * The Retry-After property.
      */
@@ -35,9 +35,9 @@ public final class GetConversionHeaders {
      * Set the retryAfter property: The Retry-After property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the GetConversionHeaders object itself.
+     * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
-    public GetConversionHeaders setRetryAfter(Integer retryAfter) {
+    public RemoteRenderingsGetConversionHeaders setRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -55,9 +55,9 @@ public final class GetConversionHeaders {
      * Set the msCV property: The MS-CV property.
      *
      * @param msCV the msCV value to set.
-     * @return the GetConversionHeaders object itself.
+     * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
-    public GetConversionHeaders setMsCV(String msCV) {
+    public RemoteRenderingsGetConversionHeaders setMsCV(String msCV) {
         this.msCV = msCV;
         return this;
     }

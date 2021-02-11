@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreateConversionSettings {
     /*
-     * Settings for where to retrieve input files from and where to write
-     * output files. Supplied when creating the conversion.
+     * Conversion settings describe the origin of input files and destination
+     * of output files.
      */
     @JsonProperty(value = "settings", required = true)
     private ConversionSettings settings;
@@ -29,8 +29,8 @@ public final class CreateConversionSettings {
     }
 
     /**
-     * Get the settings property: Settings for where to retrieve input files from and where to write output files.
-     * Supplied when creating the conversion.
+     * Get the settings property: Conversion settings describe the origin of input files and destination of output
+     * files.
      *
      * @return the settings value.
      */

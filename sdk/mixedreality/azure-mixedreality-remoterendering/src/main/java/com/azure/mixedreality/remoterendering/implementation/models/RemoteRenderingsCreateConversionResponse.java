@@ -8,29 +8,30 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the listConversions operation. */
-public final class ListConversionsResponse extends ResponseBase<ListConversionsHeaders, ConversionList> {
+/** Contains all response data for the createConversion operation. */
+public final class RemoteRenderingsCreateConversionResponse
+        extends ResponseBase<RemoteRenderingsCreateConversionHeaders, Conversion> {
     /**
-     * Creates an instance of ListConversionsResponse.
+     * Creates an instance of RemoteRenderingsCreateConversionResponse.
      *
-     * @param request the request which resulted in this ListConversionsResponse.
+     * @param request the request which resulted in this RemoteRenderingsCreateConversionResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ListConversionsResponse(
+    public RemoteRenderingsCreateConversionResponse(
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            ConversionList value,
-            ListConversionsHeaders headers) {
+            Conversion value,
+            RemoteRenderingsCreateConversionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public ConversionList getValue() {
+    public Conversion getValue() {
         return super.getValue();
     }
 }

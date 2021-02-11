@@ -9,18 +9,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Conversion model. */
+/** The properties of the conversion. */
 @Fluent
 public final class Conversion {
     /*
-     * The id of the conversion supplied when the conversion was created.
+     * The ID of the conversion supplied when the conversion was created.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * Settings for where to retrieve input files from and where to write
-     * output files. Supplied when creating the conversion.
+     * Conversion settings describe the origin of input files and destination
+     * of output files.
      */
     @JsonProperty(value = "settings", required = true)
     private ConversionSettings settings;
@@ -40,7 +40,7 @@ public final class Conversion {
 
     /*
      * The status of the conversion. Terminal states are 'Cancelled', 'Failed',
-     * 'Succeeded'
+     * and 'Succeeded'.
      */
     @JsonProperty(value = "status", required = true)
     private ConversionStatus status;
@@ -76,7 +76,7 @@ public final class Conversion {
     }
 
     /**
-     * Get the id property: The id of the conversion supplied when the conversion was created.
+     * Get the id property: The ID of the conversion supplied when the conversion was created.
      *
      * @return the id value.
      */
@@ -85,8 +85,8 @@ public final class Conversion {
     }
 
     /**
-     * Get the settings property: Settings for where to retrieve input files from and where to write output files.
-     * Supplied when creating the conversion.
+     * Get the settings property: Conversion settings describe the origin of input files and destination of output
+     * files.
      *
      * @return the settings value.
      */
@@ -114,7 +114,8 @@ public final class Conversion {
     }
 
     /**
-     * Get the status property: The status of the conversion. Terminal states are 'Cancelled', 'Failed', 'Succeeded'.
+     * Get the status property: The status of the conversion. Terminal states are 'Cancelled', 'Failed', and
+     * 'Succeeded'.
      *
      * @return the status value.
      */

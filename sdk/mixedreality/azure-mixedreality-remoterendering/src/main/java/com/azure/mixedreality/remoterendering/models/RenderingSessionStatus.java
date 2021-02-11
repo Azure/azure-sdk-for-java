@@ -1,9 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.mixedreality.remoterendering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
+/** The status of a rendering session. */
 public final class RenderingSessionStatus extends ExpandableStringEnum<RenderingSessionStatus> {
     /** Static value Error for SessionStatus. */
     public static final RenderingSessionStatus ERROR = fromString("Error");

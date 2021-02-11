@@ -9,18 +9,22 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the stopSession operation. */
-public final class StopSessionResponse extends ResponseBase<StopSessionHeaders, Void> {
+public final class RemoteRenderingsStopSessionResponse extends ResponseBase<RemoteRenderingsStopSessionHeaders, Void> {
     /**
-     * Creates an instance of StopSessionResponse.
+     * Creates an instance of RemoteRenderingsStopSessionResponse.
      *
-     * @param request the request which resulted in this StopSessionResponse.
+     * @param request the request which resulted in this RemoteRenderingsStopSessionResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public StopSessionResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, StopSessionHeaders headers) {
+    public RemoteRenderingsStopSessionResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            RemoteRenderingsStopSessionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

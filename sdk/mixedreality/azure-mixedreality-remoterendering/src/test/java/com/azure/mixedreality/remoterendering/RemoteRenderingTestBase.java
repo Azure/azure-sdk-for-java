@@ -3,9 +3,7 @@
 
 package com.azure.mixedreality.remoterendering;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -16,10 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
-import reactor.core.publisher.Mono;
 
-import java.net.URL;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

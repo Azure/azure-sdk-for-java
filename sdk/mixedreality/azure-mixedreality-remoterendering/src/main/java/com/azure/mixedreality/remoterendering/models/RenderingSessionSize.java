@@ -1,10 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.mixedreality.remoterendering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Defines values for SessionSize. */
+/** The size of a rendering session. */
 public final class RenderingSessionSize extends ExpandableStringEnum<RenderingSessionSize> {
     /** Static value Standard for SessionSize. */
     public static final RenderingSessionSize STANDARD = fromString("Standard");

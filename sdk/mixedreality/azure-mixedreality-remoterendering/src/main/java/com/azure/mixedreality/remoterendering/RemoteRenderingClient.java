@@ -11,8 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.mixedreality.remoterendering.models.*;
+import com.azure.mixedreality.remoterendering.models.BeginSessionOptions;
+import com.azure.mixedreality.remoterendering.models.Conversion;
+import com.azure.mixedreality.remoterendering.models.ConversionOptions;
+import com.azure.mixedreality.remoterendering.models.RenderingSession;
+import com.azure.mixedreality.remoterendering.models.UpdateSessionOptions;
 
+/** Client to communicate with remote rendering service. */
 @ServiceClient(builder = RemoteRenderingClientBuilder.class)
 public final class RemoteRenderingClient {
     private final RemoteRenderingAsyncClient client;
@@ -33,19 +38,43 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the rendering session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options) {
         return client.beginSession(sessionId, options).getSyncPoller();
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    /**
+     * Creates a new rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId) {
         return beginSession(sessionId, new BeginSessionOptions());
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSessionWithResponse(String sessionId, BeginSessionOptions options, Context context) {
-        return client.beginSessionWithResponse(sessionId, options, context).getSyncPoller();
+    /**
+     * Creates a new rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param options Options for the session to be created.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSession(String sessionId, BeginSessionOptions options, Context context) {
+        return client.beginSessionInternal(sessionId, options, context).getSyncPoller();
     }
 
     /**
@@ -64,9 +93,21 @@ public final class RemoteRenderingClient {
         return client.getSession(sessionId).block();
     }
 
+    /**
+     * Gets properties of a particular rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RenderingSession> getSessionWithResponse(String sessionId, Context context) {
-        return client.getSessionWithResponse(sessionId, context).block();
+        return client.getSessionInternal(sessionId, context).block();
     }
 
     /**
@@ -86,9 +127,22 @@ public final class RemoteRenderingClient {
         return client.updateSession(sessionId, options).block();
     }
 
+    /**
+     * Updates a particular rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param options Options for the session to be updated.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the rendering session.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RenderingSession> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
-        return client.updateSessionWithResponse(sessionId, options, context).block();
+        return client.updateSessionInternal(sessionId, options, context).block();
     }
 
     /**
@@ -106,9 +160,21 @@ public final class RemoteRenderingClient {
         client.endSession(sessionId).block();
     }
 
+    /**
+     * Stops a particular rendering session.
+     *
+     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The response.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> endSessionWithResponse(String sessionId, Context context) {
-        return client.endSessionWithResponse(sessionId, context).block();
+        return client.endSessionInternal(sessionId, context).block();
     }
 
     /**
@@ -124,9 +190,18 @@ public final class RemoteRenderingClient {
         return new PagedIterable<>(client.listSessions());
     }
 
+    /**
+     * Get a list of all rendering sessions.
+     *
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all rendering sessions.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RenderingSession> listSessions(Context context) {
-        return new PagedIterable<>(client.listSessions(context));
+        return new PagedIterable<>(client.listSessionsInternal(context));
     }
 
     /**
@@ -148,14 +223,34 @@ public final class RemoteRenderingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the conversion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
         return client.beginConversion(conversionId, options).getSyncPoller();
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<Response<Conversion>, Response<Conversion>> beginConversionWithResponse(String conversionId, ConversionOptions options, Context context) {
-        return client.beginConversionWithResponse(conversionId, options, context).getSyncPoller();
+    /**
+     * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
+     * been linked with the storage account no Shared Access Signatures (storageContainerReadListSas,
+     * storageContainerWriteSas) for storage access need to be provided. Documentation how to link your Azure Remote
+     * Rendering account with the Azure Blob Storage account can be found in the
+     * [documentation](https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts).
+     *
+     * <p>All files in the input container starting with the blobPrefix will be retrieved to perform the conversion. To
+     * cut down on conversion times only necessary files should be available under the blobPrefix.
+     *
+     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
+     * @param options The conversion options.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the conversion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<Response<Conversion>, Response<Conversion>> beginConversion(String conversionId, ConversionOptions options, Context context) {
+        return client.beginConversionInternal(conversionId, options, context).getSyncPoller();
     }
 
     /**
@@ -174,9 +269,21 @@ public final class RemoteRenderingClient {
         return client.getConversion(conversionId).block();
     }
 
+    /**
+     * Gets the status of a previously created asset conversion.
+     *
+     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the conversion.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Conversion> getConversionWithResponse(String conversionId, Context context) {
-        return client.getConversionWithResponse(conversionId, context).block();
+        return client.getConversionInternal(conversionId, context).block();
     }
 
     /**
@@ -192,9 +299,18 @@ public final class RemoteRenderingClient {
         return new PagedIterable<>(client.listConversions());
     }
 
+    /**
+     * Gets a list of all conversions.
+     *
+     * @param context The context to use.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all conversions.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Conversion> listConversions(Context context) {
-        return new PagedIterable<>(client.listConversions(context));
+        return new PagedIterable<>(client.listConversionsInternal(context));
     }
 
 }

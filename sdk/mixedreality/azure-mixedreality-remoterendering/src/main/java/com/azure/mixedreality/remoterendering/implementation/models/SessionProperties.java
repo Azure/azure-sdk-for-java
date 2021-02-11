@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SessionProperties model. */
+/** The properties of a rendering session. */
 @Fluent
 public final class SessionProperties {
     /*
-     * The id of the session supplied when the sessions was created.
+     * The ID of the session supplied when the session was created.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -26,13 +26,13 @@ public final class SessionProperties {
     private Integer arrInspectorPort;
 
     /*
-     * The TCP port used for the handshake.
+     * The TCP port used for the handshake when establishing a connection.
      */
     @JsonProperty(value = "handshakePort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer handshakePort;
 
     /*
-     * Amount of time in minutes the session is or has been in Ready state.
+     * Amount of time in minutes the session is or was in the 'Ready' state.
      * Time is rounded down to a full minute.
      */
     @JsonProperty(value = "elapsedTimeMinutes", access = JsonProperty.Access.WRITE_ONLY)
@@ -52,25 +52,24 @@ public final class SessionProperties {
     private Integer maxLeaseTimeMinutes;
 
     /*
-     * Size of the server used for the rendering session. Remote Rendering with
-     * Standard size server has a maximum scene size of 20 million polygons.
-     * Remote Rendering with Premium size does not enforce a hard maximum, but
-     * performance may be degraded if your content exceeds the rendering
-     * capabilities of the service.
+     * The size of the server used for the rendering session. The size impacts
+     * the number of polygons the server can render. Refer to
+     * https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
+     * details.
      */
     @JsonProperty(value = "size", required = true)
     private SessionSize size;
 
     /*
-     * The status of the rendering session. Once the status reached the 'Ready'
-     * state it can be connected to. The terminal state is 'Stopped'.
+     * The status of the rendering session. Terminal states are 'Error',
+     * 'Expired', and 'Stopped'.
      */
     @JsonProperty(value = "status", required = true)
     private SessionStatus status;
 
     /*
      * The computational power of the rendering session GPU measured in
-     * Teraflops.
+     * teraflops.
      */
     @JsonProperty(value = "teraflops", access = JsonProperty.Access.WRITE_ONLY)
     private Float teraflops;
@@ -107,7 +106,7 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the id property: The id of the session supplied when the sessions was created.
+     * Get the id property: The ID of the session supplied when the session was created.
      *
      * @return the id value.
      */
@@ -125,7 +124,7 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the handshakePort property: The TCP port used for the handshake.
+     * Get the handshakePort property: The TCP port used for the handshake when establishing a connection.
      *
      * @return the handshakePort value.
      */
@@ -134,8 +133,8 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the elapsedTimeMinutes property: Amount of time in minutes the session is or has been in Ready state. Time is
-     * rounded down to a full minute.
+     * Get the elapsedTimeMinutes property: Amount of time in minutes the session is or was in the 'Ready' state. Time
+     * is rounded down to a full minute.
      *
      * @return the elapsedTimeMinutes value.
      */
@@ -162,9 +161,9 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the size property: Size of the server used for the rendering session. Remote Rendering with Standard size
-     * server has a maximum scene size of 20 million polygons. Remote Rendering with Premium size does not enforce a
-     * hard maximum, but performance may be degraded if your content exceeds the rendering capabilities of the service.
+     * Get the size property: The size of the server used for the rendering session. The size impacts the number of
+     * polygons the server can render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
+     * details.
      *
      * @return the size value.
      */
@@ -173,8 +172,8 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the status property: The status of the rendering session. Once the status reached the 'Ready' state it can be
-     * connected to. The terminal state is 'Stopped'.
+     * Get the status property: The status of the rendering session. Terminal states are 'Error', 'Expired', and
+     * 'Stopped'.
      *
      * @return the status value.
      */
@@ -183,7 +182,7 @@ public final class SessionProperties {
     }
 
     /**
-     * Get the teraflops property: The computational power of the rendering session GPU measured in Teraflops.
+     * Get the teraflops property: The computational power of the rendering session GPU measured in teraflops.
      *
      * @return the teraflops value.
      */

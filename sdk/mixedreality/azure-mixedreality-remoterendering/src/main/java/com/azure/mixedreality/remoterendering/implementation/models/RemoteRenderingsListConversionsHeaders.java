@@ -7,9 +7,9 @@ package com.azure.mixedreality.remoterendering.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StopSessionHeaders model. */
+/** The RemoteRenderingsListConversionsHeaders model. */
 @Fluent
-public final class StopSessionHeaders {
+public final class RemoteRenderingsListConversionsHeaders {
     /*
      * The MS-CV property.
      */
@@ -29,9 +29,9 @@ public final class StopSessionHeaders {
      * Set the msCV property: The MS-CV property.
      *
      * @param msCV the msCV value to set.
-     * @return the StopSessionHeaders object itself.
+     * @return the RemoteRenderingsListConversionsHeaders object itself.
      */
-    public StopSessionHeaders setMsCV(String msCV) {
+    public RemoteRenderingsListConversionsHeaders setMsCV(String msCV) {
         this.msCV = msCV;
         return this;
     }

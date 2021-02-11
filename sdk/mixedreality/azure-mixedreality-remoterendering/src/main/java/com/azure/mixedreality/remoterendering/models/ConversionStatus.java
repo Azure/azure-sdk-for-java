@@ -1,9 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.mixedreality.remoterendering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
+/** The status of a conversion. */
 public final class ConversionStatus extends ExpandableStringEnum<ConversionStatus> {
     /** Static value NotStarted for ConversionStatus. */
     public static final ConversionStatus NOT_STARTED = fromString("NotStarted");

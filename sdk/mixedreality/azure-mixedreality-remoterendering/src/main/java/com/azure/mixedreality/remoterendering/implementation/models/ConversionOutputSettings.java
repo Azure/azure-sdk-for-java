@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for the conversion output. */
+/** Conversion output settings describe the destination of conversion output. */
 @Fluent
 public final class ConversionOutputSettings {
     /*
@@ -20,23 +20,28 @@ public final class ConversionOutputSettings {
 
     /*
      * An Azure blob storage container shared access signature giving write
-     * access to the storage container. Optional. If not is not provided the
-     * Azure Remote Rendering rendering account needs to be linked with the
-     * storage account containing the blob container. For security purposes
-     * this field will never be filled out in responses bodies.
+     * access to the storage container. Optional. If not provided, the Azure
+     * Remote Rendering account needs to be linked with the storage account
+     * containing the blob container. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts
+     * for details. For security purposes this field will never be filled out
+     * in responses bodies.
      */
     @JsonProperty(value = "storageContainerWriteSas")
     private String storageContainerWriteSas;
 
     /*
      * A prefix which gets prepended in front of all files produced by the
-     * conversion process. Will be treaded as a virtual folder.
+     * conversion process. Will be treated as a virtual folder. Optional. If
+     * not provided, output files will be stored at the container root.
      */
     @JsonProperty(value = "blobPrefix")
     private String blobPrefix;
 
     /*
-     * The file name of the output asset. Must end in '.arrAsset'.
+     * The file name of the output asset. Must end in '.arrAsset'. Optional. If
+     * not provided, file name will the same name as the input asset, with
+     * '.arrAsset' extension
      */
     @JsonProperty(value = "outputAssetFilename")
     private String outputAssetFilename;
@@ -64,9 +69,10 @@ public final class ConversionOutputSettings {
 
     /**
      * Get the storageContainerWriteSas property: An Azure blob storage container shared access signature giving write
-     * access to the storage container. Optional. If not is not provided the Azure Remote Rendering rendering account
-     * needs to be linked with the storage account containing the blob container. For security purposes this field will
-     * never be filled out in responses bodies.
+     * access to the storage container. Optional. If not provided, the Azure Remote Rendering account needs to be linked
+     * with the storage account containing the blob container. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
+     * For security purposes this field will never be filled out in responses bodies.
      *
      * @return the storageContainerWriteSas value.
      */
@@ -76,9 +82,10 @@ public final class ConversionOutputSettings {
 
     /**
      * Set the storageContainerWriteSas property: An Azure blob storage container shared access signature giving write
-     * access to the storage container. Optional. If not is not provided the Azure Remote Rendering rendering account
-     * needs to be linked with the storage account containing the blob container. For security purposes this field will
-     * never be filled out in responses bodies.
+     * access to the storage container. Optional. If not provided, the Azure Remote Rendering account needs to be linked
+     * with the storage account containing the blob container. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
+     * For security purposes this field will never be filled out in responses bodies.
      *
      * @param storageContainerWriteSas the storageContainerWriteSas value to set.
      * @return the ConversionOutputSettings object itself.
@@ -90,7 +97,8 @@ public final class ConversionOutputSettings {
 
     /**
      * Get the blobPrefix property: A prefix which gets prepended in front of all files produced by the conversion
-     * process. Will be treaded as a virtual folder.
+     * process. Will be treated as a virtual folder. Optional. If not provided, output files will be stored at the
+     * container root.
      *
      * @return the blobPrefix value.
      */
@@ -100,7 +108,8 @@ public final class ConversionOutputSettings {
 
     /**
      * Set the blobPrefix property: A prefix which gets prepended in front of all files produced by the conversion
-     * process. Will be treaded as a virtual folder.
+     * process. Will be treated as a virtual folder. Optional. If not provided, output files will be stored at the
+     * container root.
      *
      * @param blobPrefix the blobPrefix value to set.
      * @return the ConversionOutputSettings object itself.
@@ -111,7 +120,8 @@ public final class ConversionOutputSettings {
     }
 
     /**
-     * Get the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'.
+     * Get the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'. Optional. If
+     * not provided, file name will the same name as the input asset, with '.arrAsset' extension.
      *
      * @return the outputAssetFilename value.
      */
@@ -120,7 +130,8 @@ public final class ConversionOutputSettings {
     }
 
     /**
-     * Set the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'.
+     * Set the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'. Optional. If
+     * not provided, file name will the same name as the input asset, with '.arrAsset' extension.
      *
      * @param outputAssetFilename the outputAssetFilename value to set.
      * @return the ConversionOutputSettings object itself.

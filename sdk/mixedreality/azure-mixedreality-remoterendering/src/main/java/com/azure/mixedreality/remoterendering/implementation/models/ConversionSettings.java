@@ -8,20 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Settings for where to retrieve input files from and where to write output files. Supplied when creating the
- * conversion.
- */
+/** Conversion settings describe the origin of input files and destination of output files. */
 @Fluent
 public final class ConversionSettings {
     /*
-     * Settings for the conversion input.
+     * Conversion input settings describe the origin of conversion input.
      */
     @JsonProperty(value = "inputLocation", required = true)
     private ConversionInputSettings inputLocation;
 
     /*
-     * Settings for the conversion output.
+     * Conversion output settings describe the destination of conversion
+     * output.
      */
     @JsonProperty(value = "outputLocation", required = true)
     private ConversionOutputSettings outputLocation;
@@ -41,7 +39,7 @@ public final class ConversionSettings {
     }
 
     /**
-     * Get the inputLocation property: Settings for the conversion input.
+     * Get the inputLocation property: Conversion input settings describe the origin of conversion input.
      *
      * @return the inputLocation value.
      */
@@ -50,7 +48,7 @@ public final class ConversionSettings {
     }
 
     /**
-     * Get the outputLocation property: Settings for the conversion output.
+     * Get the outputLocation property: Conversion output settings describe the destination of conversion output.
      *
      * @return the outputLocation value.
      */

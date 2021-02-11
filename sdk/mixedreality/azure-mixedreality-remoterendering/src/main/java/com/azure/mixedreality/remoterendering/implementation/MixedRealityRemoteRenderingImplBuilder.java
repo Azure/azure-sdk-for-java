@@ -41,15 +41,15 @@ public final class MixedRealityRemoteRenderingImplBuilder {
 
     /*
      * The endpoint to use e.g.
-     * https://remoterendering.eastus.mixedreality.azure.com a list can be
+     * https://remoterendering.eastus.mixedreality.azure.com. A list can be
      * found at
-     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions
+     * https://docs.microsoft.com/azure/remote-rendering/reference/regions.
      */
     private String endpoint;
 
     /**
-     * Sets The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com a list can be found at
-     * https://docs.microsoft.com/en-us/azure/remote-rendering/reference/regions.
+     * Sets The endpoint to use e.g. https://remoterendering.eastus.mixedreality.azure.com. A list can be found at
+     * https://docs.microsoft.com/azure/remote-rendering/reference/regions.
      *
      * @param endpoint the endpoint value.
      * @return the MixedRealityRemoteRenderingImplBuilder.

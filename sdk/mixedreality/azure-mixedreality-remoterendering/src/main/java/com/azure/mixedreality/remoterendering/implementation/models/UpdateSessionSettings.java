@@ -8,13 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpdateSessionSettings model. */
+/** Settings used to update the session. */
 @Fluent
 public final class UpdateSessionSettings {
     /*
      * Update to the time the session will run after it reached the 'Ready'
-     * state.  It has to be bigger than the current value of
-     * maxLeaseTimeMinutes.
+     * state. It has to be larger than the current value of maxLeaseTimeMinutes
+     * and less than 1440.
      */
     @JsonProperty(value = "maxLeaseTimeMinutes", required = true)
     private int maxLeaseTimeMinutes;
@@ -32,7 +32,7 @@ public final class UpdateSessionSettings {
 
     /**
      * Get the maxLeaseTimeMinutes property: Update to the time the session will run after it reached the 'Ready' state.
-     * It has to be bigger than the current value of maxLeaseTimeMinutes.
+     * It has to be larger than the current value of maxLeaseTimeMinutes and less than 1440.
      *
      * @return the maxLeaseTimeMinutes value.
      */

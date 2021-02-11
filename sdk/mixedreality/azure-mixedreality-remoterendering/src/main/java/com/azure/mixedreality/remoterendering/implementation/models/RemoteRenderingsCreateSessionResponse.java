@@ -8,29 +8,30 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the createConversion operation. */
-public final class CreateConversionResponse extends ResponseBase<CreateConversionHeaders, Conversion> {
+/** Contains all response data for the createSession operation. */
+public final class RemoteRenderingsCreateSessionResponse
+        extends ResponseBase<RemoteRenderingsCreateSessionHeaders, SessionProperties> {
     /**
-     * Creates an instance of CreateConversionResponse.
+     * Creates an instance of RemoteRenderingsCreateSessionResponse.
      *
-     * @param request the request which resulted in this CreateConversionResponse.
+     * @param request the request which resulted in this RemoteRenderingsCreateSessionResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CreateConversionResponse(
+    public RemoteRenderingsCreateSessionResponse(
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Conversion value,
-            CreateConversionHeaders headers) {
+            SessionProperties value,
+            RemoteRenderingsCreateSessionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public Conversion getValue() {
+    public SessionProperties getValue() {
         return super.getValue();
     }
 }

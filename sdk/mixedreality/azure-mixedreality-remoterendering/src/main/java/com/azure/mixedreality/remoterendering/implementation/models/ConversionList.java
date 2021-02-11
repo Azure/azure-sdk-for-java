@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConversionList model. */
+/** List of conversions. */
 @Fluent
 public final class ConversionList {
     /*
@@ -19,8 +19,9 @@ public final class ConversionList {
     private List<Conversion> conversions;
 
     /*
-     * If more conversions are available this link with the same authentication
-     * header can be used to retrieve further values
+     * If more conversions are available this field will contain a URL where
+     * the next batch of conversions can be requested. This URL will need the
+     * same authentication as all calls to the Azure Remote Rendering API.
      */
     @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
@@ -45,8 +46,9 @@ public final class ConversionList {
     }
 
     /**
-     * Get the nextLink property: If more conversions are available this link with the same authentication header can be
-     * used to retrieve further values.
+     * Get the nextLink property: If more conversions are available this field will contain a URL where the next batch
+     * of conversions can be requested. This URL will need the same authentication as all calls to the Azure Remote
+     * Rendering API.
      *
      * @return the nextLink value.
      */

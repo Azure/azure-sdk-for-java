@@ -8,22 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreateSessionSettings model. */
+/** Settings of the session to be created. */
 @Fluent
 public final class CreateSessionSettings {
     /*
      * The time in minutes the session will run after reaching the 'Ready'
-     * state.
+     * state. It has to be between 0 and 1440.
      */
     @JsonProperty(value = "maxLeaseTimeMinutes", required = true)
     private int maxLeaseTimeMinutes;
 
     /*
-     * Size of the server used for the rendering session. Remote Rendering with
-     * Standard size server has a maximum scene size of 20 million polygons.
-     * Remote Rendering with Premium size does not enforce a hard maximum, but
-     * performance may be degraded if your content exceeds the rendering
-     * capabilities of the service.
+     * The size of the server used for the rendering session. The size impacts
+     * the number of polygons the server can render. Refer to
+     * https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
+     * details.
      */
     @JsonProperty(value = "size", required = true)
     private SessionSize size;
@@ -44,6 +43,7 @@ public final class CreateSessionSettings {
 
     /**
      * Get the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
+     * It has to be between 0 and 1440.
      *
      * @return the maxLeaseTimeMinutes value.
      */
@@ -52,9 +52,9 @@ public final class CreateSessionSettings {
     }
 
     /**
-     * Get the size property: Size of the server used for the rendering session. Remote Rendering with Standard size
-     * server has a maximum scene size of 20 million polygons. Remote Rendering with Premium size does not enforce a
-     * hard maximum, but performance may be degraded if your content exceeds the rendering capabilities of the service.
+     * Get the size property: The size of the server used for the rendering session. The size impacts the number of
+     * polygons the server can render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
+     * details.
      *
      * @return the size value.
      */

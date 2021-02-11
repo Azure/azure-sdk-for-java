@@ -7,9 +7,9 @@ package com.azure.mixedreality.remoterendering.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreateConversionHeaders model. */
+/** The RemoteRenderingsCreateConversionHeaders model. */
 @Fluent
-public final class CreateConversionHeaders {
+public final class RemoteRenderingsCreateConversionHeaders {
     /*
      * The MS-CV property.
      */
@@ -29,9 +29,9 @@ public final class CreateConversionHeaders {
      * Set the msCV property: The MS-CV property.
      *
      * @param msCV the msCV value to set.
-     * @return the CreateConversionHeaders object itself.
+     * @return the RemoteRenderingsCreateConversionHeaders object itself.
      */
-    public CreateConversionHeaders setMsCV(String msCV) {
+    public RemoteRenderingsCreateConversionHeaders setMsCV(String msCV) {
         this.msCV = msCV;
         return this;
     }
