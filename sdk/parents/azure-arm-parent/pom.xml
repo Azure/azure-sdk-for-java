@@ -6,7 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.3.2</version>
+  <version>1.3.3</version>
   <artifactId>azure-arm-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -41,7 +41,7 @@
     <!-- Dependency Versions -->
     <jackson.version>2.10.0</jackson.version>
     <jackson-databind.version>2.10.0</jackson-databind.version>
-    <client-runtime.version>1.7.5</client-runtime.version>
+    <client-runtime.version>1.7.12</client-runtime.version>
     <commons-codec.version>1.13</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
     <spotbugs.maven.version>3.1.12.2</spotbugs.maven.version>
@@ -55,11 +55,11 @@
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <reactor-core.version>3.3.9.RELEASE</reactor-core.version>
     <reactor-netty.version>0.9.11.RELEASE</reactor-netty.version>
-    <netty.version>4.1.51.Final</netty.version>
+    <netty.version>4.1.59.Final</netty.version>
     <okhttp.version>4.2.2</okhttp.version>
     <async-http-client.version>2.12.1</async-http-client.version>
     <rxjava.version>1.2.4</rxjava.version>
-    <guava.version>24.1.1-jre</guava.version>
+    <guava.version>30.1-jre</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
     <jgit.version>4.5.0.201609210915-r</jgit.version>
     <commons-net.version>3.3</commons-net.version>
@@ -93,10 +93,9 @@
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.3.9.RELEASE</reactor-test.version>
     <wiremock-standalone.version>2.24.1</wiremock-standalone.version>
-    <jetty-http.version>9.4.33.v20201020</jetty-http.version>
-    <jetty-server.version>9.4.33.v20201020</jetty-server.version>
+    <jetty-http.version>9.4.36.v20210114</jetty-http.version>
+    <jetty-server.version>9.4.36.v20210114</jetty-server.version>
     <junit.version>4.13.1</junit.version>
-    <log4j.version>1.2.17</log4j.version>
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>
     <hamcrest.version>1.3</hamcrest.version>
@@ -404,12 +403,6 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>${log4j.version}</version>
       </dependency>
 
       <dependency>
