@@ -57,7 +57,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (!(boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
+        if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
             return next.process();
         }
 
