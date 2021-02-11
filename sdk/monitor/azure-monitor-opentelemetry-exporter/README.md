@@ -38,7 +38,7 @@ search for your resource. On the overview page of your resource, you will find t
 right corner.
 
 ### Creating exporter for Azure Monitor
-<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L32-L34 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L33-L35 -->
 ```java
 AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
@@ -51,7 +51,7 @@ The following example shows how to export a trace data to Azure Monitor through 
  `AzureMonitorExporter`
 
 ##### Setup OpenTelemetry Tracer to work with Azure Monitor exporter
-<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L42-L49 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L43-L57 -->
 ```java
 // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
 // This should be done just once when application starts up
@@ -59,12 +59,19 @@ AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildExporter();
 
-OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
-Tracer tracer = OpenTelemetrySdk.get().getTracer("Sample");
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+    .build();
+
+OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+    .setTracerProvider(tracerProvider)
+    .buildAndRegisterGlobal();
+
+Tracer tracer = openTelemetrySdk.getTracer("Sample");
 ```
 
 ##### Create spans
-<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L51-L64 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L59-L72 -->
 
 ```java
 // Make service calls by adding new parent spans
