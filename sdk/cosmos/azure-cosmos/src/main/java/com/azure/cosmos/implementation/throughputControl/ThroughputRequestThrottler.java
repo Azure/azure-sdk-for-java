@@ -50,7 +50,6 @@ public class ThroughputRequestThrottler {
         } finally {
             this.throughputWriteLock.unlock();
         }
-
     }
 
     private void updateAvailableThroughput() {
@@ -88,7 +87,6 @@ public class ThroughputRequestThrottler {
         } finally {
             this.throughputReadLock.unlock();
         }
-
     }
 
     private <T> void trackRequestCharge (T response) {
