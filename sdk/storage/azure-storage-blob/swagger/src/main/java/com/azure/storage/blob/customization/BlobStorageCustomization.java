@@ -127,14 +127,8 @@ public class BlobStorageCustomization extends Customization {
         encryptionScopeOverridePrevented.addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
         blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
-        customization.getRawEditor()
-            .getFileContent("src/main/java/com/azure/storage/blob/models/BlobContainerEncryptionScope.java")
-            .replace("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)", "setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
-
-
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
-//        blobContainerItemProperties.getMethod("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)").rename("setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");
@@ -166,6 +160,22 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization cpkInfo = models.getClass("CpkInfo")
             .removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")")
             .addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
+
+        String fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerEncryptionScope.java";
+        String updatedCode = customization.getRawEditor()
+            .getFileContent(fileName)
+            .replace("Boolean encryptionScopeOverridePrevented", "boolean encryptionScopeOverridePrevented");
+
+        customization.getRawEditor().removeFile(fileName);
+        customization.getRawEditor().addFile(fileName, updatedCode);
+
+        fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerItemProperties.java";
+        updatedCode = customization.getRawEditor()
+            .getFileContent(fileName)
+            .replace("Boolean encryptionScopeOverridePrevented", "boolean encryptionScopeOverridePrevented");
+
+        customization.getRawEditor().removeFile(fileName);
+        customization.getRawEditor().addFile(fileName, updatedCode);
 
     }
 
