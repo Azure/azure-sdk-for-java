@@ -35,16 +35,16 @@ public class LICtlWorkload {
         _bulkLoadClient = AsyncClientFactory.buildBulkLoadAsyncClient(configuration);
         _metricsRegistry =  new MetricRegistry();
         _reporter = ScheduledReporterFactory.create(_configuration, _metricsRegistry);
-        _resourceManager = new ResourceManager(_configuration, _client);
+        _resourceManager = _configuration.shouldManageResources()
+            ? new ResourceManagerImpl(_configuration, _client)
+            : new NoopResourceManagerImpl();
         _dataLoader = new DataLoader(_configuration, _bulkLoadClient);
         _getTestRunner = new GetTestRunner(_configuration, _client, _metricsRegistry);
     }
 
     public void setup() throws CosmosException {
-        LOGGER.info("Initializing Database");
-        _resourceManager.initializeDatabase();
+        _resourceManager.createDatabase();
 
-        LOGGER.info("Initializing Container");
         _resourceManager.createContainer();
 
         LOGGER.info("Loading data");
