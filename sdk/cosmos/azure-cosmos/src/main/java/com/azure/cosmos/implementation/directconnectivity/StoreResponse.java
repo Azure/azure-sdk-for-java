@@ -149,6 +149,14 @@ public class StoreResponse {
         return cosmosDiagnostics;
     }
 
+    public double getRequestCharge() {
+        String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.valueOf(value);
+    }
+
     StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
