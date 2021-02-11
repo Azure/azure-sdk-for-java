@@ -145,22 +145,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         .verifyComplete();
     }
 
-    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
-        PhoneNumberSearchRequest phoneNumberSearchRequest = new PhoneNumberSearchRequest();
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
-        capabilities.setCalling(PhoneNumberCapabilityValue.INBOUND);
-        capabilities.setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
-        phoneNumberSearchRequest
-            .setAreaCode(AREA_CODE)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-            .setCapabilities(capabilities)
-            .setQuantity(1);
-
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest).setPollInterval(Duration.ofSeconds(1));
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhoneNumberNullNumber(HttpClient httpClient) {
@@ -197,6 +181,22 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilitiesRequest())
             )
             .verifyError();
+    }
+
+    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
+        PhoneNumberSearchRequest phoneNumberSearchRequest = new PhoneNumberSearchRequest();
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityValue.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
+        phoneNumberSearchRequest
+            .setAreaCode(AREA_CODE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setCapabilities(capabilities)
+            .setQuantity(1);
+
+        return this.getClientWithConnectionString(httpClient, testName)
+            .beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest).setPollInterval(Duration.ofSeconds(1));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
