@@ -146,7 +146,8 @@ public class ThroughputControlStore {
         return this.resolveContainerController(collectionLink)
             .flatMap(containerController -> {
                 if (containerController.canHandleRequest(request)) {
-                    return containerController.processRequest(request, originalRequestMono);
+                    return containerController.processRequest(request, originalRequestMono)
+                        .doOnError(throwable -> this.handleException(request, containerController, throwable));
                 }
 
                 // Unable to find container controller to handle the request,

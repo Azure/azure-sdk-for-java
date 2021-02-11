@@ -58,49 +58,58 @@ public class ThroughputRequestThrottler {
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
-        try{
-            this.throughputReadLock.lock();
-            if (this.availableThroughput.get() > 0) {
-                return originalRequestMono
-                    .doOnSuccess(response -> this.trackRequestCharge(response))
-                    .doOnError(throwable -> this.trackRequestCharge(throwable));
-            } else {
-                // there is no enough throughput left, block request
-                RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
+        if (this.availableThroughput.get() > 0) {
+            return originalRequestMono
+                .doOnSuccess(response -> this.trackRequestCharge(response))
+                .doOnError(throwable -> this.trackRequestCharge(throwable));
+        } else {
+            // there is no enough throughput left, block request
+            RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
 
-                int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
-                requestRateTooLargeException.getResponseHeaders().put(
-                    HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
-                    String.valueOf(backoffTimeInMilliSeconds));
+            int backoffTimeInMilliSeconds;
 
-                requestRateTooLargeException.getResponseHeaders().put(
-                    HttpConstants.HttpHeaders.SUB_STATUS,
-                    String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
-
-                if (request.requestContext != null) {
-                    BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
-                }
-
-                return Mono.error(requestRateTooLargeException);
+            try {
+                this.throughputReadLock.lock();
+                backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
+            } finally {
+                this.throughputReadLock.unlock();
             }
-        } finally {
-            this.throughputReadLock.unlock();
+
+            requestRateTooLargeException.getResponseHeaders().put(
+                HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
+                String.valueOf(backoffTimeInMilliSeconds));
+
+            requestRateTooLargeException.getResponseHeaders().put(
+                HttpConstants.HttpHeaders.SUB_STATUS,
+                String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
+
+            if (request.requestContext != null) {
+                BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
+            }
+
+            return Mono.error(requestRateTooLargeException);
         }
     }
 
     private <T> void trackRequestCharge (T response) {
-        double requestCharge = 0;
-        if (response instanceof StoreResponse) {
-            requestCharge = ((StoreResponse)response).getRequestCharge();
-        } else if (response instanceof RxDocumentServiceResponse) {
-            requestCharge = ((RxDocumentServiceResponse)response).getRequestCharge();
-        } else if (response instanceof Throwable) {
-            CosmosException cosmosException = Utils.as(Exceptions.unwrap((Throwable) response), CosmosException.class);
-            if (cosmosException != null) {
-                requestCharge = cosmosException.getRequestCharge();
+        try {
+            this.throughputWriteLock.lock();
+            double requestCharge = 0;
+            if (response instanceof StoreResponse) {
+                requestCharge = ((StoreResponse)response).getRequestCharge();
+            } else if (response instanceof RxDocumentServiceResponse) {
+                requestCharge = ((RxDocumentServiceResponse)response).getRequestCharge();
+            } else if (response instanceof Throwable) {
+                CosmosException cosmosException = Utils.as(Exceptions.unwrap((Throwable) response), CosmosException.class);
+                if (cosmosException != null) {
+                    requestCharge = cosmosException.getRequestCharge();
+                }
             }
+            this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
+        } finally {
+            this.throughputWriteLock.unlock();
         }
-        this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
+
     }
 
     public double getAvailableThroughput() {
