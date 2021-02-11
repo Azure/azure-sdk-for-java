@@ -58,37 +58,36 @@ public class ThroughputRequestThrottler {
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
-        if (this.availableThroughput.get() > 0) {
-            return originalRequestMono
-                .doOnSuccess(response -> this.trackRequestCharge(response))
-                .doOnError(throwable -> this.trackRequestCharge(throwable));
-        } else {
-            // there is no enough throughput left, block request
-            RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
+        try {
+            this.throughputReadLock.lock();
+            if (this.availableThroughput.get() > 0) {
+                return originalRequestMono
+                    .doOnSuccess(response -> this.trackRequestCharge(response))
+                    .doOnError(throwable -> this.trackRequestCharge(throwable));
+            } else {
+                // there is no enough throughput left, block request
+                RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
 
-            int backoffTimeInMilliSeconds;
+                int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
 
-            try {
-                this.throughputReadLock.lock();
-                backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
-            } finally {
-                this.throughputReadLock.unlock();
+                requestRateTooLargeException.getResponseHeaders().put(
+                    HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
+                    String.valueOf(backoffTimeInMilliSeconds));
+
+                requestRateTooLargeException.getResponseHeaders().put(
+                    HttpConstants.HttpHeaders.SUB_STATUS,
+                    String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
+
+                if (request.requestContext != null) {
+                    BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
+                }
+
+                return Mono.error(requestRateTooLargeException);
             }
-
-            requestRateTooLargeException.getResponseHeaders().put(
-                HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
-                String.valueOf(backoffTimeInMilliSeconds));
-
-            requestRateTooLargeException.getResponseHeaders().put(
-                HttpConstants.HttpHeaders.SUB_STATUS,
-                String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
-
-            if (request.requestContext != null) {
-                BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
-            }
-
-            return Mono.error(requestRateTooLargeException);
+        } finally {
+            this.throughputReadLock.unlock();
         }
+
     }
 
     private <T> void trackRequestCharge (T response) {
