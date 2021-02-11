@@ -5,9 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.core.exception.AzureException;
-
-import java.util.Collections;
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * General exception for Text Analytics related failures.
@@ -19,10 +17,10 @@ public class TextAnalyticsException extends AzureException {
     private final TextAnalyticsErrorCode errorCode;
     private final String target;
 
-    private List<TextAnalyticsErrorInformation> errorInformationList;
+    private IterableStream<TextAnalyticsError> errors;
 
     static {
-        TextAnalyticsExceptionPropertiesHelper.setAccessor(TextAnalyticsException::setErrorInformationList);
+        TextAnalyticsExceptionPropertiesHelper.setAccessor((e, errors) -> e.setErrors(errors));
     }
 
     /**
@@ -70,19 +68,19 @@ public class TextAnalyticsException extends AzureException {
     /**
      * Get the error information list fot this exception.
      *
-     * @return the unmodifiable error information list for this exception.
+     * @return {@link IterableStream} of {@link TextAnalyticsError}.
      */
-    public List<TextAnalyticsErrorInformation> getErrorInformationList() {
-        return Collections.unmodifiableList(this.errorInformationList);
+    public IterableStream<TextAnalyticsError> getErrors() {
+        return this.errors;
     }
 
     /**
      * The private setter to set the errors property
      * via {@link TextAnalyticsExceptionPropertiesHelper.TextAnalyticsExceptionAccessor}.
      *
-     * @param errorInformationList the list of {@link TextAnalyticsErrorInformation}
+     * @param errors {@link IterableStream} of {@link TextAnalyticsError}.
      */
-    private void setErrorInformationList(List<TextAnalyticsErrorInformation> errorInformationList) {
-        this.errorInformationList = errorInformationList;
+    private void setErrors(IterableStream<TextAnalyticsError> errors) {
+        this.errors = errors;
     }
 }

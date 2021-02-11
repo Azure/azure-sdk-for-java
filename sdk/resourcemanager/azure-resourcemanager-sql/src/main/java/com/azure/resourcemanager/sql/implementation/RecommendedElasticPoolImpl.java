@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for RecommendedElasticPool and its parent interfaces. */
 class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElasticPoolInner, RecommendedElasticPool>
@@ -120,13 +121,12 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
     @Override
     public PagedFlux<SqlDatabase> listDatabasesAsync() {
         final RecommendedElasticPoolImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServer
             .manager()
             .serviceClient()
             .getDatabases()
-            .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
-            .mapPage(
+            .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name()),
                 databaseInner ->
                     new SqlDatabaseImpl(databaseInner.name(), self.sqlServer, databaseInner, self.manager()));
     }

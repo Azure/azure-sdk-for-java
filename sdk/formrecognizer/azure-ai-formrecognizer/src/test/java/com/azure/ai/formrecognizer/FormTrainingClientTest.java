@@ -549,7 +549,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
-            assertEquals(2, composedModel.getSubmodels().stream().count());
+            assertEquals(2, (long) composedModel.getSubmodels().size());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
@@ -605,7 +605,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
             assertEquals("composedModelDisplayName", composedModel.getModelName());
-            assertEquals(2, composedModel.getSubmodels().stream().count());
+            assertEquals(2, (long) composedModel.getSubmodels().size());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
