@@ -8,6 +8,7 @@ import com.azure.spring.data.cosmos.domain.PersistableEntity;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PersistableEntityRepository;
+import com.azure.spring.data.cosmos.repository.repository.ReactivePersistableEntityRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,12 +20,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -37,7 +36,10 @@ public class PersistableIT {
     private static boolean isSetupDone;
 
     @Autowired
-    PersistableEntityRepository repository;
+    private PersistableEntityRepository repository;
+
+    @Autowired
+    private ReactivePersistableEntityRepository reactiveRepository;
 
     @Autowired
     private CosmosTemplate template;
@@ -73,6 +75,14 @@ public class PersistableIT {
     }
 
     @Test
+    public void testReactiveInsertShouldSaveEntity() {
+        final PersistableEntity entity = new PersistableEntity("id", "pk");
+        assertTrue(entity.isNew());
+        final Mono<PersistableEntity> savedEntity = reactiveRepository.save(entity);
+        StepVerifier.create(savedEntity).expectNext(entity).verifyComplete();
+    }
+
+    @Test
     public void testInsertDuplicateShouldThrowConflictException() {
         final PersistableEntity entity = new PersistableEntity("id", "pk");
         assertTrue(entity.isNew());
@@ -87,12 +97,35 @@ public class PersistableIT {
     }
 
     @Test
+    public void testReactiveInsertDuplicateShouldThrowConflictException() {
+        final PersistableEntity entity = new PersistableEntity("id", "pk");
+        assertTrue(entity.isNew());
+        reactiveRepository.save(entity).block();
+
+        final Mono<PersistableEntity> saveSecond = reactiveRepository.save(entity);
+        StepVerifier.create(saveSecond)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
+            .verify();
+    }
+
+    @Test
     public void testUpdateShouldSucceedEvenIfEntityDoesNotExist() {
         final PersistableEntity entity = new PersistableEntity("id", "pk", "version");
         assertFalse(entity.isNew());
 
         final PersistableEntity savedEntity = repository.save(entity);
         assertNotEquals(entity.getVersion(), savedEntity.getVersion());
+    }
+
+    @Test
+    public void testReactiveUpdateShouldSucceedEvenIfEntityDoesNotExist() {
+        final PersistableEntity entity = new PersistableEntity("id", "pk", "version");
+        assertFalse(entity.isNew());
+
+        final Mono<PersistableEntity> savedMono = reactiveRepository.save(entity);
+        StepVerifier.create(savedMono)
+            .assertNext(savedEntity -> assertNotEquals(entity.getVersion(), savedEntity.getVersion()))
+            .verifyComplete();
     }
 
 }

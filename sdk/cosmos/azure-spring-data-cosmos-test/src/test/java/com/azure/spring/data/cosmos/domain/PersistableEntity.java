@@ -9,6 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 
+import java.util.Objects;
+
 @Container()
 public class PersistableEntity implements Persistable<String> {
 
@@ -48,6 +50,28 @@ public class PersistableEntity implements Persistable<String> {
 
     public String getVersion() {
         return version;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersistableEntity that = (PersistableEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(partitionKey, that.partitionKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, partitionKey);
+    }
+
+    @Override
+    public String toString() {
+        return "PersistableEntity{" +
+            "id='" + id + '\'' +
+            ", partitionKey='" + partitionKey + '\'' +
+            ", version='" + version + '\'' +
+            '}';
     }
 
 }
