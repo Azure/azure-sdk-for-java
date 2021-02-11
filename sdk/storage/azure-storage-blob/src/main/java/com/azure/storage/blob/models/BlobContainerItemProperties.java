@@ -72,7 +72,7 @@ public final class BlobContainerItemProperties {
      * The DenyEncryptionScopeOverride property.
      */
     @JsonProperty(value = "DenyEncryptionScopeOverride")
-    private boolean encryptionScopeOverridePrevented;
+    private Boolean encryptionScopeOverridePrevented;
 
     /*
      * The DeletedTime property.

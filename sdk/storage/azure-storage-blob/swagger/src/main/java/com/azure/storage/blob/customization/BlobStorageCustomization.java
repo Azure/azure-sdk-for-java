@@ -164,7 +164,7 @@ public class BlobStorageCustomization extends Customization {
         String fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerEncryptionScope.java";
         String updatedCode = customization.getRawEditor()
             .getFileContent(fileName)
-            .replace("Boolean encryptionScopeOverridePrevented", "boolean encryptionScopeOverridePrevented");
+            .replace("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)", "setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
         customization.getRawEditor().removeFile(fileName);
         customization.getRawEditor().addFile(fileName, updatedCode);
@@ -172,7 +172,7 @@ public class BlobStorageCustomization extends Customization {
         fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerItemProperties.java";
         updatedCode = customization.getRawEditor()
             .getFileContent(fileName)
-            .replace("Boolean encryptionScopeOverridePrevented", "boolean encryptionScopeOverridePrevented");
+            .replace("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)", "setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
         customization.getRawEditor().removeFile(fileName);
         customization.getRawEditor().addFile(fileName, updatedCode);

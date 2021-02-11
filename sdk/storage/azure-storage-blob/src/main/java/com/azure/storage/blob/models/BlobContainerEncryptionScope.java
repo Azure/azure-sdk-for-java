@@ -25,7 +25,7 @@ public final class BlobContainerEncryptionScope {
      * container.
      */
     @JsonProperty(value = "encryptionScopeOverridePrevented")
-    private boolean encryptionScopeOverridePrevented;
+    private Boolean encryptionScopeOverridePrevented;
 
     /**
      * Get the defaultEncryptionScope property: Optional. Version 2019-07-07 and later. Specifies the default encryption
