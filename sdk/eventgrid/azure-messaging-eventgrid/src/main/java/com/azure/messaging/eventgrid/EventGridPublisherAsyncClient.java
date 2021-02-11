@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CloudEvent;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -118,15 +119,16 @@ public final class EventGridPublisherAsyncClient {
         final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
-            .map(event -> {
-                com.azure.messaging.eventgrid.implementation.models.CloudEvent internalEvent = event.toImpl();
-                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    eventDataSerializer.serialize(bos, event.getData());
-                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
-                }
-                return internalEvent;
-            })
+//            .map(event -> {
+//                com.azure.messaging.eventgrid.implementation.models.CloudEvent internalEvent =
+//                    convertToIntervalEvent(event);
+//                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+//                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                    eventDataSerializer.serialize(bos, event.getData());
+//                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
+//                }
+//                return internalEvent;
+//            })
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -207,7 +209,7 @@ public final class EventGridPublisherAsyncClient {
         final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
-            .map(CloudEvent::toImpl)
+            //.map(EventGridPublisherAsyncClient::convertToIntervalEvent)
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));

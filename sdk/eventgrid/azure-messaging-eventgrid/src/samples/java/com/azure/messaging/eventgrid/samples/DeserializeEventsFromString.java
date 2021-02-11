@@ -5,7 +5,7 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.util.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.samples.models.User;
 
