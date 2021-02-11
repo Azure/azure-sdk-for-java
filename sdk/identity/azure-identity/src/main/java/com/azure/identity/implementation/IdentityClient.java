@@ -644,9 +644,9 @@ public class IdentityClient {
             Mono.fromFuture(() -> {
                 DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
                     DeviceCodeFlowParameters.builder(
-                    new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
-                        new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                        new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
+                            new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
+                            OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
