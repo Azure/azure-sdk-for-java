@@ -11,12 +11,12 @@ import com.azure.communication.chat.implementation.models.CommunicationIdentifie
 import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
-import com.azure.communication.chat.models.CommunicationCloudEnvironment;
-import com.azure.communication.chat.models.CommunicationIdentifier;
-import com.azure.communication.chat.models.CommunicationUserIdentifier;
-import com.azure.communication.chat.models.MicrosoftTeamsUserIdentifier;
-import com.azure.communication.chat.models.PhoneNumberIdentifier;
-import com.azure.communication.chat.models.UnknownIdentifier;
+import com.azure.communication.common.CommunicationCloudEnvironment;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.UnknownIdentifier;
 
 class CommunicationIdentifierSerializer {
     /**
@@ -44,12 +44,12 @@ class CommunicationIdentifierSerializer {
             Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
+            CommunicationCloudEnvironment cloudEnvironment = new CommunicationCloudEnvironment(teamsUserIdentifierModel.getCloud().toString());
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
                 teamsUserIdentifierModel.isAnonymous())
                 .setRawId(rawId)
-                .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(teamsUserIdentifierModel.getCloud()));
+                .setCloudEnvironment(cloudEnvironment);
         }
-
         Objects.requireNonNull(rawId);
         return new UnknownIdentifier(rawId);
     }

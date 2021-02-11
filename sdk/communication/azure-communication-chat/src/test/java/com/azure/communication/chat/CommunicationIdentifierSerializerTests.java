@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.common;
-
+package com.azure.communication.chat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +9,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 
-import static com.azure.communication.common.CommunicationCloudEnvironmentModel.PUBLIC;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.common.CommunicationCloudEnvironment;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.UnknownIdentifier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentifierSerializerTests {
@@ -36,7 +46,7 @@ public class CommunicationIdentifierSerializerTests {
                 .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
                     .setUserId(teamsUserId)
                     .setIsAnonymous(true)
-                    .setCloud(PUBLIC)),
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)),
             new CommunicationIdentifierModel()
                 .setRawId(rawId)
                 .setPhoneNumber(new PhoneNumberIdentifierModel()
@@ -44,7 +54,7 @@ public class CommunicationIdentifierSerializerTests {
                 .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
                     .setUserId(teamsUserId)
                     .setIsAnonymous(true)
-                    .setCloud(PUBLIC))
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC))
         };
 
         Arrays.stream(modelsWithTooManyNestedObjects).forEach(identifierModel -> {
@@ -62,7 +72,7 @@ public class CommunicationIdentifierSerializerTests {
             new CommunicationIdentifierModel().setRawId(rawId).setCommunicationUser(new CommunicationUserIdentifierModel()), // Missing Id
             new CommunicationIdentifierModel().setRawId(rawId).setPhoneNumber(new PhoneNumberIdentifierModel()), // Missing PhoneNumber
             new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(
-                new MicrosoftTeamsUserIdentifierModel().setCloud(PUBLIC)), // Missing userId
+                new MicrosoftTeamsUserIdentifierModel().setCloud(CommunicationCloudEnvironmentModel.PUBLIC)), // Missing userId
             new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(
                 new MicrosoftTeamsUserIdentifierModel().setIsAnonymous(true).setCloud(CommunicationCloudEnvironmentModel.DOD)), // Missing UserId
             new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(

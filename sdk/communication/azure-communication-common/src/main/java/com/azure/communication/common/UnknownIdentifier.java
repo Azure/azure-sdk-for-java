@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.chat.models;
+package com.azure.communication.common;
 
 import com.azure.core.util.CoreUtils;
 
