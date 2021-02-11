@@ -36,11 +36,13 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -792,5 +794,20 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ThroughputControlMode getThroughputControlMode(ThroughputControlGroup throughputControlGroup) {
+        return throughputControlGroup.getControlMode();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static SqlQuerySpec getOfferQuerySpecFromResourceId(CosmosAsyncContainer container, String resourceId) {
+        return container.getDatabase().getOfferQuerySpecFromResourceId(resourceId);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosAsyncContainer getTargetContainerFromThroughputControlGroup(ThroughputControlGroup controlGroup) {
+        return controlGroup.getTargetContainer();
     }
 }

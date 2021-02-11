@@ -1,7 +1,9 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
-
+## 7.0.2 (2021-02-10)
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.2`.
 
 ## 7.0.1 (2021-01-15)
 ### New Features
