@@ -13,7 +13,7 @@ import com.azure.cosmos.util.Beta;
 public final class ThroughputControlGroup {
     private final ThroughputControlGroupInternal controlGroupInternal;
 
-    public ThroughputControlGroup(ThroughputControlGroupInternal groupInternal) {
+    ThroughputControlGroup(ThroughputControlGroupInternal groupInternal) {
        this.controlGroupInternal = groupInternal;
     }
 

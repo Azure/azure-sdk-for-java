@@ -1,5 +1,6 @@
 package com.azure.cosmos.implementation.throughputControl.config;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.ThroughputControlGroup;
 
@@ -53,7 +54,7 @@ public class ThroughputControlGroupFactory {
         ThroughputLocalControlGroup localControlGroup = new ThroughputLocalControlGroup(
             groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault);
 
-        return new ThroughputControlGroup(localControlGroup);
+        return BridgeInternal.createThroughputControlGroup(localControlGroup);
     }
 
     // endregion
@@ -159,7 +160,7 @@ public class ThroughputControlGroupFactory {
                 controlItemRenewInterval,
                 controlItemExpireInterval);
 
-        return new ThroughputControlGroup(globalControlGroup);
+        return BridgeInternal.createThroughputControlGroup(globalControlGroup);
     }
 
     // endregion

@@ -92,7 +92,8 @@ public class ThroughputRequestThrottler {
 
     private <T> void trackRequestCharge (T response) {
         try {
-            this.throughputWriteLock.lock();
+            // Read lock is enough here.
+            this.throughputReadLock.lock();
             double requestCharge = 0;
             if (response instanceof StoreResponse) {
                 requestCharge = ((StoreResponse)response).getRequestCharge();
@@ -106,7 +107,7 @@ public class ThroughputRequestThrottler {
             }
             this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
         } finally {
-            this.throughputWriteLock.unlock();
+            this.throughputReadLock.unlock();
         }
 
     }
