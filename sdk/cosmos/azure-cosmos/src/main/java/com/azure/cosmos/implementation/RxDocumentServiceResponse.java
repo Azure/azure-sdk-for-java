@@ -192,4 +192,20 @@ public class RxDocumentServiceResponse {
     public DiagnosticsClientContext getDiagnosticsClientContext() {
         return diagnosticsClientContext;
     }
+
+    /**
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
+     *
+     * @return the request charge.
+     */
+    public double getRequestCharge() {
+        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.valueOf(value);
+    }
 }

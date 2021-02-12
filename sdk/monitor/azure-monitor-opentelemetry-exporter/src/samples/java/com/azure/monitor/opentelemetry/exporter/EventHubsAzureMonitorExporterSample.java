@@ -12,6 +12,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -49,8 +50,15 @@ public class EventHubsAzureMonitorExporterSample {
             .connectionString("{connection-string}")
             .buildExporter();
 
-        OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
-        return OpenTelemetrySdk.get().getTracer("Sample");
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
+
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+
+        return openTelemetrySdk.getTracer("Sample");
     }
 
     /**

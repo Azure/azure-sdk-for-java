@@ -1,5 +1,8 @@
 # Release History
 
+## 12.9.0-beta.2 (Unreleased)
+
+
 ## 12.9.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
 - Added support to create a BlobBatchClient from a BlobContainerClient to perform container level operations.
