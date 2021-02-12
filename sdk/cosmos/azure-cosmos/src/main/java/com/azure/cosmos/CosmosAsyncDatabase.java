@@ -544,7 +544,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single resource response with the
      * created cosmos client encryption key or an error.
      */
-    public Mono<CosmosClientEncryptionKeyResponse> createClientEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties) {
+    Mono<CosmosClientEncryptionKeyResponse> createClientEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties) {
         return withContext(context -> createClientEncryptionKeyInternal(keyProperties, context));
     }
 
