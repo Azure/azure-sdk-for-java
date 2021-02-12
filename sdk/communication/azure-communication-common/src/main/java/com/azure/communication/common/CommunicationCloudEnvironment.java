@@ -23,10 +23,6 @@ public class CommunicationCloudEnvironment {
         this.environmentValue = environmentValue;
     }
 
-    static CommunicationCloudEnvironment fromModel(CommunicationCloudEnvironmentModel environmentModel) {
-        return new CommunicationCloudEnvironment(environmentModel.toString());
-    }
-
     /**
      * Represent Azure public cloud
      */

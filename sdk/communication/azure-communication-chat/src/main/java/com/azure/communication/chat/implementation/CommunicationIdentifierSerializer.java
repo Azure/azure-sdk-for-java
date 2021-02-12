@@ -1,12 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.common;
+package com.azure.communication.chat.implementation;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-class CommunicationIdentifierSerializer {
+import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.common.CommunicationCloudEnvironment;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.UnknownIdentifier;
+
+public class CommunicationIdentifierSerializer {
     /**
      * Deserialize CommunicationIdentifierModel into CommunicationIdentifier
      * @param identifier CommunicationIdentifierModel to be deserialized
@@ -30,14 +42,14 @@ class CommunicationIdentifierSerializer {
         if (identifier.getMicrosoftTeamsUser() != null) {
             MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
             Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
+
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
                 teamsUserIdentifierModel.isAnonymous())
                 .setRawId(rawId)
-                .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(teamsUserIdentifierModel.getCloud()));
+                .setCloudEnvironment(new CommunicationCloudEnvironment(teamsUserIdentifierModel.getCloud().toString()));
         }
-
         Objects.requireNonNull(rawId);
         return new UnknownIdentifier(rawId);
     }
