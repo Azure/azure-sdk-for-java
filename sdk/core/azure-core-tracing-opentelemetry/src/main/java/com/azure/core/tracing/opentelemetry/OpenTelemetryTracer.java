@@ -19,6 +19,8 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -193,18 +195,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addEvent(String eventName, Map<String, Object> attributes, Instant timestamp) {
+    public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
+        Objects.requireNonNull(eventName, "'eventName' cannot be null.");
+
         Span currentSpan = Span.current();
         if (currentSpan == null) {
-            logger.info("Failed to find a starting span to associate an event with.");
+            logger.info("Failed to find a starting span to associate the %s with.", eventName);
             return;
         }
 
         currentSpan.addEvent(
             eventName,
-            attributes == null ? Attributes.empty() : convertToAttributes(attributes),
-            timestamp
+            traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes),
+            timestamp == null ? null : timestamp.toInstant()
         );
     }
 
@@ -214,7 +221,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @param attributes the attributes provided by the client SDK's.
      * @return the OpenTelemetry typed {@Link Attributes}.
      */
-    private Attributes convertToAttributes(Map<String, Object> attributes) {
+    private Attributes convertToOtelAttributes(Map<String, Object> attributes) {
         AttributesBuilder attributesBuilder = Attributes.builder();
         attributes.forEach((key, value) -> {
             if (value instanceof Boolean) {
@@ -225,6 +232,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 attributesBuilder.put(key, (Double) value);
             } else if (value instanceof Long) {
                 attributesBuilder.put(key, (Long) value);
+            } else if (value instanceof String[]) {
+                attributesBuilder.put(key, (String[]) value);
+            } else if (value instanceof long[]) {
+                attributesBuilder.put(key, (long[]) value);
+            } else if (value instanceof double[]) {
+                attributesBuilder.put(key, (double[]) value);
+            } else if (value instanceof boolean[]) {
+                attributesBuilder.put(key, (boolean[]) value);
             }
         });
         return attributesBuilder.build();
@@ -252,7 +267,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span.isRecording()) {
             // If span is sampled in, add additional request attributes
             addSpanRequestAttributes(span, context, spanName);
-
         }
         return context.addData(PARENT_SPAN_KEY, span).addData("scope", span.makeCurrent());
     }

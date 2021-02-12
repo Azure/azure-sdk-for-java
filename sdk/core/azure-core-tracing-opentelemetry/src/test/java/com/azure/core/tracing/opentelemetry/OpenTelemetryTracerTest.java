@@ -16,22 +16,23 @@ import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -472,17 +473,17 @@ public class OpenTelemetryTracerTest {
     public void addEventWithAttributes() {
         // Arrange
         final String eventName = "event-0";
-        Map<String, Object> eventAttrs = new HashMap<String, Object>() {{
-                put("attr1", "value1");
-                put("attr2", true);
-                put("attr3", 1L);
-                put("attr4", 1.0);
-                // put("attr5", new double[] {1.0, 2.0, 3.0});
-                // add support for accepting varargs?
-            }};
+        Map<String, Object> input = new HashMap<>() {{
+            put("attr1", "value1");
+            put("attr2", true);
+            put("attr3", 1L);
+            put("attr4", 1.0);
+            put("attr5", new double[] {1.0, 2.0, 3.0});
+            put("attr6", null);
+        }};
 
         // Act
-        openTelemetryTracer.addEvent(eventName, eventAttrs, null);
+        openTelemetryTracer.addEvent(eventName, input, null);
 
         // Assert
         final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
@@ -491,15 +492,23 @@ public class OpenTelemetryTracerTest {
         assertEquals(1, eventData.size());
         assertEquals(eventName, eventData.get(0).getName());
         Attributes attributes = eventData.get(0).getAttributes();
-        assertEquals(4, attributes.size());
-        verifySpanAttributes(eventAttrs, attributes);
+        assertEquals(input.size() - 1, attributes.size());
+        Attributes expectedEventAttrs = Attributes.builder()
+            .put("attr5", "value1")
+            .put("attr2", true)
+            .put("attr3", 1L)
+            .put("attr4", 1.0)
+            .put("attr5", new double[] {1.0, 2.0, 3.0})
+            .build();
+
+        expectedEventAttrs.forEach((attributeKey, attrValue) -> assertEquals(attrValue, attributes.get(attributeKey)));
     }
 
     @Test
     public void addEventWithTimeSpecification() {
         // Arrange
         final String eventName = "event-0";
-        Instant eventTime = Instant.parse("2021-01-01T18:35:24.00Z");
+        OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
 
         // Act
         openTelemetryTracer.addEvent(eventName, null, eventTime);
@@ -510,8 +519,8 @@ public class OpenTelemetryTracerTest {
         assertNotNull(eventData);
         assertEquals(1, eventData.size());
         assertEquals(eventName, eventData.get(0).getName());
-        assertEquals(TimeUnit.SECONDS.toNanos(eventTime.getEpochSecond()) + eventTime.getNano(),
-            eventData.get(0).getEpochNanos());
+        assertEquals(eventTime,
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(eventData.get(0).getEpochNanos()/1000000), ZoneOffset.UTC));
     }
 
     @Test
