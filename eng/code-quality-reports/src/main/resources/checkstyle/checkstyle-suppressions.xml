@@ -4,13 +4,6 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
-  https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
-  <suppress checks="RedundantModifier"
-            files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
-  <suppress checks="RedundantModifier"
-            files="keyvault[/\\]microsoft-azure-.*[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
-
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
