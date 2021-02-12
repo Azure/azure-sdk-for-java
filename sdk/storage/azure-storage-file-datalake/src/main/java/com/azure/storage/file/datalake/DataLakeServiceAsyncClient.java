@@ -21,7 +21,6 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
-import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -41,15 +40,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.*;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -403,38 +398,6 @@ public class DataLakeServiceAsyncClient {
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
-     * @param originalRule {@link BlobCorsRule}
-     * @return The validated {@link BlobCorsRule}
-     */
-    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
-        if (originalRule == null) {
-            return null;
-        }
-        BlobCorsRule validRule = new BlobCorsRule();
-        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
-        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
-        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
-        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
-        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
-        return validRule;
-    }
-
-    /**
-     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
-     * @param retentionPolicy {@link BlobRetentionPolicy}
-     * @param policyName The name of the variable for errors.
-     */
-    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
-        if (retentionPolicy == null) {
-            return;
-        }
-        if (retentionPolicy.isEnabled()) {
-            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
         }
     }
 

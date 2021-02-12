@@ -6,8 +6,7 @@ package com.azure.storage.file.datalake.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * a summary of request statistics grouped by API in hour or minute aggregates
- * for blobs.
+ * a summary of request statistics grouped by API in hour or minute aggregates for datalake.
  */
 @Fluent
 public class DataLakeMetrics {

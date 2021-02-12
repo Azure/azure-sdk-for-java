@@ -55,7 +55,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.FluxUtil.*;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
@@ -92,7 +94,7 @@ public class DataLakeFileSystemAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
-    private final DataLakeStorageClientImpl blobDataLakeStorageFs;
+    private final DataLakeStorageClientImpl blobDataLakeStorageFs; // Just for list deleted paths
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -493,7 +495,7 @@ public class DataLakeFileSystemAsyncClient {
     /**
      * Returns a reactive Publisher emitting all the files/directories in this filesystem that have been recently soft
      * deleted lazily as needed. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -554,9 +556,6 @@ public class DataLakeFileSystemAsyncClient {
     private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
         ListDeletedPathsOptions options, Duration timeout) {
         options = options == null ? new ListDeletedPathsOptions() : options;
-        if (options.getMaxResults() == 0) {
-            options.setMaxResults(10);
-        }
 
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.fileSystems().listBlobHierarchySegmentWithRestResponseAsync(

@@ -15,7 +15,7 @@ public class ListDeletedPathsOptions {
     private final ClientLogger logger = new ClientLogger(ListPathsOptions.class);
 
     private String path;
-    private int maxResults;
+    private Integer maxResults;
 
     /**
      * Constructs an unpopulated {@link ListPathsOptions}.

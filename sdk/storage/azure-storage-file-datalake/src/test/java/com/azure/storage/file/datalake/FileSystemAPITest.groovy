@@ -949,7 +949,6 @@ class FileSystemAPITest extends APISpec {
 
     def "List deleted paths"() {
         setup:
-        System.out.println(new PathDeletedItem("foo", false, "bar", OffsetDateTime.now(), 5).isPrefix())
         enableSoftDelete()
 
         def fc1 = fsc.getFileClient(generatePathName())
@@ -1024,10 +1023,11 @@ class FileSystemAPITest extends APISpec {
         def deletionId = fsc.listDeletedPaths().first().getDeletionId()
 
         when:
-        fsc.restorePath(dir.getDirectoryName(), deletionId)
+        def returnedClient = fsc.restorePath(dir.getDirectoryName(), deletionId)
 
         then:
         dir.getProperties() != null
+        returnedClient.getPathUrl() == dir.getPathUrl()
 
         cleanup:
         disableSoftDelete()
