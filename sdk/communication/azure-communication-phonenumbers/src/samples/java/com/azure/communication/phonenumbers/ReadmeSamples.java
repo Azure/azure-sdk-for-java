@@ -98,7 +98,7 @@ public class ReadmeSamples {
         PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
         searchRequest
             .setAreaCode("800") // Area code is optional for toll free numbers
-            .setAssignmentType(PhoneNumberAssignmentType.USER)
+            .setAssignmentType(PhoneNumberAssignmentType.PERSON)
             .setCapabilities(new PhoneNumberCapabilities()
                 .setCalling(PhoneNumberCapabilityValue.INBOUND)
                 .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND))
