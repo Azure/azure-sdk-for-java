@@ -3,7 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
-  - sdk/*/azure-opentelemetry-exporter-azuremonitor/*/samples/*
+  - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
@@ -128,6 +128,7 @@ known_content_issues:
   - ['sdk/communication/azure-communication-sms/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-administration/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-identity/swagger/README.md', '#3113']
+  - ['sdk/communication/azure-communication-phonenumbers/swagger/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
@@ -144,7 +145,7 @@ known_content_issues:
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
-  - ['sdk/monitor/azure-opentelemetry-exporter-azuremonitor/swagger/README.md', '#3113' ]
+  - ['sdk/monitor/azure-monitor-opentelemetry-exporter/swagger/README.md', '#3113' ]
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']

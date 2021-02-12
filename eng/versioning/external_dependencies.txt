@@ -1,4 +1,4 @@
-# To avoid dependency conflicts between SDK and Spring, when modify or add dependencies,
+# To avoid dependency conflicts between SDK and Spring, when modifying or adding dependencies,
 # make sure the version is same to sdk/spring/scripts/spring_managed_external_dependencies.txt.
 # If your version is different from sdk/spring/scripts/spring_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
@@ -66,8 +66,8 @@ javax.validation:validation-api;2.0.1.Final
 mysql:mysql-connector-java;8.0.22
 net.minidev:json-smart;2.3
 org.apache.ant:ant;1.9.4
-org.apache.avro:avro;1.9.2
-org.apache.avro:avro-maven-plugin;1.9.2
+org.apache.avro:avro;1.10.1
+org.apache.avro:avro-maven-plugin;1.10.1
 org.apache.commons:commons-compress;1.20
 org.apache.commons:commons-lang3;3.10
 org.apache.httpcomponents:httpclient;4.5.13
@@ -216,7 +216,7 @@ com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;8.19
 com.nimbusds:oauth2-oidc-sdk;7.1.1
-com.puppycrawl.tools:checkstyle;8.37
+com.puppycrawl.tools:checkstyle;8.40
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.1.14
@@ -230,7 +230,7 @@ org.apache.commons:commons-collections4;4.2
 org.apache.commons:commons-text;1.6
 org.apache.maven.plugins:maven-antrun-plugin;1.8
 org.apache.maven.plugins:maven-assembly-plugin;3.2.0
-org.apache.maven.plugins:maven-checkstyle-plugin;3.1.1
+org.apache.maven.plugins:maven-checkstyle-plugin;3.1.2
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
@@ -300,9 +300,6 @@ eventgrid_commons-io:commons-io;2.6
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
 eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
-
-# sdk\eventhubs\microsoft-azure-eventhubs\pom.xml
-eventhubs_com.nimbusds:nimbus-jose-jwt;6.0.1
 
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 keyvault_org.mockito:mockito-core;1.10.19

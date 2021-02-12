@@ -2,7 +2,7 @@
   {
     "topic": "/subscriptions/guid/resourcegroups/rgDataMigrationSample/providers/Microsoft.EventHub/namespaces/tfdatamigratens",
     "subject": "eventhubs/hubdatamigration",
-    "eventType": "microsoft.EventHUB.CaptureFileCreated",
+    "eventType": "Microsoft.EventHub.CaptureFileCreated",
     "eventTime": "2017-08-31T19:12:46.0498024Z",
     "id": "14e87d03-6fbf-4bb2-9a21-92bd1281f247",
     "data": {

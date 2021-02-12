@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/linking?showStats=false&stringIndexType=Utf16CodeUnit",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d53d061e-7526-4424-bd84-a7d7da4c132b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "288",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
+      "apim-request-id" : "2d716f20-b100-489b-b90b-654e22e024dc",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":14,\"length\":9,\"confidenceScore\":0.24}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-02-01\"}",
+      "Date" : "Mon, 08 Feb 2021 07:06:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
