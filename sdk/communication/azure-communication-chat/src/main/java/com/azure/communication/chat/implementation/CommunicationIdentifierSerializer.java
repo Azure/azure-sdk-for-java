@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.chat;
+package com.azure.communication.chat.implementation;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,6 +42,7 @@ class CommunicationIdentifierSerializer {
         if (identifier.getMicrosoftTeamsUser() != null) {
             MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
             Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
+
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),

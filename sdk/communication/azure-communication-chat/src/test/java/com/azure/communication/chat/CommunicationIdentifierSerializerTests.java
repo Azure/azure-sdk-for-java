@@ -14,6 +14,7 @@ import com.azure.communication.chat.implementation.models.CommunicationUserIdent
 import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.chat.implementation.CommunicationIdentifierSerializer;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
