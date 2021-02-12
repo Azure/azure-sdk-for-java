@@ -6,8 +6,23 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -30,6 +45,37 @@ public final class EventGridPublisherClient {
      */
     public EventGridServiceVersion getServiceVersion() {
         return asyncClient.getServiceVersion();
+    }
+
+    /**
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link AzureSasCredential}.
+     */
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
+        return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime,
+            EventGridServiceVersion.getLatest());
+    }
+
+    /**
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link AzureSasCredential}.
+     */
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
+        EventGridServiceVersion apiVersion) {
+        return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime, apiVersion);
     }
 
     /**

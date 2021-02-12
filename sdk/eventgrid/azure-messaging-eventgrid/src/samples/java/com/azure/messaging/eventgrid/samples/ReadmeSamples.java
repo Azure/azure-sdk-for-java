@@ -13,12 +13,9 @@ import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.EventGridSasGenerator;
 import com.azure.messaging.eventgrid.SystemEventNames;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
@@ -121,7 +118,7 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String sasToken = EventGridSasGenerator
+        String sasToken = EventGridPublisherClient
             .generateSas(endpoint, new AzureKeyCredential(key), expiration);
     }
 

@@ -5,16 +5,16 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.EventGridSasGenerator;
 
 import java.time.OffsetDateTime;
 
 public class GenerateSasToken {
     public static void main(String[] args) {
         // 1. Generate the SAS token.
-        String sasToken = EventGridSasGenerator.generateSas(
+        String sasToken = EventGridPublisherClient.generateSas(
             System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"),
             new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")),
             OffsetDateTime.now().plusMinutes(20));

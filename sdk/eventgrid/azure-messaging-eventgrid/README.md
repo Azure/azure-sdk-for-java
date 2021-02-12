@@ -123,7 +123,7 @@ Here is sample code to create a shared access signature that expires after 20 mi
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
     
-String sasToken = EventGridSasGenerator
+String sasToken = EventGridPublisherClient
     .generateSas("<your event grid endpoint>", new AzureKeyCredential("<your event grid access key>"), expiration);
 ```
 

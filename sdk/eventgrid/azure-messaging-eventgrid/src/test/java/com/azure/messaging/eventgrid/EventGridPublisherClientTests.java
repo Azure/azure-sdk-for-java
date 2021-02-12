@@ -101,7 +101,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishWithSasToken() {
-        String sasToken = EventGridSasGenerator.generateSas(
+        String sasToken = EventGridPublisherAsyncClient.generateSas(
             getEndpoint(EVENTGRID_ENDPOINT),
             getKey(EVENTGRID_KEY),
             OffsetDateTime.now().plusMinutes(20)
