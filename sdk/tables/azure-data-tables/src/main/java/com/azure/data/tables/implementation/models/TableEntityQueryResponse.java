@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The TableEntityQueryResponse model. */
+/** The properties for the table entity query response. */
 @Fluent
 public final class TableEntityQueryResponse {
     /*

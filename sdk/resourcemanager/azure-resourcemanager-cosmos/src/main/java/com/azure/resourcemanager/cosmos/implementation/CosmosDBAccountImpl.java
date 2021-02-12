@@ -44,6 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for CosmosDBAccount. */
 class CosmosDBAccountImpl
@@ -169,12 +170,12 @@ class CosmosDBAccountImpl
 
     @Override
     public PagedFlux<SqlDatabase> listSqlDatabasesAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
-            .mapPage(SqlDatabaseImpl::new);
+            .listSqlDatabasesAsync(this.resourceGroupName(), this.name()),
+            SqlDatabaseImpl::new);
     }
 
     @Override
@@ -184,12 +185,12 @@ class CosmosDBAccountImpl
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
-            .mapPage(PrivateLinkResourceImpl::new);
+            .listByDatabaseAccountAsync(this.resourceGroupName(), this.name()),
+            PrivateLinkResourceImpl::new);
     }
 
     @Override

@@ -73,8 +73,8 @@ class AppServiceDomainImpl
             .serviceClient()
             .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
-            // Step 1: Consent to agreements
-            .mapPage(TldLegalAgreementInner::agreementKey)
+            // Step 1: Consent to agreements,
+            .map(TldLegalAgreementInner::agreementKey)
             .collectList()
             // Step 2: Create domain
             .flatMap(

@@ -97,8 +97,8 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
     public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         ObjectNode root = mapper.valueToTree(value);
         ObjectNode res = root.deepCopy();
-        Queue<ObjectNode> source = new LinkedBlockingQueue<ObjectNode>();
-        Queue<ObjectNode> target = new LinkedBlockingQueue<ObjectNode>();
+        Queue<ObjectNode> source = new LinkedBlockingQueue<>();
+        Queue<ObjectNode> target = new LinkedBlockingQueue<>();
         source.add(root);
         target.add(res);
         while (!source.isEmpty()) {
@@ -117,7 +117,7 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
                     Iterator<Map.Entry<String, JsonNode>> additionalFields = extraProperties.fields();
                     while (additionalFields.hasNext()) {
                         Entry<String, JsonNode> additionalField = additionalFields.next();
-                        resCurrent.put(additionalField.getKey(), additionalField.getValue());
+                        resCurrent.set(additionalField.getKey(), additionalField.getValue());
                     }
                 }
                 if (field.getValue() instanceof ObjectNode) {

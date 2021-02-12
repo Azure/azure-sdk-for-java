@@ -730,7 +730,10 @@ public class CosmosAsyncDatabase {
                     ModelBridgeInternal.getClientEncryptionPolicys(response.getResults()),
                     response.getResponseHeaders(),
                     ModelBridgeInternal.queryMetrics(response),
-                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response)));
+                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                    false,
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -888,7 +891,10 @@ public class CosmosAsyncDatabase {
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     ModelBridgeInternal.queryMetrics(response),
-                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response)));
+                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                    false,
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 

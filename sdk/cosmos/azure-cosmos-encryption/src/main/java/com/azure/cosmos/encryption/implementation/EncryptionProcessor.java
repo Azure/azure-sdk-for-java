@@ -185,7 +185,7 @@ public class EncryptionProcessor {
         return clientEncryptionPolicy;
     }
 
-    private void setClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
+    void setClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
         this.clientEncryptionPolicy = clientEncryptionPolicy;
     }
 
@@ -486,11 +486,7 @@ public class EncryptionProcessor {
                 case DOUBLE:
                     return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
                 case STRING:
-                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
-                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
                 case OBJECT:
-                    return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
-                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
                 case ARRAY:
                     return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
                         STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));

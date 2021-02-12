@@ -81,6 +81,7 @@ public class NettyAsyncHttpClientBuilder {
      * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
+    @SuppressWarnings("deprecation")
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
         if (this.baseHttpClient != null) {
@@ -131,10 +132,12 @@ public class NettyAsyncHttpClientBuilder {
                      * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
                      * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
                      * before any request data is sent.
+                     *
+                     * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
                      */
-                    tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
-                        NettyPipeline.ProxyHandler, new DeferredHttpProxyProvider(handler, proxyChallengeHolder,
-                            buildProxyOptions)));
+                    tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateResolverForProxySupport(
+                        BootstrapHandlers.updateConfiguration(bootstrap, NettyPipeline.ProxyHandler,
+                            new DeferredHttpProxyProvider(handler, proxyChallengeHolder, buildProxyOptions))));
                 } else {
                     tcpClient = tcpClient.proxy(proxy ->
                         proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
@@ -381,7 +384,7 @@ public class NettyAsyncHttpClientBuilder {
     static long getTimeoutMillis(Duration timeout) {
         // Timeout is null, use the 60 second default.
         if (timeout == null) {
-            return TimeUnit.SECONDS.toMillis(60);
+            return DEFAULT_TIMEOUT;
         }
 
         // Timeout is less than or equal to zero, return no timeout.

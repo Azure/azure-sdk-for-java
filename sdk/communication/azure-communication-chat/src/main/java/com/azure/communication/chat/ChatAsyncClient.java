@@ -2,17 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter;
 import reactor.core.publisher.Mono;
 
-import com.azure.communication.chat.implementation.converters.ChatThreadConverter;
-import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
-import com.azure.communication.chat.implementation.models.IndividualStatusResponse;
-import com.azure.communication.chat.implementation.models.MultiStatusResponse;
-import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
-import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.ListChatThreadsOptions;
 import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatThreadInfo;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatThreadsOptions;
+import com.azure.communication.chat.implementation.converters.ChatThreadConverter;
+import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
+import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
+import com.azure.communication.chat.implementation.ChatImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -23,7 +24,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
-import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -36,11 +36,11 @@ public final class ChatAsyncClient {
     private final ClientLogger logger = new ClientLogger(ChatAsyncClient.class);
 
     private final AzureCommunicationChatServiceImpl chatServiceClient;
-
-    private static final String THREAD_RESOURCE_STATUS_TYPE = "thread";
+    private final ChatImpl chatClient;
 
     ChatAsyncClient(AzureCommunicationChatServiceImpl chatServiceClient) {
         this.chatServiceClient = chatServiceClient;
+        this.chatClient = chatServiceClient.getChatClient();
     }
 
     /**
@@ -62,12 +62,12 @@ public final class ChatAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThreadAsyncClient> createChatThread(CreateChatThreadOptions options) {
+    public Mono<CreateChatThreadResult> createChatThread(CreateChatThreadOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> createChatThread(options, context)
                 .flatMap(
-                    (Response<ChatThreadAsyncClient> res) -> {
+                    (Response<CreateChatThreadResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -86,7 +86,7 @@ public final class ChatAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadAsyncClient>> createChatThreadWithResponse(CreateChatThreadOptions options) {
+    public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponse(CreateChatThreadOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> createChatThread(options, context));
@@ -102,12 +102,12 @@ public final class ChatAsyncClient {
      * @param context The context to associate with this operation.
      * @return the response.
      */
-    Mono<Response<ChatThreadAsyncClient>> createChatThread(CreateChatThreadOptions options, Context context) {
+    Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.createChatThreadWithResponseAsync(
-            CreateChatThreadOptionsConverter.convert(options), context).map(
-                result -> new SimpleResponse<ChatThreadAsyncClient>(
-                    result, getChatThreadClient(getThreadIdFromMultiStatusResponse(result.getValue()))));
+        return this.chatClient.createChatThreadWithResponseAsync(
+            CreateChatThreadOptionsConverter.convert(options), options.getRepeatabilityRequestId(), context).map(
+                result -> new SimpleResponse<CreateChatThreadResult>(
+                    result, CreateChatThreadResultConverter.convert(result.getValue())));
     }
 
     /**
@@ -159,7 +159,7 @@ public final class ChatAsyncClient {
      */
     Mono<Response<ChatThread>> getChatThread(String chatThreadId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.getChatThreadWithResponseAsync(chatThreadId, context)
+        return this.chatClient.getChatThreadWithResponseAsync(chatThreadId, context)
             .flatMap(
                 (Response<com.azure.communication.chat.implementation.models.ChatThread> res) -> {
                     return Mono.just(new SimpleResponse<ChatThread>(
@@ -177,9 +177,9 @@ public final class ChatAsyncClient {
         ListChatThreadsOptions listThreadsOptions = new ListChatThreadsOptions();
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatServiceClient.listChatThreadsSinglePageAsync(
+                () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
                     listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.chatServiceClient.listChatThreadsNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
                     nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -198,9 +198,9 @@ public final class ChatAsyncClient {
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatServiceClient.listChatThreadsSinglePageAsync(
+                () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
                     serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.chatServiceClient.listChatThreadsNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
                     nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -218,7 +218,7 @@ public final class ChatAsyncClient {
         final ListChatThreadsOptions serviceListThreadsOptions
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
 
-        return this.chatServiceClient.listChatThreadsAsync(
+        return this.chatClient.listChatThreadsAsync(
             serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), serviceContext);
     }
 
@@ -266,26 +266,7 @@ public final class ChatAsyncClient {
      */
     Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+        return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
     }
 
-    private String getThreadIdFromMultiStatusResponse(MultiStatusResponse multiStatusResponse) {
-
-        List<IndividualStatusResponse> individualStatusResponses = multiStatusResponse.getMultipleStatus();
-        for (IndividualStatusResponse individualStatusResponse : individualStatusResponses) {
-            if (individualStatusResponse.getType().equalsIgnoreCase(THREAD_RESOURCE_STATUS_TYPE)) {
-                if (individualStatusResponse.getStatusCode() == 201) {
-                    return individualStatusResponse.getId();
-                }
-
-                throw logger.logExceptionAsError(new RuntimeException(
-                    String.format(
-                        "%s. Status code: %s.",
-                        individualStatusResponse.getMessage(),
-                        individualStatusResponse.getStatusCode())));
-            }
-        }
-
-        throw logger.logExceptionAsError(new RuntimeException("Failed to create thread."));
-    }
 }

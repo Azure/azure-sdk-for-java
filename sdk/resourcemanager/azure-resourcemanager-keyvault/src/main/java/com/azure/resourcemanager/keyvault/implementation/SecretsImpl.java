@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Secrets and its parent interfaces. */
 class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProperties> implements Secrets {
@@ -103,7 +104,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
     @Override
     public PagedFlux<Secret> listAsync() {
-        return inner.listPropertiesOfSecrets().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner.listPropertiesOfSecrets(), this::wrapModel);
     }
 
     @Override

@@ -259,8 +259,9 @@ public class EncryptionCosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItemsOnEncryptedProperties(EncryptionSqlQuerySpec query, CosmosQueryRequestOptions options,
-                                             Class<T> classType) {
+    public <T> CosmosPagedFlux<T> queryItemsOnEncryptedProperties(EncryptionSqlQuerySpec query,
+                                                                  CosmosQueryRequestOptions options,
+                                                                  Class<T> classType) {
 
         if (options == null) {
             options = new CosmosQueryRequestOptions();
@@ -277,6 +278,7 @@ public class EncryptionCosmosAsyncContainer {
 
     /**
      * Get the EncryptionCosmosAsyncClient
+     *
      * @return encrypted cosmosAsyncClient
      */
     public EncryptionCosmosAsyncClient getEncryptionCosmosAsyncClient() {
@@ -285,6 +287,7 @@ public class EncryptionCosmosAsyncContainer {
 
     /**
      * Gets the CosmosAsyncContainer
+     *
      * @return cosmos container
      */
     public CosmosAsyncContainer getCosmosAsyncContainer() {
@@ -335,11 +338,13 @@ public class EncryptionCosmosAsyncContainer {
                             byteArrayList.stream().map(bytes -> decryptResponse(bytes)).collect(Collectors.toList());
                         return Flux.concat(byteArrayMonoList).map(
                             item -> getItemDeserializer().parseFrom(classType, item)
-                        ).collectList().map(itemList ->
-                            ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
-                                page.getResponseHeaders(),
-                                BridgeInternal.queryMetricsFromFeedResponse(page),
-                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
+                        ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
+                            page.getResponseHeaders(),
+                            BridgeInternal.queryMetricsFromFeedResponse(page),
+                            ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                            false,
+                            false,
+                            page.getCosmosDiagnostics())
                         );
                     }
                 )

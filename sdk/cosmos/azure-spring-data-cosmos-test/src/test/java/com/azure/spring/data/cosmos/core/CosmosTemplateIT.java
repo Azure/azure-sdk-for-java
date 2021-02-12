@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
@@ -139,10 +140,15 @@ public class CosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(person)));
     }
 
-    @Test(expected = CosmosAccessException.class)
-    public void testInsertDuplicateId() {
-        cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+    @Test
+    public void testInsertDuplicateIdShouldFailWithConflictException() {
+        try {
+            cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException() instanceof ConflictException);
+        }
     }
 
     @Test(expected = CosmosAccessException.class)

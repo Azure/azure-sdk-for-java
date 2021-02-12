@@ -25,7 +25,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -123,7 +123,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -378,7 +378,7 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
     if (jobTitles != null) {
         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+            jobTitlesItems.forEach(jobTitlesItem -> {
                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                     String jobTitle = jobTitlesItem.getValue().asString();
                     System.out.printf("Job Title: %s, confidence: %.2f%n",

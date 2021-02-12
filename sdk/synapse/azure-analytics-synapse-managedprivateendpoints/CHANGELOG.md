@@ -1,5 +1,10 @@
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
+
+## 1.0.0-beta.2 (2021-02-09)
+
+- Support specifying the service API version. (AutoRest update)
+- Send missing "Accept" request headers
 
 ## 1.0.0-beta.1 (2020-12-15)
 

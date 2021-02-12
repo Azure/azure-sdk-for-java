@@ -37,7 +37,7 @@ public class CredentialsTests {
             .httpClient(new NoOpHttpClient())
             .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
                 .flatMap(token -> {
-                    context.getHttpRequest().getHeaders().put("Authorization", "Basic " + token.getToken());
+                    context.getHttpRequest().getHeaders().set("Authorization", "Basic " + token.getToken());
                     return next.process();
                 }), auditorPolicy)
             .build();

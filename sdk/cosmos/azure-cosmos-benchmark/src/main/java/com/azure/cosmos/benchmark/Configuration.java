@@ -89,6 +89,9 @@ public class Configuration {
     @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
     private String readWriteQueryPct = "90,9,1";
 
+    @Parameter(names = "-manageResources", description = "Control switch for creating/deleting underlying test resources")
+    private boolean manageResources = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -108,7 +111,9 @@ public class Configuration {
         + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
         + "\tCtlWorkload - run a ctl workflow.*\n"
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
-        + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
+        + "\n\t* writes 10k documents initially, which are used in the reads"
+        + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n",
+        converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
     @Parameter(names = "-concurrency", description = "Degree of Concurrency in Inserting Documents."
@@ -177,7 +182,8 @@ public class Configuration {
         ReadMyWrites,
         ReadThroughputWithMultipleClients,
         CtlWorkload,
-        ReadAllItemsOfLogicalPartition;
+        ReadAllItemsOfLogicalPartition,
+        LinkedInCtlWorkload;
 
         static Operation fromString(String code) {
 
@@ -385,6 +391,10 @@ public class Configuration {
 
     public String getReadWriteQueryPct() {
         return this.readWriteQueryPct;
+    }
+
+    public boolean shouldManageResources() {
+        return this.manageResources;
     }
 
     public String toString() {

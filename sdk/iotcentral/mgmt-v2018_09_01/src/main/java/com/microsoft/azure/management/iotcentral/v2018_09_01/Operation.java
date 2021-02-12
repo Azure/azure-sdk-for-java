@@ -27,4 +27,14 @@ public interface Operation extends HasInner<OperationInner>, HasManager<IoTCentr
      */
     String name();
 
+    /**
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * @return the properties value.
+     */
+    Object properties();
+
 }

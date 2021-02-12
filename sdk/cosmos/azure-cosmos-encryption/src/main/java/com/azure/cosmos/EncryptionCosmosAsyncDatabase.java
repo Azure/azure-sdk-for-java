@@ -377,7 +377,7 @@ public class EncryptionCosmosAsyncDatabase {
         return encryptionCosmosAsyncClient;
     }
 
-    private void setEncryptionCosmosAsyncClient(EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
+    void setEncryptionCosmosAsyncClient(EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
         this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
     }
 
