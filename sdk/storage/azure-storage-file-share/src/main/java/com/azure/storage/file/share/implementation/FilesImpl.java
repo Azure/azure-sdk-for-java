@@ -74,7 +74,7 @@ public final class FilesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFile")
-    private interface FilesService {
+    public interface FilesService {
         @Put("/{shareName}/{filePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)

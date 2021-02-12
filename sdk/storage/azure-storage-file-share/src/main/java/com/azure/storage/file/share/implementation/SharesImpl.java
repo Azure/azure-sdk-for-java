@@ -43,10 +43,9 @@ import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Shares. */
 public final class SharesImpl {
@@ -72,7 +71,7 @@ public final class SharesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageShar")
-    private interface SharesService {
+    public interface SharesService {
         @Put("/{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)

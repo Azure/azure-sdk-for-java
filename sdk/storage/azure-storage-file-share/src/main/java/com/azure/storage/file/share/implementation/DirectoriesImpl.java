@@ -56,7 +56,7 @@ public final class DirectoriesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageDire")
-    private interface DirectoriesService {
+    public interface DirectoriesService {
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
