@@ -3,11 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
+import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;

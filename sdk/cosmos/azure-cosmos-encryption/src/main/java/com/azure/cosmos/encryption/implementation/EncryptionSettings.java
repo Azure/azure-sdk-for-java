@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption;
+package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.EncryptionBridgeInternal;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -20,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.security.InvalidKeyException;
@@ -36,9 +36,6 @@ public final class EncryptionSettings {
     private ProtectedDataEncryptionKey dataEncryptionKey;
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
-
-    public EncryptionSettings() {
-    }
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -65,8 +62,8 @@ public final class EncryptionSettings {
         });
     }
 
-    private Mono<CachedEncryptionSettings> fetchCachedEncryptionSettingsAsync(String propertyName,
-                                                                              EncryptionProcessor encryptionProcessor) {
+    Mono<CachedEncryptionSettings> fetchCachedEncryptionSettingsAsync(String propertyName,
+                                                                      EncryptionProcessor encryptionProcessor) {
         Mono<ClientEncryptionPolicy> encryptionPolicyMono =
             EncryptionBridgeInternal.getClientEncryptionPolicyAsync(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
@@ -75,54 +72,61 @@ public final class EncryptionSettings {
             if (clientEncryptionPolicy != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
                     if (propertyToEncrypt.path.substring(1).equals(propertyName)) {
-                        Mono<CosmosClientEncryptionKeyProperties> keyPropertiesMono =
-                            EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(), propertyToEncrypt.clientEncryptionKeyId, encryptionProcessor.getCosmosAsyncContainer(), forceRefreshClientEncryptionKey.get());
-                        keyPropertiesMono.flatMap(keyProperties -> {
-                            ProtectedDataEncryptionKey protectedDataEncryptionKey;
-                            try {
-                                protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                    encryptionProcessor.getEncryptionKeyStoreProvider(),
-                                    propertyToEncrypt.clientEncryptionKeyId);
-                            } catch (Exception ex) {
-                                return Mono.error(ex);
-                            }
-                            EncryptionSettings encryptionSettings = new EncryptionSettings();
-                            encryptionSettings.encryptionSettingTimeToLive =
-                                Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
-                            encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.clientEncryptionKeyId;
-                            encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
-                            EncryptionType encryptionType = EncryptionType.Plaintext;
-                            switch (propertyToEncrypt.encryptionType) {
-                                case CosmosEncryptionType.DETERMINISTIC:
-                                    encryptionType = EncryptionType.Deterministic;
-                                    break;
-                                case CosmosEncryptionType.RANDOMIZED:
-                                    encryptionType = EncryptionType.Randomized;
-                                    break;
-                                default:
-                                    LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.encryptionType);
-                                    break;
-                            }
-                            try {
-                                encryptionSettings = EncryptionSettings.create(encryptionSettings, encryptionType);
-                            } catch (MicrosoftDataEncryptionException e) {
-                                return Mono.error(e);
-                            }
-                            return Mono.just(encryptionSettings);
-                        }).retryWhen(Retry.withThrowable((throwableFlux -> throwableFlux.flatMap(throwable -> {
-                            //TODO DO we need to check for MicrosoftDataEncryptionException too ?
-                            // ProtectedDataEncryptionKey.getOrCreate throws Exception object and not specific
-                            // exceptions
+                        return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
+                            propertyToEncrypt.clientEncryptionKeyId,
+                            encryptionProcessor.getCosmosAsyncContainer(),
+                            forceRefreshClientEncryptionKey.get())
+                            .publishOn(Schedulers.elastic())
+                            .flatMap(keyProperties -> {
+                                ProtectedDataEncryptionKey protectedDataEncryptionKey;
+                                try {
+                                    protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
+                                        encryptionProcessor.getEncryptionKeyStoreProvider(),
+                                        propertyToEncrypt.clientEncryptionKeyId);
+                                } catch (Exception ex) {
+                                    return Mono.error(ex);
+                                }
+                                EncryptionSettings encryptionSettings = new EncryptionSettings();
+                                encryptionSettings.encryptionSettingTimeToLive =
+                                    Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
+                                encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.clientEncryptionKeyId;
+                                encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
+                                EncryptionType encryptionType = EncryptionType.Plaintext;
+                                switch (propertyToEncrypt.encryptionType) {
+                                    case CosmosEncryptionType.DETERMINISTIC:
+                                        encryptionType = EncryptionType.Deterministic;
+                                        break;
+                                    case CosmosEncryptionType.RANDOMIZED:
+                                        encryptionType = EncryptionType.Randomized;
+                                        break;
+                                    default:
+                                        LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.encryptionType);
+                                        break;
+                                }
+                                try {
+                                    encryptionSettings = EncryptionSettings.create(encryptionSettings, encryptionType);
+                                } catch (MicrosoftDataEncryptionException e) {
+                                    return Mono.error(e);
+                                }
+                                return Mono.just(new CachedEncryptionSettings(encryptionSettings,
+                                    encryptionSettings.encryptionSettingTimeToLive));
+                            }).retryWhen(Retry.withThrowable((throwableFlux -> throwableFlux.flatMap(throwable -> {
+                                //TODO DO we need to check for MicrosoftDataEncryptionException too ?
+                                // ProtectedDataEncryptionKey.getOrCreate throws Exception object and not specific
+                                // exceptions
 
-                            // the key was revoked. Try to fetch the latest EncryptionKeyProperties from the backend.
-                            // This should succeed provided the user has rewraped the key with right set of meta data.
-                            InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
-                            if (invalidKeyException != null) {
-                                forceRefreshClientEncryptionKey.set(true);
-                                return Mono.delay(Duration.ZERO).flux();
-                            }
-                            return Flux.error(throwable);
-                        }))));
+                                // the key was revoked. Try to fetch the latest EncryptionKeyProperties from the
+                                // backend.
+                                // This should succeed provided the user has rewraped the key with right set of meta
+                                // data.
+                                InvalidKeyException invalidKeyException = Utils.as(throwable,
+                                    InvalidKeyException.class);
+                                if (invalidKeyException != null && !forceRefreshClientEncryptionKey.get()) {
+                                    forceRefreshClientEncryptionKey.set(true);
+                                    return Mono.delay(Duration.ZERO).flux();
+                                }
+                                return Flux.error(throwable);
+                            }))));
                     }
                 }
             }
@@ -141,31 +145,31 @@ public final class EncryptionSettings {
             keyProperties.getWrappedDataEncryptionKey());
     }
 
-    public String getClientEncryptionKeyId() {
+    String getClientEncryptionKeyId() {
         return clientEncryptionKeyId;
     }
 
-    public void setClientEncryptionKeyId(String clientEncryptionKeyId) {
+    void setClientEncryptionKeyId(String clientEncryptionKeyId) {
         this.clientEncryptionKeyId = clientEncryptionKeyId;
     }
 
-    public AsyncCache<String, CachedEncryptionSettings> getEncryptionSettingCacheByPropertyName() {
+    AsyncCache<String, CachedEncryptionSettings> getEncryptionSettingCacheByPropertyName() {
         return encryptionSettingCacheByPropertyName;
     }
 
-    public Instant getEncryptionSettingTimeToLive() {
+    Instant getEncryptionSettingTimeToLive() {
         return encryptionSettingTimeToLive;
     }
 
-    public void setEncryptionSettingTimeToLive(Instant encryptionSettingTimeToLive) {
+    void setEncryptionSettingTimeToLive(Instant encryptionSettingTimeToLive) {
         this.encryptionSettingTimeToLive = encryptionSettingTimeToLive;
     }
 
-    public ProtectedDataEncryptionKey getDataEncryptionKey() {
+    ProtectedDataEncryptionKey getDataEncryptionKey() {
         return dataEncryptionKey;
     }
 
-    public void setDataEncryptionKey(ProtectedDataEncryptionKey dataEncryptionKey) {
+    void setDataEncryptionKey(ProtectedDataEncryptionKey dataEncryptionKey) {
         this.dataEncryptionKey = dataEncryptionKey;
     }
 
@@ -177,7 +181,7 @@ public final class EncryptionSettings {
         return aeadAes256CbcHmac256EncryptionAlgorithm;
     }
 
-    public void setAeadAes256CbcHmac256EncryptionAlgorithm(AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm) {
+    void setAeadAes256CbcHmac256EncryptionAlgorithm(AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm) {
         this.aeadAes256CbcHmac256EncryptionAlgorithm = aeadAes256CbcHmac256EncryptionAlgorithm;
     }
 
@@ -199,9 +203,9 @@ public final class EncryptionSettings {
         EncryptionSettings settingsForKey,
         EncryptionType encryptionType) throws MicrosoftDataEncryptionException {
         EncryptionSettings encryptionSettings = new EncryptionSettings();
-        encryptionSettings.setClientEncryptionKeyId(encryptionSettings.clientEncryptionKeyId);
-        encryptionSettings.setDataEncryptionKey(encryptionSettings.getDataEncryptionKey());
-        encryptionSettings.setEncryptionSettingTimeToLive(encryptionSettings.getEncryptionSettingTimeToLive());
+        encryptionSettings.setClientEncryptionKeyId(settingsForKey.clientEncryptionKeyId);
+        encryptionSettings.setDataEncryptionKey(settingsForKey.getDataEncryptionKey());
+        encryptionSettings.setEncryptionSettingTimeToLive(settingsForKey.getEncryptionSettingTimeToLive());
         AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256Algorithm =
             AeadAes256CbcHmac256EncryptionAlgorithm.getOrCreate(settingsForKey.getDataEncryptionKey(), encryptionType);
         encryptionSettings.setAeadAes256CbcHmac256EncryptionAlgorithm(aeadAes256CbcHmac256Algorithm);

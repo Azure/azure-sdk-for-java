@@ -4,11 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncDatabase;
+import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;

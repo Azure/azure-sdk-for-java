@@ -1,17 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption;
+package com.azure.cosmos;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
-import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
-import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -34,9 +31,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
-// TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
-// TODO: should we test the apis for byte-array (streaming api replacement)?
+/**
+ * CosmosAsyncContainer with encryption capabilities.
+ */
 public class EncryptionCosmosAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();

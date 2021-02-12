@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
-import com.azure.cosmos.implementation.encryption.EncryptionUtils;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.data.encryption.cryptography.EncryptionType;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
+import com.azure.cosmos.EncryptionCosmosAsyncClient;
 
 public class EncryptionDatabaseResponse {
 

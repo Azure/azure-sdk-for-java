@@ -3,11 +3,7 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
-
-import java.time.Duration;
-import java.util.Map;
+import com.azure.cosmos.EncryptionCosmosAsyncContainer;
 
 public class EncryptionContainerResponse {
     private final CosmosContainerResponse containerResponse;

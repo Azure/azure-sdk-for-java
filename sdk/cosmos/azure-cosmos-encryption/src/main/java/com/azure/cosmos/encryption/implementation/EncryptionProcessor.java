@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption;
+package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.encryption.CosmosEncryptionType;
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncClient;
+import com.azure.cosmos.EncryptionBridgeInternal;
+import com.azure.cosmos.EncryptionCosmosAsyncClient;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -501,7 +500,6 @@ public class EncryptionProcessor {
         }
         throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
     }
-
 
     public enum TypeMarker {
         NULL(1), // not used

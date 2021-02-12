@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption;
+package com.azure.cosmos;
 
-import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
@@ -20,6 +17,9 @@ import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
 import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
 import reactor.core.publisher.Mono;
 
+/**
+ * EncryptionCosmosAsyncDatabase with encryption capabilities.
+ */
 public class EncryptionCosmosAsyncDatabase {
 
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
