@@ -22,8 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 /**
  * This class is an abstraction for the many ways binary data can be represented.
  * <p>
@@ -65,6 +63,8 @@ public final class BinaryData {
     private static volatile JsonSerializer defaultJsonSerializer;
 
     private final byte[] data;
+
+    private String dataAsStringCache;
 
     /**
      * Create an instance of {@link BinaryData} from the given byte array.
@@ -126,12 +126,7 @@ public final class BinaryData {
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
-        try {
-            return Mono.fromCallable(() -> fromStream(inputStream));
-        } catch (RuntimeException runtimeException) {
-            // Don't need to log here as it is done in fromStream.
-            return Mono.error(runtimeException);
-        }
+        return Mono.fromCallable(() -> fromStream(inputStream));
     }
 
     /**
@@ -246,11 +241,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        try {
-            return Mono.fromCallable(() -> fromObject(data));
-        } catch (RuntimeException runtimeException) {
-            return Mono.error(runtimeException);
-        }
+        return Mono.fromCallable(() -> fromObject(data));
     }
 
     /**
@@ -275,7 +266,7 @@ public final class BinaryData {
      * @param data The object that will be serialized that {@link BinaryData} will represent.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null.
+     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
@@ -314,16 +305,12 @@ public final class BinaryData {
      * @param data The object that will be serialized that {@link BinaryData} will represent.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null.
+     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
-        if (Objects.isNull(serializer)) {
-            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
-        }
-
         return Mono.fromCallable(() -> fromObject(data, serializer));
     }
 
@@ -343,8 +330,11 @@ public final class BinaryData {
      * @return A {@link String} representing this {@link BinaryData}.
      */
     public String toString() {
-        // Should we cache this string?
-        return new String(this.data, StandardCharsets.UTF_8);
+        if (this.dataAsStringCache == null) {
+            this.dataAsStringCache = new String(this.data, StandardCharsets.UTF_8);
+        }
+
+        return this.dataAsStringCache;
     }
 
     /**
@@ -525,9 +515,6 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
-        if (Objects.isNull(typeReference)) {
-            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
-        }
         return Mono.fromCallable(() -> toObject(typeReference));
     }
 
@@ -599,12 +586,6 @@ public final class BinaryData {
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference, ObjectSerializer serializer) {
-
-        if (Objects.isNull(typeReference)) {
-            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
-        } else if (Objects.isNull(serializer)) {
-            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
-        }
         return Mono.fromCallable(() -> toObject(typeReference, serializer));
     }
 
