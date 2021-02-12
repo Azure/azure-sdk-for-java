@@ -18,7 +18,7 @@ import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
 
-class CommunicationIdentifierSerializer {
+public class CommunicationIdentifierSerializer {
     /**
      * Deserialize CommunicationIdentifierModel into CommunicationIdentifier
      * @param identifier CommunicationIdentifierModel to be deserialized
