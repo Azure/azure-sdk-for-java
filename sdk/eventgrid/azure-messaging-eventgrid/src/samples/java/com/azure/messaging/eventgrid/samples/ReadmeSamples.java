@@ -8,7 +8,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.core.util.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
@@ -17,8 +17,6 @@ import com.azure.messaging.eventgrid.EventGridSasGenerator;
 import com.azure.messaging.eventgrid.SystemEventNames;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
