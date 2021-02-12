@@ -3,6 +3,7 @@
 
 package com.azure.communication.chat;
 
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
@@ -49,7 +50,7 @@ public class ChatClientTestBase extends TestBase {
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("id")
         .add("token");
-        
+
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
@@ -150,7 +151,7 @@ public class ChatClientTestBase extends TestBase {
 
     protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
         for (ChatParticipant participant: participantList) {
-            if (participant.getUser().getId().equals(participantId)) {
+            if( ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId().equals(participantId)) {
                 return true;
             }
         }

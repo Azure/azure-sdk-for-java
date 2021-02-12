@@ -180,13 +180,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 });
 
                 for (ChatParticipant participant: options.getParticipants()) {
-                    assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+                    assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                        ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId()));
                 }
                 assertTrue(returnedParticipants.size() == 4);
             });
 
         for (ChatParticipant participant: options.getParticipants()) {
-            StepVerifier.create(chatThreadClient.removeParticipant(participant.getUser()))
+            StepVerifier.create(chatThreadClient.removeParticipant(participant.getCommunicationIdentifier()))
                 .verifyComplete();
         }
     }
@@ -231,7 +232,8 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 });
 
                 for (ChatParticipant member: options.getParticipants()) {
-                    assertTrue(checkParticipantsListContainsParticipantId(returnedMembers, member.getUser().getId()));
+                    assertTrue(checkParticipantsListContainsParticipantId(returnedMembers,
+                        ((CommunicationUserIdentifier)member.getCommunicationIdentifier()).getId()));
                 }
                 assertTrue(returnedMembers.size() == 4);
             });
@@ -262,14 +264,15 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 });
 
                 for (ChatParticipant participant: options.getParticipants()) {
-                    assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+                    assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                        ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId()));
                 }
 
                 assertTrue(returnedParticipants.size() == 4);
             });
 
         for (ChatParticipant participant: options.getParticipants()) {
-            StepVerifier.create(chatThreadClient.removeParticipantWithResponse(participant.getUser()))
+            StepVerifier.create(chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier()))
                 .assertNext(resp -> {
                     assertEquals(204, resp.getStatusCode());
                 })
@@ -285,10 +288,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        StepVerifier.create(chatThreadClient.addParticipant(new ChatParticipant().setUser(participant)))
+        StepVerifier.create(chatThreadClient.addParticipant(new ChatParticipant().setCommunicationIdentifier(participant)))
             .assertNext(noResp -> {
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
-                assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+                assertTrue(participantsResponse
+                    .stream()
+                    .anyMatch(p -> ((CommunicationUserIdentifier)p.getCommunicationIdentifier()).getId().equals(participant.getId())));
             });
     }
 
@@ -300,10 +305,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        StepVerifier.create(chatThreadClient.addParticipantWithResponse(new ChatParticipant().setUser(participant)))
+        StepVerifier.create(chatThreadClient.addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant)))
             .assertNext(noResp -> {
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
-                assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+                assertTrue(participantsResponse
+                    .stream()
+                    .anyMatch(p -> ((CommunicationUserIdentifier)p.getCommunicationIdentifier()).getId().equals(participant.getId())));
             });
     }
 
@@ -778,7 +785,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
+        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
     }
 
     @ParameterizedTest
@@ -801,7 +808,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
+        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
     }
 
     @ParameterizedTest

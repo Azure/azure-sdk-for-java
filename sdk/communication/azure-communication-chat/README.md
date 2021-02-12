@@ -111,11 +111,11 @@ The `ChatThread` object also contains the `getId()` method which retrieves the u
 List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
 ChatParticipant firstParticipant = new ChatParticipant()
-    .setUser(user1)
+    .setCommunicationIdentifier(user1)
     .setDisplayName("Participant Display Name 1");
 
 ChatParticipant secondParticipant = new ChatParticipant()
-    .setUser(user2)
+    .setCommunicationIdentifier(user2)
     .setDisplayName("Participant Display Name 2");
 
 participants.add(firstParticipant);
@@ -270,7 +270,7 @@ String chatMessageId = "Id";
 chatThreadClient.deleteMessage(chatMessageId);
 ```
 
-### Chat Thread Member Operations
+### Chat Thread Participant Operations
 
 #### List chat participants
 
@@ -283,7 +283,7 @@ chatParticipantsResponse.iterableByPage().forEach(resp -> {
     System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
         resp.getRequest().getUrl(), resp.getStatusCode());
     resp.getItems().forEach(chatParticipant -> {
-        System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
+        System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier)chatParticipant.getCommunicationIdentifier()).getId());
     });
 });
 ```
@@ -293,7 +293,7 @@ chatParticipantsResponse.iterableByPage().forEach(resp -> {
 Use `addParticipants` method to add participants to the thread identified by threadId.
 `addChatParticipantsOptions` describes the request object containing the members to be added; Use `.setParticipants()` to set the participants to be added to the thread;
 
-- `user`, required, is the CommunicationUser you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
+- `communicationIdentifier`, required, is the CommunicationIdentifier you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
 - `display_name`, optional, is the display name for the thread member.
 - `share_history_time`, optional, is the time from which the chat history is shared with the member. To share history since the inception of the chat thread, set this property to any date equal to, or less than the thread creation time. To share no history previous to when the member was added, set it to the current date. To share partial history, set it to the required date.
 
@@ -302,11 +302,11 @@ Use `addParticipants` method to add participants to the thread identified by thr
 List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
 ChatParticipant firstParticipant = new ChatParticipant()
-    .setUser(user1)
+    .setCommunicationIdentifier(user1)
     .setDisplayName("Display Name 1");
 
 ChatParticipant secondParticipant = new ChatParticipant()
-    .setUser(user2)
+    .setCommunicationIdentifier(user2)
     .setDisplayName("Display Name 2");
 
 participants.add(firstParticipant);
@@ -320,7 +320,7 @@ chatThreadClient.addParticipants(addChatParticipantsOptions);
 #### Remove participant
 
 Use `removeParticipant` method to remove a participant from the chat thread identified by chatThreadId.
-`user` is the CommunicationUser you've created.
+`identifier` is the CommunicationIdentifier you've created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L251-L251 -->
 ```Java

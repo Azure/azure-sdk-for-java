@@ -11,6 +11,7 @@ import com.azure.communication.chat.implementation.models.ChatMessageReadReceipt
 import com.azure.communication.chat.implementation.models.ChatMessagesCollection;
 import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.chat.implementation.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
@@ -172,14 +173,14 @@ public final class ChatThreadImpl {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Delete("/chat/threads/{chatThreadId}/participants/{chatParticipantId}")
+        @Post("/chat/threads/{chatThreadId}/participants/:remove")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> removeChatParticipant(
             @HostParam("endpoint") String endpoint,
             @PathParam("chatThreadId") String chatThreadId,
-            @PathParam("chatParticipantId") String chatParticipantId,
             @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CommunicationIdentifierModel participantCommunicationIdentifier,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1478,22 +1479,23 @@ public final class ChatThreadImpl {
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(String chatThreadId, String chatParticipantId) {
+    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
         final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.removeChatParticipant(
                     this.client.getEndpoint(),
                     chatThreadId,
-                    chatParticipantId,
                     this.client.getApiVersion(),
+                    participantCommunicationIdentifier,
                     accept,
                     context));
     }
@@ -1502,7 +1504,7 @@ public final class ChatThreadImpl {
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1511,13 +1513,13 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
-        String chatThreadId, String chatParticipantId, Context context) {
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         final String accept = "application/json";
         return service.removeChatParticipant(
             this.client.getEndpoint(),
             chatThreadId,
-            chatParticipantId,
             this.client.getApiVersion(),
+            participantCommunicationIdentifier,
             accept,
             context);
     }
@@ -1526,15 +1528,16 @@ public final class ChatThreadImpl {
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatParticipantAsync(String chatThreadId, String chatParticipantId) {
-        return removeChatParticipantWithResponseAsync(chatThreadId, chatParticipantId)
+    public Mono<Void> removeChatParticipantAsync(
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+        return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1542,7 +1545,7 @@ public final class ChatThreadImpl {
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1550,8 +1553,9 @@ public final class ChatThreadImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatParticipantAsync(String chatThreadId, String chatParticipantId, Context context) {
-        return removeChatParticipantWithResponseAsync(chatThreadId, chatParticipantId, context)
+    public Mono<Void> removeChatParticipantAsync(
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+        return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1559,21 +1563,22 @@ public final class ChatThreadImpl {
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeChatParticipant(String chatThreadId, String chatParticipantId) {
-        removeChatParticipantAsync(chatThreadId, chatParticipantId).block();
+    public void removeChatParticipant(
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+        removeChatParticipantAsync(chatThreadId, participantCommunicationIdentifier).block();
     }
 
     /**
      * Remove a participant from a thread.
      *
      * @param chatThreadId Thread id to remove the participant from.
-     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1582,8 +1587,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeChatParticipantWithResponse(
-        String chatThreadId, String chatParticipantId, Context context) {
-        return removeChatParticipantWithResponseAsync(chatThreadId, chatParticipantId, context).block();
+        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+        return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
+            .block();
     }
 
     /**
