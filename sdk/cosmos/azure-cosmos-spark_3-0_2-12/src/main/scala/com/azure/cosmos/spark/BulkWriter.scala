@@ -73,6 +73,10 @@ case class BulkWriter(container: CosmosAsyncContainer,
   def flushAndClose(): Unit = {
     bulkInputEmitter.onComplete()
 
+    // TODO: error handling, if there is any error and the subscription is cancelled
+    // the remaining tasks will not be processed hence we never reach 0 and the following will block
+    // once we do error handling we should think how to cover the scenario.
+
     lock.lock()
     try {
       while (activeTasks.get() > 0) {
