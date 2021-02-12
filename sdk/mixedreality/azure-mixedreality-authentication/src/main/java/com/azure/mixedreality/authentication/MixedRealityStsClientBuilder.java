@@ -164,6 +164,11 @@ public final class MixedRealityStsClientBuilder {
         }
 
         if (this.pipeline == null) {
+            if (this.tokenCredential != null && this.keyCredential != null) {
+                throw logger.logExceptionAsWarning(
+                    new IllegalArgumentException("Only a single type of credential may be specified."));
+            }
+
             if (this.tokenCredential == null && this.keyCredential != null) {
                 this.tokenCredential = new MixedRealityAccountKeyCredential(accountId, this.keyCredential);
             }
@@ -216,7 +221,6 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.keyCredential = null;
 
         return this;
     }
@@ -233,7 +237,6 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-        this.tokenCredential = null;
 
         return this;
     }
