@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Monitor service supported by this client library.
  */
 public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
-    V2("2");
+    V2020_09_15_PREVIEW("2020-09-15_Preview");
 
     private final String version;
 
@@ -27,6 +27,6 @@ public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
      * @return the latest service version.
      */
     public static AzureMonitorExporterServiceVersion getLatest() {
-        return V2;
+        return V2020_09_15_PREVIEW;
     }
 }

@@ -195,7 +195,15 @@ public final class Message implements Serializable, IMessage {
 
     @Override
     public Instant getExpiresAtUtc() {
-        return this.enqueuedTimeUtc.plus(this.timeToLive);
+    	if (this.enqueuedTimeUtc == null) {
+    		return null;
+    	} 
+    	else if (this.timeToLive == null) {
+    		return this.enqueuedTimeUtc;
+    	} 
+    	else {
+    		return this.enqueuedTimeUtc.plus(this.timeToLive);
+    	}
     }
 
     @Override

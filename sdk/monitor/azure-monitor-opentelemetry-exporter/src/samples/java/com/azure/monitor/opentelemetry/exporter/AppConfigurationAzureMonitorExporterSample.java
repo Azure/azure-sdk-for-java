@@ -9,6 +9,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
 /**
@@ -37,12 +38,15 @@ public class AppConfigurationAzureMonitorExporterSample {
             .connectionString("{connection-string}")
             .buildExporter();
 
-        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
-        openTelemetry
-            .getTracerManagement()
-            .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
 
-        return openTelemetry.getTracer("Sample");
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+                .setTracerProvider(tracerProvider)
+                .buildAndRegisterGlobal();
+        
+        return openTelemetrySdk.getTracer("Sample");
     }
 
     /**

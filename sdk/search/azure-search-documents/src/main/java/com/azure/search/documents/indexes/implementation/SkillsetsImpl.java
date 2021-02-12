@@ -68,7 +68,7 @@ public final class SkillsetsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerSkillset skillset,
                 Context context);
 
@@ -82,7 +82,7 @@ public final class SkillsetsImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/skillsets('{skillsetName}')")
@@ -93,7 +93,7 @@ public final class SkillsetsImpl {
                 @PathParam("skillsetName") String skillsetName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/skillsets")
@@ -104,7 +104,7 @@ public final class SkillsetsImpl {
                 @QueryParam("$select") String select,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/skillsets")
@@ -114,7 +114,7 @@ public final class SkillsetsImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerSkillset skillset,
                 Context context);
     }
@@ -123,7 +123,7 @@ public final class SkillsetsImpl {
      * Creates a new skillset in a search service or updates the skillset if it already exists.
      *
      * @param skillsetName The name of the skillset to create or update.
-     * @param skillset A list of skills.
+     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -255,7 +255,7 @@ public final class SkillsetsImpl {
     /**
      * Creates a new skillset in a search service.
      *
-     * @param skillset A list of skills.
+     * @param skillset The skillset containing one or more skills to create in a search service.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
