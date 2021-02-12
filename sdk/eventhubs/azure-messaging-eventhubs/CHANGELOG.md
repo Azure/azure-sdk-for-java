@@ -1,6 +1,6 @@
 # Release History
 
-## 5.5.0 (2020-02-15)
+## 5.5.0 (2021-02-15)
 ### New features
 - Use `BinaryData` in `EventData`.
 - Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
