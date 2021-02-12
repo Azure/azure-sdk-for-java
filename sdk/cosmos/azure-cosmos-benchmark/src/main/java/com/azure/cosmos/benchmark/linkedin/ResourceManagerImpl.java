@@ -41,7 +41,8 @@ public class ResourceManagerImpl implements ResourceManager {
     public void createDatabase() throws CosmosException {
         try {
             LOGGER.info("Creating database {} for the ctl workload", _configuration.getDatabaseId());
-            _client.createDatabaseIfNotExists(_configuration.getDatabaseId())
+            final ThroughputProperties throughputProperties = createManualThroughput(_configuration.getThroughput());
+            _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while creating database {}", _configuration.getDatabaseId(), e);
@@ -55,12 +56,11 @@ public class ResourceManagerImpl implements ResourceManager {
     public void createContainer() throws CosmosException {
         final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        final ThroughputProperties containerThroughput = createManualThroughput(_configuration.getThroughput());
         try {
             LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
             final CosmosContainerProperties containerProperties =
                 new CosmosContainerProperties(containerName, PARTITION_KEY_PATH);
-            database.createContainerIfNotExists(containerProperties, containerThroughput)
+            database.createContainerIfNotExists(containerProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while creating container {}", containerName, e);
