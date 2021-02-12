@@ -22,23 +22,20 @@ class JsonWebToken {
      * @throws IllegalArgumentException If the {@code jwtValue} is null or empty.
      */
     public static OffsetDateTime retrieveExpiration(String jwtValue) {
-        if (CoreUtils.isNullOrEmpty(jwtValue))
-        {
+        if (CoreUtils.isNullOrEmpty(jwtValue)) {
             throw new IllegalArgumentException("Value cannot be null or empty: 'jwtValue'.");
         }
 
         String[] jwtParts = jwtValue.split("[.]");
 
         // Would normally be 3, but 2 is the minimum here since Java's split ignores trailing empty strings.
-        if (jwtParts.length < 2)
-        {
+        if (jwtParts.length < 2) {
             return null;
         }
 
         String jwtPayloadEncoded = jwtParts[1];
 
-        if (CoreUtils.isNullOrEmpty(jwtPayloadEncoded))
-        {
+        if (CoreUtils.isNullOrEmpty(jwtPayloadEncoded)) {
             return null;
         }
 
