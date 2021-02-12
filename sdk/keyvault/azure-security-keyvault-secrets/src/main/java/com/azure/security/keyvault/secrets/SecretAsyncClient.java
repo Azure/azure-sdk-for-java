@@ -395,7 +395,7 @@ public final class SecretAsyncClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
             activationOperation(name),
@@ -567,7 +567,7 @@ public final class SecretAsyncClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
             recoverActivationOperation(name),

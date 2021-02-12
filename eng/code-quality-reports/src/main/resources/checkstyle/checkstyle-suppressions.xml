@@ -356,7 +356,6 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
-
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
   <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
