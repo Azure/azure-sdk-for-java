@@ -52,7 +52,7 @@ public final class MessagesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureQueueStorageMes")
-    private interface MessagesService {
+    public interface MessagesService {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)

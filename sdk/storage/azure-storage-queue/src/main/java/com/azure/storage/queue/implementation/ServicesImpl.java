@@ -58,7 +58,7 @@ public final class ServicesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureQueueStorageSer")
-    private interface ServicesService {
+    public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)

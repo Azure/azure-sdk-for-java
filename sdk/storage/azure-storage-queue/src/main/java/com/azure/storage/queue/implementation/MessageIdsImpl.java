@@ -50,7 +50,7 @@ public final class MessageIdsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureQueueStorageMes")
-    private interface MessageIdsService {
+    public interface MessageIdsService {
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
