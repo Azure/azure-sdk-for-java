@@ -14,10 +14,8 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
   private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
   private val upsertParameterTest = Seq(
-//    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemOverwrite),
     UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemOverwrite),
-
-
+    
     UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemOverwrite),
     UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemAppend)
   )
