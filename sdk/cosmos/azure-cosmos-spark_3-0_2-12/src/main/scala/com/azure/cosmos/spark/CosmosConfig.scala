@@ -124,7 +124,7 @@ private[spark] object CosmosReadConfig {
   }
 }
 
-private case class CosmosContainerConfig(database: String, container: String)
+private[spark] case class CosmosContainerConfig(database: String, container: String)
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -135,7 +135,7 @@ private object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
+private[spark] case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",

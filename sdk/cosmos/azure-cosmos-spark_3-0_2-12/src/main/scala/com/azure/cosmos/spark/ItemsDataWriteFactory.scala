@@ -2,24 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
-import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition}
-import com.azure.cosmos.{BulkOperations, ConsistencyLevel, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosClientBuilder, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
-import reactor.core.Disposable
-import reactor.core.publisher.EmitterProcessor
-import reactor.core.scala.publisher.SFlux
-import reactor.core.scala.publisher.SMono.PimpJFlux
-
-import java.util.concurrent.locks.Lock
-import java.util.concurrent.locks.ReentrantLock
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicReference}
-import scala.collection.concurrent.TrieMap
-import scala.concurrent.Future
 
 // scalastyle:off multiple.string.literals
 private class ItemsDataWriteFactory(userConfig: Map[String, String],
@@ -45,7 +35,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
-    private lazy val bulkWriter = BulkWriter(container, partitionKeyDefinition, cosmosWriteConfig)
+    private lazy val bulkWriter = BulkWriter(container, cosmosWriteConfig)
 
     override def write(internalRow: InternalRow): Unit = {
       val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
@@ -134,108 +124,5 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       }
     }
   }
-
-  case class BulkWriter(container: CosmosAsyncContainer,
-                        partitionKeyDefinition: PartitionKeyDefinition,
-                        writeConfig: CosmosWriteConfig) {
-
-//    private val pendingFutures = new TrieMap[Future[], Boolean]
-//
-    // atomicCnt
-
-    private val activeTasks = new AtomicInteger(0)
-
-    private val lock = new ReentrantLock
-    private val pendingTasksCompleted = lock.newCondition
-
-    private val bulkInputEmitter: EmitterProcessor[CosmosItemOperation] = JavaUtils.createItemOperationEmitter()
-
-    private val subscriptionDisposable: Disposable = {
-      val sFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-        container.processBulkOperations[Object](bulkInputEmitter).asScala
-
-      sFlux.subscribe(
-        resp => {
-          resp.getBatchContext
-          if (resp.getException != null) {
-            // TODO: moderakh should we have any retry in place?
-            captureIfFirstFailure(resp.getException)
-            cancelWork()
-          }
-          markTaskCompletion
-        },
-        errorConsumer = Option.apply(
-          ex => {
-            // TODO: moderakh should we have any retry in place?
-            captureIfFirstFailure(ex)
-            cancelWork()
-            markTaskCompletion
-          }
-        )
-      )
-    }
-
-    private def markTaskCompletion() : Unit = {
-      lock.lock()
-      try {
-        if (activeTasks.decrementAndGet() == 0) {
-          pendingTasksCompleted.signal()
-        }
-      } finally {
-        lock.unlock()
-      }
-    }
-
-    private val errorCaptureFirstException = new AtomicReference[Throwable]();
-
-
-
-    def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
-      val bulkItemOperation = writeConfig.itemWriteStrategy match {
-        case ItemWriteStrategy.ItemOverwrite => {
-          BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue)
-        }
-
-        // TODO moderakh add support for non upsert mode in bulk
-
-        case _ => throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
-      }
-
-      activeTasks.incrementAndGet()
-      bulkInputEmitter.onNext(bulkItemOperation)
-    }
-
-    // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
-    def flushAndClose(): Unit = {
-      bulkInputEmitter.onComplete()
-
-      lock.lock()
-      try {
-        while (activeTasks.get() > 0) {
-          pendingTasksCompleted.await()
-        }
-
-      } finally {
-        lock.unlock()
-      }
-
-      // which error to report?
-
-      if (errorCaptureFirstException.get() != null) {
-        throw errorCaptureFirstException.get()
-      }
-    }
-
-    private def captureIfFirstFailure(throwable: Throwable) = {
-      errorCaptureFirstException.compareAndSet(null, throwable)
-    }
-
-    private def cancelWork(): Unit = {
-      subscriptionDisposable.dispose()
-    }
-
-    case class OperationContext(attemptNumber: Int, itemOperation: CosmosItemOperation)
-  }
-
 }
 // scalastyle:on multiple.string.literals
