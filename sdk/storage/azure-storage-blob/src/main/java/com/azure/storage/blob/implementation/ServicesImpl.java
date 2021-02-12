@@ -38,10 +38,11 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.List;
 
 /** An instance of this class provides access to all the operations defined in Services. */
 public final class ServicesImpl {
@@ -67,7 +68,7 @@ public final class ServicesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageServ")
-    private interface ServicesService {
+    public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

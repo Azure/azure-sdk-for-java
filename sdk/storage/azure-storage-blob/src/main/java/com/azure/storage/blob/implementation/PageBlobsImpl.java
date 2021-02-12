@@ -68,7 +68,7 @@ public final class PageBlobsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStoragePage")
-    private interface PageBlobsService {
+    public interface PageBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

@@ -78,7 +78,7 @@ public final class ContainersImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageCont")
-    private interface ContainersService {
+    public interface ContainersService {
         @Put("/{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

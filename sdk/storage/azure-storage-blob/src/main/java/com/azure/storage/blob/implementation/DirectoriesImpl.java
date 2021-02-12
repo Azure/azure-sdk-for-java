@@ -57,7 +57,7 @@ public final class DirectoriesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageDire")
-    private interface DirectoriesService {
+    public interface DirectoriesService {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)

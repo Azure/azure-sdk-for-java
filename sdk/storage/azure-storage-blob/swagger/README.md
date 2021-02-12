@@ -23,6 +23,7 @@ namespace: com.azure.storage.blob
 enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
@@ -1245,37 +1246,6 @@ directive:
   where: $.parameters	
   transform: >	
     $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";	
-```
-
-### BlobContainerEncryptionScope Boolean Fix
-``` yaml
-directive:
-- from: BlobContainerEncryptionScope.java
-  where: $
-  transform: >
-    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
-      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
-      replace('public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(boolean preventEncryptionScopeOverride) {');
-```
-
-### ContainersImpl Boolean Fix
-``` yaml
-directive:
-- from: ContainersImpl.java
-  where: $
-  transform: >
-    return $.replace('preventEncryptionScopeOverride = blobContainerEncryptionScope.isPreventEncryptionScopeOverride();', 'preventEncryptionScopeOverride = blobContainerEncryptionScope.preventEncryptionScopeOverride();');
-```
-
-### BlobContainerItemProperties Boolean Fix
-``` yaml
-directive:
-- from: BlobContainerItemProperties.java
-  where: $
-  transform: >
-    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
-      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
-      replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
 ```
 
 ### Block size int to long transition
