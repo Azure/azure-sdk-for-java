@@ -7,9 +7,12 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
@@ -143,6 +146,28 @@ public final class RemoteRenderingClientBuilder {
     }
 
     /**
+     * Sets The HTTP client used to send the request.
+     *
+     * @param httpClient the httpClient value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder httpClient(HttpClient httpClient) {
+        builder.httpClient(httpClient);
+        return this;
+    }
+
+    /**
+     * Sets The logging configuration for HTTP requests and responses.
+     *
+     * @param httpLogOptions the httpLogOptions value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        builder.httpLogOptions(httpLogOptions);
+        return this;
+    }
+
+    /**
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
@@ -150,6 +175,17 @@ public final class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(pipeline);
+        return this;
+    }
+
+    /**
+     * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     *
+     * @param retryPolicy the retryPolicy value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        builder.retryPolicy(retryPolicy);
         return this;
     }
 
