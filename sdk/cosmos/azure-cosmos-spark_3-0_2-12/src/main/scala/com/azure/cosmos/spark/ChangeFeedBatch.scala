@@ -19,6 +19,15 @@ private class ChangeFeedBatch
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def planInputPartitions(): Array[InputPartition] = {
+
+    // Build Request options
+
+    // Identify Number of Partitions
+
+
+    // Create or load StartOffset
+
+
     // TODO: moderakh use get feed range?
     // for now we are returning one partition hence only one spark task will be created.
     Array(FeedRangeInputPartition(FeedRange.forFullRange.toString))
