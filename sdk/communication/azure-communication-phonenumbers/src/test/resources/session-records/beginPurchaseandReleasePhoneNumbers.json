@@ -275,7 +275,7 @@
       "operation-id" : "release_7daef158-fe12-48f3-adcf-ae63349e5dbd",
       "retry-after" : "0",
       "X-Azure-Ref" : "0NaslYAAAAADhRpIx1uqWTJByEc3+Qq0hWVZSMzBFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "StatusCode" : "204",
+      "StatusCode" : "202",
       "Operation-Location" : "/phoneNumbers/operations/release_7daef158-fe12-48f3-adcf-ae63349e5dbd?api-version=2021-03-07",
       "Date" : "Thu, 11 Feb 2021 22:09:57 GMT",
       "Location" : "/phoneNumbers/+REDACTED?api-version=2021-03-07",
