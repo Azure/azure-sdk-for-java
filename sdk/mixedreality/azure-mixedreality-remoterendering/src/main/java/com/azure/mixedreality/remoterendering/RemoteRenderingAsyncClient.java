@@ -25,10 +25,10 @@ import com.azure.mixedreality.remoterendering.implementation.models.ConversionIn
 import com.azure.mixedreality.remoterendering.implementation.models.ConversionOutputSettings;
 import com.azure.mixedreality.remoterendering.implementation.models.UpdateSessionSettings;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateSessionSettings;
+import com.azure.mixedreality.remoterendering.models.AssetConversion;
+import com.azure.mixedreality.remoterendering.models.AssetConversionStatus;
 import com.azure.mixedreality.remoterendering.models.BeginSessionOptions;
-import com.azure.mixedreality.remoterendering.models.Conversion;
-import com.azure.mixedreality.remoterendering.models.ConversionOptions;
-import com.azure.mixedreality.remoterendering.models.ConversionStatus;
+import com.azure.mixedreality.remoterendering.models.AssetConversionOptions;
 import com.azure.mixedreality.remoterendering.models.RemoteRenderingServiceError;
 import com.azure.mixedreality.remoterendering.models.RenderingSession;
 import com.azure.mixedreality.remoterendering.models.RenderingSessionSize;
@@ -281,30 +281,30 @@ public final class RemoteRenderingAsyncClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
-        return beginConversionInternal(conversionId, options, Context.NONE, c -> ModelTranslator.fromGenerated(c.getValue()), c -> ModelTranslator.fromGenerated(c.getValue()), Conversion::getStatus);
+    public PollerFlux<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options) {
+        return beginConversionInternal(conversionId, options, Context.NONE, c -> ModelTranslator.fromGenerated(c.getValue()), c -> ModelTranslator.fromGenerated(c.getValue()), AssetConversion::getStatus);
     }
 
-    PollerFlux<Response<Conversion>, Response<Conversion>> beginConversionInternal(String conversionId, ConversionOptions options, Context context) {
+    PollerFlux<Response<AssetConversion>, Response<AssetConversion>> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context) {
         return beginConversionInternal(conversionId, options, context, ModelTranslator::fromGenerated, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
     }
 
-    private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, ConversionOptions options, Context context, Function<RemoteRenderingsCreateConversionResponse, T> mapper, Function<RemoteRenderingsGetConversionResponse, T> mapper2, Function<T, ConversionStatus> statusgetter) {
+    private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context, Function<RemoteRenderingsCreateConversionResponse, T> mapper, Function<RemoteRenderingsGetConversionResponse, T> mapper2, Function<T, AssetConversionStatus> statusgetter) {
         return new PollerFlux<>(
             Duration.ofSeconds(10),
             pollingContext -> impl.getRemoteRenderings().createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(mapper),
             pollingContext -> {
                 Mono<T> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(mapper2);
                 return response.map(conversion -> {
-                    final ConversionStatus convStatus = statusgetter.apply(conversion);
+                    final AssetConversionStatus convStatus = statusgetter.apply(conversion);
                     LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                    if ((convStatus == ConversionStatus.RUNNING) || (convStatus == ConversionStatus.NOT_STARTED)) {
+                    if ((convStatus == AssetConversionStatus.RUNNING) || (convStatus == AssetConversionStatus.NOT_STARTED)) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                    } else if (convStatus == ConversionStatus.FAILED) {
+                    } else if (convStatus == AssetConversionStatus.FAILED) {
                         lroStatus = LongRunningOperationStatus.FAILED;
-                    } else if (convStatus == ConversionStatus.SUCCEEDED) {
+                    } else if (convStatus == AssetConversionStatus.SUCCEEDED) {
                         lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    } else if (convStatus == ConversionStatus.CANCELLED) {
+                    } else if (convStatus == AssetConversionStatus.CANCELLED) {
                         lroStatus = LongRunningOperationStatus.USER_CANCELLED;
                     } else {
                         lroStatus = LongRunningOperationStatus.FAILED;
@@ -330,7 +330,7 @@ public final class RemoteRenderingAsyncClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> getConversion(String conversionId) {
+    public Mono<AssetConversion> getConversion(String conversionId) {
         return impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, Context.NONE).map(r -> ModelTranslator.fromGenerated(r.getValue()));
     }
 
@@ -346,11 +346,11 @@ public final class RemoteRenderingAsyncClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Conversion>> getConversionWithResponse(String conversionId) {
+    public Mono<Response<AssetConversion>> getConversionWithResponse(String conversionId) {
         return getConversionInternal(conversionId, Context.NONE);
     }
 
-    Mono<Response<Conversion>> getConversionInternal(String conversionId, Context context) {
+    Mono<Response<AssetConversion>> getConversionInternal(String conversionId, Context context) {
         return impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(ModelTranslator::fromGenerated);
     }
 
@@ -363,21 +363,21 @@ public final class RemoteRenderingAsyncClient {
      * @return a list of all conversions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversion> listConversions() {
+    public PagedFlux<AssetConversion> listConversions() {
         return listConversionsInternal(Context.NONE);
     }
 
-    PagedFlux<Conversion> listConversionsInternal(Context context) {
+    PagedFlux<AssetConversion> listConversionsInternal(Context context) {
         return new PagedFlux<>(
             () -> impl.getRemoteRenderings().listConversionsSinglePageAsync(accountId, context).map(p ->
-                new PagedResponseBase<HttpRequest, Conversion>(p.getRequest(),
+                new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
                     p.getContinuationToken(),
                     null)),
             continuationToken -> impl.getRemoteRenderings().listConversionsNextSinglePageAsync(continuationToken, context).map(p ->
-                new PagedResponseBase<HttpRequest, Conversion>(p.getRequest(),
+                new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(),
                     p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
@@ -443,16 +443,16 @@ public final class RemoteRenderingAsyncClient {
             }
         }
 
-        private static Conversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
+        private static AssetConversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
             if (conversion == null) {
                 return null;
             }
-            return new Conversion()
+            return new AssetConversion()
                 .setId(conversion.getId())
                 .setOptions(fromGenerated(conversion.getSettings()))
                 .setOutputAssetUrl(conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null)
                 .setError(fromGenerated(conversion.getError()))
-                .setConversionStatus(ConversionStatus.fromString(conversion.getStatus().toString()))
+                .setConversionStatus(AssetConversionStatus.fromString(conversion.getStatus().toString()))
                 .setCreationTime(conversion.getCreationTime());
         }
 
@@ -485,11 +485,11 @@ public final class RemoteRenderingAsyncClient {
                 .setRootErrors((error.getDetails() != null) ? error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()) : null);
         }
 
-        private static ConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
+        private static AssetConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
             if (settings == null) {
                 return null;
             }
-            return new ConversionOptions()
+            return new AssetConversionOptions()
                 .inputBlobPrefix(settings.getInputLocation().getBlobPrefix())
                 .inputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
                 .inputStorageContainerReadListSas(settings.getInputLocation().getStorageContainerReadListSas())
@@ -501,7 +501,7 @@ public final class RemoteRenderingAsyncClient {
                 .outputStorageContainerWriteSas(settings.getOutputLocation().getStorageContainerWriteSas());
         }
 
-        private static ConversionSettings toGenerated(ConversionOptions conversionOptions) {
+        private static ConversionSettings toGenerated(AssetConversionOptions conversionOptions) {
             if (conversionOptions == null) {
                 return null;
             }

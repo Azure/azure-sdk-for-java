@@ -4,7 +4,7 @@
 package com.azure.mixedreality.remoterendering.models;
 
 /** Options for a conversion. */
-public final class ConversionOptions {
+public final class AssetConversionOptions {
 
     private String inputStorageContainerUrl;
     private String inputStorageContainerReadListSas;
@@ -24,7 +24,7 @@ public final class ConversionOptions {
      * @param inputStorageContainerUrl the inputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions inputStorageContainerUrl(String inputStorageContainerUrl) {
+    public AssetConversionOptions inputStorageContainerUrl(String inputStorageContainerUrl) {
         this.inputStorageContainerUrl = inputStorageContainerUrl;
         return this;
     }
@@ -37,7 +37,7 @@ public final class ConversionOptions {
      * @param inputStorageContainerReadListSas the inputStorageContainerReadListSas value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions inputStorageContainerReadListSas(String inputStorageContainerReadListSas) {
+    public AssetConversionOptions inputStorageContainerReadListSas(String inputStorageContainerReadListSas) {
         this.inputStorageContainerReadListSas = inputStorageContainerReadListSas;
         return this;
     }
@@ -48,7 +48,7 @@ public final class ConversionOptions {
      * @param inputBlobPrefix the inputBlobPrefix value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions inputBlobPrefix(String inputBlobPrefix) {
+    public AssetConversionOptions inputBlobPrefix(String inputBlobPrefix) {
         this.inputBlobPrefix = inputBlobPrefix;
         return this;
     }
@@ -60,7 +60,7 @@ public final class ConversionOptions {
      * @param inputRelativeAssetPath the inputRelativeAssetPath value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions inputRelativeAssetPath(String inputRelativeAssetPath) {
+    public AssetConversionOptions inputRelativeAssetPath(String inputRelativeAssetPath) {
         this.inputRelativeAssetPath = inputRelativeAssetPath;
         return this;
     }
@@ -115,7 +115,7 @@ public final class ConversionOptions {
      * @param outputStorageContainerUrl the outputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions outputStorageContainerUrl(String outputStorageContainerUrl) {
+    public AssetConversionOptions outputStorageContainerUrl(String outputStorageContainerUrl) {
         this.outputStorageContainerUrl = outputStorageContainerUrl;
         return this;
     }
@@ -128,7 +128,7 @@ public final class ConversionOptions {
      * @param outputStorageContainerWriteSas the storageContainerWriteSas value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions outputStorageContainerWriteSas(String outputStorageContainerWriteSas) {
+    public AssetConversionOptions outputStorageContainerWriteSas(String outputStorageContainerWriteSas) {
         this.outputStorageContainerWriteSas = outputStorageContainerWriteSas;
         return this;
     }
@@ -140,7 +140,7 @@ public final class ConversionOptions {
      * @param outputBlobPrefix the blobPrefix value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions outputBlobPrefix(String outputBlobPrefix) {
+    public AssetConversionOptions outputBlobPrefix(String outputBlobPrefix) {
         this.outputBlobPrefix = outputBlobPrefix;
         return this;
     }
@@ -151,7 +151,7 @@ public final class ConversionOptions {
      * @param outputAssetFilename the outputAssetFilename value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public ConversionOptions outputAssetFilename(String outputAssetFilename) {
+    public AssetConversionOptions outputAssetFilename(String outputAssetFilename) {
         this.outputAssetFilename = outputAssetFilename;
         return this;
     }

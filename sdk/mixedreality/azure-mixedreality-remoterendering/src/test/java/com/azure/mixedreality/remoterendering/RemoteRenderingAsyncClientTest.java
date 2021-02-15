@@ -39,7 +39,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
@@ -50,13 +50,13 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("asyncConversionTest");
 
-        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
-        Flux<AsyncPollResponse<Conversion, Conversion>> terminalPoller = poller.map(response -> {
-            Conversion conversion = response.getValue();
+        Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
+            AssetConversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
-            assertNotEquals(ConversionStatus.FAILED, conversion.getStatus());
+            assertNotEquals(AssetConversionStatus.FAILED, conversion.getStatus());
             return response;
         }).filter(response -> {
             return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
@@ -67,15 +67,15 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(response -> {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-                Conversion conversion = response.getValue();
-                assertEquals(conversion.getStatus(), ConversionStatus.SUCCEEDED);
+                AssetConversion conversion = response.getValue();
+                assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
                 assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
             })
             .verifyComplete();
 
         StepVerifier.create(client.getConversion(conversionId))
             .assertNext(conversion -> {
-                assertEquals(conversion.getStatus(), ConversionStatus.SUCCEEDED);
+                assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
                 assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
             })
             .verifyComplete();
@@ -93,7 +93,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
@@ -102,7 +102,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionNoAccessAsync");
 
-        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
@@ -118,7 +118,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("boxWhichDoesNotExist.fbx")
             .inputBlobPrefix("Input")
@@ -129,13 +129,13 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAssetAsync");
 
-        PollerFlux<Conversion, Conversion> poller = client.beginConversion(conversionId, conversionOptions);
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
-        Flux<AsyncPollResponse<Conversion, Conversion>> terminalPoller = poller.map(response -> {
-            Conversion conversion = response.getValue();
+        Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
+            AssetConversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
-            assertNotEquals(ConversionStatus.SUCCEEDED, conversion.getStatus());
+            assertNotEquals(AssetConversionStatus.SUCCEEDED, conversion.getStatus());
             return response;
         }).filter(response -> {
             return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
@@ -146,9 +146,9 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(response -> {
                 assertEquals(response.getStatus(), LongRunningOperationStatus.FAILED);
 
-                Conversion conversion = response.getValue();
+                AssetConversion conversion = response.getValue();
 
-                assertEquals(ConversionStatus.FAILED, conversion.getStatus());
+                assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
                 assertNotNull(conversion.getError());
                 // Invalid input provided. Check logs in output container for details.
                 assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("invalid input"));

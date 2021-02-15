@@ -11,9 +11,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.mixedreality.remoterendering.models.AssetConversion;
 import com.azure.mixedreality.remoterendering.models.BeginSessionOptions;
-import com.azure.mixedreality.remoterendering.models.Conversion;
-import com.azure.mixedreality.remoterendering.models.ConversionOptions;
+import com.azure.mixedreality.remoterendering.models.AssetConversionOptions;
 import com.azure.mixedreality.remoterendering.models.RenderingSession;
 import com.azure.mixedreality.remoterendering.models.UpdateSessionOptions;
 
@@ -224,7 +224,7 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Conversion, Conversion> beginConversion(String conversionId, ConversionOptions options) {
+    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options) {
         return client.beginConversion(conversionId, options).getSyncPoller();
     }
 
@@ -249,7 +249,7 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Response<Conversion>, Response<Conversion>> beginConversion(String conversionId, ConversionOptions options, Context context) {
+    public SyncPoller<Response<AssetConversion>, Response<AssetConversion>> beginConversion(String conversionId, AssetConversionOptions options, Context context) {
         return client.beginConversionInternal(conversionId, options, context).getSyncPoller();
     }
 
@@ -265,7 +265,7 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Conversion getConversion(String conversionId) {
+    public AssetConversion getConversion(String conversionId) {
         return client.getConversion(conversionId).block();
     }
 
@@ -282,7 +282,7 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Conversion> getConversionWithResponse(String conversionId, Context context) {
+    public Response<AssetConversion> getConversionWithResponse(String conversionId, Context context) {
         return client.getConversionInternal(conversionId, context).block();
     }
 
@@ -295,7 +295,7 @@ public final class RemoteRenderingClient {
      * @return a list of all conversions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Conversion> listConversions() {
+    public PagedIterable<AssetConversion> listConversions() {
         return new PagedIterable<>(client.listConversions());
     }
 
@@ -309,7 +309,7 @@ public final class RemoteRenderingClient {
      * @return a list of all conversions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Conversion> listConversions(Context context) {
+    public PagedIterable<AssetConversion> listConversions(Context context) {
         return new PagedIterable<>(client.listConversionsInternal(context));
     }
 

@@ -6,21 +6,21 @@ package com.azure.mixedreality.remoterendering.models;
 import java.time.OffsetDateTime;
 
 /** Holds properties of a conversion. */
-public final class Conversion {
+public final class AssetConversion {
     private String id;
-    private ConversionOptions options;
+    private AssetConversionOptions options;
     private String outputAssetUrl;
     private RemoteRenderingServiceError error;
-    private ConversionStatus conversionStatus;
+    private AssetConversionStatus conversionStatus;
     private OffsetDateTime creationTime;
 
     /**
      * Set the id property: The id of the conversion supplied when the conversion was created.
      *
      * @param id the id
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setId(String id) {
+    public AssetConversion setId(String id) {
         this.id = id;
         return this;
     }
@@ -30,9 +30,9 @@ public final class Conversion {
      * Supplied when creating the conversion.
      *
      * @param options the options value
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setOptions(ConversionOptions options) {
+    public AssetConversion setOptions(AssetConversionOptions options) {
         this.options = options;
         return this;
     }
@@ -42,9 +42,9 @@ public final class Conversion {
      * the conversion is 'Succeeded'.
      *
      * @param outputAssetUrl the outputAssetUrl value
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setOutputAssetUrl(String outputAssetUrl) {
+    public AssetConversion setOutputAssetUrl(String outputAssetUrl) {
         this.outputAssetUrl = outputAssetUrl;
         return this;
     }
@@ -53,9 +53,9 @@ public final class Conversion {
      * Set the error property: The error object containing details about the conversion failure.
      *
      * @param error the error value
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setError(RemoteRenderingServiceError error) {
+    public AssetConversion setError(RemoteRenderingServiceError error) {
         this.error = error;
         return this;
     }
@@ -64,9 +64,9 @@ public final class Conversion {
      * Set the status property: The status of the conversion. Terminal states are CANCELLED, FAILED, or SUCCEEDED.
      *
      * @param conversionStatus the conversion status
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setConversionStatus(ConversionStatus conversionStatus) {
+    public AssetConversion setConversionStatus(AssetConversionStatus conversionStatus) {
         this.conversionStatus = conversionStatus;
         return this;
     }
@@ -75,9 +75,9 @@ public final class Conversion {
      * Set the creationTime property: The time when the conversion was created. Date and time in ISO 8601 format.
      *
      * @param creationTime the creationTime value
-     * @return this Conversion object.
+     * @return this AssetConversion object.
      */
-    public Conversion setCreationTime(OffsetDateTime creationTime) {
+    public AssetConversion setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }
@@ -99,7 +99,7 @@ public final class Conversion {
      *
      * @return the conversion options value.
      */
-    public ConversionOptions getOptions() {
+    public AssetConversionOptions getOptions() {
         return this.options;
     }
 
@@ -127,7 +127,7 @@ public final class Conversion {
      *
      * @return the status value.
      */
-    public ConversionStatus getStatus() {
+    public AssetConversionStatus getStatus() {
         return this.conversionStatus;
     }
 

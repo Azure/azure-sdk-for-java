@@ -35,7 +35,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
@@ -46,22 +46,22 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("conversionTest");
 
-        SyncPoller<Conversion, Conversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
 
-        Conversion conversion0 = conversionPoller.poll().getValue();
+        AssetConversion conversion0 = conversionPoller.poll().getValue();
 
         assertEquals(conversionId, conversion0.getId());
         assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion0.getOptions().getInputRelativeAssetPath());
-        assertNotEquals(ConversionStatus.FAILED, conversion0.getStatus());
+        assertNotEquals(AssetConversionStatus.FAILED, conversion0.getStatus());
 
-        Conversion conversion = client.getConversion(conversionId);
+        AssetConversion conversion = client.getConversion(conversionId);
         assertEquals(conversionId, conversion.getId());
-        assertNotEquals(ConversionStatus.FAILED, conversion.getStatus());
+        assertNotEquals(AssetConversionStatus.FAILED, conversion.getStatus());
 
-        Conversion conversion2 = conversionPoller.waitForCompletion().getValue();
+        AssetConversion conversion2 = conversionPoller.waitForCompletion().getValue();
 
         assertEquals(conversionId, conversion2.getId());
-        assertEquals(ConversionStatus.SUCCEEDED, conversion2.getStatus());
+        assertEquals(AssetConversionStatus.SUCCEEDED, conversion2.getStatus());
         assertTrue(conversion2.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
 
         AtomicReference<Boolean> foundConversion = new AtomicReference<Boolean>(false);
@@ -82,7 +82,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         RemoteRenderingClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("testBox.fbx")
             .inputBlobPrefix("Input")
@@ -105,7 +105,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
-        ConversionOptions conversionOptions = new ConversionOptions()
+        AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageUrl())
             .inputRelativeAssetPath("boxWhichDoesNotExist.fbx")
             .inputBlobPrefix("Input")
@@ -116,13 +116,13 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAsset");
 
-        SyncPoller<Conversion, Conversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
 
-        Conversion conversion = conversionPoller.waitForCompletion().getValue();
+        AssetConversion conversion = conversionPoller.waitForCompletion().getValue();
 
         assertEquals(conversionId, conversion.getId());
 
-        assertEquals(ConversionStatus.FAILED, conversion.getStatus());
+        assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
         assertNotNull(conversion.getError());
         // Invalid input provided. Check logs in output container for details.
         assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("invalid input"));
