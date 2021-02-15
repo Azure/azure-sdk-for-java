@@ -267,6 +267,9 @@ jobs:
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
+    
+    variables:
+      - template: ../variables/globals.yml
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
