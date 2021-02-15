@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParametrizedQuery
+import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.sql.sources.Filter
 
 // TODO: moderakh, thought for future optimization:
@@ -13,7 +13,7 @@ import org.apache.spark.sql.sources.Filter
 //  the antlr query parsing support can eliminate the need for query plan fetch from GW
 //  partitionKeyValue would also be the only filter I would consider as an option for
 //  pushing down filters to change feed
-private case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParametrizedQuery,
+private case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParameterizedQuery,
                                    filtersToBePushedDownToCosmos: Array[Filter],
                                    filtersNotSupportedByCosmos: Array[Filter])
 
