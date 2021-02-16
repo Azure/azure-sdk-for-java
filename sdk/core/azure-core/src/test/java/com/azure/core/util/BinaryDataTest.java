@@ -133,7 +133,7 @@ public class BinaryDataTest {
         final byte[] expected = new byte[0];
 
         // Act
-        BinaryData actual = BinaryData.fromObject(null);
+        BinaryData actual = BinaryData.fromObject(null, null);
 
         // Assert
         assertArrayEquals(expected, actual.toBytes());

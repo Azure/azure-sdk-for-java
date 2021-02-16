@@ -21,7 +21,6 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
-import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -43,13 +42,36 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
     }
 
     @Override
+    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
+        if (data == null) {
+            return null;
+        }
+
+        return gson.fromJson(new String(data, UTF_8), typeReference.getJavaType());
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), typeReference.getJavaType());
+        if (stream == null) {
+            return null;
+        }
+
+        return gson.fromJson(new InputStreamReader(stream, UTF_8), typeReference.getJavaType());
+    }
+
+    @Override
+    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(data, typeReference));
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
+
+    @Override
+    public byte[] serialize(Object value) {
+        return gson.toJson(value).getBytes(UTF_8);
     }
 
     @Override
@@ -62,6 +84,11 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeAsync(Object value) {
+        return Mono.fromCallable(() -> serialize(value));
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
@@ -17,10 +18,12 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.util.function.Supplier;
 
 /**
  * Apache Avro based implementation of the {@link AvroSerializer} interface.
@@ -42,23 +45,46 @@ public class ApacheAvroSerializer implements AvroSerializer {
     }
 
     @Override
+    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
+        return deserialize(data, () -> decoderFactory.binaryDecoder(data, null));
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-        if (stream == null) {
+        return deserialize(stream, () -> decoderFactory.binaryDecoder(stream, null));
+    }
+
+    private <T> T deserialize(Object data, Supplier<Decoder> decoderSupplier) {
+        if (data == null) {
             return null;
         }
 
         DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
 
         try {
-            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
+            return reader.read(null, decoderSupplier.get());
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
+    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(data, typeReference));
+    }
+
+    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
+
+    @Override
+    public byte[] serialize(Object value) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        serialize(stream, value);
+
+        return stream.toByteArray();
     }
 
     @Override
@@ -72,6 +98,11 @@ public class ApacheAvroSerializer implements AvroSerializer {
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeAsync(Object value) {
+        return Mono.fromCallable(() -> serialize(value));
     }
 
     @Override

@@ -47,6 +47,19 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
+        if (data == null) {
+            return null;
+        }
+
+        try {
+            return mapper.readValue(data, typeFactory.constructType(typeReference.getJavaType()));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
@@ -60,8 +73,22 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(data, typeReference));
+    }
+
+    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
+
+    @Override
+    public byte[] serialize(Object value) {
+        try {
+            return mapper.writeValueAsBytes(value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     @Override
@@ -71,6 +98,11 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeAsync(Object value) {
+        return Mono.fromCallable(() -> serialize(value));
     }
 
     @Override
