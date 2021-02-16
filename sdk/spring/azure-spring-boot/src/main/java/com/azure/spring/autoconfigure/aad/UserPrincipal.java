@@ -66,6 +66,14 @@ public class UserPrincipal implements Serializable {
         this.roles = roles;
     }
 
+    public String getAccessTokenForGraphApi() {
+        return accessTokenForGraphApi;
+    }
+
+    public void setAccessTokenForGraphApi(String accessTokenForGraphApi) {
+        this.accessTokenForGraphApi = accessTokenForGraphApi;
+    }
+
     public boolean isMemberOf(AADAuthenticationProperties aadAuthenticationProperties, String group) {
         return aadAuthenticationProperties.isAllowedGroup(group)
             && Optional.of(groups)
@@ -95,6 +103,10 @@ public class UserPrincipal implements Serializable {
 
     public String getName() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
+    }
+
+    public String getTenantId() {
+        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("tid");
     }
 
     public String getUserPrincipalName() {

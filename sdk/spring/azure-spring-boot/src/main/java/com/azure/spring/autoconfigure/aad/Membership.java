@@ -56,8 +56,8 @@ public class Membership implements Serializable {
         }
         final Membership group = (Membership) o;
         return this.getDisplayName().equals(group.getDisplayName())
-                && this.getObjectID().equals(group.getObjectID())
-                && this.getObjectType().equals(group.getObjectType());
+            && this.getObjectID().equals(group.getObjectID())
+            && this.getObjectType().equals(group.getObjectType());
     }
 
     @Override

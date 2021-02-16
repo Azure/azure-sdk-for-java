@@ -4,6 +4,7 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.communication.common.CommunicationUserCredential;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -139,7 +141,7 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create synchronous client applying ChatUserCredentialPolicy, UserAgentPolicy,
+     * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
@@ -151,7 +153,7 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create asynchronous client applying ChatUserCredentialPolicy, UserAgentPolicy,
+     * Create asynchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
@@ -166,9 +168,11 @@ public final class ChatClientBuilder {
         } else {
             Objects.requireNonNull(communicationUserCredential);
             Objects.requireNonNull(httpClient);
+            CommunicationTokenCredential tokenCredential = 
+                new CommunicationTokenCredential(communicationUserCredential);
 
             pipeline = createHttpPipeline(httpClient,
-                new ChatUserCredentialPolicy(communicationUserCredential),
+                new BearerTokenAuthenticationPolicy(tokenCredential, ""),
                 customPolicies);
         }
 

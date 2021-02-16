@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSecurityAlertPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSecurityAlertPolicy;
 
 class SqlPoolSecurityAlertPoliciesImpl extends WrapperImpl<SqlPoolSecurityAlertPoliciesInner> implements SqlPoolSecurityAlertPolicies {
@@ -38,6 +39,24 @@ class SqlPoolSecurityAlertPoliciesImpl extends WrapperImpl<SqlPoolSecurityAlertP
 
     private SqlPoolSecurityAlertPolicyImpl wrapModel(String name) {
         return new SqlPoolSecurityAlertPolicyImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<SqlPoolSecurityAlertPolicy> listAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        SqlPoolSecurityAlertPoliciesInner client = this.inner();
+        return client.listAsync(resourceGroupName, workspaceName, sqlPoolName)
+        .flatMapIterable(new Func1<Page<SqlPoolSecurityAlertPolicyInner>, Iterable<SqlPoolSecurityAlertPolicyInner>>() {
+            @Override
+            public Iterable<SqlPoolSecurityAlertPolicyInner> call(Page<SqlPoolSecurityAlertPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SqlPoolSecurityAlertPolicyInner, SqlPoolSecurityAlertPolicy>() {
+            @Override
+            public SqlPoolSecurityAlertPolicy call(SqlPoolSecurityAlertPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

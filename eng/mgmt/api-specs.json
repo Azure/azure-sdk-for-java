@@ -250,10 +250,7 @@
   },
   "mysql/resource-manager": {
     "source": "specification/mysql/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"MySQL\""
-    }
+    "args": "--multiapi --fluent --service-name=MySQL"
   },
   "monitor/resource-manager": {
     "source": "specification/monitor/resource-manager/readme.md",

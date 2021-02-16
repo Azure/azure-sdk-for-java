@@ -54,13 +54,20 @@ class DirectoryAPITests extends APISpec {
 
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
-        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
         ShareDirectoryClient newDirClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getDirectoryClient(directoryPath)
         def directoryURL = newDirClient.getDirectoryUrl()
 
         then:
         expectURL == directoryURL
+
+        when:
+        def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+
+        then:
+        client.getDirectoryUrl() == snapshotEndpoint
     }
 
     def "Get sub directory client"() {

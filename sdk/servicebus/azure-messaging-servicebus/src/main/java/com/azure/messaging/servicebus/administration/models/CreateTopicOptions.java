@@ -24,7 +24,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
  * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
-public class CreateTopicOptions {
+public final class CreateTopicOptions {
     private final List<AuthorizationRule> authorizationRules;
 
     private Duration autoDeleteOnIdle;

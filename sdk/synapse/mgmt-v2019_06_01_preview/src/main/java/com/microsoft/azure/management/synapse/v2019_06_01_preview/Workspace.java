@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 import java.util.Map;
 import java.util.List;
+import java.util.UUID;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateEndpointConnectionInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.WorkspaceInner;
 
@@ -36,6 +37,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the defaultDataLakeStorage value.
      */
     DataLakeStorageAccountDetails defaultDataLakeStorage();
+
+    /**
+     * @return the encryption value.
+     */
+    EncryptionDetails encryption();
 
     /**
      * @return the extraProperties value.
@@ -58,6 +64,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
     String managedVirtualNetwork();
 
     /**
+     * @return the managedVirtualNetworkSettings value.
+     */
+    ManagedVirtualNetworkSettings managedVirtualNetworkSettings();
+
+    /**
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
@@ -66,6 +77,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the provisioningState value.
      */
     String provisioningState();
+
+    /**
+     * @return the purviewConfiguration value.
+     */
+    PurviewConfiguration purviewConfiguration();
 
     /**
      * @return the sqlAdministratorLogin value.
@@ -81,6 +97,16 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the virtualNetworkProfile value.
      */
     VirtualNetworkProfile virtualNetworkProfile();
+
+    /**
+     * @return the workspaceRepositoryConfiguration value.
+     */
+    WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration();
+
+    /**
+     * @return the workspaceUID value.
+     */
+    UUID workspaceUID();
 
     /**
      * The entirety of the Workspace definition.
@@ -129,6 +155,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption The encryption details of the workspace
+             * @return the next definition stage
+             */
+            WithCreate withEncryption(EncryptionDetails encryption);
+        }
+
+        /**
          * The stage of the workspace definition allowing to specify Identity.
          */
         interface WithIdentity {
@@ -165,6 +203,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next definition stage
+             */
+            WithCreate withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
+        }
+
+        /**
          * The stage of the workspace definition allowing to specify PrivateEndpointConnections.
          */
         interface WithPrivateEndpointConnections {
@@ -174,6 +224,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next definition stage
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+
+        /**
+         * The stage of the workspace definition allowing to specify PurviewConfiguration.
+         */
+        interface WithPurviewConfiguration {
+            /**
+             * Specifies purviewConfiguration.
+             * @param purviewConfiguration Purview Configuration
+             * @return the next definition stage
+             */
+            WithCreate withPurviewConfiguration(PurviewConfiguration purviewConfiguration);
         }
 
         /**
@@ -213,17 +275,29 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify WorkspaceRepositoryConfiguration.
+         */
+        interface WithWorkspaceRepositoryConfiguration {
+            /**
+             * Specifies workspaceRepositoryConfiguration.
+             * @param workspaceRepositoryConfiguration Git integration settings
+             * @return the next definition stage
+             */
+            WithCreate withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
+        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithManagedVirtualNetworkSettings, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithPurviewConfiguration, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile, DefinitionStages.WithWorkspaceRepositoryConfiguration {
         }
     }
     /**
      * The template for a Workspace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithSqlAdministratorLoginPassword {
+    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithPurviewConfiguration, UpdateStages.WithSqlAdministratorLoginPassword, UpdateStages.WithWorkspaceRepositoryConfiguration {
     }
 
     /**
@@ -243,6 +317,30 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace update allowing to specify ManagedVirtualNetworkSettings.
+         */
+        interface WithManagedVirtualNetworkSettings {
+            /**
+             * Specifies managedVirtualNetworkSettings.
+             * @param managedVirtualNetworkSettings Managed Virtual Network Settings
+             * @return the next update stage
+             */
+            Update withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
+        }
+
+        /**
+         * The stage of the workspace update allowing to specify PurviewConfiguration.
+         */
+        interface WithPurviewConfiguration {
+            /**
+             * Specifies purviewConfiguration.
+             * @param purviewConfiguration Purview Configuration
+             * @return the next update stage
+             */
+            Update withPurviewConfiguration(PurviewConfiguration purviewConfiguration);
+        }
+
+        /**
          * The stage of the workspace update allowing to specify SqlAdministratorLoginPassword.
          */
         interface WithSqlAdministratorLoginPassword {
@@ -252,6 +350,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
              * @return the next update stage
              */
             Update withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword);
+        }
+
+        /**
+         * The stage of the workspace update allowing to specify WorkspaceRepositoryConfiguration.
+         */
+        interface WithWorkspaceRepositoryConfiguration {
+            /**
+             * Specifies workspaceRepositoryConfiguration.
+             * @param workspaceRepositoryConfiguration Git integration settings
+             * @return the next update stage
+             */
+            Update withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
         }
 
     }

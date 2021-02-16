@@ -37,8 +37,8 @@ public class ChatClientTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
-    protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
+    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -64,7 +64,7 @@ public class ChatClientTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(CONNSTRING)
+            .accessKey(ACCESS_KEY)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

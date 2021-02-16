@@ -21,6 +21,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -284,6 +285,21 @@ public class CosmosContainer {
         }
     }
 
+    private <TContext> List<CosmosBulkOperationResponse<TContext>> blockBulkResponse(
+        Flux<CosmosBulkOperationResponse<TContext>> bulkResponse) {
+
+        try {
+            return bulkResponse.collectList().block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     /**
      * Read all items as {@link CosmosPagedIterable} in the current container.
      *
@@ -537,6 +553,64 @@ public class CosmosContainer {
         TransactionalBatchRequestOptions requestOptions) {
 
         return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch, requestOptions));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     * @param operations list of operation which will be executed by this container.
+     *
+     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Iterable<CosmosItemOperation> operations) {
+
+        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations)));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations list of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Iterable<CosmosItemOperation> operations,
+        BulkProcessingOptions<TContext> bulkOptions) {
+
+        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }
 
     /**

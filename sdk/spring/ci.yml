@@ -36,30 +36,39 @@ extends:
       - name: azure-spring-boot-starter
         groupId: com.azure.spring
         safeName: azurespringbootstarter
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-active-directory
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectory
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-active-directory-b2c
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectoryb2c
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringbootstarterdatagremlin
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultcertificates
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter-storage
         groupId: com.azure.spring
         safeName: azurespringbootstarterstorage
+        skipPublishDocMs: true
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext

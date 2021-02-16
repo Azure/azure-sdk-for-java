@@ -8,6 +8,9 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -310,6 +313,13 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the client telemetry
+     *
+     * @return the client telemetry
+     */
+    ClientTelemetry getClientTelemetry();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -1411,6 +1421,13 @@ public interface AsyncDocumentClient {
     Mono<DatabaseAccount> getDatabaseAccount();
 
     /**
+     * Gets latest cached database account information from GlobalEndpointManager.
+     *
+     * @return the database account.
+     */
+    DatabaseAccount getLatestDatabaseAccount();
+
+    /**
      * Reads many documents at once
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
@@ -1441,6 +1458,20 @@ public interface AsyncDocumentClient {
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options
     );
+
+    /**
+     * Gets the collection cache.
+     *
+     * @return the collection Cache
+     */
+    RxClientCollectionCache getCollectionCache();
+
+    /**
+     * Gets the partition key range cache.
+     *
+     * @return the partition key range cache
+     */
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.

@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class handles the OAuth2 request procession for AAD B2C authorization.
@@ -43,14 +44,12 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private final String passwordResetUserFlow;
 
-    public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository) {
-        this.passwordResetUserFlow = null;
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
-    }
+    private final AADB2CProperties properties;
 
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
-                                              @Nullable String passwordResetUserFlow) {
-        this.passwordResetUserFlow = passwordResetUserFlow;
+                                              @NonNull AADB2CProperties properties) {
+        this.properties = properties;
+        this.passwordResetUserFlow = this.properties.getUserFlows().getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
@@ -89,12 +88,14 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
         cleanupSecurityContextAuthentication();
 
-        final Map<String, Object> parameters = new HashMap<>(request.getAdditionalParameters());
+        final Map<String, Object> additionalParameters = new HashMap<>();
+        Optional.ofNullable(this.properties)
+                .map(AADB2CProperties::getAuthenticateAdditionalParameters)
+                .ifPresent(additionalParameters::putAll);
+        additionalParameters.put("p", userFlow);
+        additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 
-        parameters.put("p", userFlow);
-        parameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
-
-        return OAuth2AuthorizationRequest.from(request).additionalParameters(parameters).build();
+        return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }
 
     private String getRegistrationId(HttpServletRequest request) {

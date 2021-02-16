@@ -14,13 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResourceRetrieverTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
-        .withPropertyValues(
-            "azure.activedirectory.client-id=fake-client-id",
-            "azure.activedirectory.client-secret=fake-client-secret",
-            "azure.activedirectory.user-group.allowed-groups=fake-group",
-            "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri"
-        );
+            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
+            .withPropertyValues("azure.activedirectory.client-id=fake-client-id",
+                    "azure.activedirectory.client-secret=fake-client-secret",
+                    "azure.activedirectory.user-group.allowed-groups=fake-group",
+                    "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri");
 
     @Test
     public void resourceRetrieverDefaultConfig() {

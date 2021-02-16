@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
@@ -406,8 +407,7 @@ public final class BlobServiceAsyncClient {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null
                     ? Collections.emptyList()
                     : response.getValue().getBlobs().stream()
-                    .map(filterBlobItem -> new TaggedBlobItem(filterBlobItem.getContainerName(),
-                        filterBlobItem.getName()))
+                    .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 
                 return new PagedResponseBase<>(

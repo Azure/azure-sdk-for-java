@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import reactor.core.Exceptions;

@@ -11,7 +11,7 @@ import java.util.Objects;
  * A set of options for creating a rule.
  */
 @Fluent
-public class CreateRuleOptions {
+public final class CreateRuleOptions {
     private RuleFilter filter;
     private RuleAction action;
 

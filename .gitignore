@@ -38,6 +38,7 @@ extlib/
 # Azure Tooling #
 node_modules
 packages
+__pycache__
 
 # Eclipse #
 *.pydevproject

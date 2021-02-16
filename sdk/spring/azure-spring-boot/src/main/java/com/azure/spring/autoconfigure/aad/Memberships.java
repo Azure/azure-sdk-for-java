@@ -24,7 +24,7 @@ public class Memberships {
     @JsonCreator
     public Memberships(
         @JsonAlias("odata.nextLink")
-        @JsonProperty("@odata.nextLink") String odataNextLink,
+        @JsonProperty("odata.nextLink") String odataNextLink,
         @JsonProperty("value") List<Membership> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
@@ -48,7 +48,7 @@ public class Memberships {
         }
         final Memberships groups = (Memberships) o;
         return this.getOdataNextLink().equals(groups.getOdataNextLink())
-                && this.getValue().equals(groups.getValue());
+            && this.getValue().equals(groups.getValue());
     }
 
     @Override

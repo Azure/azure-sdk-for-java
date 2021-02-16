@@ -258,7 +258,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.peek(fromSequenceNumber, null, null)).thenReturn(Mono.just(receivedMessage));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessage(fromSequenceNumber))
             .expectNext(receivedMessage)
             .verifyComplete();
     }
@@ -428,7 +428,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessagesAt(numberOfEvents, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessages(numberOfEvents, fromSequenceNumber))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
     }
@@ -849,10 +849,15 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messageSink.next(m)))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
+        // TODO: Yijun and Srikanta are thinking of using two links for two subscribers.
+        //  We may not want to support multiple subscribers by using publish and autoConnect.
+        //  After the autoConnect was removed from ServiceBusAsyncConsumer.processor, the receiver doesn't support
+        //  multiple calls of receiver.receiveMessages().
+        //  For more discussions.
+//        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+//            .then(() -> messages.forEach(m -> messageSink.next(m)))
+//            .expectNextCount(numberOfEvents)
+//            .verifyComplete();
 
         verify(amqpReceiveLink).addCredits(PREFETCH);
     }

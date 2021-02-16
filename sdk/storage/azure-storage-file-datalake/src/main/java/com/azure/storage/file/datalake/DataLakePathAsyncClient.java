@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -56,6 +57,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -79,6 +81,7 @@ public class DataLakePathAsyncClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
     final DataLakeStorageClientImpl dataLakeStorage;
+    final DataLakeStorageClientImpl fileSystemDataLakeStorage;
     /**
      * This {@link DataLakeStorageClientImpl} is pointing to blob endpoint instead of dfs
      * in order to expose APIs that are on blob endpoint but are only functional for HNS enabled accounts.
@@ -126,6 +129,20 @@ public class DataLakePathAsyncClient {
         this.pathName = Utility.urlEncode(Utility.urlDecode(pathName));
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
+
+        BlobUrlParts parts = BlobUrlParts.parse(url);
+        String fileSystemUrl;
+        try {
+            fileSystemUrl = String.format("%s/%s", BuilderHelper.getEndpoint(parts), fileSystemName);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+
+        this.fileSystemDataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(fileSystemUrl)
+            .version(serviceVersion.getVersion())
+            .build();
     }
 
     /**
