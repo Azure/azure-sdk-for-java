@@ -40,7 +40,7 @@ right corner.
 ### Creating exporter for Azure Monitor
 <!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L33-L35 -->
 ```java
-AzureMonitorExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
+AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildTraceExporter();
 ```
@@ -55,7 +55,7 @@ The following example shows how to export a trace data to Azure Monitor through 
 ```java
 // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
 // This should be done just once when application starts up
-AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildTraceExporter();
 
