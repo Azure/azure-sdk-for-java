@@ -3,18 +3,23 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.util.Beta;
 
 /**
- * Group configuration which will be used in Throughput control.
+ * Throughput control group configuration.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class ThroughputControlGroup {
-    private final ThroughputControlGroupInternal controlGroupInternal;
+public final class ThroughputControlGroupConfig {
+    private final String groupName;
+    private final Integer targetThroughput;
+    private final Double targetThroughputThreshold;
+    private final boolean isDefault;
 
-    ThroughputControlGroup(ThroughputControlGroupInternal groupInternal) {
-       this.controlGroupInternal = groupInternal;
+    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
+       this.groupName= groupName;
+       this.targetThroughput = targetThroughput;
+       this.targetThroughputThreshold = targetThroughputThreshold;
+       this.isDefault = isDefault;
     }
 
     /**
@@ -24,7 +29,7 @@ public final class ThroughputControlGroup {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
-        return this.controlGroupInternal.getGroupName();
+        return this.groupName;
     }
 
     /**
@@ -37,7 +42,7 @@ public final class ThroughputControlGroup {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
-        return this.controlGroupInternal.getTargetThroughput();
+        return this.targetThroughput;
     }
 
     /**
@@ -50,22 +55,19 @@ public final class ThroughputControlGroup {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
-        return this.controlGroupInternal.getTargetThroughputThreshold();
+        return this.targetThroughputThreshold;
     }
 
     /**
      * Get whether this throughput control group will be used by default.
      *
      * By default, it is false.
+     * If it is true, requests without explicit override of the throughput control group will be routed to this group.
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
-        return this.controlGroupInternal.isDefault();
-    }
-
-    ThroughputControlGroupInternal getControlGroupInternal() {
-        return this.controlGroupInternal;
+        return this.isDefault;
     }
 }

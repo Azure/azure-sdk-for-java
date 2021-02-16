@@ -10,6 +10,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -212,5 +213,17 @@ public final class CosmosClient implements Closeable {
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+    }
+
+    /**
+     * Create throughput global control config builder which will be used to build {@link ThroughputGlobalControlConfig}.
+     *
+     * @param databaseId The database if of the control container.
+     * @param containerId The container id of the control container.
+     * @return A {@link ThroughputGlobalControlConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputGlobalControlConfigBuilder createThroughputGlobalControlConfigBuilder(String databaseId, String containerId) {
+        return new ThroughputGlobalControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 }

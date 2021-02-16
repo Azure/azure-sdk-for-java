@@ -12,7 +12,7 @@ public interface IThroughputController {
      * Different level throughput controller will have its own criteria.
      *
      * @param request The request.
-     * @return Flag to indicate whether the controller can handle the request. Each controller will have its onw criteria.
+     * @return Flag to indicate whether the controller can handle the request. Each controller will have its own criteria.
      */
     boolean canHandleRequest(RxDocumentServiceRequest request);
 

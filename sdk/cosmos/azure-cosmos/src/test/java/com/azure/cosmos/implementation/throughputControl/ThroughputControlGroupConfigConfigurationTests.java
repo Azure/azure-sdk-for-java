@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.throughputControl;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -13,21 +15,33 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
+public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
-    public ThroughputControlGroupConfigurationTests(CosmosClientBuilder clientBuilder) {
+    public ThroughputControlGroupConfigConfigurationTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
     @Test(groups = { "emulator" })
     public void validateMultipleDefaultGroups() {
-        container.enableThroughputLocalControlGroup("group-1", 10, true);
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-1")
+                .setTargetThroughput(10)
+                .setDefault(true)
+                .build();
+        container.enableThroughputLocalControlGroup(groupConfig);
 
-        assertThatThrownBy(() -> container.enableThroughputLocalControlGroup("group-2", 10, true))
+        ThroughputControlGroupConfig groupConfig2 =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-2")
+                .setTargetThroughput(10)
+                .setDefault(true)
+                .build();
+        assertThatThrownBy(() -> container.enableThroughputLocalControlGroup(groupConfig2))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("A default group already exists");
     }

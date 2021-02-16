@@ -87,7 +87,13 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                         partitionKeyInternal.toJson());
 
                 }
-                return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyInternal, partitionKeyRange, collectionRid);
+                return this.createDocumentServiceRequest(
+                    headers,
+                    querySpecForInit,
+                    partitionKeyInternal,
+                    partitionKeyRange,
+                    collectionRid,
+                    cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
@@ -198,7 +204,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                     querySpec,
                     null,
                     partitionKeyRange,
-                    collectionRid);
+                    collectionRid,
+                    cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {

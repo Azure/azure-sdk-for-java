@@ -196,7 +196,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                                 logger.warn(
                                     "Can not find request controller to handle request {} with pkRangeId {}",
                                     request.getActivityId(),
-                                    request.requestContext.resolvedPartitionKeyRange.getId());
+                                    this.getResolvedPartitionKeyRangeId(request));
                                 return nextRequestMono;
                             }
                         });
@@ -206,12 +206,19 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
             });
     }
 
+    private String getResolvedPartitionKeyRangeId(RxDocumentServiceRequest request) {
+        if (request.requestContext != null && request.requestContext.resolvedPartitionKeyRange != null) {
+            return request.requestContext.resolvedPartitionKeyRange.getId();
+        }
+
+        return StringUtils.EMPTY;
+    }
+
     private Mono<Boolean> shouldUpdateRequestController(RxDocumentServiceRequest request) {
         return this.partitionKeyRangeCache.tryGetRangeByPartitionKeyRangeId(
                 null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null)
-            .map(pkRangeHolder -> pkRangeHolder.v)
-            .flatMap(pkRange -> {
-                if (pkRange == null) {
+            .flatMap(pkRangeHolder -> {
+                if (pkRangeHolder.v == null) {
                     return Mono.just(Boolean.FALSE);
                 } else {
                     return Mono.just(Boolean.TRUE);

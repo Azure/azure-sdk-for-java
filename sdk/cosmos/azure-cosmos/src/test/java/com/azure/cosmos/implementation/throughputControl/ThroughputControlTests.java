@@ -11,12 +11,18 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.ThroughputControlGroup;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
+import com.azure.cosmos.ThroughputGlobalControlConfig;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -31,6 +37,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThroughputControlTests extends TestSuiteBase {
+    // Delete collections in emulator is not instant,
+    // so to avoid get 500 back, we are adding delay for creating the collection with same name, since in this case we want to test 410/1000
+    private final static int COLLECTION_RECREATION_TIME_DELAY = 5000;
+
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
@@ -48,18 +58,24 @@ public class ThroughputControlTests extends TestSuiteBase {
             { OperationType.Replace },
             { OperationType.Create },
             { OperationType.Delete },
+            { OperationType.Query },
+         //   { OperationType.ReadFeed } // changeFeed only go for gateway
         };
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl(OperationType operationType) {
-
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
-        ThroughputControlGroup group = container.enableThroughputLocalControlGroup("group-" + UUID.randomUUID(), 10);
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+        container.enableThroughputLocalControlGroup(groupConfig);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(group.getGroupName()); // since can not find the match group, will fall back to the default one
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
@@ -68,28 +84,34 @@ public class ThroughputControlTests extends TestSuiteBase {
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
         // second request to group-1. which will get throttled
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(operationType, createdItem, group.getGroupName());
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
-    public void throughputGlobalControl(OperationType operationType) throws InterruptedException {
-        CosmosAsyncContainer controlContainer = database.getContainer("throughputControlContainer");
+    public void throughputGlobalControl(OperationType operationType) {
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database.createContainerIfNotExists(controlContainer.getId(), "/group").block();
 
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
-        ThroughputControlGroup group = container.enableThroughputGlobalControlGroup(
-            "group-" + UUID.randomUUID(),
-            10,
-            controlContainer,
-            Duration.ofSeconds(5),
-            Duration.ofSeconds(10));
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+
+        ThroughputGlobalControlConfig globalControlConfig = this.client.createThroughputGlobalControlConfigBuilder(this.database.getId(), controlContainerId)
+            .setControlItemRenewInterval(Duration.ofSeconds(5))
+            .setControlItemExpireInterval(Duration.ofSeconds(10))
+            .build();
+        container.enableThroughputGlobalControlGroup(groupConfig, globalControlConfig);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(group.getGroupName());
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
@@ -98,7 +120,65 @@ public class ThroughputControlTests extends TestSuiteBase {
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
         // second request to same group. which will get throttled
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(operationType, createdItem, group.getGroupName());
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+        this.validateRequestThrottled(
+            cosmosDiagnostics.toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputLocalControlForContainerCreateDeleteWithSameName(OperationType operationType) throws InterruptedException {
+        ConnectionMode connectionMode = BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode();
+        if (connectionMode == ConnectionMode.GATEWAY) {
+            // for gateway connection mode, gateway will handle the 410/1000 and retry. Hence the collection cache and container controller will be refreshed.
+            // There is no point for this tests for gateway mode.
+            return;
+        }
+
+        // step1: create container
+        String testContainerId = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
+        CosmosAsyncContainer createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
+
+        // The create document in this test usually takes around 6.29RU,
+        // pick a RU super small here so we know it will throttle requests for several cycles/seconds
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+        container.enableThroughputLocalControlGroup(groupConfig);
+        createdContainer.enableThroughputLocalControlGroup(groupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        // Step2: first request to group-1, which will not get throttled, but will consume all the rus of the throughput control group.
+        CosmosItemResponse<TestItem> createItemResponse = createdContainer.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        // Step 3: delete the container
+        safeDeleteCollection(createdContainer);
+        Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
+
+        // step 4: recreate the container with the same name
+        createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
+
+        // Step 5: read operation which will trigger cache refresh and a new container controller to be built
+        performDocumentOperation(createdContainer, OperationType.Read, createdItem, null);
+
+        // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
+        this.validateRequestNotThrottled(
+            cosmosDiagnostics.toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        // Step 7: third request to group-1, which will get throttled
+        cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
@@ -125,52 +205,57 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     private void validateRequestThrottled(String cosmosDiagnostics, ConnectionMode connectionMode) {
         assertThat(cosmosDiagnostics).isNotEmpty();
-
-        if (connectionMode == ConnectionMode.DIRECT) {
-            assertThat(cosmosDiagnostics).contains("\"statusCode\":429");
-            assertThat(cosmosDiagnostics).contains("\"subStatusCode\":10003");
-        } else if (connectionMode == ConnectionMode.GATEWAY) {
-            assertThat(cosmosDiagnostics).contains("\"statusAndSubStatusCodes\":[[429,10003]");
-        }
+        assertThat(cosmosDiagnostics).contains("\"statusCode\":429");
+        assertThat(cosmosDiagnostics).contains("\"subStatusCode\":10003");
     }
 
     private void validateRequestNotThrottled(String cosmosDiagnostics, ConnectionMode connectionMode) {
         assertThat(cosmosDiagnostics).isNotEmpty();
-
-        if (connectionMode == ConnectionMode.DIRECT) {
-            assertThat(cosmosDiagnostics).doesNotContain("\"statusCode\":429");
-            assertThat(cosmosDiagnostics).doesNotContain("\"subStatusCode\":10003");
-        } else if (connectionMode == ConnectionMode.GATEWAY) {
-            assertThat(cosmosDiagnostics).doesNotContain("\"statusAndSubStatusCodes\":[[429,10003]");
-        }
+        assertThat(cosmosDiagnostics).doesNotContain("\"statusCode\":429");
+        assertThat(cosmosDiagnostics).doesNotContain("\"subStatusCode\":10003");
     }
 
-    private CosmosDiagnostics performDocumentOperation(OperationType operationType, TestItem createdItem, String throughputControlGroup) {
-        if (operationType == OperationType.Query) {
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            if (!StringUtils.isEmpty(throughputControlGroup)) {
-                queryRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+    private CosmosDiagnostics performDocumentOperation(
+        CosmosAsyncContainer cosmosAsyncContainer,
+        OperationType operationType,
+        TestItem createdItem,
+        String throughputControlGroup) {
+        try {
+            if (operationType == OperationType.Query) {
+                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                if (!StringUtils.isEmpty(throughputControlGroup)) {
+                    queryRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+                }
+
+                String query = String.format("SELECT * from c where c.mypk = '%s'", createdItem.getMypk());
+                FeedResponse<TestItem> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+
+                return itemFeedResponse.getCosmosDiagnostics();
             }
 
-            String query = String.format("SELECT * from c where c.mypk = '%s'", createdItem.getMypk());
-            FeedResponse<TestItem> itemFeedResponse =
-                container.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+            if (operationType == OperationType.ReadFeed) {
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                    .createForProcessingFromBeginning(FeedRange.forFullRange());
+                if (!StringUtils.isEmpty(throughputControlGroup)) {
+                    changeFeedRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+                }
 
-            return itemFeedResponse.getCosmosDiagnostics();
-        }
+                FeedResponse<TestItem> itemFeedResponse = cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class).byPage().blockFirst();
+                return itemFeedResponse.getCosmosDiagnostics();
+            }
 
-        if (operationType == OperationType.Read
-            || operationType == OperationType.Delete
-            || operationType == OperationType.Replace
-            || operationType == OperationType.Create) {
-            try {
+            if (operationType == OperationType.Read
+                || operationType == OperationType.Delete
+                || operationType == OperationType.Replace
+                || operationType == OperationType.Create) {
                 CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
                 if (!StringUtils.isEmpty((throughputControlGroup))) {
                     itemRequestOptions.setThroughputControlGroupName(throughputControlGroup);
                 }
 
                 if (operationType == OperationType.Read) {
-                    return container.readItem(
+                    return cosmosAsyncContainer.readItem(
                         createdItem.getId(),
                         new PartitionKey(createdItem.getMypk()),
                         itemRequestOptions,
@@ -178,7 +263,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Replace) {
-                    return container.replaceItem(
+                    return cosmosAsyncContainer.replaceItem(
                         createdItem,
                         createdItem.getId(),
                         new PartitionKey(createdItem.getMypk()),
@@ -186,21 +271,20 @@ public class ThroughputControlTests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Delete) {
-                    return container.deleteItem(createdItem, itemRequestOptions).block().getDiagnostics();
+                    return cosmosAsyncContainer.deleteItem(createdItem, itemRequestOptions).block().getDiagnostics();
                 }
 
                 if (operationType == OperationType.Create) {
                     TestItem newItem = getDocumentDefinition(createdItem.getMypk());
-                    return container.createItem(newItem, itemRequestOptions).block().getDiagnostics();
+                    return cosmosAsyncContainer.createItem(newItem, itemRequestOptions).block().getDiagnostics();
                 }
-            } catch (CosmosException cosmosException) {
-                return cosmosException.getDiagnostics();
             }
+
+            throw new IllegalArgumentException("The operation type is not supported");
+        } catch (CosmosException cosmosException) {
+            return cosmosException.getDiagnostics();
         }
-
-
-        throw new IllegalArgumentException("The operation type is not supported");
     }
 
-    // TODO: add tests for query, changeFeed, split and collection recreation
+    // TODO: add tests split
 }

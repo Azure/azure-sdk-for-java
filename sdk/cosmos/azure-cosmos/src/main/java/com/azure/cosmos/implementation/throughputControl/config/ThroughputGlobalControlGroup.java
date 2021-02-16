@@ -33,14 +33,39 @@ public class ThroughputGlobalControlGroup extends ThroughputControlGroupInternal
             controlItemExpireInterval != null ? controlItemExpireInterval : Duration.ofSeconds(2 * this.controlItemRenewInterval.getSeconds());
     }
 
+    /**
+     * Get the control container.
+     * This is the container to track all other clients throughput usage.
+     *
+     * @return The {@link CosmosAsyncContainer}.
+     */
     public CosmosAsyncContainer getGlobalControlContainer() {
         return globalControlContainer;
     }
 
+    /**
+     * Get the control item renew interval.
+     *
+     * This controls how often the client is going to update the throughput usage of itself
+     * and adjust its own throughput share based on the throughput usage of other clients.
+     *
+     * In short words, it controls how quickly the shared throughput will reload balanced across different clients.
+     *
+     * @return The control item renew interval.
+     */
     public Duration getControlItemRenewInterval() {
         return controlItemRenewInterval;
     }
 
+
+    /**
+     * Get the control item expire interval.
+     *
+     * A client may be offline due to various reasons (being shutdown, network issue... ).
+     * This controls how quickly we will detect the client has been offline and hence allow its throughput share to be taken by other clients.
+     **
+     * @return The control item renew interval.
+     */
     public Duration getControlItemExpireInterval() {
         return controlItemExpireInterval;
     }

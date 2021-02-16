@@ -2,166 +2,43 @@ package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.ThroughputControlGroup;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputGlobalControlConfig;
 
-import java.time.Duration;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ThroughputControlGroupFactory {
 
-    // region createThroughputLocalControlGroup
+    public static ThroughputLocalControlGroup createThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig, CosmosAsyncContainer targetContainer) {
+        checkNotNull(groupConfig, "Throughput control group config can not be null");
+        checkNotNull(targetContainer, "Throughput target container can not be null");
 
-    public static ThroughputControlGroup createThroughputLocalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        int targetThroughput) {
-
-        return createThroughputLocalControlGroup(groupName, targetContainer, targetThroughput, null, false);
-    }
-
-    public static ThroughputControlGroup createThroughputLocalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        int targetThroughput,
-        boolean isDefault) {
-
-        return createThroughputLocalControlGroup(groupName, targetContainer, targetThroughput, null, isDefault);
-    }
-
-    public static ThroughputControlGroup createThroughputLocalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        double targetThroughputThreshold) {
-
-        return createThroughputLocalControlGroup(groupName, targetContainer, null, targetThroughputThreshold, false);
-    }
-
-    public static ThroughputControlGroup createThroughputLocalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        double targetThroughputThreshold,
-        boolean isDefault) {
-
-        return createThroughputLocalControlGroup(groupName, targetContainer, null, targetThroughputThreshold, isDefault);
-    }
-
-    private static ThroughputControlGroup createThroughputLocalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        Integer targetThroughput,
-        Double targetThroughputThreshold,
-        boolean isDefault) {
-
-        ThroughputLocalControlGroup localControlGroup = new ThroughputLocalControlGroup(
-            groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault);
-
-        return BridgeInternal.createThroughputControlGroup(localControlGroup);
-    }
-
-    // endregion
-
-    // region createThroughputGlobalControlGroup
-
-    public static ThroughputControlGroup createThroughputGlobalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        int targetThroughput,
-        CosmosAsyncContainer controlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return createThroughputGlobalControlGroup(
-            groupName,
+        return new ThroughputLocalControlGroup(
+            groupConfig.getGroupName(),
             targetContainer,
-            targetThroughput,
-            null,
-            false,
-            controlContainer,
-            controlItemRenewInterval,
-            controlItemExpireInterval);
+            groupConfig.getTargetThroughput(),
+            groupConfig.getTargetThroughputThreshold(),
+            groupConfig.isDefault());
     }
 
-    public static ThroughputControlGroup createThroughputGlobalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        int targetThroughput,
-        boolean isDefault,
-        CosmosAsyncContainer controlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
+    public static ThroughputGlobalControlGroup createThroughputGlobalControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        ThroughputGlobalControlConfig globalControlConfig,
+        CosmosAsyncContainer targetContainer) {
 
-        return createThroughputGlobalControlGroup(
-            groupName,
-            targetContainer,
-            targetThroughput,
-            null,
-            isDefault,
-            controlContainer,
-            controlItemRenewInterval,
-            controlItemExpireInterval);
-    }
+        checkNotNull(groupConfig, "Throughput control group config can not be null");
+        checkNotNull(globalControlConfig, "Throughput global control config can not be null");
+        checkNotNull(targetContainer, "Throughput target container can not be null");
 
-    public static ThroughputControlGroup createThroughputGlobalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        double targetThroughputThreshold,
-        CosmosAsyncContainer controlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return createThroughputGlobalControlGroup(
-            groupName,
-            targetContainer,
-            null,
-            targetThroughputThreshold,
-            false,
-            controlContainer,
-            controlItemRenewInterval,
-            controlItemExpireInterval);
-    }
-
-    public static ThroughputControlGroup createThroughputGlobalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        double targetThroughputThreshold,
-        boolean isDefault,
-        CosmosAsyncContainer controlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return createThroughputGlobalControlGroup(
-            groupName,
-            targetContainer,
-            null,
-            targetThroughputThreshold,
-            isDefault,
-            controlContainer,
-            controlItemRenewInterval,
-            controlItemExpireInterval);
-    }
-
-    private static ThroughputControlGroup createThroughputGlobalControlGroup(
-        String groupName,
-        CosmosAsyncContainer targetContainer,
-        Integer targetThroughput,
-        Double targetThroughputThreshold,
-        boolean isDefault,
-        CosmosAsyncContainer controlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        ThroughputGlobalControlGroup globalControlGroup =
-            new ThroughputGlobalControlGroup(
-                groupName,
+        return new ThroughputGlobalControlGroup(
+                groupConfig.getGroupName(),
                 targetContainer,
-                targetThroughput,
-                targetThroughputThreshold,
-                isDefault,
-                controlContainer,
-                controlItemRenewInterval,
-                controlItemExpireInterval);
+                groupConfig.getTargetThroughput(),
+                groupConfig.getTargetThroughputThreshold(),
+                groupConfig.isDefault(),
+                BridgeInternal.getControlContainerFromThroughputGlobalControlConfig(globalControlConfig),
+                globalControlConfig.getControlItemRenewInterval(),
+                globalControlConfig.getControlItemExpireInterval());
 
-        return BridgeInternal.createThroughputControlGroup(globalControlGroup);
     }
-
-    // endregion
 }

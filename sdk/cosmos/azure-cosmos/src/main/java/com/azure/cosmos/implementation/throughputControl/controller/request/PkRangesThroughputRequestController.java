@@ -128,7 +128,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         // If we reach here, it means we should find the mapping pkRange
         ThroughputRequestThrottler requestThrottler =
             this.getOrCreateRegionRequestThrottlers(this.globalEndpointManager.resolveServiceEndpoint(request))
-                .get(resolvedPkRange);
+                .get(resolvedPkRange.getId());
 
         if (requestThrottler != null) {
             return requestThrottler.processRequest(request, nextRequestMono);

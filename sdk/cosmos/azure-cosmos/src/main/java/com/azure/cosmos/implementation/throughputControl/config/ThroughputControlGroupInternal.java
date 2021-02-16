@@ -34,7 +34,11 @@ public abstract class ThroughputControlGroupInternal {
         this.targetThroughputThreshold = targetThroughputThreshold;
         this.isDefault = isDefault;
 
-        this.id = this.targetContainer.getDatabase().getId() + "." + this.targetContainer.getId() + "." + this.groupName;
+        this.id = String.format(
+            "%s.%s.%s",
+            this.targetContainer.getDatabase().getId(),
+            this.targetContainer.getId(),
+            this.groupName);
     }
 
     /**
@@ -83,6 +87,7 @@ public abstract class ThroughputControlGroupInternal {
      * Get whether this throughput control group will be used by default.
      *
      * By default, it is false.
+     * If it is true, requests without explicit override of the throughput control group will be routed to this group.
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */

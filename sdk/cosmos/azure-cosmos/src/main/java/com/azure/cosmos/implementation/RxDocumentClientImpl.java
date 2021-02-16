@@ -12,7 +12,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -2218,7 +2217,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this,
             ResourceType.Document,
             Document.class,
-            collection.getSelfLink(),
+            collection.getAltLink(),
             collection.getResourceId(),
             changeFeedOptions);
 

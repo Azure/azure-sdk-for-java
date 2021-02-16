@@ -86,10 +86,13 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     SqlQuerySpec querySpec,
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
-                                                                    String collectionRid) {
+                                                                    String collectionRid,
+                                                                    String throughputControlGroup) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.throughputControlGroupName = throughputControlGroup;
 
         if (partitionKeyInternal != null) {
             request.setPartitionKeyInternal(partitionKeyInternal);

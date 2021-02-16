@@ -22,6 +22,8 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputLocalControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -44,7 +46,6 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -1409,189 +1410,32 @@ public class CosmosAsyncContainer {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }
 
-    // region enableThroughputLocalControlGroup
-
     /**
+     * Enable the throughput control group with local control mode.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughput));
+    public void enableThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig) {
+        ThroughputLocalControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup);
     }
 
     /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig
+     * @param globalControlConfig
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughput, isDefault));
-    }
+    public void enableThroughputGlobalControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        ThroughputGlobalControlConfig globalControlConfig) {
 
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughputThreshold));
-    }
+        ThroughputGlobalControlGroup globalControlGroup =
+            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupName, this, targetThroughputThreshold, isDefault));
-    }
-
-    //endregion
-
-    // region enableThroughputGlobalControlGroup
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param globalControlContainer The global control container. This is the container which will be used to track the traffic load of each client.
-     * @param controlItemRenewInterval The global control container item renew interval.
-     * @param controlItemExpireInterval The global control container item expire interval.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputGlobalControlGroup(
-        String groupName,
-        int targetThroughput,
-        CosmosAsyncContainer globalControlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(
-                groupName,
-                this,
-                targetThroughput,
-                globalControlContainer,
-                controlItemRenewInterval,
-                controlItemExpireInterval));
-    }
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     * @param globalControlContainer The global control container. This is the container which will be used to track the traffic load of each client.
-     * @param controlItemRenewInterval The global control container item renew interval.
-     * @param controlItemExpireInterval The global control container item expire interval.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputGlobalControlGroup(
-        String groupName,
-        int targetThroughput,
-        boolean isDefault,
-        CosmosAsyncContainer globalControlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(
-                groupName,
-                this,
-                targetThroughput,
-                isDefault,
-                globalControlContainer,
-                controlItemRenewInterval,
-                controlItemExpireInterval));
-    }
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param globalControlContainer The global control container. This is the container which will be used to track the traffic load of each client.
-     * @param controlItemRenewInterval The global control container item renew interval.
-     * @param controlItemExpireInterval The global control container item expire interval.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputGlobalControlGroup(
-        String groupName,
-        double targetThroughputThreshold,
-        CosmosAsyncContainer globalControlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(
-                groupName,
-                this,
-                targetThroughputThreshold,
-                globalControlContainer,
-                controlItemRenewInterval,
-                controlItemExpireInterval));
-    }
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     * @param globalControlContainer The global control container. This is the container which will be used to track the traffic load of each client.
-     * @param controlItemRenewInterval The global control container item renew interval.
-     * @param controlItemExpireInterval The global control container item expire interval.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup enableThroughputGlobalControlGroup(
-        String groupName,
-        double targetThroughputThreshold,
-        boolean isDefault,
-        CosmosAsyncContainer globalControlContainer,
-        Duration controlItemRenewInterval,
-        Duration controlItemExpireInterval) {
-
-        return this.enableThroughputControlGroup(
-            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(
-                groupName,
-                this,
-                targetThroughputThreshold,
-                isDefault,
-                globalControlContainer,
-                controlItemRenewInterval,
-                controlItemExpireInterval));
-    }
-
-    // endregion
-
-    private ThroughputControlGroup enableThroughputControlGroup(ThroughputControlGroup throughputControlGroup) {
-        checkNotNull(throughputControlGroup, "Throughput control group can not be null");
-
-        this.database.getClient().enableThroughputControlGroup(throughputControlGroup.getControlGroupInternal());
-        return throughputControlGroup;
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup);
     }
 }

@@ -106,8 +106,7 @@ public class ThroughputControlContainerManager {
 
                 if (!expectedConfigItem.equals(configItem)) {
                     logger.warn(
-                        "Group config using by this client is different than the one in control container, will be ignored. Using following config: {}" +
-                            "targetThroughput: {}, targetThroughputThreshold: {}",
+                        "Group config using by this client is different than the one in control container, will be ignored. Using following config: {}",
                         this.configItem.toString());
                 }
 

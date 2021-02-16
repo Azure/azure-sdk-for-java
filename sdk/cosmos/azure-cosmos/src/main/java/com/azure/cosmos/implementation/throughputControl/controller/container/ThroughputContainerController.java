@@ -108,7 +108,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
     @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
-        return this.resolveContainerMaxThroughput()
+        return this.resolveContainerResourceId()
+            .flatMap(containerRid -> this.resolveContainerMaxThroughput())
             .flatMap(controller -> this.createAndInitializeGroupControllers())
             .doOnSuccess(controller -> {
                 Schedulers.parallel().schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());

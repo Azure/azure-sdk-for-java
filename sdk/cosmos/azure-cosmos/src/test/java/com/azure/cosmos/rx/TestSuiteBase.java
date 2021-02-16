@@ -850,7 +850,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] clientBuilders() {
-        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}};
+        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}};
     }
 
     @DataProvider
@@ -858,7 +858,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true, true)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
-            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}
+            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}
         };
     }
 
@@ -929,6 +929,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true, false)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false)},
+            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, false)}
         };
     }
 
@@ -960,7 +961,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, contentResponseOnWriteEnabled));
+        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, contentResponseOnWriteEnabled, retryOnThrottledRequests));
 
         return cosmosConfigurations.stream().map(b -> new Object[]{b}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
@@ -1068,7 +1069,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return testConsistencies;
     }
 
-    private static Object[][] clientBuildersWithDirect(List<ConsistencyLevel> testConsistencies, boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
+    private static Object[][] clientBuildersWithDirect(
+        List<ConsistencyLevel> testConsistencies,
+        boolean contentResponseOnWriteEnabled,
+        boolean retryOnThrottledRequests,
+        Protocol... protocols) {
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
@@ -1092,7 +1097,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations, contentResponseOnWriteEnabled));
+        cosmosConfigurations.add(
+            createGatewayRxDocumentClient(
+                ConsistencyLevel.SESSION,
+                isMultiMasterEnabled,
+                preferredLocations,
+                contentResponseOnWriteEnabled,
+                retryOnThrottledRequests));
 
         return cosmosConfigurations.stream().map(c -> new Object[]{c}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
@@ -1109,20 +1120,31 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
-    static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
-                                                                       List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
+    static protected CosmosClientBuilder createGatewayRxDocumentClient(
+        ConsistencyLevel consistencyLevel,
+        boolean multiMasterEnabled,
+        List<String> preferredRegions,
+        boolean contentResponseOnWriteEnabled,
+        boolean retryOnThrottledRequests) {
+
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .credential(credential)
-                                        .gatewayMode(gatewayConnectionConfig)
-                                        .multipleWriteRegionsEnabled(multiMasterEnabled)
-                                        .preferredRegions(preferredRegions)
-                                        .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                        .consistencyLevel(consistencyLevel);
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+            .credential(credential)
+            .gatewayMode(gatewayConnectionConfig)
+            .multipleWriteRegionsEnabled(multiMasterEnabled)
+            .preferredRegions(preferredRegions)
+            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+            .consistencyLevel(consistencyLevel);
+
+        if (!retryOnThrottledRequests) {
+            builder.throttlingRetryOptions(new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(0));
+        }
+
+        return builder;
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient() {
-        return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true);
+        return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true);
     }
 
     static protected CosmosClientBuilder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,

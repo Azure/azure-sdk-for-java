@@ -336,6 +336,7 @@ public final class CosmosChangeFeedRequestOptions {
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
             effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
+            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
