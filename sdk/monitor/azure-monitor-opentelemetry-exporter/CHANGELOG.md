@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Breaking changes
+- Renamed artifact to `azure-monitor-opentelemetry-exporter`.
+
+### Dependency Updates
+- Updated versions of `opentelemetry-api` and `opentelemetry-sdk` to `0.14.1` version.
+
 ## 1.0.0-beta.3 (2021-02-09)
 
 ### Breaking changes
