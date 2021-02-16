@@ -18,9 +18,7 @@ import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -208,11 +206,17 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
-        currentSpan.addEvent(
-            eventName,
-            traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes),
-            timestamp == null ? null : timestamp.toInstant()
-        );
+        if (timestamp == null) {
+            currentSpan.addEvent(
+                eventName,
+                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes));
+        } else {
+            currentSpan.addEvent(
+                eventName,
+                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes),
+                timestamp.toInstant()
+            );
+        }
     }
 
     /**

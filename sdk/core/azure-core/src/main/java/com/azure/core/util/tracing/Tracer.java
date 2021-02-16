@@ -238,10 +238,11 @@ public interface Tracer {
     }
 
     /**
-     *  Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
-     *  <p>This API does not provide any normalization if provided timestamps are out of range of the current
-     *  span timeline</p>
-     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].</p>
+     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
      *
      * @param name the name of the event.
      * @param attributes the additional attributes to be set for the event.

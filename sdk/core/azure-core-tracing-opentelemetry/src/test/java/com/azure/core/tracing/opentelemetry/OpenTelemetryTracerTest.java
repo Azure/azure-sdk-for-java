@@ -473,14 +473,14 @@ public class OpenTelemetryTracerTest {
     public void addEventWithAttributes() {
         // Arrange
         final String eventName = "event-0";
-        Map<String, Object> input = new HashMap<>() {{
-            put("attr1", "value1");
-            put("attr2", true);
-            put("attr3", 1L);
-            put("attr4", 1.0);
-            put("attr5", new double[] {1.0, 2.0, 3.0});
-            put("attr6", null);
-        }};
+        Map<String, Object> input = new HashMap<String, Object>() {{
+                put("attr1", "value1");
+                put("attr2", true);
+                put("attr3", 1L);
+                put("attr4", 1.0);
+                put("attr5", new double[] {1.0, 2.0, 3.0});
+                put("attr6", null);
+            }};
 
         // Act
         openTelemetryTracer.addEvent(eventName, input, null);
@@ -494,7 +494,7 @@ public class OpenTelemetryTracerTest {
         Attributes attributes = eventData.get(0).getAttributes();
         assertEquals(input.size() - 1, attributes.size());
         Attributes expectedEventAttrs = Attributes.builder()
-            .put("attr5", "value1")
+            .put("attr1", "value1")
             .put("attr2", true)
             .put("attr3", 1L)
             .put("attr4", 1.0)
@@ -520,7 +520,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(1, eventData.size());
         assertEquals(eventName, eventData.get(0).getName());
         assertEquals(eventTime,
-            OffsetDateTime.ofInstant(Instant.ofEpochMilli(eventData.get(0).getEpochNanos()/1000000), ZoneOffset.UTC));
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(eventData.get(0).getEpochNanos() / 1000000), ZoneOffset.UTC));
     }
 
     @Test
