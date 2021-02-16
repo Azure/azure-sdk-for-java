@@ -42,7 +42,7 @@ right corner.
 ```java
 AzureMonitorExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .buildExporter();
+    .buildTraceExporter();
 ```
 
 #### Exporting span data
@@ -57,7 +57,7 @@ The following example shows how to export a trace data to Azure Monitor through 
 // This should be done just once when application starts up
 AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .buildExporter();
+    .buildTraceExporter();
 
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(exporter))
