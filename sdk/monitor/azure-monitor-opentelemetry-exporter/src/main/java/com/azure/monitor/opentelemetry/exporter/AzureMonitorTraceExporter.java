@@ -49,7 +49,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different tracing services to
  * export recorded data for sampled spans in their own format.
  */
-public final class AzureMonitorExporter implements SpanExporter {
+public final class AzureMonitorTraceExporter implements SpanExporter {
     private static final Pattern COMPONENT_PATTERN = Pattern
         .compile("io\\.opentelemetry\\.auto\\.([^0-9]*)(-[0-9.]*)?");
 
@@ -73,7 +73,7 @@ public final class AzureMonitorExporter implements SpanExporter {
     }
 
     private final MonitorExporterAsyncClient client;
-    private final ClientLogger logger = new ClientLogger(AzureMonitorExporter.class);
+    private final ClientLogger logger = new ClientLogger(AzureMonitorTraceExporter.class);
     private final String instrumentationKey;
     private final String telemetryItemNamePrefix;
 
@@ -84,7 +84,7 @@ public final class AzureMonitorExporter implements SpanExporter {
      * @param client The client used to send data to Azure Monitor.
      * @param instrumentationKey The instrumentation key of Application Insights resource.
      */
-    AzureMonitorExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
+    AzureMonitorTraceExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
         String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");

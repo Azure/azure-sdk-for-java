@@ -25,10 +25,11 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to instantiate {@link AzureMonitorExporter} that implements
+ * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that implements
  * {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
 public final class AzureMonitorExporterBuilder {
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
@@ -225,17 +226,24 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Creates an {@link AzureMonitorExporter} based on the options set in the builder. This exporter is an
+     * Creates an {@link AzureMonitorTraceExporter} based on the options set in the builder. This exporter is an
      * implementation of OpenTelemetry {@link SpanExporter}.
      *
-     * @return An instance of {@link AzureMonitorExporter}.
-     * @throws NullPointerException if the connection string is not set.
+     * @return An instance of {@link AzureMonitorTraceExporter}.
+     * @throws NullPointerException if the connection string is not set on this builder or if the environment variable
+     * "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public AzureMonitorExporter buildExporter() {
+    public AzureMonitorTraceExporter buildTraceExporter() {
+        if (this.connectionString == null) {
+            // if connection string is not set, try loading from configuration
+            Configuration configuration = Configuration.getGlobalConfiguration().clone();
+            connectionString(configuration.get(APPLICATIONINSIGHTS_CONNECTION_STRING));
+        }
+
         // instrumentationKey is extracted from connectionString, so, if instrumentationKey is null
         // then the error message should read "connectionString cannot be null".
         Objects.requireNonNull(instrumentationKey, "'connectionString' cannot be null");
-        return new AzureMonitorExporter(buildAsyncClient(), instrumentationKey);
+        return new AzureMonitorTraceExporter(buildAsyncClient(), instrumentationKey);
     }
 
 }

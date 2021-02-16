@@ -40,7 +40,7 @@ right corner.
 ### Creating exporter for Azure Monitor
 <!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L33-L35 -->
 ```java
-AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+AzureMonitorExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildExporter();
 ```
