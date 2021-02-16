@@ -67,7 +67,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private ThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
     private String targetDatabaseRid;
-    private ThroughputResolveLevel throughputResolveLevel;
+    private ThroughputProvisioningScope throughputProvisioningScope;
 
     public ThroughputContainerController(
         ConnectionMode connectionMode,
@@ -90,18 +90,18 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.targetContainer = groups.iterator().next().getTargetContainer();
         this.client = CosmosBridgeInternal.getContextClient(this.targetContainer);
 
-        this.throughputResolveLevel = this.getThroughputResolveLevel(groups);
+        this.throughputProvisioningScope = this.getThroughputResolveLevel(groups);
 
         this.cancellationTokenSource = new CancellationTokenSource();
     }
 
-    private ThroughputResolveLevel getThroughputResolveLevel(Set<ThroughputControlGroupInternal> groupConfigs) {
+    private ThroughputProvisioningScope getThroughputResolveLevel(Set<ThroughputControlGroupInternal> groupConfigs) {
         if (groupConfigs.stream().anyMatch(groupConfig -> groupConfig.getTargetThroughputThreshold() != null)) {
             // Throughput can be provisioned on container level or database level, will start from container
-            return ThroughputResolveLevel.CONTAINER;
+            return ThroughputProvisioningScope.CONTAINER;
         } else {
             // There is no group configured with throughput threshold, so no need to query throughput
-            return ThroughputResolveLevel.NONE;
+            return ThroughputProvisioningScope.NONE;
         }
     }
 
@@ -146,22 +146,22 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
-        return Mono.just(this.throughputResolveLevel) // TODO: ---> test whether it works without defer
-            .flatMap(throughputResolveLevel -> {
-                if (throughputResolveLevel == ThroughputResolveLevel.CONTAINER) {
+        return Mono.just(this.throughputProvisioningScope) // TODO: ---> test whether it works without defer
+            .flatMap(throughputProvisioningScope -> {
+                if (throughputProvisioningScope == ThroughputProvisioningScope.CONTAINER) {
                     return this.resolveContainerThroughput()
                         .onErrorResume(throwable -> {
                             if (this.isOfferNotConfiguredException(throwable)) {
-                                this.throughputResolveLevel = ThroughputResolveLevel.DATABASE;
+                                this.throughputProvisioningScope = ThroughputProvisioningScope.DATABASE;
                             }
 
                             return Mono.error(throwable);
                         });
-                } else if (throughputResolveLevel == ThroughputResolveLevel.DATABASE) {
+                } else if (throughputProvisioningScope == ThroughputProvisioningScope.DATABASE) {
                     return this.resolveDatabaseThroughput()
                         .onErrorResume(throwable -> {
                             if (this.isOfferNotConfiguredException(throwable)) {
-                                this.throughputResolveLevel = ThroughputResolveLevel.CONTAINER;
+                                this.throughputProvisioningScope = ThroughputProvisioningScope.CONTAINER;
                             }
 
                             return Mono.error(throwable);
@@ -302,7 +302,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private Flux<Void> refreshContainerMaxThroughputTask(CancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
 
-        if (this.throughputResolveLevel == ThroughputResolveLevel.NONE) {
+        if (this.throughputProvisioningScope == ThroughputProvisioningScope.NONE) {
             return Flux.empty();
         }
 

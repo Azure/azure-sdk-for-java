@@ -24,7 +24,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     private static final Logger logger = LoggerFactory.getLogger(ThroughputGroupGlobalController.class);
     private static final double INITIAL_CLIENT_THROUGHPUT_RU_SHARE = 1.0;
     private static final double INITIAL_THROUGHPUT_USAGE = 1.0;
-    private static final int DEFAULT_LOAD_FACTOR_QUEUE_SIZE = 300; // 5 mins windows since we refresh ru usage every 1s
+    private static final int DEFAULT_THROUGHPUT_USAGE_QUEUE_SIZE = 300; // 5 mins windows since we refresh ru usage every 1s
 
     private final Duration controlItemRenewInterval;
     private final ThroughputControlContainerManager containerManager;
@@ -44,7 +44,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
         this.controlItemRenewInterval = group.getControlItemRenewInterval();
         this.containerManager = new ThroughputControlContainerManager(group);
 
-        this.throughputUsageSnapshotQueue = EvictingQueue.create(DEFAULT_LOAD_FACTOR_QUEUE_SIZE);
+        this.throughputUsageSnapshotQueue = EvictingQueue.create(DEFAULT_THROUGHPUT_USAGE_QUEUE_SIZE);
         this.throughputUsageSnapshotQueue.add(new ThroughputUsageSnapshot(INITIAL_THROUGHPUT_USAGE));
         this.throughputUsageSnapshotQueueLock = new Object();
         this.clientThroughputShare = new AtomicReference<>(INITIAL_CLIENT_THROUGHPUT_RU_SHARE);

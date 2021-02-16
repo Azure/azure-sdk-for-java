@@ -97,7 +97,7 @@ public class ThroughputControlContainerManager {
 
                 return Mono.error(throwable);
             })
-            .retryWhen(RetrySpec.max(1).filter(throwable -> {
+            .retryWhen(RetrySpec.max(10).filter(throwable -> {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
                 return cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.CONFLICT;
             }))
