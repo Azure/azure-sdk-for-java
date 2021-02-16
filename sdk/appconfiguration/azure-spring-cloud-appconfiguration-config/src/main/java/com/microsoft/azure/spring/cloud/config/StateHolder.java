@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+
 final class StateHolder {
 
     private static final int MAX_JITTER = 15;
+    private static final String FEATURE_ENDPOINT = "_feature";
     private static ConcurrentHashMap<String, State> state = new ConcurrentHashMap<String, State>();
     private static ConcurrentHashMap<String, Boolean> loadState = new ConcurrentHashMap<String, Boolean>();
 
@@ -25,6 +27,13 @@ final class StateHolder {
     static State getState(String endpoint) {
         return state.get(endpoint);
     }
+    
+    /**
+     * @return the state
+     */
+    static State getStateFeatureFlag(String endpoint) {
+        return state.get(endpoint + FEATURE_ENDPOINT);
+    }
 
     /**
      * @param endpoint   the stores endpoint
@@ -32,8 +41,18 @@ final class StateHolder {
      * @param monitoring refresh configurations
      */
     static void setState(String endpoint, List<ConfigurationSetting> watchKeys,
-        AppConfigurationStoreMonitoring monitoring) {
-        state.put(endpoint, new State(watchKeys, Math.toIntExact(monitoring.getCacheExpiration().getSeconds())));
+        Duration duration) {
+        state.put(endpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds())));
+    }
+    
+    /**
+     * @param endpoint   the stores endpoint
+     * @param watchKeys  list of configuration watch keys that can trigger a refresh event
+     * @param monitoring refresh configurations
+     */
+    static void setStateFeatureFlag(String endpoint, List<ConfigurationSetting> watchKeys,
+        Duration duration) {
+        setState(endpoint + FEATURE_ENDPOINT, watchKeys, duration);
     }
 
     static void expireState(String endpoint) {
@@ -54,11 +73,25 @@ final class StateHolder {
         Boolean loadstate = loadState.get(name);
         return loadstate == null ? false : loadstate;
     }
+    
+    /**
+     * @return the loadState
+     */
+    static boolean getLoadStateFeatureFlag(String name) {
+        return getLoadState(name + FEATURE_ENDPOINT);
+    }
 
     /**
      * @param loadState the loadState to set
      */
     static void setLoadState(String name, Boolean loaded) {
         loadState.put(name, loaded);
+    }
+    
+    /**
+     * @param loadState the loadState to set
+     */
+    static void setLoadStateFeatureFlag(String name, Boolean loaded) {
+        setLoadState(name + FEATURE_ENDPOINT, loaded);
     }
 }

@@ -17,6 +17,7 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProper
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class AppConfigurationRefreshTest {
     private Map<String, List<String>> contextsMap;
     private AppConfigurationStoreTrigger trigger;
     private AppConfigurationStoreMonitoring monitoring;
+    private FeatureFlagStore featureFlagStore;
     @Mock
     private Date date;
     @Mock
@@ -71,6 +73,9 @@ public class AppConfigurationRefreshTest {
         monitoring.setCacheExpiration(Duration.ofMinutes(-60));
         monitoring.setEnabled(true);
         store.setMonitoring(monitoring);
+        
+        featureFlagStore = new FeatureFlagStore();
+        store.setFeatureFlags(featureFlagStore);
 
         properties = new AppConfigurationProperties();
         properties.setStores(Arrays.asList(store));
@@ -88,18 +93,19 @@ public class AppConfigurationRefreshTest {
         item.setETag("fake-etag");
         configRefresh = new AppConfigurationRefresh(properties, clientStoreMock);
         StateHolder.setLoadState(TEST_STORE_NAME, true);
+        StateHolder.setLoadStateFeatureFlag(TEST_STORE_NAME, true);
     }
 
     @After
     public void cleanupMethod() {
-        StateHolder.setState(TEST_STORE_NAME, new ArrayList<ConfigurationSetting>(), monitoring);
+        StateHolder.setState(TEST_STORE_NAME, new ArrayList<ConfigurationSetting>(), monitoring.getCacheExpiration());
     }
 
     @Test
     public void nonUpdatedEtagShouldntPublishEvent() throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
@@ -113,7 +119,7 @@ public class AppConfigurationRefreshTest {
     public void updatedEtagShouldPublishEvent() throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
@@ -130,7 +136,7 @@ public class AppConfigurationRefreshTest {
 
         watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(updatedResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("store1_configuration", "fake-etag-updated");
@@ -140,7 +146,47 @@ public class AppConfigurationRefreshTest {
         updated.setETag("fake-etag-updated");
         watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(updated);
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
+
+        // If there is no change it shouldn't update
+        assertFalse(configRefresh.refreshConfigurations().get());
+        verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
+    }
+    
+    @Test
+    public void updatedFeatureFlagEtagShouldPublishEvent() throws Exception {
+        monitoring.setEnabled(false);
+        featureFlagStore.setEnabled(true);
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
+
+        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        configRefresh.setApplicationEventPublisher(eventPublisher);
+
+        // The first time an action happens it can't update
+        assertFalse(configRefresh.refreshConfigurations().get());
+        verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
+
+        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
+
+        // If there is a change it should update
+        assertTrue(configRefresh.refreshConfigurations().get());
+        verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
+
+        watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(updatedResponse());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("store1_configuration", "fake-etag-updated");
+        map.put("store1_feature", "fake-etag-updated");
+
+        ConfigurationSetting updated = new ConfigurationSetting();
+        updated.setETag("fake-etag-updated");
+        watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(updated);
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         // If there is no change it shouldn't update
         assertFalse(configRefresh.refreshConfigurations().get());
@@ -151,7 +197,7 @@ public class AppConfigurationRefreshTest {
     public void noEtagReturned() throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString()))
             .thenReturn(null);
@@ -166,7 +212,7 @@ public class AppConfigurationRefreshTest {
     public void nullItemsReturned() throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
@@ -211,7 +257,7 @@ public class AppConfigurationRefreshTest {
     public void notRefreshTime() throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
         ConfigStore store = new ConfigStore();
         store.setEndpoint(TEST_STORE_NAME);

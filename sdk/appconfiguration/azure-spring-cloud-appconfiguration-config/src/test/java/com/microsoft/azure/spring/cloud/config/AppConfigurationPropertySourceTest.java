@@ -58,6 +58,7 @@ import com.microsoft.azure.spring.cloud.config.feature.management.entity.Feature
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
@@ -147,6 +148,8 @@ public class AppConfigurationPropertySourceTest {
     
     @Mock
     private ConfigStore configStoreMock;
+    
+    private FeatureFlagStore featureFlagStore;
 
     private AppConfigurationProviderProperties appProperties;
 
@@ -181,6 +184,8 @@ public class AppConfigurationPropertySourceTest {
         testItems.add(item3);
 
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
+        featureFlagStore = new FeatureFlagStore();
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
         when(configClientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
         when(settingsMock.byPage()).thenReturn(pageMock);
         when(pageMock.collectList()).thenReturn(collectionMock);
@@ -242,7 +247,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
-        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
+        featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -283,7 +288,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagDisabled() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
-        when(configStoreMock.isUseFeatureManagement()).thenReturn(false);
+        featureFlagStore.setEnabled(false);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -308,8 +313,8 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagBuildError() throws IOException {
+        featureFlagStore.setEnabled(true);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(FEATURE_ITEMS);
-        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -400,7 +405,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagTargeting() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS_TARGETING);
-        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
+        featureFlagStore.setEnabled(true);
         
         FeatureSet featureSet = new FeatureSet();
         try {

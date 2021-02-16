@@ -19,16 +19,6 @@ class State {
     }
 
     /**
-     * Creates a new State object that is already expired.
-     *
-     * @param oldState
-     */
-    State(State oldState) {
-        this.watchKeys = oldState.getWatchKeys();
-        this.notCachedTime = DateUtils.addSeconds(new Date(), Math.toIntExact(-60));
-    }
-
-    /**
      * @return the watchKeys
      */
     public List<ConfigurationSetting> getWatchKeys() {
