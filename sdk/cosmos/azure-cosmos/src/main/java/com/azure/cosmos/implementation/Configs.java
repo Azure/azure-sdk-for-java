@@ -43,6 +43,7 @@ public class Configs {
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
     private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
+    private static final String QUERYPLAN_CACHING_ENABLED = "COSMOS.QUERYPLAN_CACHING_ENABLED";
 
     private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
@@ -212,6 +213,11 @@ public class Configs {
 
     public static boolean isClientTelemetryEnabled(boolean defaultValue) {
         return getJVMConfigAsBoolean(CLIENT_TELEMETRY_ENABLED, defaultValue);
+    }
+
+    public static boolean isQueryPlanCachingEnabled() {
+        // Queryplan caching will be disabled by default
+        return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, false);
     }
 
     public static int getAddressRefreshResponseTimeoutInSeconds() {

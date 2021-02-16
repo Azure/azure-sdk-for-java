@@ -169,6 +169,13 @@ public class BastionHostIpConfiguration extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BastionHostIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

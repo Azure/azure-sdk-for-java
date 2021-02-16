@@ -10,6 +10,8 @@ package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplate;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import java.util.List;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplateLocations;
 
 class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTemplate {
     private final IoTCentralManager manager;
@@ -24,13 +26,18 @@ class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTempla
     }
 
     @Override
-    public String appTemplateName() {
-        return this.inner().appTemplateName();
+    public String description() {
+        return this.inner().description();
     }
 
     @Override
-    public String description() {
-        return this.inner().description();
+    public String industry() {
+        return this.inner().industry();
+    }
+
+    @Override
+    public List<AppTemplateLocations> locations() {
+        return this.inner().locations();
     }
 
     @Override
@@ -41,6 +48,11 @@ class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTempla
     @Override
     public String manifestVersion() {
         return this.inner().manifestVersion();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override

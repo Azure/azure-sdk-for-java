@@ -1,7 +1,37 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.14.0-beta.1 (Unreleased)
 
+
+## 1.13.0 (2021-02-05)
+
+### New Features
+
+- Added `setPollInterval` to `PollerFlux` and `SyncPoller` to allow mutating how often a long-running request is polled.
+- Added `HttpClientOptions` to allow for reusable `HttpClient` configurations to be passed into SPIs and client builders.
+- Added `CoreUtils.getApplicationId` as a convenience method to determine application ID from `ClientOptions` or `HttpLogOptions`.
+- Added additional convenience methods to `HttpHeaders` and `HttpHeader` to better support multi-value headers.
+- Added support for claims in `TokenRequestContext`.
+- Added the ability to disable tracing for individual network requests.
+
+### Deprecations
+
+- Deprecated `HttpHeaders.put` and replaced with `HttpHeaders.set`.
+
+## 1.12.0 (2021-01-11)
+
+### New Features
+
+- Added `AzureSasCredential` and `AzureSasCredentialPolicy` to standardize the ability to add SAS tokens to HTTP requests.
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Updated `reactor-core` from `3.3.11.RELEASE` to `3.3.12.RELEASE`.
+- Updated `netty-tcnative-boringssl-static` from `2.0.34.Final` to `2.0.35.Final`.
 
 ## 1.11.0 (2020-11-24)
 

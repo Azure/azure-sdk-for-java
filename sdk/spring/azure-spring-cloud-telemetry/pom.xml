@@ -12,17 +12,16 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-telemetry</artifactId>
-  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
 
   <name>Azure Spring Cloud Telemetry</name>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure</artifactId> <!-- We may not need include all azure management sdks in a batch -->
-      <version>1.34.0</version> <!-- {x-version-update;spring_com.microsoft.azure:azure;external_dependency} -->
-    </dependency>
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
+  </properties>
 
+  <dependencies>
     <!-- Libraries and frameworks> -->
     <dependency>
       <groupId>commons-io</groupId>
@@ -51,6 +50,11 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.11.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
@@ -74,7 +78,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure:[1.34.0]</include> <!-- {x-include-update;spring_com.microsoft.azure:azure;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-aop:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->

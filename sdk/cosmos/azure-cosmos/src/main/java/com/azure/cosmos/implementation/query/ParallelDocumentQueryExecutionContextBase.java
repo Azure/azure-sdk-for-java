@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -23,12 +24,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -103,7 +106,9 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     protected <TContinuationToken> int findTargetRangeAndExtractContinuationTokens(
-            List<PartitionKeyRange> partitionKeyRanges, Range<String> range) {
+        List<PartitionKeyRange> partitionKeyRanges, Range<String> range,
+        Utils.ValueHolder<Map<String, TContinuationToken>> outPartitionRangeToContinuation,
+        TContinuationToken continuation) {
         if (partitionKeyRanges == null) {
             throw new IllegalArgumentException("partitionKeyRanges can not be null.");
         }
@@ -132,12 +137,29 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                     String.format("Could not find partition key range for continuation token: {0}", needle));
         }
 
+        List<PartitionKeyRange> replacementRanges;
+
+        // find what ranges make up the supplied continuation token
+        replacementRanges = partitionKeyRanges.stream()
+                                .filter(p -> range.getMin().compareTo(p.getMinInclusive()) <= 0 &&
+                                                 range.getMax().compareTo(p.getMaxExclusive()) >= 0)
+                                .sorted(Comparator.comparing(PartitionKeyRange::getId))
+                                .collect(Collectors.toList());
+
+        if (replacementRanges.isEmpty()) {
+            throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
+                                                       String.format("Cannot find ranges for continuation {}", continuation));
+        }
+
+        replacementRanges.forEach(r -> outPartitionRangeToContinuation.v.put(r.getId(), continuation));
+
         return minIndex;
     }
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-                                                                  String initialContinuationToken
-        , int initialPageSize, CosmosQueryRequestOptions cosmosQueryRequestOptions, SqlQuerySpec querySpecForInit,
+                                                                  String initialContinuationToken, int initialPageSize,
+                                                                  CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                                                                  SqlQuerySpec querySpecForInit,
                                                                   Map<String, String> commonRequestHeaders,
                                                                   TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                                   Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,

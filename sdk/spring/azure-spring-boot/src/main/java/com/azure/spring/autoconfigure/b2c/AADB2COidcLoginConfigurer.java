@@ -10,15 +10,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
  */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {
 
-    private final AADB2CProperties properties;
-
     private final AADB2CLogoutSuccessHandler handler;
 
     private final AADB2CAuthorizationRequestResolver resolver;
 
-    public AADB2COidcLoginConfigurer(AADB2CProperties properties,
-                                     AADB2CLogoutSuccessHandler handler, AADB2CAuthorizationRequestResolver resolver) {
-        this.properties = properties;
+    public AADB2COidcLoginConfigurer(AADB2CLogoutSuccessHandler handler, AADB2CAuthorizationRequestResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
     }
@@ -26,10 +22,10 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
     @Override
     public void init(HttpSecurity http) throws Exception {
         http.logout()
-            .logoutSuccessHandler(handler)
-            .and()
+                .logoutSuccessHandler(handler)
+                .and()
             .oauth2Login()
-            .loginProcessingUrl(properties.getLoginProcessingUrl())
-            .authorizationEndpoint().authorizationRequestResolver(resolver);
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(resolver);
     }
 }

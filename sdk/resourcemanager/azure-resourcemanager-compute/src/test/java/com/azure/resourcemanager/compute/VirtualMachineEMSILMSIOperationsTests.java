@@ -27,7 +27,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().deleteByName(rgName);
+        this.resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

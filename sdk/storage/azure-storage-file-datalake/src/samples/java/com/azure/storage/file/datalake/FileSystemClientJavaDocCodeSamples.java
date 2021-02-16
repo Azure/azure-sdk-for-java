@@ -40,6 +40,7 @@ public class FileSystemClientJavaDocCodeSamples {
     private Duration timeout = Duration.ofSeconds(30);
     private String key1 = "key1";
     private String value1 = "value1";
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
@@ -423,5 +424,57 @@ public class FileSystemClientJavaDocCodeSamples {
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link DataLakeFileSystemClient#generateSas(DataLakeServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission permission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission myPermission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemClient#rename(String)}
+//     */
+//    public void renameContainer() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
+//        DataLakeFileSystemClient fileSystemClient = client.rename("newFileSystemName");
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemClient#renameWithResponse(FileSystemRenameOptions, Duration, Context)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        Context context = new Context("Key", "Value");
+//
+//        DataLakeFileSystemClient fileSystemClient = client.renameWithResponse(
+//            new FileSystemRenameOptions("newFileSystemName")
+//                .setRequestConditions(requestConditions),
+//            Duration.ofSeconds(1),
+//            context).getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context
+//    }
 
 }

@@ -1,11 +1,51 @@
 ## Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.13.0-beta.1 (Unreleased)
 
+
+### 4.12.0 (2021-02-09)
+#### New Features
+* Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
+* Added changeFeed pull model beta API.
+* Added support for resuming query from a pre split continuation token after partition split.
+* Optimized query execution time by caching query plan for single partition queries with filters and orderby.
+
+#### Key Bug Fixes
+* Fixed telemetry deserialization issue.
+* Skip session token for query plan, trigger and UDF.
+* Improved session timeout 404/1002 exception handling.
+
+### 4.11.0 (2021-01-15)
+#### New Features
+* Added Beta API for Patch support.
+* Updated reactor-core library version to `3.3.12.RELEASE`.
+* Updated reactor-netty library version to `0.9.15.RELEASE`.
+* Updated netty library version to `4.1.54.Final`.
+
+#### Key Bug Fixes
+* Fixed RntbdServiceEnpoint close issue.
+* Improved the latency and throughput for writes when multiplexing.
+
+### 4.10.0 (2020-12-14)
+#### New Features
+* Added Conflict API support.
+
+### 4.9.0 (2020-12-11)
+#### New Features
+* Added Beta API for Bulk Operations.
+* Added `getRegionsContacted` API in `CosmosDiagnostics`.
+* Added Diagnostics for `CosmosStoredProcedureResponse`.
+* Added trouble shooting guide links to `CosmosException`.
+
+#### Key Bug Fixes
+* Adding automatic retries on client-side transient failures on writes while possible with still being idempotent.
+* Fixed NPE on `getDiagnostics` for `CosmosStoredProcedureResponse`.
+* Fixed empty `resourceAddress` in `CosmosException`.
 
 ### 4.8.0 (2020-10-27)
 #### New Features
 * Added `contentResponseOnWriteEnabled` feature to `CosmosItemRequestOptions`.
+
 #### Key Bug Fixes
 * Fixed an issue which may affect query behaviour when resuming from a continuation token.
 
@@ -15,7 +55,7 @@
 
 ### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
 #### New Features
-* Added Beta for transactional batches.
+* Added Beta API for transactional batches.
 
 #### Key Bug Fixes
 * Fixed an error parsing query metrics on locales with ',' as floating-point delimiter.

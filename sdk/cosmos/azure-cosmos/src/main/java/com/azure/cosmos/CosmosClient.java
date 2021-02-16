@@ -213,5 +213,4 @@ public final class CosmosClient implements Closeable {
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
-
 }

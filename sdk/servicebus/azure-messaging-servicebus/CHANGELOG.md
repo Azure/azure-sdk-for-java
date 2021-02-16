@@ -3,6 +3,30 @@
 ## 7.1.0-beta.1 (Unreleased)
 
 
+## 7.0.2 (2021-02-10)
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.2`.
+
+## 7.0.1 (2021-01-15)
+### New Features
+- Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from 
+  sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection.
+
+### Bug Fixes
+- Fix issue [18351](https://github.com/Azure/azure-sdk-for-java/issues/18351): Getting 'NullPointerException' When calling 
+  'ServiceBusAdministrationAsyncClient#getSubscriptionRuntimeProperties()' for the topic where user has only listen 
+  (and not manage) permission.
+- Fix issue [18122](https://github.com/Azure/azure-sdk-for-java/issues/18435): A session-based Message receiver does not 
+  receive messages sent after 60s gap from the last message sent. This happens if there is only one active session in
+  Service Bus entity.
+- Fix issue [18536](https://github.com/Azure/azure-sdk-for-java/issues/18536): The 'ServiceBusAdministrationClient.deleteSubscription()'
+  is not synchronous.
+
+### Dependency Updates   
+- Upgraded `azure-core` dependency to `1.12.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.1`.
+
 ## 7.0.0 (2020-11-30)
 
 ### New Features
@@ -23,11 +47,16 @@
 ### Bug Fixes
 - Set the default 'prefetch' to 0 instead of 1 in both 'RECEIVE_AND_DELETE' and 'PEEK_LOCK' mode. User can set this 
   value in builder.
+
+### Known issues
+### Can not resolve `BinaryData` or `NoClassDefFoundError` 
+  NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azure SDKs in the same pom.xml file.
+  Check [here][known-issue-binarydata-notfound] for more details.
    
 ### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
-
+  
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
 - Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
@@ -133,6 +162,6 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 ### Known issues
 
-- Following features are not implemented Transactions, Sessions, Managing filter rules on Subscription.
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)

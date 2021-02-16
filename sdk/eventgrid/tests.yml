@@ -1,11 +1,11 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventgrid
-      Timeout: 60
-      MaxParallel: 6
+      TimeoutInMinutes: 60
+      MaxParallel: 7
       EnvVars:
         AZURE_TEST_MODE: RECORD
       Artifacts:
