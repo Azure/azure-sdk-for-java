@@ -13,7 +13,7 @@ private[spark] object CosmosClientCache {
   private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosAsyncClient]
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
-                           cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
+            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
     cache.get(cosmosClientConfiguration) match {
       case Some(client) => client
       case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle)

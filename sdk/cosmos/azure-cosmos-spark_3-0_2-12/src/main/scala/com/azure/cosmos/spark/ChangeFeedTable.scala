@@ -93,9 +93,9 @@ private class ChangeFeedTable(val transforms: Array[Transform],
                           userConfig: Map[String, String]): StructType = {
 
     val defaultSchema: StructType = changeFeedConfig.changeFeedMode match {
-      case ChangeFeedModes.incremental =>
+      case ChangeFeedModes.Incremental =>
         ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled
-      case ChangeFeedModes.fullFidelity =>
+      case ChangeFeedModes.FullFidelity =>
         ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled
     }
 

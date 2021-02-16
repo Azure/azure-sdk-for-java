@@ -176,6 +176,24 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
+     * Gets the current size of the documents in a container in kilobytes from the Azure Cosmos DB service.
+     *
+     * @return The current size of a container in kilobytes.
+     */
+    public long getDocumentUsage() {
+        return this.currentQuotaHeader(Constants.Quota.DOCUMENTS_SIZE);
+    }
+
+    /**
+     * Current document count usage.
+     *
+     * @return the document count usage.
+     */
+    public long getDocumentCountUsage() {
+        return this.currentQuotaHeader(Constants.Quota.DOCUMENTS_COUNT);
+    }
+
+    /**
      * Gets the maximum quota of stored procedures for a container from the Azure Cosmos DB service.
      *
      * @return The maximum stored procedure quota.

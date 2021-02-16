@@ -34,9 +34,9 @@ private case class ChangeFeedPartitionReader
 
   // TODO fabianm this needs to be initialized based on InputPartition and startFrom configuration
   private val changeFeedRequestOptions = this.changeFeedConfig.changeFeedMode match {
-    case ChangeFeedModes.incremental =>
+    case ChangeFeedModes.Incremental =>
       CosmosChangeFeedRequestOptions.createForProcessingFromBeginning (FeedRange.forFullRange)
-    case ChangeFeedModes.fullFidelity =>
+    case ChangeFeedModes.FullFidelity =>
       CosmosChangeFeedRequestOptions
         .createForProcessingFromNow(FeedRange.forFullRange)
         .fullFidelity()

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation
 
 import com.azure.cosmos.CosmosClientBuilder
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 
 private[cosmos] object SparkBridgeInternal {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
@@ -12,5 +13,15 @@ private[cosmos] object SparkBridgeInternal {
 
     val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
     clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(cosmosClientBuilder, metadataCache)
+  }
+
+  def extractLsnFromChangeFeedContinuation(continuation: String) : Long = {
+    val lsnToken = ChangeFeedState
+      .fromString(continuation)
+      .getContinuation
+      .getCurrentContinuationToken
+      .getToken
+
+    lsnToken.substring(1, lsnToken.size - 1).toLong
   }
 }
