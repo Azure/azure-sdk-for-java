@@ -13,6 +13,7 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 
+//scalastyle:off null
 case class BulkWriter(container: CosmosAsyncContainer,
                       writeConfig: CosmosWriteConfig) {
 
@@ -20,8 +21,8 @@ case class BulkWriter(container: CosmosAsyncContainer,
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-  private val bulkInputEmitter: EmitterProcessor[CosmosItemOperation] = EmitterProcessor.create
-
+  private val bulkInputEmitter: EmitterProcessor[CosmosItemOperation] = EmitterProcessor.create[CosmosItemOperation]()
+  
   // TODO: moderakh implement retry
   // TODO: moderakh handle 409
 
@@ -111,3 +112,4 @@ case class BulkWriter(container: CosmosAsyncContainer,
     subscriptionDisposable.dispose()
   }
 }
+//scalastyle:on null
