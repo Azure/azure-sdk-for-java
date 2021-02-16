@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartitionKeyBuilder {
-    private List<Object> partitionKeyValues;
+    private final List<Object> partitionKeyValues;
 
     /**
      * Constructor. CREATE a new instance of the PartitionKeyBuilder object.
@@ -71,8 +71,7 @@ public class PartitionKeyBuilder {
 
         PartitionKeyInternal partitionKeyInternal;
         Object[] valueArray = new Object[this.partitionKeyValues.size()];
-        for(int i = 0; i < this.partitionKeyValues.size(); i++)
-        {
+        for(int i = 0; i < this.partitionKeyValues.size(); i++) {
             Object val = this.partitionKeyValues.get(i);
             if(PartitionKey.NONE.equals(val))
             {

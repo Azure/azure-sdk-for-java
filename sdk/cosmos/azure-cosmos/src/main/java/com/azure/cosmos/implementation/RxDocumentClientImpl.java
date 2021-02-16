@@ -1240,32 +1240,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (partitionKeyDefinition != null) {
             switch (partitionKeyDefinition.getKind()) {
                 case HASH:
+                    String path = partitionKeyDefinition.getPaths().iterator().next();
+                    List<String> parts = PathParser.getPathParts(path);
+                    if (parts.size() >= 1) {
+                        Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
+                        if (value == null || value.getClass() == ObjectNode.class) {
+                            value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+                        }
 
-                String path = partitionKeyDefinition.getPaths().iterator().next();
-                List<String> parts = PathParser.getPathParts(path);
-                if (parts.size() >= 1) {
-                    Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
-                    if (value == null || value.getClass() == ObjectNode.class) {
-                        value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+                        if (value instanceof PartitionKeyInternal) {
+                            return (PartitionKeyInternal) value;
+                        } else {
+                            return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
+                        }
                     }
+                    break;
+                    case MULTI_HASH:
+                        Object[] partitionKeyValues = new Object[partitionKeyDefinition.getPaths().size()];
+                        for(int path_iter = 0 ; path_iter < partitionKeyDefinition.getPaths().size(); path_iter++){
+                            String partitionPath = partitionKeyDefinition.getPaths().get(path_iter);
+                            List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
+                            partitionKeyValues[path_iter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
+                        }
+                        return PartitionKeyInternal.fromObjectArray(partitionKeyValues, false);
 
-                    if (value instanceof PartitionKeyInternal) {
-                        return (PartitionKeyInternal) value;
-                    } else {
-                        return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
-                    }
+                    default:
+                        throw new IllegalArgumentException("Unrecognized Partition kind");
                 }
-                break;
-                case MULTI_HASH:
-                    Object[] partitionKeyValues = new Object[partitionKeyDefinition.getPaths().size()];
-                    for(int path_iter = 0 ; path_iter < partitionKeyDefinition.getPaths().size(); path_iter++)
-                    {
-                        String partitionPath = partitionKeyDefinition.getPaths().get(path_iter);
-                        List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
-                        partitionKeyValues[path_iter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
-                    }
-                    return PartitionKeyInternal.fromObjectArray(partitionKeyValues, false);
-            }
         }
 
         return null;
