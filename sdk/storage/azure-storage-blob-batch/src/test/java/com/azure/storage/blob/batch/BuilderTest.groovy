@@ -44,7 +44,7 @@ class BuilderTest extends Specification {
 
         when:
         def batchClient = new BlobBatchClientBuilder(serviceClient).buildClient()
-        def pipeline = batchClient.client.client.getHttpPipeline()
+        def pipeline = batchClient.client.client.httpPipeline
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
             foundPolicy |= (pipeline.getPolicy(i) instanceof BlobUserAgentModificationPolicy)
@@ -68,7 +68,7 @@ class BuilderTest extends Specification {
 
         when:
         def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
-        def pipeline = batchClient.client.client.getHttpPipeline()
+        def pipeline = batchClient.client.client.httpPipeline
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
             foundPolicy |= (pipeline.getPolicy(i) instanceof BlobUserAgentModificationPolicy)
