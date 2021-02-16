@@ -22,10 +22,8 @@ case class BulkWriter(container: CosmosAsyncContainer,
   private val pendingTasksCompleted = lock.newCondition
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: EmitterProcessor[CosmosItemOperation] = EmitterProcessor.create[CosmosItemOperation]()
-  
   // TODO: moderakh implement retry
   // TODO: moderakh handle 409
-
   private val subscriptionDisposable: Disposable = {
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
       container.processBulkOperations[Object](bulkInputEmitter).asScala
