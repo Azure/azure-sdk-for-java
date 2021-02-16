@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 
-public class AzureMonitorExporterTestBase extends TestBase {
+public class AzureMonitorTraceExporterTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -28,10 +28,10 @@ public class AzureMonitorExporterTestBase extends TestBase {
     }
 
     Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString(System.getenv("AZURE_MONITOR_CONNECTION_STRING"))
             .addPolicy(validator)
-            .buildExporter();
+            .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))

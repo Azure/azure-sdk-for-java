@@ -108,7 +108,7 @@ Search for available phone numbers by providing the area code, assignment type, 
 PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
 searchRequest
     .setAreaCode("800") // Area code is optional for toll free numbers
-    .setAssignmentType(PhoneNumberAssignmentType.USER)
+    .setAssignmentType(PhoneNumberAssignmentType.PERSON)
     .setCapabilities(new PhoneNumberCapabilities()
         .setCalling(PhoneNumberCapabilityValue.INBOUND)
         .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND))

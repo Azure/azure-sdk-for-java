@@ -105,7 +105,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/operations/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelOperation(
                 @HostParam("endpoint") String endpoint,
@@ -123,7 +123,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(
                 @HostParam("endpoint") String endpoint,
@@ -142,7 +142,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Patch("/phoneNumbers/{phoneNumber}/capabilities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(
                 @HostParam("endpoint") String endpoint,
