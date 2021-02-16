@@ -21,7 +21,7 @@ public class AzureMonitorExporterBuilderTest {
                                                                           Class<T> exceptionExpected) {
         Assertions.assertThrows(exceptionExpected, () -> new AzureMonitorExporterBuilder()
             .connectionString(connectionString)
-            .buildExporter());
+            .buildTraceExporter());
 
     }
 
