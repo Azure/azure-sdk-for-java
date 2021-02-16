@@ -43,7 +43,7 @@ final class ReliableDownload {
                      Function<HttpGetterInfo, Mono<ReliableDownload>> getter) {
         StorageImplUtils.assertNotNull("getter", getter);
         StorageImplUtils.assertNotNull("info", info);
-        StorageImplUtils.assertNotNull("info.eTag", info.getETag());
+        // Note: We do not check for eTag since it is possible for the service to not return the etag on large downloads.
 
         this.rawResponse = rawResponse;
         this.options = (options == null) ? new DownloadRetryOptions() : options;
