@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 
 //scalastyle:off null
-case class BulkWriter(container: CosmosAsyncContainer,
+class BulkWriter(container: CosmosAsyncContainer,
                       writeConfig: CosmosWriteConfig) {
 
   private val activeTasks = new AtomicInteger(0)
