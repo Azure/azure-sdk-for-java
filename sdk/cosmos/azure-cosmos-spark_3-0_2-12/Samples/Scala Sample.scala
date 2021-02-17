@@ -11,7 +11,7 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.container" -> cosmosContainerName
 )
 
-val cfgWithAutoSchemaInferance = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
@@ -54,7 +54,7 @@ df.show()
 // COMMAND ----------
 
 // Show the schema of the table and data with auto schema inference
-val df = spark.read.format("cosmos.items").options(cfgWithAutoSchemaInferance).load()
+val df = spark.read.format("cosmos.items").options(cfgWithAutoSchemaInference).load()
 df.printSchema()
 
 df.show()
