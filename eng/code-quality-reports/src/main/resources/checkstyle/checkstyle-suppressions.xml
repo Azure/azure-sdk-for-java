@@ -22,9 +22,9 @@
   <!--  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>-->
 
   <!-- ignore missing javadoc in samples -->
-  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
-  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
-  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+<!--  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>-->
+<!--  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>-->
+<!--  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>-->
 
   <!-- Files licensed with alternate license in the header -->
   <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
@@ -132,6 +132,13 @@
 
   <!-- Suppress LineLength for samples and tests -->
 <!--  <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>-->
+
+  <!-- To allow using sysout rather than logger in samples -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="Receipt.java"/>
 
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
