@@ -70,15 +70,9 @@ public final class TestHelpers {
     public static final JacksonAdapter SERIALIZER = (JacksonAdapter) Utility.initializeSerializerAdapter();
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() { };
-//    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
-//            Collections.singletonMap("crs", new HashMap<String, Object>() {
-//            {
-//                put("type", "name");
-//                put("properties", Collections.singletonMap("name", "EPSG:4326"));
-//            }
-//        }));
-//    }
+
+    private static final ObjectMapper VALIDATION_MAPPER =
+        ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter()).serializer();
 
     /**
      * Assert whether two objects are equal.
@@ -116,9 +110,8 @@ public final class TestHelpers {
         } else if (expected instanceof Map) {
             assertMapEquals((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode expectedNode = mapper.valueToTree(expected);
-            ObjectNode actualNode = mapper.valueToTree(actual);
+            ObjectNode expectedNode = VALIDATION_MAPPER.valueToTree(expected);
+            ObjectNode actualNode = VALIDATION_MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
     }
@@ -366,7 +359,7 @@ public final class TestHelpers {
             .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
 
         try {
-            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
+            SearchIndex index = VALIDATION_MAPPER.readValue(indexData, SearchIndex.class);
 
             Field searchIndexName = index.getClass().getDeclaredField("name");
             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
