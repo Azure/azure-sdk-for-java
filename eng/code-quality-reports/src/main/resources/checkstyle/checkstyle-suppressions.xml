@@ -35,11 +35,6 @@
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
-  <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*InteractiveBrowserCredentialBuilder.java"/>
-
   <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>

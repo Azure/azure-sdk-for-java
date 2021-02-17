@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @param <T> the type of the credential builder
  */
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> {
-    IdentityClientOptions identityClientOptions;
+    final IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {
         this.identityClientOptions = new IdentityClientOptions();
