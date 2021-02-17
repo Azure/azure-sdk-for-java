@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -843,6 +844,29 @@ public class BlobAsyncClientBase {
                 .flatMapMany(BlobDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadContent}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<BinaryData> downloadContent() {
+        try {
+            return downloadWithResponse(null, null, null, false)
+                .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
     }
 

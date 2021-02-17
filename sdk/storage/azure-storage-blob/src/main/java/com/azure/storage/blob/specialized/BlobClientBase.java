@@ -10,6 +10,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -576,6 +577,25 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void download(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
+    }
+
+    /**
+     * Downloads the entire blob. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.downloadContent}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @return The content of the blob.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadContent() {
+        return blockWithOptionalTimeout(client.downloadContent(), null);
     }
 
     /**
