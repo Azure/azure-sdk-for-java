@@ -19,5 +19,6 @@
     <module>mgmt-v2019_11_01</module>
     <module>mgmt-v2020_06_01</module>
     <module>mgmt-v2020_10_01_preview</module>
+    <module>mgmt-v2020_12_01</module>
   </modules>
 </project>

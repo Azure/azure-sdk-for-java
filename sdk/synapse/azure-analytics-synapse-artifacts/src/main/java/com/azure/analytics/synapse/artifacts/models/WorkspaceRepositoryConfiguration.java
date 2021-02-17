@@ -6,6 +6,7 @@ package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /** Git integration settings. */
 @Fluent
@@ -52,6 +53,18 @@ public final class WorkspaceRepositoryConfiguration {
      */
     @JsonProperty(value = "rootFolder")
     private String rootFolder;
+
+    /*
+     * The last commit ID
+     */
+    @JsonProperty(value = "lastCommitId")
+    private String lastCommitId;
+
+    /*
+     * The VSTS tenant ID
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
 
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
@@ -192,6 +205,46 @@ public final class WorkspaceRepositoryConfiguration {
      */
     public WorkspaceRepositoryConfiguration setRootFolder(String rootFolder) {
         this.rootFolder = rootFolder;
+        return this;
+    }
+
+    /**
+     * Get the lastCommitId property: The last commit ID.
+     *
+     * @return the lastCommitId value.
+     */
+    public String getLastCommitId() {
+        return this.lastCommitId;
+    }
+
+    /**
+     * Set the lastCommitId property: The last commit ID.
+     *
+     * @param lastCommitId the lastCommitId value to set.
+     * @return the WorkspaceRepositoryConfiguration object itself.
+     */
+    public WorkspaceRepositoryConfiguration setLastCommitId(String lastCommitId) {
+        this.lastCommitId = lastCommitId;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The VSTS tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The VSTS tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the WorkspaceRepositoryConfiguration object itself.
+     */
+    public WorkspaceRepositoryConfiguration setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 }

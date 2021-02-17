@@ -16,7 +16,6 @@ import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotRes
 
 public class MetricsImpl implements Metrics {
 
-    private final MetricRegistry _metricsRegistry;
     private final Clock _clock;
     private final Meter _successMeter;
     private final Meter _failureMeter;
@@ -32,15 +31,14 @@ public class MetricsImpl implements Metrics {
         Preconditions.checkNotNull(collectionKey,
             "The CollectionKey can not be null. Gotta have a CollectionKey to perform any DocumentDB operations");
 
-        _metricsRegistry = metricsRegistry;
         _clock = clock;
 
         // The metric prefix is comprised of the Collection name and Operation type
-        //      e.g. #GET (invitations)
-        final String metricPrefix = String.format("#%s (%s)", operationName.toUpperCase(), collectionKey.getCollectionName());
-        _successMeter = _metricsRegistry.meter(metricPrefix + " Successful Operations");
-        _failureMeter = _metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
-        _latencyTimer = _metricsRegistry.register(metricPrefix + " Latency",
+        //      e.g. GET (invitations)
+        final String metricPrefix = String.format("%s %s", operationName.toUpperCase(), collectionKey.getCollectionName());
+        _successMeter = metricsRegistry.meter(metricPrefix + " Successful Operations");
+        _failureMeter = metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
+        _latencyTimer = metricsRegistry.register(metricPrefix + " Latency",
             new Timer(new HdrHistogramResetOnSnapshotReservoir()));
     }
 

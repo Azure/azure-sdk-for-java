@@ -41,7 +41,9 @@
         "minor": "nonBreaking",
         "patch": "equivalent"
       },
-      "passThroughDifferences": [ "java.class.nonPublicPartOfAPI" ]
+      "passThroughDifferences": [
+        "java.class.nonPublicPartOfAPI"
+      ]
     }
   },
   {
@@ -215,7 +217,6 @@
         "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
         "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
       },
-
       {
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
@@ -350,7 +351,7 @@
         "code": "java.method.parameterTypeChanged",
         "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===java.lang.String===)",
         "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===com.azure.core.amqp.models.AmqpMessageId===)",
-        "justification":"Introduced new type AmqpMessageId."
+        "justification": "Introduced new type AmqpMessageId."
       },
       {
         "code": "java.method.parameterTypeChanged",
@@ -368,10 +369,76 @@
         "code": "java.method.removed",
         "old": "method void com.azure.core.amqp.models.AmqpAnnotatedMessage::<init>(com.azure.core.amqp.models.AmqpAnnotatedMessage)",
         "justification": "Removed copy constructor, It is not required for Service bus message."
-      },      {
+      },
+      {
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
         "justification": "Default interface method"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "new": "class com.azure.search.documents.SearchClientBuilder",
+        "justification": "Non-breaking change"
+      },
+      {
+        "code": "java.method.staticMethodAddedToInterface",
+        "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
+        "justification": "Default implementation"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.http.HttpHeader::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New constructor"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.lang.String[])",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.util.List<java.lang.String> com.azure.core.util.Header::getValuesList()",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setClaims(java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getClaims()",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method com.azure.core.util.polling.SyncPoller<T, U> com.azure.core.util.polling.SyncPoller<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "Default implementation"
       }
     ]
   }

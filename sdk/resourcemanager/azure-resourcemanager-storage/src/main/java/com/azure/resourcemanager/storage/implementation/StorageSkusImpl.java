@@ -9,6 +9,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.models.StorageSku;
 import com.azure.resourcemanager.storage.models.StorageSkus;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for {@link StorageSkus}. */
 public class StorageSkusImpl implements StorageSkus {
@@ -26,12 +27,12 @@ public class StorageSkusImpl implements StorageSkus {
 
     @Override
     public PagedIterable<StorageSku> list() {
-        return this.inner().list().mapPage(StorageSkuImpl::new);
+        return PagedConverter.mapPage(this.inner().list(), StorageSkuImpl::new);
     }
 
     @Override
     public PagedFlux<StorageSku> listAsync() {
-        return this.inner().listAsync().mapPage(StorageSkuImpl::new);
+        return PagedConverter.mapPage(this.inner().listAsync(), StorageSkuImpl::new);
     }
 
     public SkusClient inner() {

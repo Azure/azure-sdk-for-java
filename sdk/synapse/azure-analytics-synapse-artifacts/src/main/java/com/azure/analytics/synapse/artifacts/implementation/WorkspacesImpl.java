@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.Workspace;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.QueryParam;
@@ -51,7 +52,10 @@ public final class WorkspacesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<Workspace>> get(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -63,8 +67,9 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -78,7 +83,8 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync(Context context) {
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

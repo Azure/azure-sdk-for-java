@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -50,6 +51,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
+    List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private Flux<OrderByRowResult<T>> orderByObservable;
     private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -74,6 +76,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
+        this.clientSideRequestStatisticsList = new ArrayList<>();
         targetRangeToOrderByContinuationTokenMap = new HashMap<>();
     }
 
@@ -201,7 +204,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 tracker,
                 documentProducers,
                 queryMetricMap,
-                targetRangeToOrderByContinuationTokenMap);
+                targetRangeToOrderByContinuationTokenMap,
+                clientSideRequestStatisticsList);
     }
 
     private void initializeRangeWithContinuationTokenAndFilter(
@@ -357,6 +361,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 right.toString());
     }
 
+    @Override
     protected OrderByDocumentProducer<T> createDocumentProducer(
             String collectionRid,
             PartitionKeyRange targetRange,
@@ -392,18 +397,21 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         private final int maxPageSize;
         private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
         private final Function<OrderByRowResult<T>, String> orderByContinuationTokenCallback;
+        private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
         private volatile FeedResponse<OrderByRowResult<T>> previousPage;
 
         public ItemToPageTransformer(
-                RequestChargeTracker tracker,
-                int maxPageSize,
-                ConcurrentMap<String, QueryMetrics> queryMetricsMap,
-                Function<OrderByRowResult<T>, String> orderByContinuationTokenCallback) {
+            RequestChargeTracker tracker,
+            int maxPageSize,
+            ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+            Function<OrderByRowResult<T>, String> orderByContinuationTokenCallback,
+            List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
             this.tracker = tracker;
             this.maxPageSize = maxPageSize > 0 ? maxPageSize : DEFAULT_PAGE_SIZE;
             this.queryMetricMap = queryMetricsMap;
             this.orderByContinuationTokenCallback = orderByContinuationTokenCallback;
             this.previousPage = null;
+            this.clientSideRequestStatisticsList = clientSideRequestStatisticsList;
         }
 
         private static Map<String, String> headerResponse(
@@ -423,7 +431,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 BridgeInternal.queryMetricsFromFeedResponse(page),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                 false,
-                false);
+                false,
+                page.getCosmosDiagnostics());
         }
 
         @Override
@@ -500,21 +509,28 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             unwrappedResults.add(orderByRowResult.getPayload());
                         }
 
-                    return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
+                    FeedResponse<T> feedResponse = BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                         feedOfOrderByRowResults.getResponseHeaders(),
                         BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
-                        false);
+                        false, feedOfOrderByRowResults.getCosmosDiagnostics());
+                    BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
+                                                                  clientSideRequestStatisticsList);
+                    return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                        return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                    FeedResponse<T> frp =  BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
                                 headerResponse(
                                     tracker.getAndResetCharge()),
                             queryMetricMap,
                             null,
                             false,
-                            false));
+                            false,
+                            null);
+                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
+                                                                  clientSideRequestStatisticsList);
+                    return Flux.just(frp);
                     }));
         }
     }
@@ -555,7 +571,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         return this.orderByObservable.compose(new ItemToPageTransformer<T>(tracker,
                 maxPageSize,
                 this.queryMetricMap,
-                this::getContinuationToken));
+                this::getContinuationToken,
+                this.clientSideRequestStatisticsList));
     }
 
     @Override

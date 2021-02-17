@@ -47,6 +47,9 @@ parameters:
 - name: ServiceDirectory
   type: string
   default: not-specified
+- name: TestResourceDirectories
+  type: object
+  default:
 - name: TestSetupSteps
   type: stepList
   default: []
@@ -84,6 +87,9 @@ parameters:
 - name: AdditionalMatrixConfigs
   type: object
   default: []
+- name: MatrixFilters
+  type: object
+  default: []
 - name: PlatformPreSteps
   type: object
   default:
@@ -117,6 +123,7 @@ stages:
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               Location: ${{ parameters.Location }}
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
@@ -129,6 +136,10 @@ stages:
                 -  ${{ config }}
               - ${{ each config in parameters.AdditionalMatrixConfigs }}:
                 -  ${{ config }}
+            MatrixFilters:
+              - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                - ${{ cloudFilter }}
+              - ${{ parameters.MatrixFilters }}
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}

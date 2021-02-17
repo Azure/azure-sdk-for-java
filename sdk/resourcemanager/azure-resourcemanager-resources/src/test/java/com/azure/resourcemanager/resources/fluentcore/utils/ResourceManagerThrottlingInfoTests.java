@@ -15,8 +15,8 @@ public class ResourceManagerThrottlingInfoTests {
     public void canCalculateThrottlingInfo() {
         String resourceHeaderValue = "Microsoft.Compute/PutVM3Min;237,Microsoft.Compute/PutVM30Min;1197";
         HttpHeaders headers = new HttpHeaders()
-            .put("x-ms-ratelimit-remaining-subscription-writes", "1193")
-            .put("x-ms-ratelimit-remaining-resource", resourceHeaderValue);
+            .set("x-ms-ratelimit-remaining-subscription-writes", "1193")
+            .set("x-ms-ratelimit-remaining-resource", resourceHeaderValue);
 
         ResourceManagerThrottlingInfo info = ResourceManagerThrottlingInfo.fromHeaders(headers);
         Assertions.assertEquals(resourceHeaderValue, info.getResourceRateLimit());

@@ -1,7 +1,17 @@
 # Release History
 
-## 5.5.0-beta.1 (Unreleased)
+## 5.6.0-beta.1 (Unreleased)
+
+
+## 5.5.0 (2020-02-15)
+### New features
 - Use `BinaryData` in `EventData`.
+- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.13.0`.
+- Update `azure-core-amqp` dependency to `2.0.2`.
 
 ## 5.4.0 (2021-01-14)
 ### New features
@@ -24,7 +34,7 @@
  the connection times out.
 - Added checks for matching lost link name with the current link name before propagating the error in
  `AmqpReceiveLinkProcessor`.
- 
+
 ## 5.3.0 (2020-10-12)
 ### New Features
 - Add `clientOptions` to `EventHubClientBuilder` to support for setting user's application id in the user-agent property
@@ -40,7 +50,7 @@ the partition consumer to rebuild the connection later.
 - Update `azure-identity` dependency to `1.1.3`.
 
 ## 5.2.0 (2020-09-11)
-- Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
+- Default scheme to 'sb://' if no scheme is set in 'Endpoint'.
 - Update dependency version of `azure-core-amp` to `1.5.1`
 - Add support for connection strings containing Shared Access Signature
 - Add option to control the load balancing cycle interval.
@@ -57,7 +67,7 @@ the partition consumer to rebuild the connection later.
 
 ## 5.1.2 (2020-07-08)
 - Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
-- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls. 
+- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls.
 
 ## 5.1.1 (2020-06-12)
 - Fix bug where receiver link fails to add credits to new links created after an existing link is closed.

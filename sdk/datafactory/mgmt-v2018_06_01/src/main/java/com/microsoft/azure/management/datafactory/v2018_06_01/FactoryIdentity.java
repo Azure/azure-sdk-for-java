@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
 import java.util.UUID;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FactoryIdentity {
     /**
-     * The identity type. Currently the only supported type is
-     * 'SystemAssigned'.
+     * The identity type.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
@@ -35,6 +35,12 @@ public class FactoryIdentity {
     private UUID tenantId;
 
     /**
+     * List of user assigned identities for the factory.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    private Map<String, Object> userAssignedIdentities;
+
+    /**
      * Creates an instance of FactoryIdentity class.
      */
     public FactoryIdentity() {
@@ -42,7 +48,7 @@ public class FactoryIdentity {
     }
 
     /**
-     * Get the identity type. Currently the only supported type is 'SystemAssigned'.
+     * Get the identity type.
      *
      * @return the type value
      */
@@ -51,7 +57,7 @@ public class FactoryIdentity {
     }
 
     /**
-     * Set the identity type. Currently the only supported type is 'SystemAssigned'.
+     * Set the identity type.
      *
      * @param type the type value to set
      * @return the FactoryIdentity object itself.
@@ -77,6 +83,26 @@ public class FactoryIdentity {
      */
     public UUID tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Get list of user assigned identities for the factory.
+     *
+     * @return the userAssignedIdentities value
+     */
+    public Map<String, Object> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set list of user assigned identities for the factory.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set
+     * @return the FactoryIdentity object itself.
+     */
+    public FactoryIdentity withUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
     }
 
 }
