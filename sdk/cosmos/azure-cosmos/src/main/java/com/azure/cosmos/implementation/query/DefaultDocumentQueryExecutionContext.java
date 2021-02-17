@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -118,6 +119,15 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
         return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges);
+    }
+
+    public Mono<Range<String>> getTargetRange(String collectionRid, FeedRangeInternal feedRangeInternal) {
+        return  feedRangeInternal.getEffectiveRange(client.getPartitionKeyRangeCache(),
+                                                    null,
+                                                    this.client.getCollectionCache().resolveByRidAsync(
+                                                        null,
+                                                        collectionRid,
+                                                        null));
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,

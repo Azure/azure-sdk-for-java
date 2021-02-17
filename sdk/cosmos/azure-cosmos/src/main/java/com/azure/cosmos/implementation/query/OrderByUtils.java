@@ -96,7 +96,7 @@ class OrderByUtils {
                     }
                 }
                 List<T> results = documentProducerFeedResponse.pageResult.getResults();
-                OrderByContinuationToken orderByContinuationToken = targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourcePartitionKeyRange.getId());
+                OrderByContinuationToken orderByContinuationToken = targetRangeToOrderByContinuationTokenMap.get("1");
                 if (orderByContinuationToken != null) {
                     Pair<Boolean, ResourceId> booleanResourceIdPair = ResourceId.tryParse(orderByContinuationToken.getRid());
                     if (!booleanResourceIdPair.getLeft()) {
@@ -156,7 +156,8 @@ class OrderByUtils {
                 return x.map(r -> new OrderByRowResult<T>(
                         klass,
                         ModelBridgeInternal.toJsonFromJsonSerializable(r),
-                        documentProducerFeedResponse.sourcePartitionKeyRange,
+                        //TODO clean this up?
+                        null,
                         documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);
         }

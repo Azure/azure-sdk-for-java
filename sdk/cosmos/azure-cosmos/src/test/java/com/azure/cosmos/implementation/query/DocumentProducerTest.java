@@ -66,6 +66,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
 public class DocumentProducerTest {
+    /*
     private final static Logger logger = LoggerFactory.getLogger(DocumentProducerTest.class);
     private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
 
@@ -257,7 +258,7 @@ public class DocumentProducerTest {
                                               queryCl, collectionRid, null, requestCreator, requestExecutor,
                                               parentPartitionKeyRange, collectionLink, null, Document.class, null,
                                               initialPageSize, initialContinuationToken, top,
-                /*targetRangeToOrderByContinuationTokenMap*/new HashMap<>());
+                                                new HashMap<>());
 
         TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -271,6 +272,7 @@ public class DocumentProducerTest {
                                      leftChildPartitionId, rightChildPartitionId, resultFromParentPartition,
                                      resultFromLeftChildPartition, resultFromRightChildPartition);
 
+
         // page size match
         assertThat(requestCreator.invocations.stream().map(i -> i.maxItemCount).distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(initialPageSize));
 
@@ -282,6 +284,7 @@ public class DocumentProducerTest {
 
         Mockito.verify(queryCl, times(1)).getPartitionKeyRangeCache();
     }
+
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void simple() {
@@ -929,4 +932,6 @@ public class DocumentProducerTest {
                                                           "\"prop\": \"%s\"" + "}", uuid, uuid, uuid));
         return doc;
     }
+
+    */
 }

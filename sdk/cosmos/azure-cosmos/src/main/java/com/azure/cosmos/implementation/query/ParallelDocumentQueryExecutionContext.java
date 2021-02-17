@@ -18,7 +18,9 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -47,23 +49,24 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     private final Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap;
 
     private ParallelDocumentQueryExecutionContext(
-            DiagnosticsClientContext diagnosticsClientContext,
-            IDocumentQueryClient client,
-            List<PartitionKeyRange> partitionKeyRanges,
-            ResourceType resourceTypeEnum,
-            Class<T> resourceType,
-            SqlQuerySpec query,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            String resourceLink,
-            String rewrittenQuery,
-            String collectionRid,
-            boolean isContinuationExpected,
-            boolean getLazyFeedResponse,
-            UUID correlatedActivityId) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        List<PartitionKeyRange> partitionKeyRanges,
+        ResourceType resourceTypeEnum,
+        Class<T> resourceType,
+        SqlQuerySpec query,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        String resourceLink,
+        String rewrittenQuery,
+        String collectionRid,
+        boolean isContinuationExpected,
+        boolean getLazyFeedResponse,
+        UUID correlatedActivityId, List<FeedRange> feedRanges) {
         super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
+        this.feedRanges = feedRanges;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -83,13 +86,15 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initParams.getCollectionRid(),
                 initParams.isContinuationExpected(),
                 initParams.isGetLazyResponseFeed(),
-                initParams.getCorrelatedActivityId());
+                initParams.getCorrelatedActivityId(),
+                initParams.getFeedRanges());
         context.setTop(initParams.getTop());
 
         try {
             context.initialize(
                     initParams.getCollectionRid(),
                     initParams.getPartitionKeyRanges(),
+                    initParams.getFeedRanges(),
                     initParams.getInitialPageSize(),
                     ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
             return Flux.just(context);
@@ -121,7 +126,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                                                                                         collectionRid,
                                                                                                         false,
                                                                                                         false,
-                                                                                                        activityId);
+                                                                                                        activityId,
+                                                                                                        new ArrayList<>());
 
         context
             .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, cosmosQueryRequestOptions,
@@ -131,10 +137,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
 
     private void initialize(
-            String collectionRid,
-            List<PartitionKeyRange> targetRanges,
-            int initialPageSize,
-            String continuationToken) {
+        String collectionRid,
+        List<PartitionKeyRange> targetRanges,
+        List<FeedRange> feedRanges,
+        int initialPageSize,
+        String continuationToken) {
         // Generate the corresponding continuation token map.
         if (continuationToken == null) {
             // If the user does not give a continuation token,
@@ -330,8 +337,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     } else {
                         // It wasn't the last partition, so we need to give the next range, but with a
                         // null continuation
-                        CompositeContinuationToken compositeContinuationTokenDom = new CompositeContinuationToken(null,
-                                next.sourcePartitionKeyRange.toRange());
+                        CompositeContinuationToken compositeContinuationTokenDom =
+                            new CompositeContinuationToken(null, ((FeedRangeEpkImpl)next.sourceFeedRange).getRange());
                         compositeContinuationToken = compositeContinuationTokenDom.toJson();
                     }
                 } else {
@@ -339,7 +346,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     // so give back this partition with a backend continuation token
                     CompositeContinuationToken compositeContinuationTokenDom = new CompositeContinuationToken(
                             backendContinuationToken,
-                            current.sourcePartitionKeyRange.toRange());
+                            current.sourceFeedRange.getRange());
                     compositeContinuationToken = compositeContinuationTokenDom.toJson();
                 }
 
@@ -372,7 +379,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 // Get the stream.
                 .stream()
                 // Start from the left most partition first.
-                .sorted(Comparator.comparing(dp -> dp.targetRange.getMinInclusive()))
+                .sorted(Comparator.comparing(dp -> dp.feedRange.getRange().getMin()))
                 // For each partition get it's stream of results.
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
@@ -401,9 +408,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRange feedRange) {
         return new DocumentProducer<T>(client,
                 collectionRid,
                 cosmosQueryRequestOptions,
@@ -416,7 +423,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 correlatedActivityId,
                 initialPageSize,
                 initialContinuationToken,
-                top);
+                top, feedRange);
     }
 
     private int fluxSequentialMergeConcurrency(CosmosQueryRequestOptions options, int numberOfPartitions) {

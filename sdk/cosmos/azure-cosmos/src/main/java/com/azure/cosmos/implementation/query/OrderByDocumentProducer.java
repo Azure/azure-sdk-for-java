@@ -4,7 +4,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -37,9 +39,10 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             IDocumentQueryClient client,
             String collectionResourceId,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
+            FeedRange feedRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType,
@@ -48,8 +51,9 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             String initialContinuationToken,
             int top,
             Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
-        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange, collectionLink,
-                createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize, initialContinuationToken, top);
+        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
+              collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
+              initialContinuationToken,top, feedRange);
         this.consumeComparer = consumeComparer;
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
     }
@@ -70,7 +74,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
         FeedResponse<T> fr = BridgeInternal.createFeedResponse(Collections.singletonList((T) row), headers);
-        return new DocumentProducerFeedResponse(fr, row.getSourcePartitionKeyRange());
+        return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 
     protected DocumentProducer<T> createChildDocumentProducerOnSplit(
@@ -78,21 +82,22 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             String initialContinuationToken) {
 
         return new OrderByDocumentProducer<>(
-                consumeComparer,
-                client,
-                collectionRid,
-                cosmosQueryRequestOptions,
-                createRequestFunc,
-                executeRequestFuncWithRetries,
-                targetRange,
-                collectionLink,
-                createRetryPolicyFunc,
-                resourceType ,
-                correlatedActivityId,
-                pageSize,
-                initialContinuationToken,
-                top,
-                this.targetRangeToOrderByContinuationTokenMap);
+            consumeComparer,
+            client,
+            collectionRid,
+            cosmosQueryRequestOptions,
+            createRequestFunc,
+            executeRequestFuncWithRetries,
+            targetRange,
+            new FeedRangeEpkImpl(targetRange.toRange()),
+            collectionLink,
+            createRetryPolicyFunc,
+            resourceType ,
+            correlatedActivityId,
+            pageSize,
+            initialContinuationToken,
+            top,
+            this.targetRangeToOrderByContinuationTokenMap);
     }
 
 }

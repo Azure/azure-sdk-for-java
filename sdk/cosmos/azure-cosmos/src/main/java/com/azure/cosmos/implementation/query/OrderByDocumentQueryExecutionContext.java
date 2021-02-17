@@ -18,10 +18,12 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -105,6 +107,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         try {
             context.initialize(
                     initParams.getPartitionKeyRanges(),
+                    initParams.getFeedRanges(),
                     initParams.getQueryInfo().getOrderBy(),
                     initParams.getQueryInfo().getOrderByExpressions(),
                     initParams.getInitialPageSize(),
@@ -117,11 +120,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     }
 
     private void initialize(
-            List<PartitionKeyRange> partitionKeyRanges,
-            List<SortOrder> sortOrders,
-            Collection<String> orderByExpressions,
-            int initialPageSize,
-            String continuationToken) throws CosmosException {
+        List<PartitionKeyRange> partitionKeyRanges,
+        List<FeedRange> feedRanges, List<SortOrder> sortOrders,
+        Collection<String> orderByExpressions,
+        int initialPageSize,
+        String continuationToken) throws CosmosException {
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
             Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
@@ -129,7 +132,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 partitionKeyRangeToContinuationToken.put(partitionKeyRange,
                         null);
             }
-
+            this.feedRanges = feedRanges;
             super.initialize(collectionRid,
                     partitionKeyRangeToContinuationToken,
                     initialPageSize,
@@ -370,9 +373,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRange feedRange) {
         return new OrderByDocumentProducer<T>(consumeComparer,
                 client,
                 collectionRid,
@@ -380,6 +383,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 createRequestFunc,
                 executeFunc,
                 targetRange,
+                feedRange,
                 collectionRid,
                 () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
                 resourceType,
@@ -587,7 +591,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
         // CompositeContinuationToken
         String backendContinuationToken = orderByRowResult.getSourceBackendContinuationToken();
-        Range<String> range = orderByRowResult.getSourcePartitionKeyRange().toRange();
+        Range<String> range = ((FeedRangeEpkImpl)orderByRowResult.getSourceRange()).getRange();
 
         boolean inclusive = true;
         CompositeContinuationToken compositeContinuationToken = new CompositeContinuationToken(backendContinuationToken,

@@ -1447,9 +1447,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         switch (request.getOperationType()) {
             case ReadFeed:
-            // TODO fabianm add EPK filtering for query as well
-            // case Query:
-            // case SqlQuery:
+            case Query:
+            case SqlQuery:
                 return request.getFeedRange() != null;
             default:
                 return false;
