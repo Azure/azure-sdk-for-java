@@ -5,12 +5,14 @@ package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.OffsetDateTime;
 
@@ -19,6 +21,8 @@ import java.time.OffsetDateTime;
  * createClientWithAccountKey() is used in all samples.
  */
 public class CreateClients {
+
+    final ClientLogger logger = new ClientLogger(CreateClients.class);
 
     private SampleEnvironment environment = new SampleEnvironment();
 
@@ -29,56 +33,58 @@ public class CreateClients {
      */
     public RemoteRenderingClient createClientWithAccountKey()
     {
-        RemoteRenderingClientBuilder builder = new RemoteRenderingClientBuilder();
-        builder.accountId(environment.getAccountId());
-        builder.accountDomain(environment.getAccountDomain());
-        builder.credential(new AzureKeyCredential(environment.getAccountKey()));
-        builder.endpoint(environment.getServiceEndpoint());
-        return builder.buildClient();
+        return new RemoteRenderingClientBuilder()
+            .accountId(environment.getAccountId())
+            .accountDomain(environment.getAccountDomain())
+            .endpoint(environment.getServiceEndpoint())
+            .credential(new AzureKeyCredential(environment.getAccountKey()))
+            .buildClient();
     }
 
     public RemoteRenderingClient createClientWithAAD()
     {
-        RemoteRenderingClientBuilder builder = new RemoteRenderingClientBuilder();
-        builder.accountId(environment.getAccountId());
-        builder.accountDomain(environment.getAccountDomain());
-        builder.credential(new ClientSecretCredentialBuilder()
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
             .tenantId(environment.getTenantId())
             .clientId(environment.getClientId())
             .clientSecret(environment.getClientSecret())
             .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
-            .build()
-        );
-        builder.endpoint(environment.getServiceEndpoint());
-        return builder.buildClient();
+            .build();
+
+        return new RemoteRenderingClientBuilder()
+            .accountId(environment.getAccountId())
+            .accountDomain(environment.getAccountDomain())
+            .endpoint(environment.getServiceEndpoint())
+            .credential(credential)
+            .buildClient();
     }
 
     public RemoteRenderingClient createClientWithDeviceCode()
     {
-        RemoteRenderingClientBuilder builder = new RemoteRenderingClientBuilder();
-        builder.accountId(environment.getAccountId());
-        builder.accountDomain(environment.getAccountDomain());
-        builder.endpoint(environment.getServiceEndpoint());
-
-        builder.credential(new DeviceCodeCredentialBuilder()
-            .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { System.out.println(deviceCodeInfo.getMessage()); })
+        DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
+            .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
             .clientId(environment.getClientId())
             .tenantId(environment.getTenantId())
             .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
-            .build()
-        );
+            .build();
 
-        return builder.buildClient();
+        return new RemoteRenderingClientBuilder()
+            .accountId(environment.getAccountId())
+            .accountDomain(environment.getAccountDomain())
+            .endpoint(environment.getServiceEndpoint())
+            .credential(credential)
+            .buildClient();
     }
 
     public RemoteRenderingClient createClientWithDefaultAzureCredential()
     {
-        RemoteRenderingClientBuilder builder = new RemoteRenderingClientBuilder();
-        builder.accountId(environment.getAccountId());
-        builder.accountDomain(environment.getAccountDomain());
-        builder.endpoint(environment.getServiceEndpoint());
-        builder.credential(new DefaultAzureCredentialBuilder().build());
-        return builder.buildClient();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        return new RemoteRenderingClientBuilder()
+            .accountId(environment.getAccountId())
+            .accountDomain(environment.getAccountDomain())
+            .endpoint(environment.getServiceEndpoint())
+            .credential(credential)
+            .buildClient();
     }
 
     /**
@@ -96,11 +102,17 @@ public class CreateClients {
 
     public RemoteRenderingClient createClientWithStaticAccessToken()
     {
-        RemoteRenderingClientBuilder builder = new RemoteRenderingClientBuilder();
-        builder.accountId(environment.getAccountId());
-        builder.accountDomain(environment.getAccountDomain());
-        builder.endpoint(environment.getServiceEndpoint());
-        builder.accessToken(getMixedRealityAccessTokenFromWebService());
-        return builder.buildClient();
+        // GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
+        // a Mixed Reality access token from a web service. The web service would use the
+        // MixedRealityStsClient and credentials to obtain an access token to be returned
+        // to the client.
+        AccessToken accessToken = getMixedRealityAccessTokenFromWebService();
+
+        return new RemoteRenderingClientBuilder()
+            .accountId(environment.getAccountId())
+            .accountDomain(environment.getAccountDomain())
+            .endpoint(environment.getServiceEndpoint())
+            .accessToken(accessToken)
+            .buildClient();
     }
 }

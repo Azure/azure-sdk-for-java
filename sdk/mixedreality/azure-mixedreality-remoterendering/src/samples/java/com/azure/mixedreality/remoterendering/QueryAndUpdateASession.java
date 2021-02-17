@@ -42,10 +42,10 @@ public class QueryAndUpdateASession extends SampleBase {
         {
             Duration newLeaseTime = currentSession.getMaxLeaseTime().plus(Duration.ofMinutes(30));
 
-            UpdateSessionOptions longerLeaseSettings = new UpdateSessionOptions()
+            UpdateSessionOptions longerLeaseOptions = new UpdateSessionOptions()
                 .maxLeaseTime(newLeaseTime);
 
-            client.updateSession(sessionId, longerLeaseSettings);
+            client.updateSession(sessionId, longerLeaseOptions);
         }
 
         client.endSession(sessionId);

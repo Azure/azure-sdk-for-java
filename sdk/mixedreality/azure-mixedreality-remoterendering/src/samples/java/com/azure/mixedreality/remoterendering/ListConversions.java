@@ -3,6 +3,7 @@
 
 package com.azure.mixedreality.remoterendering;
 
+import com.azure.mixedreality.remoterendering.models.AssetConversion;
 import com.azure.mixedreality.remoterendering.models.AssetConversionStatus;
 
 import java.time.OffsetDateTime;
@@ -26,7 +27,7 @@ public class ListConversions extends SampleBase {
     {
         logger.info("Successful conversions since yesterday:");
 
-        for (var conversion : client.listConversions())
+        for (AssetConversion conversion : client.listConversions())
         {
             if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
                 && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1))))
