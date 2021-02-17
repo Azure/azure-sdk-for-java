@@ -31,7 +31,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 /**
  * Unit tests for {@AzureMonitorExporter}.
  */
-public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
+public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase {
 
     private static final String TRACE_ID = TraceId.fromLongs(10L, 2L);
     private static final String SPAN_ID = SpanId.fromLong(1);
@@ -39,10 +39,10 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
 
     @Test
     public void testExportRequestData() {
-        AzureMonitorExporter azureMonitorExporter = getClientBuilder()
+        AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilder()
             .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
-            .buildExporter();
-        CompletableResultCode export = azureMonitorExporter.export(Collections.singleton(new RequestSpanData()));
+            .buildTraceExporter();
+        CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }

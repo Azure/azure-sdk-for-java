@@ -74,7 +74,7 @@
         <!-- Mixed Reality -->
         <module>sdk/mixedreality/azure-mixedreality-authentication</module>
         <module>sdk/mixedreality/azure-mixedreality-remoterendering</module>
-        
+
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
@@ -435,7 +435,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>

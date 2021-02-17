@@ -87,14 +87,16 @@ public final class MixedRealityStsRestClientImpl {
      * Initializes an instance of MixedRealityStsRestClient client.
      *
      * @param host server parameter.
+     * @param apiVersion Api Version.
      */
-    MixedRealityStsRestClientImpl(String host) {
+    MixedRealityStsRestClientImpl(String host, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host);
+                host,
+                apiVersion);
     }
 
     /**
@@ -102,9 +104,10 @@ public final class MixedRealityStsRestClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
+     * @param apiVersion Api Version.
      */
-    MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, String host) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
     }
 
     /**
@@ -113,12 +116,14 @@ public final class MixedRealityStsRestClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
+     * @param apiVersion Api Version.
      */
-    MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
+    MixedRealityStsRestClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = "2019-02-28-preview";
+        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(
                         MixedRealityStsRestClientService.class, this.httpPipeline, this.getSerializerAdapter());

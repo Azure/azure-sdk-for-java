@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
 public final class MixedRealityStsClientBuilder {
-    private static final String APP_CONFIG_PROPERTIES = "azure-mixedreality-authentication.properties";
+    private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -80,8 +80,10 @@ public final class MixedRealityStsClientBuilder {
      * @throws IllegalArgumentException If {@code accountDomain} is null or empty.
      */
     public MixedRealityStsClientBuilder accountDomain(String accountDomain) {
-        if (CoreUtils.isNullOrEmpty(accountDomain)) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountDomain' cannot be null or empty."));
+        Objects.requireNonNull(accountDomain, "'accountDomain' cannot be null.");
+
+        if (accountDomain.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
         }
 
         this.accountDomain = accountDomain;
@@ -97,8 +99,10 @@ public final class MixedRealityStsClientBuilder {
      * @throws IllegalArgumentException If {@code accountId} is null or empty.
      */
     public MixedRealityStsClientBuilder accountId(String accountId) {
-        if (CoreUtils.isNullOrEmpty(accountId)) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'accountId' cannot be null or empty."));
+        Objects.requireNonNull(accountId, "'accountId' cannot be null.");
+
+        if (accountId.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'accountId' cannot be an empty string."));
         }
 
         this.accountId = accountId;
@@ -160,6 +164,11 @@ public final class MixedRealityStsClientBuilder {
         }
 
         if (this.pipeline == null) {
+            if (this.tokenCredential != null && this.keyCredential != null) {
+                throw logger.logExceptionAsWarning(
+                    new IllegalArgumentException("Only a single type of credential may be specified."));
+            }
+
             if (this.tokenCredential == null && this.keyCredential != null) {
                 this.tokenCredential = new MixedRealityAccountKeyCredential(accountId, this.keyCredential);
             }
@@ -170,16 +179,16 @@ public final class MixedRealityStsClientBuilder {
             this.pipeline = createHttpPipeline(this.httpClient, authPolicy, this.customPolicies);
         }
 
-        // MixedRealityStsServiceVersion version;
+        MixedRealityStsServiceVersion version;
 
-        // if (this.apiVersion != null) {
-        //     version = this.apiVersion;
-        // } else {
-        //     version = MixedRealityStsServiceVersion.getLatest();
-        // }
+        if (this.apiVersion != null) {
+            version = this.apiVersion;
+        } else {
+            version = MixedRealityStsServiceVersion.getLatest();
+        }
 
         MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
-            //.apiVersion(version.getVersion())
+            .apiVersion(version.getVersion())
             .pipeline(this.pipeline)
             .host(endpoint)
             .buildClient();
@@ -212,7 +221,6 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.keyCredential = null;
 
         return this;
     }
@@ -229,7 +237,6 @@ public final class MixedRealityStsClientBuilder {
      */
     public MixedRealityStsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-        this.tokenCredential = null;
 
         return this;
     }
@@ -385,7 +392,7 @@ public final class MixedRealityStsClientBuilder {
      * @return The default {@link UserAgentPolicy} for the module.
      */
     private UserAgentPolicy getUserAgentPolicy() {
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
+        Map<String, String> properties = CoreUtils.getProperties(MIXED_REALITY_STS_PROPERTIES);
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");

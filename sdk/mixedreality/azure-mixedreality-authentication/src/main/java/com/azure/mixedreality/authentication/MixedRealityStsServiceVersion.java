@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of the Azure Mixed Reality STS supported by this client library.
  */
 public enum MixedRealityStsServiceVersion implements ServiceVersion {
-    V2019_02_28_preview("2019-02-28-preview");
+    V2019_02_28_PREVIEW("2019-02-28-preview");
 
     private final String version;
 
@@ -31,6 +31,6 @@ public enum MixedRealityStsServiceVersion implements ServiceVersion {
      * @return the latest {@link MixedRealityStsServiceVersion}
      */
     public static MixedRealityStsServiceVersion getLatest() {
-        return V2019_02_28_preview;
+        return V2019_02_28_PREVIEW;
     }
 }

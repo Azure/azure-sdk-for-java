@@ -298,7 +298,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             final CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -519,32 +519,30 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void beginCreateComposedModel(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode),
-                Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode),
-                Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller2.waitForCompletion();
             CustomFormModel model2 = syncPoller2.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
-            CustomFormModel composedModel
-                = client.beginCreateComposedModel(
-                modelIdList,
-                new CreateComposedModelOptions()
-                    .setPollInterval(durationTestMode), Context.NONE)
-                .getFinalResult();
+            CustomFormModel composedModel =
+                client.beginCreateComposedModel(
+                    modelIdList,
+                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                    Context.NONE)
+                    .getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
@@ -568,34 +566,33 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void beginCreateComposedModelWithOptions(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode),
-                Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode),
-                Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions()
+                        .setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller2.waitForCompletion();
             CustomFormModel model2 = syncPoller2.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
-            CustomFormModel composedModel
-                = client.beginCreateComposedModel(
-                modelIdList,
-                new CreateComposedModelOptions()
-                    .setModelName("composedModelDisplayName")
-                    .setPollInterval(durationTestMode),
-                Context.NONE)
-                .getFinalResult();
+            CustomFormModel composedModel =
+                client.beginCreateComposedModel(
+                    modelIdList,
+                    new CreateComposedModelOptions()
+                        .setModelName("composedModelDisplayName")
+                        .setPollInterval(durationTestMode),
+                    Context.NONE)
+                    .getFinalResult();
 
             client.deleteModel(model1.getModelId());
             client.deleteModel(model2.getModelId());
@@ -620,19 +617,19 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void beginCreateComposedUnlabeledModel(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller2.waitForCompletion();
             CustomFormModel model2 = syncPoller2.getFinalResult();
 
@@ -659,21 +656,22 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void beginCreateComposedDuplicateModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model1.getModelId());
-            HttpResponseException httpResponseException
-                = assertThrows(HttpResponseException.class, () -> client.beginCreateComposedModel(
-                    modelIdList,
-                    new CreateComposedModelOptions()
-                        .setPollInterval(durationTestMode), Context.NONE)
-                    .getFinalResult());
+            HttpResponseException httpResponseException =
+                assertThrows(HttpResponseException.class,
+                    () -> client.beginCreateComposedModel(
+                        modelIdList,
+                        new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                        Context.NONE)
+                              .getFinalResult());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
@@ -738,11 +736,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void beginTrainingLabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"),
-                Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"),
+                    Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
