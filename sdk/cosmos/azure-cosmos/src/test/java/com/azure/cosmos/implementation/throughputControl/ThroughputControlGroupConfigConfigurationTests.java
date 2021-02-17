@@ -38,7 +38,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
         ThroughputControlGroupConfig groupConfig2 =
             new ThroughputControlGroupConfigBuilder()
                 .setGroupName("group-2")
-                .setTargetThroughput(10)
+                .setTargetThroughputThreshold(1.0)
                 .setDefault(true)
                 .build();
         assertThatThrownBy(() -> container.enableThroughputLocalControlGroup(groupConfig2))

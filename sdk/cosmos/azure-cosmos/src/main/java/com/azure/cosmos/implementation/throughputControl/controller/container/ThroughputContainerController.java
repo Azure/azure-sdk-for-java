@@ -150,7 +150,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
-        return Mono.just(this.throughputProvisioningScope) // TODO: ---> test whether it works without defer
+        return Mono.defer(() -> Mono.just(this.throughputProvisioningScope))
             .flatMap(throughputProvisioningScope -> {
                 if (throughputProvisioningScope == ThroughputProvisioningScope.CONTAINER) {
                     return this.resolveContainerThroughput()
@@ -198,8 +198,11 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .single()
             .flatMap(offerFeedResponse -> {
                 if (offerFeedResponse.getResults().isEmpty()) {
-                    return Mono.error(
-                        BridgeInternal.createCosmosException(NO_OFFER_EXCEPTION_STATUS_CODE, "No offers found for the resource " + resourceId));
+                    CosmosException noOfferException =
+                        BridgeInternal.createCosmosException(NO_OFFER_EXCEPTION_STATUS_CODE, "No offers found for the resource " + resourceId);
+
+                    BridgeInternal.setSubStatusCode(noOfferException, NO_OFFER_EXCEPTION_SUB_STATUS_CODE);
+                    return Mono.error(noOfferException);
                 }
 
                 return this.client.readOffer(offerFeedResponse.getResults().get(0).getSelfLink()).single();
