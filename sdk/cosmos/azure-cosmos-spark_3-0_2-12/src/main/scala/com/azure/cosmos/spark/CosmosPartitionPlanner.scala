@@ -53,7 +53,20 @@ private class CosmosPartitionPlanner {
         cosmosContainerConfig,
         changeFeedOffset,
         cosmosPartitioningConfig.targetedPartitionCount.get)
-      // TODO fabianm Finish for other strategies
+      case PartitioningStrategies.Default =>  applyStorageAlignedStrategy(
+        cosmosClientConfig,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
+        changeFeedOffset,
+        1
+      )
+      case PartitioningStrategies.Aggressive =>  applyStorageAlignedStrategy(
+        cosmosClientConfig,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
+        changeFeedOffset,
+        3
+      )
     }
   }
 
@@ -74,6 +87,64 @@ private class CosmosPartitionPlanner {
       .map(feedRange => ChangeFeedInputPartition(feedRange.toString))
   }
 
+  private[this] def applyStorageAlignedStrategy
+  (
+    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig,
+    planningInfo: Array[PartitionPlanningInfo],
+    splitCountMultiplier: Double
+  ) = {
+    requireNotNullOrEmpty(planningInfo, "planningInfo")
+
+    val totalScaleFactor = planningInfo.map(pi => pi.scaleFactor).sum
+    val inputPartitions =
+      new util.ArrayList[ChangeFeedInputPartition]((totalScaleFactor * (splitCountMultiplier + 1)).toInt)
+
+    val client = CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
+
+    val container = client
+      .getDatabase(cosmosContainerConfig.database)
+      .getContainer(cosmosContainerConfig.container)
+
+    planningInfo.foreach(info => {
+      val numberOfSparkPartitions = math.min(
+        Int.MaxValue,
+        math.min(1, (info.scaleFactor * splitCountMultiplier).round)).toInt
+      SparkBridgeInternal
+        .trySplitFeedRange(container, info.feedRange, numberOfSparkPartitions)
+        .foreach(feedRange => inputPartitions.add(ChangeFeedInputPartition(feedRange)))
+    })
+
+    val returnValue = new Array[ChangeFeedInputPartition](inputPartitions.size())
+    inputPartitions.toArray(returnValue)
+    returnValue
+  }
+
+  private[this] def applyStorageAlignedStrategy
+  (
+    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig,
+    changeFeedOffset: Option[ChangeFeedOffset],
+    weightFactor: Double
+  ) = {
+    val planningInfo = this.getPartitionPlanningInfo(
+      cosmosClientConfig,
+      cosmosClientStateHandle,
+      cosmosContainerConfig,
+      changeFeedOffset
+    )
+
+    applyStorageAlignedStrategy(
+      cosmosClientConfig,
+      cosmosClientStateHandle,
+      cosmosContainerConfig,
+      planningInfo,
+      weightFactor
+    )
+  }
+
   private[this] def applyCustomStrategy
   (
     cosmosClientConfig: CosmosClientConfiguration,
@@ -90,26 +161,13 @@ private class CosmosPartitionPlanner {
     )
 
     val customPartitioningFactor = planningInfo.map(pi => pi.scaleFactor).sum/targetPartitionCount
-    val inputPartitions = new util.ArrayList[ChangeFeedInputPartition](2 * targetPartitionCount)
-
-    val client = CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
-
-    val container = client
-      .getDatabase(cosmosContainerConfig.database)
-      .getContainer(cosmosContainerConfig.container)
-
-    planningInfo.foreach(info => {
-      val numberOfSparkPartitions = math.min(
-        Int.MaxValue,
-        math.min(1, (info.scaleFactor * customPartitioningFactor).round)).toInt
-      SparkBridgeInternal
-        .trySplitFeedRange(container, info.feedRange, numberOfSparkPartitions)
-        .foreach(feedRange => inputPartitions.add(ChangeFeedInputPartition(feedRange)))
-    })
-
-    val returnValue = new Array[ChangeFeedInputPartition](inputPartitions.size())
-    inputPartitions.toArray(returnValue)
-    returnValue
+    applyStorageAlignedStrategy(
+      cosmosClientConfig,
+      cosmosClientStateHandle,
+      cosmosContainerConfig,
+      planningInfo,
+      customPartitioningFactor
+    )
   }
 
   private[this] def getPartitionPlanningInfo
