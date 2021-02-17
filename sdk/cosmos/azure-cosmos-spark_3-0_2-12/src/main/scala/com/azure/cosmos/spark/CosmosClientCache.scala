@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ConsistencyLevel}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import org.apache.spark.broadcast.Broadcast
 import java.util.ConcurrentModificationException
 
@@ -52,8 +52,8 @@ private[spark] object CosmosClientCache {
 
         cosmosClientStateHandle match {
           case Some(handle) =>
-            val metadataCache = handle.value;
-            SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
+            val metadataCache = handle.value
+            SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
           case None => Unit
         }
 

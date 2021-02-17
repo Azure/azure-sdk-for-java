@@ -42,4 +42,10 @@ private object CosmosPredicates {
     require(candidate != null && !candidate.isEmpty, argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
   }
+
+  private[spark] def assertNotNullOrEmpty[T](candidate: Array[T], parameterName: String): Array[T] = {
+    assert(parameterName != null && !parameterName.isBlank, argumentMustNotBeNullOrEmptyMessage(ParameterName))
+    assert(candidate != null && !candidate.isEmpty, argumentMustNotBeNullOrEmptyMessage(parameterName))
+    candidate
+  }
 }

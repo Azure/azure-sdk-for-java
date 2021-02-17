@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.HexConvert;
+import com.azure.cosmos.implementation.routing.Int128;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +21,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -91,6 +95,65 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         if (populateProperties) {
             super.populatePropertyBag();
         }
+    }
+
+    public Mono<List<FeedRange>> trySplit(
+        IRoutingMapProvider routingMapProvider,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        int targetedSplitCount) {
+
+        return this
+            .getEffectiveRange(
+                routingMapProvider,
+                metadataDiagnosticsCtx,
+                collectionResolutionMono)
+            .map(effectiveRange -> {
+
+                if (targetedSplitCount <= 1 || effectiveRange.isSingleValue()) {
+                    return Arrays.asList(new FeedRangeEpkImpl(effectiveRange));
+                }
+
+                final Int128 min = new Int128(effectiveRange.getMin());
+                final Int128 max = new Int128(effectiveRange.getMax());
+
+                final Int128 splitCount = new Int128(targetedSplitCount);
+                final Int128 diff = Int128.subtract(max, min);
+
+                if (Int128.lt(diff, splitCount)) {
+                    return Arrays.asList(new FeedRangeEpkImpl(effectiveRange));
+                }
+
+                List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+                final Int128 splitRangeWidth = Int128.div(diff, splitCount);
+
+                Int128 currentMin = min;
+                Int128 currentMax = min;
+
+                for (int i = 0; i < targetedSplitCount - 1; i++) {
+                    currentMax = Int128.add(currentMin, splitRangeWidth);
+                    boolean isMinInclusive = (i == 0) ? effectiveRange.isMinInclusive() : true;
+
+                    splitFeedRanges.add(
+                        new FeedRangeEpkImpl(
+                            new Range<String>(
+                                HexConvert.bytesToHex(currentMin.bytes()),
+                                HexConvert.bytesToHex(currentMax.bytes()),
+                                isMinInclusive,
+                                false)));
+                    currentMin = currentMax;
+                }
+
+                splitFeedRanges.add(
+                    new FeedRangeEpkImpl(
+                        new Range<String>(
+                            HexConvert.bytesToHex(currentMin.bytes()),
+                            HexConvert.bytesToHex(currentMax.bytes()),
+                            true,
+                            effectiveRange.isMaxInclusive())));
+
+                return splitFeedRanges;
+            });
     }
 
     @Override

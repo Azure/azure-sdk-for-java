@@ -6,6 +6,9 @@ package com.azure.cosmos.implementation.routing;
 
 import java.math.BigInteger;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class Int128 {
 
     private final BigInteger value;
@@ -43,6 +46,27 @@ public class Int128 {
         }
     }
 
+    public Int128(String hexBinary) {
+        this(hexBinaryToByteArray(hexBinary));
+    }
+
+    private static byte[] hexBinaryToByteArray(String hexBinary) {
+        checkNotNull(hexBinary, "Argument 'hexBinary' must not be null.");
+
+        int len = hexBinary.length();
+        checkArgument(
+            (len & 0x01) == 0,
+            "Argument 'hexBinary' must not have odd number of characters.");
+
+        byte[] blob = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            blob[i / 2] = (byte) ((Character.digit(hexBinary.charAt(i), 16) << 4)
+                + Character.digit(hexBinary.charAt(i+1), 16));
+        }
+
+        return blob;
+    }
+
     public static Int128 multiply(Int128 left, Int128 right) {
         return new Int128(left.value.multiply(right.value));
     }
@@ -77,5 +101,4 @@ public class Int128 {
 
         return bytes;
     }
-
 }

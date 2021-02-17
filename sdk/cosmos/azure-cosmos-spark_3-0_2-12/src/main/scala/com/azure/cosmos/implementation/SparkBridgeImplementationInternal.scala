@@ -7,11 +7,11 @@ import com.azure.cosmos.CosmosClientBuilder
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 
-private[cosmos] object SparkBridgeInternal {
+private[cosmos] object SparkBridgeImplementationInternal {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
-    val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
+    val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor
     clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(cosmosClientBuilder, metadataCache)
   }
 
@@ -22,6 +22,6 @@ private[cosmos] object SparkBridgeInternal {
       .getCurrentContinuationToken
       .getToken
 
-    lsnToken.substring(1, lsnToken.size - 1).toLong
+    lsnToken.substring(1, lsnToken.length - 1).toLong
   }
 }

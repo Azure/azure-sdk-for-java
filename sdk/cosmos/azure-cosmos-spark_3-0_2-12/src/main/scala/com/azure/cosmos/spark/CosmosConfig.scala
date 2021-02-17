@@ -248,8 +248,8 @@ private object PartitioningStrategies extends Enumeration {
 
 private case class CosmosPartitioningConfig
 (
-  partitioningStrategies: PartitioningStrategy,
-  fixedPartitionCount: Option[Int],
+  partitioningStrategy: PartitioningStrategy,
+  targetedPartitionCount: Option[Int],
   partitionMetadataRefreshIntervalInSeconds: Int
 )
 
@@ -257,17 +257,17 @@ private object CosmosPartitioningConfig {
   private val DefaultPartitioningStrategy: PartitioningStrategy = PartitioningStrategies.Default
   private val DefaultRefreshInterval = 50
 
-  private[spark] val fixedPartitionCount = CosmosConfigEntry[Int](
-    key = "spark.cosmos.partitioning.fixedCount",
+  private[spark] val targetedPartitionCount = CosmosConfigEntry[Int](
+    key = "spark.cosmos.partitioning.targetedCount",
     mandatory = true,
-    parseFromStringFunction = fixedCountText => fixedCountText.toInt,
-    helpMessage = "An optional fixed Partition Count. If set along with strategy==Custom " +
+    parseFromStringFunction = targetedCountText => targetedCountText.toInt,
+    helpMessage = "An optional targeted Partition Count. If set along with strategy==Custom " +
       "the Spark Connector won't dynamically calculate number of partitions but stick with this value.")
 
   private[spark] val refreshIntervalInSeconds = CosmosConfigEntry[Int](
     key = "spark.cosmos.partitioning.metadataRefreshInterval",
     mandatory = false,
-    parseFromStringFunction = fixedCountText => fixedCountText.toInt,
+    parseFromStringFunction = intervalText => intervalText.toInt,
     helpMessage = "The interval for refreshing metadata driving the partition planning. This " +
       "interval will influence how soon partition planning would reflect changes to the size or " +
       "provisioned throughput of the container/database.")
@@ -298,8 +298,8 @@ private object CosmosPartitioningConfig {
       .parse(cfg, partitioningStrategy)
       .getOrElse(DefaultPartitioningStrategy)
 
-    val fixedPartitionCountParsed = if (partitioningStrategyParsed == PartitioningStrategies.Custom) {
-      CosmosConfigEntry.parse(cfg, fixedPartitionCount)
+    val targetedPartitionCountParsed = if (partitioningStrategyParsed == PartitioningStrategies.Custom) {
+      CosmosConfigEntry.parse(cfg, targetedPartitionCount)
     } else {
       None
     }
@@ -307,7 +307,7 @@ private object CosmosPartitioningConfig {
 
     CosmosPartitioningConfig(
       partitioningStrategyParsed,
-      fixedPartitionCountParsed,
+      targetedPartitionCountParsed,
       refreshIntervalInSecondsParsed.getOrElse(DefaultRefreshInterval)
     )
   }
