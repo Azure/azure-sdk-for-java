@@ -338,7 +338,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                         // It wasn't the last partition, so we need to give the next range, but with a
                         // null continuation
                         CompositeContinuationToken compositeContinuationTokenDom =
-                            new CompositeContinuationToken(null, ((FeedRangeEpkImpl)next.sourceFeedRange).getRange());
+                            new CompositeContinuationToken(null, next.sourceFeedRange.getRange());
                         compositeContinuationToken = compositeContinuationTokenDom.toJson();
                     }
                 } else {
