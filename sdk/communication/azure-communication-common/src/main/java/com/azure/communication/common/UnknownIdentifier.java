@@ -24,7 +24,10 @@ public class UnknownIdentifier extends CommunicationIdentifier {
         this.id = id;
     }
 
-    @Override
+    /**
+     * Get id of this identifier
+     * @return id of this identifier
+     */
     public String getId() {
         return id;
     }

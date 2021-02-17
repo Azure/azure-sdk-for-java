@@ -64,6 +64,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
+  $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
   $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
@@ -92,6 +93,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
+    DocsReadMeName = $docsReadMeName
   }
 }
 

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 public class SpringAppDeploymentsImpl
     extends ExternalChildResourcesNonCachedImpl<
@@ -88,8 +89,8 @@ public class SpringAppDeploymentsImpl
 
     @Override
     public PagedFlux<SpringAppDeployment> listAsync() {
-        return inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name())
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
+            this::wrapModel);
     }
 
     private SpringAppDeploymentImpl wrapModel(String name) {

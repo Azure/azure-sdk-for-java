@@ -15,7 +15,7 @@ Azure Core Gson JSON Serializer is a plugin for the `azure-core` `JsonSerializer
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-gson</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

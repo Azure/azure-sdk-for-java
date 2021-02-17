@@ -228,10 +228,6 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        /*
-         * Do we need to serialize and then deserialize the headers? For now transition to using convertValue as it
-         * allows for some internal optimizations by Jackson.
-         */
         T deserializedHeaders = headerMapper.convertValue(headers, createJavaType(deserializedHeadersType));
 
         final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
@@ -286,11 +282,15 @@ public class JacksonAdapter implements SerializerAdapter {
         for (final HttpHeader header : headers) {
             String headerNameLower = header.getName().toLowerCase(Locale.ROOT);
 
-            for (HeaderCollectionHandler headerCollectionHandler : headerCollectionHandlers) {
-                if (!headerCollectionsFirstCharacters.contains(headerNameLower.charAt(0))) {
-                    continue;
-                }
+            /*
+             * Optimization to skip this header as it doesn't begin with any character starting header collections in
+             * the deserialized headers type.
+             */
+            if (!headerCollectionsFirstCharacters.contains(headerNameLower.charAt(0))) {
+                continue;
+            }
 
+            for (HeaderCollectionHandler headerCollectionHandler : headerCollectionHandlers) {
                 if (headerCollectionHandler.headerStartsWithPrefix(headerNameLower)) {
                     headerCollectionHandler.addHeader(header.getName(), header.getValue());
                 }
@@ -306,6 +306,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
 
+    @SuppressWarnings("deprecation")
     private static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
@@ -375,6 +376,7 @@ public class JacksonAdapter implements SerializerAdapter {
             values.put(headerName.substring(prefixLength), headerValue);
         }
 
+        @SuppressWarnings("deprecation")
         void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
             /*
              * First check if the deserialized headers type has a public setter.
