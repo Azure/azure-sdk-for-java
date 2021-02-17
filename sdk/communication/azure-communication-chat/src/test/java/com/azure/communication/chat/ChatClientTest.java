@@ -54,7 +54,7 @@ public class ChatClientTest extends ChatClientTestBase {
         secondThreadMember = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
+        AccessToken response = communicationClient.getToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
