@@ -10,11 +10,11 @@ import java.util.Collection;
 
 /** Defines values for TextStyle. */
 public final class TextStyle extends ExpandableStringEnum<TextStyle> {
-    /** Static value other for TextStyle. */
-    public static final TextStyle OTHER = fromString("other");
-
     /** Static value handwriting for TextStyle. */
     public static final TextStyle HANDWRITING = fromString("handwriting");
+
+    /** Static value printed for TextStyle. */
+    public static final TextStyle PRINTED = fromString("printed");
 
     /**
      * Creates or finds a TextStyle from its string representation.

@@ -11,28 +11,54 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Appearance {
     /*
-     * An object representing the style of the text line.
+     * Style of the extracted text: handwriting or printed.
      */
     @JsonProperty(value = "style", required = true)
-    private Style style;
+    private TextStyle style;
+
+    /*
+     * Confidence value of predicted style.
+     */
+    @JsonProperty(value = "styleConfidence", required = true)
+    private float styleConfidence;
 
     /**
-     * Get the style property: An object representing the style of the text line.
+     * Get the style property: Style of the extracted text: handwriting or printed.
      *
      * @return the style value.
      */
-    public Style getStyle() {
+    public TextStyle getStyle() {
         return this.style;
     }
 
     /**
-     * Set the style property: An object representing the style of the text line.
+     * Set the style property: Style of the extracted text: handwriting or printed.
      *
      * @param style the style value to set.
      * @return the Appearance object itself.
      */
-    public Appearance setStyle(Style style) {
+    public Appearance setStyle(TextStyle style) {
         this.style = style;
+        return this;
+    }
+
+    /**
+     * Get the styleConfidence property: Confidence value of predicted style.
+     *
+     * @return the styleConfidence value.
+     */
+    public float getStyleConfidence() {
+        return this.styleConfidence;
+    }
+
+    /**
+     * Set the styleConfidence property: Confidence value of predicted style.
+     *
+     * @param styleConfidence the styleConfidence value to set.
+     * @return the Appearance object itself.
+     */
+    public Appearance setStyleConfidence(float styleConfidence) {
+        this.styleConfidence = styleConfidence;
         return this;
     }
 }
