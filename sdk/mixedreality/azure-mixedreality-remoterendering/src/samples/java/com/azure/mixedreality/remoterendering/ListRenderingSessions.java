@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.mixedreality.remoterendering.models.BeginSessionOptions;
@@ -11,7 +14,7 @@ import java.util.UUID;
 /**
  * Sample class demonstrating how to list rendering sessions.
  */
-public class ListRenderingSessions extends SampleBase{
+public class ListRenderingSessions extends SampleBase {
 
     /**
      * Main method to invoke this demo about how to list rendering sessions.

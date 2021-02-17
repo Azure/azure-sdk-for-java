@@ -19,6 +19,6 @@ public class SampleBase {
      * @return the storage URL.
      */
     String getStorageURL() {
-        return "https://"+environment.getStorageAccountName()+".blob.core.windows.net/"+environment.getBlobContainerName();
+        return "https://" + environment.getStorageAccountName() + ".blob.core.windows.net/" + environment.getBlobContainerName();
     }
 }

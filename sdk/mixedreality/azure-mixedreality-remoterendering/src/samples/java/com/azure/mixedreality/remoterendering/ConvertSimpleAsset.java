@@ -27,19 +27,19 @@ public class ConvertSimpleAsset extends SampleBase
     /**
      * Sample method demonstrating how to convert a simple asset.
      */
-	public void convertSimpleAsset()
-	{
+    public void convertSimpleAsset()
+    {
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .inputStorageContainerUrl(getStorageURL())
             .inputRelativeAssetPath("box.fbx")
             .outputStorageContainerUrl(getStorageURL());
 
-		// A randomly generated UUID is a good choice for a conversionId.
+        // A randomly generated UUID is a good choice for a conversionId.
         String conversionId = UUID.randomUUID().toString();
 
         SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
 
-		AssetConversion conversion = conversionOperation.getFinalResult();
+        AssetConversion conversion = conversionOperation.getFinalResult();
         if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
         {
             logger.info("Conversion succeeded: Output written to {}", conversion.getOutputAssetUrl());
@@ -52,5 +52,5 @@ public class ConvertSimpleAsset extends SampleBase
         {
             logger.error("Unexpected conversion status: {}", conversion.getStatus());
         }
-	}
+    }
 }

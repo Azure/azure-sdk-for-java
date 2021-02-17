@@ -31,22 +31,22 @@ public class CreateRenderingSession extends SampleBase
      *
      * To avoid launching too many sessions during testing, we rely on the live tests.
      */
-	public void createRenderingSession()
-	{
-		BeginSessionOptions options = new BeginSessionOptions()
+    public void createRenderingSession()
+    {
+        BeginSessionOptions options = new BeginSessionOptions()
             .setMaxLeaseTime(Duration.ofMinutes(30))
             .setSize(RenderingSessionSize.STANDARD);
 
-		// A randomly generated GUID is a good choice for a sessionId.
-		String sessionId = UUID.randomUUID().toString();
+        // A randomly generated GUID is a good choice for a sessionId.
+        String sessionId = UUID.randomUUID().toString();
 
-		SyncPoller<RenderingSession, RenderingSession> startSessionOperation = client.beginSession(sessionId, options);
+        SyncPoller<RenderingSession, RenderingSession> startSessionOperation = client.beginSession(sessionId, options);
 
-		RenderingSession session = startSessionOperation.getFinalResult();
-		if (session.getStatus() == RenderingSessionStatus.READY)
-		{
+        RenderingSession session = startSessionOperation.getFinalResult();
+        if (session.getStatus() == RenderingSessionStatus.READY)
+        {
             logger.error("Session {} is ready.", session.getId());
-		}
+        }
         else if (session.getStatus() == RenderingSessionStatus.ERROR)
         {
             logger.error("Session {} encountered an error: {} {}", session.getId(), session.getError().getCode(), session.getError().getMessage());
@@ -56,10 +56,10 @@ public class CreateRenderingSession extends SampleBase
             logger.error("Got unexpected session status: {}", session.getStatus());
         }
 
-		// Use the session here.
-		// ...
+        // Use the session here.
+        // ...
 
-		// The session will automatically timeout, but in this sample we also demonstrate how to shut it down explicitly.
-		client.endSession(sessionId);
-	}
+        // The session will automatically timeout, but in this sample we also demonstrate how to shut it down explicitly.
+        client.endSession(sessionId);
+    }
 }
