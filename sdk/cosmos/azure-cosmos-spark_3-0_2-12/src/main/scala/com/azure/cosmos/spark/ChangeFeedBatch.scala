@@ -3,7 +3,6 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.FeedRange
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
 import org.apache.spark.sql.types.StructType
@@ -20,17 +19,18 @@ private class ChangeFeedBatch
 
   override def planInputPartitions(): Array[InputPartition] = {
 
-    // Build Request options
+    val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+    val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+    val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+    val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
 
-    // Identify Number of Partitions
-
-
-    // Create or load StartOffset
-
-
-    // TODO: moderakh use get feed range?
-    // for now we are returning one partition hence only one spark task will be created.
-    Array(FeedRangeInputPartition(FeedRange.forFullRange.toString))
+    CosmosPartitionPlanner.createInputPartitions(
+      clientConfiguration,
+      Some(cosmosClientStateHandle),
+      containerConfig,
+      partitioningConfig,
+      None // In batch mode always start a new query - without previous continuation state
+    )
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

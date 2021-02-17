@@ -21,7 +21,6 @@ private[cosmos] object SparkBridgeInternal {
     for (i <- 0 to list.size - 1) {
       array(i) = list.get(i).toString
     }
-    list.toArray(array)
     array
   }
 }

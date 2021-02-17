@@ -9,6 +9,7 @@ import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, requireNotNull, requireNotNullOrEmpty}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.connector.read.InputPartition
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scheduler.Schedulers
@@ -17,7 +18,7 @@ import java.util
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.collection.concurrent.TrieMap
 
-private class CosmosPartitionPlanner {
+private object CosmosPartitionPlanner {
 
   private object ParameterNames {
     val CosmosClientConfig = "cosmosClientConfig"
@@ -35,7 +36,7 @@ private class CosmosPartitionPlanner {
     cosmosContainerConfig: CosmosContainerConfig,
     cosmosPartitioningConfig: CosmosPartitioningConfig,
     changeFeedOffset: Option[ChangeFeedOffset]
-  ) : Array[ChangeFeedInputPartition] = {
+  ) : Array[InputPartition] = {
 
     requireNotNull(cosmosClientConfig, ParameterNames.CosmosClientConfig)
     requireNotNull(cosmosContainerConfig, ParameterNames.CosmosContainerConfig)
@@ -75,7 +76,7 @@ private class CosmosPartitionPlanner {
     cosmosClientConfig: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig
-  ) = {
+  ): Array[InputPartition] = {
     val feedRangesList = this
       .getFeedRanges(cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig)
       .block()
@@ -94,7 +95,7 @@ private class CosmosPartitionPlanner {
     cosmosContainerConfig: CosmosContainerConfig,
     planningInfo: Array[PartitionPlanningInfo],
     splitCountMultiplier: Double
-  ) = {
+  ): Array[InputPartition] = {
     requireNotNullOrEmpty(planningInfo, "planningInfo")
 
     val totalScaleFactor = planningInfo.map(pi => pi.scaleFactor).sum
@@ -116,7 +117,7 @@ private class CosmosPartitionPlanner {
         .foreach(feedRange => inputPartitions.add(ChangeFeedInputPartition(feedRange)))
     })
 
-    val returnValue = new Array[ChangeFeedInputPartition](inputPartitions.size())
+    val returnValue = new Array[InputPartition](inputPartitions.size())
     inputPartitions.toArray(returnValue)
     returnValue
   }
@@ -128,7 +129,7 @@ private class CosmosPartitionPlanner {
     cosmosContainerConfig: CosmosContainerConfig,
     changeFeedOffset: Option[ChangeFeedOffset],
     weightFactor: Double
-  ) = {
+  ): Array[InputPartition] = {
     val planningInfo = this.getPartitionPlanningInfo(
       cosmosClientConfig,
       cosmosClientStateHandle,
@@ -152,7 +153,7 @@ private class CosmosPartitionPlanner {
     cosmosContainerConfig: CosmosContainerConfig,
     changeFeedOffset: Option[ChangeFeedOffset],
     targetPartitionCount: Int
-  ) = {
+  ): Array[InputPartition] = {
     val planningInfo = this.getPartitionPlanningInfo(
       cosmosClientConfig,
       cosmosClientStateHandle,
@@ -348,28 +349,30 @@ private class CosmosPartitionPlanner {
           val lastDocumentCount = new AtomicLong()
           val lastTotalDocumentSize = new AtomicLong()
           val lastContinuationToken = new AtomicReference[String]()
-          val results = container.queryChangeFeed(options,classOf[ObjectNode])
 
-          results.handle(r => {
-            lastDocumentCount.set(r.getDocumentCountUsage)
-            lastTotalDocumentSize.set(r.getDocumentUsage)
-            val continuation = r.getContinuationToken
-            if (continuation != null && !continuation.isBlank) {
-              lastContinuationToken.set(continuation)
-            }
-          })
-
-          val metadataObservable = results
+          val metadataObservable = container
+            .queryChangeFeed(options,classOf[ObjectNode])
+            .handle(r => {
+              lastDocumentCount.set(r.getDocumentCountUsage)
+              lastTotalDocumentSize.set(r.getDocumentUsage)
+              val continuation = r.getContinuationToken
+              if (continuation != null && !continuation.isBlank) {
+                lastContinuationToken.set(continuation)
+              }
+            })
             .collectList()
             .asScala
-            .`then`(
-              SMono.just(
-                PartitionMetadata.create(
-                  cosmosContainerConfig,
-                  feedRange,
-                  assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
-                  assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
-                  assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken"))))
+            .map(_ => {
+              val metadata = PartitionMetadata.create(
+                cosmosContainerConfig,
+                feedRange,
+                assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
+                assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
+                assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken"))
+
+              metadata
+            })
+
           metadataObservable.subscribeOn(Schedulers.boundedElastic())
           cache.putIfAbsent(key, metadataObservable) match {
             case None =>
