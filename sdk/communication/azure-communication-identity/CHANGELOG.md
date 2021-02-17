@@ -2,9 +2,8 @@
 
 ## 1.0.0-beta.5 (Unreleased)
 ### Breaking
-- `issueToken` is renamed to `getToken`.
-- `issueTokenWithResponse` is renamed to `getTokenWithReponse`.
-
+- `CommunicationIdentityAsyncClient.issueToken` and `CommunicationIdentityClient.issueToken` is renamed to `CommunicationIdentityAsyncClient.getToken` and `CommunicationIdentityClient.getToken`.
+- `CommunicationIdentityAsyncClient.issueTokenWithResponse` and `CommunicationIdentityClient.issueTokenWithResponse` is renamed to `CommunicationIdentityAsyncClient.getTokenWithReponse` and `CommunicationIdentityClient.getTokenWithReponse`.
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking
 - `pstn` token scope is removed.
