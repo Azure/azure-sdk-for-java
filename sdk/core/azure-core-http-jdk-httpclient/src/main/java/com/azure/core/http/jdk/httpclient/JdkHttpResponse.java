@@ -4,6 +4,7 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.FluxUtil;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,7 +13,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-import static com.azure.core.http.jdk.httpclient.JdkAsyncHttpClient.collectResponseWithHint;
 import static com.azure.core.http.jdk.httpclient.JdkAsyncHttpClient.fromJdkHttpHeaders;
 
 final class JdkHttpResponse extends JdkHttpResponseBase {
@@ -33,7 +33,7 @@ final class JdkHttpResponse extends JdkHttpResponseBase {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return collectResponseWithHint(getBody(), getHeaders());
+        return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders());
     }
 
     @Override

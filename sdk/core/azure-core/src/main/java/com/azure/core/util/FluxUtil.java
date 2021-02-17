@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
@@ -25,6 +26,7 @@ import java.nio.channels.CompletionHandler;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
      *
@@ -78,6 +82,40 @@ public final class FluxUtil {
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream, int sizeHint) {
         return stream.collect(() -> new ByteBufferCollector(sizeHint), ByteBufferCollector::write)
             .map(ByteBufferCollector::toByteArray);
+    }
+
+    /**
+     * Collects ByteBuffers returned in a network response into a byte array.
+     * <p>
+     * The {@code headers} are inspected for containing an {@code Content-Length} which determines if a size hinted
+     * collection, {@link #collectBytesInByteBufferStream(Flux, int)}, or default collection,
+     * {@link #collectBytesInByteBufferStream(Flux)}, will be used.
+     *
+     * @param stream A network response ByteBuffer stream.
+     * @param headers The HTTP headers of the response.
+     * @return A Mono which emits the collected network response ByteBuffers.
+     * @throws NullPointerException If {@code headers} is null.
+     * @throws IllegalStateException If the size of the network response is greater than {@link Integer#MAX_VALUE}.
+     */
+    public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
+        Objects.requireNonNull(headers, "'headers' cannot be null.");
+
+        String contentLengthHeader = headers.getValue("Content-Length");
+
+        if (contentLengthHeader == null) {
+            return FluxUtil.collectBytesInByteBufferStream(stream);
+        } else {
+            try {
+                int contentLength = Integer.parseInt(contentLengthHeader);
+                if (contentLength > 0) {
+                    return FluxUtil.collectBytesInByteBufferStream(stream, contentLength);
+                } else {
+                    return Mono.just(EMPTY_BYTE_ARRAY);
+                }
+            } catch (NumberFormatException ex) {
+                return FluxUtil.collectBytesInByteBufferStream(stream);
+            }
+        }
     }
 
     /**

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -144,7 +145,8 @@ class NettyAsyncHttpClient implements HttpClient {
                 Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
-                return collectResponseWithHint(body, reactorNettyResponse.responseHeaders().get("Content-Length"))
+                return FluxUtil.collectBytesFromNetworkResponse(body,
+                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
@@ -152,22 +154,5 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy));
             }
         };
-    }
-
-    private static Mono<byte[]> collectResponseWithHint(Flux<ByteBuffer> data, String contentLengthHeader) {
-        if (contentLengthHeader == null) {
-            return FluxUtil.collectBytesInByteBufferStream(data);
-        } else {
-            try {
-                int contentLength = Integer.parseInt(contentLengthHeader);
-                if (contentLength > 0) {
-                    return FluxUtil.collectBytesInByteBufferStream(data, contentLength);
-                } else {
-                    return Mono.just(new byte[0]);
-                }
-            } catch (NumberFormatException ex) {
-                return FluxUtil.collectBytesInByteBufferStream(data);
-            }
-        }
     }
 }
