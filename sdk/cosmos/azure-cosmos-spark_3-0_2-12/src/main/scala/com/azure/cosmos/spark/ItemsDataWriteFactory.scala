@@ -35,7 +35,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
-    private lazy val bulkWriter = BulkWriter(container, cosmosWriteConfig)
+    private lazy val bulkWriter = new BulkWriter(container, cosmosWriteConfig)
 
     override def write(internalRow: InternalRow): Unit = {
       val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)

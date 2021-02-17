@@ -24,7 +24,7 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = true)
 
-    val bulkWriter = BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig)
 
     val items = Map[String, ObjectNode]()
     for(i <- 0 until 100) {
