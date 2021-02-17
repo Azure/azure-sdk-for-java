@@ -387,6 +387,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [how_to_authenticate]: https://docs.microsoft.com/azure/remote-rendering/how-tos/authentication
 [sts_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/mixedreality/azure-mixedreality-authentication
 [troubleshoot]: https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot
-[api_reference_doc]: https://docs.microsoft.com/en-us/rest/api/mixedreality/
+[api_reference_doc]: https://docs.microsoft.com/rest/api/mixedreality/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
