@@ -9,20 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -32,10 +20,10 @@ import java.util.Base64;
  * @see CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
-public final class EventGridPublisherClient {
+public final class EventGridPublisherClient<T> {
 
-    EventGridPublisherAsyncClient asyncClient;
-    EventGridPublisherClient(EventGridPublisherAsyncClient client) {
+    EventGridPublisherAsyncClient<T> asyncClient;
+    EventGridPublisherClient(EventGridPublisherAsyncClient<T> client) {
         this.asyncClient = client;
     }
 
@@ -78,72 +66,13 @@ public final class EventGridPublisherClient {
         return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime, apiVersion);
     }
 
-    /**
-     * Publishes the given EventGrid events to the given topic or domain.
-     * @param events the EventGrid events to publish.
-     * @throws NullPointerException if events is {@code null}.
-     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendEventGridEvents(Iterable<EventGridEvent> events) {
-        asyncClient.sendEventGridEvents(events, Context.NONE).block();
+    public void sendEvents(Iterable<T> events) {
+        asyncClient.sendEvents(events).block();
     }
 
-    /**
-     * Publishes the given cloud events to the given topic or domain.
-     * @param events the cloud events to publish.
-     * @throws NullPointerException if events is {@code null}.
-     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendCloudEvents(Iterable<CloudEvent> events) {
-        asyncClient.sendCloudEvents(events, Context.NONE).block();
-    }
-
-    /**
-     * Publishes the given custom events to the given topic or domain.
-     * @param events the custom events to publish.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendCustomEvents(Iterable<Object> events) {
-        asyncClient.sendCustomEvents(events, Context.NONE).block();
-    }
-
-    /**
-     * Publishes the given EventGrid events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the EventGrid events to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response given by the EventGrid service.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
-        return asyncClient.sendEventGridEventsWithResponse(events, context).block();
-    }
-
-    /**
-     * Publishes the given cloud events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the cloud events to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response given by the EventGrid service.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
-        return asyncClient.sendCloudEventsWithResponse(events, context).block();
-    }
-
-    /**
-     * Publishes the given custom events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the custom events to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response given by the EventGrid service.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
-        return asyncClient.sendCustomEventsWithResponse(events, context).block();
+    public Response<Void> sendEventsWithResponse(Iterable<T> events) {
+        return asyncClient.sendEventsWithResponse(events).block();
     }
 }

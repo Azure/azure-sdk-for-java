@@ -102,7 +102,7 @@ public final class EventGridPublisherClientBuilder {
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
-    public EventGridPublisherAsyncClient buildAsyncClient() {
+    private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         String hostname;
         try {
             hostname = new URL(Objects.requireNonNull(endpoint, "endpoint cannot be null")).getHost();
@@ -115,7 +115,7 @@ public final class EventGridPublisherClientBuilder {
             serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion, eventDataSerializer);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -169,7 +169,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion, eventDataSerializer);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
     }
 
     /**
@@ -179,8 +179,8 @@ public final class EventGridPublisherClientBuilder {
      * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
-    public EventGridPublisherClient buildClient() {
-        return new EventGridPublisherClient(buildAsyncClient());
+    private <T> EventGridPublisherClient<T> buildClient(Class<T> eventClass) {
+        return new EventGridPublisherClient<T>(buildAsyncClient(eventClass));
     }
 
     /**
@@ -325,4 +325,27 @@ public final class EventGridPublisherClientBuilder {
         return this;
     }
 
+    public EventGridPublisherAsyncClient<CloudEvent> buildCloudEventPublisherAsyncClient() {
+        return this.buildAsyncClient(CloudEvent.class);
+    }
+
+    public EventGridPublisherAsyncClient<EventGridEvent> buildEventGridEventPublisherAsyncClient() {
+        return this.buildAsyncClient(EventGridEvent.class);
+    }
+
+    public EventGridPublisherAsyncClient<Object> buildCustomEventPublisherAsyncClient() {
+        return this.buildAsyncClient(Object.class);
+    }
+
+    public EventGridPublisherClient<CloudEvent> buildCloudEventPublisherClient() {
+        return this.buildClient(CloudEvent.class);
+    }
+
+    public EventGridPublisherClient<EventGridEvent> buildEventGridEventPublisherClient() {
+        return this.buildClient(EventGridEvent.class);
+    }
+
+    public EventGridPublisherClient<Object> buildCustomEventPublisherClient() {
+        return this.buildClient(Object.class);
+    }
 }

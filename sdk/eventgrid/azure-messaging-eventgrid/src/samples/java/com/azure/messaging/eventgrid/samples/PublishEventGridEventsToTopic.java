@@ -21,10 +21,10 @@ import java.util.List;
  */
 public class PublishEventGridEventsToTopic {
     public static void main(String[] args) {
-        EventGridPublisherClient publisherClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<EventGridEvent> publisherClient = new EventGridPublisherClientBuilder()
             .endpoint(System.getenv("AZURE_EVENTGRID_EVENT_ENDPOINT"))  // make sure it accepts EventGridEvent
             .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_EVENT_KEY")))
-            .buildClient();
+            .buildEventGridEventPublisherClient();
 
         // Create a CloudEvent with String data
         String str = "FirstName: John1, LastName: James";
@@ -42,6 +42,6 @@ public class PublishEventGridEventsToTopic {
         events.add(eventModelClass);
         events.add(eventBytes);
 
-        publisherClient.sendEventGridEvents(events);
+        publisherClient.sendEvents(events);
     }
 }

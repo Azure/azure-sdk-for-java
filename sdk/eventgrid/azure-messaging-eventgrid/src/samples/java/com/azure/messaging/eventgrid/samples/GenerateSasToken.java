@@ -5,7 +5,7 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
+import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 
@@ -22,10 +22,10 @@ public class GenerateSasToken {
 
         // 2. Use the SAS token to create an client to send events.
         //  For how to use the client to send events, refer to the Publish* samples in the same folder.
-        EventGridPublisherClient publisherClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<CloudEvent> publisherClient = new EventGridPublisherClientBuilder()
             .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
             .credential(new AzureSasCredential(sasToken))
-            .buildClient();
+            .buildCloudEventPublisherClient();
 
     }
 }
