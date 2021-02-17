@@ -307,7 +307,7 @@ You can get information about your sessions using the `listSessions` method.
 This method may return sessions which have yet to start and sessions which are ready.
 
 ```
-    for (var session : client.listSessions())
+    for (RenderingSession session : client.listSessions())
     {
         if (session.getStatus() == RenderingSessionStatus.STARTING)
         {

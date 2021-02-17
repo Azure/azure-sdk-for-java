@@ -1,6 +1,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.mixedreality.remoterendering.models.BeginSessionOptions;
+import com.azure.mixedreality.remoterendering.models.RenderingSession;
 import com.azure.mixedreality.remoterendering.models.RenderingSessionSize;
 import com.azure.mixedreality.remoterendering.models.RenderingSessionStatus;
 
@@ -38,7 +39,7 @@ public class ListRenderingSessions extends SampleBase{
         } catch (InterruptedException e) {
         }
 
-        for (var session : client.listSessions())
+        for (RenderingSession session : client.listSessions())
         {
             if (session.getStatus() == RenderingSessionStatus.STARTING)
             {
