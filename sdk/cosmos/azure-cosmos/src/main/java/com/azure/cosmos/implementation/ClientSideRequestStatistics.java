@@ -339,7 +339,7 @@ public class ClientSideRequestStatistics {
         boolean inflightRequest = true;
     }
 
-    private static class GatewayStatistics {
+    public static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
         int statusCode;
