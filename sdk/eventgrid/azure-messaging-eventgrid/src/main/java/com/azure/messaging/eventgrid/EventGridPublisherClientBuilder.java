@@ -325,26 +325,68 @@ public final class EventGridPublisherClientBuilder {
         return this;
     }
 
+    /**
+     * Build a {@link CloudEvent} publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
     public EventGridPublisherAsyncClient<CloudEvent> buildCloudEventPublisherAsyncClient() {
         return this.buildAsyncClient(CloudEvent.class);
     }
 
+    /**
+     * Build an {@link EventGridEvent} publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
     public EventGridPublisherAsyncClient<EventGridEvent> buildEventGridEventPublisherAsyncClient() {
         return this.buildAsyncClient(EventGridEvent.class);
     }
 
+    /**
+     * Build a custom event publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
     public EventGridPublisherAsyncClient<Object> buildCustomEventPublisherAsyncClient() {
         return this.buildAsyncClient(Object.class);
     }
 
+    /**
+     * Build a {@link CloudEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * Note that currently the asynchronous client created by the method above is the recommended version for higher
+     * performance, as the synchronous client simply blocks on the same asynchronous calls.
+     * @return a publisher client with synchronous publishing methods.
+     */
     public EventGridPublisherClient<CloudEvent> buildCloudEventPublisherClient() {
         return this.buildClient(CloudEvent.class);
     }
 
+    /**
+     * Build an {@link EventGridEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * Note that currently the asynchronous client created by the method above is the recommended version for higher
+     * performance, as the synchronous client simply blocks on the same asynchronous calls.
+     * @return a publisher client with synchronous publishing methods.
+     */
     public EventGridPublisherClient<EventGridEvent> buildEventGridEventPublisherClient() {
         return this.buildClient(EventGridEvent.class);
     }
 
+    /**
+     * Build a custom event publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * Note that currently the asynchronous client created by the method above is the recommended version for higher
+     * performance, as the synchronous client simply blocks on the same asynchronous calls.
+     * @return a publisher client with synchronous publishing methods.
+     */
     public EventGridPublisherClient<Object> buildCustomEventPublisherClient() {
         return this.buildClient(Object.class);
     }

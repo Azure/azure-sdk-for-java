@@ -136,13 +136,12 @@ public final class EventGridPublisherAsyncClient<T> {
     }
 
     /**
-     * Get the service version of the Rest API.
-     * @return the Service version of the rest API
+     * Publishes the given events to the set topic or domain.
+     * @param events the events to publish.
+     *
+     * @return A {@link Mono} that completes when the events are sent to the service.
+     * @throws NullPointerException if events is {@code null}.
      */
-    public EventGridServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvents(Iterable<T> events) {
         return withContext(context -> sendEvents(events, context));
@@ -164,12 +163,16 @@ public final class EventGridPublisherAsyncClient<T> {
         }
     }
 
+    /**
+     * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
+     * @param events the events to publish.
+     * @param context the context to use along the pipeline.
+     *
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events) {
-        return withContext(context -> sendEventsWithResponse(events, context));
-    }
-
-    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
         if(this.eventClass == CloudEvent.class) {
             List<CloudEvent> eventList = new ArrayList<>();
             events.forEach(event -> eventList.add((CloudEvent) event));
@@ -183,6 +186,35 @@ public final class EventGridPublisherAsyncClient<T> {
             events.forEach(eventList::add);
             return this.sendCustomEventsWithResponse(eventList, context);
         }
+    }
+
+    /**
+     * Publishes the given event to the set topic or domain and gives the response issued by EventGrid.
+     * @param event the event to publish.
+     * @param context the context to use along the pipeline.
+     *
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendEventWithResponse(T event, Context context) {
+        List<T> events = new ArrayList<>();
+        events.add(event);
+        return this.sendEventsWithResponse(events, context);
+    }
+
+    /**
+     * Publishes the given events to the set topic or domain.
+     * @param event the event to publish.
+     *
+     * @return A {@link Mono} that completes when the event is sent to the service.
+     * @throws NullPointerException if events is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendEvent(T event) {
+        List<T> events = new ArrayList<>();
+        events.add(event);
+        return withContext(context -> sendEvents(events, context));
     }
 
     Mono<Void> sendEventGridEvents(Iterable<EventGridEvent> events, Context context) {

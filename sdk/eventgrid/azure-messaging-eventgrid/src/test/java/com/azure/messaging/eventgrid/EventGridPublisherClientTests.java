@@ -9,6 +9,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -93,7 +94,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -121,7 +122,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -143,7 +144,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -189,7 +190,7 @@ public class EventGridPublisherClientTests extends TestBase {
             );
         }
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events))
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -212,7 +213,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        StepVerifier.create(egClient.sendEventsWithResponse(events));
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE));
     }
 
     @Test
@@ -232,7 +233,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -256,7 +257,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -278,7 +279,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
