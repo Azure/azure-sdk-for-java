@@ -24,6 +24,10 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
         {
           $pkgProp.SdkType = "mgmt"
         }
+        elseif ($projectPkgName -match "spring")
+        {
+          $pkgProp.SdkType = "spring"
+        }
         else
         {
           $pkgProp.SdkType = "client"
