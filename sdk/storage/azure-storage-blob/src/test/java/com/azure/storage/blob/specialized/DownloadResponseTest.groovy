@@ -3,12 +3,19 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.http.HttpHeader
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -29,6 +36,33 @@ class DownloadResponseTest extends APISpec {
      */
 
     def "Network call"() {
+        expect:
+        OutputStream outputStream = new ByteArrayOutputStream()
+        bu.download(outputStream)
+        outputStream.toByteArray() == defaultData.array()
+    }
+
+    def "Network call no etag returned"() {
+        setup:
+        def removeEtagPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process()
+                .flatMap({ response ->
+                    HttpHeader eTagHeader = response.getHeaders().get("eTag")
+                    if (eTagHeader == null) {
+                        return  Mono.just(response);
+                    }
+                    HttpHeaders headers = response.getHeaders()
+                    headers.remove("eTag")
+                    return  Mono.just(getStubDownloadResponse(response, response.getStatusCode(), response.getBody(), headers));
+                })
+            }
+        }
+        def bsc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
+        def cc = bsc.getBlobContainerClient(containerName)
+        def bu = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient()
+
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
@@ -95,17 +129,13 @@ class DownloadResponseTest extends APISpec {
     def "Info null IA"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
+        def info = null
 
         when:
         new ReliableDownload(null, null, info, { HttpGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
         thrown(NullPointerException)
-
-        where:
-        info                               | _
-        null                               | _
-        new HttpGetterInfo().setETag(null) | _
     }
 
     def "Options IA"() {

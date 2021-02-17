@@ -4,9 +4,6 @@ stages:
 - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     Artifacts:
-      - name: azure-communication-administration
-        groupId: com.azure
-        safeName: azurecommunicationadministration
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchat
