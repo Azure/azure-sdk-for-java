@@ -36,7 +36,7 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 
 // ingestion
 spark.createDataFrame(Seq(("cat-alive", "Schrodinger cat", 2, true), ("cat-dead", "Schrodinger cat", 2, false)))
-  .toDF("id","Name","Age","isAlive")
+  .toDF("id","name","age","isAlive")
    .write
    .format("cosmos.items")
    .options(cfg)
@@ -65,5 +65,5 @@ import org.apache.spark.sql.functions.col
 
 // Query to find the live cat and increment age of the alive cat
 df.filter(col("isAlive") === true)
- .withColumn("Age", col("Age") + 1)
+ .withColumn("age", col("age") + 1)
  .show()
