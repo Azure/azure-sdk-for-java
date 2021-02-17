@@ -8,6 +8,9 @@ import com.azure.mixedreality.remoterendering.models.RenderingSessionStatus;
 import java.time.Duration;
 import java.util.UUID;
 
+/**
+ * Sample class demonstrating how to list rendering sessions.
+ */
 public class ListRenderingSessions extends SampleBase{
 
     /**

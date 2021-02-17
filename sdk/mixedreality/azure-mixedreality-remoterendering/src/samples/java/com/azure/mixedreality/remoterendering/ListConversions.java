@@ -8,6 +8,9 @@ import com.azure.mixedreality.remoterendering.models.AssetConversionStatus;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Sample class demonstrating how to list conversions.
+ */
 public class ListConversions extends SampleBase {
 
     /**

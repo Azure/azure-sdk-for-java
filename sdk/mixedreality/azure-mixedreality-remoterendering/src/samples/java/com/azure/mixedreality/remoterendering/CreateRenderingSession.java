@@ -12,6 +12,9 @@ import com.azure.mixedreality.remoterendering.models.RenderingSessionStatus;
 import java.time.Duration;
 import java.util.UUID;
 
+/**
+ * Sample class demonstrating how to create a rendering session.
+ */
 public class CreateRenderingSession extends SampleBase
 {
     /**

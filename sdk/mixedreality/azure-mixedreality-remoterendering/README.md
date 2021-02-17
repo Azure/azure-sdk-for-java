@@ -9,7 +9,7 @@ the lifetime of remote rendering sessions.
 > These SDKs are designed to best support the needs of an interactive application doing 3d rendering.
 > They are available in [.NET][dotnet_api] and [C++][cpp_api].
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Source code][source_code] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -374,12 +374,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
 [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-
-
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://mvnrepository.com/artifact/com.azure/azure-mixedreality-remoterendering
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/mixedreality/azure-mixedreality-remoterendering/src
 [remote_rendering_account]: https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account
@@ -390,5 +387,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [how_to_authenticate]: https://docs.microsoft.com/azure/remote-rendering/how-tos/authentication
 [sts_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/mixedreality/azure-mixedreality-authentication
 [troubleshoot]: https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot
+[api_reference_doc]: https://docs.microsoft.com/en-us/rest/api/mixedreality/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

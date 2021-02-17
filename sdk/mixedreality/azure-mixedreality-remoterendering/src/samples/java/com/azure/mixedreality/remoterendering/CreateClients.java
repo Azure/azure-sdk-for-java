@@ -41,6 +41,11 @@ public class CreateClients {
             .buildClient();
     }
 
+    /**
+     * Obtains a client with an AAD client secret.
+     *
+     * @return the RemoteRenderingClient.
+     */
     public RemoteRenderingClient createClientWithAAD()
     {
         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
@@ -58,6 +63,11 @@ public class CreateClients {
             .buildClient();
     }
 
+    /**
+     * Obtains a client with a device code.
+     *
+     * @return the RemoteRenderingClient.
+     */
     public RemoteRenderingClient createClientWithDeviceCode()
     {
         DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
@@ -75,6 +85,11 @@ public class CreateClients {
             .buildClient();
     }
 
+    /**
+     * Obtains a client with a default azure credential.
+     *
+     * @return the RemoteRenderingClient.
+     */
     public RemoteRenderingClient createClientWithDefaultAzureCredential()
     {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -100,6 +115,11 @@ public class CreateClients {
         return new AccessToken("TokenObtainedFromStsClientRunningInWebservice", OffsetDateTime.MAX);
     }
 
+    /**
+     * Obtains a client with a static access token.
+     *
+     * @return the RemoteRenderingClient.
+     */
     public RemoteRenderingClient createClientWithStaticAccessToken()
     {
         // GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves

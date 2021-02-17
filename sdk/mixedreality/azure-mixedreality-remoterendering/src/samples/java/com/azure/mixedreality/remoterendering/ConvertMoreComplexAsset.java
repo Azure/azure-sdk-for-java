@@ -14,6 +14,9 @@ import com.azure.mixedreality.remoterendering.models.AssetConversionStatus;
 
 import java.util.UUID;
 
+/**
+ * Sample class demonstrating how to convert a complex asset.
+ */
 public class ConvertMoreComplexAsset extends SampleBase {
 
     /**

@@ -9,6 +9,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ * Sample class demonstrating how to query and update a rendering session.
+ */
 public class QueryAndUpdateASession extends SampleBase {
 
     /**

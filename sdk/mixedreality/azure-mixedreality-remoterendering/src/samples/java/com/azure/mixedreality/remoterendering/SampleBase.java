@@ -13,6 +13,11 @@ public class SampleBase {
     final RemoteRenderingClient client = new CreateClients().createClientWithAccountKey();
     final ClientLogger logger = new ClientLogger(SampleBase.class);
 
+    /**
+     * Get the storage URL used in samples.
+     *
+     * @return the storage URL.
+     */
     String getStorageURL() {
         return "https://"+environment.getStorageAccountName()+".blob.core.windows.net/"+environment.getBlobContainerName();
     }

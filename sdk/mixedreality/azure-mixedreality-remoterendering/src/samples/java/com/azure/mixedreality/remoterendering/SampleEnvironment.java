@@ -28,46 +28,101 @@ public class SampleEnvironment {
     private final String clientId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_CLIENT_ID");
     private final String clientSecret = Configuration.getGlobalConfiguration().get("MIXEDREALITY_CLIENT_SECRET");
 
+    /**
+     * Get the accounId used in samples.
+     *
+     * @return the accountId.
+     */
     public String getAccountId() {
         return accountId;
     }
 
+    /**
+     * Get the accountDomain used in samples.
+     *
+     * @return the accountDomain.
+     */
     public String getAccountDomain() {
         return accountDomain;
     }
 
+    /**
+     * Get the accountKey used in samples.
+     *
+     * @return the accountKey.
+     */
     public String getAccountKey() {
         return accountKey;
     }
 
+    /**
+     * Get the storageAccountName used in samples.
+     *
+     * @return the storageAccountName.
+     */
     public String getStorageAccountName() {
         return storageAccountName;
     }
 
+    /**
+     * Get the storageAccountKey used in samples.
+     *
+     * @return the storageAccountKey.
+     */
     public String getStorageAccountKey() {
         return storageAccountKey;
     }
 
+    /**
+     * Get the blobContainerName used in samples.
+     *
+     * @return the blobContainerName.
+     */
     public String getBlobContainerName() {
         return blobContainerName;
     }
 
+    /**
+     * Get the blobContainerSasToken used in samples.
+     *
+     * @return the blobContainerSasToken.
+     */
     public String getBlobContainerSasToken() {
         return blobContainerSasToken;
     }
 
+    /**
+     * Get the serviceEndpoint used in samples.
+     *
+     * @return the serviceEndpoint.
+     */
     public String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
+    /**
+     * Get the tenantId used in samples.
+     *
+     * @return the tenantId.
+     */
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     * Get the clientId used in samples.
+     *
+     * @return the clientId.
+     */
     public String getClientId() {
         return clientId;
     }
 
+    /**
+     * Get the clientSecret used in samples.
+     *
+     * @return the clientSecret.
+     */
     public String getClientSecret() {
         return clientSecret;
     }
