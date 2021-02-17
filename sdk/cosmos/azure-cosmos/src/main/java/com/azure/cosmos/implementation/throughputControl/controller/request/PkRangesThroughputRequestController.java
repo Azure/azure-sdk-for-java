@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -82,11 +81,6 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         }
 
         return false;
-    }
-
-    @Override
-    public Mono<Void> close() {
-        return Mono.empty();
     }
 
     @Override

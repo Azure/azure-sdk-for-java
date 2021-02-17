@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputLocalControlGroup;
@@ -20,7 +21,8 @@ public class ThroughputGroupControllerFactory {
         ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        String targetCollectionRid) {
+        String targetCollectionRid,
+        LinkedCancellationToken parentToken) {
 
         if (group instanceof ThroughputLocalControlGroup) {
             return new ThroughputGroupLocalController(
@@ -29,7 +31,8 @@ public class ThroughputGroupControllerFactory {
                 (ThroughputLocalControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
-                targetCollectionRid);
+                targetCollectionRid,
+                parentToken);
         } else if (group instanceof ThroughputGlobalControlGroup) {
             return new ThroughputGroupGlobalController(
                 connectionMode,
@@ -37,7 +40,8 @@ public class ThroughputGroupControllerFactory {
                 (ThroughputGlobalControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
-                targetCollectionRid);
+                targetCollectionRid,
+                parentToken);
         }
 
         throw new IllegalArgumentException(String.format("Throughput group control group %s is not supported", group.getClass()));

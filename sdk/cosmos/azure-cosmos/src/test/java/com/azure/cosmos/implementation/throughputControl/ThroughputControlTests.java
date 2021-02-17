@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
-import com.azure.cosmos.ThroughputGlobalControlConfig;
+import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -103,7 +103,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 .setTargetThroughput(6)
                 .build();
 
-        ThroughputGlobalControlConfig globalControlConfig = this.client.createThroughputGlobalControlConfigBuilder(this.database.getId(), controlContainerId)
+        GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
             .setControlItemRenewInterval(Duration.ofSeconds(5))
             .setControlItemExpireInterval(Duration.ofSeconds(10))
             .build();

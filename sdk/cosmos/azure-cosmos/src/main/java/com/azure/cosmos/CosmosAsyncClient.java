@@ -479,15 +479,15 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     /**
-     * Create throughput global control config builder which will be used to build {@link ThroughputGlobalControlConfig}.
+     * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
      *
      * @param databaseId The database if of the control container.
      * @param containerId The container id of the control container.
-     * @return A {@link ThroughputGlobalControlConfigBuilder}.
+     * @return A {@link GlobalThroughputControlConfigBuilder}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputGlobalControlConfigBuilder createThroughputGlobalControlConfigBuilder(String databaseId, String containerId) {
-        return new ThroughputGlobalControlConfigBuilder(this, databaseId, containerId);
+    public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
+        return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

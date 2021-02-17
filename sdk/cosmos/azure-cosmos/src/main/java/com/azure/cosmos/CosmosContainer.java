@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -25,7 +26,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -728,7 +728,7 @@ public class CosmosContainer {
     /**
      * Enable the throughput control group with local control mode.
      *
-     * @param groupConfig A {@link ThroughputGlobalControlConfig}.
+     * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig) {
@@ -739,11 +739,11 @@ public class CosmosContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
-     * @param groupConfig A {@link ThroughputControlGroupConfig}.
-     * @param globalControlConfig A {@link ThroughputGlobalControlConfig}.
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputGlobalControlGroup(ThroughputControlGroupConfig groupConfig, ThroughputGlobalControlConfig globalControlConfig) {
+    public void enableThroughputGlobalControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
         this.asyncContainer.enableThroughputGlobalControlGroup(groupConfig, globalControlConfig);
     }
 }

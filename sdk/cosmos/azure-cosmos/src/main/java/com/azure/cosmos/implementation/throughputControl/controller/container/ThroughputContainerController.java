@@ -16,8 +16,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.changefeed.CancellationToken;
-import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerFactory;
@@ -35,6 +35,7 @@ import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -62,7 +63,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final CosmosAsyncContainer targetContainer;
 
-    private final CancellationTokenSource cancellationTokenSource;
+    private final LinkedCancellationTokenSource cancellationTokenSource;
+    private final ConcurrentHashMap<String, LinkedCancellationToken> cancellationTokenMap;
 
     private ThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
@@ -73,7 +75,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
         Set<ThroughputControlGroupInternal> groups,
-        RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        RxPartitionKeyRangeCache partitionKeyRangeCache,
+        LinkedCancellationToken parentToken) {
 
         checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
         checkArgument(groups != null && groups.size() > 0, "Throughput budget groups can not be null or empty");
@@ -92,7 +95,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
         this.throughputProvisioningScope = this.getThroughputResolveLevel(groups);
 
-        this.cancellationTokenSource = new CancellationTokenSource();
+        this.cancellationTokenSource = new LinkedCancellationTokenSource(parentToken);
+        this.cancellationTokenMap = new ConcurrentHashMap<>();
     }
 
     private ThroughputProvisioningScope getThroughputResolveLevel(Set<ThroughputControlGroupInternal> groupConfigs) {
@@ -280,13 +284,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputGroupControllerBase> createAndInitializeGroupController(ThroughputControlGroupInternal group) {
+        LinkedCancellationToken parentToken =
+            this.cancellationTokenMap.compute(
+                group.getGroupName(),
+                (key, cancellationToken) -> this.cancellationTokenSource.getToken());
+
         ThroughputGroupControllerBase groupController = ThroughputGroupControllerFactory.createController(
             this.connectionMode,
             this.globalEndpointManager,
             group,
             this.maxContainerThroughput.get(),
             this.partitionKeyRangeCache,
-            this.targetContainerRid);
+            this.targetContainerRid,
+            parentToken);
 
         return groupController
             .init()
@@ -299,7 +309,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     }
 
-    private Flux<Void> refreshContainerMaxThroughputTask(CancellationToken cancellationToken) {
+    private Flux<Void> refreshContainerMaxThroughputTask(LinkedCancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
 
         if (this.throughputProvisioningScope == ThroughputProvisioningScope.NONE) {
@@ -317,14 +327,5 @@ public class ThroughputContainerController implements IThroughputContainerContro
             })
             .then()
             .repeat(() -> !cancellationToken.isCancellationRequested());
-    }
-
-    @Override
-    public Mono<Void> close() {
-        this.cancellationTokenSource.cancel();
-        return Flux.fromIterable(this.groups)
-            .flatMap(group -> this.resolveThroughputGroupController(group))
-            .flatMap(groupController -> groupController.close())
-            .then();
     }
 }

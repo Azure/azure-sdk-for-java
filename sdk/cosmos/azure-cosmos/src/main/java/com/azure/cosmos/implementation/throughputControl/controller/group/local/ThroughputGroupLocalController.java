@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group.local
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputLocalControlGroup;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import reactor.core.publisher.Mono;
@@ -20,9 +21,10 @@ public class ThroughputGroupLocalController extends ThroughputGroupControllerBas
         ThroughputLocalControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        String targetContainerRid) {
+        String targetContainerRid,
+        LinkedCancellationToken parentToken) {
 
-        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid);
+        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
     }
 
     @Override

@@ -12,13 +12,13 @@ import java.time.Duration;
  * It contains configuration about the extra container which will track all the clients throughput usage for a certain control group.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class ThroughputGlobalControlConfig {
+public class GlobalThroughputControlConfig {
     private final CosmosAsyncContainer controlContainer;
     private final Duration controlItemRenewInterval;
     private final Duration controlItemExpireInterval;
 
 
-    ThroughputGlobalControlConfig(
+    GlobalThroughputControlConfig(
         CosmosAsyncContainer controlContainer,
         Duration controlItemRenewInterval,
         Duration controlItemExpireInterval) {

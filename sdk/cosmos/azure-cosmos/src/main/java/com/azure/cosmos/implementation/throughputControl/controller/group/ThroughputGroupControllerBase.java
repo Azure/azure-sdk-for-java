@@ -11,10 +11,10 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.changefeed.CancellationToken;
-import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +51,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private final AsyncCache<String, IThroughputRequestController> requestControllerAsyncCache;
     private final String targetContainerRid;
 
-    protected final CancellationTokenSource cancellationTokenSource;
+    protected final LinkedCancellationTokenSource cancellationTokenSource;
 
     public ThroughputGroupControllerBase(
         ConnectionMode connectionMode,
@@ -60,7 +59,8 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        String targetContainerRid) {
+        String targetContainerRid,
+        LinkedCancellationToken parentToken) {
 
         checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(group, "Throughput control group can not be null");
@@ -85,7 +85,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.requestControllerAsyncCache = new AsyncCache<>();
         this.targetContainerRid = targetContainerRid;
 
-        this.cancellationTokenSource = new CancellationTokenSource();
+        this.cancellationTokenSource = new LinkedCancellationTokenSource(parentToken);
     }
 
     public abstract double getClientThroughputShare();
@@ -105,7 +105,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.groupThroughput.set(allocatedThroughput);
     }
 
-    public Flux<Void> throughputUsageCycleRenewTask(CancellationToken cancellationToken) {
+    public Flux<Void> throughputUsageCycleRenewTask(LinkedCancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
         return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
             .flatMap(t -> this.resolveRequestController())
@@ -123,6 +123,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     private Mono<IThroughputRequestController> createAndInitializeRequestController() {
         IThroughputRequestController requestController;
+
         double clientAllocatedThroughput = this.groupThroughput.get() * this.getClientThroughputShare();
 
         if (this.connectionMode == ConnectionMode.DIRECT) {
@@ -152,13 +153,6 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     }
 
     @Override
-    public Mono<Void> close() {
-        this.cancellationTokenSource.cancel();
-        return this.resolveRequestController()
-            .flatMap(requestController -> requestController.close());
-    }
-
-    @Override
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         return this.resolveRequestController()
             .flatMap(requestController -> {
@@ -171,19 +165,15 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                 // or the request has staled info.
                 // We will handle the first scenario by creating a new request controller,
                 // while for second scenario, we will go to the original request mono, which will eventually get exception from server
-                return this.updateControllerAndRetry(requestController, request, originalRequestMono);
+                return this.updateControllerAndRetry(request, originalRequestMono);
             });
     }
 
-    private <T> Mono<T> updateControllerAndRetry(
-        IThroughputRequestController currentRequestController,
-        RxDocumentServiceRequest request,
-        Mono<T> nextRequestMono) {
+    private <T> Mono<T> updateControllerAndRetry(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
 
         return this.shouldUpdateRequestController(request)
             .flatMap(shouldUpdate -> {
                 if (shouldUpdate) {
-                    currentRequestController.close().subscribeOn(Schedulers.parallel()).subscribe();
                     this.refreshRequestController();
                     return this.resolveRequestController()
                         .flatMap(updatedController -> {

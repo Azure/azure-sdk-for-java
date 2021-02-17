@@ -1425,13 +1425,13 @@ public class CosmosAsyncContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
-     * @param groupConfig
-     * @param globalControlConfig
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputGlobalControlGroup(
         ThroughputControlGroupConfig groupConfig,
-        ThroughputGlobalControlConfig globalControlConfig) {
+        GlobalThroughputControlConfig globalControlConfig) {
 
         ThroughputGlobalControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);

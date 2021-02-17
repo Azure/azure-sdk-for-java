@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.EmptyThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.IThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.ThroughputContainerController;
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -84,6 +85,9 @@ public class ThroughputControlStore {
     private final ConcurrentHashMap<String, Set<ThroughputControlGroupInternal>> groupMapByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
+    private final LinkedCancellationTokenSource cancellationTokenSource;
+    private final ConcurrentHashMap<String, LinkedCancellationToken> cancellationTokenMap;
+
     public ThroughputControlStore(
         RxClientCollectionCache collectionCache,
         ConnectionMode connectionMode,
@@ -100,6 +104,9 @@ public class ThroughputControlStore {
         this.globalEndpointManager = globalEndpointManager;
         this.groupMapByContainer = new ConcurrentHashMap<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
+
+        this.cancellationTokenSource = new LinkedCancellationTokenSource();
+        this.cancellationTokenMap = new ConcurrentHashMap<>();
     }
 
     public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
@@ -147,19 +154,18 @@ public class ThroughputControlStore {
             .flatMap(containerController -> {
                 if (containerController.canHandleRequest(request)) {
                     return containerController.processRequest(request, originalRequestMono)
-                        .doOnError(throwable -> this.handleException(request, containerController, throwable));
+                        .doOnError(throwable -> this.handleException(collectionLink, request, throwable));
                 }
 
                 // Unable to find container controller to handle the request,
                 // It is caused by control store out of sync or the request has staled info.
                 // We will handle the first scenario by creating a new container controller,
                 // while fall back to original request Mono for the second scenario.
-                return this.updateControllerAndRetry(containerController, collectionLink, request, originalRequestMono);
+                return this.updateControllerAndRetry(collectionLink, request, originalRequestMono);
             });
     }
 
     private <T> Mono<T> updateControllerAndRetry(
-        IThroughputContainerController currentContainerController,
         String collectionLink,
         RxDocumentServiceRequest request,
         Mono<T> originalRequestMono) {
@@ -167,13 +173,20 @@ public class ThroughputControlStore {
         return this.shouldRefreshContainerController(collectionLink, request)
             .flatMap(shouldRefresh -> {
                 if (shouldRefresh) {
-                    currentContainerController.close().subscribeOn(Schedulers.parallel()).subscribe();
+                    this.cancellationTokenMap.compute(collectionLink, (key, cancellationToken) -> {
+                        if (cancellationToken != null) {
+                            cancellationToken.cancel();
+                        }
+
+                        return null;
+                    });
+
                     this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
                     return this.resolveContainerController(collectionLink)
                         .flatMap(updatedContainerController -> {
                             if (updatedContainerController.canHandleRequest(request)) {
                                 return updatedContainerController.processRequest(request, originalRequestMono)
-                                    .doOnError(throwable -> this.handleException(request, updatedContainerController, throwable));
+                                    .doOnError(throwable -> this.handleException(collectionLink, request, throwable));
                             } else {
                                 // still can not handle the request
                                 logger.warn(
@@ -206,12 +219,18 @@ public class ThroughputControlStore {
         if (this.groupMapByContainer.containsKey(containerLink)) {
             return Mono.just(this.groupMapByContainer.get(containerLink))
                 .flatMap(groups -> {
+                    LinkedCancellationToken parentToken =
+                        this.cancellationTokenMap.compute(
+                            containerLink,
+                            (key, cancellationToken) -> this.cancellationTokenSource.getToken());
+
                     ThroughputContainerController containerController =
                         new ThroughputContainerController(
                             this.connectionMode,
                             this.globalEndpointManager,
                             groups,
-                            this.partitionKeyRangeCache);
+                            this.partitionKeyRangeCache,
+                            parentToken);
 
                     return containerController.init();
                 });
@@ -228,9 +247,8 @@ public class ThroughputControlStore {
                 Mono.just(StringUtils.equals(documentCollection.getResourceId(), request.requestContext.resolvedCollectionRid)));
     }
 
-    private void handleException(RxDocumentServiceRequest request, IThroughputController controller, Throwable throwable) {
+    private void handleException(String collectionLink, RxDocumentServiceRequest request, Throwable throwable) {
         checkNotNull(request, "Request can not be null");
-        checkNotNull(controller, "Container controller can not be null");
         checkNotNull(throwable, "Exception can not be null");
 
         CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
@@ -238,7 +256,13 @@ public class ThroughputControlStore {
         if (cosmosException != null &&
             (isNameCacheStale(cosmosException) || isPartitionKeyMismatchException(cosmosException))) {
 
-            controller.close().subscribeOn(Schedulers.parallel()).subscribe();
+            this.cancellationTokenMap.compute(collectionLink,(key, cancellationToken) -> {
+                if (cancellationToken != null) {
+                    cancellationToken.cancel();
+                }
+                return null;
+            });
+
             String containerLink = Utils.getCollectionName(request.getResourceAddress());
 
             this.collectionCache.refresh(null, containerLink, null);

@@ -3,7 +3,7 @@ package com.azure.cosmos.implementation.throughputControl.config;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.ThroughputControlGroupConfig;
-import com.azure.cosmos.ThroughputGlobalControlConfig;
+import com.azure.cosmos.GlobalThroughputControlConfig;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -23,7 +23,7 @@ public class ThroughputControlGroupFactory {
 
     public static ThroughputGlobalControlGroup createThroughputGlobalControlGroup(
         ThroughputControlGroupConfig groupConfig,
-        ThroughputGlobalControlConfig globalControlConfig,
+        GlobalThroughputControlConfig globalControlConfig,
         CosmosAsyncContainer targetContainer) {
 
         checkNotNull(groupConfig, "Throughput control group config can not be null");

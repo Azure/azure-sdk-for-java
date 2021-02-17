@@ -65,9 +65,4 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
             .max(Comparator.naturalOrder())
             .get();
     }
-
-    @Override
-    public Mono<Void> close() {
-        return Mono.empty();
-    }
 }

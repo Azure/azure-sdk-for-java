@@ -6,8 +6,8 @@ package com.azure.cosmos.implementation.throughputControl.controller.group.globa
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import org.slf4j.Logger;
@@ -38,8 +38,9 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
         ThroughputGlobalControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        String targetContainerRid) {
-        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid);
+        String targetContainerRid,
+        LinkedCancellationToken parentToken) {
+        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
 
         this.controlItemRenewInterval = group.getControlItemRenewInterval();
         this.containerManager = new ThroughputControlContainerManager(group);
@@ -104,7 +105,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
         }
     }
 
-    private Flux<Void> calculateClientThroughputShareTask(CancellationToken cancellationToken) {
+    private Flux<Void> calculateClientThroughputShareTask(LinkedCancellationToken cancellationToken) {
         return Mono.delay(controlItemRenewInterval)
             .flatMap(t -> {
                 double loadFactor = this.calculateLoadFactor();

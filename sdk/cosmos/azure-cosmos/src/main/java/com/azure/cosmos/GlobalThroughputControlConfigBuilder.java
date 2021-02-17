@@ -15,13 +15,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Throughput global control config builder.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class ThroughputGlobalControlConfigBuilder {
+public class GlobalThroughputControlConfigBuilder {
     private final CosmosAsyncContainer controlContainer;
 
     private Duration controlItemRenewInterval;
     private Duration controlItemExpireInterval;
 
-    ThroughputGlobalControlConfigBuilder(CosmosAsyncClient client, String databaseId, String containerId) {
+    GlobalThroughputControlConfigBuilder(CosmosAsyncClient client, String databaseId, String containerId) {
         checkNotNull(client, "Client can not be null");
         checkArgument(StringUtils.isNotEmpty(databaseId), "DatabaseId cannot be null nor empty");
         checkArgument(StringUtils.isNotEmpty(containerId), "ContainerId cannot be null nor empty");
@@ -37,10 +37,11 @@ public class ThroughputGlobalControlConfigBuilder {
      *
      * In short words, it controls how quickly the shared throughput will reload balanced across different clients.
      *
-     * @return The {@link ThroughputGlobalControlConfigBuilder}.
+     * @param controlItemRenewInterval The control item renewal interval.
+     * @return The {@link GlobalThroughputControlConfigBuilder}
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputGlobalControlConfigBuilder setControlItemRenewInterval(Duration controlItemRenewInterval) {
+    public GlobalThroughputControlConfigBuilder setControlItemRenewInterval(Duration controlItemRenewInterval) {
         this.controlItemRenewInterval = controlItemRenewInterval;
         return this;
     }
@@ -50,11 +51,12 @@ public class ThroughputGlobalControlConfigBuilder {
      *
      * A client may be offline due to various reasons (being shutdown, network issue... ).
      * This controls how quickly we will detect the client has been offline and hence allow its throughput share to be taken by other clients.
-     **
-     * @return The {@link ThroughputGlobalControlConfigBuilder}.
+     *
+     * @param controlItemExpireInterval The control item expire interval.
+     * @return The {@link GlobalThroughputControlConfigBuilder}
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputGlobalControlConfigBuilder setControlItemExpireInterval(Duration controlItemExpireInterval) {
+    public GlobalThroughputControlConfigBuilder setControlItemExpireInterval(Duration controlItemExpireInterval) {
         this.controlItemExpireInterval = controlItemExpireInterval;
         return this;
     }
@@ -62,14 +64,14 @@ public class ThroughputGlobalControlConfigBuilder {
     /**
      * Validate the throughput global control configuration and create a new throughput global control config item.
      *
-     * @return A new {@link ThroughputGlobalControlConfig}.
+     * @return A new {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputGlobalControlConfig build() {
+    public GlobalThroughputControlConfig build() {
         if (this.controlItemExpireInterval.getSeconds() < this.controlItemRenewInterval.getSeconds()) {
             throw new IllegalArgumentException("Expire time should not be smaller than renew interval");
         }
 
-        return new ThroughputGlobalControlConfig(this.controlContainer, this.controlItemRenewInterval, this.controlItemExpireInterval);
+        return new GlobalThroughputControlConfig(this.controlContainer, this.controlItemRenewInterval, this.controlItemExpireInterval);
     }
 }
