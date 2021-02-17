@@ -796,7 +796,7 @@ directive:
     delete $["x-ms-parameter-grouping"];
 ```
 
-### ListQueuesSegment x-ms-pageable itemName
+### ListSharesSegment x-ms-pageable itemName
 ``` yaml
 directive:
 - from: swagger-document
