@@ -48,7 +48,6 @@ public class ChatClientTestBase extends TestBase {
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("id")
         .add("token");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
@@ -151,7 +150,7 @@ public class ChatClientTestBase extends TestBase {
 
     protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
         for (ChatParticipant participant: participantList) {
-            if( ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId().equals(participantId)) {
+            if (((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId().equals(participantId)) {
                 return true;
             }
         }

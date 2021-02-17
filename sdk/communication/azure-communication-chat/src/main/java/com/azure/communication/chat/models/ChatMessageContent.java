@@ -103,8 +103,8 @@ public final class ChatMessageContent {
      * @param initiatorCommunicationIdentifier the initiator value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setInitiatorCommunicationIdentifier
-    (CommunicationIdentifier initiatorCommunicationIdentifier) {
+    public ChatMessageContent setInitiatorCommunicationIdentifier(
+        CommunicationIdentifier initiatorCommunicationIdentifier) {
         this.initiatorCommunicationIdentifier = initiatorCommunicationIdentifier;
         return this;
     }

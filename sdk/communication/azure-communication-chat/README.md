@@ -283,7 +283,7 @@ chatParticipantsResponse.iterableByPage().forEach(resp -> {
     System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
         resp.getRequest().getUrl(), resp.getStatusCode());
     resp.getItems().forEach(chatParticipant -> {
-        System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier)chatParticipant.getCommunicationIdentifier()).getId());
+        System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
     });
 });
 ```

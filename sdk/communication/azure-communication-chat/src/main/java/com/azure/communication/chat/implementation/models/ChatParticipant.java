@@ -21,15 +21,6 @@ public final class ChatParticipant {
     private CommunicationIdentifierModel communicationIdentifier;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model must be interpreted as a union: Apart from rawId, at most one
-     * further property may be set.
-     */
-    @JsonProperty(value = "identifier")
-    private CommunicationIdentifierModel identifier;
-
-    /*
      * Display name for the chat participant.
      */
     @JsonProperty(value = "displayName")
@@ -63,30 +54,6 @@ public final class ChatParticipant {
      */
     public ChatParticipant setCommunicationIdentifier(CommunicationIdentifierModel communicationIdentifier) {
         this.communicationIdentifier = communicationIdentifier;
-        return this;
-    }
-
-    /**
-     * Get the identifier property: Identifies a participant in Azure Communication services. A participant is, for
-     * example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart from
-     * rawId, at most one further property may be set.
-     *
-     * @return the identifier value.
-     */
-    public CommunicationIdentifierModel getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
-     * Set the identifier property: Identifies a participant in Azure Communication services. A participant is, for
-     * example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart from
-     * rawId, at most one further property may be set.
-     *
-     * @param identifier the identifier value to set.
-     * @return the ChatParticipant object itself.
-     */
-    public ChatParticipant setIdentifier(CommunicationIdentifierModel identifier) {
-        this.identifier = identifier;
         return this;
     }
 

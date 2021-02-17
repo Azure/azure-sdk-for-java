@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.models.ChatThread;
 
 /**
@@ -25,7 +24,8 @@ public final class ChatThreadConverter {
             .setCreatedOn(obj.getCreatedOn());
 
         if (obj.getCreatedByCommunicationIdentifier() != null) {
-            chatThread.setCreatedByCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCreatedByCommunicationIdentifier()));
+            chatThread.setCreatedByCommunicationIdentifier(
+                CommunicationIdentifierConverter.convert(obj.getCreatedByCommunicationIdentifier()));
         }
 
         return chatThread;

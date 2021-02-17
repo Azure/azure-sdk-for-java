@@ -15,21 +15,26 @@ public final class ChatMessageContentConverter {
     /**
      * Maps from {com.azure.communication.chat.implementation.models.ChatMessageContent} to {@link ChatMessageContent}.
      */
-    public static ChatMessageContent convert(com.azure.communication.chat.implementation.models.ChatMessageContent obj) {
+    public static ChatMessageContent convert(
+        com.azure.communication.chat.implementation.models.ChatMessageContent obj) {
         if (obj == null) {
             return null;
         }
 
         ChatMessageContent chatMessageContent = new ChatMessageContent()
             .setMessage(obj.getMessage())
-            .setParticipants(obj.getParticipants()
-                .stream()
-                .map(participant -> ChatParticipantConverter.convert(participant))
-                .collect(Collectors.toList()))
             .setTopic(obj.getTopic());
 
         if (obj.getInitiatorCommunicationIdentifier() != null) {
-            chatMessageContent.setInitiatorCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getInitiatorCommunicationIdentifier()));
+            chatMessageContent.setInitiatorCommunicationIdentifier(
+                CommunicationIdentifierConverter.convert(obj.getInitiatorCommunicationIdentifier()));
+        }
+
+        if (obj.getParticipants() != null) {
+            chatMessageContent.setParticipants(obj.getParticipants()
+                .stream()
+                .map(participant -> ChatParticipantConverter.convert(participant))
+                .collect(Collectors.toList()));
         }
 
         return chatMessageContent;

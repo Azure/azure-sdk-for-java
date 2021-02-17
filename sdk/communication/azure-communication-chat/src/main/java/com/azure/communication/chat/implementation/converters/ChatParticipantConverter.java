@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.models.ChatParticipant;
 
 /**

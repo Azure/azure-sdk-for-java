@@ -78,7 +78,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();
 
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(),
-                secondParticipant.getId());
+            secondParticipant.getId());
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest).block();
         chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
@@ -101,11 +101,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateTopic(newTopic)
-                    .flatMap(noResp -> {
-                        return client.getChatThread(threadId);
-                    })
-            )
+            chatThreadClient.updateTopic(newTopic)
+                .flatMap(noResp -> {
+                    return client.getChatThread(threadId);
+                })
+        )
             .assertNext(chatThread -> {
                 assertEquals(chatThread.getTopic(), newTopic);
             });
@@ -120,13 +120,13 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateTopicWithResponse(newTopic)
-                    .flatMap(updateThreadResponse -> {
-                        assertEquals(204, updateThreadResponse.getStatusCode());
-                        return client.getChatThread(threadId);
-                    })
+            chatThreadClient.updateTopicWithResponse(newTopic)
+                .flatMap(updateThreadResponse -> {
+                    assertEquals(204, updateThreadResponse.getStatusCode());
+                    return client.getChatThread(threadId);
+                })
 
-            )
+        )
             .assertNext(chatThread -> {
                 assertEquals(chatThread.getTopic(), newTopic);
             })
@@ -179,14 +179,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
-                for (ChatParticipant participant: options.getParticipants()) {
+                for (ChatParticipant participant : options.getParticipants()) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
-                        ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId()));
+                        ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
                 }
                 assertTrue(returnedParticipants.size() == 4);
             });
 
-        for (ChatParticipant participant: options.getParticipants()) {
+        for (ChatParticipant participant : options.getParticipants()) {
             StepVerifier.create(chatThreadClient.removeParticipant(participant.getCommunicationIdentifier()))
                 .verifyComplete();
         }
@@ -231,9 +231,9 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedMembers.add(item));
                 });
 
-                for (ChatParticipant member: options.getParticipants()) {
+                for (ChatParticipant member : options.getParticipants()) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedMembers,
-                        ((CommunicationUserIdentifier)member.getCommunicationIdentifier()).getId()));
+                        ((CommunicationUserIdentifier) member.getCommunicationIdentifier()).getId()));
                 }
                 assertTrue(returnedMembers.size() == 4);
             });
@@ -263,15 +263,15 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
-                for (ChatParticipant participant: options.getParticipants()) {
+                for (ChatParticipant participant : options.getParticipants()) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
-                        ((CommunicationUserIdentifier)participant.getCommunicationIdentifier()).getId()));
+                        ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
                 }
 
                 assertTrue(returnedParticipants.size() == 4);
             });
 
-        for (ChatParticipant participant: options.getParticipants()) {
+        for (ChatParticipant participant : options.getParticipants()) {
             StepVerifier.create(chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier()))
                 .assertNext(resp -> {
                     assertEquals(204, resp.getStatusCode());
@@ -293,7 +293,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
                 assertTrue(participantsResponse
                     .stream()
-                    .anyMatch(p -> ((CommunicationUserIdentifier)p.getCommunicationIdentifier()).getId().equals(participant.getId())));
+                    .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
             });
     }
 
@@ -310,7 +310,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
                 assertTrue(participantsResponse
                     .stream()
-                    .anyMatch(p -> ((CommunicationUserIdentifier)p.getCommunicationIdentifier()).getId().equals(participant.getId())));
+                    .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
             });
     }
 
@@ -485,7 +485,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 .flatMap(response -> {
                     return chatThreadClient.deleteMessage(response);
                 })
-            )
+        )
             .verifyComplete();
     }
 
@@ -524,7 +524,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 .flatMap(response -> {
                     return chatThreadClient.deleteMessageWithResponse(response);
                 })
-            )
+        )
             .assertNext(deleteResponse -> {
                 assertEquals(deleteResponse.getStatusCode(), 204);
             })
@@ -550,7 +550,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 .flatMap((Void resp) -> {
                     return chatThreadClient.getMessage(messageResponseRef.get());
                 })
-            )
+        )
             .assertNext(message -> {
                 assertEquals(message.getContent(), updateMessageRequest.getContent());
             });
@@ -592,15 +592,15 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         AtomicReference<String> messageResponseRef = new AtomicReference<>();
         StepVerifier.create(chatThreadClient.sendMessage(messageRequest)
-                    .flatMap((String response) -> {
-                        messageResponseRef.set(response);
-                        return chatThreadClient.updateMessageWithResponse(response, updateMessageRequest);
-                    })
-                    .flatMap((Response<Void> updateResponse) -> {
-                        assertEquals(204, updateResponse.getStatusCode());
-                        return chatThreadClient.getMessage(messageResponseRef.get());
-                    })
-                )
+            .flatMap((String response) -> {
+                messageResponseRef.set(response);
+                return chatThreadClient.updateMessageWithResponse(response, updateMessageRequest);
+            })
+            .flatMap((Response<Void> updateResponse) -> {
+                assertEquals(204, updateResponse.getStatusCode());
+                return chatThreadClient.getMessage(messageResponseRef.get());
+            })
+        )
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
             })
@@ -713,7 +713,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     messageResponseRef.set(response);
                     return chatThreadClient.sendReadReceipt(response);
                 })
-            )
+        )
             .assertNext(noResp -> {
                 PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = new PagedIterable<ChatMessageReadReceipt>(chatThreadClient.listReadReceipts());
 
@@ -746,7 +746,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     messageResponseRef.set(response);
                     return chatThreadClient.sendReadReceiptWithResponse(response);
                 })
-            )
+        )
             .assertNext(receiptResponse -> {
                 assertEquals(201, receiptResponse.getStatusCode());
                 PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = new PagedIterable<>(chatThreadClient.listReadReceipts());
@@ -836,10 +836,10 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
         // Action & Assert
         StepVerifier
-           .create(chatThreadClient.sendMessage(messageRequest)
-               .flatMap((String id) -> {
-                   return chatThreadClient.sendReadReceiptWithResponse(id);
-               }))
+            .create(chatThreadClient.sendMessage(messageRequest)
+                .flatMap((String id) -> {
+                    return chatThreadClient.sendReadReceiptWithResponse(id);
+                }))
             .assertNext((Response<Void> response) -> {
                 assertEquals(200, response.getStatusCode());
             })
