@@ -10,6 +10,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
@@ -29,9 +30,9 @@ public class ReadmeSamples {
      * Sample for creating Azure Monitor Exporter.
      */
     public void createExporter() {
-        AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
     }
 
     /**
@@ -41,12 +42,19 @@ public class ReadmeSamples {
 
         // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
         // This should be done just once when application starts up
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
 
-        OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
-        Tracer tracer = OpenTelemetrySdk.get().getTracer("Sample");
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
+
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+
+        Tracer tracer = openTelemetrySdk.getTracer("Sample");
 
         // Make service calls by adding new parent spans
         ConfigurationClient client = new ConfigurationClientBuilder()

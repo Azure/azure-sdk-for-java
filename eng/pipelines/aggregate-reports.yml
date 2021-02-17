@@ -105,7 +105,7 @@ jobs:
         GdnBreakGdnToolCredScan: true
         GdnBreakGdnToolCredScanSeverity: Error
         GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
-        GdnBreakBaselines: baseline  
+        GdnBreakBaselines: baseline
         # Used for generating baseline file.
         # GdnBreakOutputBaselineFile: java
         # GdnBreakOutputBaseline: baseline

@@ -42,7 +42,9 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-#      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if parameters.TestResourceDirectories }}:

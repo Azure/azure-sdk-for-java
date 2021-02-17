@@ -122,9 +122,6 @@
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
       files=".*[/\\]implementation[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
-
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"
@@ -242,7 +239,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter"/>
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
