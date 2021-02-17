@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the create operation.
- */
-public final class SharesCreateResponse extends ResponseBase<ShareCreateHeaders, Void> {
+/** Contains all response data for the create operation. */
+public final class SharesCreateResponse extends ResponseBase<SharesCreateHeaders, Void> {
     /**
      * Creates an instance of SharesCreateResponse.
      *
@@ -21,7 +19,8 @@ public final class SharesCreateResponse extends ResponseBase<ShareCreateHeaders,
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ShareCreateHeaders headers) {
+    public SharesCreateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, SharesCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }
