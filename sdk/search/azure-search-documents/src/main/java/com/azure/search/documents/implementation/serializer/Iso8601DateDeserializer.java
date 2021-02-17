@@ -14,12 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Iso8601DateDeserializer extends UntypedObjectDeserializer {
+public final class Iso8601DateDeserializer extends UntypedObjectDeserializer {
     private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
     private static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    protected Iso8601DateDeserializer(final UntypedObjectDeserializer defaultDeserializer) {
+    public Iso8601DateDeserializer(final UntypedObjectDeserializer defaultDeserializer) {
         super(null, null);
         this.defaultDeserializer = defaultDeserializer;
     }

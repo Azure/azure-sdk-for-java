@@ -17,17 +17,19 @@ import java.util.Date;
  * Custom serializer to serialize {@link Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
  */
 public final class Iso8601DateSerializer extends JsonSerializer<Date> {
+    private static final SimpleModule MODULE;
+
+    static {
+        MODULE = new SimpleModule().addSerializer(Date.class, new Iso8601DateSerializer());
+    }
 
     /**
-     * Gets a module wrapping this serializer as an adapter for the Jackson
-     * ObjectMapper.
+     * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
     public static SimpleModule getModule() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Date.class, new Iso8601DateSerializer());
-        return module;
+        return MODULE;
     }
 
     /**

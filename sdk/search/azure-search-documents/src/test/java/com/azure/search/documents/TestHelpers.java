@@ -10,10 +10,8 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -50,6 +48,7 @@ import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
+import static com.azure.search.documents.implementation.util.Utility.DEFAULT_SERIALIZER_ADAPTER;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -61,13 +60,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
 
+    public static final ObjectMapper MAPPER = new ObjectMapper();
+
     public static final String HOTEL_INDEX_NAME = "hotels";
 
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final JacksonAdapter SERIALIZER = (JacksonAdapter) Utility.initializeSerializerAdapter();
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() { };
 //    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
@@ -87,10 +87,9 @@ public final class TestHelpers {
      * @param actual The actual object.
      */
     public static void assertObjectEquals(Object expected, Object actual) {
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
         try {
-            assertEquals(jacksonAdapter.serialize(expected, SerializerEncoding.JSON),
-                jacksonAdapter.serialize(actual, SerializerEncoding.JSON));
+            assertEquals(DEFAULT_SERIALIZER_ADAPTER.serialize(expected, SerializerEncoding.JSON),
+                DEFAULT_SERIALIZER_ADAPTER.serialize(actual, SerializerEncoding.JSON));
         } catch (IOException ex) {
             fail("There is something wrong happen in serializer.");
         }
@@ -116,9 +115,8 @@ public final class TestHelpers {
         } else if (expected instanceof Map) {
             assertMapEquals((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode expectedNode = mapper.valueToTree(expected);
-            ObjectNode actualNode = mapper.valueToTree(actual);
+            ObjectNode expectedNode = MAPPER.valueToTree(expected);
+            ObjectNode actualNode = MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
     }
@@ -313,7 +311,8 @@ public final class TestHelpers {
             sb.append(sc.nextLine());
         }
         try {
-            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
+            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
+                SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }
@@ -328,7 +327,7 @@ public final class TestHelpers {
             sb.append(sc.nextLine());
         }
         try {
-            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
+            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
                 SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
@@ -344,7 +343,7 @@ public final class TestHelpers {
             sb.append(sc.nextLine());
         }
         try {
-            return SERIALIZER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
+            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
                 SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
@@ -353,8 +352,8 @@ public final class TestHelpers {
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
         try {
-            String serializedJson = SERIALIZER.serialize(value, SerializerEncoding.JSON);
-            return SERIALIZER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
+            String serializedJson = DEFAULT_SERIALIZER_ADAPTER.serialize(value, SerializerEncoding.JSON);
+            return DEFAULT_SERIALIZER_ADAPTER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw Exceptions.propagate(ex);
         }
@@ -366,7 +365,7 @@ public final class TestHelpers {
             .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
 
         try {
-            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
+            SearchIndex index = MAPPER.readValue(indexData, SearchIndex.class);
 
             Field searchIndexName = index.getClass().getDeclaredField("name");
             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {

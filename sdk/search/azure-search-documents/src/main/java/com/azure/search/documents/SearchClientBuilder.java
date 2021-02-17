@@ -16,7 +16,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
@@ -36,7 +35,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.search.documents.implementation.util.Utility.buildRestClient;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
@@ -77,8 +75,6 @@ public final class SearchClientBuilder {
 //            return Math.max(1, oldBatchCount / 2);
 //        }
 //    };
-
-    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     private final ClientLogger logger = new ClientLogger(SearchClientBuilder.class);
 
@@ -138,7 +134,7 @@ public final class SearchClientBuilder {
 
         HttpPipeline pipeline = getHttpPipeline();
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(endpoint, indexName, pipeline, ADAPTER));
+            Utility.buildRestClient(endpoint, indexName, pipeline, Utility.DEFAULT_SERIALIZER_ADAPTER));
     }
 
     /**
@@ -414,9 +410,9 @@ public final class SearchClientBuilder {
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             return new SearchIndexingBufferedAsyncSender<>(buildRestClient(endpoint, indexName, getHttpPipeline(),
-                ADAPTER), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval, initialBatchActionCount,
-                maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
-                onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+                Utility.DEFAULT_SERIALIZER_ADAPTER), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
+                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 
         /**
