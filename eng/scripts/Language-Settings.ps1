@@ -29,6 +29,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
           $pkgProp.SdkType = "client"
         }
         $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+        $pkgProp.ArtifactName = $pkgName
         return $pkgProp
     }
   }
