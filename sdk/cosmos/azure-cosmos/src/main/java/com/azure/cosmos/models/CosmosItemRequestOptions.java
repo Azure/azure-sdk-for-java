@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CosmosItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
+    private String throughputControlGroupName;
 
 
     /**
@@ -36,6 +38,7 @@ public class CosmosItemRequestOptions {
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
+        throughputControlGroupName = options.throughputControlGroupName;
     }
 
 
@@ -281,6 +284,17 @@ public class CosmosItemRequestOptions {
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         return requestOptions;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
     }
 }
