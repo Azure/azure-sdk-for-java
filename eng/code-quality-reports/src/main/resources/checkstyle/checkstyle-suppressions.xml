@@ -9,6 +9,7 @@
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
+
   <!-- Suppress all checkstyle rules for Track 1/management libraries. -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
@@ -16,6 +17,17 @@
   <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- Code was taken from Netty and uses its license instead of our usual one. -->
+  <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
+
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
+  <suppress checks="Header" files="com.azure.core.implementation.OptionModule"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionPropertiesModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionBeanPropertyWriter"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionTypeModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializerProvider"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializer"/>
 
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
