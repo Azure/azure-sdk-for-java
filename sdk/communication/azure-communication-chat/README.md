@@ -232,15 +232,15 @@ The original time of message creation can be accessed using `chatMessage.getCrea
 
 listMessages returns different types of messages which can be identified by `chatMessage.getType()`. These types are:
 
--`text`: Regular chat message sent by a thread participant.
+- `text`: Regular chat message sent by a thread participant.
 
--`html`: HTML chat message sent by a thread participant.
+- `html`: HTML chat message sent by a thread participant.
 
--`topicUpdated`: System message that indicates the topic has been updated.
+- `topicUpdated`: System message that indicates the topic has been updated.
 
--`participantAdded`: System message that indicates one or more participants have been added to the chat thread.
+- `participantAdded`: System message that indicates one or more participants have been added to the chat thread.
 
--`participantRemoved`: System message that indicates a participant has been removed from the chat thread.
+- `participantRemoved`: System message that indicates a participant has been removed from the chat thread.
 
 For more details, see [Message Types](https://docs.microsoft.com/azure/communication-services/concepts/chat/concepts#message-types).
 
