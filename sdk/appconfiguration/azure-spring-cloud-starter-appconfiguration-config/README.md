@@ -53,12 +53,12 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
 
-`spring.cloud.azure.appconfiguration.stores` is a List of stores, were each store follows the following format:
+`spring.cloud.azure.appconfiguration.stores` is a list of stores, where each store follows the following format:
 
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will be loaded. | No | true
-spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether throw `RuntimeException` or not when fail to read App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
+spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether to throw a `RuntimeException` or not when failing to read from App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `{spring.profiles.active}` or if null `\0`
 
@@ -83,7 +83,7 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.prima
 spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name | The name of a token used with Event Hub to trigger push based refresh. | No | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret | The secret value of a token used with Event Hub to trigger push based refresh. | No | null
 
-`spring.cloud.azure.appconfiguration.stores[x].feature-flags` is a set of configurations for the stores feature flags:
+`spring.cloud.azure.appconfiguration.stores[x].feature-flags` is a set of configurations for the feature flags of the store:
 
 Name | Description | Required | Default
 ---|---|---|---
@@ -119,7 +119,7 @@ Multiple labels can be separated with comma, if duplicate keys exists for multip
 
 #### Spring Profiles
 
-Spring Profiles are supported by automatically set as App Configuration Labels. Using the configuration overrides profile use. To include Spring Profiles and labels:
+Spring Profiles are supported by automatically by being set as App Configuration Labels. Using the label filter configuration overrides profile use. To include Spring Profiles and labels:
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=${spring.profiles.active},v1
