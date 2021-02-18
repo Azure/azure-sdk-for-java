@@ -183,7 +183,6 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 assertEquals(firstExpectedLeaseTimeMinutes, readyRenderingSession.getMaxLeaseTime().toMinutes());
                 assertNotNull(readyRenderingSession.getHostname());
                 assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
-                assertNotNull(readyRenderingSession.getHostname());
                 assertEquals(readyRenderingSession.getSize(), options.getSize());
             })
             .verifyComplete();
@@ -193,7 +192,6 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 assertEquals(session.getStatus(), RenderingSessionStatus.READY);
                 assertNotNull(session.getHostname());
                 assertNotEquals(session.getArrInspectorPort(), 0);
-                assertNotNull(session.getHostname());
                 assertEquals(session.getSize(), options.getSize());
             })
             .verifyComplete();

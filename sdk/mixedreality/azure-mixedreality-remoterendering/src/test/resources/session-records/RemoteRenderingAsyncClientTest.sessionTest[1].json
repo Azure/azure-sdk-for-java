@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : {
       "Content-Type" : "application/json"
     },
@@ -12,14 +12,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "201",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:50:49 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -28,14 +28,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:50:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -44,14 +44,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:51:10 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -60,14 +60,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:51:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -76,14 +76,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:51:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -92,14 +92,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:51:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -108,14 +108,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:51:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -124,14 +124,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:00 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -140,14 +140,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -156,14 +156,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -172,14 +172,14 @@
       "retry-after" : "0",
       "Content-Length" : "265",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":0,\"handshakePort\":0,\"elapsedTimeMinutes\":0,\"hostname\":null,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\",\"teraflops\":0.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:31 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -188,14 +188,14 @@
       "retry-after" : "0",
       "Content-Length" : "366",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:41 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",
@@ -204,14 +204,14 @@
       "retry-after" : "0",
       "Content-Length" : "366",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:41 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest?api-version=2021-01-01-preview",
     "Headers" : {
       "Content-Type" : "application/json"
     },
@@ -222,7 +222,7 @@
       "retry-after" : "0",
       "Content-Length" : "366",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
+      "Body" : "{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}",
       "Date" : "Mon, 08 Feb 2021 12:52:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -240,14 +240,14 @@
       "retry-after" : "0",
       "Content-Length" : "381",
       "StatusCode" : "200",
-      "Body" : "{\"sessions\":[{\"id\":\"ayncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}]}",
+      "Body" : "{\"sessions\":[{\"id\":\"asyncSessionTest\",\"creationTime\":\"2021-02-08T12:50:50.4612032+00:00\",\"arrInspectorPort\":60356,\"handshakePort\":65392,\"elapsedTimeMinutes\":0,\"hostname\":\"2104844277-3af3769e-7249-47da-88bb-c1267945cf4c.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":14.0,\"error\":null}]}",
       "Date" : "Mon, 08 Feb 2021 12:52:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/ayncSessionTest/:stop?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/asyncSessionTest/:stop?api-version=2021-01-01-preview",
     "Headers" : { },
     "Response" : {
       "api-supported-versions" : "2021-01-01-preview",

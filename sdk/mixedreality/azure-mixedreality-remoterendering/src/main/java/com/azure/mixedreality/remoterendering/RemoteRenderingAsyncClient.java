@@ -238,7 +238,7 @@ public final class RemoteRenderingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> endSession(String sessionId) {
-        return endSessionWithResponse(sessionId).map(Response::getValue);
+        return endSessionWithResponse(sessionId).then();
     }
 
     /**

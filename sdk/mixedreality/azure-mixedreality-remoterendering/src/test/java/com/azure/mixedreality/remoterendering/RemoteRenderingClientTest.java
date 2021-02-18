@@ -155,21 +155,12 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4) || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
         assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
-        assertNotNull(readyRenderingSession.getHostname());
         assertEquals(readyRenderingSession.getSize(), options.getSize());
 
         UpdateSessionOptions updateOptions2 = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(6));
         assertEquals(6, updateOptions2.getMaxLeaseTime().toMinutes());
 
-        AtomicReference<Boolean> foundSession = new AtomicReference<Boolean>(false);
-
-        client.listSessions().forEach(s -> {
-            if (s.getId().equals(sessionId)) {
-                foundSession.set(true);
-            }
-        });
-
-        assertTrue(foundSession.get());
+        assertTrue(client.listSessions().stream().anyMatch(s -> s.getId().equals(sessionId)));
 
         client.endSession(sessionId);
     }
