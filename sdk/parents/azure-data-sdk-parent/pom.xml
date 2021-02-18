@@ -228,9 +228,6 @@
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
-            <sourceFileExcludes>
-              <sourceFileExclude>module-info.java</sourceFileExclude>
-            </sourceFileExcludes>
             <groups>
               <group>
                 <title>Azure Application Insights</title>
@@ -450,39 +447,10 @@
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>
-              <excludes>
-                <exclude>module-info.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <!-- Avoid errors from module-info -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <sourceFileExcludes>
-                <sourceFileExclude>module-info.java</sourceFileExclude>
-              </sourceFileExcludes>
             </configuration>
           </plugin>
         </plugins>
       </build>
-      <reporting>
-        <plugins>
-          <!-- Avoid errors from module-info -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <sourceFileExcludes>
-                <sourceFileExclude>module-info.java</sourceFileExclude>
-              </sourceFileExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
     </profile>
 
     <profile>
