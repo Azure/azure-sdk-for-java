@@ -53,7 +53,7 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
 
-`spring.cloud.azure.appconfiguration.stores` is a List of stores, for each store should follow below format:
+`spring.cloud.azure.appconfiguration.stores` is a List of stores, were each store follows the following format:
 
 Name | Description | Required | Default
 ---|---|---|---
