@@ -34,11 +34,13 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
-3. Select `User flows`, and then:
-    1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of `sign-in-or-up` user flow.
-    2. Fill in the `${your-profile-edit-user-flow}` with the name of `profile-edit` user flow.
-    3. Fill in the `${your-password-reset-user-flow}` with the name of `password-reset` user flow.
-4. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
+3. Select **User flows**, Fill in the `${your-sign-up-or-in-user-flow}` with the name of **Sign up and sign in** user flow, this configuration can be changed to sign in user flow.
+4. The configuration below `user-flows` are optional, Select **User flows**, and then:
+    1. Fill in the `${your-profile-edit-user-flow}` with the name of **Profile editing** user flow.
+    2. Fill in the `${your-password-reset-user-flow}` with the name of **Password reset** user flow.
+    3. If you want to enable sign in user flow, replace in the `${your-sign-up-or-in-user-flow}` with the name of **Sign in** user flow.
+    4. If you want to enable sign up user flow, fill in the `${your-sign-up-user-flow}` with the name of **Sign up** user flow, let the browser redirect to `/oauth2/authorization/${your-sign-up-user-flow}`, then will start the sign up flow.
+5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
 azure:
@@ -48,13 +50,13 @@ azure:
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}
+      sign-in-user-flow: ${your-sign-up-or-in-user-flow}
       user-name-attribute-name: ${your-user-name-claim}
       user-flows:
-        sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
-        profile-edit: ${your-profile-edit-user-flow}      # optional
-        password-reset: ${your-password-reset-user-flow}  # optional
-        sign-in: ${your-sign-in-user-flow} # optional  
-        sign-up: ${your-sign-up-user-flow} # optional
+        - ${your-profile-edit-user-flow}    # optional
+        - ${your-password-reset-user-flow}  # optional
+        - ${your-sign-in-user-flow}         # optional
+        - ${your-sign-up-user-flow}         # optional
 ```
 
 **NOTE**: If both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect.
@@ -69,13 +71,10 @@ mvn spring-boot:run
 
 1. Access `http://localhost:8080/` as index page.
 2. Sign up/in.
-3. Access greeting button.
-4. Logout.
-5. Sign in.
-6. Profile edit.
-7. Password reset.
-8. Logout
-9. Sign in.
+3. Profile edit.
+4. Password reset.
+5. Logout.
+6. Sign in.
 
 ## Troubleshooting
 - `Missing attribute 'name' in attributes `

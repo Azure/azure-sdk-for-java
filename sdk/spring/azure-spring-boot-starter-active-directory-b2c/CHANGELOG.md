@@ -1,7 +1,18 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
-
+### Breaking Changes
+- Remove `azure.activedirectory.b2c.oidc-enabled` configuration.
+- Change user flow configuration, below is the new structure:
+    ```yaml
+    azure:
+      activedirectory:
+        b2c:
+          sign-in-user-flow: ${your-sign-up-or-in-user-flow}
+          user-flows:
+            - ${your-profile-edit-user-flow}
+            - ${your-password-reset-user-flow}
+    ```
 
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes

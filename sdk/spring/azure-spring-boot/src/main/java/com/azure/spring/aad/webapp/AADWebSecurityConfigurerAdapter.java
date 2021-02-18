@@ -73,7 +73,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         restTemplate.setErrorHandler(new ConditionalAccessResponseErrorHandler());
         result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+            new AADOAuth2AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
     }
 

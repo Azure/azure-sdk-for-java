@@ -23,7 +23,7 @@ public class AADB2CLogoutSuccessHandlerTest {
 
         properties.setBaseUri(BASE_URI);
         properties.setLogoutSuccessUrl(TEST_LOGOUT_SUCCESS_URL);
-        properties.getUserFlows().setSignUpOrSignIn(TEST_USER_FLOW_SIGN_UP_OR_IN);
+        properties.setSignInUserFlow(TEST_USER_FLOW_SIGN_UP_OR_IN);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class AADB2CLogoutSuccessHandlerTest {
         final MyLogoutSuccessHandler handler = new MyLogoutSuccessHandler(properties);
         final String baseUri = properties.getBaseUri();
         final String url = properties.getLogoutSuccessUrl();
-        final String userFlow = properties.getUserFlows().getSignUpOrSignIn();
+        final String userFlow = properties.getSignInUserFlow();
 
         assertThat(handler.getTargetUrl()).isEqualTo(AADB2CURL.getEndSessionUrl(baseUri, url, userFlow));
     }

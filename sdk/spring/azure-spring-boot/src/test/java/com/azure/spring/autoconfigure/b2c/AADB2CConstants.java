@@ -4,9 +4,6 @@ package com.azure.spring.autoconfigure.b2c;
 
 
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
-import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_IN;
-import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP;
-import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
 public class AADB2CConstants {
     public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = ".authenticate-additional-parameters"
@@ -36,6 +33,8 @@ public class AADB2CConstants {
 
     public static final Object TEST_SIGN_UP_NAME = "fake-sign-up";
 
+    public static final String TEST_PROFILE_EDIT_NAME = "profile_edit";
+
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
 
     public static final String BASE_URI = String.format("%s.%s", PREFIX, "base-uri");
@@ -50,11 +49,9 @@ public class AADB2CConstants {
 
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
-    public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP_OR_SIGN_IN);
+    public static final String SIGN_IN_USER_FLOW = String.format("%s.%s", PREFIX, AADB2CProperties.SIGN_IN_USER_FLOW);
 
-    public static final String SIGN_UP = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP);
-
-    public static final String SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_IN);
+    public static final String USER_FLOWS = String.format("%s.%s", PREFIX, AADB2CProperties.USER_FLOWS);
 
     public static final Object CONFIG_PROMPT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);
