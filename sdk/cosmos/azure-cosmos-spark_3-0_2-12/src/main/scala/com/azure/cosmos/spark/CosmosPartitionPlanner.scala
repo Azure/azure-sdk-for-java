@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull, requireNotNullOrEmpty}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -425,7 +425,7 @@ private object CosmosPartitionPlanner {
           lastDocumentCount.set(r.getDocumentCountUsage)
           lastTotalDocumentSize.set(r.getDocumentUsage)
           val continuation = r.getContinuationToken
-          if (continuation != null && !continuation.isBlank) {
+          if (!Strings.isNullOrWhiteSpace(continuation)) {
             lastContinuationToken.set(continuation)
           }
         })

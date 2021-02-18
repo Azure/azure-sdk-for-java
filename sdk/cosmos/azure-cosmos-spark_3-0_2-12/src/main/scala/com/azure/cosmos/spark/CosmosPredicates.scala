@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.Strings
 import org.apache.spark.SparkEnv
 
 private object CosmosPredicates {
@@ -26,17 +27,17 @@ private object CosmosPredicates {
 
   private[spark] def requireNotNullOrEmpty(candidate: String, parameterName: String): String = {
     require(
-      parameterName != null && !parameterName.isBlank,
+      !Strings.isNullOrWhiteSpace(parameterName),
       argumentMustNotBeNullOrEmptyMessage(ParameterName))
-    require(candidate != null, argumentMustNotBeNullOrEmptyMessage(parameterName))
+    require(!Strings.isNullOrWhiteSpace(candidate), argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
   }
 
   private[spark] def assertNotNullOrEmpty(candidate: String, parameterName: String): String = {
     assert(
-      parameterName != null && !parameterName.isBlank,
+      !Strings.isNullOrWhiteSpace(parameterName),
       argumentMustNotBeNullOrEmptyMessage(ParameterName))
-    assert(candidate != null, argumentMustNotBeNullOrEmptyMessage(parameterName))
+    assert(!Strings.isNullOrWhiteSpace(candidate), argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
   }
 
@@ -47,13 +48,13 @@ private object CosmosPredicates {
   }
 
   private[spark] def requireNotNullOrEmpty[T](candidate: Array[T], parameterName: String): Array[T] = {
-    require(parameterName != null && !parameterName.isBlank, argumentMustNotBeNullOrEmptyMessage(ParameterName))
+    require(!Strings.isNullOrWhiteSpace(parameterName), argumentMustNotBeNullOrEmptyMessage(ParameterName))
     require(candidate != null && !candidate.isEmpty, argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
   }
 
   private[spark] def assertNotNullOrEmpty[T](candidate: Array[T], parameterName: String): Array[T] = {
-    assert(parameterName != null && !parameterName.isBlank, argumentMustNotBeNullOrEmptyMessage(ParameterName))
+    assert(!Strings.isNullOrWhiteSpace(parameterName), argumentMustNotBeNullOrEmptyMessage(ParameterName))
     assert(candidate != null && !candidate.isEmpty, argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
   }
