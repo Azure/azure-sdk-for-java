@@ -138,7 +138,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,7 +157,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,7 +176,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -195,7 +195,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,7 +216,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,7 +235,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -254,7 +254,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -446,7 +446,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -465,7 +465,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -485,7 +485,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,7 +505,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -527,7 +527,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,7 +546,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,7 +565,7 @@ public interface SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -915,7 +915,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -936,7 +936,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -957,7 +957,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -978,7 +978,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1001,7 +1001,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1022,7 +1022,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1043,7 +1043,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1242,7 +1242,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1263,7 +1263,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1285,7 +1285,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1307,7 +1307,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1331,7 +1331,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1352,7 +1352,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1373,7 +1373,7 @@ public interface SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1766,7 +1766,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1789,7 +1789,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1813,7 +1813,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1837,7 +1837,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1863,7 +1863,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1886,7 +1886,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1909,7 +1909,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2218,7 +2218,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2242,7 +2242,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2267,7 +2267,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2292,7 +2292,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2319,7 +2319,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2343,7 +2343,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2367,7 +2367,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2665,7 +2665,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2688,7 +2688,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2711,7 +2711,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2734,7 +2734,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2759,7 +2759,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2782,7 +2782,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2805,7 +2805,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

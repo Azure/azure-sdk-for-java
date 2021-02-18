@@ -612,7 +612,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -623,7 +622,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SqlDatabaseGetResultsInner>>map(
@@ -666,7 +665,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -675,7 +673,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -784,7 +782,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -796,7 +793,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -839,7 +836,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -849,7 +845,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -920,7 +916,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -962,7 +958,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlDatabaseParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -974,7 +969,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateSqlDatabaseParameters,
                             accept,
                             context))
@@ -987,7 +982,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,7 +1026,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlDatabaseParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1041,7 +1035,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateSqlDatabaseParameters,
                 accept,
                 context);
@@ -1053,7 +1047,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1085,7 +1079,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1120,7 +1114,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1143,7 +1137,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,7 +1162,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1192,7 +1186,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1218,7 +1212,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1241,7 +1235,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1296,7 +1290,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1307,7 +1300,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1349,7 +1342,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteSqlDatabase(
@@ -1358,7 +1350,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1548,7 +1540,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1560,7 +1551,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -1605,7 +1596,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1615,7 +1605,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1692,7 +1682,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1734,7 +1724,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1746,7 +1735,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
@@ -1759,7 +1748,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1803,7 +1792,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1813,7 +1801,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -1825,7 +1813,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1857,7 +1845,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1892,7 +1880,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1916,7 +1904,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1942,7 +1930,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1966,7 +1954,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1992,7 +1980,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2015,7 +2003,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2070,7 +2058,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2082,7 +2069,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -2125,7 +2112,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2135,7 +2121,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2342,7 +2328,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2354,7 +2339,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -2397,7 +2382,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2407,7 +2391,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2617,7 +2601,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2629,7 +2612,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SqlContainerGetResultsInner>>map(
@@ -2676,7 +2659,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2686,7 +2668,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -2806,7 +2788,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2819,7 +2800,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -2866,7 +2847,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2877,7 +2857,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2953,7 +2933,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2999,7 +2979,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlContainerParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3012,7 +2991,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateSqlContainerParameters,
                             accept,
                             context))
@@ -3026,7 +3005,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3074,7 +3053,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlContainerParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3085,7 +3063,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateSqlContainerParameters,
                 accept,
                 context);
@@ -3098,7 +3076,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3132,7 +3110,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3174,7 +3152,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3200,7 +3178,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3233,7 +3211,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3259,7 +3237,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3292,7 +3270,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3317,7 +3295,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3382,7 +3360,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3394,7 +3371,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -3440,7 +3417,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteSqlContainer(
@@ -3450,7 +3426,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -3655,7 +3631,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3668,7 +3643,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -3715,7 +3690,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3726,7 +3700,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -3803,7 +3777,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3849,7 +3823,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3862,7 +3835,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
@@ -3876,7 +3849,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3924,7 +3897,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3935,7 +3907,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -3948,7 +3920,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3982,7 +3954,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4019,7 +3991,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4045,7 +4017,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4073,7 +4045,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4099,7 +4071,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4127,7 +4099,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4152,7 +4124,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4212,7 +4184,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4225,7 +4196,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -4272,7 +4243,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4283,7 +4253,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -4510,7 +4480,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4523,7 +4492,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -4570,7 +4539,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4581,7 +4549,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -4812,7 +4780,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4825,7 +4792,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SqlStoredProcedureGetResultsInner>>map(
@@ -4876,7 +4843,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4887,7 +4853,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -5025,7 +4991,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5039,7 +5004,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             storedProcedureName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -5096,7 +5061,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5108,7 +5072,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 storedProcedureName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -5205,7 +5169,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5256,7 +5220,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlStoredProcedureParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5270,7 +5233,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             storedProcedureName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateSqlStoredProcedureParameters,
                             accept,
                             context))
@@ -5285,7 +5248,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5338,7 +5301,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlStoredProcedureParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5350,7 +5312,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 storedProcedureName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateSqlStoredProcedureParameters,
                 accept,
                 context);
@@ -5364,7 +5326,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5405,7 +5367,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5450,7 +5412,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5483,7 +5445,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5519,7 +5481,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5552,7 +5514,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5588,7 +5550,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5620,7 +5582,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL storedProcedure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5696,7 +5658,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -5709,7 +5670,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             storedProcedureName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -5765,7 +5726,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteSqlStoredProcedure(
@@ -5776,7 +5736,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 storedProcedureName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -6034,7 +5994,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6047,7 +6006,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SqlUserDefinedFunctionGetResultsInner>>map(
@@ -6098,7 +6057,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -6109,7 +6067,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -6250,7 +6208,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 .error(
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6264,7 +6221,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             userDefinedFunctionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -6322,7 +6279,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 .error(
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -6334,7 +6290,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 userDefinedFunctionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -6431,7 +6387,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6484,7 +6440,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlUserDefinedFunctionParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6498,7 +6453,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             userDefinedFunctionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateSqlUserDefinedFunctionParameters,
                             accept,
                             context))
@@ -6513,7 +6468,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6568,7 +6523,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlUserDefinedFunctionParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -6580,7 +6534,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 userDefinedFunctionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateSqlUserDefinedFunctionParameters,
                 accept,
                 context);
@@ -6594,7 +6548,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6636,7 +6590,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6682,7 +6636,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6716,7 +6670,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6753,7 +6707,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6787,7 +6741,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6824,7 +6778,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6857,7 +6811,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
      *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6935,7 +6889,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 .error(
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -6948,7 +6901,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             userDefinedFunctionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -7005,7 +6958,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 .error(
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteSqlUserDefinedFunction(
@@ -7016,7 +6968,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 userDefinedFunctionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -7275,7 +7227,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7288,7 +7239,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             accountName,
                             databaseName,
                             containerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SqlTriggerGetResultsInner>>map(
@@ -7339,7 +7290,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -7350,7 +7300,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 accountName,
                 databaseName,
                 containerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -7480,7 +7430,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7494,7 +7443,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             triggerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -7550,7 +7499,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -7562,7 +7510,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 triggerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -7648,7 +7596,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7698,7 +7646,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlTriggerParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7712,7 +7659,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             triggerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateSqlTriggerParameters,
                             accept,
                             context))
@@ -7727,7 +7674,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -7779,7 +7726,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         } else {
             createUpdateSqlTriggerParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -7791,7 +7737,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 triggerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateSqlTriggerParameters,
                 accept,
                 context);
@@ -7805,7 +7751,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7846,7 +7792,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -7891,7 +7837,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7923,7 +7869,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -7958,7 +7904,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7991,7 +7937,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -8027,7 +7973,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8059,7 +8005,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param createUpdateSqlTriggerParameters The parameters to provide for the current SQL trigger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -8130,7 +8076,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -8143,7 +8088,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                             databaseName,
                             containerName,
                             triggerName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -8198,7 +8143,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteSqlTrigger(
@@ -8209,7 +8153,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 databaseName,
                 containerName,
                 triggerName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 

@@ -10,11 +10,11 @@ import java.util.Collection;
 
 /** Defines values for CompositePathSortOrder. */
 public final class CompositePathSortOrder extends ExpandableStringEnum<CompositePathSortOrder> {
-    /** Static value Ascending for CompositePathSortOrder. */
-    public static final CompositePathSortOrder ASCENDING = fromString("Ascending");
+    /** Static value ascending for CompositePathSortOrder. */
+    public static final CompositePathSortOrder ASCENDING = fromString("ascending");
 
-    /** Static value Descending for CompositePathSortOrder. */
-    public static final CompositePathSortOrder DESCENDING = fromString("Descending");
+    /** Static value descending for CompositePathSortOrder. */
+    public static final CompositePathSortOrder DESCENDING = fromString("descending");
 
     /**
      * Creates or finds a CompositePathSortOrder from its string representation.

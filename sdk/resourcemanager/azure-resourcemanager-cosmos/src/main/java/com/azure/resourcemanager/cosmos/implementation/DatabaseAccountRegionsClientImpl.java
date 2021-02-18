@@ -120,7 +120,6 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -132,7 +131,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
                             resourceGroupName,
                             accountName,
                             region,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -186,7 +185,6 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -196,7 +194,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
                 resourceGroupName,
                 accountName,
                 region,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)

@@ -16,6 +16,9 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     /** Static value 3.6 for ServerVersion. */
     public static final ServerVersion THREE_SIX = fromString("3.6");
 
+    /** Static value 4.0 for ServerVersion. */
+    public static final ServerVersion FOUR_ZERO = fromString("4.0");
+
     /**
      * Creates or finds a ServerVersion from its string representation.
      *
