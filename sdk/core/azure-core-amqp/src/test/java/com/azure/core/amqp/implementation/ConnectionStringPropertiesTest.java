@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConnectionStringPropertiesTest {
     private static final String HOST = "foo.bar.windows.net";
@@ -74,11 +73,12 @@ public class ConnectionStringPropertiesTest {
             .replace(String.format(Locale.US, "SharedAccessKeyName=%s;", SAS_KEY), "");
 
         // Act & Assert
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
 
-        String actualMessage = exception.getMessage();
+        final String actualMessage = exception.getMessage();
 
         assertFalse(actualMessage.contains(SAS_VALUE));
+        assertFalse(actualMessage.contains(HOSTNAME_URI));
     }
 
     /**
@@ -91,9 +91,9 @@ public class ConnectionStringPropertiesTest {
             .replace(String.format(Locale.US, "Endpoint=%s;", HOSTNAME_URI), "");
 
         // Act & Assert
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
 
-        String actualMessage = exception.getMessage();
+        final String actualMessage = exception.getMessage();
 
         assertFalse(actualMessage.contains(SAS_VALUE));
         assertFalse(actualMessage.contains(SAS_KEY));
