@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://e88xscnapdz5ptf01d.file.preprod.core.windows.net?include=&comp=list",
+    "Uri" : "https://e88xscnapdz5ptf01d.file.preprod.core.windows.net?comp=list&include=",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
