@@ -8,11 +8,15 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
@@ -20,6 +24,9 @@ import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteR
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
@@ -34,6 +41,8 @@ public final class RemoteRenderingClientBuilder {
     private RemoteRenderingServiceVersion apiVersion;
     private AccessToken accessToken;
     private String endpoint;
+    private ClientOptions clientOptions;
+    private HttpLogOptions httpLogOptions;
 
     /** Constructs a new RemoteRenderingClientBuilder instance. */
     public RemoteRenderingClientBuilder() {
@@ -65,6 +74,19 @@ public final class RemoteRenderingClientBuilder {
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken), scope));
         }
 
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<HttpHeader>();
+            clientOptions.getHeaders().forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            builder.addPolicy(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+
+            // generated code uses deprecated httpLogOptions.getApplicationId(), so we set that here.
+            if (httpLogOptions == null) {
+                httpLogOptions = new HttpLogOptions();
+                builder.httpLogOptions(httpLogOptions);
+            }
+            httpLogOptions.setApplicationId(clientOptions.getApplicationId());
+        }
+
         return new RemoteRenderingAsyncClient(builder.buildClient(), accountId);
     }
 
@@ -75,11 +97,14 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder accountId(String accountId) {
+        Objects.requireNonNull(accountId, "'accountId' cannot be null.");
+
         try {
             this.accountId = UUID.fromString(accountId);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
         }
+
         this.stsBuilder.accountId(accountId);
         return this;
     }
@@ -91,6 +116,12 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder accountDomain(String accountDomain) {
+        Objects.requireNonNull(accountDomain, "'accountDomain' cannot be null.");
+
+        if (accountDomain.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
+        }
+
         this.stsBuilder.accountDomain(accountDomain);
         return this;
     }
@@ -102,7 +133,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder credential(AzureKeyCredential accountKeyCredential) {
-        this.stsBuilder.credential(accountKeyCredential);
+        this.stsBuilder.credential(Objects.requireNonNull(accountKeyCredential, "'accountKeyCredential' cannot be null."));
         return this;
     }
 
@@ -114,7 +145,7 @@ public final class RemoteRenderingClientBuilder {
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public RemoteRenderingClientBuilder credential(TokenCredential tokenCredential) {
-        this.stsBuilder.credential(tokenCredential);
+        this.stsBuilder.credential(Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null."));
         return this;
     }
 
@@ -125,7 +156,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder accessToken(AccessToken accessToken) {
-        this.accessToken = accessToken;
+        this.accessToken = Objects.requireNonNull(accessToken, "'accessToken' cannot be null.");
         return this;
     }
 
@@ -140,6 +171,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder endpoint(String endpoint) {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         builder.endpoint(endpoint);
         this.endpoint = endpoint;
         return this;
@@ -152,7 +184,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder httpClient(HttpClient httpClient) {
-        builder.httpClient(httpClient);
+        builder.httpClient(Objects.requireNonNull(httpClient, "'httpClient' cannot be null."));
         return this;
     }
 
@@ -163,7 +195,10 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        Objects.requireNonNull(httpLogOptions, "'httpLogOptions' cannot be null.");
+
         builder.httpLogOptions(httpLogOptions);
+        this.httpLogOptions = httpLogOptions;
         return this;
     }
 
@@ -174,7 +209,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder pipeline(HttpPipeline pipeline) {
-        builder.pipeline(pipeline);
+        builder.pipeline(Objects.requireNonNull(pipeline, "'pipeline' cannot be null."));
         return this;
     }
 
@@ -185,7 +220,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        builder.retryPolicy(retryPolicy);
+        builder.retryPolicy(Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null."));
         return this;
     }
 
@@ -196,7 +231,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder configuration(Configuration configuration) {
-        builder.configuration(configuration);
+        builder.configuration(Objects.requireNonNull(configuration, "'configuration' cannot be null."));
         return this;
     }
 
@@ -207,7 +242,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        builder.addPolicy(customPolicy);
+        builder.addPolicy(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
 
@@ -222,7 +257,20 @@ public final class RemoteRenderingClientBuilder {
      * @return The RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder serviceVersion(RemoteRenderingServiceVersion version) {
-        this.apiVersion = version;
+        this.apiVersion = Objects.requireNonNull(version, "'version' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client.
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder clientOptions(ClientOptions clientOptions) {
+        Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        this.stsBuilder.clientOptions(clientOptions);
+        this.clientOptions = clientOptions;
         return this;
     }
 }
