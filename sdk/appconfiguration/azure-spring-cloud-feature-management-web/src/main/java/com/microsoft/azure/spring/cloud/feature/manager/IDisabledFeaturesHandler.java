@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.feature.manager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +17,7 @@ public interface IDisabledFeaturesHandler {
 
     /**
      * Called when an endpoint intercepter returns and no redirect is set.
-     * 
+     *
      * @param request current HTTP
      * @param response current HTTP
      * @return response to current HTTP request

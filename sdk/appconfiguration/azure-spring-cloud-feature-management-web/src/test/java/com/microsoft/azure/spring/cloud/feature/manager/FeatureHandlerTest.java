@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.feature.manager;
 
 import static org.junit.Assert.assertFalse;
@@ -53,7 +50,7 @@ public class FeatureHandlerTest {
 
     @Mock
     HandlerMethod handlerMethod;
-    
+
     @Mock
     FeatureHandler featureHandler2;
 
@@ -105,7 +102,7 @@ public class FeatureHandlerTest {
 
         assertFalse(featureHandler.preHandle(request, response, handlerMethod));
     }
-    
+
     @Test
     public void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
@@ -116,14 +113,14 @@ public class FeatureHandlerTest {
         assertFalse(featureHandler2.preHandle(request, response, handlerMethod));
         verify(response, times(1)).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
     }
-    
+
     @Test
     public void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
         Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
-        
+
         doThrow(new IOException()).when(response).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
 
         assertFalse(featureHandler2.preHandle(request, response, handlerMethod));

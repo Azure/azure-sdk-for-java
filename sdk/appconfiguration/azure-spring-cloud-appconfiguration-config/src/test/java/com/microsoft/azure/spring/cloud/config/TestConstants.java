@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
 /**
@@ -26,18 +23,18 @@ public class TestConstants {
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";
     public static final String CACHE_EXPIRATION_PROP = "spring.cloud.azure.appconfiguration.cache-expiration";
     public static final String SEPARATOR_PROP = "spring.cloud.azure.appconfiguration.profile-separator";
-    
+
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
-    
-    public static final String KEY_VAULT_STORE_1_CONNECTION = 
+
+    public static final String KEY_VAULT_STORE_1_CONNECTION =
             "spring.cloud.azure.appconfiguration.key_vault_stores[0].connection_url";
-    public static final String KEY_VAULT_STORE_1_CLIENT = 
+    public static final String KEY_VAULT_STORE_1_CLIENT =
             "spring.cloud.azure.appconfiguration.key_vault_stores[0].client_id";
-    public static final String KEY_VAULT_STORE_1_DOMAIN = 
+    public static final String KEY_VAULT_STORE_1_DOMAIN =
             "spring.cloud.azure.appconfiguration.key_vault_stores[0].domain";
-    public static final String KEY_VAULT_STORE_1_SECRET = 
+    public static final String KEY_VAULT_STORE_1_SECRET =
             "spring.cloud.azure.appconfiguration.key_vault_stores[0].secret";
-    
+
 
     public static final String TEST_CONN_STRING =
             "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
@@ -70,7 +67,7 @@ public class TestConstants {
     public static final String TEST_URI_VAULT_1 = "https://test.key.vault.com/my_secret_url";
     public static final String TEST_VALUE_VAULT_1 = "{\"uri\":\"" + TEST_URI_VAULT_1 + "\"}";
     public static final String TEST_LABEL_VAULT_1 = "test_lable_vault_1";
-    
+
     public static final String FEATURE_KEY = "feature-management.featureManagement";
     public static final String FEATURE_VALUE = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
             + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\"}]}}";

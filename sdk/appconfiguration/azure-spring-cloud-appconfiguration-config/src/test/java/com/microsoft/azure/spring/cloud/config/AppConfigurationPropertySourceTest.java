@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
 import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
@@ -239,7 +236,7 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("Alpha");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
                 new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
@@ -288,7 +285,7 @@ public class AppConfigurationPropertySourceTest {
 
         FeatureSet featureSetExpected = new FeatureSet();
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
                 new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
@@ -299,7 +296,7 @@ public class AppConfigurationPropertySourceTest {
         alpha.setKey("Alpha");
         alpha.setEnabledFor(filters);
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters2 = 
+        HashMap<Integer, FeatureFilterEvaluationContext> filters2 =
                 new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec2 = new FeatureFilterEvaluationContext();
         ffec2.setName("TestFilter");

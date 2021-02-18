@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.feature.management.entity;
 
 import java.util.LinkedHashMap;
@@ -13,15 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureFilterEvaluationContext {
-    
+
     @JsonProperty("name")
     @JsonAlias("Name")
     private String name;
-    
+
     @JsonProperty("parameters")
     @JsonAlias("Parameters")
     private LinkedHashMap<String, Object> parameters;
-    
+
     /**
      * @return the name
      */

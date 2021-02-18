@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.feature.manager.entities;
 
 import java.util.HashMap;
@@ -15,7 +12,7 @@ public class Feature {
 
     @JsonProperty("key")
     private String key;
-    
+
     @JsonProperty("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
 

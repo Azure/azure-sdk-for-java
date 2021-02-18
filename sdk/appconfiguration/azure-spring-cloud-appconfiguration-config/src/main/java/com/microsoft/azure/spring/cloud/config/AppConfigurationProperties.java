@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
 import java.time.Duration;
@@ -111,7 +108,7 @@ public class AppConfigurationProperties {
     /**
      * The minimum time between checks. The minimum valid cache time is 1s. The default
      * cache time is 30s.
-     * 
+     *
      * @param cacheExpiration minimum time between refresh checks
      */
     public void setCacheExpiration(Duration cacheExpiration) {

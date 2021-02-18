@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.resource;
 
 import org.springframework.util.Assert;
@@ -38,11 +35,11 @@ public class Connection {
         this.endpoint = matcher.group(1);
 
         Assert.hasText(endpoint, String.format(NON_EMPTY_MSG, "Endpoint"));
-        
+
         this.connectionString = connectionString;
         this.clientId = "";
     }
-    
+
     public Connection(String endpoint, String clientId) {
         this.endpoint = endpoint;
         this.clientId = clientId;

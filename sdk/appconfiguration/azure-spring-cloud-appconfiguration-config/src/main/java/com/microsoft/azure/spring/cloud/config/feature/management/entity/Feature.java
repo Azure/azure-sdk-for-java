@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.feature.management.entity;
 
 import java.util.HashMap;
@@ -20,15 +17,15 @@ public class Feature {
 
     @JsonAlias("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
-    
+
     public Feature() {}
-    
+
     public Feature(String key, FeatureManagementItem featureItem) {
         this.key = key;
         List<FeatureFilterEvaluationContext> filterMapper = featureItem.getConditions().getClientFilters();
-        
+
         enabledFor = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        
+
         for (int i = 0; i < filterMapper.size(); i++) {
             enabledFor.put(i, filterMapper.get(i));
         }
