@@ -9,12 +9,13 @@ pr:
       - eng/pipelines/aggregate-reports.yml
 
 jobs:
-  - job: Generate
+  - job: Reporting
+    displayName: Generate Reports (with build)
     timeoutInMinutes: 180
     variables:
       - template: templates/variables/globals.yml
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'ubuntu-18.04'
     steps:
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -83,23 +84,17 @@ jobs:
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
-    # Run link verification at the end as it will run no matter the pipeline passing or failing.
-    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-    - template: ../common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        Directory: ""
-        CheckLinkGuidance: $true
-        Condition: succeededOrFailed()
     - publish: $(Build.ArtifactStagingDirectory)
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
   - job: Compliance
+    displayName: Analyze (No build)
     timeoutInMinutes: 120
     variables:
       - template: templates/variables/globals.yml
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'ubuntu-18.04'
     steps:
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
       # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
@@ -129,3 +124,10 @@ jobs:
         # GdnBreakOutputBaselineFile: java
         # GdnBreakOutputBaseline: baseline
       condition: succeededOrFailed()
+    # Run link verification at the end as it will run no matter the pipeline passing or failing.
+    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
+        Condition: succeededOrFailed()
