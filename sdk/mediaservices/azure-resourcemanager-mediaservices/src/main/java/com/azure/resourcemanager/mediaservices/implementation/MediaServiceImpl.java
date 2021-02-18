@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
+import com.azure.resourcemanager.mediaservices.models.EdgePolicies;
+import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
+import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +55,10 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
 
     public MediaServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public UUID mediaServiceId() {
@@ -173,6 +182,26 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
                 .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
                 .getValue();
         return this;
+    }
+
+    public void syncStorageKeys(SyncStorageKeysInput parameters) {
+        serviceManager.mediaservices().syncStorageKeys(resourceGroupName, accountName, parameters);
+    }
+
+    public Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context) {
+        return serviceManager
+            .mediaservices()
+            .syncStorageKeysWithResponse(resourceGroupName, accountName, parameters, context);
+    }
+
+    public EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters) {
+        return serviceManager.mediaservices().listEdgePolicies(resourceGroupName, accountName, parameters);
+    }
+
+    public Response<EdgePolicies> listEdgePoliciesWithResponse(ListEdgePoliciesInput parameters, Context context) {
+        return serviceManager
+            .mediaservices()
+            .listEdgePoliciesWithResponse(resourceGroupName, accountName, parameters, context);
     }
 
     public MediaServiceImpl withRegion(Region location) {
