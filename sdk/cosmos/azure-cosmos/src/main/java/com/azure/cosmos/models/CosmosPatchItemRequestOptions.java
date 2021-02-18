@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
@@ -8,25 +6,13 @@ import com.azure.cosmos.implementation.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Encapsulates options that can be specified for a request issued to cosmos Item.
- */
-public class CosmosItemRequestOptions {
-    protected ConsistencyLevel consistencyLevel;
-    protected IndexingDirective indexingDirective;
-    protected List<String> preTriggerInclude;
-    protected List<String> postTriggerInclude;
-    protected String sessionToken;
-    protected PartitionKey partitionKey;
-    protected String ifMatchETag;
-    protected String ifNoneMatchETag;
-    protected Boolean contentResponseOnWriteEnabled;
-
+public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions{
+    private String filterPredicate;
 
     /**
      * copy constructor
      */
-    CosmosItemRequestOptions(CosmosItemRequestOptions options) {
+    CosmosPatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
         consistencyLevel = options.consistencyLevel;
         indexingDirective = options.indexingDirective;
         preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
@@ -36,13 +22,13 @@ public class CosmosItemRequestOptions {
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
+        filterPredicate = options.filterPredicate;
     }
-
 
     /**
      * Constructor
      */
-    public CosmosItemRequestOptions() {
+    public CosmosPatchItemRequestOptions() {
         super();
     }
 
@@ -51,18 +37,29 @@ public class CosmosItemRequestOptions {
      *
      * @param partitionKey the partition key
      */
-    CosmosItemRequestOptions(PartitionKey partitionKey) {
+    CosmosPatchItemRequestOptions(PartitionKey partitionKey) {
         super();
         setPartitionKey(partitionKey);
     }
 
     /**
-     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifMatchETag associated with the request.
+     * @return the FilterPredicate associated with the request.
      */
-    public String getIfMatchETag() {
-        return this.ifMatchETag;
+    public String getFilterPredicate() {
+        return this.filterPredicate;
+    }
+
+    /**
+     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @param filterPredicate the filterPredicate associated with the request.
+     * @return the current request options
+     */
+    public CosmosPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
+        this.filterPredicate = filterPredicate;
+        return this;
     }
 
     /**
@@ -71,18 +68,9 @@ public class CosmosItemRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosItemRequestOptions setIfMatchETag(String ifMatchETag) {
+    public CosmosPatchItemRequestOptions setIfMatchETag(String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
-    }
-
-    /**
-     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
-     *
-     * @return the ifNoneMatchETag associated with the request.
-     */
-    public String getIfNoneMatchETag() {
-        return this.ifNoneMatchETag;
     }
 
     /**
@@ -91,18 +79,9 @@ public class CosmosItemRequestOptions {
      * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosItemRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+    public CosmosPatchItemRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
         this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
-    }
-
-    /**
-     * Gets the consistency level required for the request.
-     *
-     * @return the consistency level.
-     */
-    public ConsistencyLevel getConsistencyLevel() {
-        return consistencyLevel;
     }
 
     /**
@@ -117,112 +96,55 @@ public class CosmosItemRequestOptions {
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      *
      * @param consistencyLevel the consistency level.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    public CosmosPatchItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
-    }
-
-    /**
-     * Gets the indexing directive (index, do not index etc).
-     *
-     * @return the indexing directive.
-     */
-    public IndexingDirective getIndexingDirective() {
-        return indexingDirective;
     }
 
     /**
      * Sets the indexing directive (index, do not index etc).
      *
      * @param indexingDirective the indexing directive.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setIndexingDirective(IndexingDirective indexingDirective) {
+    public CosmosPatchItemRequestOptions setIndexingDirective(IndexingDirective indexingDirective) {
         this.indexingDirective = indexingDirective;
         return this;
-    }
-
-    /**
-     * Gets the triggers to be invoked before the operation.
-     *
-     * @return the triggers to be invoked before the operation.
-     */
-    public List<String> getPreTriggerInclude() {
-        return preTriggerInclude;
     }
 
     /**
      * Sets the triggers to be invoked before the operation.
      *
      * @param preTriggerInclude the triggers to be invoked before the operation.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setPreTriggerInclude(List<String> preTriggerInclude) {
+    public CosmosPatchItemRequestOptions setPreTriggerInclude(List<String> preTriggerInclude) {
         this.preTriggerInclude = preTriggerInclude;
         return this;
-    }
-
-    /**
-     * Gets the triggers to be invoked after the operation.
-     *
-     * @return the triggers to be invoked after the operation.
-     */
-    public List<String> getPostTriggerInclude() {
-        return postTriggerInclude;
     }
 
     /**
      * Sets the triggers to be invoked after the operation.
      *
      * @param postTriggerInclude the triggers to be invoked after the operation.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setPostTriggerInclude(List<String> postTriggerInclude) {
+    public CosmosPatchItemRequestOptions setPostTriggerInclude(List<String> postTriggerInclude) {
         this.postTriggerInclude = postTriggerInclude;
         return this;
-    }
-
-    /**
-     * Gets the token for use with session consistency.
-     *
-     * @return the session token.
-     */
-    public String getSessionToken() {
-        return sessionToken;
     }
 
     /**
      * Sets the token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setSessionToken(String sessionToken) {
+    public CosmosPatchItemRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
-    }
-
-    /**
-     * Gets the boolean to only return the headers and status code in Cosmos DB response
-     * in case of Create, Update and Delete operations on CosmosItem.
-     *
-     * If set to false, service doesn't returns payload in the response. It reduces networking
-     * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
-     * This feature does not impact RU usage for read or write operations.
-     *
-     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
-     * however if specified on {@link CosmosItemRequestOptions},
-     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
-     *
-     * By-default, this is null.
-     *
-     * @return a boolean indicating whether payload will be included in the response or not for this request.
-     */
-    public Boolean isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
     }
 
     /**
@@ -237,34 +159,25 @@ public class CosmosItemRequestOptions {
      * By-default, this is null.
      *
      * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
-     * however if specified on {@link CosmosItemRequestOptions},
+     * however if specified on {@link CosmosPatchItemRequestOptions},
      * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this request
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    public CosmosItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+    public CosmosPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
-    }
-
-    /**
-     * Gets the partition key
-     *
-     * @return the partition key
-     */
-    PartitionKey getPartitionKey() {
-        return partitionKey;
     }
 
     /**
      * Sets the partition key
      *
      * @param partitionKey the partition key
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosPatchItemRequestOptions.
      */
-    CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
+    CosmosPatchItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -281,6 +194,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        requestOptions.setFilterPredicate(filterPredicate);
         return requestOptions;
     }
 }

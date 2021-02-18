@@ -11,11 +11,11 @@ import com.azure.cosmos.util.Beta;
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class BulkItemRequestOptions {
+public class BulkItemRequestOptions {
 
-    private String ifMatchETag;
-    private String ifNoneMatchETag;
-    private Boolean contentResponseOnWriteEnabled;
+    protected String ifMatchETag;
+    protected String ifNoneMatchETag;
+    protected Boolean contentResponseOnWriteEnabled;
 
     /**
      * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.

@@ -10,9 +10,9 @@ import com.azure.cosmos.util.Beta;
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
 @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class TransactionalBatchItemRequestOptions {
-    private String ifMatchETag;
-    private String ifNoneMatchETag;
+public class TransactionalBatchItemRequestOptions {
+    protected String ifMatchETag;
+    protected String ifNoneMatchETag;
 
     /**
      * Gets the If-Match (ETag) associated with the operation in TransactionalBatch.

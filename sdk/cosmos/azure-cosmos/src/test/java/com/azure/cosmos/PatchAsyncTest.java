@@ -99,12 +99,15 @@ public class PatchAsyncTest extends BatchTestBase {
                 new PartitionKey(this.partitionKey1),
                 contentResponseDisableRequestOption));
 
+        BulkPatchItemRequestOptions patchContentResponseDisableRequestOption = new BulkPatchItemRequestOptions()
+            .setContentResponseOnWriteEnabled(false);
+
         operations.add(
             BulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
                 new PartitionKey(this.partitionKey1),
                 cosmosPatchOperations1,
-                contentResponseDisableRequestOption));
+                patchContentResponseDisableRequestOption));
 
         operations.add(
             BulkOperations.getPatchItemOperation(

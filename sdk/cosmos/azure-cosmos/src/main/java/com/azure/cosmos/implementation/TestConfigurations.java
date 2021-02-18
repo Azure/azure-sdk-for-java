@@ -32,8 +32,8 @@ public final class TestConfigurations {
     private static Logger logger = LoggerFactory.getLogger(TestConfigurations.class);
     private static Properties properties = loadProperties();
 
-    private final static String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-    private final static String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
+    private final static String COSMOS_EMULATOR_KEY = "f4G2Itl5606UviqLchfD1t60yZRvWTgMbd0kagQB0I5NBw4nw70hUVh7h7u1aF8CveZ5ovAI0zg8CXSOkVOVjg==";
+    private final static String COSMOS_EMULATOR_HOST = "https://abpaistgcossql-westus2.documents-staging.windows-ppe.net:443/";
 
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
