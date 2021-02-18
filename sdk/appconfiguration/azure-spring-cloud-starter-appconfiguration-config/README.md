@@ -62,9 +62,13 @@ spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an
 spring.cloud.azure.appconfiguration.stores[0].connection-string | When the connection-string of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether throw `RuntimeException` or not when fail to read App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
-spring.cloud.azure.appconfiguration.stores[0].feature-flags | Configurations specific to the loading of feature flags.  | No | true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `{spring.profiles.active}` or if null `\0`
+
+`spring.cloud.azure.appconfiguration.stores[0].monitoring` is a set of configurations dealing with refresh of configurations:
+
+Name | Description | Required | Default
+---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].monitoring.enable | Whether the configurations and feature flags will be re-loaded if a change is detected.  | No | false
 spring.cloud.azure.appconfiguration.stores[0].monitoring.cache-expiration | Amount of time, of type Duration, configurations are stored before a check can occur. | No | 30s
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. | Yes (If monitoring enabled) | null
