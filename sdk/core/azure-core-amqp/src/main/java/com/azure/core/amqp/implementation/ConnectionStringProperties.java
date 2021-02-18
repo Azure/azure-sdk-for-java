@@ -104,7 +104,7 @@ public class ConnectionStringProperties {
         if (endpoint == null
             || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
-            throw new IllegalArgumentException(ERROR_MESSAGE_FORMAT);
+            throw logger.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }
 
         this.endpoint = endpoint;
@@ -168,7 +168,7 @@ public class ConnectionStringProperties {
 
         String updatedEndpoint = endpoint.trim();
 
-        final String endpointLowerCase = endpoint.toLowerCase(Locale.getDefault());
+        final String endpointLowerCase = updatedEndpoint.toLowerCase(Locale.getDefault());
         if (!endpointLowerCase.startsWith(ENDPOINT_SCHEME_SB_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTPS_PREFIX)) {
