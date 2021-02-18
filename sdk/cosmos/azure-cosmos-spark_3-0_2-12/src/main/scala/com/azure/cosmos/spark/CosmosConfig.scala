@@ -7,6 +7,7 @@ import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
+import com.azure.cosmos.spark.CosmosWriteConfig.bulkEnabled
 
 import java.net.URL
 import java.util.Locale
@@ -128,7 +129,7 @@ private[spark] object CosmosReadConfig {
   }
 }
 
-private case class CosmosContainerConfig(database: String, container: String)
+private[spark] case class CosmosContainerConfig(database: String, container: String)
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -139,9 +140,15 @@ private object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int)
+private[spark] case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
 
 private object CosmosWriteConfig {
+  private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
+    defaultValue = Option.apply(false),
+    mandatory = false,
+    parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
+    helpMessage = "Cosmos DB Item Write bulk enabled")
+
   private val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
     defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
     mandatory = false,
@@ -164,12 +171,14 @@ private object CosmosWriteConfig {
   def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
+    val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
 
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined)
     assert(maxRetryCountOpt.isDefined)
+    assert(bulkEnabledOpt.isDefined)
 
-    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get)
+    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get)
   }
 }
 

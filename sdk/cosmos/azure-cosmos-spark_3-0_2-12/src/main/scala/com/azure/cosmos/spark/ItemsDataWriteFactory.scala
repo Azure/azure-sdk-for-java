@@ -3,8 +3,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
-import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -35,6 +36,8 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
+    private lazy val bulkWriter = new BulkWriter(container, cosmosWriteConfig)
+
     override def write(internalRow: InternalRow): Unit = {
       val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
 
@@ -44,9 +47,13 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
 
-      cosmosWriteConfig.itemWriteStrategy match {
-        case ItemWriteStrategy.ItemOverwrite => upsertWithRetry(partitionKeyValue, objectNode)
-        case ItemWriteStrategy.ItemAppend => createWithRetry(partitionKeyValue, objectNode)
+      if (cosmosWriteConfig.bulkEnabled) {
+        bulkWriter.scheduleWrite(partitionKeyValue, objectNode)
+      } else {
+        cosmosWriteConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemOverwrite => upsertWithRetry(partitionKeyValue, objectNode)
+          case ItemWriteStrategy.ItemAppend => createWithRetry(partitionKeyValue, objectNode)
+        }
       }
     }
 
@@ -99,15 +106,23 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     // scalastyle:on return
 
     override def commit(): WriterCommitMessage = {
+      if (cosmosWriteConfig.bulkEnabled) {
+        bulkWriter.flushAndClose()
+      }
+
       new WriterCommitMessage {}
     }
 
     override def abort(): Unit = {
-      // TODO
+      if (cosmosWriteConfig.bulkEnabled) {
+        bulkWriter.flushAndClose()
+      }
     }
 
     override def close(): Unit = {
-      // TODO
+      if (cosmosWriteConfig.bulkEnabled) {
+        bulkWriter.flushAndClose()
+      }
     }
   }
 }
