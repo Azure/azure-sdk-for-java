@@ -21,6 +21,7 @@ import java.util.UUID;
 
 public class RemoteRenderingTestBase extends TestBase {
     static final String RESPONSE_CODE_400 = "400";
+    static final String RESPONSE_CODE_403 = "403";
 
     private final String accountId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_ID");
     private final String accountDomain = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_DOMAIN");

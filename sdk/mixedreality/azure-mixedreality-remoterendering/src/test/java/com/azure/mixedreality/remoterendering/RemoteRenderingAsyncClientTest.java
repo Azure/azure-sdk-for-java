@@ -102,7 +102,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
             return (error instanceof ErrorResponseException)
-                && error.getMessage().contains(RESPONSE_CODE_400)
+                && error.getMessage().contains(RESPONSE_CODE_403)
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("storage")
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("permissions");
         }).verify();

@@ -93,7 +93,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         ErrorResponseException ex = assertThrows(ErrorResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
 
-        assertTrue(ex.getMessage().contains(RESPONSE_CODE_400));
+        assertTrue(ex.getMessage().contains(RESPONSE_CODE_403));
 
         // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
         assertTrue(ex.getMessage().toLowerCase(Locale.ROOT).contains("storage"));
