@@ -8,11 +8,6 @@ azure:
         scopes:
             - https://graph.microsoft.com/User.Read
             - https://graph.microsoft.com/Directory.Read.All
-      office:
-        scopes:
-            - https://manage.office.com/ActivityFeed.Read
-            - https://manage.office.com/ActivityFeed.ReadDlp
-            - https://manage.office.com/ServiceHealth.Read
     client-id: <client-id>
     client-secret: <client-secret>
     tenant-id: <tenant-id>
