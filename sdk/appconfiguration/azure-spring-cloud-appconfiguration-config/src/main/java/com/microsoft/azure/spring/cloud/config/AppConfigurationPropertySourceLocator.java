@@ -254,7 +254,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 StateHolder.setEtagState(store.getEndpoint() + FEATURE_SUFFIX, new ConfigurationSetting());
             }
             StateHolder.setLoadState(store.getEndpoint(), true);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             delayException();
             throw e;
         }
