@@ -17,8 +17,13 @@ private case class ChangeFeedOffset
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  @transient private lazy val jsonPersisted =
-    s"{'$IdPropertyName':'$V1Identifier','$StatePropertyName':'$changeFeedState'}"
+  @transient private lazy val jsonPersisted = String.format(
+    "{\"%s\":\"%s\",\"%s\":\"%s\"}",
+    IdPropertyName,
+    V1Identifier,
+    StatePropertyName,
+    changeFeedState
+  )
 
   override def json(): String = jsonPersisted
 }
