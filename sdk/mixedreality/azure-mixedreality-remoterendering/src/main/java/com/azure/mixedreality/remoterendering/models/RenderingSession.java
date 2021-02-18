@@ -21,130 +21,46 @@ public final class RenderingSession {
     private OffsetDateTime creationTime;
 
     /**
-     * Set the id property: The id of the session supplied when the conversion was created.
+     * Constructs a new RenderingSession object.
      *
-     * @param id the id value.
-     * @return this RenderingSession object.
+     * @param id The id of the session supplied when the conversion was created.
+     * @param arrInspectorPort The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
+     * @param handshakePort The TCP port used for the handshake.
+     * @param elapsedTime Amount of time the session is or has been in Ready state. Time is rounded down to a full minute.
+     * @param hostname The hostname under which the rendering session is reachable.
+     * @param maxLeaseTime The time the session will run after reaching the 'Ready' state.
+     * @param sessionSize Size of the server used for the rendering session. Remote Rendering with Standard size
+     *                    server has a maximum scene size of 20 million polygons. Remote Rendering with Premium size does not enforce a
+     *                    hard maximum, but performance may be degraded if your content exceeds the rendering capabilities of the service.
+     * @param sessionStatus The status of the rendering session. Once the status reached the 'Ready' state it can be
+     *                      connected to. The terminal state is 'Stopped'.
+     * @param teraflops The computational power of the rendering session GPU measured in Teraflops.
+     * @param error The error object containing details about the rendering session startup failure.
+     * @param creationTime The time when the rendering session was created. Date and time in ISO 8601 format.
      */
-    public RenderingSession setId(String id) {
+    public RenderingSession(String id,
+                            int arrInspectorPort,
+                            int handshakePort,
+                            Duration elapsedTime,
+                            String hostname,
+                            Duration maxLeaseTime,
+                            RenderingSessionSize sessionSize,
+                            RenderingSessionStatus sessionStatus,
+                            float teraflops,
+                            RemoteRenderingServiceError error,
+                            OffsetDateTime creationTime) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Set the arrInspectorPort property: The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
-     *
-     * @param arrInspectorPort the arrInspectorPort value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setArrInspectorPort(int arrInspectorPort) {
         this.arrInspectorPort = arrInspectorPort;
-        return this;
-    }
-
-    /**
-     * Set the handshakePort property: The TCP port used for the handshake.
-     *
-     * @param handshakePort the handshakePort value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setHandshakePort(int handshakePort) {
         this.handshakePort = handshakePort;
-        return this;
-    }
-
-    /**
-     * Set the elapsedTime property: Amount of time the session is or has been in Ready state. Time is
-     * rounded down to a full minute.
-     *
-     * @param elapsedTime the elapsedTime value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setElapsedTime(Duration elapsedTime) {
         this.elapsedTime = elapsedTime;
-        return this;
-    }
-
-    /**
-     * Set the hostname property: The hostname under which the rendering session is reachable.
-     *
-     * @param hostname the hostname value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setHostname(String hostname) {
         this.hostname = hostname;
-        return this;
-    }
-
-    /**
-     * Set the maxLeaseTime property: The time the session will run after reaching the 'Ready' state.
-     *
-     * @param maxLeaseTime the maxLeaseTime value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setMaxLeaseTime(Duration maxLeaseTime) {
         this.maxLeaseTime = maxLeaseTime;
-        return this;
-    }
-
-    /**
-     * Set the size property: Size of the server used for the rendering session. Remote Rendering with Standard size
-     * server has a maximum scene size of 20 million polygons. Remote Rendering with Premium size does not enforce a
-     * hard maximum, but performance may be degraded if your content exceeds the rendering capabilities of the service.
-     *
-     * @param sessionSize the session size value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setSize(RenderingSessionSize sessionSize) {
         this.sessionSize = sessionSize;
-        return this;
-    }
-
-    /**
-     * Set the status property: The status of the rendering session. Once the status reached the 'Ready' state it can be
-     * connected to. The terminal state is 'Stopped'.
-     *
-     * @param sessionStatus the session status value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setStatus(RenderingSessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
-        return this;
-    }
-
-    /**
-     * Set the teraflops property: The computational power of the rendering session GPU measured in Teraflops.
-     *
-     * @param teraflops the teraflops value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setTeraflops(float teraflops) {
         this.teraflops = teraflops;
-        return this;
-    }
-
-    /**
-     * Set the error property: The error object containing details about the rendering session startup failure.
-     *
-     * @param error the error value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setError(RemoteRenderingServiceError error) {
         this.error = error;
-        return this;
-    }
-
-    /**
-     * Set the creationTime property: The time when the rendering session was created. Date and time in ISO 8601 format.
-     *
-     * @param creationTime the creationTime value.
-     * @return this RenderingSession object.
-     */
-    public RenderingSession setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
-        return this;
     }
-
 
 
     /**

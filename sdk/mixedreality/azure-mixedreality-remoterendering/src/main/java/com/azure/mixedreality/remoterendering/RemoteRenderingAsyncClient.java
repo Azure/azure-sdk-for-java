@@ -502,30 +502,31 @@ public final class RemoteRenderingAsyncClient {
             if (conversion == null) {
                 return null;
             }
-            return new AssetConversion()
-                .setId(conversion.getId())
-                .setOptions(fromGenerated(conversion.getSettings()))
-                .setOutputAssetUrl(conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null)
-                .setError(fromGenerated(conversion.getError()))
-                .setConversionStatus(AssetConversionStatus.fromString(conversion.getStatus().toString()))
-                .setCreationTime(conversion.getCreationTime());
+            return new AssetConversion(
+                conversion.getId(),
+                fromGenerated(conversion.getSettings()),
+                conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null,
+                fromGenerated(conversion.getError()),
+                AssetConversionStatus.fromString(conversion.getStatus().toString()),
+                conversion.getCreationTime());
         }
 
         private static RenderingSession fromGenerated(SessionProperties sessionProperties) {
             if (sessionProperties == null) {
                 return null;
             }
-            return new RenderingSession()
-                .setId(sessionProperties.getId())
-                .setHandshakePort(sessionProperties.getHandshakePort())
-                .setElapsedTime(Duration.ofMinutes(sessionProperties.getElapsedTimeMinutes()))
-                .setHostname(sessionProperties.getHostname())
-                .setMaxLeaseTime(Duration.ofMinutes(sessionProperties.getMaxLeaseTimeMinutes()))
-                .setSize(RenderingSessionSize.fromString(sessionProperties.getSize().toString()))
-                .setStatus(RenderingSessionStatus.fromString(sessionProperties.getStatus().toString()))
-                .setTeraflops(sessionProperties.getTeraflops())
-                .setError(fromGenerated(sessionProperties.getError()))
-                .setCreationTime(sessionProperties.getCreationTime());
+            return new RenderingSession(
+                sessionProperties.getId(),
+                sessionProperties.getArrInspectorPort(),
+                sessionProperties.getHandshakePort(),
+                Duration.ofMinutes(sessionProperties.getElapsedTimeMinutes()),
+                sessionProperties.getHostname(),
+                Duration.ofMinutes(sessionProperties.getMaxLeaseTimeMinutes()),
+                RenderingSessionSize.fromString(sessionProperties.getSize().toString()),
+                RenderingSessionStatus.fromString(sessionProperties.getStatus().toString()),
+                sessionProperties.getTeraflops(),
+                fromGenerated(sessionProperties.getError()),
+                sessionProperties.getCreationTime());
         }
 
         private static RemoteRenderingServiceError fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Error error) {
