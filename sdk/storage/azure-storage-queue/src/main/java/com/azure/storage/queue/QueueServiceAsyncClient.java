@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -20,7 +19,6 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -277,24 +275,18 @@ public final class QueueServiceAsyncClient {
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
         final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
-        final List<ListQueuesIncludeType> include = new ArrayList<>();
+        final List<String> include = new ArrayList<>();
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
+                include.add("metadata");
             }
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.client.services()
-                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include,
-                    null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getQueueItems(),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
+            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
+                .listQueuesSegmentSinglePageAsync(prefix, nextMarker, maxResultsPerPage, include,
+                    null, null, context), timeout);
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -351,7 +343,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.services().getPropertiesWithRestResponseAsync(
+        return client.getServices().getPropertiesWithResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -450,7 +442,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.services().setPropertiesWithRestResponseAsync(properties,
+        return client.getServices().setPropertiesWithResponseAsync(properties, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -503,7 +495,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.services().getStatisticsWithRestResponseAsync(
+        return client.getServices().getStatisticsWithResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }

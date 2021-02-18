@@ -9,12 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Additional parameters for a set of operations, such as: Files_create,
- * Files_setHTTPHeaders.
- */
-@JacksonXmlRootElement(localName = "share-file-http-headers")
+/** Parameter group. */
 @Fluent
+@JacksonXmlRootElement(localName = "share-file-http-headers")
 public final class ShareFileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is
@@ -55,8 +52,8 @@ public final class ShareFileHttpHeaders {
     private String contentDisposition;
 
     /**
-     * Get the contentType property: Sets the MIME content type of the file.
-     * The default type is 'application/octet-stream'.
+     * Get the contentType property: Sets the MIME content type of the file. The default type is
+     * 'application/octet-stream'.
      *
      * @return the contentType value.
      */
@@ -65,8 +62,8 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Set the contentType property: Sets the MIME content type of the file.
-     * The default type is 'application/octet-stream'.
+     * Set the contentType property: Sets the MIME content type of the file. The default type is
+     * 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
      * @return the ShareFileHttpHeaders object itself.
@@ -77,8 +74,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Get the contentEncoding property: Specifies which content encodings have
-     * been applied to the file.
+     * Get the contentEncoding property: Specifies which content encodings have been applied to the file.
      *
      * @return the contentEncoding value.
      */
@@ -87,8 +83,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Set the contentEncoding property: Specifies which content encodings have
-     * been applied to the file.
+     * Set the contentEncoding property: Specifies which content encodings have been applied to the file.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the ShareFileHttpHeaders object itself.
@@ -99,8 +94,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Get the contentLanguage property: Specifies the natural languages used
-     * by this resource.
+     * Get the contentLanguage property: Specifies the natural languages used by this resource.
      *
      * @return the contentLanguage value.
      */
@@ -109,8 +103,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Set the contentLanguage property: Specifies the natural languages used
-     * by this resource.
+     * Set the contentLanguage property: Specifies the natural languages used by this resource.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the ShareFileHttpHeaders object itself.
@@ -121,8 +114,8 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Get the cacheControl property: Sets the file's cache control. The File
-     * service stores this value but does not use or modify it.
+     * Get the cacheControl property: Sets the file's cache control. The File service stores this value but does not use
+     * or modify it.
      *
      * @return the cacheControl value.
      */
@@ -131,8 +124,8 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Set the cacheControl property: Sets the file's cache control. The File
-     * service stores this value but does not use or modify it.
+     * Set the cacheControl property: Sets the file's cache control. The File service stores this value but does not use
+     * or modify it.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the ShareFileHttpHeaders object itself.
@@ -163,8 +156,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Get the contentDisposition property: Sets the file's Content-Disposition
-     * header.
+     * Get the contentDisposition property: Sets the file's Content-Disposition header.
      *
      * @return the contentDisposition value.
      */
@@ -173,8 +165,7 @@ public final class ShareFileHttpHeaders {
     }
 
     /**
-     * Set the contentDisposition property: Sets the file's Content-Disposition
-     * header.
+     * Set the contentDisposition property: Sets the file's Content-Disposition header.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the ShareFileHttpHeaders object itself.
