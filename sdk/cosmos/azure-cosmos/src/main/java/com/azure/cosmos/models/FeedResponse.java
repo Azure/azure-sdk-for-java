@@ -275,7 +275,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
-        return Double.valueOf(value);
+        return Double.parseDouble(value);
     }
 
     /**

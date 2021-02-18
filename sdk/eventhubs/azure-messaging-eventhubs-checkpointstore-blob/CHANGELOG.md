@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.0 (2020-02-15)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.5.0`.

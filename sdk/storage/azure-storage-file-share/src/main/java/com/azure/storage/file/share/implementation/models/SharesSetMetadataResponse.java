@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the setMetadata operation.
- */
-public final class SharesSetMetadataResponse extends ResponseBase<ShareSetMetadataHeaders, Void> {
+/** Contains all response data for the setMetadata operation. */
+public final class SharesSetMetadataResponse extends ResponseBase<SharesSetMetadataHeaders, Void> {
     /**
      * Creates an instance of SharesSetMetadataResponse.
      *
@@ -21,7 +19,8 @@ public final class SharesSetMetadataResponse extends ResponseBase<ShareSetMetada
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesSetMetadataResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ShareSetMetadataHeaders headers) {
+    public SharesSetMetadataResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, SharesSetMetadataHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }
