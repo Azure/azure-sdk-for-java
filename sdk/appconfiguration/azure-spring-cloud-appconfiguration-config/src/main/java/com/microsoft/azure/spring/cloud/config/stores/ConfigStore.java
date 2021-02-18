@@ -42,10 +42,11 @@ public class ConfigStore {
     // The keys to be watched, won't take effect if watch not enabled
     @NotEmpty
     private String watchedKey = "*";
-    
+
     private boolean failFast = true;
 
     public ConfigStore() {
+        label = null;
     }
 
     public String getEndpoint() {
@@ -87,7 +88,7 @@ public class ConfigStore {
     public void setWatchedKey(String watchedKey) {
         this.watchedKey = watchedKey;
     }
-    
+
     public boolean isFailFast() {
         return failFast;
     }
@@ -140,11 +141,11 @@ public class ConfigStore {
                 .map(label -> mapLabel(label))
                 .distinct()
                 .collect(Collectors.toList());
-        
+
         if (this.getLabel().endsWith(",")) {
             labels.add(EMPTY_LABEL);
         }
-        
+
         Collections.reverse(labels);
         if (labels.isEmpty()) {
             return EMPTY_LABEL_ARRAY;
@@ -153,7 +154,7 @@ public class ConfigStore {
             return labels.toArray(t);
         }
     }
-    
+
     private String mapLabel(String label) {
         if (label == null || label.equals("")) {
             return EMPTY_LABEL;

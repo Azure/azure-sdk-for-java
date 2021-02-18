@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
@@ -157,7 +158,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         field.setAccessible(true);
-        field.set(null, true);
+        field.set(null, new AtomicBoolean(true));
         StateHolder.setLoadState(TEST_STORE_NAME, false);
     }
 
@@ -181,7 +182,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/foo_prod/store1/\0", "/foo_dev/store1/\0", "/foo/store1/\0",
                 "/application_prod/store1/\0", "/application_dev/store1/\0", "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -206,7 +207,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/foo_prod/store1/\0", "/foo_dev/store1/\0", "/foo/store1/\0",
                 "/application_prod/store1/\0", "/application_dev/store1/\0", "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -232,7 +233,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 "/config/foo/store1/\0", "/config/application_prod/store1/\0", "/config/application_dev/store1/\0",
                 "/config/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -256,7 +257,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -279,7 +280,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -302,7 +303,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         field.setAccessible(true);
-        field.set(null, false);
+        field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
         expected.expect(NullPointerException.class);
@@ -328,7 +329,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
-        
+
         // Once a store fails it should stop attempting to load
         verify(configStoreMock, times(1)).isFailFast();
     }
@@ -355,7 +356,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/application/" + TEST_STORE_NAME_2 + "/\0",
                 "/application/" + TEST_STORE_NAME_1 + "/\0" };
         assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test

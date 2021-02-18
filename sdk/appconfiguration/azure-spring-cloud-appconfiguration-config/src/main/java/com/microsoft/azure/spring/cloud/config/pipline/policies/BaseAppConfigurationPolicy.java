@@ -28,7 +28,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
             BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    public static Boolean watchRequests = false;
+    static Boolean watchRequests = false;
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -42,7 +42,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     /**
      * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing
      * information.
-     * 
+     *
      * @param request The http request that will be traced, used to check operation being
      * run.
      * @return String of the value for the correlation-context header.
@@ -74,7 +74,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     /**
      * Gets the current host machines type; Azure Function, Azure Web App, Kubernetes, or Empty.
-     * 
+     *
      * @return String of Host Type
      */
     private static String getHostType() {

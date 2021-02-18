@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -53,15 +54,15 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final Map<String, List<String>> storeContextsMap = new ConcurrentHashMap<>();
 
-    private AppConfigurationProviderProperties appProperties;
+    private final AppConfigurationProviderProperties appProperties;
 
-    private ClientStore clients;
+    private final ClientStore clients;
 
-    private KeyVaultCredentialProvider keyVaultCredentialProvider;
+    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private static Boolean startup = true;
+    private static AtomicBoolean startup = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -97,7 +98,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
-            if (startup || (!startup && StateHolder.getLoadState(configStore.getEndpoint()))) {
+            if (startup.get() || StateHolder.getLoadState(configStore.getEndpoint())) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                         !configStoreIterator.hasNext());
             } else {
@@ -105,7 +106,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             }
         }
 
-        startup = false;
+        startup.set(false);
 
         return composite;
     }
@@ -116,7 +117,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     /**
      * Adds a new Property Source
-     * 
+     *
      * @param composite PropertySource being added
      * @param store Config Store the PropertySource is being generated from
      * @param applicationName Name of the application
@@ -151,7 +152,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
             } catch (Exception e) {
-                if (store.isFailFast() || !startup) {
+                if (store.isFailFast() || !startup.get()) {
                     LOGGER.error(
                             "Fail fast is set and there was an error reading configuration from Azure App "
                                     + "Configuration store " + store.getEndpoint()
@@ -201,7 +202,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     /**
      * Creates a new set of AppConfigurationProertySources, 1 per Label.
-     * 
+     *
      * @param context Context of the application, part of uniquely define a PropertySource
      * @param store Config Store the PropertySource is being generated from
      * @param storeContextsMap the Map storing the storeName -> List of contexts map

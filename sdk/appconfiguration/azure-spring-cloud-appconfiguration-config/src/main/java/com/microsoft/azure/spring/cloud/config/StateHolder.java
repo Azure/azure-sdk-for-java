@@ -15,7 +15,7 @@ final class StateHolder {
         throw new IllegalStateException("Should not be callable.");
     }
 
-    private static ConcurrentHashMap<String, ConfigurationSetting> etagState = 
+    private static ConcurrentHashMap<String, ConfigurationSetting> etagState =
             new ConcurrentHashMap<String, ConfigurationSetting>();
 
     private static ConcurrentHashMap<String, Boolean> loadState = new ConcurrentHashMap<String, Boolean>();
@@ -37,7 +37,7 @@ final class StateHolder {
     /**
      * @return the loadState
      */
-    public static Boolean getLoadState(String name) {
+    static boolean getLoadState(String name) {
         Boolean loadstate = loadState.get(name);
         return loadstate == null ? false : loadstate;
     }

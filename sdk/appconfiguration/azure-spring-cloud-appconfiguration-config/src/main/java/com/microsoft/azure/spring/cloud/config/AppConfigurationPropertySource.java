@@ -97,13 +97,13 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * <p>
      * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call
      * {@code initFeatures} to update Feature Management, but make sure its done in the
      * last {@code AppConfigurationPropertySource}
      * </p>
-     * 
+     *
      * @param featureSet The set of Feature Management Flags from various config stores.
      * @throws IOException Thrown when processing key/value failed when reading feature
      * flags
@@ -145,7 +145,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     /**
      * Given a Setting's Key Vault Reference stored in the Settings value, it will get its
      * entry in Key Vault.
-     * 
+     *
      * @param value {"uri":
      * "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
@@ -162,12 +162,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             } catch (URISyntaxException e) {
                 LOGGER.error("Error Processing Key Vault Entry URI.");
                 ReflectionUtils.rethrowRuntimeException(e);
-            }
-
-            // If no entry found don't connect to Key Vault
-            if (uri == null) {
-                ReflectionUtils.rethrowRuntimeException(
-                        new IOException("Invaid URI when parsing Key Vault Reference."));
             }
 
             // Check if we already have a client for this key vault, if not we will make
@@ -204,9 +198,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     /**
      * Adds items to a {@code FeatureSet} from a list of {@code KeyValueItem}.
-     * 
+     *
      * @param featureSet The parsed KeyValueItems will be added to this
-     * @param items New items read in from Azure
+     * @param settings New items read in from Azure
      * @param date Cache timestamp
      * @throws IOException
      */
@@ -224,7 +218,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     /**
      * Creates a {@code Feature} from a {@code KeyValueItem}
-     * 
+     *
      * @param item Used to create Features before being converted to be set into
      * properties.
      * @return Feature created from KeyValueItem

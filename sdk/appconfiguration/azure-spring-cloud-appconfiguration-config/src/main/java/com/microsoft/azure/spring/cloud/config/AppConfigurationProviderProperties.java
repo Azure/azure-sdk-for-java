@@ -101,7 +101,7 @@ public class AppConfigurationProviderProperties {
      * @return the startDate
      */
     public Date getStartDate() {
-        return startDate;
+        return new Date(startDate.getTime());
     }
 
 }

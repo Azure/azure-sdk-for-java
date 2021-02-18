@@ -73,7 +73,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * Checks configurations to see if they are no longer cached. If they are no longer
      * cached they are updated.
-     * 
+     *
      * @return Future with a boolean of if a RefreshEvent was published. If
      * refreshConfigurations is currently being run elsewhere this method will return
      * right away as <b>false</b>.
@@ -138,7 +138,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * Checks un-cached items for etag changes. If they have changed a RefreshEventData is
      * published.
-     * 
+     *
      * @param store the {@code store} for which to composite watched key names
      * @return Refresh event was triggered. No other sources need to be checked.
      */
@@ -158,7 +158,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * Checks un-cached items for etag changes for feature flags. If they have changed a
      * RefreshEventData is published.
-     * 
+     *
      * @param store the {@code store} for which to composite watched key names
      * @return Refresh event was triggered. No other sources need to be checked.
      */
@@ -207,7 +207,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * For each refresh, multiple etags can change, but even one etag is changed, refresh
      * is required.
      */
-    class RefreshEventData {
+    static class RefreshEventData {
         private static final String MSG_TEMPLATE = "Some keys matching %s has been updated since last check.";
 
         private final String message;

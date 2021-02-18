@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +64,9 @@ public class ClientStore {
         TokenCredential tokenCredential = null;
         Connection connection = pool.get(store);
 
-        String endpoint = connection.getEndpoint();
+        String endpoint = Optional.ofNullable(connection)
+            .map(Connection::getEndpoint)
+            .orElse(null);
 
         if (tokenCredentialProvider != null) {
             tokenCredential = tokenCredentialProvider.getAppConfigCredential(endpoint);
@@ -117,7 +120,7 @@ public class ClientStore {
     /**
      * Gets the latest Configuration Setting from the revisions given config store that
      * match the Setting Selector criteria.
-     * 
+     *
      * @param settingSelector Information on which setting to pull. i.e. number of
      * results, key value...
      * @param storeName Name of the App Configuration store to query against.
@@ -131,7 +134,7 @@ public class ClientStore {
     /**
      * Gets a list of Configuration Settings from the given config store that match the
      * Setting Selector criteria.
-     * 
+     *
      * @param settingSelector Information on which setting to pull. i.e. number of
      * results, key value...
      * @param storeName Name of the App Configuration store to query against.
