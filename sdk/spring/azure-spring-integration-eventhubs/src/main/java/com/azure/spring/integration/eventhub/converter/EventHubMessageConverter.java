@@ -4,6 +4,8 @@
 package com.azure.spring.integration.eventhub.converter;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -11,6 +13,7 @@ import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -51,6 +54,9 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
     @Override
     protected Map<String, Object> buildCustomHeaders(EventData azureMessage) {
         Map<String, Object> headers = super.buildCustomHeaders(azureMessage);
+
+        headers.putAll(getSystemProperties(azureMessage));
+
         Map<String, Object> properties = azureMessage.getProperties();
         if (properties.containsKey(NativeMessageHeaderAccessor.NATIVE_HEADERS)
                 && isValidJson(properties.get(NativeMessageHeaderAccessor.NATIVE_HEADERS))) {
@@ -60,5 +66,14 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         }
         headers.putAll(azureMessage.getProperties());
         return headers;
+    }
+
+    private Map<String, Object> getSystemProperties(EventData azureMessage) {
+        Map<String, Object> result = new HashMap<>();
+        result.put(EventHubHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
+        result.put(EventHubHeaders.OFFSET, azureMessage.getOffset());
+        result.put(EventHubHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());
+        result.put(EventHubHeaders.PARTITION_KEY, azureMessage.getPartitionKey());
+        return result;
     }
 }
