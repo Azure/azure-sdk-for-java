@@ -88,8 +88,8 @@ public final class RemoteRenderingAsyncClient {
         return beginSession(sessionId, new BeginSessionOptions());
     }
 
-    PollerFlux<Response<RenderingSession>, Response<RenderingSession>> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context) {
-        return beginSessionInternal(sessionId, options, context, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
+    PollerFlux<RenderingSession, RenderingSession> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context) {
+        return beginSessionInternal(sessionId, options, context, r -> ModelTranslator.fromGenerated(r.getValue()), RenderingSession::getStatus);
     }
 
     private <T> PollerFlux<T, T> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context, Function<Response<SessionProperties>, T> mapper, Function<T, RenderingSessionStatus> statusgetter) {
@@ -100,7 +100,7 @@ public final class RemoteRenderingAsyncClient {
                 Mono<T> response = impl.getRemoteRenderings().getSessionWithResponseAsync(accountId, sessionId, context).map(mapper);
                 return response.map(session -> {
                     final RenderingSessionStatus sessionStatus = statusgetter.apply(session);
-                    LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                    LongRunningOperationStatus lroStatus;
                     if (sessionStatus == RenderingSessionStatus.STARTING) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
                     } else if (sessionStatus == RenderingSessionStatus.ERROR) {
@@ -285,8 +285,8 @@ public final class RemoteRenderingAsyncClient {
         return beginConversionInternal(conversionId, options, Context.NONE, c -> ModelTranslator.fromGenerated(c.getValue()), c -> ModelTranslator.fromGenerated(c.getValue()), AssetConversion::getStatus);
     }
 
-    PollerFlux<Response<AssetConversion>, Response<AssetConversion>> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context) {
-        return beginConversionInternal(conversionId, options, context, ModelTranslator::fromGenerated, ModelTranslator::fromGenerated, s -> s.getValue().getStatus());
+    PollerFlux<AssetConversion, AssetConversion> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context) {
+        return beginConversionInternal(conversionId, options, context, c -> ModelTranslator.fromGenerated(c.getValue()), c -> ModelTranslator.fromGenerated(c.getValue()), AssetConversion::getStatus);
     }
 
     private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context, Function<RemoteRenderingsCreateConversionResponse, T> mapper, Function<RemoteRenderingsGetConversionResponse, T> mapper2, Function<T, AssetConversionStatus> statusgetter) {
@@ -297,7 +297,7 @@ public final class RemoteRenderingAsyncClient {
                 Mono<T> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(mapper2);
                 return response.map(conversion -> {
                     final AssetConversionStatus convStatus = statusgetter.apply(conversion);
-                    LongRunningOperationStatus lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                    LongRunningOperationStatus lroStatus;
                     if ((convStatus == AssetConversionStatus.RUNNING) || (convStatus == AssetConversionStatus.NOT_STARTED)) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
                     } else if (convStatus == AssetConversionStatus.FAILED) {

@@ -73,7 +73,7 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Response<RenderingSession>, Response<RenderingSession>> beginSession(String sessionId, BeginSessionOptions options, Context context) {
+    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options, Context context) {
         return client.beginSessionInternal(sessionId, options, context).getSyncPoller();
     }
 
@@ -249,7 +249,7 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Response<AssetConversion>, Response<AssetConversion>> beginConversion(String conversionId, AssetConversionOptions options, Context context) {
+    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options, Context context) {
         return client.beginConversionInternal(conversionId, options, context).getSyncPoller();
     }
 
