@@ -11,27 +11,26 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Abstract for entries that can be listed from Directory.
- */
+/** Abstract for entries that can be listed from Directory. */
 @JacksonXmlRootElement(localName = "Entries")
 @Fluent
-@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)
+@JsonDeserialize(
+        using = com.azure.storage.file.share.implementation.util.FilesAndDirectoriesListSegmentDeserializer.class)
 public final class FilesAndDirectoriesListSegment {
     /*
-     * The directoryItems property.
+     * The DirectoryItems property.
      */
     @JsonProperty("Directory")
     private List<DirectoryItem> directoryItems = new ArrayList<>();
 
     /*
-     * The fileItems property.
+     * The FileItems property.
      */
     @JsonProperty("File")
     private List<FileItem> fileItems = new ArrayList<>();
 
     /**
-     * Get the directoryItems property: The directoryItems property.
+     * Get the directoryItems property: The DirectoryItems property.
      *
      * @return the directoryItems value.
      */
@@ -40,7 +39,7 @@ public final class FilesAndDirectoriesListSegment {
     }
 
     /**
-     * Set the directoryItems property: The directoryItems property.
+     * Set the directoryItems property: The DirectoryItems property.
      *
      * @param directoryItems the directoryItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.
@@ -51,7 +50,7 @@ public final class FilesAndDirectoriesListSegment {
     }
 
     /**
-     * Get the fileItems property: The fileItems property.
+     * Get the fileItems property: The FileItems property.
      *
      * @return the fileItems value.
      */
@@ -60,7 +59,7 @@ public final class FilesAndDirectoriesListSegment {
     }
 
     /**
-     * Set the fileItems property: The fileItems property.
+     * Set the fileItems property: The FileItems property.
      *
      * @param fileItems the fileItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.

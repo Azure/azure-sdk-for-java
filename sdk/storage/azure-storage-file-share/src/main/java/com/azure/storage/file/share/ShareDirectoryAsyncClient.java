@@ -21,11 +21,11 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.models.DirectorysCreateResponse;
-import com.azure.storage.file.share.implementation.models.DirectorysGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.share.implementation.models.DirectorysSetMetadataResponse;
-import com.azure.storage.file.share.implementation.models.DirectorysSetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
@@ -286,8 +286,8 @@ public class ShareDirectoryAsyncClient {
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.directorys()
-            .createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
+        return azureFileStorageClient.getDirectories()
+            .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
                 null, metadata, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::createWithRestResponse);
@@ -343,7 +343,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath,
+        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -398,8 +398,8 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.directorys()
-            .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null,
+        return azureFileStorageClient.getDirectories()
+            .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getPropertiesResponse);
     }
@@ -472,8 +472,8 @@ public class ShareDirectoryAsyncClient {
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.directorys()
-            .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
+        return azureFileStorageClient.getDirectories()
+            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::setPropertiesResponse);
@@ -546,8 +546,8 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.directorys()
-            .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata,
+        return azureFileStorageClient.getDirectories()
+            .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::setMetadataResponse);
     }
@@ -608,8 +608,8 @@ public class ShareDirectoryAsyncClient {
     PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
                                                                         Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<ShareFileItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
+                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResultsPerPage, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -650,8 +650,8 @@ public class ShareDirectoryAsyncClient {
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
+                .listHandlesWithResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -714,11 +714,11 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
-        return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
+        return this.azureFileStorageClient.getDirectories().forceCloseHandlesWithResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
             .map(response -> new SimpleResponse<>(response,
-                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())));
+                new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())));
     }
 
     /**
@@ -751,16 +751,16 @@ public class ShareDirectoryAsyncClient {
 
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
+                .forceCloseHandlesWithResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(
-                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                             response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())),
-                    response.getDeserializedHeaders().getMarker(),
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                             response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())),
+                    response.getDeserializedHeaders().getXMsMarker(),
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -1178,7 +1178,7 @@ public class ShareDirectoryAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private Response<ShareDirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
+    private Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1186,18 +1186,18 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
+    private Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
+        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties =
             new ShareDirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
-    private Response<ShareDirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
+    private Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1205,16 +1205,16 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
+    private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectoriesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
             isServerEncrypted);
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
     }
 
     private List<ShareFileItem> convertResponseAndGetNumOfResults(
-        DirectorysListFilesAndDirectoriesSegmentResponse response) {
+        DirectoriesListFilesAndDirectoriesSegmentResponse response) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (response.getValue().getSegment() != null) {
             response.getValue().getSegment().getDirectoryItems()

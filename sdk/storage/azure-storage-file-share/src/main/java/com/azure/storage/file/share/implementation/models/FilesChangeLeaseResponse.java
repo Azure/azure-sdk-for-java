@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the changeLease operation.
- */
-public final class FilesChangeLeaseResponse extends ResponseBase<FileChangeLeaseHeaders, Void> {
+/** Contains all response data for the changeLease operation. */
+public final class FilesChangeLeaseResponse extends ResponseBase<FilesChangeLeaseHeaders, Void> {
     /**
      * Creates an instance of FilesChangeLeaseResponse.
      *
@@ -21,7 +19,8 @@ public final class FilesChangeLeaseResponse extends ResponseBase<FileChangeLease
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesChangeLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileChangeLeaseHeaders headers) {
+    public FilesChangeLeaseResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FilesChangeLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

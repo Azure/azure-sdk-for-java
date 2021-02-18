@@ -1,5 +1,8 @@
 # Release History
-## 5.1.0-beta.4 (Unreleased)
+## 5.1.0-beta.5 (Unreleased)
+
+
+## 5.1.0-beta.4 (2021-02-10)
 ### New features
 - Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.
 - A new options to control how the offset and length are calculated by the service. Added `StringIndexType` to all
@@ -64,6 +67,10 @@
   `PiiEntityDomainType` to `PiiEntitiesDomainType`,
   `RecognizePiiEntityOptions` to `RecognizePiiEntitiesOptions`,
   `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`
+
+## 5.0.3 (2021-02-10)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.13.0 and `azure-core-http-netty` to 1.8.0.
 
 ## 5.0.2 (2021-01-14)
 ### Dependency updates

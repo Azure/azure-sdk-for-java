@@ -35,6 +35,10 @@ extends:
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
-      - name: azure-communication-administration
+      - name: azure-communication-identity
         groupId: com.azure
-        safeName: azurecommunicationadministration
+        safeName: azurecommunicationidentity
+      - name: azure-communication-phonenumbers
+        groupId: com.azure
+        safeName: azurecommunicationphonenumbers
+

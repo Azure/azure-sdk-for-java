@@ -46,7 +46,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(
     prefix = AADB2CProperties.PREFIX,
     value = {
-        "tenant",
         "client-id",
         "client-secret",
         AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
@@ -89,10 +88,8 @@ public class AADB2CAutoConfiguration {
         if (properties.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
-
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADB2CAutoConfiguration.class));
             events.put(TENANT_NAME, properties.getTenant());
-
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }
@@ -145,9 +142,9 @@ public class AADB2CAutoConfiguration {
                                      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                      .redirectUriTemplate(properties.getReplyUrl())
                                      .scope(properties.getClientId(), "openid")
-                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                                     .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getBaseUri()))
+                                     .tokenUri(AADB2CURL.getTokenUrl(properties.getBaseUri(), userFlow))
+                                     .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getBaseUri(), userFlow))
                                      .userNameAttributeName(properties.getUserNameAttributeName())
                                      .clientName(userFlow)
                                      .build();
