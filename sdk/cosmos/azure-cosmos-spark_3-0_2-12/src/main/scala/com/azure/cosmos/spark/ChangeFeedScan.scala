@@ -4,11 +4,13 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, Scan}
 import org.apache.spark.sql.types.StructType
 
 private case class ChangeFeedScan
 (
+  session: SparkSession,
   schema: StructType,
   config: Map[String, String],
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
@@ -39,6 +41,6 @@ private case class ChangeFeedScan
    *                                       `TableCapability.BATCH_READ`
    */
   override def toBatch: Batch = {
-    new ChangeFeedBatch(schema, config, cosmosClientStateHandle)
+    new ChangeFeedBatch(session, schema, config, cosmosClientStateHandle)
   }
 }

@@ -50,7 +50,8 @@ private[spark] object ChangeFeedTable {
  * @param userConfig         The effective user configuration
  * @param userProvidedSchema The user provided schema - can be null/none
  */
-private class ChangeFeedTable(val transforms: Array[Transform],
+private class ChangeFeedTable(val session: SparkSession,
+                              val transforms: Array[Transform],
                               val userConfig: util.Map[String, String],
                               val userProvidedSchema: Option[StructType] = None)
   extends Table
@@ -79,8 +80,10 @@ private class ChangeFeedTable(val transforms: Array[Transform],
     TableCapability.BATCH_READ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
-    ChangeFeedScanBuilder(new CaseInsensitiveStringMap(
-      CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
+    ChangeFeedScanBuilder(
+      session,
+      new CaseInsensitiveStringMap(
+        CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
       schema(),
       containerStateHandle)
   }

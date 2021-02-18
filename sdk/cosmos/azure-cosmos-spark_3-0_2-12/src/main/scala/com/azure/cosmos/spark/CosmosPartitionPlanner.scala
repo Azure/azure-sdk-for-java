@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
-import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, requireNotNull, requireNotNullOrEmpty}
+import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull, requireNotNullOrEmpty}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.InputPartition
@@ -14,7 +14,9 @@ import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scheduler.Schedulers
 
+import java.time.Instant
 import java.util
+import java.util.{Timer, TimerTask}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.collection.concurrent.TrieMap
 
@@ -24,8 +26,6 @@ private object CosmosPartitionPlanner {
     val CosmosClientConfig = "cosmosClientConfig"
     val CosmosContainerConfig = "cosmosContainerConfig"
     val CosmosPartitioningConfig = "cosmosPartitioningConfig"
-    val DatabaseId = "databaseId"
-    val ContainerId = "containerId"
     val FeedRange = "feedRange"
   }
 
@@ -35,9 +35,12 @@ private object CosmosPartitionPlanner {
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
     cosmosPartitioningConfig: CosmosPartitioningConfig,
-    changeFeedOffset: Option[ChangeFeedOffset]
+    changeFeedOffset: Option[ChangeFeedOffset],
+    defaultMinimalPartitionCount : Int,
+    defaultMaxPartitionSizeInMB: Int
   ) : Array[InputPartition] = {
 
+    assertOnSparkDriver()
     requireNotNull(cosmosClientConfig, ParameterNames.CosmosClientConfig)
     requireNotNull(cosmosContainerConfig, ParameterNames.CosmosContainerConfig)
     requireNotNull(cosmosPartitioningConfig, ParameterNames.CosmosPartitioningConfig)
@@ -59,14 +62,16 @@ private object CosmosPartitionPlanner {
         cosmosClientStateHandle,
         cosmosContainerConfig,
         changeFeedOffset,
-        1
+        1 / defaultMaxPartitionSizeInMB,
+        defaultMinimalPartitionCount
       )
       case PartitioningStrategies.Aggressive =>  applyStorageAlignedStrategy(
         cosmosClientConfig,
         cosmosClientStateHandle,
         cosmosContainerConfig,
         changeFeedOffset,
-        3
+        3 / defaultMaxPartitionSizeInMB,
+        defaultMinimalPartitionCount
       )
     }
   }
@@ -94,16 +99,18 @@ private object CosmosPartitionPlanner {
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
     planningInfo: Array[PartitionPlanningInfo],
-    splitCountMultiplier: Double
+    splitCountMultiplier: Double,
+    defaultMinPartitionCount: Int
   ): Array[InputPartition] = {
     requireNotNullOrEmpty(planningInfo, "planningInfo")
 
     val totalScaleFactor = planningInfo.map(pi => pi.scaleFactor).sum
+    val effectiveSplitCountMultiplier = splitCountMultiplier * math.min(
+      1,
+      defaultMinPartitionCount / (splitCountMultiplier * totalScaleFactor))
     val inputPartitions =
-      new util.ArrayList[ChangeFeedInputPartition]((totalScaleFactor * (splitCountMultiplier + 1)).toInt)
-
+      new util.ArrayList[ChangeFeedInputPartition]((2 * totalScaleFactor * effectiveSplitCountMultiplier).toInt)
     val client = CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
-
     val container = client
       .getDatabase(cosmosContainerConfig.database)
       .getContainer(cosmosContainerConfig.container)
@@ -111,7 +118,7 @@ private object CosmosPartitionPlanner {
     planningInfo.foreach(info => {
       val numberOfSparkPartitions = math.min(
         Int.MaxValue,
-        math.min(1, (info.scaleFactor * splitCountMultiplier).round)).toInt
+        math.min(1, (info.scaleFactor * effectiveSplitCountMultiplier).round)).toInt
       SparkBridgeInternal
         .trySplitFeedRange(container, info.feedRange, numberOfSparkPartitions)
         .foreach(feedRange => inputPartitions.add(ChangeFeedInputPartition(feedRange)))
@@ -128,7 +135,8 @@ private object CosmosPartitionPlanner {
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
     changeFeedOffset: Option[ChangeFeedOffset],
-    weightFactor: Double
+    weightFactor: Double,
+    defaultMinPartitionCount: Int
   ): Array[InputPartition] = {
     val planningInfo = this.getPartitionPlanningInfo(
       cosmosClientConfig,
@@ -142,7 +150,8 @@ private object CosmosPartitionPlanner {
       cosmosClientStateHandle,
       cosmosContainerConfig,
       planningInfo,
-      weightFactor
+      weightFactor,
+      defaultMinPartitionCount
     )
   }
 
@@ -167,7 +176,8 @@ private object CosmosPartitionPlanner {
       cosmosClientStateHandle,
       cosmosContainerConfig,
       planningInfo,
-      customPartitioningFactor
+      customPartitioningFactor,
+      targetPartitionCount
     )
   }
 
@@ -194,19 +204,19 @@ private object CosmosPartitionPlanner {
     var index = 0
     partitionMetadata.foreach(m => {
       // rounded up to the next size
-      val storageSizeInGB: Double = m.totalDocumentSizeInKB / (1024 * 1024)
-      val progressWeightFactor: Double = getChangeFeedProgressFactor(changeFeedOffset, storageSizeInGB, m.latestLsn)
+      val storageSizeInMB: Double = m.totalDocumentSizeInKB / 1024
+      val progressWeightFactor: Double = getChangeFeedProgressFactor(changeFeedOffset, storageSizeInMB, m.latestLsn)
 
       // Round up scale factor
-      val scaleFactor = if (storageSizeInGB == 0) {
+      val scaleFactor = if (storageSizeInMB == 0) {
         1
       } else {
-        progressWeightFactor * storageSizeInGB.toDouble
+        progressWeightFactor * storageSizeInMB.toDouble
       }
 
       val planningInfo = PartitionPlanningInfo(
         m.feedRange,
-        storageSizeInGB,
+        storageSizeInMB,
         progressWeightFactor,
         scaleFactor
       )
@@ -219,20 +229,20 @@ private object CosmosPartitionPlanner {
   }
 
   private[this] def getChangeFeedProgressFactor(changeFeedOffset: Option[ChangeFeedOffset],
-                                                storageSizeInGB: Double,
+                                                storageSizeInMB: Double,
                                                 latestLsn: Long) : Double = {
     changeFeedOffset match {
       case None => 1
       case Some(offset) =>
         val lsnFromOffset = SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(offset.changeFeedState)
 
-        if (lsnFromOffset <= 0 || storageSizeInGB == 0) {
+        if (lsnFromOffset <= 0 || storageSizeInMB == 0) {
           // No progress has been made so far - use one Spark partition per GB
           1
         } else if (latestLsn <= lsnFromOffset) {
           // If progress has caught up with estimation already make sure we only use one Spark partition
           // for the physical partition in Cosmos
-          1 / storageSizeInGB
+          1 / storageSizeInMB
         } else {
           // Use weight factor based on progress. This estimate assumes equal distribution of storage
           // size per LSN - which is a "good enough" simplification
@@ -290,14 +300,33 @@ private object CosmosPartitionPlanner {
   // physical partition - it is not guaranteeing functional correctness
   // because the cached metadata could be old or even be for a different
   // container after deletion and recreation of a container
-  private object PartitionMetadataCache {
-    private[this] val cache = new TrieMap[String, SMono[PartitionMetadata]]
+  private object PartitionMetadataCache extends CosmosLoggingTrait {
+    private[this] val Nothing = 0
+    private[this] val cache = new TrieMap[String, PartitionMetadata]
+
+    // purpose of the time is to update partition metadata
+    // additional throughput when more RUs are getting provisioned
+    private val timerName = "partition-metadata-refresh-timer"
+    private val timer: Timer = new Timer(timerName, true)
+    private val refreshIntervalInMs : Long = 1 * 1000 // refresh cache every minute after initialization
+
+    // update cached items which haven't been retrieved in the last refreshPeriod only if they
+    // have been last updated longer than 15 minutes ago
+    // any cached item which has been retrieved within the last refresh period will
+    // automatically kept being updated
+    private val staleCachedItemRefreshPeriodInMs : Long = 15 * 60 * 1000
+
+    // purged cached items if they haven't been retrieved within 2 hours
+    private val cachedItemTtlInMs : Long = 2 * 60 * 60 * 1000
+
+    this.startRefreshTimer()
 
     def apply(cosmosClientConfig: CosmosClientConfiguration,
               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
               cosmosContainerConfig: CosmosContainerConfig,
               feedRange: String): SMono[PartitionMetadata] = {
 
+      assertOnSparkDriver()
       requireNotNull(cosmosClientConfig, ParameterNames.CosmosClientConfig)
 
       val key = PartitionMetadata.createKey(
@@ -306,8 +335,10 @@ private object CosmosPartitionPlanner {
         feedRange)
 
       cache.get(key) match {
-        case Some(metadata) => metadata
-        case None => create(
+        case Some(metadata) =>
+          metadata.lastRetrieved.set(Instant.now.toEpochMilli)
+          SMono.just(metadata)
+        case None => this.create(
           cosmosClientConfig,
           cosmosClientStateHandle,
           cosmosContainerConfig,
@@ -317,6 +348,7 @@ private object CosmosPartitionPlanner {
     }
 
     def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: String): Unit = {
+      assertOnSparkDriver()
       val key = PartitionMetadata.createKey(
         cosmosContainerConfig.database,
         cosmosContainerConfig.container,
@@ -329,57 +361,143 @@ private object CosmosPartitionPlanner {
       }
     }
 
-    private[this] def create(cosmosClientConfiguration: CosmosClientConfiguration,
-                             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-                             cosmosContainerConfig: CosmosContainerConfig,
-                             feedRange: String,
-                             key: String) : SMono[PartitionMetadata] = {
+    private[this] def create
+    (
+       cosmosClientConfiguration: CosmosClientConfiguration,
+       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+       cosmosContainerConfig: CosmosContainerConfig,
+       feedRange: String,
+       key: String
+    ): SMono[PartitionMetadata] = {
+
+      assertOnSparkDriver()
       cache.get(key) match {
-        case Some(metadata) => metadata
+        case Some(metadata) =>
+          metadata.lastRetrieved.set(Instant.now.toEpochMilli)
+          SMono.just(metadata)
         case None =>
-          val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
-          val container = client
-            .getDatabase(cosmosContainerConfig.database)
-            .getContainer(cosmosContainerConfig.container)
+          val metadataObservable = readPartitionMetadata(
+            cosmosClientConfiguration: CosmosClientConfiguration,
+            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosContainerConfig: CosmosContainerConfig,
+            feedRange: String
+          )
 
-          val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.fromString(feedRange))
-          options.setMaxItemCount(1)
-          options.setMaxPrefetchPageCount(1)
+          metadataObservable
+            .map(metadata => {
+              cache.putIfAbsent(key, metadata) match {
+                case None =>
+                  metadata
+                case Some(metadataAddedConcurrently) =>
+                  metadataAddedConcurrently.lastRetrieved.set(Instant.now.toEpochMilli)
 
-          val lastDocumentCount = new AtomicLong()
-          val lastTotalDocumentSize = new AtomicLong()
-          val lastContinuationToken = new AtomicReference[String]()
-
-          val metadataObservable = container
-            .queryChangeFeed(options,classOf[ObjectNode])
-            .handle(r => {
-              lastDocumentCount.set(r.getDocumentCountUsage)
-              lastTotalDocumentSize.set(r.getDocumentUsage)
-              val continuation = r.getContinuationToken
-              if (continuation != null && !continuation.isBlank) {
-                lastContinuationToken.set(continuation)
+                  metadataAddedConcurrently
               }
             })
-            .collectList()
-            .asScala
-            .map(_ => {
-              val metadata = PartitionMetadata.create(
-                cosmosContainerConfig,
-                feedRange,
-                assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
-                assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
-                assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken"))
+            .subscribeOn(Schedulers.boundedElastic())
+      }
+    }
 
-              metadata
-            })
+    private def readPartitionMetadata
+    (
+      cosmosClientConfiguration: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      feedRange: String
+    ): SMono[PartitionMetadata] = {
+      val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
+      val container = client
+        .getDatabase(cosmosContainerConfig.database)
+        .getContainer(cosmosContainerConfig.container)
 
-          metadataObservable.subscribeOn(Schedulers.boundedElastic())
-          cache.putIfAbsent(key, metadataObservable) match {
-            case None =>
-              metadataObservable
-            case Some(metadataObservableAddedConcurrently) =>
-              metadataObservableAddedConcurrently
+      val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.fromString(feedRange))
+      options.setMaxItemCount(1)
+      options.setMaxPrefetchPageCount(1)
+      options.setQuotaInfoEnabled(true)
+
+      val lastDocumentCount = new AtomicLong()
+      val lastTotalDocumentSize = new AtomicLong()
+      val lastContinuationToken = new AtomicReference[String]()
+
+      container
+        .queryChangeFeed(options, classOf[ObjectNode])
+        .handle(r => {
+          lastDocumentCount.set(r.getDocumentCountUsage)
+          lastTotalDocumentSize.set(r.getDocumentUsage)
+          val continuation = r.getContinuationToken
+          if (continuation != null && !continuation.isBlank) {
+            lastContinuationToken.set(continuation)
           }
+        })
+        .collectList()
+        .asScala
+        .map(_ => {
+          PartitionMetadata.create(
+            cosmosClientConfiguration,
+            cosmosClientStateHandle,
+            cosmosContainerConfig,
+            feedRange,
+            assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
+            assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
+            assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
+          )
+        })
+    }
+
+    private def startRefreshTimer() : Unit = {
+      logInfo(s"$timerName: scheduling timer - delay: $refreshIntervalInMs ms, period: $refreshIntervalInMs ms")
+      timer.schedule(
+        new TimerTask { def run(): Unit = onRunRefreshTimer() },
+        refreshIntervalInMs,
+        refreshIntervalInMs)
+    }
+
+    private def onRunRefreshTimer() : Unit = {
+      logTrace(s"--> $timerName: onRunRefreshTimer")
+      val snapshot = cache.readOnlySnapshot()
+      val updateObservables = snapshot.map(metadataSnapshot => updateIfNecessary(metadataSnapshot._2))
+      SMono
+        .zipDelayError(updateObservables, _ => 0)
+        .onErrorResume(t => {
+          logWarning("An error happened when updating partition metadata", t)
+          SMono.just(Nothing)
+        })
+        .block()
+      logTrace(s"<-- $timerName: onRunRefreshTimer")
+    }
+
+    private def updateIfNecessary(metadataSnapshot: PartitionMetadata):SMono[Int] = {
+      val nowEpochMs = Instant.now.toEpochMilli
+      val hotThreshold = nowEpochMs - refreshIntervalInMs
+      val staleThreshold = nowEpochMs - staleCachedItemRefreshPeriodInMs
+      val ttlThreshold = nowEpochMs - cachedItemTtlInMs
+
+      val lastRetrievedSnapshot = metadataSnapshot.lastRetrieved.get()
+      if (lastRetrievedSnapshot < ttlThreshold) {
+        this.purge(metadataSnapshot.cosmosContainerConfig, metadataSnapshot.feedRange)
+        SMono.just(Nothing)
+      } else if (lastRetrievedSnapshot < staleThreshold || lastRetrievedSnapshot > hotThreshold) {
+        readPartitionMetadata(
+          metadataSnapshot.cosmosClientConfig,
+          metadataSnapshot.cosmosClientStateHandle,
+          metadataSnapshot.cosmosContainerConfig,
+          metadataSnapshot.feedRange
+        ).map(metadata => {
+          val key = PartitionMetadata.createKey(
+            metadataSnapshot.cosmosContainerConfig.database,
+            metadataSnapshot.cosmosContainerConfig.container,
+            metadataSnapshot.feedRange
+          )
+          if (cache.replace(key, metadataSnapshot, metadata)) {
+            logTrace(s"Updated partition metadata '$key'")
+          } else {
+            logWarning(s"Ignored retrieved metadata due to concurrent update of partition metadata '$key'")
+          }
+
+          Nothing
+        })
+      } else {
+        SMono.just(Nothing)
       }
     }
   }
@@ -390,34 +508,44 @@ private object CosmosPartitionPlanner {
                    containerId: String,
                    feedRange: String) : String = s"$databaseId|$containerId|$feedRange"
 
-    def create(cosmosContainerConfig: CosmosContainerConfig,
+    def create(cosmosClientConfig: CosmosClientConfiguration,
+               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+               cosmosContainerConfig: CosmosContainerConfig,
                feedRange: String,
                documentCount: Long,
                totalDocumentSize: Long,
                continuationToken: String): PartitionMetadata = {
 
+      val nowEpochMs = Instant.now().toEpochMilli
+
       PartitionMetadata(
-        cosmosContainerConfig.database,
-        cosmosContainerConfig.container,
+        cosmosClientConfig,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
         feedRange,
         documentCount,
         totalDocumentSize,
-        SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken))
+        SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken),
+        new AtomicLong(nowEpochMs),
+        new AtomicLong(nowEpochMs))
     }
   }
 
   private case class PartitionMetadata
   (
-    databaseId: String,
-    containerId: String,
+    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig,
     feedRange: String,
     documentCount: Long,
     totalDocumentSizeInKB: Long,
-    latestLsn: Long
+    latestLsn: Long,
+    lastRetrieved: AtomicLong,
+    lastUpdated: AtomicLong
   ) {
-    requireNotNullOrEmpty(databaseId, ParameterNames.DatabaseId)
-    requireNotNullOrEmpty(containerId, ParameterNames.ContainerId)
     requireNotNullOrEmpty(feedRange, ParameterNames.FeedRange)
+    requireNotNull(cosmosClientConfig, ParameterNames.CosmosClientConfig)
+    requireNotNull(cosmosContainerConfig, ParameterNames.CosmosContainerConfig)
     requireNotNull(documentCount, "documentCount")
     requireNotNull(totalDocumentSizeInKB, "totalDocumentSizeInKB")
     requireNotNull(latestLsn, "latestLsn")
@@ -426,12 +554,12 @@ private object CosmosPartitionPlanner {
   private case class PartitionPlanningInfo
   (
     feedRange: String,
-    storageSizeInGB: Double,
+    storageSizeInMB: Double,
     progressWeightFactor: Double,
     scaleFactor: Double
   ) {
     requireNotNullOrEmpty(feedRange, ParameterNames.FeedRange)
-    requireNotNull(storageSizeInGB, "storageSizeInGB")
+    requireNotNull(storageSizeInMB, "storageSizeInMB")
     requireNotNull(scaleFactor, "scaleFactor")
   }
 }

@@ -13,8 +13,8 @@ import java.util.Locale
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
+import java.time.Instant
 import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalAccessor
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -249,13 +249,11 @@ private object PartitioningStrategies extends Enumeration {
 private case class CosmosPartitioningConfig
 (
   partitioningStrategy: PartitioningStrategy,
-  targetedPartitionCount: Option[Int],
-  partitionMetadataRefreshIntervalInSeconds: Int
+  targetedPartitionCount: Option[Int]
 )
 
 private object CosmosPartitioningConfig {
   private val DefaultPartitioningStrategy: PartitioningStrategy = PartitioningStrategies.Default
-  private val DefaultRefreshInterval = 50
 
   private[spark] val targetedPartitionCount = CosmosConfigEntry[Int](
     key = "spark.cosmos.partitioning.targetedCount",
@@ -263,14 +261,6 @@ private object CosmosPartitioningConfig {
     parseFromStringFunction = targetedCountText => targetedCountText.toInt,
     helpMessage = "An optional targeted Partition Count. If set along with strategy==Custom " +
       "the Spark Connector won't dynamically calculate number of partitions but stick with this value.")
-
-  private[spark] val refreshIntervalInSeconds = CosmosConfigEntry[Int](
-    key = "spark.cosmos.partitioning.metadataRefreshInterval",
-    mandatory = false,
-    parseFromStringFunction = intervalText => intervalText.toInt,
-    helpMessage = "The interval for refreshing metadata driving the partition planning. This " +
-      "interval will influence how soon partition planning would reflect changes to the size or " +
-      "provisioned throughput of the container/database.")
 
   private[spark] val partitioningStrategy = CosmosConfigEntry[PartitioningStrategy](
     key = "spark.cosmos.partitioning.strategy",
@@ -303,12 +293,10 @@ private object CosmosPartitioningConfig {
     } else {
       None
     }
-    val refreshIntervalInSecondsParsed = CosmosConfigEntry.parse(cfg, refreshIntervalInSeconds)
 
     CosmosPartitioningConfig(
       partitioningStrategyParsed,
-      targetedPartitionCountParsed,
-      refreshIntervalInSecondsParsed.getOrElse(DefaultRefreshInterval)
+      targetedPartitionCountParsed
     )
   }
 }
@@ -332,7 +320,8 @@ private case class CosmosChangeFeedConfig
 (
   changeFeedMode: ChangeFeedMode,
   startFrom: ChangeFeedStartFromMode,
-  startFromPointInTime: Option[TemporalAccessor]
+  startFromPointInTime: Option[Instant],
+  maxItemCountPerTrigger: Option[Long]
 )
 
 private object CosmosChangeFeedConfig {
@@ -346,24 +335,41 @@ private object CosmosChangeFeedConfig {
     helpMessage = "ChangeFeed Start from settings (Now, Beginning  or a certain point in " +
       "time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'.")
 
-  private[spark] val startFromPointInTime = CosmosConfigEntry[TemporalAccessor](
+  private[spark] val startFromPointInTime = CosmosConfigEntry[Instant](
     key = "spark.cosmos.changeFeed.startFrom",
     mandatory = true,
-    parseFromStringFunction = startFrom => DateTimeFormatter.ISO_DATE_TIME.parse(startFrom.trim),
+    parseFromStringFunction = startFrom => Instant.from(DateTimeFormatter
+      .ISO_INSTANT
+      .parse(startFrom.trim)),
     helpMessage = "ChangeFeed Start from settings (Now, Beginning  or a certain point in " +
-      "time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'.")
+      "time (UTC) for example 2020-02-10T14:15:03Z) - the default value is 'Beginning'.")
 
   private[spark] val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](
     key = "spark.cosmos.changeFeed.mode",
     mandatory = false,
-    parseFromStringFunction = changeFeedModeString => ChangeFeedModes.withName(changeFeedModeString),
+    parseFromStringFunction = changeFeedModeString => validateChangeFeedMode(changeFeedModeString),
     helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
 
-  private[spark] val maxItemCountPerTriggerHint = CosmosConfigEntry[Int](
+  private[spark] val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = "spark.cosmos.changeFeed.maxItemCountPerTriggerHint",
     mandatory = false,
     parseFromStringFunction = maxItemCount => maxItemCount.toInt,
     helpMessage = "Approximate maximum number of items read from change feed for each trigger")
+
+  private def validateChangeFeedMode(mode: String): ChangeFeedMode = {
+    Option(mode).fold(DefaultChangeFeedMode)(p => {
+      val modeName = p.trim
+
+      if (modeName.isEmpty) {
+        DefaultChangeFeedMode
+      } else {
+        ChangeFeedModes
+          .values
+          .find(_.toString.equalsIgnoreCase(modeName))
+          .getOrElse(throw new IllegalArgumentException(s"Invalid change feed mode '$modeName'"))
+      }
+    })
+  }
 
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
@@ -384,15 +390,17 @@ private object CosmosChangeFeedConfig {
   private[spark] def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
     val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
     val startFromModeParsed = CosmosConfigEntry.parse(cfg, startFrom)
+    val maxItemCountPerTriggerHintParsed = CosmosConfigEntry.parse(cfg, maxItemCountPerTriggerHint)
     val startFromPointInTimeParsed = startFromModeParsed match {
-      case PointInTime => Some(CosmosConfigEntry.parse(cfg, startFromPointInTime))
+      case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
       case _ => None
     }
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
       startFromModeParsed.getOrElse(DefaultStartFromMode),
-      startFromPointInTimeParsed.flatten)
+      startFromPointInTimeParsed,
+      maxItemCountPerTriggerHintParsed)
   }
 }
 

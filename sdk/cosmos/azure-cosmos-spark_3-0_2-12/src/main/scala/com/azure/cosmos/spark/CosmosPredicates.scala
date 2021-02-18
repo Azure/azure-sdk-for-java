@@ -3,8 +3,17 @@
 
 package com.azure.cosmos.spark
 
+import org.apache.spark.SparkEnv
+
 private object CosmosPredicates {
   private[this] val ParameterName = "parameterName"
+
+  /**
+   * Executor id for the driver.  In earlier versions of Spark, this was `<driver>`, but this was
+   * changed to `driver` because the angle brackets caused escaping issues in URLs and XML (see
+   * SPARK-6716 for more details).
+   */
+  private[this] val DRIVER_IDENTIFIER = "driver"
 
   private[this] def argumentMustNotBeNullOrEmptyMessage(parameterName: String): String =
     s"Argument '$parameterName' must not be null or empty."
@@ -47,5 +56,10 @@ private object CosmosPredicates {
     assert(parameterName != null && !parameterName.isBlank, argumentMustNotBeNullOrEmptyMessage(ParameterName))
     assert(candidate != null && !candidate.isEmpty, argumentMustNotBeNullOrEmptyMessage(parameterName))
     candidate
+  }
+
+  private[spark] def assertOnSparkDriver(): Unit = {
+    // assert that we're only accessing it on the driver.
+    assert(SparkEnv.get.executorId == DRIVER_IDENTIFIER, "This code should only be executed on the Spark driver.")
   }
 }
