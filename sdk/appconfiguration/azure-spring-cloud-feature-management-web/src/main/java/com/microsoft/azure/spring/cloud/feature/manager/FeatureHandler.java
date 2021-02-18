@@ -7,6 +7,7 @@ package com.microsoft.azure.spring.cloud.feature.manager;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +46,7 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
      * Checks if the endpoint being called has the @FeatureOn annotation. Checks if the
      * feature is on. Can redirect if feature is off, or can return the disabled feature
      * handler.
-     * 
+     *
      * @return true if the @FeatureOn annotation is on or the feature is enabled. Else, it
      * returns false, or is redirected.
      */
@@ -69,7 +70,9 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
                 }
                 boolean isEnabled = false;
                 try {
-                    isEnabled = enabled.block();
+                    isEnabled = Optional.ofNullable(enabled)
+                        .map(Mono::block)
+                        .orElse(false);
 
                     if (!isEnabled && !featureOn.fallback().isEmpty()) {
                         response.sendRedirect(featureOn.fallback());
@@ -79,7 +82,7 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
                     ReflectionUtils.rethrowRuntimeException(e);
                 }
                 if (!isEnabled && disabledFeaturesHandler != null) {
-                    response = disabledFeaturesHandler.handleDisabledFeatures(request, response);
+                    disabledFeaturesHandler.handleDisabledFeatures(request, response);
                 } else if (!isEnabled) {
                     try {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);
