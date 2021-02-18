@@ -17,13 +17,13 @@ public class FilterNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    private final FeatureFilterEvaluationContext filter;
-    
+    private final transient FeatureFilterEvaluationContext filter;
+
     private final String message;
 
     /**
      * Creates a new instance of the FilterNotFoundException
-     * 
+     *
      * @param message the error message.
      * @param cause the original error thrown, typically of NoSuchBeanDefinitionException type.
      * @param filter The filter context used to find the not found filter.

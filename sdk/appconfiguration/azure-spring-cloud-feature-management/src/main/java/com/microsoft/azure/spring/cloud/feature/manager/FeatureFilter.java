@@ -17,7 +17,7 @@ public interface FeatureFilter {
      * Evaluates if the filter is on or off. Returning true results in Feature evaluation
      * ending and returning true. Returning false results in the next Feature evaluation
      * to continue.
-     * 
+     *
      * @param context The context for whether or not the filter is passed.
      * @return True if the feature is enabled, false otherwise.
      */

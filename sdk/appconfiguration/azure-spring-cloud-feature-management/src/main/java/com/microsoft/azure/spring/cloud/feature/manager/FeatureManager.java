@@ -37,13 +37,14 @@ import reactor.core.publisher.Mono;
 public class FeatureManager extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManager.class);
+    private static final long serialVersionUID = -5941681857165566018L;
 
     @Autowired
-    private ApplicationContext context;
+    private transient ApplicationContext context;
 
-    private FeatureManagementConfigProperties properties;
+    private transient FeatureManagementConfigProperties properties;
 
-    private HashMap<String, Feature> featureManagement;
+    private transient HashMap<String, Feature> featureManagement;
 
     private HashMap<String, Boolean> onOff;
 
@@ -61,17 +62,17 @@ public class FeatureManager extends HashMap<String, Object> {
      * single filter returns true it returns true. If no filter returns true, it returns
      * false. If there are no filters, it returns true. If feature isn't found it returns
      * false.
-     * 
+     *
      * @param feature Feature being checked.
      * @return state of the feature
-     * @throws FilterNotFoundException 
+     * @throws FilterNotFoundException file not found
      */
     public Mono<Boolean> isEnabledAsync(String feature) throws FilterNotFoundException {
         return Mono.just(checkFeatures(feature));
     }
 
-    private boolean checkFeatures(String feature) throws FilterNotFoundException {
-        boolean enabled = false;
+    private Boolean checkFeatures(String feature) throws FilterNotFoundException {
+        Boolean enabled = false;
         if (featureManagement == null || onOff == null) {
             return false;
         }
@@ -99,11 +100,11 @@ public class FeatureManager extends HashMap<String, Object> {
                     }
                 }
             }
-            if (enabled) {
-                return enabled;
-            }
+
+            return enabled;
+
         }
-        return enabled;
+        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -140,31 +141,32 @@ public class FeatureManager extends HashMap<String, Object> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void putAll(Map<? extends String, ? extends Object> m) {
         if (m == null) {
             return;
         }
-        
+
         // Need to reset or switch between on/off to conditional doesn't work
         featureManagement = new HashMap<String, Feature>();
         onOff = new HashMap<String, Boolean>();
-        
+
         if (m.size() == 1 && m.containsKey("featureManagement")) {
             m = (Map<? extends String, ? extends Object>) m.get("featureManagement");
         }
-        
+
         for (String key : m.keySet()) {
             addToFeatures(m, key, "");
         }
     }
-    
+
     /**
      * Returns the names of all features flags
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
         Set<String> allFeatures = new HashSet<String>();
-        
+
         allFeatures.addAll(onOff.keySet());
         allFeatures.addAll(featureManagement.keySet());
         return allFeatures;
@@ -183,6 +185,6 @@ public class FeatureManager extends HashMap<String, Object> {
     HashMap<String, Boolean> getOnOff() {
         return onOff;
     }
-    
-    
+
+
 }
