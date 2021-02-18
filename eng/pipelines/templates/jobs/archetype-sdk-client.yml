@@ -176,7 +176,7 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+#      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
