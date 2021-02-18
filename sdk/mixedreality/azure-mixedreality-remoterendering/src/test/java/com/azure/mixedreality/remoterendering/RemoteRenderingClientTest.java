@@ -93,7 +93,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         ErrorResponseException ex = assertThrows(ErrorResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
 
-        assertTrue(ex.getMessage().contains("400"));
+        assertTrue(ex.getMessage().contains(RESPONSE_CODE_400));
 
         // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
         assertTrue(ex.getMessage().toLowerCase(Locale.ROOT).contains("storage"));
@@ -154,7 +154,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         RenderingSession readyRenderingSession = sessionPoller.getFinalResult();
         assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4) || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
-        assertNotNull(readyRenderingSession.getArrInspectorPort());
+        assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
         assertNotNull(readyRenderingSession.getHostname());
         assertEquals(readyRenderingSession.getSize(), options.getSize());
 
@@ -184,7 +184,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         ErrorResponseException ex = assertThrows(ErrorResponseException.class, () -> client.beginSession(sessionId, options));
 
-        assertTrue(ex.getMessage().contains("400"));
+        assertTrue(ex.getMessage().contains(RESPONSE_CODE_400));
 
         // The maxLeaseTimeMinutes value cannot be negative
         assertTrue(ex.getMessage().toLowerCase(Locale.ROOT).contains("lease"));

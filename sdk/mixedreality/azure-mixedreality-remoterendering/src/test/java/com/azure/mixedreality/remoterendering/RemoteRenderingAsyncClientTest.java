@@ -13,7 +13,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.core.http.HttpClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -58,10 +57,8 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(AssetConversionStatus.FAILED, conversion.getStatus());
             return response;
-        }).filter(response -> {
-            return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-                                  && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS));
-        });
+        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+                              && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
         StepVerifier.create(terminalPoller)
             .assertNext(response -> {
@@ -80,12 +77,10 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             })
             .verifyComplete();
 
-        Mono<Boolean> foundConversion = client.listConversions().any(conversion -> {
-            return conversion.getId().equals(conversionId);
-        });
-
-        assertTrue(foundConversion.block());
-    };
+        Boolean foundConversion = client.listConversions().any(conversion -> conversion.getId().equals(conversionId)).block();
+        assertNotNull(foundConversion);
+        assertTrue(foundConversion);
+    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
@@ -107,7 +102,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
             return (error instanceof ErrorResponseException)
-                && error.getMessage().contains("400")
+                && error.getMessage().contains(RESPONSE_CODE_400)
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("storage")
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("permissions");
         }).verify();
@@ -137,10 +132,8 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(AssetConversionStatus.SUCCEEDED, conversion.getStatus());
             return response;
-        }).filter(response -> {
-            return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS));
-        });
+        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+            && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
         StepVerifier.create(terminalPoller)
             .assertNext(response -> {
@@ -160,11 +153,15 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
+
+        final long firstExpectedLeaseTimeMinutes = 4;
+        final long secondExpectedLeaseTimeMinutes = 5;
+
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
+        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(firstExpectedLeaseTimeMinutes)).setSize(RenderingSessionSize.STANDARD);
 
-        String sessionId = getRandomId("ayncSessionTest");
+        String sessionId = getRandomId("asyncSessionTest");
 
         PollerFlux<RenderingSession, RenderingSession> sessionPoller = client.beginSession(sessionId, options);
 
@@ -173,10 +170,8 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             assertEquals(sessionId, session.getId());
             assertNotEquals(RenderingSessionStatus.ERROR, session.getStatus());
             return response;
-        }).filter(response -> {
-            return ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS));
-        });
+        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+            && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
         StepVerifier.create(terminalPoller)
             .assertNext(response -> {
@@ -185,9 +180,9 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
                 RenderingSession readyRenderingSession = response.getValue();
                 assertEquals(readyRenderingSession.getStatus(), RenderingSessionStatus.READY);
 
-                assertTrue(readyRenderingSession.getMaxLeaseTime().toMinutes() == 4);
+                assertEquals(firstExpectedLeaseTimeMinutes, readyRenderingSession.getMaxLeaseTime().toMinutes());
                 assertNotNull(readyRenderingSession.getHostname());
-                assertNotNull(readyRenderingSession.getArrInspectorPort());
+                assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
                 assertNotNull(readyRenderingSession.getHostname());
                 assertEquals(readyRenderingSession.getSize(), options.getSize());
             })
@@ -197,27 +192,23 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
             .assertNext(session -> {
                 assertEquals(session.getStatus(), RenderingSessionStatus.READY);
                 assertNotNull(session.getHostname());
-                assertNotNull(session.getArrInspectorPort());
+                assertNotEquals(session.getArrInspectorPort(), 0);
                 assertNotNull(session.getHostname());
                 assertEquals(session.getSize(), options.getSize());
             })
             .verifyComplete();
 
-        UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(5));
+        UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(secondExpectedLeaseTimeMinutes));
 
         StepVerifier.create(client.updateSession(sessionId, updateOptions))
-            .assertNext(session -> {
-                assertTrue(session.getMaxLeaseTime().toMinutes() == 5);
-            }).verifyComplete();
+            .assertNext(session -> assertEquals(secondExpectedLeaseTimeMinutes, session.getMaxLeaseTime().toMinutes())).verifyComplete();
 
-        Mono<Boolean> foundSession = client.listSessions().any(session -> {
-            return session.getId().equals(sessionId);
-        });
-
-        assertTrue(foundSession.block());
+        Boolean foundSession = client.listSessions().any(session -> session.getId().equals(sessionId)).block();
+        assertNotNull(foundSession);
+        assertTrue(foundSession);
 
         client.endSession(sessionId).block();
-    };
+    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
@@ -232,7 +223,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // The maxLeaseTimeMinutes value cannot be negative
             return (error instanceof ErrorResponseException)
-                && error.getMessage().contains("400")
+                && error.getMessage().contains(RESPONSE_CODE_400)
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("lease")
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("negative");
         }).verify();

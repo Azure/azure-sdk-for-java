@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
 /** A builder for creating a new instance of the MixedRealityRemoteRendering type. */
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
 public final class RemoteRenderingAsyncClient {
+    private final static Duration DEFAULT_POLLER_TIME = Duration.ofSeconds(10);
+
     private final UUID accountId;
     private final MixedRealityRemoteRenderingImpl impl;
 
@@ -92,7 +94,7 @@ public final class RemoteRenderingAsyncClient {
 
     private <T> PollerFlux<T, T> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context, Function<Response<SessionProperties>, T> mapper, Function<T, RenderingSessionStatus> statusgetter) {
         return new PollerFlux<>(
-            Duration.ofSeconds(10),
+            DEFAULT_POLLER_TIME,
             pollingContext -> impl.getRemoteRenderings().createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(mapper),
             pollingContext -> {
                 Mono<T> response = impl.getRemoteRenderings().getSessionWithResponseAsync(accountId, sessionId, context).map(mapper);
@@ -117,8 +119,6 @@ public final class RemoteRenderingAsyncClient {
             pollingContext -> Mono.just(pollingContext.getLatestResponse().getValue())
         );
     }
-
-
 
     /**
      * Gets properties of a particular rendering session.
@@ -291,7 +291,7 @@ public final class RemoteRenderingAsyncClient {
 
     private <T> PollerFlux<T, T> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context, Function<RemoteRenderingsCreateConversionResponse, T> mapper, Function<RemoteRenderingsGetConversionResponse, T> mapper2, Function<T, AssetConversionStatus> statusgetter) {
         return new PollerFlux<>(
-            Duration.ofSeconds(10),
+            DEFAULT_POLLER_TIME,
             pollingContext -> impl.getRemoteRenderings().createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(mapper),
             pollingContext -> {
                 Mono<T> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(mapper2);
