@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Pattern;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -27,10 +26,6 @@ public class ConfigStore {
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
     private String endpoint; // Config store endpoint
-
-    @Nullable
-    @Pattern(regexp = "(/[a-zA-Z0-9.\\-_]+)*")
-    private String prefix;
 
     private String connectionString;
 
@@ -56,14 +51,6 @@ public class ConfigStore {
 
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
     }
 
     public String getConnectionString() {
