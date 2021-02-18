@@ -9,7 +9,6 @@ import spock.lang.Unroll
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.FileStoreAttributeView
 import java.nio.file.attribute.PosixFileAttributeView
-import java.nio.file.attribute.UserDefinedFileAttributeView
 
 class AzureFileStoreTest extends APISpec {
     @Shared
@@ -18,9 +17,9 @@ class AzureFileStoreTest extends APISpec {
     // Just need one fs instance for creating the stores.
     def setup() {
         def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+        fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
     }
 
     // The constructor is implicitly tested by creating a file system.

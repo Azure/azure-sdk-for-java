@@ -81,8 +81,8 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?account=<accountName>"}. The name of the Storage account is used to uniquely identify the file
- * system.
+ * {@code "azb://?endpoint=<url_encoded_endpoint>"}. The endpoint of the Storage account is used to uniquely identify
+ * the filesystem.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
  * containers may be specified as file stores upon creation of the file system. When a file system is created,
@@ -110,7 +110,6 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
- *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
  *     <li>{@code AzureStorageFileStores:}{@link String}</li>
  * </ul>
  * <p>
@@ -160,7 +159,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     public static final String CACHE_CONTROL = "Cache-Control";
 
-    private static final String ACCOUNT_QUERY_KEY = "account";
+    private static final String ACCOUNT_ENDPOINT_KEY = "endpoint";
     private static final int COPY_TIMEOUT_SECONDS = 30;
     private static final Set<OpenOption> OUTPUT_STREAM_DEFAULT_OPTIONS =
         Collections.unmodifiableSet(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
@@ -198,7 +197,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Constructs a new FileSystem object identified by a URI.
      * <p>
-     * The format of a {@code URI} identifying a file system is {@code "azb://?account=<accountName>"}.
+     * The format of a {@code URI} identifying a file system is {@code "azb://?endpoint=<endpoint>"}.
      * <p>
      * Once closed, a file system with the same identifier may be reopened.
      *
@@ -213,14 +212,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
-        String accountName = extractAccountName(uri);
+        String endpoint = extractAccountEndpoint(uri);
 
-        if (this.openFileSystems.containsKey(accountName)) {
-            throw LoggingUtility.logError(this.logger, new FileSystemAlreadyExistsException("Name: " + accountName));
+        if (this.openFileSystems.containsKey(endpoint)) {
+            throw LoggingUtility.logError(this.logger, new FileSystemAlreadyExistsException("Name: " + endpoint));
         }
 
-        AzureFileSystem afs = new AzureFileSystem(this, accountName, config);
-        this.openFileSystems.put(accountName, afs);
+        AzureFileSystem afs = new AzureFileSystem(this, endpoint, config);
+        this.openFileSystems.put(endpoint, afs);
 
         return afs;
     }
@@ -228,7 +227,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Returns an existing FileSystem created by this provider.
      * <p>
-     * The format of a {@code URI} identifying an file system is {@code "azb://?account=&lt;accountName&gt;"}.
+     * The format of a {@code URI} identifying an file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
      * <p>
      * Trying to retrieve a closed file system will throw a {@link FileSystemNotFoundException}. Once closed, a
      * file system with the same identifier may be reopened.
@@ -241,11 +240,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem getFileSystem(URI uri) {
-        String accountName = extractAccountName(uri);
-        if (!this.openFileSystems.containsKey(accountName)) {
-            throw LoggingUtility.logError(this.logger, new FileSystemNotFoundException("Name: " + accountName));
+        String endpoint = extractAccountEndpoint(uri);
+        if (!this.openFileSystems.containsKey(endpoint)) {
+            throw LoggingUtility.logError(this.logger, new FileSystemNotFoundException("Name: " + endpoint));
         }
-        return this.openFileSystems.get(accountName);
+        return this.openFileSystems.get(endpoint);
     }
 
     /**
@@ -1133,7 +1132,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         this.openFileSystems.remove(fileSystemName);
     }
 
-    private String extractAccountName(URI uri) {
+    private String extractAccountEndpoint(URI uri) {
         if (!uri.getScheme().equals(this.getScheme())) {
             throw LoggingUtility.logError(this.logger, new IllegalArgumentException(
                 "URI scheme does not match this provider"));
@@ -1143,19 +1142,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 + "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
         }
 
-        String accountName = Flux.fromArray(uri.getQuery().split("&"))
-                .filter(s -> s.startsWith(ACCOUNT_QUERY_KEY + "="))
+        String endpoint = Flux.fromArray(uri.getQuery().split("&"))
+                .filter(s -> s.startsWith(ACCOUNT_ENDPOINT_KEY + "="))
                 .switchIfEmpty(Mono.error(LoggingUtility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ACCOUNT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
-                            + "of the format \"azb://?account=<account_name>\""))))
-                .map(s -> s.substring(ACCOUNT_QUERY_KEY.length() + 1))
+                        "URI does not contain an \"" + ACCOUNT_ENDPOINT_KEY + "=\" parameter. FileSystems require a URI "
+                            + "of the format \"azb://?endpoint=<endpoint>\""))))
+                .map(s -> s.substring(ACCOUNT_ENDPOINT_KEY.length() + 1)) // Trim the query key and =
                 .blockLast();
 
-        if (CoreUtils.isNullOrEmpty(accountName)) {
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("No account name provided in URI"
                 + " query."));
         }
 
-        return accountName;
+        return endpoint;
     }
 }
