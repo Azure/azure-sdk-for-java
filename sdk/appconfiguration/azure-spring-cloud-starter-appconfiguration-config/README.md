@@ -52,7 +52,6 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
-spring.cloud.azure.appconfiguration.managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a List of stores, for each store should follow below format:
 
@@ -61,10 +60,27 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will be loaded. | No | true
 spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].connection-string | When the connection-string of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
-spring.cloud.azure.appconfiguration.stores[0].cache-expiration | Amount of time, of type Duration, configurations are stored before a check can occur.  | No | 30s
-spring.cloud.azure.appconfiguration.stores[0].label | Comma separated list of label values, by default will query *(No label)* labeled values. If you want to specify *(No label)* label explicitly, use `\0`, e.g., spring.cloud.azure.appconfiguration.stores[0].label=\0,v0 | No |  null
+spring.cloud.azure.appconfiguration.stores[0].managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether throw `RuntimeException` or not when fail to read App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
-spring.cloud.azure.appconfiguration.stores[0].watched-key | The single watched key(or by default *) used to indicate configuration change.  | No | *
+spring.cloud.azure.appconfiguration.stores[0].feature-flags | Configurations specific to the loading of feature flags.  | No | true
+spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `{spring.profiles.active}` or if null `\0`
+spring.cloud.azure.appconfiguration.stores[0].monitoring.enable | Whether the configurations and feature flags will be re-loaded if a change is detected.  | No | false
+spring.cloud.azure.appconfiguration.stores[0].monitoring.cache-expiration | Amount of time, of type Duration, configurations are stored before a check can occur. | No | 30s
+spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. | Yes (If monitoring enabled) | null
+spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label | The label of the key that is being watched for etag changes. | No | \0
+spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.name | The name of a token used with Event Hub to trigger push based refresh. | No | null
+spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.secret | The secret value of a token used with Event Hub to trigger push based refresh. | No | null
+spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name | The name of a token used with Event Hub to trigger push based refresh. | No | null
+spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret | The secret value of a token used with Event Hub to trigger push based refresh. | No | null
+
+`spring.cloud.azure.appconfiguration.stores[x].feature-flags` is a set of configurations for the stores feature flags:
+
+Name | Description | Required | Default
+---|---|---|---
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.enable | Whether feature flags are loaded from the config store.  | No | false
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.label-filter | The label used to indicate which feature flags will be loaded. | No | \0
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.cache-expiration | Amount of time, of type Duration, feature flags are stored before a check can occur. | No | 30s
 
 ### Advanced usage
 
@@ -74,8 +90,7 @@ If the application needs to load configuration properties from multiple stores, 
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].connection-string=[first-store-connection-string]
-spring.cloud.azure.appconfiguration.stores[0].prefix=[my-prefix]
-spring.cloud.azure.appconfiguration.stores[0].label=[my-label]
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=[my-label]
 spring.cloud.azure.appconfiguration.stores[1].connection-string=[second-store-connection-string]
 ```
 
@@ -87,17 +102,18 @@ If the application needs to load property values from multiple labels in the sam
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].connection-string=[first-store-connection-string]
-spring.cloud.azure.appconfiguration.stores[0].label=[my-label1], [my-label2]
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=[my-label1]
+spring.cloud.azure.appconfiguration.stores[0].selects[1].label-filter=[my-label2]
 ```
 
 Multiple labels can be separated with comma, if duplicate keys exists for multiple labels, the last label has highest priority.
 
 #### Spring Profiles
 
-Spring Profiles are supported by setting labels on your configurations that match your profile. Then set your label on your config store:
+Spring Profiles are supported by automatically set as App Configuration Labels. Using the configuration overrides profile use. To include Spring Profiles and labels:
 
 ```properties
-spring.cloud.azure.appconfiguration.stores[0].label=${spring.profiles.active}
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=${spring.profiles.active},v1
 ```
 
 #### Configuration Refresh
@@ -112,37 +128,36 @@ INFO 17496 --- [TaskScheduler-1] o.s.c.e.event.RefreshEventListener       : Refr
 
 The application now will be using the updated properties. By default, `@ConfigurationProperties` annotated beans will be automatically refreshed. Use `@RefreshScope` on beans which are required to be refreshed when properties are changed.
 
-By default, all the keys in a configuration store will be watched. To prevent configuration changes are picked up in the middle of an update of multiple keys, you are recommended to use the watched-key property to watch a specific key that signals the completion of your update so all configuration changes can be refreshed together.
+By default, all the keys following the pattern `/application/*` with the label `${spring.profiles.active}` or when no Spring Profile is set `(No Label)` is used. At least one watch key is required when monitoring is enabled.
 
 ```properties
-spring.cloud.azure.appconfiguration.stores[0].watched-key=[my-watched-key]
+spring.cloud.azure.appconfiguration.stores[0].monitoring.enabled=true
+spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key=[my-watched-key]
+spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label=[my-watched-label]
 ```
 
-When using the web library, applications will attempt a refresh whenever a servlet request occurs after the cache expiration time.
+When using the web library, applications will attempt a refresh whenever a servlet request occurs after the cache expiration time when monitoring is enabled.
 
 In the console library calling refreshConfiguration on `AzureCloudConfigRefresh` will result in a refresh if the cache has expired. The web library can also use this method along with servlet request method.
 
-#### Push Based Refresh
+##### Push Based Refresh
 
-The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid.
+The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid. When refreshing multiple instances `azure-servicebus-jms-spring-boot-starter` needs to be setup.
 
 ```properties
 management.endpoints.web.exposure.include= appconfiguration-refresh, appconfiguration-refresh-bus
 ```
 
-In addition a required query parameter has been added for security. No token name or value is set by default, but setting one is required in order to use the endpoints. We suggest you set up your token value in Key Vault and add it to your store through a key vault reference. The values should be:
+In addition a required query parameter has been added for security. No token name or value is set by default, but setting one is required in order to use the endpoints. It is suggested you set up your token value in Key Vault and add it to your store through a key vault reference. The values should be:
 
 ```properties
-/application/spring.cloud.appconfiguration.token-name
-/application/spring.cloud.appconfiguration.token-secret
-
- or
-
-/YOUR_APPLICATION_NAME/spring.cloud.appconfiguration.token-name
-/YOUR_APPLICATION_NAME/spring.cloud.appconfiguration.token-secret
+/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.primary-token.name=[primary-token-name]
+/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.primary-token.secret=[primary-token-secret]
+/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name=[secondary-token-name]
+/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret=[secondary-token-secret]
 ```
 
-To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and selent the Endpoint type of Web Hook. Select "Select an endpoint". You endpoint will be your look as following:
+To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and select the Endpoint type of Web Hook. Select "Select an endpoint". You endpoint will be your look as following:
 
 `http://myApplication.azurewebsites.net/actuator/appconfiguration-refresh?myTokenName=mySecret`
 
