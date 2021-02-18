@@ -34,11 +34,11 @@ public class ConvertMoreComplexAsset extends SampleBase {
     public void convertMoreComplexAsset()
     {
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .inputStorageContainerUrl(getStorageURL())
-            .inputRelativeAssetPath("bicycle.gltf")
-            .inputBlobPrefix("Bicycle")
-            .outputStorageContainerUrl(getStorageURL())
-            .outputBlobPrefix("ConvertedBicycle");
+            .setInputStorageContainerUrl(getStorageURL())
+            .setInputRelativeAssetPath("bicycle.gltf")
+            .setInputBlobPrefix("Bicycle")
+            .setOutputStorageContainerUrl(getStorageURL())
+            .setOutputBlobPrefix("ConvertedBicycle");
 
         String conversionId = UUID.randomUUID().toString();
 

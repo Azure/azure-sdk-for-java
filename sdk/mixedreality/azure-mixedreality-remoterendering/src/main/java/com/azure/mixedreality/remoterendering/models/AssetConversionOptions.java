@@ -24,7 +24,7 @@ public final class AssetConversionOptions {
      * @param inputStorageContainerUrl the inputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions inputStorageContainerUrl(String inputStorageContainerUrl) {
+    public AssetConversionOptions setInputStorageContainerUrl(String inputStorageContainerUrl) {
         this.inputStorageContainerUrl = inputStorageContainerUrl;
         return this;
     }
@@ -37,7 +37,7 @@ public final class AssetConversionOptions {
      * @param inputStorageContainerReadListSas the inputStorageContainerReadListSas value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions inputStorageContainerReadListSas(String inputStorageContainerReadListSas) {
+    public AssetConversionOptions setInputStorageContainerReadListSas(String inputStorageContainerReadListSas) {
         this.inputStorageContainerReadListSas = inputStorageContainerReadListSas;
         return this;
     }
@@ -48,7 +48,7 @@ public final class AssetConversionOptions {
      * @param inputBlobPrefix the inputBlobPrefix value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions inputBlobPrefix(String inputBlobPrefix) {
+    public AssetConversionOptions setInputBlobPrefix(String inputBlobPrefix) {
         this.inputBlobPrefix = inputBlobPrefix;
         return this;
     }
@@ -60,7 +60,7 @@ public final class AssetConversionOptions {
      * @param inputRelativeAssetPath the inputRelativeAssetPath value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions inputRelativeAssetPath(String inputRelativeAssetPath) {
+    public AssetConversionOptions setInputRelativeAssetPath(String inputRelativeAssetPath) {
         this.inputRelativeAssetPath = inputRelativeAssetPath;
         return this;
     }
@@ -115,7 +115,7 @@ public final class AssetConversionOptions {
      * @param outputStorageContainerUrl the outputStorageContainerUrl value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions outputStorageContainerUrl(String outputStorageContainerUrl) {
+    public AssetConversionOptions setOutputStorageContainerUrl(String outputStorageContainerUrl) {
         this.outputStorageContainerUrl = outputStorageContainerUrl;
         return this;
     }
@@ -128,7 +128,7 @@ public final class AssetConversionOptions {
      * @param outputStorageContainerWriteSas the storageContainerWriteSas value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions outputStorageContainerWriteSas(String outputStorageContainerWriteSas) {
+    public AssetConversionOptions setOutputStorageContainerWriteSas(String outputStorageContainerWriteSas) {
         this.outputStorageContainerWriteSas = outputStorageContainerWriteSas;
         return this;
     }
@@ -140,7 +140,7 @@ public final class AssetConversionOptions {
      * @param outputBlobPrefix the blobPrefix value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions outputBlobPrefix(String outputBlobPrefix) {
+    public AssetConversionOptions setOutputBlobPrefix(String outputBlobPrefix) {
         this.outputBlobPrefix = outputBlobPrefix;
         return this;
     }
@@ -151,7 +151,7 @@ public final class AssetConversionOptions {
      * @param outputAssetFilename the outputAssetFilename value to set.
      * @return the ConversionOptionsBuilder object itself.
      */
-    public AssetConversionOptions outputAssetFilename(String outputAssetFilename) {
+    public AssetConversionOptions setOutputAssetFilename(String outputAssetFilename) {
         this.outputAssetFilename = outputAssetFilename;
         return this;
     }

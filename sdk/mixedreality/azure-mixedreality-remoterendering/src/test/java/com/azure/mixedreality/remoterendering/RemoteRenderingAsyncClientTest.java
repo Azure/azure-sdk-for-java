@@ -39,13 +39,13 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .inputStorageContainerUrl(getStorageUrl())
-            .inputRelativeAssetPath("testBox.fbx")
-            .inputBlobPrefix("Input")
-            .inputStorageContainerReadListSas(getBlobContainerSasToken())
-            .outputStorageContainerUrl(getStorageUrl())
-            .outputBlobPrefix("Output")
-            .outputStorageContainerWriteSas(getBlobContainerSasToken());
+            .setInputStorageContainerUrl(getStorageUrl())
+            .setInputRelativeAssetPath("testBox.fbx")
+            .setInputBlobPrefix("Input")
+            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+            .setOutputStorageContainerUrl(getStorageUrl())
+            .setOutputBlobPrefix("Output")
+            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("asyncConversionTest");
 
@@ -89,11 +89,11 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         // Don't provide SAS tokens.
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .inputStorageContainerUrl(getStorageUrl())
-            .inputRelativeAssetPath("testBox.fbx")
-            .inputBlobPrefix("Input")
-            .outputStorageContainerUrl(getStorageUrl())
-            .outputBlobPrefix("Output");
+            .setInputStorageContainerUrl(getStorageUrl())
+            .setInputRelativeAssetPath("testBox.fbx")
+            .setInputBlobPrefix("Input")
+            .setOutputStorageContainerUrl(getStorageUrl())
+            .setOutputBlobPrefix("Output");
 
         String conversionId = getRandomId("failedConversionNoAccessAsync");
 
@@ -114,13 +114,13 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .inputStorageContainerUrl(getStorageUrl())
-            .inputRelativeAssetPath("boxWhichDoesNotExist.fbx")
-            .inputBlobPrefix("Input")
-            .inputStorageContainerReadListSas(getBlobContainerSasToken())
-            .outputStorageContainerUrl(getStorageUrl())
-            .outputBlobPrefix("Output")
-            .outputStorageContainerWriteSas(getBlobContainerSasToken());
+            .setInputStorageContainerUrl(getStorageUrl())
+            .setInputRelativeAssetPath("boxWhichDoesNotExist.fbx")
+            .setInputBlobPrefix("Input")
+            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+            .setOutputStorageContainerUrl(getStorageUrl())
+            .setOutputBlobPrefix("Output")
+            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("failedConversionMissingAssetAsync");
 

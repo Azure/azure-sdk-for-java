@@ -490,15 +490,15 @@ public final class RemoteRenderingAsyncClient {
                 return null;
             }
             return new AssetConversionOptions()
-                .inputBlobPrefix(settings.getInputLocation().getBlobPrefix())
-                .inputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
-                .inputStorageContainerReadListSas(settings.getInputLocation().getStorageContainerReadListSas())
-                .inputStorageContainerUrl(settings.getInputLocation().getStorageContainerUri())
+                .setInputBlobPrefix(settings.getInputLocation().getBlobPrefix())
+                .setInputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
+                .setInputStorageContainerReadListSas(settings.getInputLocation().getStorageContainerReadListSas())
+                .setInputStorageContainerUrl(settings.getInputLocation().getStorageContainerUri())
 
-                .outputAssetFilename(settings.getOutputLocation().getOutputAssetFilename())
-                .outputBlobPrefix(settings.getOutputLocation().getBlobPrefix())
-                .outputStorageContainerUrl(settings.getOutputLocation().getStorageContainerUri())
-                .outputStorageContainerWriteSas(settings.getOutputLocation().getStorageContainerWriteSas());
+                .setOutputAssetFilename(settings.getOutputLocation().getOutputAssetFilename())
+                .setOutputBlobPrefix(settings.getOutputLocation().getBlobPrefix())
+                .setOutputStorageContainerUrl(settings.getOutputLocation().getStorageContainerUri())
+                .setOutputStorageContainerWriteSas(settings.getOutputLocation().getStorageContainerWriteSas());
         }
 
         private static ConversionSettings toGenerated(AssetConversionOptions conversionOptions) {

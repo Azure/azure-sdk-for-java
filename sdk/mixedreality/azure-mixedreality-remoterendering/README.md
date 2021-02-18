@@ -183,9 +183,9 @@ The following snippet describes how to request that "box.fbx", found at the root
 
 ```
     AssetConversionOptions conversionOptions = new AssetConversionOptions()
-        .inputStorageContainerUrl(storageURL)
-        .inputRelativeAssetPath("box.fbx")
-        .outputStorageContainerUrl(storageURL);
+        .setInputStorageContainerUrl(storageURL)
+        .setInputRelativeAssetPath("box.fbx")
+        .setOutputStorageContainerUrl(storageURL);
     
     // A randomly generated UUID is a good choice for a conversionId.
     String conversionId = UUID.randomUUID().toString();
@@ -207,11 +207,11 @@ The code is as follows:
 
 ```
     AssetConversionOptions conversionOptions = new AssetConversionOptions()
-        .inputStorageContainerUrl(inputStorageURL)
-        .inputRelativeAssetPath("bicycle.gltf")
-        .inputBlobPrefix("Bicycle")
-        .outputStorageContainerUrl(outputStorageURL)
-        .outputBlobPrefix("ConvertedBicycle");
+        .setInputStorageContainerUrl(inputStorageURL)
+        .setInputRelativeAssetPath("bicycle.gltf")
+        .setInputBlobPrefix("Bicycle")
+        .setOutputStorageContainerUrl(outputStorageURL)
+        .setOutputBlobPrefix("ConvertedBicycle");
     
     String conversionId = UUID.randomUUID().toString();
     

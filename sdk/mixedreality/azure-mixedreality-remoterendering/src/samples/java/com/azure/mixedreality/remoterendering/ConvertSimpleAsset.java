@@ -30,9 +30,9 @@ public class ConvertSimpleAsset extends SampleBase
     public void convertSimpleAsset()
     {
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .inputStorageContainerUrl(getStorageURL())
-            .inputRelativeAssetPath("box.fbx")
-            .outputStorageContainerUrl(getStorageURL());
+            .setInputStorageContainerUrl(getStorageURL())
+            .setInputRelativeAssetPath("box.fbx")
+            .setOutputStorageContainerUrl(getStorageURL());
 
         // A randomly generated UUID is a good choice for a conversionId.
         String conversionId = UUID.randomUUID().toString();
