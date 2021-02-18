@@ -8,17 +8,17 @@ import java.time.OffsetDateTime;
 
 /** Holds the properties of a rendering session. */
 public final class RenderingSession {
-    private String id;
-    private int arrInspectorPort;
-    private int handshakePort;
-    private Duration elapsedTime;
-    private String hostname;
-    private Duration maxLeaseTime;
-    private RenderingSessionSize sessionSize;
-    private RenderingSessionStatus sessionStatus;
-    private float teraflops;
-    private RemoteRenderingServiceError error;
-    private OffsetDateTime creationTime;
+    private final String id;
+    private final int arrInspectorPort;
+    private final int handshakePort;
+    private final Duration elapsedTime;
+    private final String hostname;
+    private final Duration maxLeaseTime;
+    private final RenderingSessionSize sessionSize;
+    private final RenderingSessionStatus sessionStatus;
+    private final float teraflops;
+    private final RemoteRenderingServiceError error;
+    private final OffsetDateTime creationTime;
 
     /**
      * Constructs a new RenderingSession object.

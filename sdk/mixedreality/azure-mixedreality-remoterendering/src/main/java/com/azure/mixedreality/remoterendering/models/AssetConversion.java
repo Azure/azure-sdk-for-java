@@ -7,12 +7,12 @@ import java.time.OffsetDateTime;
 
 /** Holds properties of a conversion. */
 public final class AssetConversion {
-    private String id;
-    private AssetConversionOptions options;
-    private String outputAssetUrl;
-    private RemoteRenderingServiceError error;
-    private AssetConversionStatus conversionStatus;
-    private OffsetDateTime creationTime;
+    private final String id;
+    private final AssetConversionOptions options;
+    private final String outputAssetUrl;
+    private final RemoteRenderingServiceError error;
+    private final AssetConversionStatus conversionStatus;
+    private final OffsetDateTime creationTime;
 
     /**
      * Constructs a new AssetConversion object.
