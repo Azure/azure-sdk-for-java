@@ -94,7 +94,7 @@ jobs:
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
-  - job: Compliance Tools
+  - job: Compliance
     timeoutInMinutes: 120
     variables:
       - template: templates/variables/globals.yml
