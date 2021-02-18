@@ -5,11 +5,7 @@
  */
 package com.microsoft.azure.spring.cloud.feature.manager;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,8 +67,8 @@ public class FeatureManager extends HashMap<String, Object> {
         return Mono.just(checkFeatures(feature));
     }
 
-    private Boolean checkFeatures(String feature) throws FilterNotFoundException {
-        Boolean enabled = false;
+    private boolean checkFeatures(String feature) throws FilterNotFoundException {
+        boolean enabled = false;
         if (featureManagement == null || onOff == null) {
             return false;
         }
@@ -90,7 +86,9 @@ public class FeatureManager extends HashMap<String, Object> {
             if (filter != null && filter.getName() != null) {
                 try {
                     FeatureFilter featureFilter = (FeatureFilter) context.getBean(filter.getName());
-                    enabled = Mono.just(featureFilter.evaluate(filter)).block();
+                    enabled = Optional.ofNullable(Mono.just(featureFilter.evaluate(filter)))
+                        .map(Mono::block)
+                        .orElse(false);
                 } catch (NoSuchBeanDefinitionException e) {
                     LOGGER.error("Was unable to find Filter " + filter.getName()
                             + ". Does the class exist and set as an @Component?");
