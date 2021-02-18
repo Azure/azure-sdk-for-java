@@ -155,3 +155,10 @@ Some feature filters require parameters to decide whether a feature should be tu
 ### Request Based Features/Snapshot
 
 There are scenarios which require the state of a feature to remain consistent during the lifetime of a request. The values returned from the standard `FeatureManager` may change if the configuration source which it is pulling from is updated during the request. This can be prevented by using `FeatureManagerSnapshot` and `@FeatureOn( snapshot = true )`. `FeatureManagerSnapshot` can be retrieved in the same manner as `FeatureManager`. `FeatureManagerSnapshot` calls `FeatureManager`, but it caches the first evaluated state of a feature during a request and will return the same state of a feature during its lifetime.
+
+## Getting started
+## Key concepts
+## Examples
+## Troubleshooting
+## Next steps
+## Contributing
