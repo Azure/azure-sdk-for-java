@@ -228,6 +228,12 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 }
 ```
 
+## Troubleshooting
+
+## Next steps
+
+## Contributing
+
 <!-- LINKS -->
 [azure]: https://azure.microsoft.com
 [azure_active_directory]: https://azure.microsoft.com/services/active-directory/
