@@ -225,9 +225,8 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 ### Recognize Content
 Recognize text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
 coordinates, from documents, without the need to train a model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L118-L147 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L119-L147 -->
 ```java
-ic void recognizeContent() throws IOException {
 // recognize form content using file input stream
 File form = new File("local/file_path/filename.png");
 byte[] fileContent = Files.readAllBytes(form.toPath());

@@ -18,13 +18,11 @@
   <suppress checks="Header" files=".*package-info.java"/>
   <!-- Suppress LineLength for Track 1/management libraries. -->
   <suppress checks="[a-zA-Z0-9]*|com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <!-- Custom checkstyle rules only check track 2 libraries -->
-  <!--  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>-->
 
   <!-- ignore missing javadoc in samples -->
-<!--  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>-->
-<!--  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>-->
-<!--  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>-->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Files licensed with alternate license in the header -->
   <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
@@ -89,7 +87,7 @@
   <suppress checks="FinalClass" files="Util.java"/>
 
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
-<!--  <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>-->
+  <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
@@ -123,20 +121,21 @@
       files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
-<!--  <suppress-->
-<!--      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"-->
-<!--      files=".*[/\\]samples[/\\].*\.java"/>-->
+  <suppress
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)"
+      files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Don't check for JavaDocPackage in samples or tests -->
-<!--  <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>-->
+  <!-- Don't check for JavaDocPackage in samples or tests-->
+  <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for samples and tests -->
-<!--  <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>-->
+  <!-- Suppress LineLength for samples and tests-->
+  <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
   <!-- To allow using sysout rather than logger in samples -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files=".*[/\\]samples[/\\].*\.java"/>
 
+  <!-- All fields are not set in constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="Receipt.java"/>
 
