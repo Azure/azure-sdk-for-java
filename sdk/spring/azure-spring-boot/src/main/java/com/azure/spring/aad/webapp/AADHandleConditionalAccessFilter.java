@@ -26,20 +26,9 @@ import java.util.stream.Stream;
  * Handle the {@link WebClientResponseException} in On-Behalf-Of flow.
  *
  * <p>
- * User carries token to access webapi or other resources, but the server requires higher privileges,so user need to
- * carries the claims field(returned by Azure Security) re-acquire token.
- *
- * <p>
- * On-Behalf-Of allows you to exchange an access token that your API received for an access token to another API. For
- * better understanding On-Behalf-Of, the reference documentation can help us. See the <a
- * href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">Microsoftidentity
- * platform and OAuth 2.0 On-Behalf-Of flow</a>
- *
- * <p>
- * Conditional Access is the tool used by Azure Active Directory to bring signals together, to make decisions, and
- * enforce organizational policies. The reference documentation is
- * <a href="https://docs.microsoft.com/en-us/azure/active-directory/conditional-access">Azure AD Conditional Access
- * documentation</a>
+ * When the Web API needs re-acquire token(The request requires higher privileges than provided by the access token in
+ * On-Behalf-Of flow.), it can sent a 403 with information in the WWW-Authenticate header to web client ,web client
+ * will throw {@link WebClientResponseException}, Web APP can handle this exception to challenge the user.
  */
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
