@@ -601,6 +601,7 @@
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
+        <module>sdk/storagecache</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>
