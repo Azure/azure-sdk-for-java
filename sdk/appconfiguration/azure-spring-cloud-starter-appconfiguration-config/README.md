@@ -9,15 +9,14 @@ This project allows Spring Application to load properties from Azure Configurati
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-
-There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#Configuration-Refresh) section.
+There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
 
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>{version}</version>
+    <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+    <version>1.2.8-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -28,8 +27,8 @@ or
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>{version}</version>
+    <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
+    <version>1.2.8-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,7 +47,7 @@ spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-
 spring.cloud.azure.appconfiguration.default-context | Default context path to load properties from | No | application
 spring.cloud.azure.appconfiguration.name | Alternative to Spring application name, if not configured, fallback to default Spring application name | No | ${spring.application.name}
 spring.cloud.azure.appconfiguration.profile-separator | Profile separator for the key name, e.g., /foo-app_dev/db.connection.key, must follow format `^[a-zA-Z0-9_@]+$` | No | `_`
-spring.cloud.azure.appconfiguration.cache-expiration | Amount of time, of type [Duration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration), configurations are stored before a check can occur. | No | 30s
+spring.cloud.azure.appconfiguration.cache-expiration | Amount of time, of type [Duration][spring_conversion_duration], configurations are stored before a check can occur. | No | 30s
 spring.cloud.azure.appconfiguration.managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a List of stores, for each store should follow below format:
@@ -151,7 +150,7 @@ Follow the below steps to enable accessing App Configuration with managed identi
 
 The configuration store endpoint must be configured when `connection-string` is empty. When using a User Assigned Id the value `spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]` must be set.
 
-#### bootstrap.application
+##### bootstrap.application
 
 ```application
 spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]
@@ -242,3 +241,4 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 [azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
 [support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
+[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration
