@@ -12,8 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -92,23 +90,6 @@ public final class EventGridPublisherClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvent(T event) {
-        List<T> events = new ArrayList<>();
-        events.add(event);
-        asyncClient.sendEvents(events).block();
-    }
-
-    /**
-     * Publishes the given event to the set topic or domain and gives the response issued by EventGrid.
-     * @param event the event to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response from the EventGrid service.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventWithResponse(T event, Context context) {
-        List<T> events = new ArrayList<>();
-        events.add(event);
-        return asyncClient.sendEventsWithResponse(events, context).block();
+        asyncClient.sendEvent(event).block();
     }
 }

@@ -189,21 +189,6 @@ public final class EventGridPublisherAsyncClient<T> {
     }
 
     /**
-     * Publishes the given event to the set topic or domain and gives the response issued by EventGrid.
-     * @param event the event to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response from the EventGrid service.
-     * @throws NullPointerException if events is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventWithResponse(T event, Context context) {
-        List<T> events = new ArrayList<>();
-        events.add(event);
-        return this.sendEventsWithResponse(events, context);
-    }
-
-    /**
      * Publishes the given events to the set topic or domain.
      * @param event the event to publish.
      *
