@@ -389,4 +389,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [troubleshoot]: https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot
 [api_reference_doc]: https://docs.microsoft.com/rest/api/mixedreality/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmixedreality%2Fazure-mixedreality-remoterendering%2FREADME.png)
