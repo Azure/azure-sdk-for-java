@@ -91,7 +91,7 @@ public final class BlobsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageBlob")
-    private interface BlobsService {
+    public interface BlobsService {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

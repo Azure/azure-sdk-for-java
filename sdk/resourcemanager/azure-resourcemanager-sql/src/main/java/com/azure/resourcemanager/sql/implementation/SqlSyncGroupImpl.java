@@ -22,6 +22,7 @@ import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlSyncGroup. */
 public class SqlSyncGroupImpl
@@ -182,27 +183,27 @@ public class SqlSyncGroupImpl
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listHubSchemas() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
-            .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
-            .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
+            .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
+            inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listHubSchemasAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
-            .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
-            .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
+            .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
+            syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override
     public PagedIterable<SqlSyncGroupLogProperty> listLogs(String startTime, String endTime, String type) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
@@ -213,13 +214,13 @@ public class SqlSyncGroupImpl
                 this.name(),
                 startTime,
                 endTime,
-                SyncGroupsType.fromString(type))
-            .mapPage(inner -> new SqlSyncGroupLogPropertyImpl(inner));
+                SyncGroupsType.fromString(type)),
+            inner -> new SqlSyncGroupLogPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
@@ -230,8 +231,8 @@ public class SqlSyncGroupImpl
                 this.name(),
                 startTime,
                 endTime,
-                SyncGroupsType.fromString(type))
-            .mapPage(syncGroupLogPropertiesInner -> new SqlSyncGroupLogPropertyImpl(syncGroupLogPropertiesInner));
+                SyncGroupsType.fromString(type)),
+            syncGroupLogPropertiesInner -> new SqlSyncGroupLogPropertyImpl(syncGroupLogPropertiesInner));
     }
 
     @Override

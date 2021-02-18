@@ -122,9 +122,6 @@
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
       files=".*[/\\]implementation[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
-
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"
@@ -153,7 +150,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporter[/\\]azuremonitor[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -242,7 +239,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.opentelemetry.exporter.azuremonitor.AzureMonitorExporter"/>
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -388,7 +385,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporter.azuremonitor.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleDefinitionsImpl"/>
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
@@ -574,10 +571,19 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 
+  <!-- Suppress non-conforming service builder and service clients -->
+  <!-- The clients don't end with 'Client' but instead with 'Sender' -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
+            files="com.azure.search.documents.SearchClientBuilder"
+            lines="369,401,413"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedSender"/>
+
   <!-- Suppress checks on AutoRest generated Attestation service code -->
   <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
             files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
   <suppress checks="WhitespaceAround|ThrowFromClientLogger"
             files="com.azure.security.attestation.models.*\.java"/>
-
 </suppressions>

@@ -34,12 +34,13 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlockBlobs. */
 public final class BlockBlobsImpl {
@@ -66,7 +67,7 @@ public final class BlockBlobsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageBloc")
-    private interface BlockBlobsService {
+    public interface BlockBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

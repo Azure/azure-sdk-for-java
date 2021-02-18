@@ -19,6 +19,7 @@ import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import com.azure.resourcemanager.search.models.Sku;
 import com.azure.resourcemanager.search.models.SkuName;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for Search service and its create and update interfaces.
@@ -110,9 +111,9 @@ class SearchServiceImpl
 
     @Override
     public PagedFlux<QueryKey> listQueryKeysAsync() {
-        return this.manager().serviceClient().getQueryKeys()
-            .listBySearchServiceAsync(this.resourceGroupName(), this.name())
-            .mapPage(QueryKeyImpl::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getQueryKeys()
+            .listBySearchServiceAsync(this.resourceGroupName(), this.name()),
+            QueryKeyImpl::new);
     }
 
     @Override

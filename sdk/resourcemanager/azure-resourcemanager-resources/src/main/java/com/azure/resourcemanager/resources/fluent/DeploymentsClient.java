@@ -218,7 +218,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +233,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,7 +248,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,7 +263,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -279,7 +279,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,7 +294,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -308,7 +308,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -438,7 +438,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -454,7 +454,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,7 +470,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -486,7 +486,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -503,7 +503,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,7 +519,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -534,7 +534,7 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -631,6 +631,18 @@ public interface DeploymentsClient
      * Get all the deployments at the given scope.
      *
      * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments at the given scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentExtendedInner> listAtScope(String scope);
+
+    /**
+     * Get all the deployments at the given scope.
+     *
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -642,18 +654,6 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top, Context context);
-
-    /**
-     * Get all the deployments at the given scope.
-     *
-     * @param scope The resource scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the given scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listAtScope(String scope);
 
     /**
      * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
@@ -827,7 +827,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -841,7 +841,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -855,7 +855,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -869,7 +869,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -884,7 +884,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -897,7 +897,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -910,7 +910,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1031,7 +1031,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1046,7 +1046,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1061,7 +1061,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1076,7 +1076,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1092,7 +1092,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1106,7 +1106,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1120,7 +1120,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1135,7 +1135,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,7 +1149,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1163,7 +1163,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1177,7 +1177,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1192,7 +1192,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1205,7 +1205,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1218,7 +1218,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1306,6 +1306,16 @@ public interface DeploymentsClient
     /**
      * Get all the deployments at the tenant scope.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments at the tenant scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentExtendedInner> listAtTenantScope();
+
+    /**
+     * Get all the deployments at the tenant scope.
+     *
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -1317,16 +1327,6 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top, Context context);
-
-    /**
-     * Get all the deployments at the tenant scope.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the tenant scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listAtTenantScope();
 
     /**
      * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
@@ -1516,7 +1516,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1531,7 +1531,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1547,7 +1547,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1562,7 +1562,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1578,7 +1578,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1593,7 +1593,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1608,7 +1608,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1740,7 +1740,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1756,7 +1756,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1772,7 +1772,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1788,7 +1788,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1806,7 +1806,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1822,7 +1822,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1838,7 +1838,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1854,7 +1854,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1869,7 +1869,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1885,7 +1885,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1900,7 +1900,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1916,7 +1916,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1931,7 +1931,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1946,7 +1946,7 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2043,6 +2043,18 @@ public interface DeploymentsClient
      * Get all the deployments for a management group.
      *
      * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a management group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId);
+
+    /**
+     * Get all the deployments for a management group.
+     *
+     * @param groupId The management group ID.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -2055,18 +2067,6 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(
         String groupId, String filter, Integer top, Context context);
-
-    /**
-     * Get all the deployments for a management group.
-     *
-     * @param groupId The management group ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a management group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId);
 
     /**
      * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
@@ -2240,7 +2240,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2254,7 +2254,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2268,7 +2268,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2282,7 +2282,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2297,7 +2297,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2311,7 +2311,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2324,7 +2324,7 @@ public interface DeploymentsClient
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2445,7 +2445,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2460,7 +2460,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2475,7 +2475,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2490,7 +2490,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2506,7 +2506,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2521,7 +2521,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2535,7 +2535,7 @@ public interface DeploymentsClient
      * Manager..
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2550,7 +2550,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2564,7 +2564,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2578,7 +2578,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2592,7 +2592,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2607,7 +2607,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2620,7 +2620,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2633,7 +2633,7 @@ public interface DeploymentsClient
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
      *
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to What If.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2722,6 +2722,16 @@ public interface DeploymentsClient
     /**
      * Get all the deployments for a subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentExtendedInner> list();
+
+    /**
+     * Get all the deployments for a subscription.
+     *
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -2733,16 +2743,6 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentExtendedInner> list(String filter, Integer top, Context context);
-
-    /**
-     * Get all the deployments for a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> list();
 
     /**
      * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
@@ -2947,7 +2947,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2963,7 +2963,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2979,7 +2979,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2995,7 +2995,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3012,7 +3012,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3028,7 +3028,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3043,7 +3043,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3176,7 +3176,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3193,7 +3193,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3210,7 +3210,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3227,7 +3227,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3245,7 +3245,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3262,7 +3262,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3278,7 +3278,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3295,7 +3295,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3311,7 +3311,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3327,7 +3327,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3343,7 +3343,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3360,7 +3360,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3376,7 +3376,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3391,7 +3391,7 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
+     * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3491,6 +3491,19 @@ public interface DeploymentsClient
      *
      * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
      *     insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Get all the deployments for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -3505,22 +3518,9 @@ public interface DeploymentsClient
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Get all the deployments for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
-     *     insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName);
-
-    /**
      * Calculate the hash of the given template.
      *
-     * @param template Any object.
+     * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3532,7 +3532,7 @@ public interface DeploymentsClient
     /**
      * Calculate the hash of the given template.
      *
-     * @param template Any object.
+     * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3544,7 +3544,7 @@ public interface DeploymentsClient
     /**
      * Calculate the hash of the given template.
      *
-     * @param template Any object.
+     * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3556,7 +3556,7 @@ public interface DeploymentsClient
     /**
      * Calculate the hash of the given template.
      *
-     * @param template Any object.
+     * @param template The template provided to calculate hash.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -60,7 +60,7 @@ public final class AppendBlobsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureBlobStorageAppe")
-    private interface AppendBlobsService {
+    public interface AppendBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)

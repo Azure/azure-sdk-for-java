@@ -6,40 +6,54 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.ENTITY_TASK;
+import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASES_TASK;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.PII_TASK;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
+import static com.azure.ai.textanalytics.TestUtils.getActionError;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
@@ -67,6 +81,7 @@ import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
+import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_REQUEST;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -365,6 +380,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
+            (inputs, options) ->
+                StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, options))
+                    .assertNext(response -> validateCategorizedEntitiesResultCollectionWithResponse(true,
+                        getExpectedBatchCategorizedEntities(), 200, response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeCategorizedEntityStringInputRunner((inputs) ->
@@ -414,6 +442,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emojiRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(13, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -421,11 +450,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(documents,
+                new RecognizeEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
+                                     categorizedEntity -> {
+                                         assertEquals(9, categorizedEntity.getLength());
+                                         assertEquals(12, categorizedEntity.getOffset());
+                                     })))
+                    .verifyComplete(),
+            CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(15, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -438,6 +487,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emojiFamilyRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(22, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -445,11 +495,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(30, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -462,6 +514,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         diacriticsNfcRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(14, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -474,6 +527,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         diacriticsNfdRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(15, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -486,6 +540,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         koreanNfcRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(13, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -498,6 +553,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         koreanNfdRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(13, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -510,6 +566,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         zalgoTextRunner(document ->
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(9, categorizedEntity.getLength());
                     assertEquals(126, categorizedEntity.getOffset());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -643,6 +700,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emojiRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(8, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -650,11 +708,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(documents,
+                new RecognizePiiEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 result -> result.getEntities().forEach(
+                                     piiEntity -> {
+                                         assertEquals(11, piiEntity.getLength());
+                                         assertEquals(7, piiEntity.getOffset());
+                                     })))
+                             .verifyComplete(),
+            PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(10, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -667,6 +745,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emojiFamilyRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(17, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -674,11 +753,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(25, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -691,6 +772,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         diacriticsNfcRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(9, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -703,6 +785,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         diacriticsNfdRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(10, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -715,6 +798,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         koreanNfcRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(8, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -727,6 +811,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         koreanNfdRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(8, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -739,6 +824,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         zalgoTextRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(11, piiEntity.getLength());
                     assertEquals(121, piiEntity.getOffset());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
@@ -854,6 +940,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
+            (inputs, options) ->
+                StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, options))
+                    .assertNext(response -> validateLinkedEntitiesResultCollectionWithResponse(true,
+                        getExpectedBatchLinkedEntities(), 200, response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeLinkedStringInputRunner((inputs) ->
@@ -904,6 +1003,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(13, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -912,12 +1012,34 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(documents,
+                new RecognizeLinkedEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                             .assertNext(response -> response.getValue().stream().forEach(
+                                 result -> result.getEntities().forEach(
+                                     linkedEntity ->
+                                         linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                                             assertEquals(9, linkedEntityMatch.getLength());
+                                             assertEquals(12, linkedEntityMatch.getOffset());
+                                         }))))
+                             .verifyComplete(),
+            LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(15, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -932,6 +1054,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(22, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -940,12 +1063,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyWithSkinToneModifierRunner(document ->
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(30, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -960,6 +1085,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(14, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -974,6 +1100,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(15, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -988,6 +1115,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(13, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -1002,6 +1130,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(13, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -1016,6 +1145,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntities(document))
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(9, linkedEntityMatch.getLength());
                         assertEquals(126, linkedEntityMatch.getOffset());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
@@ -1496,11 +1626,55 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emojiRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        emojiRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(25, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(17, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(7, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        batchEmojiRunner(
+            documents ->
+                StepVerifier.create(client.analyzeSentimentBatchWithResponse(documents,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
+                        .setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+                    .assertNext(response -> response.getValue().stream().forEach(
+                        result -> result.getDocumentSentiment().getSentences().forEach(
+                            sentenceSentiment -> {
+                                assertEquals(24, sentenceSentiment.getLength());
+                                assertEquals(0, sentenceSentiment.getOffset());
+                                sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                                    minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                        assertEquals(7, opinionSentiment.getLength());
+                                        assertEquals(16, opinionSentiment.getOffset());
+                                    });
+                                    final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                                    assertEquals(5, aspectSentiment.getLength());
+                                    assertEquals(6, aspectSentiment.getOffset());
+                                });
+                            })))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1508,11 +1682,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emojiWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        emojiWithSkinToneModifierRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(27, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(19, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(9, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1520,23 +1708,57 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emojiFamilyRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        emojiFamilyRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(
+                        result -> result.getSentences().forEach(
+                            sentenceSentiment -> {
+                                assertEquals(34, sentenceSentiment.getLength());
+                                assertEquals(0, sentenceSentiment.getOffset());
+                                sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                                    minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                        assertEquals(7, opinionSentiment.getLength());
+                                        assertEquals(26, opinionSentiment.getOffset());
+                                    });
+                                    final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                                    assertEquals(5, aspectSentiment.getLength());
+                                    assertEquals(16, aspectSentiment.getOffset());
+                                });
+                            })
+                    )
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emojiFamilyWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        emojiFamilyWithSkinToneModifierRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(
+                        result -> result.getSentences().forEach(
+                            sentenceSentiment -> {
+                                assertEquals(42, sentenceSentiment.getLength());
+                                assertEquals(0, sentenceSentiment.getOffset());
+                                sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                                    minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                        assertEquals(7, opinionSentiment.getLength());
+                                        assertEquals(34, opinionSentiment.getOffset());
+                                    });
+                                    final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                                    assertEquals(5, aspectSentiment.getLength());
+                                    assertEquals(24, aspectSentiment.getOffset());
+                                });
+                            }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1544,11 +1766,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        diacriticsNfcRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        diacriticsNfcRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(26, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(18, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(8, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1556,11 +1792,26 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        diacriticsNfdRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        diacriticsNfdRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(
+                        sentenceSentiment -> {
+                            assertEquals(27, sentenceSentiment.getLength());
+                            assertEquals(0, sentenceSentiment.getOffset());
+                            sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                                minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                    assertEquals(7, opinionSentiment.getLength());
+                                    assertEquals(19, opinionSentiment.getOffset());
+                                });
+                                final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                                assertEquals(5, aspectSentiment.getLength());
+                                assertEquals(9, aspectSentiment.getOffset());
+                            });
+                        }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1568,11 +1819,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        koreanNfcRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        koreanNfcRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(25, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(17, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(7, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1580,11 +1845,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        koreanNfdRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        koreanNfdRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(25, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(17, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(7, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1592,11 +1871,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        zalgoTextRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                    assertEquals(0, sentenceSentiment.getOffset());
-                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        zalgoTextRunner(
+            document ->
+                StepVerifier.create(client.analyzeSentiment(document, null,
+                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                        assertEquals(138, sentenceSentiment.getLength());
+                        assertEquals(0, sentenceSentiment.getOffset());
+                        sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                            minedOpinion.getOpinions().forEach(opinionSentiment -> {
+                                assertEquals(7, opinionSentiment.getLength());
+                                assertEquals(130, opinionSentiment.getOffset());
+                            });
+                            final AspectSentiment aspectSentiment = minedOpinion.getAspect();
+                            assertEquals(5, aspectSentiment.getLength());
+                            assertEquals(120, aspectSentiment.getOffset());
+                        });
+                    }))
+                    .verifyComplete(),
+            SENTIMENT_OFFSET_INPUT
         );
     }
 
@@ -1607,12 +1900,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForSinglePage(),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1624,12 +1917,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
-            PagedFlux<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
@@ -1641,11 +1934,264 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
-            StepVerifier.create(client.beginAnalyzeHealthcare(documents, null))
+            StepVerifier.create(client.beginAnalyzeHealthcareEntities(documents, null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                        Collections.singletonList(new TextDocumentInput("0", document)),
+                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
+                                     .getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(entitiesResult ->
+                        entitiesResult.getEntities().forEach(entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(19, entity.getOffset());
+                        }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(20, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiWithSkinToneModifierRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(22, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(29, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyWithSkinToneModifierRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(37, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfcRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(21, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfdRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(22, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfcRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(20, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfdRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(20, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        zalgoTextRunner(
+            document -> {
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                    syncPoller = client.beginAnalyzeHealthcareEntities(
+                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+                    = syncPoller.getFinalResult();
+                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+                    result.forEach(
+                        entitiesResult -> entitiesResult.getEntities().forEach(
+                            entity -> {
+                                assertEquals(11, entity.getLength());
+                                assertEquals(133, entity.getOffset());
+                            }));
+                });
+            },
+            HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     // Healthcare LRO - Cancellation
@@ -1655,12 +2201,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
-            // TODO: update the changes in the healthcare PR #18828
-//            PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-//            client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(), options);
-//            syncPoller.waitForCompletion();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            syncPoller.cancelOperation();
+            syncPoller.waitForCompletion();
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 
@@ -1680,11 +2225,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                        getRecognizeEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                        getRecognizePiiEntitiesResultCollection(), TIME_NOW, false))),
+                        false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                        getExtractKeyPhrasesResultCollection(), TIME_NOW, false))))),
+                        false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
@@ -1695,8 +2240,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
-                syncPoller = client.beginAnalyzeBatchActions(documents, tasks,
-                new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller = client.beginAnalyzeBatchActions(
+                    documents, tasks, new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false,
@@ -1716,5 +2261,62 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchActionsPartialCompletedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(
+                                false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(
+                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchActionsAllFailedRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(asList(
+                            getExpectedRecognizeEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, ENTITY_TASK, "0")))),
+                        IterableStream.of(asList(
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
+                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, PII_TASK, "1")))),
+                        IterableStream.of(asList(
+                            getExpectedExtractKeyPhrasesActionResult(true, TIME_NOW, null,
+                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
     }
 }

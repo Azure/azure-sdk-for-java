@@ -42,7 +42,10 @@ public class AADOnDemandIT {
         String httpResponse = aadSeleniumITHelper.httpGet("api/azure");
         Assert.assertTrue(httpResponse.contains("azure"));
 
-        httpResponse = aadSeleniumITHelper.httpGetWithIncreamentalConsent("api/arm");
+        String incrementalConsentUrl = aadSeleniumITHelper.httpGetWithIncrementalConsent("api/arm");
+        Assert.assertTrue(incrementalConsentUrl.contains("https://management.azure.com/user_impersonation"));
+
+        httpResponse = aadSeleniumITHelper.httpGet("api/arm");
         Assert.assertTrue(httpResponse.contains("arm"));
     }
 

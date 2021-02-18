@@ -4,20 +4,24 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
-import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -28,15 +32,17 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -139,7 +145,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "ES")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.detectLanguageBatchWithResponse(detectLanguageInputs1, requestOptions)
@@ -227,7 +232,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -249,6 +253,39 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatchWithResponse(Iterable, RecognizeEntitiesOptions)}
+     */
+    public void recognizeBatchEntitiesMaxOverloadWithRecognizeEntitiesOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions
+        List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
+            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
+
+        RecognizeEntitiesOptions requestOptions = new RecognizeEntitiesOptions().setIncludeStatistics(true);
+
+        textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
+            .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                RecognizeEntitiesResultCollection resultCollection = response.getValue();
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                resultCollection.forEach(
+                    recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
+                        entity -> System.out.printf(
+                            "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(),
+                            entity.getCategory(),
+                            entity.getConfidenceScore())));
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions
     }
 
     // Personally Identifiable Information Entity
@@ -454,7 +491,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
             new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -480,6 +516,43 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, RecognizeLinkedEntitiesOptions)}
+     */
+    public void recognizeBatchLinkedEntitiesMaxOverloadWithRecognizeLinkedEntitiesOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions
+        List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
+            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
+
+        RecognizeLinkedEntitiesOptions requestOptions = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
+
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
+            .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                resultCollection.forEach(
+                    recognizeLinkedEntitiesResult -> recognizeLinkedEntitiesResult.getEntities().forEach(
+                        linkedEntity -> {
+                            System.out.println("Linked Entities:");
+                            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                                linkedEntity.getDataSource());
+                            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                                "Matched entity: %s, confidence score: %.2f.%n",
+                                entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        }));
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions
     }
 
     // Key Phrases
@@ -539,7 +612,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -717,7 +789,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -757,7 +828,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
             .setIncludeOpinionMining(true).setIncludeStatistics(true);
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, options)
@@ -796,10 +866,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Healthcare
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeHealthcare(Iterable, RecognizeHealthcareEntityOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeHealthcareEntities(Iterable, AnalyzeHealthcareEntitiesOptions)}
      */
     public void analyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
@@ -807,58 +877,63 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "over the past several months."));
         }
 
-        // Request options: show statistics and model version
-        RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.beginAnalyzeHealthcare(documents, options)
-            .flatMap(AsyncPollResponse::getFinalResult)
+        textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities(documents, options)
+            .flatMap(pollResult -> {
+                AnalyzeHealthcareEntitiesOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
             .subscribe(healthcareTaskResultPagedFlux -> {
                 healthcareTaskResultPagedFlux.subscribe(
                     healthcareTaskResult -> {
-                        System.out.printf("Action display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
-                            healthcareTaskResult.getJobId());
-
-                        RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection =
-                            healthcareTaskResult.getResult();
                         // Model version
                         System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                            healthcareEntitiesResultCollection.getModelVersion());
+                            healthcareTaskResult.getModelVersion());
 
+                        TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
                         // Batch statistics
-                        TextDocumentBatchStatistics batchStatistics =
-                            healthcareEntitiesResultCollection.getStatistics();
                         System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
-                                + " transaction count = %s, valid document count = %s.%n",
-                            batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
-                            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                                              + " transaction count = %s, valid document count = %s.%n",
+                            healthcareTaskStatistics.getDocumentCount(),
+                            healthcareTaskStatistics.getInvalidDocumentCount(),
+                            healthcareTaskStatistics.getTransactionCount(),
+                            healthcareTaskStatistics.getValidDocumentCount());
 
-                        healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
+                        healthcareTaskResult.forEach(healthcareEntitiesResult -> {
                             System.out.println("document id = " + healthcareEntitiesResult.getId());
                             System.out.println("Document entities: ");
-                            HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                             AtomicInteger ct = new AtomicInteger();
-                            healthcareEntities.forEach(healthcareEntity -> {
+                            healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
                                 System.out.printf(
-                                    "\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                                    ct.getAndIncrement(),
-                                    healthcareEntity.getText(), healthcareEntity.getCategory(),
-                                    healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
-                            });
+                                    "\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                                    ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                                    healthcareEntity.getConfidenceScore());
 
-                            healthcareEntities.getEntityRelations().forEach(
-                                healthcareEntityRelation ->
-                                    System.out.printf(
-                                        "Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                                        healthcareEntityRelation.isBidirectional(),
-                                        healthcareEntityRelation.getTargetLink(),
-                                        healthcareEntityRelation.getSourceLink(),
-                                        healthcareEntityRelation.getRelationType()));
+                                IterableStream<EntityDataSource> healthcareEntityDataSources =
+                                    healthcareEntity.getDataSources();
+                                if (healthcareEntityDataSources != null) {
+                                    healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                                        "\t\tEntity ID in data source: %s, data source: %s.%n",
+                                        healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                                }
+                                Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                                    healthcareEntity.getRelatedEntities();
+                                if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                                    relatedHealthcareEntities.forEach(
+                                        (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                                            "\t\tRelated entity: %s, relation type: %s.%n",
+                                            relatedHealthcareEntity.getText(), entityRelationType));
+                                }
+                            });
                         });
                     }
                 );
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions
     }
 
     // Analyze batch actions

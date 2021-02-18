@@ -67,7 +67,7 @@ public final class BlobContainerEncryptionScope {
      * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
      * @return the BlobContainerEncryptionScope object itself.
      */
-    public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+    public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }

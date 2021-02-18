@@ -54,10 +54,10 @@ public class QueryMetricsUtils {
     }
 
     static Duration getDurationFromMetrics(HashMap<String, Double> metrics, String key) {
-        double timeSpanInMilliseconds;
-        Duration timeSpanFromMetrics;
-        timeSpanInMilliseconds = metrics.get(key);
-        timeSpanFromMetrics = QueryMetricsUtils.doubleMillisecondsToDuration(timeSpanInMilliseconds);
+        Duration timeSpanFromMetrics = Duration.ZERO;
+        if (metrics.containsKey(key)) {
+            timeSpanFromMetrics = QueryMetricsUtils.doubleMillisecondsToDuration(metrics.get(key));
+        }
         return timeSpanFromMetrics;
     }
 
