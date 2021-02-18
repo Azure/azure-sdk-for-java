@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.0.0-beta.4 (Unreleased)
-
+- Made AzurePath.toBlobClient public
 
 ## 12.0.0-beta.3 (2021-02-10)
 - Added support for FileSystemProvider.checkAccess method
