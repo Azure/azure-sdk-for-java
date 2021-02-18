@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,4 +21,11 @@ public interface RxStoreModel {
      * @return
      */
     Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
+
+    /**
+     * Enable throughput control.
+     *
+     * @param throughputControlStore
+     */
+    void enableThroughputControl(ThroughputControlStore throughputControlStore);
 }

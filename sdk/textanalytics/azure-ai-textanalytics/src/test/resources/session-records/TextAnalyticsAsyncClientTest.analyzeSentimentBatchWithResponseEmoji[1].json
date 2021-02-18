@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//sentiment?showStats=false&opinionMining=true&stringIndexType=UnicodeCodePoint",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "37630499-c5be-48f6-b46c-a36f7eb22acf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "399",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
+      "apim-request-id" : "66c5d11c-a3ef-4cc9-83e0-082eb93378dd",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":24,\"text\":\"\uD83D\uDC69 The hotel was unclean.\",\"aspects\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":6,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"opinion\",\"ref\":\"#/documents/0/sentences/0/opinions/0\"}]}],\"opinions\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":16,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
+      "Date" : "Mon, 08 Feb 2021 06:48:31 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

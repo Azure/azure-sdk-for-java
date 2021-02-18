@@ -163,7 +163,7 @@ public class AADWebAppConfiguration {
     private ClientRegistration.Builder createClientBuilder(String id) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
+        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/");
 
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
@@ -193,6 +193,9 @@ public class AADWebAppConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated();
         }
     }
 

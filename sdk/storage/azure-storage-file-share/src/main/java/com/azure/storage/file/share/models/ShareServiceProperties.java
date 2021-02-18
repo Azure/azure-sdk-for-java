@@ -12,9 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Storage service properties.
- */
+/** Storage service properties. */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
 public final class ShareServiceProperties {
@@ -55,8 +53,7 @@ public final class ShareServiceProperties {
     private ShareProtocolSettings protocol;
 
     /**
-     * Get the hourMetrics property: A summary of request statistics grouped by
-     * API in hourly aggregates for files.
+     * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
      *
      * @return the hourMetrics value.
      */
@@ -65,8 +62,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Set the hourMetrics property: A summary of request statistics grouped by
-     * API in hourly aggregates for files.
+     * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
      *
      * @param hourMetrics the hourMetrics value to set.
      * @return the ShareServiceProperties object itself.
@@ -77,8 +73,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Get the minuteMetrics property: A summary of request statistics grouped
-     * by API in minute aggregates for files.
+     * Get the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
      *
      * @return the minuteMetrics value.
      */
@@ -87,8 +82,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Set the minuteMetrics property: A summary of request statistics grouped
-     * by API in minute aggregates for files.
+     * Set the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
      *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the ShareServiceProperties object itself.

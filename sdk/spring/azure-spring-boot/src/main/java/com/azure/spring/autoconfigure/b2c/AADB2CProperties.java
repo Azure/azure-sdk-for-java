@@ -3,28 +3,31 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.lang.NonNull;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.net.MalformedURLException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
-public class AADB2CProperties {
+public class AADB2CProperties implements InitializingBean {
 
     private static final String USER_FLOWS = "user-flows";
 
     /**
-     * We do not use ${@link String#format(String, Object...)}
-     * as it's not real constant, which cannot be referenced in annotation.
+     * We do not use ${@link String#format(String, Object...)} as it's not real constant, which cannot be referenced in
+     * annotation.
      */
     public static final String USER_FLOW_PASSWORD_RESET = USER_FLOWS + ".password-reset";
 
@@ -40,15 +43,18 @@ public class AADB2CProperties {
 
     public static final String PREFIX = "azure.activedirectory.b2c";
 
+    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
+
     /**
      * The name of the b2c tenant.
+     * @deprecated It's recommended to use 'baseUri' instead.
      */
-    @NotBlank(message = "tenant name should not be blank")
+    @Deprecated
     private String tenant;
 
     /**
-     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
-     * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
+     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false, will use Oauth2
+     * ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
      */
     private Boolean oidcEnabled = true;
 
@@ -63,9 +69,6 @@ public class AADB2CProperties {
      */
     @NotBlank(message = "client secret should not be blank")
     private String clientSecret;
-
-    @URL(message = "reply URL should be valid URL")
-    private String replyUrl;
 
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
@@ -87,17 +90,19 @@ public class AADB2CProperties {
      */
     private boolean allowTelemetry = true;
 
-    private String getReplyURLPath(@URL String replyURL) {
-        try {
-            return new java.net.URL(replyURL).getPath();
-        } catch (MalformedURLException e) {
-            throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
-        }
-    }
+    private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
-    @NonNull
-    public String getLoginProcessingUrl() {
-        return getReplyURLPath(replyUrl);
+    /**
+     * AAD B2C endpoint base uri.
+     */
+    @URL(message = "baseUri should be valid URL")
+    private String baseUri;
+
+    @Override
+    public void afterPropertiesSet() {
+        if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
+            throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+        }
     }
 
     /**
@@ -177,12 +182,40 @@ public class AADB2CProperties {
         }
     }
 
-    public String getTenant() {
-        return tenant;
+    public String getBaseUri() {
+        // baseUri is empty and points to Global env by default
+        if (StringUtils.hasText(tenant) && StringUtils.isEmpty(baseUri)) {
+            return String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
+        }
+        return baseUri;
+    }
+
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
     }
 
     public void setTenant(String tenant) {
         this.tenant = tenant;
+    }
+
+    /**
+     * Get tenant name for Telemetry
+     * @return tenant name
+     * @throws AADB2CConfigurationException resolve tenant name failed
+     */
+    @DeprecatedConfigurationProperty(
+        reason = "Configuration updated to baseUri",
+        replacement = "azure.activedirectory.b2c.base-uri")
+    public String getTenant() {
+        if (StringUtils.hasText(baseUri)) {
+            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
+            if (matcher.find()) {
+                String matched = matcher.group();
+                return matched.substring(0, matched.length() - 1);
+            }
+            throw new AADB2CConfigurationException("Unable to resolve the 'tenant' name.");
+        }
+        return tenant;
     }
 
     public Boolean getOidcEnabled() {
@@ -207,14 +240,6 @@ public class AADB2CProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public String getReplyUrl() {
-        return replyUrl;
-    }
-
-    public void setReplyUrl(String replyUrl) {
-        this.replyUrl = replyUrl;
     }
 
     public String getLogoutSuccessUrl() {
@@ -255,5 +280,13 @@ public class AADB2CProperties {
 
     public void setUserNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
+    }
+
+    public String getReplyUrl() {
+        return replyUrl;
+    }
+
+    public void setReplyUrl(String replyUrl) {
+        this.replyUrl = replyUrl;
     }
 }

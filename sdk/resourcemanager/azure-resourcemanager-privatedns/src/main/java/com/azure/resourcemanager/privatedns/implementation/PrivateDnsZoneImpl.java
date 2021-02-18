@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for {@link PrivateDnsZone}. */
 class PrivateDnsZoneImpl
@@ -426,9 +427,9 @@ class PrivateDnsZoneImpl
 
     private PagedFlux<PrivateDnsRecordSet> listRecordSetsInternAsync(String recordSetSuffix, Integer pageSize) {
         final PrivateDnsZoneImpl self = this;
-        return manager().serviceClient().getRecordSets()
-            .listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
-            .mapPage(recordSetInner -> {
+        return PagedConverter.mapPage(manager().serviceClient().getRecordSets()
+            .listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix),
+            recordSetInner -> {
                 PrivateDnsRecordSet recordSet = new PrivateDnsRecordSetImpl(
                     recordSetInner.name(), recordSetInner.type(), self, recordSetInner);
                 switch (recordSet.recordType()) {

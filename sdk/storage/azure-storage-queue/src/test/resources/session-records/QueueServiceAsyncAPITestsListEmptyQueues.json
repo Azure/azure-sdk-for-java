@@ -1,23 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net?prefix=QueueServiceAsyncAPITestsListEmptyQueues&include=&comp=list",
+    "Uri" : "https://REDACTED.queue.core.windows.net?comp=list&prefix=QueueServiceAsyncAPITestsListEmptyQueues&include=",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "4b7a967d-c848-4f32-a71f-c817e65f9b6a"
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5408b3a7-93ad-4692-9745-8b2b499178f8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "45cef0c7-7003-0041-3a04-3a1544000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmcccanary.queue.core.windows.net/\"><Prefix>QueueServiceAsyncAPITestsListEmptyQueues</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Jun 2020 00:06:59 GMT",
-      "x-ms-client-request-id" : "4b7a967d-c848-4f32-a71f-c817e65f9b6a",
+      "x-ms-request-id" : "edafbe0f-d003-008b-6b77-f321c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracanary.queue.core.windows.net/\"><Prefix>QueueServiceAsyncAPITestsListEmptyQueues</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 26 Jan 2021 00:09:14 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

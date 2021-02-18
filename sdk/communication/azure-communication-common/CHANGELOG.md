@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
+
+## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes
 - Renamed `CommunicationUserCredential` to `CommunicationTokenCredential`
 - Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken, boolean refreshProactively)` and `CommunicationTokenCredential(TokenRefresher tokenRefresher)` with `CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions)`
