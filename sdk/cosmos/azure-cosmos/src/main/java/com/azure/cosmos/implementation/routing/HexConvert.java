@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.routing;
 import java.nio.ByteBuffer;
 
 public class HexConvert {
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    final private static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
