@@ -35,6 +35,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.search.documents.implementation.util.Utility.buildRestClient;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
@@ -134,7 +135,7 @@ public final class SearchClientBuilder {
 
         HttpPipeline pipeline = getHttpPipeline();
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(endpoint, indexName, pipeline, Utility.DEFAULT_SERIALIZER_ADAPTER));
+            Utility.buildRestClient(endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**
@@ -410,7 +411,7 @@ public final class SearchClientBuilder {
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             return new SearchIndexingBufferedAsyncSender<>(buildRestClient(endpoint, indexName, getHttpPipeline(),
-                Utility.DEFAULT_SERIALIZER_ADAPTER), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
+                getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
                 initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
                 onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }

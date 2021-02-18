@@ -32,8 +32,6 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.serializer.Iso8601DateDeserializer;
-import com.azure.search.documents.implementation.serializer.Iso8601DateSerializer;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -58,7 +56,7 @@ public final class Utility {
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().set("return-client-request-id", "true");
 
-    public static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
+    private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -86,6 +84,10 @@ public final class Utility {
             .registerModule(module);
 
         DEFAULT_SERIALIZER_ADAPTER = adapter;
+    }
+
+    public static JacksonAdapter getDefaultSerializerAdapter() {
+        return DEFAULT_SERIALIZER_ADAPTER;
     }
 
     public static <T> T convertValue(Object initialValue, Class<T> newValueType) throws IOException {

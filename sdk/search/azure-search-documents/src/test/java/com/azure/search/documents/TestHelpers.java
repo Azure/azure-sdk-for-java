@@ -12,6 +12,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -24,8 +25,6 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.security.AccessController;
@@ -41,15 +40,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.Set;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
-import static com.azure.search.documents.implementation.util.Utility.DEFAULT_SERIALIZER_ADAPTER;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -88,8 +86,8 @@ public final class TestHelpers {
      */
     public static void assertObjectEquals(Object expected, Object actual) {
         try {
-            assertEquals(DEFAULT_SERIALIZER_ADAPTER.serialize(expected, SerializerEncoding.JSON),
-                DEFAULT_SERIALIZER_ADAPTER.serialize(actual, SerializerEncoding.JSON));
+            assertEquals(getDefaultSerializerAdapter().serialize(expected, SerializerEncoding.JSON),
+                getDefaultSerializerAdapter().serialize(actual, SerializerEncoding.JSON));
         } catch (IOException ex) {
             fail("There is something wrong happen in serializer.");
         }
@@ -103,7 +101,7 @@ public final class TestHelpers {
      * @param ignoredDefaults Set to true if it needs to ignore default value of expected object.
      * @param ignoredFields Varargs of ignored fields.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
     public static void assertObjectEquals(Object expected, Object actual, boolean ignoredDefaults,
         String... ignoredFields) {
         if (isComparableType(expected)) {
@@ -127,7 +125,7 @@ public final class TestHelpers {
      * @param expectedMap The expected map.
      * @param actualMap The actual map.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void assertMapEquals(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, String... ignoredFields) {
         expectedMap.forEach((key, value) -> {
@@ -143,6 +141,7 @@ public final class TestHelpers {
         });
     }
 
+    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     public static void assertDateEquals(Date expect, Date actual) {
         assertEquals(0, expect.toInstant().atOffset(ZoneOffset.UTC)
             .compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
@@ -300,51 +299,23 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-
         InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename));
-        //Creating a Scanner object
-        Scanner sc = new Scanner(inputStream);
-        //Reading line by line from scanner to StringBuffer
-        StringBuilder sb = new StringBuilder();
-        while (sc.hasNext()) {
-            sb.append(sc.nextLine());
-        }
-        try {
-            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
-                SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw Exceptions.propagate(e);
-        }
+
+        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
     }
 
     public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        //Creating a Scanner object
-        Scanner sc = new Scanner(sourceStream);
-        //Reading line by line from scanner to StringBuffer
-        StringBuilder sb = new StringBuilder();
-        while (sc.hasNext()) {
-            sb.append(sc.nextLine());
-        }
-        try {
-            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
-                SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw Exceptions.propagate(e);
-        }
+        return deserializeToType(sourceStream, LIST_TYPE_REFERENCE);
     }
 
     public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
-        //Creating a Scanner object
-        Scanner sc = new Scanner(sourceStream);
-        //Reading line by line from scanner to StringBuffer
-        StringBuilder sb = new StringBuilder();
-        while (sc.hasNext()) {
-            sb.append(sc.nextLine());
-        }
+        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    }
+
+    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
         try {
-            return DEFAULT_SERIALIZER_ADAPTER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
-                SerializerEncoding.JSON);
+            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }
@@ -352,20 +323,19 @@ public final class TestHelpers {
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
         try {
-            String serializedJson = DEFAULT_SERIALIZER_ADAPTER.serialize(value, SerializerEncoding.JSON);
-            return DEFAULT_SERIALIZER_ADAPTER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
+            return Utility.convertValue(value, clazz);
         } catch (IOException ex) {
             throw Exceptions.propagate(ex);
         }
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        Reader indexData = new InputStreamReader(Objects.requireNonNull(AutocompleteSyncTests.class
+        InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
             .getClassLoader()
-            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON));
 
         try {
-            SearchIndex index = MAPPER.readValue(indexData, SearchIndex.class);
+            SearchIndex index = MAPPER.readValue(stream, SearchIndex.class);
 
             Field searchIndexName = index.getClass().getDeclaredField("name");
             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {

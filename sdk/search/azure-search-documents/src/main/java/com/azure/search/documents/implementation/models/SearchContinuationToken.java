@@ -14,7 +14,7 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.search.documents.implementation.util.Utility.DEFAULT_SERIALIZER_ADAPTER;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * Serialization and deserialization of search page continuation token.
@@ -56,7 +56,7 @@ public final class SearchContinuationToken {
 
         String nextParametersString;
         try {
-            nextParametersString = DEFAULT_SERIALIZER_ADAPTER.serialize(nextPageParameters, SerializerEncoding.JSON);
+            nextParametersString = getDefaultSerializerAdapter().serialize(nextPageParameters, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw new IllegalStateException("Failed to serialize the search request.");
         }
@@ -84,7 +84,7 @@ public final class SearchContinuationToken {
             if (!apiVersion.equals(tokenFields.get(API_VERSION))) {
                 throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
             }
-            return DEFAULT_SERIALIZER_ADAPTER.deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS), SearchRequest.class,
+            return getDefaultSerializerAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS), SearchRequest.class,
                 SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new IllegalArgumentException("The continuation token is invalid. Token: " + continuationToken);

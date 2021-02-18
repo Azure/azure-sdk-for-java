@@ -13,8 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.azure.search.documents.implementation.util.Utility.DEFAULT_SERIALIZER_ADAPTER;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
@@ -62,8 +62,9 @@ public final class IndexActionConverter {
             T properties = obj.getDocument();
             if (serializer == null) {
                 try {
-                    String serializedJson = DEFAULT_SERIALIZER_ADAPTER.serialize(properties, SerializerEncoding.JSON);
-                    mapProperties = DEFAULT_SERIALIZER_ADAPTER.deserialize(serializedJson,
+                    String serializedJson = getDefaultSerializerAdapter().serialize(properties,
+                        SerializerEncoding.JSON);
+                    mapProperties = getDefaultSerializerAdapter().deserialize(serializedJson,
                         MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
                 } catch (IOException ex) {
                     throw LOGGER.logExceptionAsError(

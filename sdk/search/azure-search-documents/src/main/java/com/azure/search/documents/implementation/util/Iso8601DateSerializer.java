@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.implementation.serializer;
+package com.azure.search.documents.implementation.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -16,7 +16,8 @@ import java.util.Date;
 /**
  * Custom serializer to serialize {@link Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
  */
-public final class Iso8601DateSerializer extends JsonSerializer<Date> {
+@SuppressWarnings("UseOfObsoleteDateTimeApi")
+final class Iso8601DateSerializer extends JsonSerializer<Date> {
     private static final SimpleModule MODULE;
 
     static {
@@ -28,7 +29,7 @@ public final class Iso8601DateSerializer extends JsonSerializer<Date> {
      *
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
-    public static SimpleModule getModule() {
+    static SimpleModule getModule() {
         return MODULE;
     }
 
