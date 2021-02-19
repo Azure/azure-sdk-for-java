@@ -158,7 +158,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     public static final String CACHE_CONTROL = "Cache-Control";
 
-    private static final String ACCOUNT_ENDPOINT_KEY = "endpoint";
+    private static final String ENDPOINT_QUERY_KEY = "endpoint";
     private static final int COPY_TIMEOUT_SECONDS = 30;
     private static final Set<OpenOption> OUTPUT_STREAM_DEFAULT_OPTIONS =
         Collections.unmodifiableSet(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
@@ -1142,11 +1142,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         String endpoint = Flux.fromArray(uri.getQuery().split("&"))
-                .filter(s -> s.startsWith(ACCOUNT_ENDPOINT_KEY + "="))
+                .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
                 .switchIfEmpty(Mono.error(LoggingUtility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ACCOUNT_ENDPOINT_KEY + "=\" parameter. FileSystems require a URI "
+                        "URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
                             + "of the format \"azb://?endpoint=<endpoint>\""))))
-                .map(s -> s.substring(ACCOUNT_ENDPOINT_KEY.length() + 1)) // Trim the query key and =
+                .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
                 .blockLast();
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
