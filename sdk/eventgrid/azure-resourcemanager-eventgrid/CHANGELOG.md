@@ -6,22 +6,6 @@
 
 ### Breaking Change
 
-#### `models.SystemTopic$DefinitionStages` was modified
-
-* Stage 1, 2 was added
-
-#### `models.PartnerNamespace$DefinitionStages` was modified
-
-* Stage 1, 2 was added
-
-#### `models.PartnerRegistration$DefinitionStages` was modified
-
-* Stage 1, 2 was added
-
-#### `models.EventChannel$DefinitionStages` was modified
-
-* Stage 1 was added
-
 #### `models.Topics` was modified
 
 * `regenerateKeyWithResponse(java.lang.String,java.lang.String,models.TopicRegenerateKeyRequest,com.azure.core.util.Context)` was removed
