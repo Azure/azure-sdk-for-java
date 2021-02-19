@@ -5,6 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -46,7 +47,7 @@ public final class QueueMessageItem {
     /*
      * The content of the Message.
      */
-    private String messageText;
+    private BinaryData body;
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -195,9 +196,11 @@ public final class QueueMessageItem {
      * Get the messageText property: The content of the Message.
      *
      * @return the messageText value.
+     * @deprecated use {@link #getBody()} instead.
      */
+    @Deprecated
     public String getMessageText() {
-        return this.messageText;
+        return this.body == null ? null : this.body.toString();
     }
 
     /**
@@ -205,9 +208,31 @@ public final class QueueMessageItem {
      *
      * @param messageText the messageText value to set.
      * @return the QueueMessageItem object itself.
+     * * @deprecated use {@link #setBody(BinaryData)} instead.
      */
+    @Deprecated
     public QueueMessageItem setMessageText(String messageText) {
-        this.messageText = messageText;
+        this.body = messageText == null ? null : BinaryData.fromString(messageText);
+        return this;
+    }
+
+    /**
+     * Get the body property: The content of the Message.
+     *
+     * @return the body value.
+     */
+    public BinaryData getBody() {
+        return this.body;
+    }
+
+    /**
+     * Set the body property: The content of the Message.
+     *
+     * @param body the body value to set.
+     * @return the QueueMessageItem object itself.
+     */
+    public QueueMessageItem setBody(BinaryData body) {
+        this.body = body;
         return this;
     }
 }

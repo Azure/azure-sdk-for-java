@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -726,32 +727,61 @@ public final class QueueAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
                 .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
-                .map(this::transformMessagesDequeueResponse);
+                .flatMap(this::transformMessagesDequeueResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformMessagesDequeueResponse(
+    private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
         MessagesDequeueResponse response) {
         List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
         List<QueueMessageItem> queueMessageItems = new ArrayList<>(queueMessageInternalItems.size());
+        Mono<Void> mono = Mono.empty();
         for (QueueMessageItemInternal queueMessageItemInternal : queueMessageInternalItems) {
-            QueueMessageItem queueMessageItem = new QueueMessageItem()
-                .setMessageId(queueMessageItemInternal.getMessageId())
-                .setMessageText(queueMessageItemInternal.getMessageText())
-                .setDequeueCount(queueMessageItemInternal.getDequeueCount())
-                .setExpirationTime(queueMessageItemInternal.getExpirationTime())
-                .setInsertionTime(queueMessageItemInternal.getInsertionTime())
-                .setPopReceipt(queueMessageItemInternal.getPopReceipt())
-                .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
-            queueMessageItems.add(queueMessageItem);
+            try {
+                queueMessageItems.add(transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding));
+            } catch (IllegalArgumentException e) {
+                if (messageDecodingFailedHandler != null) {
+                    mono = mono.then(messageDecodingFailedHandler.apply(
+                        transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE)));
+                } else {
+                    throw e;
+                }
+            }
         }
-        return new PagedResponseBase<>(response.getRequest(),
+        return mono.then(Mono.just(new PagedResponseBase<>(response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
             queueMessageItems,
             null,
-            response.getDeserializedHeaders());
+            response.getDeserializedHeaders())));
+    }
+
+    private QueueMessageItem transformQueueMessageItemInternal(
+        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        return new QueueMessageItem()
+            .setMessageId(queueMessageItemInternal.getMessageId())
+            .setBody(decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding))
+            .setDequeueCount(queueMessageItemInternal.getDequeueCount())
+            .setExpirationTime(queueMessageItemInternal.getExpirationTime())
+            .setInsertionTime(queueMessageItemInternal.getInsertionTime())
+            .setPopReceipt(queueMessageItemInternal.getPopReceipt())
+            .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
+    }
+
+    private BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+        if (messageText == null) {
+            return null;
+        }
+
+        switch (messageEncoding) {
+            case NONE:
+                return BinaryData.fromString(messageText);
+            case BASE64:
+                return BinaryData.fromBytes(Base64.getDecoder().decode(messageText));
+            default:
+                throw new IllegalArgumentException("Unsupported message encoding=" + messageEncoding);
+        }
     }
 
     /**
@@ -816,30 +846,44 @@ public final class QueueAsyncClient {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
                 .peekWithResponseAsync(queueName, maxMessages, null, null, context), timeout)
-                .map(this::transformMessagesPeekResponse);
+                .flatMap(this::transformMessagesPeekResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformMessagesPeekResponse(
+    private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
         MessagesPeekResponse response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
         List<PeekedMessageItem> peekedMessageItems = new ArrayList<>(peekedMessageInternalItems.size());
+        Mono<Void> mono = Mono.empty();
         for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageInternalItems) {
-            PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
-                .setMessageId(peekedMessageItemInternal.getMessageId())
-                .setMessageText(peekedMessageItemInternal.getMessageText())
-                .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
-                .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
-                .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
-            peekedMessageItems.add(peekedMessageItem);
+            try {
+                peekedMessageItems.add(transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding));
+            } catch (IllegalArgumentException e) {
+                if (messageDecodingFailedHandler != null) {
+                    mono = mono.then(messageDecodingFailedHandler.apply(
+                        transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE)));
+                } else {
+                    throw e;
+                }
+            }
         }
-        return new PagedResponseBase<>(response.getRequest(),
+        return mono.then(Mono.just(new PagedResponseBase<>(response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
             peekedMessageItems,
             null,
-            response.getDeserializedHeaders());
+            response.getDeserializedHeaders())));
+    }
+
+    private PeekedMessageItem transformPeekedMessageItemInternal(
+        PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        return new PeekedMessageItem()
+            .setMessageId(peekedMessageItemInternal.getMessageId())
+            .setBody(decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding))
+            .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
+            .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
+            .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
     }
 
     /**
