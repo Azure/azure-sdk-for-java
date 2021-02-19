@@ -317,7 +317,7 @@ public class DocumentQueryExecutionContextFactory {
             //            }
         }
 
-        List<FeedRange> feedRangeEpks = new ArrayList<>();
+        List<FeedRangeEpkImpl> feedRangeEpks = new ArrayList<>();
         feedRangeEpks =
             targetRanges.stream().map(FeedRangeEpkImpl::new).collect(Collectors.toList());
 

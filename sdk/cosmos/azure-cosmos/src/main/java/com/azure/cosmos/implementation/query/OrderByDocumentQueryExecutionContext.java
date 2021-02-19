@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
     List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private Flux<OrderByRowResult<T>> orderByObservable;
-    private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
+    private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     private OrderByDocumentQueryExecutionContext(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -106,7 +107,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
         try {
             context.initialize(
-                    initParams.getPartitionKeyRanges(),
                     initParams.getFeedRanges(),
                     initParams.getQueryInfo().getOrderBy(),
                     initParams.getQueryInfo().getOrderByExpressions(),
@@ -120,16 +120,15 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     }
 
     private void initialize(
-        List<PartitionKeyRange> partitionKeyRanges,
-        List<FeedRange> feedRanges, List<SortOrder> sortOrders,
+        List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,
         int initialPageSize,
         String continuationToken) throws CosmosException {
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
-            Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
-            for (PartitionKeyRange partitionKeyRange : partitionKeyRanges) {
-                partitionKeyRangeToContinuationToken.put(partitionKeyRange,
+            Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
+            for (FeedRangeEpkImpl feedRangeEpk : feedRanges) {
+                partitionKeyRangeToContinuationToken.put(feedRangeEpk,
                         null);
             }
             this.feedRanges = feedRanges;
@@ -164,42 +163,23 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             }
 
             // At this point the token is valid.
-            ImmutablePair<Integer, FormattedFilterInfo> targetIndexAndFilters = this.getFiltersForPartitions(
+            ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo> targetIndexAndFilters = this.getFiltersForPartitions(
                     orderByContinuationToken,
-                    partitionKeyRanges,
+                    feedRanges,
                     sortOrders,
                     orderByExpressions);
 
-            int targetIndex = targetIndexAndFilters.left;
-            targetRangeToOrderByContinuationTokenMap.put(partitionKeyRanges.get(targetIndex).getId(), orderByContinuationToken);
             FormattedFilterInfo formattedFilterInfo = targetIndexAndFilters.right;
 
-            // Left
-            String filterForRangesLeftOfTheTargetRange = formattedFilterInfo.getFilterForRangesLeftOfTheTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
-                    /* startInclusive */ 0,
-                    /* endExclusive */ targetIndex,
-                    /* continuationToken */ null,
-                    filterForRangesLeftOfTheTargetRange,
-                    initialPageSize);
+            PartitionMapper.PartitionMapping<OrderByContinuationToken> partitionMapping =
+                PartitionMapper.getPartitionMapping(feedRanges, Collections.singletonList(orderByContinuationToken));
 
-            // Target
-            String filterForTargetRange = formattedFilterInfo.getFilterForTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
-                    /* startInclusive */ targetIndex,
-                    /* endExclusive */ targetIndex + 1,
-                    null,
-                    filterForTargetRange,
-                    initialPageSize);
-
-            // Right
-            String filterForRangesRightOfTheTargetRange = formattedFilterInfo.getFilterForRangesRightOfTheTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
-                    /* startInclusive */ targetIndex + 1,
-                    /* endExclusive */ partitionKeyRanges.size(),
-                    /* continuationToken */ null,
-                    filterForRangesRightOfTheTargetRange,
-                    initialPageSize);
+            initializeWithTokenAndFilter(partitionMapping.getMappingLeftOfTarget(), initialPageSize,
+                                         formattedFilterInfo.filterForRangesLeftOfTheTargetRange);
+            initializeWithTokenAndFilter(partitionMapping.getTargetMapping(), initialPageSize,
+                                         formattedFilterInfo.filterForTargetRange);
+            initializeWithTokenAndFilter(partitionMapping.getMappingRightOfTarget(), initialPageSize,
+                                         formattedFilterInfo.filterForRangesRightOfTheTargetRange);
         }
 
         orderByObservable = OrderByUtils.orderedMerge(resourceType,
@@ -211,41 +191,37 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 clientSideRequestStatisticsList);
     }
 
-    private void initializeRangeWithContinuationTokenAndFilter(
-            List<PartitionKeyRange> partitionKeyRanges,
-            int startInclusive,
-            int endExclusive,
-            String continuationToken,
-            String filter,
-            int initialPageSize) {
-        Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
-        for (int i = startInclusive; i < endExclusive; i++) {
-            PartitionKeyRange partitionKeyRange = partitionKeyRanges.get(i);
-            partitionKeyRangeToContinuationToken.put(partitionKeyRange,
-                    continuationToken);
-        }
+    private void initializeWithTokenAndFilter(Map<FeedRangeEpkImpl, OrderByContinuationToken> rangeToTokenMapping,
+                                              int initialPageSize,
+                                              String filter) {
+        for (Map.Entry<FeedRangeEpkImpl, OrderByContinuationToken> entry :
+            rangeToTokenMapping.entrySet()) {
+            targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<FeedRangeEpkImpl, String>();
+            partitionKeyRangeToContinuationToken.put(entry.getKey(), null);
+            super.initialize(collectionRid,
+                             partitionKeyRangeToContinuationToken,
+                             initialPageSize,
+                             new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
+                                                                               filter),
+                                              querySpec.getParameters()));
 
-        super.initialize(collectionRid,
-                partitionKeyRangeToContinuationToken,
-                initialPageSize,
-                new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
-                        filter),
-                        querySpec.getParameters()));
+        }
     }
 
-    private ImmutablePair<Integer, FormattedFilterInfo> getFiltersForPartitions(
+    private ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo> getFiltersForPartitions(
             OrderByContinuationToken orderByContinuationToken,
-            List<PartitionKeyRange> partitionKeyRanges,
+            List<FeedRangeEpkImpl> feedRangeEpks,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) {
 
-        ValueHolder<Map<String, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
+        ValueHolder<Map<FeedRangeEpkImpl, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
         valueHolder.v = this.targetRangeToOrderByContinuationTokenMap;
         // Find the partition key range we left off on
-        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
-                                                                          orderByContinuationToken.getCompositeContinuationToken().getRange(),
-                                                                          valueHolder,
-                                                                          orderByContinuationToken);
+        FeedRangeEpkImpl startIndex = this.findTargetRangeAndExtractContinuationTokens(feedRangeEpks,
+                                                                                       orderByContinuationToken.getCompositeContinuationToken().getRange(),
+                                                                                       valueHolder,
+                                                                                       orderByContinuationToken);
 
         // Get the filters.
         FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
@@ -253,7 +229,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 sortOrders,
                 orderByContinuationToken.getInclusive());
 
-        return new ImmutablePair<Integer, FormattedFilterInfo>(startIndex,
+        return new ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo>(startIndex,
                 formattedFilterInfo);
     }
 
@@ -591,7 +567,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
         // CompositeContinuationToken
         String backendContinuationToken = orderByRowResult.getSourceBackendContinuationToken();
-        Range<String> range = ((FeedRangeEpkImpl)orderByRowResult.getSourceRange()).getRange();
+        Range<String> range = orderByRowResult.getSourceRange().getRange();
 
         boolean inclusive = true;
         CompositeContinuationToken compositeContinuationToken = new CompositeContinuationToken(backendContinuationToken,

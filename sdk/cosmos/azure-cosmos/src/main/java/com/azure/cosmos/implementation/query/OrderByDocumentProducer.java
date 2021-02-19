@@ -32,7 +32,7 @@ import java.util.function.Function;
 
 class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
     private final OrderbyRowComparer<T> consumeComparer;
-    private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
+    private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     OrderByDocumentProducer(
             OrderbyRowComparer<T> consumeComparer,
@@ -50,7 +50,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             int initialPageSize,
             String initialContinuationToken,
             int top,
-            Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
+            Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
         super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
               collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
               initialContinuationToken,top, feedRange);

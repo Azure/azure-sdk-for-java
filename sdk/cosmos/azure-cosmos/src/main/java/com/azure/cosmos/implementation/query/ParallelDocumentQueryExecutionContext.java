@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
-    private final Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap;
+    private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
 
     private ParallelDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -61,7 +62,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         String collectionRid,
         boolean isContinuationExpected,
         boolean getLazyFeedResponse,
-        UUID correlatedActivityId, List<FeedRange> feedRanges) {
+        UUID correlatedActivityId,
+        List<FeedRangeEpkImpl> feedRanges) {
         super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
@@ -139,15 +141,15 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     private void initialize(
         String collectionRid,
         List<PartitionKeyRange> targetRanges,
-        List<FeedRange> feedRanges,
+        List<FeedRangeEpkImpl> feedRanges,
         int initialPageSize,
         String continuationToken) {
         // Generate the corresponding continuation token map.
         if (continuationToken == null) {
             // If the user does not give a continuation token,
             // then just start the query from the first partition.
-            for (PartitionKeyRange targetRange : targetRanges) {
-                partitionKeyRangeToContinuationTokenMap.put(targetRange,
+            for (FeedRangeEpkImpl feedRangeEpk : feedRanges) {
+                partitionKeyRangeToContinuationTokenMap.put(feedRangeEpk,
                         null);
             }
         } else {
@@ -172,18 +174,13 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             CompositeContinuationToken compositeContinuationToken = outCompositeContinuationToken.v;
 
-            // Get the right hand side of the query ranges and set continuation token for relevant ranges in the
-            // partitionKeyRangeToContinuationTokenMap
-            List<PartitionKeyRange> filteredPartitionKeyRanges = this.getPartitionKeyRangesForContinuation(
-                    compositeContinuationToken,
-                    targetRanges);
+            PartitionMapper.PartitionMapping<CompositeContinuationToken> partitionMapping =
+                PartitionMapper.getPartitionMapping(feedRanges, Collections.singletonList(compositeContinuationToken));
 
-            // The remaining partitions we have yet to touch / have null continuation tokens
-            for (int i = 1; i < filteredPartitionKeyRanges.size(); i++) {
-                if (!partitionKeyRangeToContinuationTokenMap.containsKey(filteredPartitionKeyRanges.get(i))) {
-                    partitionKeyRangeToContinuationTokenMap.put(filteredPartitionKeyRanges.get(i), null);
-                }
-            }
+            // Skip all the partitions left of the target range, since they have already been drained fully.
+            populatePartitionToContinuationMap(partitionMapping.getTargetMapping());
+            populatePartitionToContinuationMap(partitionMapping.getMappingRightOfTarget());
+
         }
 
         super.initialize(collectionRid,
@@ -192,13 +189,24 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 this.querySpec);
     }
 
-    private List<PartitionKeyRange> getPartitionKeyRangesForContinuation(
+    private void populatePartitionToContinuationMap(
+        Map<FeedRangeEpkImpl, CompositeContinuationToken> partitionMapping) {
+        for (Map.Entry<FeedRangeEpkImpl, CompositeContinuationToken> entry : partitionMapping.entrySet()) {
+            if (entry.getValue() != null) {
+                partitionKeyRangeToContinuationTokenMap.put(entry.getKey(), entry.getValue().getToken());
+            } else {
+                partitionKeyRangeToContinuationTokenMap.put(entry.getKey(), null);
+            }
+        }
+    }
+
+  /*  private List<PartitionKeyRange> getPartitionKeyRangesForContinuation(
         CompositeContinuationToken compositeContinuationToken,
         List<PartitionKeyRange> partitionKeyRanges) {
-        Map<String, String> partitionRangeIdToTokenMap = new HashMap<>();
-        ValueHolder<Map<String, String>> outPartitionRangeIdToTokenMap = new ValueHolder<>(partitionRangeIdToTokenMap);
+        Map<FeedRangeEpkImpl, String> partitionRangeIdToTokenMap = new HashMap<>();
+        ValueHolder<Map<FeedRangeEpkImpl, String>> outPartitionRangeIdToTokenMap = new ValueHolder<>(partitionRangeIdToTokenMap);
         // Find the partition key range we left off on and fill the range to continuation token map
-        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(this.feedRanges,
                                                                           compositeContinuationToken.getRange(),
                                                                           outPartitionRangeIdToTokenMap,
                                                                           compositeContinuationToken.getToken());
@@ -213,7 +221,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
         return rightHandSideRanges;
     }
-
+*/
     private static class EmptyPagesFilterTransformer<T extends Resource>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;

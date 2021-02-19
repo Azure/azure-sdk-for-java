@@ -71,8 +71,8 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 }
             }
 
-            return ((FeedRangeEpkImpl)r1.getSourceRange()).getRange().getMin()
-                       .compareTo(((FeedRangeEpkImpl)r2.getSourceRange()).getRange().getMin());
+            return r1.getSourceRange().getRange().getMin()
+                       .compareTo(r2.getSourceRange().getRange().getMin());
         } catch (Exception e) {
             // Due to a bug in rxjava-extras <= 0.8.0.15 dependency,
             // if OrderbyRowComparer throws an unexpected exception,

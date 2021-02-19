@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query.orderbyquery;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -20,13 +21,13 @@ public final class OrderByRowResult<T> extends Document {
     private final Class<T> klass;
     private volatile List<QueryItem> orderByItems;
     private volatile T payload;
-    private final FeedRange targetRange;
+    private final FeedRangeEpkImpl targetRange;
     private final String backendContinuationToken;
 
     public OrderByRowResult(
             Class<T> klass,
             String jsonString,
-            FeedRange targetRange,
+            FeedRangeEpkImpl targetRange,
             String backendContinuationToken) {
         super(jsonString);
         this.klass = klass;
@@ -55,7 +56,7 @@ public final class OrderByRowResult<T> extends Document {
         return payload;
     }
 
-    public FeedRange getSourceRange() {
+    public FeedRangeEpkImpl getSourceRange() {
         return this.targetRange;
     }
 

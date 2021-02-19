@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -27,7 +28,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final List<PartitionKeyRange> partitionKeyRanges;
     private final QueryInfo queryInfo;
-    private final List<FeedRange> feedRanges;
+    private final List<FeedRangeEpkImpl> feedRanges;
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
@@ -42,7 +43,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         QueryInfo queryInfo,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         UUID correlatedActivityId,
-        List<FeedRange> feedRanges) {
+        List<FeedRangeEpkImpl> feedRanges) {
 
         this.resourceTypeEnum = resourceTypeEnum;
         this.resourceType = resourceType;
@@ -119,7 +120,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         return queryInfo;
     }
 
-    public List<FeedRange> getFeedRanges() {
+    public List<FeedRangeEpkImpl> getFeedRanges() {
         return feedRanges;
     }
 }
