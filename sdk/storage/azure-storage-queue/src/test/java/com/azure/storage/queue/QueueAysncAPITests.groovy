@@ -5,10 +5,12 @@ package com.azure.storage.queue
 
 import com.azure.core.util.BinaryData
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.queue.models.PeekedMessageItem
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -395,6 +397,62 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Dequeue fails without handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        queueAsyncClient.sendMessage(expectMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.verifyError(IllegalArgumentException.class)
+    }
+
+    def "Dequeue with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                badMessage = (QueueMessageItem) message
+                return Mono.empty()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
+    def "Dequeue with handler error"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.verifyError(IllegalStateException.class)
+    }
+
     def "Dequeue multiple messages"() {
         given:
         queueAsyncClient.create().block()
@@ -488,6 +546,62 @@ class QueueAysncAPITests extends APISpec {
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getBody().toString()
         }.verifyComplete()
+    }
+
+    def "Peek fails without handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        queueAsyncClient.sendMessage(expectMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        peekMsgVerifier.verifyError(IllegalArgumentException.class)
+    }
+
+    def "Peek with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        PeekedMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                badMessage = (PeekedMessageItem) message
+                return Mono.empty()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage !=null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
+    def "Peek with handler exception"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.verifyError(IllegalStateException.class)
     }
 
     def "Peek multiple messages"() {

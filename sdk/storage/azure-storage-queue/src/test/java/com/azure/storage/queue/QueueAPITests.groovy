@@ -7,11 +7,13 @@ import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.queue.models.PeekedMessageItem
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
+import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -329,6 +331,61 @@ class QueueAPITests extends APISpec {
         expectMsg == messageItem.getBody().toString()
     }
 
+    def "Dequeue fails without handler"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        queueClient.sendMessage(expectMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        when:
+        encodingQueueClient.receiveMessage()
+        then:
+        thrown(IllegalArgumentException.class)
+    }
+
+    def "Dequeue with handler"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(encodedMsg)
+        queueClient.sendMessage(expectMsg)
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                badMessage = (QueueMessageItem) message
+                return Mono.empty()
+            })
+            .buildClient().getQueueClient(queueName)
+        when:
+        def messageItems = encodingQueueClient.receiveMessages(10).toList()
+        then:
+        messageItems.size() == 1
+        messageItems[0].getBody().toString() == expectMsg
+        badMessage != null
+        badMessage.getBody().toString() == expectMsg
+    }
+
+    def "Dequeue with handler error"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(encodedMsg)
+        queueClient.sendMessage(expectMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildClient().getQueueClient(queueName)
+        when:
+        encodingQueueClient.receiveMessages(10).toList()
+        then:
+        thrown(IllegalStateException.class)
+    }
+
     def "Dequeue multiple messages"() {
         given:
         queueClient.create()
@@ -401,6 +458,61 @@ class QueueAPITests extends APISpec {
         def peekedMessage = encodingQueueClient.peekMessage()
         then:
         expectMsg == peekedMessage.getBody().toString()
+    }
+
+    def "Peek fails without handler"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        queueClient.sendMessage(expectMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        when:
+        encodingQueueClient.peekMessage()
+        then:
+        thrown(IllegalArgumentException.class)
+    }
+
+    def "Peek with handler"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(expectMsg)
+        queueClient.sendMessage(encodedMsg)
+        PeekedMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                badMessage = (PeekedMessageItem) message
+                return Mono.empty()
+            })
+            .buildClient().getQueueClient(queueName)
+        when:
+        def peekedMessages = encodingQueueClient.peekMessages(10, null, null).toList()
+        then:
+        peekedMessages.size() == 1
+        peekedMessages[0].getBody().toString() == expectMsg
+        badMessage != null
+        badMessage.getBody().toString() == expectMsg
+    }
+
+    def "Peek with handler exception"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(expectMsg)
+        queueClient.sendMessage(encodedMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildClient().getQueueClient(queueName)
+        when:
+        encodingQueueClient.peekMessages(10, null, null).toList()
+        then:
+        thrown(IllegalStateException.class)
     }
 
     def "Peek multiple messages"() {
