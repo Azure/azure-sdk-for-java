@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -13,6 +14,7 @@ import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -256,6 +258,18 @@ class QueueAPITests extends APISpec {
         expectMsg == peekedMessage.getMessageText()
     }
 
+    def "Enqueue message binary data"() {
+        given:
+        queueClient.create()
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
+        def peekedMessage = queueClient.peekMessage()
+        then:
+        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
+        expectMsg.toBytes() == peekedMessage.getBody().toBytes()
+    }
+
     def "Enqueue empty message"() {
         given:
         queueClient.create()
@@ -278,6 +292,19 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
     }
 
+    def "Enqueue message encoded message"() {
+        given:
+        queueClient.create()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgResponse = encodingQueueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
+        def peekedMessage = queueClient.peekMessage()
+        then:
+        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
+        Base64.getEncoder().encodeToString(expectMsg.toBytes()) == peekedMessage.getBody().toString()
+    }
+
     def "Dequeue message"() {
         given:
         queueClient.create()
@@ -287,6 +314,19 @@ class QueueAPITests extends APISpec {
         def messageItem = queueClient.receiveMessage()
         then:
         expectMsg == messageItem.getMessageText()
+    }
+
+    def "Dequeue encoded message"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(encodedMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        when:
+        def messageItem = encodingQueueClient.receiveMessage()
+        then:
+        expectMsg == messageItem.getBody().toString()
     }
 
     def "Dequeue multiple messages"() {
@@ -313,6 +353,19 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
+    def "Enqueue Dequeue non-UTF message"() {
+        given:
+        queueClient.create()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
+
+        when:
+        def messageItem = encodingQueueClient.receiveMessage()
+        then:
+        content == messageItem.getBody().toBytes()
+    }
+
     def "Peek message"() {
         given:
         queueClient.create()
@@ -322,6 +375,19 @@ class QueueAPITests extends APISpec {
         def peekedMessage = queueClient.peekMessage()
         then:
         expectMsg == peekedMessage.getMessageText()
+    }
+
+    def "Peek encoded message"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(encodedMsg)
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        when:
+        def peekedMessage = encodingQueueClient.peekMessage()
+        then:
+        expectMsg == peekedMessage.getBody().toString()
     }
 
     def "Peek multiple messages"() {

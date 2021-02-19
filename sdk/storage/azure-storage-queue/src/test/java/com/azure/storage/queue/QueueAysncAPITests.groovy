@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.util.BinaryData
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
@@ -12,6 +13,7 @@ import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -294,6 +296,22 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Enqueue message binary data"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.sendMessageWithResponse(expectMsg, null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        enqueueMsgVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
+        }.verifyComplete()
+        peekMsgVerifier.assertNext {
+            assert expectMsg.toBytes() == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
     def "Enqueue empty message"() {
         given:
         queueAsyncClient.create().block()
@@ -321,6 +339,23 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Enqueue message encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgVerifier = StepVerifier.create(encodingQueueClient.sendMessageWithResponse(expectMsg, null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        enqueueMsgVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
+        }.verifyComplete()
+        peekMsgVerifier.assertNext {
+            assert Base64.getEncoder().encodeToString(expectMsg.toBytes()) == it.getBody().toString()
+        }.verifyComplete()
+    }
+
     def "Dequeue message from empty queue"() {
         given:
         queueAsyncClient.create().block()
@@ -342,6 +377,21 @@ class QueueAysncAPITests extends APISpec {
         then:
         dequeueMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
+        }.verifyComplete()
+    }
+
+    def "Dequeue encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
         }.verifyComplete()
     }
 
@@ -373,6 +423,21 @@ class QueueAysncAPITests extends APISpec {
         }
     }
 
+    def "Enqueue Dequeue non-UTF message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content)).block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert content == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
     def "Peek message from empty queue"() {
         given:
         queueAsyncClient.create().block()
@@ -392,6 +457,21 @@ class QueueAysncAPITests extends APISpec {
         then:
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
+        }.verifyComplete()
+    }
+
+    def "Peek encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
         }.verifyComplete()
     }
 
