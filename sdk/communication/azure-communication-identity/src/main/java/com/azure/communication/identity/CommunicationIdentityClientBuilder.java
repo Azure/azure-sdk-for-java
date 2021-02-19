@@ -145,7 +145,7 @@ public final class CommunicationIdentityClientBuilder {
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
-     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
     public CommunicationIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
