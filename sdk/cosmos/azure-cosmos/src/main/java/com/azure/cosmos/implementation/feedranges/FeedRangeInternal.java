@@ -188,10 +188,6 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         Int128 splitCountInt128 = new Int128(targetedSplitCount);
         List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
         for(int i = 1; i < targetedSplitCount; i++) {
-            Int128 quotiant = Int128.div(diff, splitCountInt128);
-            Int128 product = Int128.multiply(quotiant, new Int128(i));
-            Int128 sum = Int128.add(min, product);
-            byte[] dummy = sum.bytes();
             byte[] currentBlob = Int128.add(
                 min,
                 Int128.multiply(new Int128(i), Int128.div(diff, splitCountInt128))
@@ -310,7 +306,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     private static long fromHexEncodedBinaryString(String hexBinary)
     {
         byte[] byteString = hexBinaryToByteArray(hexBinary);
-        if (byteString == null || byteString.length < 2 || byteString[0] != 5)
+        if (byteString.length < 2 || byteString[0] != 5)
         {
             throw new IllegalStateException("Invalid hex-byteString");
         }
@@ -341,10 +337,10 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             }
         }
 
-        return (long)DecodeDoubleFromUInt64Long(payload);
+        return (long)decodeDoubleFromUInt64Long(payload);
     }
 
-    private static double DecodeDoubleFromUInt64Long(long value)
+    private static double decodeDoubleFromUInt64Long(long value)
     {
         value = (value < UINT64_TO_DOUBLE_MASK) ? -value : value ^ UINT64_TO_DOUBLE_MASK;
         return Double.longBitsToDouble(value);
