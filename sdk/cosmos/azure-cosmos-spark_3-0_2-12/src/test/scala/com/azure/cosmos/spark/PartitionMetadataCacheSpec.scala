@@ -19,7 +19,7 @@ class PartitionMetadataCacheSpec
     "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.accountKey" -> cosmosMasterKey,
     "spark.cosmos.database" -> cosmosDatabase,
-    "spark.cosmos.container" -> cosmosContainer,
+    "spark.cosmos.container" -> cosmosContainer
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
