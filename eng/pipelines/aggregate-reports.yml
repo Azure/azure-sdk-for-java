@@ -10,7 +10,7 @@ pr:
 
 jobs:
   - job: Reporting
-    displayName: Generate Reports (with build)
+    displayName: Generate reports (with build)
     timeoutInMinutes: 180
     variables:
       - template: templates/variables/globals.yml
@@ -46,7 +46,7 @@ jobs:
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'clean verify site:site site:stage'
+        goals: 'verify site:site site:stage'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
@@ -89,7 +89,7 @@ jobs:
       displayName: 'Publish Report Artifacts'
       artifact: reports
   - job: Compliance
-    displayName: Analyze (No build)
+    displayName: Analyze (no build)
     timeoutInMinutes: 120
     variables:
       - template: templates/variables/globals.yml
