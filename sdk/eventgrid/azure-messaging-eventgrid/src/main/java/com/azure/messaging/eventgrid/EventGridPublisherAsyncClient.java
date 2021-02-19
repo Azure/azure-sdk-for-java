@@ -151,19 +151,14 @@ public final class EventGridPublisherAsyncClient<T> {
         return withContext(context -> sendEvents(events, context));
     }
 
+    @SuppressWarnings("unchecked")
     Mono<Void> sendEvents(Iterable<T> events, Context context) {
         if(this.eventClass == CloudEvent.class) {
-            List<CloudEvent> eventList = new ArrayList<>();
-            events.forEach(event -> eventList.add((CloudEvent) event));
-            return this.sendCloudEvents(eventList, context);
+            return this.sendCloudEvents((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
-            List<EventGridEvent> eventList = new ArrayList<>();
-            events.forEach(event -> eventList.add((EventGridEvent) event));
-            return this.sendEventGridEvents(eventList, context);
+            return this.sendEventGridEvents((Iterable<EventGridEvent>) events, context);
         } else {
-            List<Object> eventList = new ArrayList<>();
-            events.forEach(eventList::add);
-            return this.sendCustomEvents(eventList, context);
+            return this.sendCustomEvents((Iterable<Object>) events, context);
         }
     }
 
@@ -175,20 +170,15 @@ public final class EventGridPublisherAsyncClient<T> {
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
+    @SuppressWarnings("unchecked")
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
         if(this.eventClass == CloudEvent.class) {
-            List<CloudEvent> eventList = new ArrayList<>();
-            events.forEach(event -> eventList.add((CloudEvent) event));
-            return this.sendCloudEventsWithResponse(eventList, context);
+            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
-            List<EventGridEvent> eventList = new ArrayList<>();
-            events.forEach(event -> eventList.add((EventGridEvent) event));
-            return this.sendEventGridEventsWithResponse(eventList, context);
+            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>)events, context);
         } else {
-            List<Object> eventList = new ArrayList<>();
-            events.forEach(eventList::add);
-            return this.sendCustomEventsWithResponse(eventList, context);
+            return this.sendCustomEventsWithResponse((Iterable<Object>) events, context);
         }
     }
 
