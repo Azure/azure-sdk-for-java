@@ -167,7 +167,7 @@ public class ConnectionStringProperties {
                 "'Endpoint' must be provided in 'connectionString'."));
         }
 
-        final String endpointLowerCase = endpoint.trim().toLowerCase();
+        final String endpointLowerCase = endpoint.trim().toLowerCase(Locale.ROOT);
         if (!endpointLowerCase.startsWith(ENDPOINT_SCHEME_SB_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTPS_PREFIX)) {
