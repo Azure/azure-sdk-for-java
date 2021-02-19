@@ -4,9 +4,17 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{
+  CosmosClientMetadataCachesSnapshot,
+  SparkBridgeImplementationInternal
+}
 import com.azure.cosmos.models.FeedRange
-import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
+import com.azure.cosmos.spark.CosmosPredicates.{
+  assertNotNull,
+  assertNotNullOrEmpty,
+  assertOnSparkDriver,
+  requireNotNull
+}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.InputPartition
 import reactor.core.scala.publisher.{SFlux, SMono}
@@ -15,16 +23,16 @@ import reactor.core.scala.publisher.SMono.PimpJMono
 import java.util
 
 private object CosmosPartitionPlanner {
-  def createInputPartitions
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    cosmosPartitioningConfig: CosmosPartitioningConfig,
-    changeFeedOffset: Option[ChangeFeedOffset],
-    defaultMinimalPartitionCount : Int,
-    defaultMaxPartitionSizeInMB: Int
-  ) : Array[InputPartition] = {
+  def createInputPartitions(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      cosmosPartitioningConfig: CosmosPartitioningConfig,
+      changeFeedOffset: Option[ChangeFeedOffset],
+      defaultMinimalPartitionCount: Int,
+      defaultMaxPartitionSizeInMB: Int
+  ): Array[InputPartition] = {
 
     assertOnSparkDriver()
 
@@ -32,47 +40,56 @@ private object CosmosPartitionPlanner {
     requireNotNull(cosmosClientConfig, "cosmosClientConfig")
     requireNotNull(cosmosContainerConfig, "cosmosContainerConfig")
     requireNotNull(cosmosPartitioningConfig, "cosmosPartitioningConfig")
+    require(defaultMaxPartitionSizeInMB >= 64,
+            "Argument 'defaultMaxPartitionSizeInMB' must at least be 64")
+    require(defaultMinimalPartitionCount >= 1,
+            "Argument 'defaultMinimalPartitionCount' must at least be 1")
     //scalastyle:on multiple.string.literals
 
     cosmosPartitioningConfig.partitioningStrategy match {
-      case PartitioningStrategies.Restrictive => applyRestrictiveStrategy(
-        cosmosClientConfig,
-        cosmosClientStateHandle,
-        cosmosContainerConfig
-      )
-      case PartitioningStrategies.Custom => applyCustomStrategy(
-        cosmosClientConfig,
-        cosmosClientStateHandle,
-        cosmosContainerConfig,
-        changeFeedOffset,
-        cosmosPartitioningConfig.targetedPartitionCount.get)
-      case PartitioningStrategies.Default =>  applyStorageAlignedStrategy(
-        cosmosClientConfig,
-        cosmosClientStateHandle,
-        cosmosContainerConfig,
-        changeFeedOffset,
-        1 / defaultMaxPartitionSizeInMB,
-        defaultMinimalPartitionCount
-      )
-      case PartitioningStrategies.Aggressive =>  applyStorageAlignedStrategy(
-        cosmosClientConfig,
-        cosmosClientStateHandle,
-        cosmosContainerConfig,
-        changeFeedOffset,
-        3 / defaultMaxPartitionSizeInMB,
-        defaultMinimalPartitionCount
-      )
+      case PartitioningStrategies.Restrictive =>
+        applyRestrictiveStrategy(
+          cosmosClientConfig,
+          cosmosClientStateHandle,
+          cosmosContainerConfig
+        )
+      case PartitioningStrategies.Custom =>
+        applyCustomStrategy(cosmosClientConfig,
+                            cosmosClientStateHandle,
+                            cosmosContainerConfig,
+                            changeFeedOffset,
+                            cosmosPartitioningConfig.targetedPartitionCount.get)
+      case PartitioningStrategies.Default =>
+        applyStorageAlignedStrategy(
+          cosmosClientConfig,
+          cosmosClientStateHandle,
+          cosmosContainerConfig,
+          changeFeedOffset,
+          1 / defaultMaxPartitionSizeInMB.toDouble,
+          defaultMinimalPartitionCount
+        )
+      case PartitioningStrategies.Aggressive =>
+        applyStorageAlignedStrategy(
+          cosmosClientConfig,
+          cosmosClientStateHandle,
+          cosmosContainerConfig,
+          changeFeedOffset,
+          3 / defaultMaxPartitionSizeInMB.toDouble,
+          defaultMinimalPartitionCount
+        )
     }
   }
 
-  private[this] def applyRestrictiveStrategy
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig
+  private[this] def applyRestrictiveStrategy(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig
   ): Array[InputPartition] = {
     val feedRangesList = this
-      .getFeedRanges(cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig)
+      .getFeedRanges(cosmosClientConfig,
+                     cosmosClientStateHandle,
+                     cosmosContainerConfig)
       .block()
 
     val feedRanges = new Array[FeedRange](feedRangesList.size())
@@ -82,24 +99,33 @@ private object CosmosPartitionPlanner {
       .map(feedRange => ChangeFeedInputPartition(feedRange.toString))
   }
 
-  private[this] def applyStorageAlignedStrategy
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    planningInfo: Array[PartitionPlanningInfo],
-    splitCountMultiplier: Double,
-    defaultMinPartitionCount: Int
+  private[this] def applyStorageAlignedStrategy(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      planningInfo: Array[PartitionPlanningInfo],
+      splitCountMultiplier: Double,
+      defaultMinPartitionCount: Int
   ): Array[InputPartition] = {
     assertNotNullOrEmpty(planningInfo, "planningInfo")
 
     val totalScaleFactor = planningInfo.map(pi => pi.scaleFactor).sum
-    val effectiveSplitCountMultiplier = splitCountMultiplier * math.min(
-      1,
-      defaultMinPartitionCount / (splitCountMultiplier * totalScaleFactor))
+
+    val effectiveSplitCountMultiplier =
+      if (splitCountMultiplier == 0 || totalScaleFactor == 0) {
+        1
+      } else {
+        splitCountMultiplier * math.max(
+          1,
+          defaultMinPartitionCount / (splitCountMultiplier * totalScaleFactor))
+      }
+
     val inputPartitions =
-      new util.ArrayList[ChangeFeedInputPartition]((2 * totalScaleFactor * effectiveSplitCountMultiplier).toInt)
-    val client = CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
+      new util.ArrayList[ChangeFeedInputPartition](
+        (2 * totalScaleFactor * effectiveSplitCountMultiplier).toInt)
+    val client =
+      CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
     val container = client
       .getDatabase(cosmosContainerConfig.database)
       .getContainer(cosmosContainerConfig.container)
@@ -107,10 +133,13 @@ private object CosmosPartitionPlanner {
     planningInfo.foreach(info => {
       val numberOfSparkPartitions = math.min(
         Int.MaxValue,
-        math.min(1, (info.scaleFactor * effectiveSplitCountMultiplier).round)).toInt
+        math.max(
+          1,
+          math.ceil(info.scaleFactor * effectiveSplitCountMultiplier).toInt))
       SparkBridgeInternal
         .trySplitFeedRange(container, info.feedRange, numberOfSparkPartitions)
-        .foreach(feedRange => inputPartitions.add(ChangeFeedInputPartition(feedRange)))
+        .foreach(feedRange =>
+          inputPartitions.add(ChangeFeedInputPartition(feedRange)))
     })
 
     val returnValue = new Array[InputPartition](inputPartitions.size())
@@ -118,14 +147,14 @@ private object CosmosPartitionPlanner {
     returnValue
   }
 
-  private[this] def applyStorageAlignedStrategy
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    changeFeedOffset: Option[ChangeFeedOffset],
-    weightFactor: Double,
-    defaultMinPartitionCount: Int
+  private[this] def applyStorageAlignedStrategy(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      changeFeedOffset: Option[ChangeFeedOffset],
+      weightFactor: Double,
+      defaultMinPartitionCount: Int
   ): Array[InputPartition] = {
     val planningInfo = this.getPartitionPlanningInfo(
       cosmosClientConfig,
@@ -144,13 +173,13 @@ private object CosmosPartitionPlanner {
     )
   }
 
-  private[this] def applyCustomStrategy
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    changeFeedOffset: Option[ChangeFeedOffset],
-    targetPartitionCount: Int
+  private[this] def applyCustomStrategy(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      changeFeedOffset: Option[ChangeFeedOffset],
+      targetPartitionCount: Int
   ): Array[InputPartition] = {
     val planningInfo = this.getPartitionPlanningInfo(
       cosmosClientConfig,
@@ -159,7 +188,9 @@ private object CosmosPartitionPlanner {
       changeFeedOffset
     )
 
-    val customPartitioningFactor = planningInfo.map(pi => pi.scaleFactor).sum/targetPartitionCount
+    val customPartitioningFactor = planningInfo
+      .map(pi => pi.scaleFactor)
+      .sum / targetPartitionCount
     applyStorageAlignedStrategy(
       cosmosClientConfig,
       cosmosClientStateHandle,
@@ -170,13 +201,13 @@ private object CosmosPartitionPlanner {
     )
   }
 
-  private[this] def getPartitionPlanningInfo
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    changeFeedOffset: Option[ChangeFeedOffset]
-  ) : Array[PartitionPlanningInfo] = {
+  private[this] def getPartitionPlanningInfo(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      changeFeedOffset: Option[ChangeFeedOffset]
+  ): Array[PartitionPlanningInfo] = {
 
     assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
@@ -189,14 +220,16 @@ private object CosmosPartitionPlanner {
 
     assertNotNullOrEmpty(partitionMetadata, "partitionMetadata")
 
-    val partitionPlanningInfo = new Array[PartitionPlanningInfo](partitionMetadata.length)
+    val partitionPlanningInfo =
+      new Array[PartitionPlanningInfo](partitionMetadata.length)
     var index = 0
     partitionMetadata.foreach(m => {
-      // rounded up to the next size
-      val storageSizeInMB: Double = m.totalDocumentSizeInKB / 1024
-      val progressWeightFactor: Double = getChangeFeedProgressFactor(changeFeedOffset, storageSizeInMB, m.latestLsn)
+      val storageSizeInMB: Double = m.totalDocumentSizeInKB / 1024.toDouble
+      val progressWeightFactor: Double =
+        getChangeFeedProgressFactor(changeFeedOffset,
+                                    storageSizeInMB,
+                                    m.latestLsn)
 
-      // Round up scale factor
       val scaleFactor = if (storageSizeInMB == 0) {
         1
       } else {
@@ -217,13 +250,15 @@ private object CosmosPartitionPlanner {
     partitionPlanningInfo
   }
 
-  private[this] def getChangeFeedProgressFactor(changeFeedOffset: Option[ChangeFeedOffset],
-                                                storageSizeInMB: Double,
-                                                latestLsn: Long) : Double = {
+  private[this] def getChangeFeedProgressFactor(
+      changeFeedOffset: Option[ChangeFeedOffset],
+      storageSizeInMB: Double,
+      latestLsn: Long): Double = {
     changeFeedOffset match {
       case None => 1
       case Some(offset) =>
-        val lsnFromOffset = SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(offset.changeFeedState)
+        val lsnFromOffset = SparkBridgeImplementationInternal
+          .extractLsnFromChangeFeedContinuation(offset.changeFeedState)
 
         if (lsnFromOffset <= 0 || storageSizeInMB == 0) {
           // No progress has been made so far - use one Spark partition per GB
@@ -231,52 +266,56 @@ private object CosmosPartitionPlanner {
         } else if (latestLsn <= lsnFromOffset) {
           // If progress has caught up with estimation already make sure we only use one Spark partition
           // for the physical partition in Cosmos
-          1 / storageSizeInMB
+          1 / storageSizeInMB.toDouble
         } else {
           // Use weight factor based on progress. This estimate assumes equal distribution of storage
           // size per LSN - which is a "good enough" simplification
-          (latestLsn - lsnFromOffset) / latestLsn
+          (latestLsn - lsnFromOffset) / latestLsn.toDouble
         }
     }
   }
 
-  private[this] def getFeedRanges
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig
+  private[this] def getFeedRanges(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig
   ): SMono[util.List[FeedRange]] = {
 
     assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    val client = CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
+    val client =
+      CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
 
     val container = client
       .getDatabase(cosmosContainerConfig.database)
       .getContainer(cosmosContainerConfig.container)
 
-    container
-      .getFeedRanges
-      .asScala
+    container.getFeedRanges.asScala
   }
 
-  private[this] def getPartitionMetadata
-  (
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig
-  ) : Array[PartitionMetadata] = {
+  private[this] def getPartitionMetadata(
+      cosmosClientConfig: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[
+        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig
+  ): Array[PartitionMetadata] = {
 
-    this.getFeedRanges(cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig)
+    this
+      .getFeedRanges(cosmosClientConfig,
+                     cosmosClientStateHandle,
+                     cosmosContainerConfig)
       .flatMap(feedRanges => {
         SFlux
           .fromArray(feedRanges.toArray())
-          .flatMap(f => PartitionMetadataCache.apply(
-            cosmosClientConfig,
-            cosmosClientStateHandle,
-            cosmosContainerConfig,
-            f.toString
-          ))
+          .flatMap(
+            f =>
+              PartitionMetadataCache.apply(
+                cosmosClientConfig,
+                cosmosClientStateHandle,
+                cosmosContainerConfig,
+                f.toString
+            ))
           .collectSeq()
       })
       .block()
