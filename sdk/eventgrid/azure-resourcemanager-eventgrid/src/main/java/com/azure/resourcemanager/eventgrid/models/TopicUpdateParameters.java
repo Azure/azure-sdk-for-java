@@ -25,6 +25,18 @@ public class TopicUpdateParameters {
     private Map<String, String> tags;
 
     /*
+     * Resource identity information.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
      * This determines if traffic is allowed over public network. By default it
      * is enabled.
      * You can further restrict to specific IPs by configuring <seealso
@@ -58,6 +70,46 @@ public class TopicUpdateParameters {
      */
     public TopicUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Resource identity information.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Resource identity information.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -115,6 +167,12 @@ public class TopicUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }

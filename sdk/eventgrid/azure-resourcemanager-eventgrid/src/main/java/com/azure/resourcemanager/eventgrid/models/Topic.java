@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
@@ -47,6 +48,34 @@ public interface Topic {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    ResourceSku sku();
+
+    /**
+     * Gets the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    IdentityInfo identity();
+
+    /**
+     * Gets the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    ResourceKind kind();
+
+    /**
+     * Gets the extendedLocation property: Extended location of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
 
     /**
      * Gets the privateEndpointConnections property: The privateEndpointConnections property.
@@ -177,6 +206,10 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithKind,
+                DefinitionStages.WithExtendedLocation,
                 DefinitionStages.WithPrivateEndpointConnections,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
@@ -206,6 +239,46 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             *
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
+        }
+        /** The stage of the Topic definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity information for the resource..
+             *
+             * @param identity Identity information for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(IdentityInfo identity);
+        }
+        /** The stage of the Topic definition allowing to specify kind. */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Kind of the resource..
+             *
+             * @param kind Kind of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ResourceKind kind);
+        }
+        /** The stage of the Topic definition allowing to specify extendedLocation. */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Extended location of the resource..
+             *
+             * @param extendedLocation Extended location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
         /** The stage of the Topic definition allowing to specify privateEndpointConnections. */
         interface WithPrivateEndpointConnections {
@@ -280,7 +353,11 @@ public interface Topic {
 
     /** The template for Topic update. */
     interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules {
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithSku,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithInboundIpRules {
         /**
          * Executes the update request.
          *
@@ -307,6 +384,26 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Resource identity information..
+             *
+             * @param identity Resource identity information.
+             * @return the next definition stage.
+             */
+            Update withIdentity(IdentityInfo identity);
+        }
+        /** The stage of the Topic update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             *
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
         }
         /** The stage of the Topic update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
@@ -353,4 +450,47 @@ public interface Topic {
      * @return the refreshed resource.
      */
     Topic refresh(Context context);
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys listSharedAccessKeys();
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 }

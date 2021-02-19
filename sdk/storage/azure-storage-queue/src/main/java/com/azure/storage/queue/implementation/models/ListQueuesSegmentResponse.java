@@ -13,32 +13,30 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The object returned when calling List Queues on a Queue Service.
- */
+/** The object returned when calling List Queues on a Queue Service. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListQueuesSegmentResponse {
     /*
-     * The serviceEndpoint property.
+     * The ServiceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
-     * The prefix property.
+     * The Prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
-     * The marker property.
+     * The Marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
     /*
-     * The maxResults property.
+     * The MaxResults property.
      */
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
@@ -54,19 +52,19 @@ public final class ListQueuesSegmentResponse {
     }
 
     /*
-     * The queueItems property.
+     * The QueueItems property.
      */
     @JsonProperty(value = "Queues")
     private QueuesWrapper queueItems;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint property: The serviceEndpoint property.
+     * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -75,7 +73,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the serviceEndpoint property: The serviceEndpoint property.
+     * Set the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListQueuesSegmentResponse object itself.
@@ -86,7 +84,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Get the prefix property: The prefix property.
+     * Get the prefix property: The Prefix property.
      *
      * @return the prefix value.
      */
@@ -95,7 +93,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the prefix property: The prefix property.
+     * Set the prefix property: The Prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListQueuesSegmentResponse object itself.
@@ -106,7 +104,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Get the marker property: The marker property.
+     * Get the marker property: The Marker property.
      *
      * @return the marker value.
      */
@@ -115,7 +113,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the marker property: The marker property.
+     * Set the marker property: The Marker property.
      *
      * @param marker the marker value to set.
      * @return the ListQueuesSegmentResponse object itself.
@@ -126,7 +124,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Get the maxResults property: The maxResults property.
+     * Get the maxResults property: The MaxResults property.
      *
      * @return the maxResults value.
      */
@@ -135,7 +133,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the maxResults property: The maxResults property.
+     * Set the maxResults property: The MaxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListQueuesSegmentResponse object itself.
@@ -146,7 +144,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Get the queueItems property: The queueItems property.
+     * Get the queueItems property: The QueueItems property.
      *
      * @return the queueItems value.
      */
@@ -158,7 +156,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the queueItems property: The queueItems property.
+     * Set the queueItems property: The QueueItems property.
      *
      * @param queueItems the queueItems value to set.
      * @return the ListQueuesSegmentResponse object itself.
@@ -169,7 +167,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -178,7 +176,7 @@ public final class ListQueuesSegmentResponse {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListQueuesSegmentResponse object itself.

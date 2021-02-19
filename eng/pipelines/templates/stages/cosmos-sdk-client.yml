@@ -36,37 +36,44 @@ stages:
         SDKType: ${{parameters.SDKType}}
         TestMatrix:
           Linux - Java 8:
-            OSVmImage: 'ubuntu-18.04'
+            Pool: azsdk-pool-mms-ubuntu-1804-general
+            OSVmImage: MMSUbuntu18.04
             JavaTestVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
-            OSVmImage: 'macOS-10.15'
+            Pool: Azure Pipelines
+            OSVmImage: macOS-10.15
             JavaTestVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
-            OSVmImage: 'ubuntu-18.04'
+            Pool: azsdk-pool-mms-ubuntu-1804-general
+            OSVmImage: MMSUbuntu18.04
             JavaTestVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
-            OSVmImage: 'macOS-10.15'
+            Pool: Azure Pipelines
+            OSVmImage: macOS-10.15
             JavaTestVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Linux From Source - Java 11:
-            OSVmImage: 'ubuntu-18.04'
+            Pool: azsdk-pool-mms-ubuntu-1804-general
+            OSVmImage: MMSUbuntu18.04
             JavaTestVersion: '1.11'
             RunTitle: 'From Source: Linux on Java 1.11'
             AdditionalOptions: '-amd'
@@ -98,7 +105,7 @@ stages:
           TimeoutInMinutes: 90
           TestStepMavenInputs:
             goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false $(AdditionalArgs) -pl $(ProjectList)'
             mavenAuthenticateFeed: true
             jdkVersionOption: $(JavaTestVersion)
 

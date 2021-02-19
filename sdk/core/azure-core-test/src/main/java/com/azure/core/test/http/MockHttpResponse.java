@@ -197,4 +197,9 @@ public class MockHttpResponse extends HttpResponse {
         headers.set(name, value);
         return this;
     }
+
+    @Override
+    public HttpResponse buffer() {
+        return this; // This response is already buffered.
+    }
 }

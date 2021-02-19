@@ -60,7 +60,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         // Interpret the algorithm
         EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -116,7 +116,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         // Interpret the algorithm
         EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -167,7 +167,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -198,7 +198,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));

@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleasesnapshotfail693180253129a?sharesnapshot=2020-08-19T19:26:08.0000000Z&comp=lease&restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakshareleasesnapshotfail693180253129a?comp=lease&restype=share&sharesnapshot=2020-08-19T19%3A26%3A08.0000000Z",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
