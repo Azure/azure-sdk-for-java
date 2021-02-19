@@ -230,7 +230,7 @@ Or read attributes dynamically by specifying a string of desired attributes. Thi
 to retrieve any attribute will always retrieve all of them as an atomic bulk operation. You may specify "*" instead of a 
 list of specific attributes to have all attributes returned in the map.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L85-L85 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L87-L87 -->
 ```java
 Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metadata,headers");
 ```
