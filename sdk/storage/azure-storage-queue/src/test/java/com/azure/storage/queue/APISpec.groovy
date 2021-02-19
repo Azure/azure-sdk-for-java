@@ -18,16 +18,19 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.models.QueuesSegmentOptions
+import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.stream.Collectors
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -54,10 +57,7 @@ class APISpec extends Specification {
     def setup() {
         primaryCredential = getCredential(PRIMARY_STORAGE)
 
-        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '')
-        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
-            fullTestName += specificationContext.getCurrentIteration().getIterationIndex()
-        }
+        String fullTestName = getFullTestName(specificationContext)
         String className = specificationContext.getCurrentSpec().getName()
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + fullTestName, testMode, interceptorManager.getRecordedData())
@@ -74,6 +74,23 @@ class APISpec extends Specification {
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+    }
+
+    static def getFullTestName(ISpecificationContext specificationContext) {
+        StringBuilder fullTestNameBuilder = new StringBuilder()
+        for (def piece : specificationContext.getCurrentFeature().getName().split(" ")) {
+            if (CoreUtils.isNullOrEmpty(piece)) {
+                continue
+            }
+
+            fullTestNameBuilder = fullTestNameBuilder.append(piece.charAt(0).toUpperCase())
+                .append(piece.substring(1));
+        }
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestNameBuilder.append(specificationContext.getCurrentIteration().getIterationIndex())
+        }
+
+        return fullTestNameBuilder.toString()
     }
 
     /**

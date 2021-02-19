@@ -79,7 +79,7 @@ org.apache.qpid:proton-j;0.33.4
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
-org.codehaus.groovy:groovy-eclipse-batch;2.5.12-02
+org.codehaus.groovy:groovy-eclipse-batch;2.5.14-02
 org.codehaus.groovy:groovy-eclipse-compiler;3.6.0-03
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.hibernate.validator:hibernate-validator;6.1.6.Final
@@ -206,6 +206,7 @@ org.junit.platform:junit-platform-testkit;1.6.3
 org.junit.vintage:junit-vintage-engine;5.6.3
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
+org.codehaus.groovy:groovy;2.5.14
 org.spockframework:spock-core;2.0-M4-groovy-2.5
 org.testng:testng;6.14.3
 uk.org.lidalia:slf4j-test;1.2.0
