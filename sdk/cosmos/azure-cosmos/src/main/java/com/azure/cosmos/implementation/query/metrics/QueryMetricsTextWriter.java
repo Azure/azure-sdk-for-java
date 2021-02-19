@@ -64,7 +64,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final String ACTIVITY_ID_HEADER = "Activity Id";
 
     // Constants for Scheduling Metrics Table
-    private static final String PARTITION_ID_HEADER = "Partition Id";
+    private static final String PARTITION_ID_HEADER = "Partition Feed Range";
     private static final String RESPONSE_TIME_HEADER = "Response Time (ms)";
     private static final String RUN_TIME_HEADER = "Run Time (ms)";
     private static final String WAIT_TIME_HEADER = "Wait Time (ms)";

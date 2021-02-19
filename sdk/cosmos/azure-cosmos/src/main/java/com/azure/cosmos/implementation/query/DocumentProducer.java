@@ -73,7 +73,7 @@ class DocumentProducer<T extends Resource> {
                                                              QueryMetricsConstants.RequestCharge,
                                                              pageResult.getRequestCharge());
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                        new ImmutablePair<>(feedRange.getRange().getMin(), fetchSchedulingMetrics.getElapsedTime());
+                        new ImmutablePair<>(feedRange.getRange().toString(), fetchSchedulingMetrics.getElapsedTime());
 
                 QueryMetrics qm =BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
                         new ClientSideMetrics(retries,
@@ -81,7 +81,7 @@ class DocumentProducer<T extends Resource> {
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),
                                 Arrays.asList(schedulingTimeSpanMap)
                         ), pageResult.getActivityId());
-                BridgeInternal.putQueryMetricsIntoMap(pageResult, feedRange.getRange().getMin(), qm);
+                BridgeInternal.putQueryMetricsIntoMap(pageResult, feedRange.getRange().toString(), qm);
             }
         }
     }
@@ -127,7 +127,7 @@ class DocumentProducer<T extends Resource> {
 
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
-        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(this.feedRange.getRange().getMin());
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
 
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;

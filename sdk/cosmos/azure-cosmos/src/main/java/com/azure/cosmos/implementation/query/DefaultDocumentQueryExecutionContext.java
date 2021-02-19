@@ -58,7 +58,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
-    private static final String DEFAULT_PARTITION_KEY_RANGE_ID = "0";
+    private static final String DEFAULT_PARTITION_RANGE = "00-FF";
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
@@ -76,7 +76,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         this.isContinuationExpected = isContinuationExpected;
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
-        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_KEY_RANGE_ID);
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_RANGE);
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
@@ -172,7 +172,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                 tFeedResponse.getResults().size(),
                                 this.retries);
                         ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                                new ImmutablePair<>(DEFAULT_PARTITION_KEY_RANGE_ID, this.fetchSchedulingMetrics.getElapsedTime());
+                                new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
                         if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
                             QueryMetrics qm =
                                     BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
@@ -182,7 +182,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
                                             tFeedResponse.getActivityId());
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_KEY_RANGE_ID, qm);
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_RANGE, qm);
                         }
                         return tFeedResponse;
                     });
