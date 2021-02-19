@@ -3,20 +3,19 @@
 
 package com.azure.storage.queue;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -40,14 +39,8 @@ public class ReadmeSamples {
     String value = "value";
     String queueAsyncName = "queueAsyncName";
     String queueName = "queueName";
-    Map<String, String> metadata = new HashMap<String, String>() {
-        {
-            put("key1", "val1");
-            put("key2", "val2");
-        }
-    };
 
-    private Logger logger = LoggerFactory.getLogger(ReadmeSamples.class);
+    private final Logger logger = LoggerFactory.getLogger(ReadmeSamples.class);
 
     public void getQueueServiceClient1() {
         // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
@@ -98,6 +91,10 @@ public class ReadmeSamples {
         QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).buildClient();
 
         // metadata is map of key-value pair
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key1", "val1");
+        metadata.put("key2", "val2");
+
         queueClient.createWithResponse(metadata, Duration.ofSeconds(30), Context.NONE);
     }
 
@@ -106,6 +103,11 @@ public class ReadmeSamples {
         String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s?%s", ACCOUNT_NAME, queueAsyncName,
                 SAS_TOKEN);
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder().endpoint(queueAsyncURL).buildAsyncClient();
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key1", "val1");
+        metadata.put("key2", "val2");
+
         queueAsyncClient.createWithResponse(metadata).subscribe(result -> {
             // do something when new queue created
         }, error -> {
@@ -222,12 +224,9 @@ public class ReadmeSamples {
         QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
                 .buildClient();
 
-        Map<String, String> metadata = new HashMap<String, String>() {
-            {
-                put("key1", "val1");
-                put("key2", "val2");
-            }
-        };
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key1", "val1");
+        metadata.put("key2", "val2");
         queueClient.setMetadata(metadata);
     }
 }

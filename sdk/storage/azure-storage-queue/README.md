@@ -107,7 +107,7 @@ https://myaccount.queue.core.windows.net/myqueue
 ### Handling Exceptions
 Uses the `queueServiceClient` generated from [Queue Service Client](#queue-service-client) section below.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L68-L72 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L61-L65 -->
 ```java
 try {
     queueServiceClient.createQueue("myQueue");
@@ -131,7 +131,7 @@ The queue service do operations on the queues in the storage account and manage 
 The client performs the interactions with the Queue service, create or delete a queue, getting and setting Queue properties, list queues in account, and get queue statistics. An asynchronous, `QueueServiceAsyncClient`, and synchronous, `QueueClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${SASToken}`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L76-L80 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L69-L73 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -142,7 +142,7 @@ QueueClient newQueueClient = queueServiceClient.createQueue("myQueue");
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L84-L93 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L77-L86 -->
 ```Java
 String queueServiceAsyncURL = String.format("https://%s.queue.core.windows.net/", ACCOUNT_NAME);
 QueueServiceAsyncClient queueServiceAsyncClient = new QueueServiceClientBuilder().endpoint(queueServiceAsyncURL)
@@ -163,7 +163,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 ### QueueClient
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${queueName}`, `${SASToken}`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L97-L101 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L90-L98 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, queueName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).buildClient();
@@ -174,7 +174,7 @@ queueClient.createWithResponse(metadata, Duration.ofSeconds(30), Context.NONE);
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L105-L115 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L102-L117 -->
 ```Java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s?%s", ACCOUNT_NAME, queueAsyncName,
@@ -212,7 +212,7 @@ We have two ways of building QueueService or Queue Client. Here will take queueS
 
 First, build client from full URL/endpoint (e.g. with queueName, with SASToken and etc.)
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L53-L55 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L46-L48 -->
 ```Java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 String queueServiceURL = String.format("https://%s.queue.core.windows.net/?%s", ACCOUNT_NAME, SAS_TOKEN);
@@ -223,7 +223,7 @@ Or
 
 We can build the queueServiceClient from the builder using `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L59-L61 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L52-L54 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -235,7 +235,7 @@ QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint
 Create a queue in the Storage Account using `${SASToken}` as credential.
 Throws StorageException If the queue fails to be created.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L76-L80 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L69-L73 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -249,7 +249,7 @@ QueueClient newQueueClient = queueServiceClient.createQueue("myQueue");
 Delete a queue in the Storage Account using `${SASToken}` as credential.
 Throws StorageException If the queue fails to be deleted.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L119-L123 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L121-L125 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -262,7 +262,7 @@ queueServiceClient.deleteQueue("myqueue");
 
 List all the queues in account using `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L127-L136 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L129-L138 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -282,7 +282,7 @@ Get queue properties in account, including properties for Storage Analytics and 
 
 Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L140-L144 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L142-L146 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -297,7 +297,7 @@ Set queue properties in account, including properties for Storage Analytics and 
 
 Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L148-L154 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L150-L156 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -314,7 +314,7 @@ The `Get Queue Service Stats` operation retrieves statistics related to replicat
 Use `${SASToken}` as credential.
 It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L158-L162 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L160-L164 -->
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL)
@@ -329,7 +329,7 @@ The operation adds a new message to the back of the message queue. A visibility 
 Use `${SASToken}` as credential.
 A message must be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L166-L170 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L168-L172 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -341,7 +341,7 @@ queueClient.sendMessage("myMessage");
 ### Update a message in a queue
 The operation updates a message in the message queue. Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L174-L180 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L176-L182 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -355,7 +355,7 @@ queueClient.updateMessage(messageId, popReceipt, "new message", visibilityTimeou
 ### Peek at messages in a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L184-L191 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L186-L193 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -371,7 +371,7 @@ queueClient.peekMessages(5, Duration.ofSeconds(1), new Context(key, value)).forE
 ### Receive messages from a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L195-L201 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L197-L203 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -386,7 +386,7 @@ queueClient.receiveMessages(10).forEach(message -> {
 ### Delete message from a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L205-L209 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L207-L211 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -400,7 +400,7 @@ The operation retrieves user-defined metadata and queue properties on the specif
 
 Use `${SASToken}` as credential.
 
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L213-L217 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L215-L219 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
@@ -413,7 +413,7 @@ QueueProperties properties = queueClient.getProperties();
 The operation sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
 
 Use `${SASToken}` as credential.
-<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L221-L231 -->
+<!-- embedme ./src/samples/java/com/azure/storage/queue/ReadmeSamples.java#L223-L230 -->
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")

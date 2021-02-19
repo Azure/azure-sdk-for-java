@@ -34,7 +34,7 @@ class APISpec extends Specification {
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
+    TestResourceNamer resourceNamer
 
     // Clients for API tests
     QueueServiceClient primaryQueueServiceClient
@@ -53,12 +53,18 @@ class APISpec extends Specification {
      */
     def setup() {
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = refactorName(specificationContext.currentIteration.getName())
+
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '')
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += specificationContext.getCurrentIteration().getIterationIndex()
+        }
         String className = specificationContext.getCurrentSpec().getName()
-        methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + fullTestName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+
         if (getTestMode() != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
@@ -67,7 +73,7 @@ class APISpec extends Specification {
         }
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, testName)
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
     }
 
     /**
@@ -142,7 +148,7 @@ class APISpec extends Specification {
     }
 
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
-        def queueName = testResourceName.randomName("queue", 16)
+        def queueName = resourceNamer.randomName("queue", 16)
         QueueClientBuilder builder = new QueueClientBuilder()
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -200,7 +206,7 @@ class APISpec extends Specification {
     }
 
     OffsetDateTime getUTCNow() {
-        return testResourceName.now()
+        return resourceNamer.now()
     }
 
     HttpClient getHttpClient() {

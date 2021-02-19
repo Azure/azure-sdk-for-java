@@ -33,6 +33,7 @@ import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
+import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -138,7 +139,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = getFullTestName(specificationContext)
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -150,7 +151,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
 
         primaryDataLakeServiceClient = setClient(primaryCredential)
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -571,7 +572,7 @@ class APISpec extends Specification {
      * @return
      * Whether or not the header values are appropriate.
      */
-    def validateBasicHeaders(HttpHeaders headers) {
+    static def validateBasicHeaders(HttpHeaders headers) {
         return headers.getValue("etag") != null &&
             // Quotes should be scrubbed from etag header values
             !headers.getValue("etag").contains("\"") &&
@@ -581,7 +582,7 @@ class APISpec extends Specification {
             headers.getValue("date") != null
     }
 
-    def validatePathProperties(Response<PathProperties> response, String cacheControl, String contentDisposition,
+    static def validatePathProperties(Response<PathProperties> response, String cacheControl, String contentDisposition,
                                String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
         return response.getValue().getCacheControl() == cacheControl &&
             response.getValue().getContentDisposition() == contentDisposition &&
@@ -591,7 +592,7 @@ class APISpec extends Specification {
             response.getHeaders().getValue("Content-Type") == contentType
     }
 
-    def setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
+    static def setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
         if (leaseID == receivedLeaseID) {
             return createLeaseClient(fsc).acquireLease(-1)
         } else {
@@ -611,7 +612,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupPathMatchCondition(DataLakePathClient pc, String match) {
+    static def setupPathMatchCondition(DataLakePathClient pc, String match) {
         if (match == receivedEtag) {
             return pc.getProperties().getETag()
         } else {
@@ -619,7 +620,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
+    static def setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
         if (match == receivedEtag) {
             return pac.getProperties().block().getETag()
         } else {
@@ -641,7 +642,7 @@ class APISpec extends Specification {
      * The actual lease id of the path if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
+    static def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             if (pc instanceof DataLakeFileClient) {
@@ -657,7 +658,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathLeaseCondition(DataLakeFileAsyncClient fac, String leaseID) {
+    static def setupPathLeaseCondition(DataLakeFileAsyncClient fac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new DataLakeLeaseClientBuilder()
@@ -673,7 +674,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathLeaseCondition(DataLakeDirectoryAsyncClient dac, String leaseID) {
+    static def setupPathLeaseCondition(DataLakeDirectoryAsyncClient dac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new DataLakeLeaseClientBuilder()
@@ -757,7 +758,7 @@ class APISpec extends Specification {
         }
     }
 
-    def getMockRequest() {
+    static def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
         headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
@@ -766,13 +767,13 @@ class APISpec extends Specification {
     }
 
     // Only sleep if test is running in live mode
-    def sleepIfRecord(long milliseconds) {
+    static def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
-    def compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
+    static def compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
         if (expected.size() == actual.size()) {
             boolean success = true
             for (PathAccessControlEntry entry : expected) {
@@ -784,7 +785,7 @@ class APISpec extends Specification {
 
     }
 
-    def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
+    static def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
             if (e.isInDefaultScope() == entry.isInDefaultScope() &&
                 e.getAccessControlType().equals(entry.getAccessControlType()) &&
@@ -797,7 +798,7 @@ class APISpec extends Specification {
         return false
     }
 
-    def sleepIfLive(long milliseconds) {
+    static def sleepIfLive(long milliseconds) {
         if (testMode == TestMode.PLAYBACK) {
             return
         }
@@ -834,7 +835,7 @@ class APISpec extends Specification {
      * @param count Size of the download from the service
      * @return Whether the files have equivalent content based on offset and read count
      */
-    def compareFiles(File file1, File file2, long offset, long count) {
+    static def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
         def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
@@ -874,7 +875,7 @@ class APISpec extends Specification {
     with than was worth it.
      */
 
-    def getStubResponse(int code, HttpRequest request) {
+    static def getStubResponse(int code, HttpRequest request) {
         return new HttpResponse(request) {
 
             @Override
@@ -914,7 +915,7 @@ class APISpec extends Specification {
         }
     }
 
-    def getPerCallVersionPolicy() {
+    static def getPerCallVersionPolicy() {
         return new HttpPipelinePolicy() {
             @Override
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -967,4 +968,12 @@ class APISpec extends Specification {
         }
     }
 
+    static def getFullTestName(ISpecificationContext specificationContext) {
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
+
+        return fullTestName
+    }
 }

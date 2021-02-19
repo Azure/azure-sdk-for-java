@@ -69,8 +69,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiConsumer;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -102,7 +102,7 @@ public class Samples {
         if (testMode == null) {
             testMode = PLAYBACK_MODE;
         }
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+        Assumptions.assumeTrue(testMode.equalsIgnoreCase("RECORD"), "The test only runs in Live mode.");
     }
 
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {

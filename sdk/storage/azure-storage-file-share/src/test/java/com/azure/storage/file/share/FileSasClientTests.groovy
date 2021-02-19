@@ -28,7 +28,7 @@ class FileSasClientTests extends APISpec {
     private String data
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
 
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()

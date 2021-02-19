@@ -26,7 +26,7 @@ class QueueAPITests extends APISpec {
     String queueName
 
     def setup() {
-        queueName = testResourceName.randomName(methodName, 60)
+        queueName = resourceNamer.randomName(methodName, 60)
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
     }

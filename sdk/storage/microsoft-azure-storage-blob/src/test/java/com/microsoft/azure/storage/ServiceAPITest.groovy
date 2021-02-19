@@ -3,11 +3,37 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.*
+
+import com.microsoft.azure.storage.blob.AnonymousCredentials
+import com.microsoft.azure.storage.blob.BlobURLParts
+import com.microsoft.azure.storage.blob.ContainerListDetails
+import com.microsoft.azure.storage.blob.ContainerURL
+import com.microsoft.azure.storage.blob.ListContainersOptions
+import com.microsoft.azure.storage.blob.Metadata
+import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.RequestRetryOptions
+import com.microsoft.azure.storage.blob.ServiceURL
+import com.microsoft.azure.storage.blob.StorageException
+import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.URLParser
+import com.microsoft.azure.storage.blob.models.ContainerItem
+import com.microsoft.azure.storage.blob.models.CorsRule
+import com.microsoft.azure.storage.blob.models.Logging
+import com.microsoft.azure.storage.blob.models.Metrics
+import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
+import com.microsoft.azure.storage.blob.models.ServiceGetUserDelegationKeyHeaders
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentHeaders
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
+import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.StaticWebsite
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.HttpPipeline
-import org.junit.Assume
+import org.junit.jupiter.api.Assumptions
 
 import java.time.OffsetDateTime
 
@@ -28,7 +54,7 @@ class ServiceAPITest extends APISpec {
     }
 
     def cleanup() {
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+        Assumptions.assumeTrue(getTestMode().equalsIgnoreCase(RECORD_MODE), "The test only runs in Live mode.")
         RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
         primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withStaticWebsite(new StaticWebsite().withEnabled(false))

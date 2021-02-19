@@ -53,7 +53,7 @@ class APISpec extends Specification {
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
+    TestResourceNamer resourceNamer
     // Prefixes for paths and shares
     String sharePrefix = "jts" // java test share
 
@@ -97,13 +97,18 @@ class APISpec extends Specification {
     def setup() {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = reformat(specificationContext.currentIteration.getName())
+
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '')
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += specificationContext.getCurrentIteration().getIterationIndex()
+        }
         String className = specificationContext.getCurrentSpec().getName()
-        methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode,
-            interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + fullTestName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+
         if (getTestMode() != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
@@ -115,9 +120,6 @@ class APISpec extends Specification {
 
         premiumFileServiceClient = setClient(premiumCredential)
         premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**
@@ -200,7 +202,7 @@ class APISpec extends Specification {
     }
 
     private String generateResourceName(String prefix, int entityNo) {
-        return testResourceName.randomName(prefix + methodName + entityNo, 63)
+        return resourceNamer.randomName(prefix + methodName + entityNo, 63)
     }
 
     ShareServiceAsyncClient setAsyncClient(StorageSharedKeyCredential credential) {
@@ -423,7 +425,7 @@ class APISpec extends Specification {
     }
 
     OffsetDateTime getUTCNow() {
-        return testResourceName.now()
+        return resourceNamer.now()
     }
 
     InputStream getInputStream(byte[] data) {
@@ -501,7 +503,7 @@ class APISpec extends Specification {
     }
 
     String getRandomUUID() {
-        return testResourceName.randomUuid()
+        return resourceNamer.randomUuid()
     }
 
     void sleepIfLive(long milliseconds) {

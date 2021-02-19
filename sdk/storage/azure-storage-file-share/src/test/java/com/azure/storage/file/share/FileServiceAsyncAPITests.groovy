@@ -3,8 +3,7 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.test.TestMode
-import com.azure.core.util.Context
+
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -14,12 +13,8 @@ import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
-import com.azure.storage.file.share.models.ShareStorageException
-import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
-
-import java.time.Duration
 
 class FileServiceAsyncAPITests extends APISpec {
     String shareName
@@ -33,7 +28,7 @@ class FileServiceAsyncAPITests extends APISpec {
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
@@ -121,7 +116,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def "Delete share does not exist"() {
         when:
-        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(testResourceName.randomName(methodName, 60)))
+        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(resourceNamer.randomName(methodName, 60)))
 
         then:
         deleteShareVerifier.verifyErrorSatisfies {

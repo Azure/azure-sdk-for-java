@@ -5,20 +5,45 @@ package com.microsoft.azure.storage
 
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
-import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.blob.BlobURL
+import com.microsoft.azure.storage.blob.Constants
+import com.microsoft.azure.storage.blob.ContainerURL
+import com.microsoft.azure.storage.blob.ListContainersOptions
+import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.ServiceURL
+import com.microsoft.azure.storage.blob.SharedKeyCredentials
+import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.TokenCredentials
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ContainerItem
+import com.microsoft.azure.storage.blob.models.CopyStatusType
+import com.microsoft.azure.storage.blob.models.LeaseStateType
+import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import com.microsoft.rest.v2.Context
-import com.microsoft.rest.v2.http.*
+import com.microsoft.rest.v2.http.HttpClient
+import com.microsoft.rest.v2.http.HttpClientConfiguration
+import com.microsoft.rest.v2.http.HttpHeaders
+import com.microsoft.rest.v2.http.HttpMethod
+import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpPipelineLogLevel
+import com.microsoft.rest.v2.http.HttpPipelineLogger
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.HttpResponse
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
 import io.reactivex.Single
-import org.junit.Assume
+import org.junit.jupiter.api.Assumptions
 import org.spockframework.lang.ISpecificationContext
+import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.lang.reflect.Method
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
@@ -297,12 +322,12 @@ class APISpec extends Specification {
     }
 
     def cleanupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+        Assumptions.assumeTrue(getTestMode().equalsIgnoreCase(RECORD_MODE), "The test only runs in Live mode.")
         cleanupContainers()
     }
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+        Assumptions.assumeTrue(getTestMode().equalsIgnoreCase(RECORD_MODE), "The test only runs in Live mode.")
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }

@@ -32,7 +32,7 @@ class FileSASTests extends APISpec {
     private String filePath = "filename"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
 
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
@@ -294,7 +294,7 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithId)
             .buildClient()
 
-        def dirName = testResourceName.randomName(methodName, 60)
+        def dirName = resourceNamer.randomName(methodName, 60)
         client1.createDirectory(dirName)
         client1.deleteDirectory(dirName)
 
@@ -310,7 +310,7 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithPermissions)
             .buildClient()
 
-        def dirName2 = testResourceName.randomName(methodName, 60)
+        def dirName2 = resourceNamer.randomName(methodName, 60)
         client2.createDirectory(dirName2)
         client2.deleteDirectory(dirName2)
 
@@ -350,7 +350,7 @@ class FileSASTests extends APISpec {
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        def shareName = testResourceName.randomName(methodName, 60)
+        def shareName = resourceNamer.randomName(methodName, 60)
         sc.createShare(shareName)
         sc.deleteShare(shareName)
 
@@ -378,8 +378,8 @@ class FileSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .generateSasQueryParameters(primaryCredential)
             .encode()
-        def shareName = testResourceName.randomName(methodName, 60)
-        def pathName = testResourceName.randomName(methodName, 60)
+        def shareName = resourceNamer.randomName(methodName, 60)
+        def pathName = resourceNamer.randomName(methodName, 60)
 
         when:
         def sc = getServiceClientBuilder(null, primaryFileServiceClient.getFileServiceUrl() + "?" + sas, null).buildClient()

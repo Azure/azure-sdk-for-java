@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import org.spockframework.lang.ISpecificationContext
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -72,7 +73,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = getFullTestName(specificationContext)
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -84,7 +85,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -193,7 +194,7 @@ class APISpec extends Specification {
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
-                                       HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
@@ -207,7 +208,7 @@ class APISpec extends Specification {
     }
 
     BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
-                                                     HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -249,8 +250,27 @@ class APISpec extends Specification {
     /*
      Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
+
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
+    static def getFullTestName(ISpecificationContext specificationContext) {
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
+
+        return fullTestName
+    }
+
+    static def logTestName(ISpecificationContext specificationContext) {
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
+        String className = specificationContext.getCurrentSpec().getName()
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+    }
 }

@@ -19,7 +19,10 @@ import java.time.ZoneOffset
 class SasModelsTest extends Specification {
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
         String className = specificationContext.getCurrentSpec().getName()
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)

@@ -23,8 +23,8 @@ class LeaseAPITest extends APISpec {
     String filePath
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        filePath = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
+        filePath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()

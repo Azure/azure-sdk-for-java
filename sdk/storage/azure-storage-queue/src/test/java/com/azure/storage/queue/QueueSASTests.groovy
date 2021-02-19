@@ -6,20 +6,19 @@ package com.azure.storage.queue
 import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasProtocol
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
+import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
-import org.junit.Test
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -31,7 +30,7 @@ class QueueSASTests extends APISpec {
 
     def setup() {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+        queueClient = primaryQueueServiceClient.getQueueClient(resourceNamer.randomName(methodName, 60))
 
     }
 
@@ -99,7 +98,6 @@ class QueueSASTests extends APISpec {
         serviceSASSignatureValues.getQueueName() == queueName
     }
 
-    @Test
     def " QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
@@ -148,7 +146,6 @@ class QueueSASTests extends APISpec {
         thrown(QueueStorageException)
     }
 
-    @Test
     def "QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
@@ -198,7 +195,6 @@ class QueueSASTests extends APISpec {
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
-    @Test
     def "QueueSAS enqueue dequeue with identifier"() {
         setup:
         queueClient.create()
@@ -213,7 +209,7 @@ class QueueSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         QueueSignedIdentifier identifier = new QueueSignedIdentifier()
-            .setId(testResourceName.randomUuid())
+            .setId(resourceNamer.randomUuid())
             .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
                 .setExpiresOn(expiryTime).setStartsOn(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
@@ -244,7 +240,6 @@ class QueueSASTests extends APISpec {
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
 
-    @Test
     def "AccountSAS create delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
@@ -273,7 +268,7 @@ class QueueSASTests extends APISpec {
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = resourceNamer.randomName(methodName, 60)
         sc.createQueue(queueName)
 
         then:
@@ -286,7 +281,6 @@ class QueueSASTests extends APISpec {
         notThrown(QueueStorageException)
     }
 
-    @Test
     def "AccountSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
@@ -343,7 +337,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = resourceNamer.randomName(methodName, 60)
 
         when:
         def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()

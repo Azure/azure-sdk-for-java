@@ -1,20 +1,20 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
 
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.*
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.verify
+import static org.mockito.Mockito.when
 
 class BlobChangefeedPagedFluxTest extends Specification {
 
@@ -27,10 +27,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
     List<BlobChangefeedEventWrapper> mockEventWrappers
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+        APISpec.logTestName(specificationContext)
         setupEvents()
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockChangefeedFactory = mock(ChangefeedFactory.class)

@@ -18,15 +18,20 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.function.Function
 import java.util.function.Supplier
 
-import static org.mockito.ArgumentMatchers.*
-import static org.mockito.Mockito.*
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.ArgumentMatchers.anyString
+import static org.mockito.ArgumentMatchers.argThat
+import static org.mockito.ArgumentMatchers.nullable
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.spy
+import static org.mockito.Mockito.times
+import static org.mockito.Mockito.verify
+import static org.mockito.Mockito.when
 
 class ChangefeedTest extends Specification {
 
@@ -37,10 +42,7 @@ class ChangefeedTest extends Specification {
     String urlHost = 'testaccount.blob.core.windows.net'
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+        APISpec.logTestName(specificationContext)
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockSegmentFactory = mock(SegmentFactory.class)
 
@@ -57,13 +59,13 @@ class ChangefeedTest extends Specification {
             .thenReturn(new PagedFlux<>(yearSupplier))
         Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
         when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
+            .thenReturn(new PagedFlux<>(segmentSupplier("2017")))
         when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
+            .thenReturn(new PagedFlux<>(segmentSupplier("2018")))
         when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
+            .thenReturn(new PagedFlux<>(segmentSupplier("2019")))
         when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
+            .thenReturn(new PagedFlux<>(segmentSupplier("2020")))
 
         mockSegment = mock(Segment.class)
 
@@ -144,16 +146,13 @@ class ChangefeedTest extends Specification {
     }
 
     /* 4 segments 12:00, 3:00, 5:00, 6:00 */
-    Function<String, Supplier<Mono<PagedResponse<BlobItem>>>> segmentSupplier = { year ->
-        new Supplier<Mono<PagedResponse<BlobItem>>>() {
-            @Override
-            Mono<PagedResponse<BlobItem>> get() {
-                return Mono.just(new PagedResponseBase<>(
+    static Supplier<Mono<PagedResponse<BlobItem>>> segmentSupplier(String year) {
+        return {
+            Mono.just(new PagedResponseBase<>(
                     null, 200, null,
                     [new BlobItem().setName("idx/segments/" + year + "/01/01/1200/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0300/meta.json"),
-                        new BlobItem().setName("idx/segments/"+ year +"/01/01/0500/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0600/meta.json")],
+                     new BlobItem().setName("idx/segments/"+ year +"/01/01/0500/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0600/meta.json")],
                     null, null))
-            }
         }
     }
 

@@ -30,7 +30,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.options.BlobBreakLeaseOptions
-import com.azure.storage.blob.specialized.BlobAsyncClientBase	
+import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
@@ -39,6 +39,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -88,7 +89,8 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map {buffer -> buffer.duplicate()
+    }
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -168,7 +170,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = getFullTestName(specificationContext)
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -180,7 +182,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -217,7 +219,8 @@ class APISpec extends Specification {
     }
 
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
-        return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
+        return FluxUtil.collectBytesInByteBufferStream(content).map {bytes -> ByteBuffer.wrap(bytes)
+        }
     }
 
     static TestMode setupTestMode() {
@@ -364,7 +367,7 @@ class APISpec extends Specification {
         retryTimeout = Math.max(60, retryTimeout)
         return getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-        .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
 
@@ -570,6 +573,7 @@ class APISpec extends Specification {
     /*
      Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
+
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -577,6 +581,7 @@ class APISpec extends Specification {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
+
     File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
@@ -604,7 +609,7 @@ class APISpec extends Specification {
      * @param count Size of the download from the service
      * @return Whether the files have equivalent content based on offset and read count
      */
-    def compareFiles(File file1, File file2, long offset, long count) {
+    static def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
         def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
@@ -650,7 +655,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobClientBase bc, String match) {
+    static def setupBlobMatchCondition(BlobClientBase bc, String match) {
         if (match == receivedEtag) {
             return bc.getProperties().getETag()
         } else {
@@ -658,7 +663,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
+    static def setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (match == receivedEtag) {
             return bac.getProperties().block().getETag()
         } else {
@@ -680,7 +685,7 @@ class APISpec extends Specification {
      * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
+    static def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(bc).acquireLease(-1)
@@ -692,7 +697,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
+    static def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new BlobLeaseClientBuilder()
@@ -708,7 +713,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupContainerMatchCondition(BlobContainerClient cu, String match) {
+    static def setupContainerMatchCondition(BlobContainerClient cu, String match) {
         if (match == receivedEtag) {
             return cu.getProperties().getETag()
         } else {
@@ -716,7 +721,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
+    static def setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
             return createLeaseClient(cu).acquireLease(-1)
         } else {
@@ -724,9 +729,9 @@ class APISpec extends Specification {
         }
     }
 
-    def getMockRequest() {
+    static def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
-        headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
         URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
         HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
         return request
@@ -738,7 +743,7 @@ class APISpec extends Specification {
     with than was worth it.
      */
 
-    def getStubResponse(int code, HttpRequest request) {
+    static def getStubResponse(int code, HttpRequest request) {
         return new HttpResponse(request) {
 
             @Override
@@ -778,7 +783,7 @@ class APISpec extends Specification {
         }
     }
 
-    def getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+    static def getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
         return new HttpResponse(response.getRequest()) {
 
             @Override
@@ -838,7 +843,7 @@ class APISpec extends Specification {
      * @return
      * Whether or not the header values are appropriate.
      */
-    def validateBasicHeaders(HttpHeaders headers) {
+    static def validateBasicHeaders(HttpHeaders headers) {
         return headers.getValue("etag") != null &&
             // Quotes should be scrubbed from etag header values
             !headers.getValue("etag").contains("\"") &&
@@ -848,8 +853,8 @@ class APISpec extends Specification {
             headers.getValue("date") != null
     }
 
-    def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
-        String contentLanguage, byte[] contentMD5, String contentType) {
+    static def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
         return response.getValue().getCacheControl() == cacheControl &&
             response.getValue().getContentDisposition() == contentDisposition &&
             response.getValue().getContentEncoding() == contentEncoding &&
@@ -873,7 +878,7 @@ class APISpec extends Specification {
     }
 
     // Only sleep if test is running in live mode
-    def sleepIfRecord(long milliseconds) {
+    static def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
@@ -882,7 +887,7 @@ class APISpec extends Specification {
     class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process().flatMap { HttpResponse response ->
+            return next.process().flatMap {HttpResponse response ->
                 if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
                     return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 } else {
@@ -968,12 +973,12 @@ class APISpec extends Specification {
                         // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
                         byteBuffer.get()
                         return Flux.just(byteBuffer)
-                }.reduce( 0L, {
-                    // Reduce in order to force processing of all buffers.
+                }.reduce(0L, {
+                        // Reduce in order to force processing of all buffers.
                     a, byteBuffer ->
                         return a + byteBuffer.remaining()
-                    } as BiFunction<Long, ByteBuffer, Long>
-                ).flatMap ({
+                } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap({
                     aLong ->
                         // Throw retry-able error.
                         return Mono.error(new IOException("KABOOM!"))
@@ -982,21 +987,31 @@ class APISpec extends Specification {
         }
     }
 
-    def getPollingDuration(long liveTestDurationInMillis) {
+    static def getPollingDuration(long liveTestDurationInMillis) {
         return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
-    def getPerCallVersionPolicy() {
+    static def getPerCallVersionPolicy() {
         return new HttpPipelinePolicy() {
             @Override
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09")
                 return next.process()
             }
+
             @Override
             HttpPipelinePosition getPipelinePosition() {
                 return HttpPipelinePosition.PER_CALL
             }
         }
+    }
+
+    static def getFullTestName(ISpecificationContext specificationContext) {
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
+
+        return fullTestName
     }
 }

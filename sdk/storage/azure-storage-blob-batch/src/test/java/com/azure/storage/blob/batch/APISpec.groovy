@@ -22,6 +22,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import org.spockframework.lang.ISpecificationContext
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -86,7 +87,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = getFullTestName(specificationContext)
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -98,7 +99,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -274,7 +275,7 @@ class APISpec extends Specification {
      * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
+    static def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(bc).acquireLease(-1)
@@ -295,5 +296,14 @@ class APISpec extends Specification {
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    static def getFullTestName(ISpecificationContext specificationContext) {
+        String fullTestName = specificationContext.getCurrentFeature().getName().replace(' ', '').toLowerCase()
+        if (specificationContext.getCurrentIteration().getEstimatedNumIterations() > 1) {
+            fullTestName += "[" + specificationContext.getCurrentIteration().getIterationIndex() + "]"
+        }
+
+        return fullTestName
     }
 }

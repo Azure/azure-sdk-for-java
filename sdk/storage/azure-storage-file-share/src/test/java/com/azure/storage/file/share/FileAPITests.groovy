@@ -55,8 +55,8 @@ class FileAPITests extends APISpec {
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        filePath = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
+        filePath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
@@ -426,7 +426,7 @@ class FileAPITests extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileClient.uploadFromFile(file.toPath().toString())
-        def outFile = new File(testResourceName.randomName(methodName, 60) + ".txt")
+        def outFile = new File(resourceNamer.randomName(methodName, 60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -753,7 +753,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -770,7 +770,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges with range"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -787,7 +787,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges snapshot"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -810,7 +810,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges snapshot fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -884,7 +884,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges diff with range"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -907,7 +907,7 @@ class FileAPITests extends APISpec {
     @Requires({ playbackMode() })
     def "List ranges diff lease"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -930,7 +930,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges diff lease fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -952,7 +952,7 @@ class FileAPITests extends APISpec {
     @Requires({ playbackMode() })
     def "List ranges diff fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)

@@ -15,17 +15,13 @@ class BlobChunkedDownloaderTest extends APISpec {
     BlobChunkedDownloaderFactory factory
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
         def cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         cc.create().block()
         bc = Spy(cc.getBlobAsyncClient(generateBlobName()))
         factory = new BlobChunkedDownloaderFactory(cc)
     }
 
-    byte[] downloadHelper(BlobChunkedDownloader downloader) {
+    static byte[] downloadHelper(BlobChunkedDownloader downloader) {
         OutputStream os = downloader.download()
             .reduce(new ByteArrayOutputStream(),  { outputStream, buffer ->
             outputStream.write(FluxUtil.byteBufferToArray(buffer))

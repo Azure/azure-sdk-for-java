@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
@@ -17,10 +20,7 @@ import java.nio.file.StandardOpenOption
 class AvroReaderTest extends Specification {
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+        TestHelpers.logTestName(specificationContext)
     }
 
     String getTestCasePath(int testCase) {
