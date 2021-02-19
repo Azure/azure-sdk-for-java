@@ -22,7 +22,7 @@ public class WebController {
         }
     }
 
-    @GetMapping(value = { "/", "/home", "/greeting" })
+    @GetMapping(value = { "/", "/home" })
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
         return "home";

@@ -115,14 +115,14 @@ This starter provides following properties to be customized:
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
          logout-success-url: ${you-logout-success-url}
-         sign-in-user-flow: ${your-sign-up-or-in-user-flow}   
+         sign-in-user-flow: ${your-sign-up-or-in-user-flow}
          user-flows:
            - ${your-sign-up-or-in-user-flow}   # optional
            - ${your-profile-edit-user-flow}    # optional
            - ${your-password-reset-user-flow}  # optional
            - ${your-sign-in-user-flow}         # optional
            - ${your-sign-up-user-flow}         # optional
-         user-name-attribute-name: ${your-user-name-attribute-name}   
+         user-name-attribute-name: ${your-user-name-attribute-name}
    ```
 7. Save and close the *application.yml* file.
 
@@ -174,9 +174,9 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http.authorizeRequests()
-            .antMatchers("/login").permitAll()
-            .anyRequest().authenticated()
-            .and()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
             .apply(configurer);
         // @formatter:on
     }
@@ -200,7 +200,7 @@ respectively that completed earlier.
 3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
-4. Click link with name of `${your-sign-up-or-in-user-flow}` user flow, you should be redirected Azure AD B2C to start the authentication process.
+4. Click link with the name of `${your-sign-up-or-in-user-flow}` user flow, you should be redirected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
