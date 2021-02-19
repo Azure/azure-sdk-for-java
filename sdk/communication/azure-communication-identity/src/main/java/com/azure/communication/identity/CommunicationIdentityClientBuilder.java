@@ -20,6 +20,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,7 +38,7 @@ public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final String COMMUNICATION_IDENTITY_PROPERTIES = 
+    private static final String COMMUNICATION_IDENTITY_PROPERTIES =
         "azure-communication-identity.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
@@ -47,8 +48,9 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private Configuration configuration;    
-    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);    
+    private Configuration configuration;
+    private ClientOptions clientOptions;
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
     /**
@@ -136,6 +138,18 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
+        return this;
+    }
+
+        /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public CommunicationIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 
@@ -247,6 +261,7 @@ public final class CommunicationIdentityClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 

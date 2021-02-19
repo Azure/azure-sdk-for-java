@@ -14,20 +14,20 @@ public final class PhoneNumberCapabilitiesRequest {
      * Capability value for calling.
      */
     @JsonProperty(value = "calling")
-    private PhoneNumberCapabilityValue calling;
+    private PhoneNumberCapabilityType calling;
 
     /*
      * Capability value for SMS.
      */
     @JsonProperty(value = "sms")
-    private PhoneNumberCapabilityValue sms;
+    private PhoneNumberCapabilityType sms;
 
     /**
      * Get the calling property: Capability value for calling.
      *
      * @return the calling value.
      */
-    public PhoneNumberCapabilityValue getCalling() {
+    public PhoneNumberCapabilityType getCalling() {
         return this.calling;
     }
 
@@ -37,7 +37,7 @@ public final class PhoneNumberCapabilitiesRequest {
      * @param calling the calling value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
-    public PhoneNumberCapabilitiesRequest setCalling(PhoneNumberCapabilityValue calling) {
+    public PhoneNumberCapabilitiesRequest setCalling(PhoneNumberCapabilityType calling) {
         this.calling = calling;
         return this;
     }
@@ -47,7 +47,7 @@ public final class PhoneNumberCapabilitiesRequest {
      *
      * @return the sms value.
      */
-    public PhoneNumberCapabilityValue getSms() {
+    public PhoneNumberCapabilityType getSms() {
         return this.sms;
     }
 
@@ -57,7 +57,7 @@ public final class PhoneNumberCapabilitiesRequest {
      * @param sms the sms value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
-    public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityValue sms) {
+    public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
         return this;
     }

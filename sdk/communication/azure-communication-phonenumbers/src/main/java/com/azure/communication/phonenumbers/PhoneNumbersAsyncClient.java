@@ -6,15 +6,18 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -98,22 +101,37 @@ public final class PhoneNumbersAsyncClient {
      * Starts the search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param searchRequest {@link PhoneNumberSearchRequest} specifying the search request
-     * until it gets a result from the server
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone assignment type
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number's capabilities
+     * @param areaCode The area code of the phone number
+     * @param quantity The quantity of phone numbers to search
      * @return A {@link PollerFlux} object with the reservation result
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest) {
-        return beginSearchAvailablePhoneNumbers(countryCode, searchRequest, null);
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, String areaCode, Integer quantity) {
+        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, areaCode, quantity, null);
     }
 
     PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
+        String countryCode,  PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, String areaCode, Integer quantity, Context context) {
         try {
             Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
-            Objects.requireNonNull(searchRequest, "'searchRequest' cannot be null.");
+            Objects.requireNonNull(phoneNumberType, "'phoneNumberType' cannot be null.");
+            Objects.requireNonNull(assignmentType, "'assignmentType' cannot be null.");
+            Objects.requireNonNull(capabilities, "'capabilities' cannot be null.");
+
+            PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
+            searchRequest
+                .setPhoneNumberType(phoneNumberType)
+                .setAssignmentType(assignmentType)
+                .setCapabilities(capabilities)
+                .setAreaCode(areaCode)
+                .setQuantity(quantity);
 
             return new PollerFlux<>(defaultPollInterval,
                 searchAvailableNumbersInitOperation(countryCode, searchRequest, context),
@@ -145,7 +163,7 @@ public final class PhoneNumbersAsyncClient {
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
         pollOperation() {
-        return (pollingContext) -> { 
+        return (pollingContext) -> {
             return client.getOperationAsync(pollingContext.getData("operationId"))
             .flatMap(operation -> {
                 if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
@@ -179,7 +197,7 @@ public final class PhoneNumbersAsyncClient {
             return Mono.empty();
         };
     }
-    
+
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberSearchResult>>
         searchAvailableNumbersFetchFinalResultOperation() {
         return (pollingContext) -> {
@@ -212,7 +230,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         purchaseNumbersInitOperation(String searchId, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
@@ -231,7 +249,7 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Begins release of an acquired phone number.
      *
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
@@ -256,7 +274,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         releaseNumberInitOperation(String phoneNumber, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
@@ -281,12 +299,12 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+    public PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber>
         beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, null);
     }
 
-    PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+    PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber>
         beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
@@ -302,7 +320,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         updateNumberCapabilitiesInitOperation(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {

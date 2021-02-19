@@ -25,7 +25,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/967da531665d4b51a7a5599324e5edd95489cc3d/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
-custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
+custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -94,4 +94,40 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
+```
+
+### Rename PhoneNumberCapabilities Calling PhoneNumberCapabilityValue to PhoneNumberCapabilityType
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCapabilities.properties.calling
+    transform: >
+      $["x-ms-enum"].name = "PhoneNumberCapabilityType";
+```
+
+### Rename PhoneNumberCapabilities SMS PhoneNumberCapabilityValue to PhoneNumberCapabilityType
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCapabilities.properties.sms
+    transform: >
+      $["x-ms-enum"].name = "PhoneNumberCapabilityType";
+```
+
+### Rename PhoneNumberCapabilitiesRequest Calling PhoneNumberCapabilityValue to PhoneNumberCapabilityType
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCapabilitiesRequest.properties.calling
+    transform: >
+      $["x-ms-enum"].name = "PhoneNumberCapabilityType";
+```
+
+### Rename PhoneNumberCapabilitiesRequest SMS PhoneNumberCapabilityValue to PhoneNumberCapabilityType
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCapabilitiesRequest.properties.sms
+    transform: >
+      $["x-ms-enum"].name = "PhoneNumberCapabilityType";
 ```
