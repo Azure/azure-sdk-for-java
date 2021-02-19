@@ -23,12 +23,11 @@ class PartitionMetadataCacheSpec
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+  private[this] var feedRange: String = ""
 
   //scalastyle:off multiple.string.literals
   it should "create the partition metadata for the first physical partition" taggedAs RequiresCosmosEndpoint in {
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val feedRange = container.getFeedRanges.block.get(0).toString
-    PartitionMetadataCache.purge(containerConfig, feedRange)
+    this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
     val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
@@ -39,9 +38,7 @@ class PartitionMetadataCacheSpec
 
   //scalastyle:off multiple.string.literals
   it should "update lastRetrievedAt timestamp every time" taggedAs RequiresCosmosEndpoint in {
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val feedRange = container.getFeedRanges.block.get(0).toString
-    PartitionMetadataCache.purge(containerConfig, feedRange)
+    this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
     val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
@@ -64,13 +61,11 @@ class PartitionMetadataCacheSpec
 
   //scalastyle:off multiple.string.literals
   it should "retrieve new item after purge" taggedAs RequiresCosmosEndpoint in {
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val feedRange = container.getFeedRanges.block.get(0).toString
-    PartitionMetadataCache.purge(containerConfig, feedRange)
+    this.reinitialize()
 
     val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
-    PartitionMetadataCache.purge(containerConfig, feedRange)
+    PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
 
     //scalastyle:off magic.number
     Thread.sleep(10)
@@ -78,6 +73,56 @@ class PartitionMetadataCacheSpec
 
     val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
     nextRetrievedItem.lastUpdated.get should be > initialLastUpdated
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "delete cached item after TTL elapsed" taggedAs RequiresCosmosEndpoint in {
+    this.reinitialize()
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val initialLastUpdated = newItem.lastUpdated.get
+
+    //scalastyle:off magic.number
+    PartitionMetadataCache.applyTestOverrides(
+      newRefreshIntervalInMsOverride = Some(10),
+      newStaleCachedItemRefreshPeriodInMsOverride = Some(10 * 1000),
+      newCachedItemTtlInMsOverride = Some(50))
+
+    Thread.sleep(500)
+    //scalastyle:on magic.number
+
+    PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual false
+    this.reinitialize()
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "automatically update the cached item after staleness threshold elapsed" taggedAs RequiresCosmosEndpoint in {
+    this.reinitialize()
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val initialLastUpdated = newItem.lastUpdated.get
+
+    //scalastyle:off magic.number
+    PartitionMetadataCache.applyTestOverrides(
+      newRefreshIntervalInMsOverride = Some(10),
+      newStaleCachedItemRefreshPeriodInMsOverride = Some(50),
+      newCachedItemTtlInMsOverride = Some(10 * 1000))
+
+    Thread.sleep(500)
+    //scalastyle:on magic.number
+
+    val candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    candidate.lastUpdated.get should be > initialLastUpdated
+
+    PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
+    this.reinitialize()
+  }
+
+  private[this] def reinitialize() = {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    this.feedRange = container.getFeedRanges.block.get(0).toString
+    PartitionMetadataCache.purge(containerConfig, feedRange)
+    PartitionMetadataCache.resetTestOverrides()
   }
   //scalastyle:on multiple.string.literals
 }

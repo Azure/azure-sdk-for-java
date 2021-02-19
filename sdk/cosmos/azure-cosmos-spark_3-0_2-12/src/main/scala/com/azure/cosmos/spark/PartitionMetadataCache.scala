@@ -27,18 +27,27 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   // purpose of the time is to update partition metadata
   // additional throughput when more RUs are getting provisioned
-  private val timerName = "partition-metadata-refresh-timer"
-  private val timer: Timer = new Timer(timerName, true)
-  private val refreshIntervalInMs : Long = 1 * 1000 // refresh cache every minute after initialization
+  private[this] val timerName = "partition-metadata-refresh-timer"
+  private[this] val timerOverrideName = "partition-metadata-refresh-timerOverride"
+  private[this] val timer: Timer = new Timer(timerName, true)
+  private[this] var testTimerOverride: Option[Timer] = None
+  private[this] val refreshIntervalInMsDefault : Long = 1 * 1000 // refresh cache every minute after initialization
+  private[this] var refreshIntervalInMsOverride: Option[Long] = None
+  private[this] def refreshIntervalInMs : Long= refreshIntervalInMsOverride.getOrElse(refreshIntervalInMsDefault)
 
   // update cached items which haven't been retrieved in the last refreshPeriod only if they
   // have been last updated longer than 15 minutes ago
   // any cached item which has been retrieved within the last refresh period will
   // automatically kept being updated
-  private val staleCachedItemRefreshPeriodInMs : Long = 15 * 60 * 1000
+  private[this] val staleCachedItemRefreshPeriodInMsDefault : Long = 15 * 60 * 1000
+  private[this] var staleCachedItemRefreshPeriodInMsOverride : Option[Long] = None
+  private[this] def staleCachedItemRefreshPeriodInMs: Long =
+    staleCachedItemRefreshPeriodInMsOverride.getOrElse(staleCachedItemRefreshPeriodInMsDefault)
 
   // purged cached items if they haven't been retrieved within 2 hours
-  private val cachedItemTtlInMs : Long = 2 * 60 * 60 * 1000
+  private[this] val cachedItemTtlInMsDefault : Long = 2 * 60 * 60 * 1000
+  private[this] var cachedItemTtlInMsOverride : Option[Long] = None
+  private[this] def cachedItemTtlInMs: Long = cachedItemTtlInMsOverride.getOrElse(cachedItemTtlInMsDefault)
 
   this.startRefreshTimer()
 
@@ -74,7 +83,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
   }
 
-  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: String): Unit = {
+  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: String): Boolean = {
     assertOnSparkDriver()
     val key = PartitionMetadata.createKey(
       cosmosContainerConfig.database,
@@ -82,10 +91,37 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       feedRange)
 
     cache.get(key) match {
-      case None => Unit
+      case None => false
       case Some(_) =>
-        cache.remove(key)
+        cache.remove(key).isDefined
     }
+  }
+
+  def resetTestOverrides(): Unit = {
+    val timerOverrideSnapshot = this.testTimerOverride
+    timerOverrideSnapshot match {
+      case Some(testTimer) =>
+        testTimer.cancel()
+        this.testTimerOverride = None
+      case None => Unit
+    }
+
+    this.refreshIntervalInMsOverride = None
+    this.cachedItemTtlInMsOverride = None
+    this.staleCachedItemRefreshPeriodInMsOverride = None
+  }
+
+  def applyTestOverrides
+  (
+      newRefreshIntervalInMsOverride: Option[Long],
+      newStaleCachedItemRefreshPeriodInMsOverride: Option[Long],
+      newCachedItemTtlInMsOverride: Option[Long]
+  ): Unit = {
+    this.refreshIntervalInMsOverride = newRefreshIntervalInMsOverride
+    this.cachedItemTtlInMsOverride = newCachedItemTtlInMsOverride
+    this.staleCachedItemRefreshPeriodInMsOverride = newStaleCachedItemRefreshPeriodInMsOverride
+    this.testTimerOverride = Some(new Timer(timerOverrideName, true))
+    this.startRefreshTimer()
   }
 
   private[this] def create
@@ -173,7 +209,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   private def startRefreshTimer() : Unit = {
     logInfo(s"$timerName: scheduling timer - delay: $refreshIntervalInMs ms, period: $refreshIntervalInMs ms")
-    timer.schedule(
+    testTimerOverride.getOrElse(timer).schedule(
       new TimerTask { def run(): Unit = onRunRefreshTimer() },
       refreshIntervalInMs,
       refreshIntervalInMs)
