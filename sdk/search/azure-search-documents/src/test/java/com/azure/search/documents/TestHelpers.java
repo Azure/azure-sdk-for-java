@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
 
-    public static final ObjectMapper MAPPER = new ObjectMapper();
+    public static final ObjectMapper MAPPER = getDefaultSerializerAdapter().serializer();
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
