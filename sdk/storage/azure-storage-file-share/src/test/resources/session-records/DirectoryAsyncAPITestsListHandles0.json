@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslisthandles077963ec9b77939b/directoryasyncapitestslisthandles0588027b58376ccb?maxresults=2&comp=listhandles",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslisthandles077963ec9b77939b/directoryasyncapitestslisthandles0588027b58376ccb?comp=listhandles&maxresults=2",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",

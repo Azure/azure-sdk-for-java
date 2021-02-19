@@ -51,12 +51,5 @@
       <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-selenium-common;current} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-
 </project>

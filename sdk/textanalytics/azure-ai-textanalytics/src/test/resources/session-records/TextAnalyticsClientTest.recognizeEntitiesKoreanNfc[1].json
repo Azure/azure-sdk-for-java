@@ -9,15 +9,15 @@
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "52",
+      "x-envoy-upstream-service-time" : "47",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "23f030f5-6be2-48d6-89e3-b578970d474a",
+      "apim-request-id" : "d1280c70-7966-459e-8ec2-3cc1458b88b1",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":13,\"length\":9,\"confidenceScore\":0.98}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Fri, 05 Feb 2021 04:28:01 GMT",
+      "Date" : "Fri, 05 Feb 2021 04:29:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

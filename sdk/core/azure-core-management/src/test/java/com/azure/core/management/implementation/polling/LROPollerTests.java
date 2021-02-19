@@ -853,7 +853,6 @@ public class LROPollerTests {
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-
                     httpPipeline,
                     FooWithProvisioningState.class,
                     FooWithProvisioningState.class,

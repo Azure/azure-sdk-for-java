@@ -15,6 +15,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -107,8 +109,21 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     }
 
     protected PhoneNumbersClientBuilder addLoggingPolicy(PhoneNumbersClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
+    }
+
     static class FakeCredentials implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {

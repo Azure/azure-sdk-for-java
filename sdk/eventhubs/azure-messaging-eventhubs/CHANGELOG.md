@@ -16,6 +16,16 @@
 - Update `azure-core` dependency to `1.13.0`.
 - Update `azure-core-amqp` dependency to `2.0.2`.
 
+## 5.5.0 (2020-02-15)
+### New features
+- Use `BinaryData` in `EventData`.
+- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.13.0`.
+- Update `azure-core-amqp` dependency to `2.0.2`.
+
 ## 5.4.0 (2021-01-14)
 ### New features
 - Add `clientOptions` to `EventProcessorClientBuilder` to support setting user's application id used in user-agent
