@@ -11,8 +11,13 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.Int128;
+import com.azure.cosmos.implementation.routing.NumberPartitionKeyComponent;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
@@ -22,15 +27,18 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonDeserialize(using = FeedRangeInternalDeserializer.class)
 public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeInternal.class);
+    private final static Long UINT64_TO_DOUBLE_MASK = Long.parseUnsignedLong("9223372036854775808");
+    private final static Long UINT_MAX_VALUE = Long.parseUnsignedLong("4294967295");
 
     public static FeedRangeInternal convert(final FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
@@ -97,63 +105,183 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         }
     }
 
+    static List<FeedRange> trySplitWithHashV1(
+        Range<String> effectiveRange,
+        int targetedSplitCount) {
+
+        long min = 0;
+        long max = UINT_MAX_VALUE;
+
+        if (!effectiveRange.getMin().equalsIgnoreCase(
+            PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey)) {
+
+            min = fromHexEncodedBinaryString(effectiveRange.getMin());
+        }
+
+        if (!effectiveRange.getMax().equalsIgnoreCase(
+            PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey)) {
+
+            max = fromHexEncodedBinaryString(effectiveRange.getMax());
+        }
+
+        String minRange = effectiveRange.getMin();
+        long diff = max - min;
+        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        for(int i = 1; i < targetedSplitCount; i++) {
+
+            long splitPoint = min + (i * (diff / targetedSplitCount));
+            String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
+                new NumberPartitionKeyComponent[] {
+                    new NumberPartitionKeyComponent(splitPoint)
+                });
+            splitFeedRanges.add(
+                new FeedRangeEpkImpl(
+                    new Range<>(
+                        minRange,
+                        maxRange,
+                        i > 1 || effectiveRange.isMinInclusive(),
+                        false)));
+
+            minRange = maxRange;
+        }
+
+        splitFeedRanges.add(
+            new FeedRangeEpkImpl(
+                new Range<>(
+                    minRange,
+                    effectiveRange.getMax(),
+                    true,
+                    effectiveRange.isMaxInclusive())));
+
+        return splitFeedRanges;
+    }
+
+    static List<FeedRange> trySplitWithHashV2(
+        Range<String> effectiveRange,
+        int targetedSplitCount) {
+
+        Int128 min = new Int128(0);
+        if (!effectiveRange.getMin().equalsIgnoreCase(
+            PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey)) {
+
+            byte[] minBytes = hexBinaryToByteArray(effectiveRange.getMin());
+            min = new Int128(minBytes);
+        }
+
+        Int128 max = PartitionKeyInternalHelper.MaxHashV2Value;
+        if (!effectiveRange.getMax().equalsIgnoreCase(
+            PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey)) {
+
+            byte[] maxBytes = hexBinaryToByteArray(effectiveRange.getMax());
+            max = new Int128(maxBytes);
+        }
+
+        if (Int128.lt(
+            Int128.subtract(max, min),
+            new Int128(targetedSplitCount))) {
+
+            return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
+        }
+
+        String minRange = effectiveRange.getMin();
+        Int128 diff = Int128.subtract(max, min);
+        Int128 splitCountInt128 = new Int128(targetedSplitCount);
+        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        for(int i = 1; i < targetedSplitCount; i++) {
+            Int128 quotiant = Int128.div(diff, splitCountInt128);
+            Int128 product = Int128.multiply(quotiant, new Int128(i));
+            Int128 sum = Int128.add(min, product);
+            byte[] dummy = sum.bytes();
+            byte[] currentBlob = Int128.add(
+                min,
+                Int128.multiply(new Int128(i), Int128.div(diff, splitCountInt128))
+            ).bytes();
+
+            String maxRange = HexConvert.bytesToHex(currentBlob);
+            splitFeedRanges.add(
+                new FeedRangeEpkImpl(
+                    new Range<>(
+                        minRange,
+                        maxRange,
+                        i > 1 || effectiveRange.isMinInclusive(),
+                        false)));
+
+            minRange = maxRange;
+        }
+
+        splitFeedRanges.add(
+            new FeedRangeEpkImpl(
+                new Range<>(
+                    minRange,
+                    effectiveRange.getMax(),
+                    true,
+                    effectiveRange.isMaxInclusive())));
+
+        return splitFeedRanges;
+    }
+
     public Mono<List<FeedRange>> trySplit(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
         int targetedSplitCount) {
 
-        return this
-            .getEffectiveRange(
+        return Mono.zip(
+            this.getEffectiveRange(
                 routingMapProvider,
                 metadataDiagnosticsCtx,
-                collectionResolutionMono)
-            .map(effectiveRange -> {
+                collectionResolutionMono),
+            collectionResolutionMono)
+            .map(tuple -> {
 
-                if (targetedSplitCount <= 1 || effectiveRange.isSingleValue()) {
-                    return Arrays.asList(new FeedRangeEpkImpl(effectiveRange));
+                Range<String> effectiveRange = tuple.getT1();
+                Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
+
+                if (collectionValueHolder.v == null) {
+                    throw new IllegalStateException("Collection should have been resolved.");
                 }
 
-                final Int128 min = new Int128(effectiveRange.getMin());
-                final Int128 max = new Int128(effectiveRange.getMax());
+                PartitionKeyDefinition pkDefinition = collectionValueHolder.v.getPartitionKey();
 
-                final Int128 splitCount = new Int128(targetedSplitCount);
-                final Int128 diff = Int128.subtract(max, min);
+                if (targetedSplitCount <= 1 ||
+                    effectiveRange.isSingleValue() ||
+                    // splitting ranges into sub ranges only possible for hash partitioning
+                    pkDefinition.getKind() != PartitionKind.HASH) {
 
-                if (Int128.lt(diff, splitCount)) {
-                    return Arrays.asList(new FeedRangeEpkImpl(effectiveRange));
+                    return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
                 }
 
-                List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
-                final Int128 splitRangeWidth = Int128.div(diff, splitCount);
+                PartitionKeyDefinitionVersion effectivePKVersion = pkDefinition.getVersion() != null
+                    ? pkDefinition.getVersion()
+                    : PartitionKeyDefinitionVersion.V1;
+                switch (effectivePKVersion) {
+                    case V1:
+                        return trySplitWithHashV1(effectiveRange, targetedSplitCount);
 
-                Int128 currentMin = min;
-                Int128 currentMax = min;
+                    case V2:
+                        return trySplitWithHashV2(effectiveRange, targetedSplitCount);
 
-                for (int i = 0; i < targetedSplitCount - 1; i++) {
-                    currentMax = Int128.add(currentMin, splitRangeWidth);
-                    boolean isMinInclusive = (i == 0) ? effectiveRange.isMinInclusive() : true;
-
-                    splitFeedRanges.add(
-                        new FeedRangeEpkImpl(
-                            new Range<String>(
-                                HexConvert.bytesToHex(currentMin.bytes()),
-                                HexConvert.bytesToHex(currentMax.bytes()),
-                                isMinInclusive,
-                                false)));
-                    currentMin = currentMax;
+                    default:
+                        return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
                 }
-
-                splitFeedRanges.add(
-                    new FeedRangeEpkImpl(
-                        new Range<String>(
-                            HexConvert.bytesToHex(currentMin.bytes()),
-                            HexConvert.bytesToHex(currentMax.bytes()),
-                            true,
-                            effectiveRange.isMaxInclusive())));
-
-                return splitFeedRanges;
             });
+    }
+
+    private static byte[] hexBinaryToByteArray(String hexBinary) {
+        checkNotNull(hexBinary, "Argument 'hexBinary' must not be null.");
+
+        int len = hexBinary.length();
+        checkArgument(
+            (len & 0x01) == 0,
+            "Argument 'hexBinary' must not have odd number of characters.");
+
+        byte[] blob = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            blob[i / 2] = (byte) ((Character.digit(hexBinary.charAt(i), 16) << 4)
+                + Character.digit(hexBinary.charAt(i+1), 16));
+        }
+
+        return blob;
     }
 
     @Override
@@ -177,5 +305,48 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             LOGGER.debug("Failed to parse feed range JSON {}", jsonString, ioError);
             return null;
         }
+    }
+
+    private static long fromHexEncodedBinaryString(String hexBinary)
+    {
+        byte[] byteString = hexBinaryToByteArray(hexBinary);
+        if (byteString == null || byteString.length < 2 || byteString[0] != 5)
+        {
+            throw new IllegalStateException("Invalid hex-byteString");
+        }
+        int byteStringOffset = 1;
+        int offset = 64;
+        long payload = 0;
+
+        // Decode first 8-bit chunk
+        offset -= 8;
+        payload |= (((long)byteString[byteStringOffset++]) & 0x00FF) << offset;
+
+        // Decode remaining 7-bit chunks
+        while (true)
+        {
+            if (byteStringOffset >= byteString.length)
+            {
+                throw new IllegalStateException("Incorrect byte string without termination");
+            }
+
+            byte currentByte = byteString[byteStringOffset++];
+
+            offset -= 7;
+            payload |= (((long)(currentByte >> 1)) & 0x00FF) << offset;
+
+            if ((currentByte & 0x01) == 0)
+            {
+                break;
+            }
+        }
+
+        return (long)DecodeDoubleFromUInt64Long(payload);
+    }
+
+    private static double DecodeDoubleFromUInt64Long(long value)
+    {
+        value = (value < UINT64_TO_DOUBLE_MASK) ? -value : value ^ UINT64_TO_DOUBLE_MASK;
+        return Double.longBitsToDouble(value);
     }
 }

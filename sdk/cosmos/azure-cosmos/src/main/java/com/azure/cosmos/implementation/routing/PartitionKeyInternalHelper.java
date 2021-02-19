@@ -31,7 +31,7 @@ public class PartitionKeyInternalHelper {
                     1 /* type marker*/ + StringPartitionKeyComponent.MAX_STRING_BYTES_TO_APPEND +
                     1 /*trailing zero*/
             ) * 3;
-    private static final Int128 MaxHashV2Value = new Int128(new byte[] {
+    public static final Int128 MaxHashV2Value = new Int128(new byte[] {
             (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
             (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
 
@@ -52,7 +52,7 @@ public class PartitionKeyInternalHelper {
         return buffer.array();
     }
 
-    static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
+    public static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
         ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
             component.writeForBinaryEncoding(stream);
