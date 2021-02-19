@@ -578,6 +578,33 @@ public final class QueueAsyncClient {
     }
 
     /**
+     * Enqueues a message that has a time-to-live of 7 days and is instantly visible.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Enqueue a message of "Hello, Azure"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessage#BinaryData}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SendMessageResult> sendMessage(BinaryData message) {
+        try {
+            return sendMessageWithResponse(message, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Enqueues a message with a given time-to-live and a timeout period where the message is invisible in the queue.
      *
      * <p><strong>Code Samples</strong></p>
@@ -609,24 +636,78 @@ public final class QueueAsyncClient {
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
-            return withContext(context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+            BinaryData message = messageText == null ? null : BinaryData.fromString(messageText);
+            return withContext(context -> sendMessageWithResponse(message, visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
+    /**
+     * Enqueues a message with a given time-to-live and a timeout period where the message is invisible in the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessageWithResponse#BinaryData-duration-duration}
+     *
+     * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#BinaryData-Duration-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
+     * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
+     * seconds and 7 days.
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
+     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
+     * are outside of the allowed limits.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SendMessageResult>> sendMessageWithResponse(BinaryData message, Duration visibilityTimeout,
+                                                                     Duration timeToLive) {
+        try {
+            return withContext(context -> sendMessageWithResponse(message, visibilityTimeout, timeToLive, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<SendMessageResult>> sendMessageWithResponse(BinaryData message, Duration visibilityTimeout,
                                                               Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        QueueMessage message = new QueueMessage().setMessageText(messageText);
+        String messageText = encodeMessage(message);
+        QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
 
         return client.getMessages()
-            .enqueueWithResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
+            .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds,
                 null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
+    }
+
+    private String encodeMessage(BinaryData message) {
+        if (message == null) {
+            return null;
+        }
+        switch (messageEncoding) {
+            case NONE:
+                return message.toString();
+            case BASE64:
+                return Base64.getEncoder().encodeToString(message.toBytes());
+            default:
+                throw new IllegalArgumentException("Unsupported message encoding=" + messageEncoding);
+        }
     }
 
     /**
