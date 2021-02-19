@@ -3,11 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-
 import java.math.BigInteger;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class Int128 {
 

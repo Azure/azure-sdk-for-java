@@ -80,7 +80,6 @@ class SparkE2EChangeFeedSpec
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchemaEnabled" -> "false",
       "spark.cosmos.changeFeed.mode" -> "FullFidelity"
-      // TODO fabianm ChangeFeed mode currently is case sensitive. Is that acceptable?
     )
 
     val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
