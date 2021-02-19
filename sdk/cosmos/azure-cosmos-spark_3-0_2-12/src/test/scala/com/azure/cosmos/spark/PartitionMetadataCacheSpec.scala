@@ -28,12 +28,26 @@ class PartitionMetadataCacheSpec
   it should "create the partition metadata for the first physical partition" taggedAs RequiresCosmosEndpoint in {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val feedRange = container.getFeedRanges.block.get(0).toString
+    PartitionMetadataCache.purge(containerConfig, feedRange)
     val startEpochMs = Instant.now.toEpochMilli
 
     val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastRetrieved.get should be >= startEpochMs
     newItem.lastUpdated.get should be >= startEpochMs
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "update lastRetrievedAt timestamp every time" taggedAs RequiresCosmosEndpoint in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val feedRange = container.getFeedRanges.block.get(0).toString
+    PartitionMetadataCache.purge(containerConfig, feedRange)
+    val startEpochMs = Instant.now.toEpochMilli
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    newItem.feedRange shouldEqual feedRange
+    newItem.lastUpdated.get should be >= startEpochMs
+    newItem.lastRetrieved.get should be >=  startEpochMs
 
     val initialLastRetrieved = newItem.lastRetrieved.get
     val initialLastUpdated = newItem.lastUpdated.get
@@ -46,6 +60,24 @@ class PartitionMetadataCacheSpec
     nextRetrievedItem.feedRange shouldEqual feedRange
     nextRetrievedItem.lastUpdated.get shouldEqual initialLastUpdated
     nextRetrievedItem.lastRetrieved.get should be > initialLastRetrieved
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "retrieve new item after purge" taggedAs RequiresCosmosEndpoint in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val feedRange = container.getFeedRanges.block.get(0).toString
+    PartitionMetadataCache.purge(containerConfig, feedRange)
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val initialLastUpdated = newItem.lastUpdated.get
+    PartitionMetadataCache.purge(containerConfig, feedRange)
+
+    //scalastyle:off magic.number
+    Thread.sleep(10)
+    //scalastyle:on magic.number
+
+    val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    nextRetrievedItem.lastUpdated.get should be > initialLastUpdated
   }
   //scalastyle:on multiple.string.literals
 }
