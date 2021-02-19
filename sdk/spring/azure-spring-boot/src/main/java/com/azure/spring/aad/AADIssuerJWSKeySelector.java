@@ -20,6 +20,7 @@ import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
@@ -50,12 +51,9 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
         if (trustedIssuers.getTrustedIssuers().contains(iss)) {
-            if (selectors.containsKey(iss)) {
-                return selectors.get(iss).selectJWSKeys(header, context);
-            }
             try {
-                selectors.put(iss, fromIssuer(iss));
-                return selectors.get(iss).selectJWSKeys(header, context);
+                return selectors.computeIfAbsent(iss, (Function<? super String, ?
+                    extends JWSKeySelector<SecurityContext>>) fromIssuer(iss)).selectJWSKeys(header, context);
             } catch (Exception ex) {
                 throw new KeySourceException("The issuer: '" + iss + "' were unable to create a Key Source.", ex);
             }
