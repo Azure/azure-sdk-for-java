@@ -22,10 +22,12 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -91,6 +93,9 @@ public final class QueueServiceClientBuilder {
     private Configuration configuration;
     private QueueServiceVersion version;
 
+    private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
+    private Function<Object, Mono<Void>> messageDecodingFailedHandler;
+
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
@@ -128,7 +133,8 @@ public final class QueueServiceClientBuilder {
             .version(serviceVersion.getVersion())
             .buildClient();
 
-        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
+        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion,
+            messageEncoding, messageDecodingFailedHandler);
     }
 
     /**
@@ -364,6 +370,33 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the queue message encoding.
+     *
+     * @param messageEncoding {@link QueueMessageEncoding}.
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code messageEncoding} is {@code null}.
+     */
+    public QueueServiceClientBuilder messageEncoding(QueueMessageEncoding messageEncoding) {
+        this.messageEncoding = Objects.requireNonNull(messageEncoding, "'messageEncoding' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     *
+     * @param messageDecodingFailedHandler the handler.
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code messageDecodingFailedHandler} is {@code null}.
+     */
+    public QueueServiceClientBuilder messageDecodingFailedHandler(
+        Function<Object, Mono<Void>> messageDecodingFailedHandler) {
+        this.messageDecodingFailedHandler = Objects.requireNonNull(messageDecodingFailedHandler,
+            "'messageDecodingFailedHandler' cannot be null.");
         return this;
     }
 

@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -74,6 +75,8 @@ public final class QueueAsyncClient {
     private final String queueName;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
+    private final QueueMessageEncoding messageEncoding;
+    private final Function<Object, Mono<Void>> messageDecodingFailedHandler;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -83,12 +86,15 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
-        QueueServiceVersion serviceVersion) {
+        QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
+        Function<Object, Mono<Void>> messageDecodingFailedHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.messageEncoding = messageEncoding;
+        this.messageDecodingFailedHandler = messageDecodingFailedHandler;
     }
 
     /**
@@ -105,6 +111,15 @@ public final class QueueAsyncClient {
      */
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return messageEncoding;
     }
 
     /**
@@ -712,6 +727,19 @@ public final class QueueAsyncClient {
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    private List<QueueMessageItem> decodeReceivedMessages(List<QueueMessageItem> queueMessageItems) {
+        switch (messageEncoding) {
+            case BASE64:
+                return queueMessageItems.stream().map(queueMessageItem -> {
+                    return queueMessageItem;
+                }).collect(Collectors.toList());
+            case NONE:
+                return queueMessageItems;
+            default:
+                throw new IllegalArgumentException("Unknown messageEncoding=" + messageEncoding);
+        }
     }
 
     /**

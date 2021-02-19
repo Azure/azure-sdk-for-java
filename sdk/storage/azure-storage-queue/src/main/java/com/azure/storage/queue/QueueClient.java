@@ -70,6 +70,15 @@ public final class QueueClient {
     }
 
     /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return client.getMessageEncoding();
+    }
+
+    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
