@@ -26,7 +26,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus</artifactId>
-      <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+      <version>3.6.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -70,7 +70,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus:[3.4.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+                <include>com.microsoft.azure:azure-servicebus:[3.6.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
