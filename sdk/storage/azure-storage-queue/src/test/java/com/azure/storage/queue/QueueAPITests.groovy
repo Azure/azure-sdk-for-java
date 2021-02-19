@@ -366,6 +366,19 @@ class QueueAPITests extends APISpec {
         content == messageItem.getBody().toBytes()
     }
 
+    def "Enqueue Peek non-UTF message"() {
+        given:
+        queueClient.create()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
+
+        when:
+        def messageItem = encodingQueueClient.peekMessage()
+        then:
+        content == messageItem.getBody().toBytes()
+    }
+
     def "Peek message"() {
         given:
         queueClient.create()

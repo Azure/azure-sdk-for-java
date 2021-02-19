@@ -438,6 +438,21 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Enqueue Peek non-UTF message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content)).block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert content == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
     def "Peek message from empty queue"() {
         given:
         queueAsyncClient.create().block()
