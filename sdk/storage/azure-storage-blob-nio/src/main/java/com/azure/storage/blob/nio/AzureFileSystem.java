@@ -368,10 +368,6 @@ public final class AzureFileSystem extends FileSystem {
         throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
-    String getFileSystemName() {
-        return this.blobServiceClient.getAccountName();
-    }
-
     String getFileSystemUrl() {
         return this.blobServiceClient.getAccountUrl();
     }
