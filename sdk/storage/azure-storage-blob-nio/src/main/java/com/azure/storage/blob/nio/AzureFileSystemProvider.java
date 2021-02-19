@@ -1138,7 +1138,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
         if (CoreUtils.isNullOrEmpty(uri.getQuery())) {
             throw LoggingUtility.logError(this.logger, new IllegalArgumentException("URI does not contain a query "
-                + "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
+                + "component. FileSystems require a URI of the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
         String endpoint = Flux.fromArray(uri.getQuery().split("&"))
@@ -1150,7 +1150,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 .blockLast();
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("No account name provided in URI"
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("No account endpoint provided in URI"
                 + " query."));
         }
 
