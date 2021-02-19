@@ -49,7 +49,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
-                .withShardCount(10)
+                .withShardCount(2)
                 .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302));
         Creatable<RedisCache> redisCacheDefinition3 =
             redisManager
