@@ -32,8 +32,9 @@ public class ConnectionStringProperties {
         + "SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
         + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
-    private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
-        + CONNECTION_STRING_WITH_ACCESS_KEY + " or " + CONNECTION_STRING_WITH_SAS + ".";
+    private static final String ERROR_MESSAGE_FORMAT = String.format(Locale.US,
+        "Could not parse 'connectionString'. Expected format: %s or %s.", CONNECTION_STRING_WITH_ACCESS_KEY,
+        CONNECTION_STRING_WITH_SAS);
 
     private final URI endpoint;
     private final String entityPath;
@@ -166,14 +167,12 @@ public class ConnectionStringProperties {
                 "'Endpoint' must be provided in 'connectionString'."));
         }
 
-        String updatedEndpoint = endpoint.trim();
-
-        final String endpointLowerCase = updatedEndpoint.toLowerCase(Locale.getDefault());
+        final String endpointLowerCase = endpoint.trim().toLowerCase();
         if (!endpointLowerCase.startsWith(ENDPOINT_SCHEME_SB_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)
             && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTPS_PREFIX)) {
-            updatedEndpoint = ENDPOINT_SCHEME_SB_PREFIX + endpoint;
+            return ENDPOINT_SCHEME_SB_PREFIX + endpoint;
         }
-        return updatedEndpoint;
+        return endpointLowerCase;
     }
 }
