@@ -10,9 +10,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,12 +23,6 @@ import java.util.regex.Pattern;
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties implements InitializingBean {
 
-    public static final String USER_FLOWS = "user-flows";
-
-    /**
-     * We do not use ${@link String#format(String, Object...)}
-     * as it's not real constant, which cannot be referenced in annotation.
-     */
     public static final String SIGN_IN_USER_FLOW = "sign-in-user-flow";
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
@@ -82,7 +76,7 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * The all user flows which is created under b2c tenant.
      */
-    private List<String> userFlows = new ArrayList<>();
+    private Set<String> userFlows = new HashSet<>();
 
     /**
      * Specify the primary sign in flow name
@@ -96,7 +90,7 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
 
-        if (!userFlows.isEmpty() && userFlows.contains(signInUserFlow)) {
+        if (userFlows.contains(signInUserFlow)) {
             throw new AADB2CConfigurationException("Sign in user flow '" + signInUserFlow
                 + "' does not need to be configured repeatedly.");
         }
@@ -138,11 +132,11 @@ public class AADB2CProperties implements InitializingBean {
         return tenant;
     }
 
-    public List<String> getUserFlows() {
+    public Set<String> getUserFlows() {
         return userFlows;
     }
 
-    public void setUserFlows(List<String> userFlows) {
+    public void setUserFlows(Set<String> userFlows) {
         this.userFlows = userFlows;
     }
 

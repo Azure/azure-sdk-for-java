@@ -30,7 +30,8 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
                 .and()
             .oauth2Login()
                 .authorizationEndpoint()
-                    .authorizationRequestResolver(resolver).and()
+                    .authorizationRequestResolver(resolver)
+                    .and()
                 .tokenEndpoint()
                     .accessTokenResponseClient(accessTokenResponseClient());
         // @formatter:on
@@ -38,8 +39,7 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRequestEntityConverter(
-            new AADB2COAuth2AuthzCodeGrantRequestEntityConverter());
+        result.setRequestEntityConverter(new AADB2COAuth2AuthzCodeGrantRequestEntityConverter());
         return result;
     }
 }

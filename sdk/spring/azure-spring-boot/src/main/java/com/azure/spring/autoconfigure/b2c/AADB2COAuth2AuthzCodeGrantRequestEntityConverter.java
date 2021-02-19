@@ -15,7 +15,7 @@ public class AADB2COAuth2AuthzCodeGrantRequestEntityConverter
     extends OAuth2AuthzCodeGrantRequestEntityConverter {
 
     public AADB2COAuth2AuthzCodeGrantRequestEntityConverter() {
-        this.azureModule = ApplicationId.AZURE_SPRING_AADB2C;
+        this.azureModule = ApplicationId.AZURE_SPRING_B2C;
     }
 
     @Override

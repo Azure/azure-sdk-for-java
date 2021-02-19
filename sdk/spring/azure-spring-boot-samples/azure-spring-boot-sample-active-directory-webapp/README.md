@@ -29,26 +29,26 @@ In order to try the authorization action with this sample with minimum effort, [
 ### Configure application.yml
 ```yaml
 azure:
-  activedirectory:
-    authorization-clients:
-      arm:
-        on-demand: true
-        scopes: https://management.core.windows.net/user_impersonation
-      graph:
-        scopes:
-          - https://graph.microsoft.com/User.Read
-          - https://graph.microsoft.com/Directory.Read.All
-      office:
-        scopes:
-          - https://manage.office.com/ActivityFeed.Read
-          - https://manage.office.com/ActivityFeed.ReadDlp
-          - https://manage.office.com/ServiceHealth.Read
-    client-id: <client-id>
-    client-secret: <client-secret>
-    tenant-id: <tenant-id>
-    user-group:
-      allowed-groups: group1, group2
-    post-logout-redirect-uri: http://localhost:8080
+   activedirectory:
+      authorization-clients:
+         arm:
+            on-demand: true
+            scopes: https://management.core.windows.net/user_impersonation
+         graph:
+            scopes:
+               - https://graph.microsoft.com/User.Read
+               - https://graph.microsoft.com/Directory.AccessAsUser.All
+         office:
+            scopes:
+               - https://manage.office.com/ActivityFeed.Read
+               - https://manage.office.com/ActivityFeed.ReadDlp
+               - https://manage.office.com/ServiceHealth.Read
+      client-id: <client-id>
+      client-secret: <client-secret>
+      tenant-id: <tenant-id>
+      user-group:
+         allowed-groups: group1, group2
+      post-logout-redirect-uri: http://localhost:8080
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 ```

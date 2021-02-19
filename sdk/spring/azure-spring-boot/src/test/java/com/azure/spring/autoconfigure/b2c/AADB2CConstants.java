@@ -51,7 +51,7 @@ public class AADB2CConstants {
 
     public static final String SIGN_IN_USER_FLOW = String.format("%s.%s", PREFIX, AADB2CProperties.SIGN_IN_USER_FLOW);
 
-    public static final String USER_FLOWS = String.format("%s.%s", PREFIX, AADB2CProperties.USER_FLOWS);
+    public static final String USER_FLOWS = String.format("%s.%s", PREFIX, "user-flows");
 
     public static final Object CONFIG_PROMPT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);

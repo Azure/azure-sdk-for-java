@@ -28,7 +28,7 @@ public class AADB2CWebController {
         }
     }
 
-    @GetMapping(value = { "/", "/home", "/greeting" })
+    @GetMapping(value = { "/", "/home" })
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
         return "home";

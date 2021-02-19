@@ -51,12 +51,12 @@ azure:
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}
       sign-in-user-flow: ${your-sign-up-or-in-user-flow}
-      user-name-attribute-name: ${your-user-name-claim}
       user-flows:
         - ${your-profile-edit-user-flow}    # optional
         - ${your-password-reset-user-flow}  # optional
         - ${your-sign-in-user-flow}         # optional
         - ${your-sign-up-user-flow}         # optional
+      user-name-attribute-name: ${your-user-name-claim}
 ```
 
 **NOTE**: If both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect.

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,7 +47,7 @@ public class AADB2CAutoConfigurationTest {
             assertThat(properties.getClientSecret()).isEqualTo(AADB2CConstants.TEST_CLIENT_SECRET);
             assertThat(properties.getUserNameAttributeName()).isEqualTo(AADB2CConstants.TEST_ATTRIBUTE_NAME);
 
-            List<String> userFlows = properties.getUserFlows();
+            Set<String> userFlows = properties.getUserFlows();
             final Object prompt = properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.PROMPT);
             final String loginHint =
                 String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));

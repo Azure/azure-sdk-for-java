@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * When using "auth-code" in AAD and AAD B2C, it's used to set the azure service header tag.
+ * When using "auth-code" in AAD and AAD B2C, it's used to expand head and body parameters of the request.
  */
 public abstract class OAuth2AuthzCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {

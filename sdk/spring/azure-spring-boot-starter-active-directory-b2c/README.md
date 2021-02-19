@@ -68,10 +68,10 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
    | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
-   | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
    | `azure.activedirectory.b2c.sign-in-user-flow` | The name of the **sign up or sign in** user flow. |
+   | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
    | `azure.activedirectory.b2c.user-flows.{user-flow-name}` | The names of all user flows except `azure.activedirectory.b2c.sign-in-user-flow` user flow. |
+   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
    
 ## Examples
 ### Configure and compile your app
@@ -107,22 +107,22 @@ This starter provides following properties to be customized:
    azure:
      activedirectory:
        b2c:
+         authenticate-additional-parameters: 
+           domain_hint: xxxxxxxxx         # optional
+           login_hint: xxxxxxxxx          # optional
+           prompt: [login,none,consent]   # optional
          base-uri: ${your-tenant-authorization-server-base-uri}
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
          logout-success-url: ${you-logout-success-url}
          sign-in-user-flow: ${your-sign-up-or-in-user-flow}   
-         user-name-attribute-name: ${your-user-name-attribute-name}   
          user-flows:
            - ${your-sign-up-or-in-user-flow}   # optional
            - ${your-profile-edit-user-flow}    # optional
            - ${your-password-reset-user-flow}  # optional
            - ${your-sign-in-user-flow}         # optional
            - ${your-sign-up-user-flow}         # optional
-         authenticate-additional-parameters: 
-           domain_hint: xxxxxxxxx         # optional
-           login_hint: xxxxxxxxx          # optional
-           prompt: [login,none,consent]   # optional
+         user-name-attribute-name: ${your-user-name-attribute-name}   
    ```
 7. Save and close the *application.yml* file.
 
@@ -146,7 +146,7 @@ public class AADB2CWebController {
         }
     }
 
-    @GetMapping(value = { "/", "/home", "/greeting" })
+    @GetMapping(value = { "/", "/home" })
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
         return "home";
@@ -159,7 +159,7 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L17-L34 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L17-L36 -->
 ```java
 @EnableWebSecurity
 public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
@@ -172,11 +172,13 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
+            .antMatchers("/login").permitAll()
+            .anyRequest().authenticated()
+            .and()
             .apply(configurer);
+        // @formatter:on
     }
 }
 ```
@@ -198,7 +200,7 @@ respectively that completed earlier.
 3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
-4. Click linked with name of `${your-sign-up-or-in-user-flow}` user flow, you should be redirected Azure AD B2C to start the authentication process.
+4. Click link with name of `${your-sign-up-or-in-user-flow}` user flow, you should be redirected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
