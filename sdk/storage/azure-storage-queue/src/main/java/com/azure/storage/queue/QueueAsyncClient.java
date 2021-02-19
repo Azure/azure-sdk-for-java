@@ -20,6 +20,10 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
+import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
+import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
@@ -722,19 +726,16 @@ public final class QueueAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
                 .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    transformReceivedMessages(response.getValue()),
-                    null,
-                    response.getDeserializedHeaders()));
+                .map(this::transformMessagesDequeueResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    private List<QueueMessageItem> transformReceivedMessages(List<QueueMessageItemInternal> queueMessageItems) {
-        List<QueueMessageItem> result = new ArrayList<>(queueMessageItems.size());
-        for (QueueMessageItemInternal queueMessageItemInternal : queueMessageItems) {
+    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformMessagesDequeueResponse(
+        MessagesDequeueResponse response) {
+        List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
+        List<QueueMessageItem> queueMessageItems = new ArrayList<>(queueMessageInternalItems.size());
+        for (QueueMessageItemInternal queueMessageItemInternal : queueMessageInternalItems) {
             QueueMessageItem queueMessageItem = new QueueMessageItem()
                 .setMessageId(queueMessageItemInternal.getMessageId())
                 .setMessageText(queueMessageItemInternal.getMessageText())
@@ -743,9 +744,14 @@ public final class QueueAsyncClient {
                 .setInsertionTime(queueMessageItemInternal.getInsertionTime())
                 .setPopReceipt(queueMessageItemInternal.getPopReceipt())
                 .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
-            result.add(queueMessageItem);
+            queueMessageItems.add(queueMessageItem);
         }
-        return result;
+        return new PagedResponseBase<>(response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            queueMessageItems,
+            null,
+            response.getDeserializedHeaders());
     }
 
     /**
@@ -810,28 +816,30 @@ public final class QueueAsyncClient {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
                 .peekWithResponseAsync(queueName, maxMessages, null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    transformPeekedMessages(response.getValue()),
-                    null,
-                    response.getDeserializedHeaders()));
+                .map(this::transformMessagesPeekResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    private List<PeekedMessageItem> transformPeekedMessages(List<PeekedMessageItemInternal> peekedMessageItems) {
-        List<PeekedMessageItem> result = new ArrayList<>(peekedMessageItems.size());
-        for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageItems) {
+    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformMessagesPeekResponse(
+        MessagesPeekResponse response) {
+        List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
+        List<PeekedMessageItem> peekedMessageItems = new ArrayList<>(peekedMessageInternalItems.size());
+        for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageInternalItems) {
             PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
                 .setMessageId(peekedMessageItemInternal.getMessageId())
                 .setMessageText(peekedMessageItemInternal.getMessageText())
                 .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
                 .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
                 .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
-            result.add(peekedMessageItem);
+            peekedMessageItems.add(peekedMessageItem);
         }
-        return result;
+        return new PagedResponseBase<>(response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            peekedMessageItems,
+            null,
+            response.getDeserializedHeaders());
     }
 
     /**
