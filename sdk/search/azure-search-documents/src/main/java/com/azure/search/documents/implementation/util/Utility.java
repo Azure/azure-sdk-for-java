@@ -46,8 +46,6 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 public final class Utility {
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
