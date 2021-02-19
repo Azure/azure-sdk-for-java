@@ -60,7 +60,11 @@ public final class EventGridPublisherAsyncClient<T> {
 
     private final ObjectSerializer eventDataSerializer;
 
-    private final Object eventClass;
+    private final Class<T> eventClass;
+
+    private static final DateTimeFormatter SAS_DATE_TIME_FORMATER = DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a");
+    private static final String HMAC_SHA256 = "hmacSHA256";
+    private static final String API_VERSION = "api-version";
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherClient.class);
 
@@ -112,16 +116,16 @@ public final class EventGridPublisherAsyncClient<T> {
             String signKey = "s";
 
             Charset charset = StandardCharsets.UTF_8;
-            endpoint = endpoint + "?api-version=" + apiVersion.getVersion();
+            endpoint = String.format("%s?%s=%s", endpoint, API_VERSION, apiVersion.getVersion());
             String encodedResource = URLEncoder.encode(endpoint, charset.name());
             String encodedExpiration = URLEncoder.encode(expirationTime.atZoneSameInstant(ZoneOffset.UTC).format(
-                DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a")),
+                SAS_DATE_TIME_FORMATER),
                 charset.name());
 
             String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
-            Mac hmac = Mac.getInstance("hmacSHA256");
-            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(keyCredential.getKey()), "hmacSHA256"));
+            Mac hmac = Mac.getInstance(HMAC_SHA256);
+            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(keyCredential.getKey()), HMAC_SHA256));
             String signature = new String(Base64.getEncoder().encode(
                 hmac.doFinal(unsignedSas.getBytes(charset))),
                 charset);

@@ -361,8 +361,6 @@ public final class EventGridPublisherClientBuilder {
     /**
      * Build a {@link CloudEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
-     * Note that currently the asynchronous client created by the method above is the recommended version for higher
-     * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
     public EventGridPublisherClient<CloudEvent> buildCloudEventPublisherClient() {
@@ -372,8 +370,6 @@ public final class EventGridPublisherClientBuilder {
     /**
      * Build an {@link EventGridEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
-     * Note that currently the asynchronous client created by the method above is the recommended version for higher
-     * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
     public EventGridPublisherClient<EventGridEvent> buildEventGridEventPublisherClient() {
@@ -383,8 +379,6 @@ public final class EventGridPublisherClientBuilder {
     /**
      * Build a custom event publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
-     * Note that currently the asynchronous client created by the method above is the recommended version for higher
-     * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
     public EventGridPublisherClient<Object> buildCustomEventPublisherClient() {
