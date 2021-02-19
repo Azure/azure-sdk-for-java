@@ -11,6 +11,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.ReturnType;
@@ -87,8 +88,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone assignment type
      * @param capabilities {@link PhoneNumberCapabilities} The phone number's capabilities
-     * @param areaCode The area code of the phone number
-     * @param quantity The quantity of phone numbers to search
+     * @param searchOptions The phone number search options
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with the reservation result
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
@@ -96,8 +96,8 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
         String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-        PhoneNumberCapabilities capabilities, String areaCode, Integer quantity, Context context) {
-        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, areaCode, quantity, context).getSyncPoller();
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions, context).getSyncPoller();
     }
 
     /**

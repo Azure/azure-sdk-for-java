@@ -296,10 +296,20 @@ public final class PhoneNumbersClientBuilder {
 
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
         // Add required policies
         policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createUserAgentPolicy(
-            this.getHttpLogOptions().getApplicationId(),
+            applicationId,
             PROPERTIES.get(SDK_NAME),
             PROPERTIES.get(SDK_VERSION),
             this.configuration

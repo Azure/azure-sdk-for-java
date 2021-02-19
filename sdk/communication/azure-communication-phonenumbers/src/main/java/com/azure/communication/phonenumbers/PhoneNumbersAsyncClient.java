@@ -16,6 +16,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.ReturnType;
@@ -104,27 +105,32 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone assignment type
      * @param capabilities {@link PhoneNumberCapabilities} The phone number's capabilities
-     * @param areaCode The area code of the phone number
-     * @param quantity The quantity of phone numbers to search
+     * @param searchOptions The phone number search options
      * @return A {@link PollerFlux} object with the reservation result
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
         String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-        PhoneNumberCapabilities capabilities, String areaCode, Integer quantity) {
-        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, areaCode, quantity, null);
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions) {
+        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions, null);
     }
 
     PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
         String countryCode,  PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-        PhoneNumberCapabilities capabilities, String areaCode, Integer quantity, Context context) {
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
         try {
             Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
             Objects.requireNonNull(phoneNumberType, "'phoneNumberType' cannot be null.");
             Objects.requireNonNull(assignmentType, "'assignmentType' cannot be null.");
             Objects.requireNonNull(capabilities, "'capabilities' cannot be null.");
 
+            String areaCode = null;
+            Integer quantity = null;
+            if (searchOptions != null) {
+                areaCode = searchOptions.getAreaCode();
+                quantity = searchOptions.getQuantity();
+            }
             PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
             searchRequest
                 .setPhoneNumberType(phoneNumberType)

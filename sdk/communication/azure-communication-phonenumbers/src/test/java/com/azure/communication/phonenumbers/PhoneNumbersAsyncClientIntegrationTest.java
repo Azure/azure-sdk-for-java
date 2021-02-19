@@ -19,6 +19,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.http.HttpClient;
@@ -170,7 +171,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void beginSearchAvailablePhoneNumbersNullCountryCode(HttpClient httpClient) {
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbersNullCountryCode")
-                .beginSearchAvailablePhoneNumbers(null, PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, null, AREA_CODE, 1)
+                .beginSearchAvailablePhoneNumbers(null, PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, null, null)
             )
             .verifyError();
     }
@@ -189,6 +190,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
 
         return this.getClientWithConnectionString(httpClient, testName)
             .beginSearchAvailablePhoneNumbers(
@@ -196,8 +198,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 PhoneNumberType.TOLL_FREE,
                 PhoneNumberAssignmentType.APPLICATION,
                 capabilities,
-                AREA_CODE,
-                1).setPollInterval(Duration.ofSeconds(1));
+                searchOptions
+                ).setPollInterval(Duration.ofSeconds(1));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {

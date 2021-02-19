@@ -9,6 +9,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.http.HttpClient;
@@ -97,9 +98,10 @@ public class ReadmeSamples {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.PERSON, capabilities, "800", 1, Context.NONE)
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.PERSON, capabilities, searchOptions, Context.NONE)
             .getFinalResult();
 
         System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
