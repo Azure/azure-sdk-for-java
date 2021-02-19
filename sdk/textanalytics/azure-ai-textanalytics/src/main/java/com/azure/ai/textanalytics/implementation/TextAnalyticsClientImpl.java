@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthResponse;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
@@ -43,7 +44,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.UUID;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the TextAnalyticsClient type. */
@@ -239,6 +246,16 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("showStats") Boolean showStats,
                 @BodyParam("application/json") LanguageBatchInput input,
                 Context context);
+
+        @Post("/languages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<LanguageResult>> languages(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json") byte[] input,
+            Context context);
 
         @Post("/sentiment")
         @ExpectedResponses({200})
@@ -478,7 +495,36 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LanguageResult>> languagesWithResponseAsync(
             LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            JsonGenerator generator = new JsonFactory().createGenerator(outputStream);
+
+            generator.writeStartObject();
+            generator.writeArrayFieldStart("documents");
+
+            for (LanguageInput languageInput : input.getDocuments()) {
+                generator.writeStartObject();
+                generator.writeFieldName("id");
+                generator.writeString(languageInput.getId());
+                generator.writeFieldName("text");
+                generator.writeString(languageInput.getText());
+                if (languageInput.getCountryHint() != null) {
+                    generator.writeFieldName("countryHint");
+                    generator.writeString(languageInput.getCountryHint());
+                }
+                generator.writeEndObject();
+            }
+            generator.writeEndArray();
+            generator.writeEndObject();
+            generator.close();
+
+            return service.languages(this.getEndpoint(), modelVersion, showStats, outputStream.toByteArray(),
+                context.addData("json-payload", true));
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
+        // return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
