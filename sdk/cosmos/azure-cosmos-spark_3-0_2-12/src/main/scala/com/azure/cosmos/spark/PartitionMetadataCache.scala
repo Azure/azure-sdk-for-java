@@ -24,6 +24,7 @@ import scala.collection.concurrent.TrieMap
 private object PartitionMetadataCache extends CosmosLoggingTrait {
   private[this] val Nothing = 0
   private[this] val cache = new TrieMap[String, PartitionMetadata]
+  private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
 
   // purpose of the time is to update partition metadata
   // additional throughput when more RUs are getting provisioned
@@ -70,7 +71,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       cosmosContainerConfig.container,
       feedRange)
 
-    cache.get(key) match {
+    val getKey = (key: String) =>  cache.get(key) match {
       case Some(metadata) =>
         metadata.lastRetrieved.set(Instant.now.toEpochMilli)
         SMono.just(metadata)
@@ -80,6 +81,19 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
         cosmosContainerConfig,
         feedRange,
         key)
+    }
+
+    cacheTestOverride match {
+      case Some(testCache) => {
+        testCache.get(key) match {
+          case Some(testMetadata) => {
+            testMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
+            SMono.just(testMetadata)
+          }
+          case None  => getKey(key)
+        }
+      }
+      case None => getKey(key)
     }
   }
 
@@ -97,6 +111,23 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
   }
 
+  def injectTestData(cosmosContainerConfig: CosmosContainerConfig,
+                     feedRange: String,
+                     partitionMetadata: PartitionMetadata): Unit = {
+
+    val key = PartitionMetadata.createKey(cosmosContainerConfig.database, cosmosContainerConfig.container, feedRange)
+    val effectiveTestCache = this.cacheTestOverride match {
+      case None => {
+        val newCache = new TrieMap[String, PartitionMetadata]()
+        this.cacheTestOverride = Some(newCache)
+        newCache
+      }
+      case Some(existingCache) => existingCache
+    }
+
+    effectiveTestCache.put(key, partitionMetadata)
+  }
+
   def resetTestOverrides(): Unit = {
     val timerOverrideSnapshot = this.testTimerOverride
     timerOverrideSnapshot match {
@@ -106,6 +137,13 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       case None => Unit
     }
 
+    this.cacheTestOverride match {
+      case Some(cacheOverrideSnapshot) => {
+        this.cacheTestOverride = None
+        cacheOverrideSnapshot.clear()
+      }
+      case None => Unit
+    }
     this.refreshIntervalInMsOverride = None
     this.cachedItemTtlInMsOverride = None
     this.staleCachedItemRefreshPeriodInMsOverride = None

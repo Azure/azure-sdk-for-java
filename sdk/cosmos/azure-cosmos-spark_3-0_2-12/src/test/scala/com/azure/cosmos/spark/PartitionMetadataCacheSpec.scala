@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.TestConfigurations
 
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicLong
 
 class PartitionMetadataCacheSpec
   extends UnitSpec
@@ -116,6 +117,46 @@ class PartitionMetadataCacheSpec
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
     this.reinitialize()
+  }
+
+  it should "honor test data overrides" taggedAs RequiresCosmosEndpoint in {
+    this.reinitialize()
+    val startEpochMs = Instant.now.toEpochMilli
+
+    val rnd = scala.util.Random
+    val docCount = rnd.nextInt()
+    val docSize = rnd.nextInt()
+    val lastLsn = rnd.nextInt()
+
+    val testMetadata = PartitionMetadata(
+      clientConfig,
+      None,
+      containerConfig,
+      feedRange,
+      docCount,
+      docSize,
+      lastLsn,
+      new AtomicLong(startEpochMs),
+      new AtomicLong(startEpochMs))
+
+    PartitionMetadataCache.injectTestData(containerConfig, feedRange, testMetadata)
+
+    //scalastyle:off magic.number
+    Thread.sleep(10)
+    //scalastyle:on magic.number
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    newItem.feedRange shouldEqual feedRange
+    newItem.lastRetrieved.get should be >= startEpochMs
+    newItem.lastUpdated.get shouldEqual startEpochMs
+    newItem should be theSameInstanceAs testMetadata
+
+    val reinitializedEpochMs = Instant.now.toEpochMilli
+    this.reinitialize()
+
+    val realItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    realItem.lastUpdated.get should be >= reinitializedEpochMs
+    realItem should not (be theSameInstanceAs testMetadata)
   }
 
   private[this] def reinitialize() = {
