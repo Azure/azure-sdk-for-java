@@ -317,9 +317,8 @@ public class DocumentQueryExecutionContextFactory {
             //            }
         }
 
-        List<FeedRangeEpkImpl> feedRangeEpks = new ArrayList<>();
-        feedRangeEpks =
-            targetRanges.stream().map(FeedRangeEpkImpl::new).collect(Collectors.toList());
+        List<FeedRangeEpkImpl> feedRangeEpks = targetRanges.stream().map(FeedRangeEpkImpl::new)
+                                                   .collect(Collectors.toList());
 
         PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<T>(
             resourceTypeEnum,
@@ -346,9 +345,10 @@ public class DocumentQueryExecutionContextFactory {
         ResourceType resourceTypeEnum) {
 
         return PipelinedDocumentQueryExecutionContext.createReadManyAsync(diagnosticsClientContext, queryClient,
-                                                                   collectionResourceId, sqlQuery, rangeQueryMap,
-            cosmosQueryRequestOptions, resourceId, collectionLink,
-                                                                   activityId, klass,
-            resourceTypeEnum );
+                                                                          collectionResourceId, sqlQuery, rangeQueryMap,
+                                                                          cosmosQueryRequestOptions, resourceId,
+                                                                          collectionLink,
+                                                                          activityId, klass,
+                                                                          resourceTypeEnum);
     }
 }

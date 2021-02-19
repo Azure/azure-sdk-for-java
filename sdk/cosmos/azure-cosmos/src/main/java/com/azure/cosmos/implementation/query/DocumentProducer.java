@@ -92,7 +92,7 @@ class DocumentProducer<T extends Resource> {
     protected final Class<T> resourceType;
     protected PartitionKeyRange targetRange;
     protected final String collectionLink;
-    protected final TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
+    protected final TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc;
     protected final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFuncWithRetries;
     protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
@@ -108,7 +108,7 @@ class DocumentProducer<T extends Resource> {
             IDocumentQueryClient client,
             String collectionResourceId,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
@@ -117,7 +117,8 @@ class DocumentProducer<T extends Resource> {
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
             String initialContinuationToken,
-            int top, FeedRange feedRange) {
+            int top,
+            FeedRangeEpkImpl feedRange) {
 
         this.client = client;
         this.collectionRid = collectionResourceId;
@@ -166,7 +167,7 @@ class DocumentProducer<T extends Resource> {
         this.createRetryPolicyFunc = createRetryPolicyFunc;
         this.pageSize = initialPageSize;
         this.top = top;
-        this.feedRange = (FeedRangeEpkImpl)feedRange;
+        this.feedRange = feedRange;
     }
 
     public Flux<DocumentProducerFeedResponse> produceAsync() {

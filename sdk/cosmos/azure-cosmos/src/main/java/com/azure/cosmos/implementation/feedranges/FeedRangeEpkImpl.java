@@ -156,7 +156,6 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 final String containerRid = collection.getResourceId();
                 request.setEffectiveRange(this.range);
-                System.out.println("###populateFeedRangeFilteringHeaders#this.range = " + this.range);
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(

@@ -131,12 +131,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk,
                         null);
             }
-            this.feedRanges = feedRanges;
             super.initialize(collectionRid,
                     partitionKeyRangeToContinuationToken,
                     initialPageSize,
-                    new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
-                            True),
+                    new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder, True),
                             querySpec.getParameters()));
         } else {
             // Check to see if order by continuation token is a valid JSON.
@@ -349,9 +347,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRange feedRange) {
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
         return new OrderByDocumentProducer<T>(consumeComparer,
                 client,
                 collectionRid,

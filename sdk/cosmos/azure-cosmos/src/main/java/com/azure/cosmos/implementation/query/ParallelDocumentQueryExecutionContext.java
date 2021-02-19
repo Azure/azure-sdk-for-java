@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -68,7 +67,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
-        this.feedRanges = feedRanges;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -113,12 +111,13 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
 
-        List<PartitionKeyRange> ranges = new ArrayList<>();
-        ranges.addAll(rangeQueryMap.keySet());
+        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>(rangeQueryMap.keySet());
+        List<FeedRangeEpkImpl> feedRangeEpks =
+            partitionKeyRanges.stream().map(range -> new FeedRangeEpkImpl(range.toRange())).collect(Collectors.toList());
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                                                                                                         queryClient,
-                                                                                                        ranges,
+                                                                                                        partitionKeyRanges,
                                                                                                         resourceTypeEnum,
                                                                                                         klass,
                                                                                                         sqlQuery,
@@ -129,7 +128,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                                                                                         false,
                                                                                                         false,
                                                                                                         activityId,
-                                                                                                        new ArrayList<>());
+                                                                                                        feedRangeEpks);
 
         context
             .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, cosmosQueryRequestOptions,
@@ -416,9 +415,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRange feedRange) {
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
         return new DocumentProducer<T>(client,
                 collectionRid,
                 cosmosQueryRequestOptions,

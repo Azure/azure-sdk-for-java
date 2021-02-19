@@ -47,8 +47,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     protected final SqlQuerySpec querySpec;
     protected int pageSize;
     protected int top = -1;
-    List<FeedRangeEpkImpl> feedRanges;
-
 
     protected ParallelDocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                         IDocumentQueryClient client,
@@ -73,7 +71,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
         for (Map.Entry<FeedRangeEpkImpl, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
-            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
                                                                                                            continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
@@ -162,10 +160,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                                                                   CosmosQueryRequestOptions cosmosQueryRequestOptions,
                                                                   SqlQuerySpec querySpecForInit,
                                                                   Map<String, String> commonRequestHeaders,
-                                                                  TriFunction<FeedRange, String, Integer,
+                                                                  TriFunction<FeedRangeEpkImpl, String, Integer,
                                                                                  RxDocumentServiceRequest> createRequestFunc,
                                                                   Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-                                                                  Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRange feedRange);
+                                                                  Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+                                                                  FeedRangeEpkImpl feedRange);
 
     @Override
     abstract public Flux<FeedResponse<T>> drainAsync(int maxPageSize);
@@ -188,18 +187,19 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
         for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
             final PartitionKeyRange targetRange = entry.getKey();
+            final FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(targetRange.toRange());
             final SqlQuerySpec querySpec = entry.getValue();
-            TriFunction<FeedRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
-                return this.createDocumentServiceRequest(headers,
+                return this.createDocumentServiceRequestWithFeedRange(headers,
                     querySpec,
                     null,
-                    null,
+                    feedRangeEpk,
                     collectionRid);
             };
 
@@ -213,7 +213,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                                                             querySpec,
                                                             commonRequestHeaders, createRequestFunc, executeFunc,
                                                             () -> client.getResetSessionTokenRetryPolicy()
-                                                                      .getRequestPolicy(), null);
+                                                                      .getRequestPolicy(), feedRangeEpk);
 
             documentProducers.add(dp);
         }
