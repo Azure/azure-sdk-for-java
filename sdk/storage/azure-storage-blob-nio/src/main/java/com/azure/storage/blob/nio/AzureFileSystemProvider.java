@@ -81,8 +81,8 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?endpoint=<url_encoded_endpoint>"}. The endpoint of the Storage account is used to uniquely identify
- * the filesystem.
+ * {@code "azb://?endpoint=<endpoing>"}. The endpoint of the Storage account is used to uniquely identify the
+ * filesystem.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
  * containers may be specified as file stores upon creation of the file system. When a file system is created,
@@ -96,8 +96,8 @@ import java.util.function.Supplier;
  * types. Any entries not listed here will be ignored. Note that {@link AzureFileSystem} has public constants defined
  * for each of the keys for convenience.
  * <ul>
- *     <li>{@code AzureStorageAccountKey:}{@link String}</li>
- *     <li>{@code AzureStorageSasToken:}{@link String}</li>
+ *     <li>{@code AzureStorageSharedKeyCredential:}{@link com.azure.storage.common.StorageSharedKeyCredential}</li>
+ *     <li>{@code AzureStorageSasTokenCredential:}{@link com.azure.core.credential.AzureSasCredential}</li>
  *     <li>{@code AzureStorageHttpLogDetailLevel:}{@link com.azure.core.http.policy.HttpLogDetailLevel}</li>
  *     <li>{@code AzureStorageMaxTries:}{@link Integer}</li>
  *     <li>{@code AzureStorageTryTimeout:}{@link Integer}</li>
@@ -115,9 +115,8 @@ import java.util.function.Supplier;
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
  * a sas token is specified, the customer must take care that it has appropriate permissions to perform the actions
- * demanded of the file system in a given workflow, including the initial connection check specified above. Furthermore,
- * it must have an expiry time that lasts at least until the file system is closed as there is no token refresh offered
- * at this time. The same token will be applied to all containers.
+ * demanded of the file system in a given workflow, including the initial connection check specified above. The same
+ * token will be applied to all operations.
  * <p>
  * An iterable of file stores must also be provided; each entry should simply be the name of a container. The first
  * container listed will be considered the default file store and the root directory of which will be the file system's
