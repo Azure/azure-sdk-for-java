@@ -708,6 +708,13 @@ public final class AzurePath implements Path {
         return Objects.hash(parentFileSystem, pathString);
     }
 
+    /**
+     * Returns a {@link BlobClient} which references a blob pointed to by this path. Note that this does not guarantee
+     * the existence of the blob at this location.
+     *
+     * @return a {@link BlobClient}.
+     * @throws IOException If the path only contains a root component or is empty
+     */
     /*
     We don't store the blob client because unlike other types in this package, a Path does not actually indicate the
     existence or even validity of any remote resource. It is purely a representation of a path. Therefore, we do not
