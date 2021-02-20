@@ -14,10 +14,11 @@ import org.springframework.jms.core.JmsTemplate;
 import javax.jms.ConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceBusJMSAutoConfigurationTest {
 
-    private final String connectionString = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
+    private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
 
     @Test
     public void testAzureServiceBusDisabled() {
@@ -49,7 +50,7 @@ public class ServiceBusJMSAutoConfigurationTest {
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
                 ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-                assertThat(context.getBean(JmsTemplate.class).getConnectionFactory()).isEqualTo(connectionFactory);
+                assertTrue(connectionFactory == context.getBean(JmsTemplate.class).getConnectionFactory());
             }
         );
     }
@@ -63,7 +64,7 @@ public class ServiceBusJMSAutoConfigurationTest {
             context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getConnectionString()).isEqualTo(
-                    connectionString);
+                    CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
             }
@@ -81,7 +82,7 @@ public class ServiceBusJMSAutoConfigurationTest {
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
             .withPropertyValues(
-            "spring.jms.servicebus.connection-string=" + connectionString,
+            "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
             "spring.jms.servicebus.topic-client-id=cid",
             "spring.jms.servicebus.idle-timeout=123"
         );
