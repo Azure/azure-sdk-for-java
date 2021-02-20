@@ -26,130 +26,126 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redis.fluent.FirewallRulesClient;
-import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
-import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
-import com.azure.resourcemanager.redis.models.RedisFirewallRuleListResult;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.redis.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.redis.models.PrivateEndpointConnectionListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
-public final class FirewallRulesClientImpl implements FirewallRulesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallRulesClientImpl.class);
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final FirewallRulesService service;
+    private final PrivateEndpointConnectionsService service;
 
     /** The service client containing this operation class. */
     private final RedisManagementClientImpl client;
 
     /**
-     * Initializes an instance of FirewallRulesClientImpl.
+     * Initializes an instance of PrivateEndpointConnectionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    FirewallRulesClientImpl(RedisManagementClientImpl client) {
+    PrivateEndpointConnectionsClientImpl(RedisManagementClientImpl client) {
         this.service =
-            RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy
+                .create(
+                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RedisManagementClientFirewallRules to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisManagementClientPrivateEndpointConnections to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
-    private interface FirewallRulesService {
+    private interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules")
+                + "/{cacheName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResult>> list(
+        Mono<Response<PrivateEndpointConnectionListResult>> list(
             @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
+                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PrivateEndpointConnectionInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cacheName") String cacheName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
-        @ExpectedResponses({200, 201})
+                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> put(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cacheName") String cacheName,
-            @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisFirewallRuleCreateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cacheName") String cacheName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @BodyParam("application/json") PrivateEndpointConnectionInner properties,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
+                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cacheName") String cacheName,
-            @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listSinglePageAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String cacheName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -157,18 +153,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -177,26 +173,21 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             cacheName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
                             accept,
                             context))
-            .<PagedResponse<RedisFirewallRuleInner>>map(
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
@@ -204,10 +195,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listSinglePageAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -215,59 +206,53 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 resourceGroupName,
                 cacheName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
                 accept,
                 context)
             .map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cacheName), nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String cacheName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cacheName));
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
@@ -275,32 +260,31 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cacheName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<PrivateEndpointConnectionInner> listAsync(
+        String resourceGroupName, String cacheName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cacheName, context));
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName) {
+    public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String cacheName) {
         return new PagedIterable<>(listAsync(resourceGroupName, cacheName));
     }
 
     /**
-     * Gets all firewall rules in the specified redis cache.
+     * List all the private endpoint connections associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
@@ -308,29 +292,29 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all firewall rules in the specified redis cache.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName, Context context) {
+    public PagedIterable<PrivateEndpointConnectionInner> list(
+        String resourceGroupName, String cacheName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, cacheName, context));
     }
 
     /**
-     * Create or update a redis cache firewall rule.
+     * Gets the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     *     to connect.
+     * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisFirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -344,200 +328,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
+        if (privateEndpointConnectionName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cacheName,
-                            ruleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update a redis cache firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     *     to connect.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisFirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cacheName,
-        String ruleName,
-        RedisFirewallRuleCreateParameters parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cacheName,
-                ruleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Create or update a redis cache firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     *     to connect.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisFirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, cacheName, ruleName, parameters)
-            .flatMap(
-                (Response<RedisFirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a redis cache firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     *     to connect.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisFirewallRuleInner createOrUpdate(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, cacheName, ruleName, parameters).block();
-    }
-
-    /**
-     * Create or update a redis cache firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
-     *     to connect.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisFirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String cacheName,
-        String ruleName,
-        RedisFirewallRuleCreateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, cacheName, ruleName, parameters, context).block();
-    }
-
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisFirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -554,7 +349,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             cacheName,
-                            ruleName,
+                            privateEndpointConnectionName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             accept,
@@ -563,20 +358,21 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Gets a single firewall rule in a specified redis cache.
+     * Gets the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
+     * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisFirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName, Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -590,8 +386,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -606,7 +405,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 cacheName,
-                ruleName,
+                privateEndpointConnectionName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 accept,
@@ -614,21 +413,23 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Gets a single firewall rule in a specified redis cache.
+     * Gets the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
+     * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisFirewallRuleInner> getAsync(String resourceGroupName, String cacheName, String ruleName) {
-        return getWithResponseAsync(resourceGroupName, cacheName, ruleName)
+    public Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
+        return getWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName)
             .flatMap(
-                (Response<RedisFirewallRuleInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -638,52 +439,61 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * Gets a single firewall rule in a specified redis cache.
+     * Gets the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
+     * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisFirewallRuleInner get(String resourceGroupName, String cacheName, String ruleName) {
-        return getAsync(resourceGroupName, cacheName, ruleName).block();
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
+        return getAsync(resourceGroupName, cacheName, privateEndpointConnectionName).block();
     }
 
     /**
-     * Gets a single firewall rule in a specified redis cache.
+     * Gets the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single firewall rule in a specified redis cache.
+     * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisFirewallRuleInner> getWithResponse(
-        String resourceGroupName, String cacheName, String ruleName, Context context) {
-        return getWithResponseAsync(resourceGroupName, cacheName, ruleName, context).block();
+    public Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName, context).block();
     }
 
     /**
-     * Deletes a single firewall rule in a specified redis cache.
+     * Update the state of specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String cacheName, String ruleName) {
+    public Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -697,14 +507,354 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .put(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cacheName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            privateEndpointConnectionName,
+                            properties,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .put(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cacheName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                privateEndpointConnectionName,
+                properties,
+                accept,
+                context);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPutAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            putWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPutAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            putWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                context);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
+        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties).getSyncPoller();
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context) {
+        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> putAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
+        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionInner> putAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context) {
+        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
+        return putAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties).block();
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context) {
+        return putAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context).block();
+    }
+
+    /**
+     * Deletes the specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -715,20 +865,21 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             cacheName,
-                            ruleName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            privateEndpointConnectionName,
                             accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes a single firewall rule in a specified redis cache.
+     * Deletes the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -737,7 +888,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName, Context context) {
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -751,14 +902,17 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -767,51 +921,54 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 cacheName,
-                ruleName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                privateEndpointConnectionName,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a single firewall rule in a specified redis cache.
+     * Deletes the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String ruleName) {
-        return deleteWithResponseAsync(resourceGroupName, cacheName, ruleName)
+    public Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
+        return deleteWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes a single firewall rule in a specified redis cache.
+     * Deletes the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cacheName, String ruleName) {
-        deleteAsync(resourceGroupName, cacheName, ruleName).block();
+    public void delete(String resourceGroupName, String cacheName, String privateEndpointConnectionName) {
+        deleteAsync(resourceGroupName, cacheName, privateEndpointConnectionName).block();
     }
 
     /**
-     * Deletes a single firewall rule in a specified redis cache.
+     * Deletes the specified private endpoint connection associated with the redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -820,78 +977,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String cacheName, String ruleName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, cacheName, ruleName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list firewall rules Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RedisFirewallRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list firewall rules Redis operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, cacheName, privateEndpointConnectionName, context).block();
     }
 }
