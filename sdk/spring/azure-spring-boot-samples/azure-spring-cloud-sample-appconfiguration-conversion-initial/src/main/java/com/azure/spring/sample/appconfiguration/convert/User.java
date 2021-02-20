@@ -6,12 +6,11 @@
 
 package com.azure.spring.sample.appconfiguration.convert;
 
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.PartitionKey;
-
-@Document(collection = "mycollection")
+@Container(containerName = "mycollection")
 public class User {
     @Id
     private String id;

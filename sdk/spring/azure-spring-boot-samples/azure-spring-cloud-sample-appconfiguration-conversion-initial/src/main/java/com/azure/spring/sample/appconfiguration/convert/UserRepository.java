@@ -6,7 +6,7 @@
 
 package com.azure.spring.sample.appconfiguration.convert;
 
-import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
+import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
