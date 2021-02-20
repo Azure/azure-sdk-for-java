@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.azure.spring.sample.featuremanagement.web.convert;
+package com.azure.spring.sample.appconfiguration.convert;
 
 import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;

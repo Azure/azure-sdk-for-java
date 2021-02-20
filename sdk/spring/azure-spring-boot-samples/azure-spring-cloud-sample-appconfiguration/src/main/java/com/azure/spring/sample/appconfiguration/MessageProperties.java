@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See LICENSE in the project root for
  * license information.
  */
-package com.azure.spring.sample.featuremanagement.web;
+package com.azure.spring.sample.appconfiguration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

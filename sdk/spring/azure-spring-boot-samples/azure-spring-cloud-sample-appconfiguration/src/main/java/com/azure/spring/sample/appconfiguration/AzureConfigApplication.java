@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.azure.spring.sample.featuremanagement.web;
+package com.azure.spring.sample.appconfiguration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

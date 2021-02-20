@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.azure.spring.sample.featuremanagement.web.convert;
+package com.azure.spring.sample.appconfiguration.convert;
 
 import org.springframework.data.annotation.Id;
 
