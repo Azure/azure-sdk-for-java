@@ -180,9 +180,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
 
+        markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
@@ -321,7 +322,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(object, "Upsert object should not be null");
 
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
+        markAuditedIfConfigured(object);
+
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
 
         LOGGER.debug("execute upsert item in database {} container {}", this.databaseName,
             containerName);
@@ -749,11 +752,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                    .block();
     }
 
-    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+    private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
-        return mappingCosmosConverter.writeJsonNode(object);
     }
 
     private Long getCountValue(CosmosQuery query, String containerName) {

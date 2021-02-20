@@ -362,8 +362,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return cosmosAsyncClient
@@ -422,7 +423,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> upsert(String containerName, T object) {
         final Class<T> domainType = (Class<T>) object.getClass();
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
+        markAuditedIfConfigured(object);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         applyVersioning(object.getClass(), originalItem, options);
@@ -673,13 +675,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return CosmosEntityInformation.getInstance(domainType).getContainerName();
     }
 
-    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+
+    private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
-        return mappingCosmosConverter.writeJsonNode(object);
     }
-
 
     private Flux<JsonNode> findItems(@NonNull CosmosQuery query,
                                      @NonNull String containerName) {
