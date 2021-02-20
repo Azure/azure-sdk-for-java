@@ -25,25 +25,20 @@ import java.util
 private object CosmosPartitionPlanner {
   def createInputPartitions(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
       cosmosPartitioningConfig: CosmosPartitioningConfig,
       changeFeedOffset: Option[ChangeFeedOffset],
       defaultMinimalPartitionCount: Int,
       defaultMaxPartitionSizeInMB: Int
   ): Array[InputPartition] = {
-
     assertOnSparkDriver()
-
     //scalastyle:off multiple.string.literals
     requireNotNull(cosmosClientConfig, "cosmosClientConfig")
     requireNotNull(cosmosContainerConfig, "cosmosContainerConfig")
     requireNotNull(cosmosPartitioningConfig, "cosmosPartitioningConfig")
-    require(defaultMaxPartitionSizeInMB >= 64,
-            "Argument 'defaultMaxPartitionSizeInMB' must at least be 64")
-    require(defaultMinimalPartitionCount >= 1,
-            "Argument 'defaultMinimalPartitionCount' must at least be 1")
+    require(defaultMaxPartitionSizeInMB >= 64, "Argument 'defaultMaxPartitionSizeInMB' must at least be 64")
+    require(defaultMinimalPartitionCount >= 1, "Argument 'defaultMinimalPartitionCount' must at least be 1")
     //scalastyle:on multiple.string.literals
 
     cosmosPartitioningConfig.partitioningStrategy match {
