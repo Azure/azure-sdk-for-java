@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInn
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import java.util.ArrayList;
@@ -218,5 +219,26 @@ public class VirtualMachineScaleSetsImpl
         }
         return new VirtualMachineScaleSetImpl(
             inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
+    }
+
+    @Override
+    public void deleteById(String id, boolean forceDeletion) {
+        deleteByIdAsync(id, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
+        return deleteByResourceGroupAsync(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+    }
+
+    @Override
+    public void deleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        deleteByResourceGroupAsync(resourceGroupName, name, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name, boolean forceDeletion) {
+        return this.inner().deleteAsync(resourceGroupName, name, forceDeletion);
     }
 }
