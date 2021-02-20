@@ -1,6 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.utils;
 
-
+/**
+ * Util class for Azure urls
+ */
 public class AzureCloudUrls {
     public static String getBaseUrl(String cloudType) {
         return cloudType.equals("Global") ? "https://login.microsoftonline.com/"
