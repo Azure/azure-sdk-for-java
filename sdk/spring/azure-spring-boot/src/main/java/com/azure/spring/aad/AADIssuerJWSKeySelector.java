@@ -20,7 +20,6 @@ import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
@@ -51,25 +50,24 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
         if (trustedIssuers.getTrustedIssuers().contains(iss)) {
-            try {
-                return selectors.computeIfAbsent(iss, (Function<? super String, ?
-                    extends JWSKeySelector<SecurityContext>>) fromIssuer(iss)).selectJWSKeys(header, context);
-            } catch (Exception ex) {
-                throw new KeySourceException("The issuer: '" + iss + "' were unable to create a Key Source.", ex);
-            }
+            return selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
         throw new IllegalArgumentException("The issuer: '" + iss + "' is not registered in trusted issuer repository,"
             + " so cannot create JWSKeySelector.");
     }
 
-    private JWSKeySelector<SecurityContext> fromIssuer(String issuer) throws Exception {
+    private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
         Map<String, Object> configurationForOidcIssuerLocation =
             AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(issuer);
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
             sizeLimit);
-        JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
-        return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
+        try {
+            JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
+            return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("The issuer: '" + issuer + "' were unable to create a Key Source.", ex);
+        }
     }
 
 }
