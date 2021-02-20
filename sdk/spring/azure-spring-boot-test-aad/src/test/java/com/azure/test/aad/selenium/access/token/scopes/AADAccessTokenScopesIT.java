@@ -3,13 +3,8 @@
 
 package com.azure.test.aad.selenium.access.token.scopes;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_GRAPH_BASE_URL;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
-
+import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,6 +16,13 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 public class AADAccessTokenScopesIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
@@ -28,8 +30,11 @@ public class AADAccessTokenScopesIT {
     @Test
     public void testAccessTokenScopes() {
         Map<String, String> properties = createDefaultProperties();
+
+        String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
-            AAD_GRAPH_BASE_URL + "User.Read, " + AAD_GRAPH_BASE_URL + "Directory.Read.All");
+            graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
+
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");

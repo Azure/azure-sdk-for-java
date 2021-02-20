@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.ondemand;
 
+import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_ON_DEMAND;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_ON_DEMAND;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.checkIfChinaCloud;
+import static com.azure.spring.test.EnvironmentVariable.*;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
 public class AADOnDemandIT {
@@ -30,9 +29,8 @@ public class AADOnDemandIT {
 
     @Test
     public void onDemandTest() {
-        String armClientUri = checkIfChinaCloud() ? "https://management.chinacloudapi.cn/"
-            : "https://management.azure.com/";
-        String armClientScope = armClientUri + "user_impersonation";
+        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientScope = armClientUrl + "user_impersonation";
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
         properties.put("azure.activedirectory.authorization-clients.arm.on-demand", "true");

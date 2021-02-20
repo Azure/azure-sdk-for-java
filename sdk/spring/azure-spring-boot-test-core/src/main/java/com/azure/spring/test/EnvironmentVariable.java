@@ -11,8 +11,6 @@ public class EnvironmentVariable {
     public static final String AAD_B2C_TENANT = System.getenv("AAD_B2C_TENANT");
     public static final String AAD_B2C_USER_EMAIL = System.getenv("AAD_B2C_USER_EMAIL");
     public static final String AAD_B2C_USER_PASSWORD = System.getenv("AAD_B2C_USER_PASSWORD");
-    public static final String AAD_LOGIN_BASE_URL = System.getenv("AAD_LOGIN_BASE_URL");
-    public static final String AAD_GRAPH_BASE_URL = System.getenv("AAD_GRAPH_BASE_URL");
     public static final String AAD_MULTI_TENANT_CLIENT_ID = System.getenv("AAD_MULTI_TENANT_CLIENT_ID");
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = System.getenv("AAD_MULTI_TENANT_CLIENT_SECRET");
     public static final String AAD_SINGLE_TENANT_CLIENT_ID = System.getenv("AAD_SINGLE_TENANT_CLIENT_ID");
@@ -27,6 +25,7 @@ public class EnvironmentVariable {
     public static final String AAD_USER_PASSWORD_1 = System.getenv("AAD_USER_PASSWORD_1");
     public static final String AAD_USER_PASSWORD_2 = System.getenv("AAD_USER_PASSWORD_2");
     public static final String AAD_USER_PASSWORD_ON_DEMAND = System.getenv("AAD_USER_PASSWORD_ON_DEMAND");
+    public static final String AZURE_CLOUD_TYPE = System.getenv("AZURE_CLOUD_TYPE");
     public static final String AZURE_KEYVAULT2_URI = System.getenv("AZURE_KEYVAULT2_URI");
     public static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
     public static final String AZURE_STORAGE_ACCOUNT_KEY = System.getenv("AZURE_STORAGE_ACCOUNT_KEY");

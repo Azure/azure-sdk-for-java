@@ -28,8 +28,8 @@ public class SeleniumITHelper {
             System.setProperty("wdm.cachePath", getClass().getClassLoader().getResource("selenium").getPath());
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
-            options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
+//            options.addArguments("--headless");
+//            options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
             driver = new ChromeDriver(options);
             wait = new WebDriverWait(driver, 10);
         }

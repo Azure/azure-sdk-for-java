@@ -80,8 +80,6 @@ stages:
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
           AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
-          AAD_LOGIN_BASE_URL: 'https://login.microsoftonline.com/'
-          AAD_GRAPH_BASE_URL: 'https://graph.microsoft.com/'
           AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
           AAD_B2C_TENANT: "B2CITTest1"
           AAD_B2C_REPLY_URL: "http://localhost:8080/home"
@@ -94,6 +92,7 @@ stages:
           AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
           AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
+          AZURE_CLOUD_TYPE: "Global"
 
     - template: spring-test-template.yml
       parameters:
@@ -124,9 +123,8 @@ stages:
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret-cn)
           AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role-cn)
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role-cn)
-          AAD_LOGIN_BASE_URL: 'https://login.partner.microsoftonline.cn/'
-          AAD_GRAPH_BASE_URL: 'https://microsoftgraph.chinacloudapi.cn/'
           AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserNameChina }}
           AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1-cn)
           AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id-cn)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret-cn)
+          AZURE_CLOUD_TYPE: "China"
