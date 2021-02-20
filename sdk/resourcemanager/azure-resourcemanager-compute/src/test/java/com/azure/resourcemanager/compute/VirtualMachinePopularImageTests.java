@@ -24,7 +24,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
     @Test
     @DoNotRecord
     public void canCreateAllPopularImageVM() {
-        if (skipInPlayback()) {git statu
+        if (skipInPlayback()) {
             return;
         }
 
