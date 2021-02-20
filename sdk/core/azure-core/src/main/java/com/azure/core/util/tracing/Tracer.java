@@ -5,6 +5,9 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
+import java.time.OffsetDateTime;
+import java.util.Map;
+
 /**
  * Contract that all tracers must implement to be pluggable into the SDK.
  *
@@ -86,7 +89,6 @@ public interface Tracer {
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code methodName} or {@code context} is {@code null}.
      */
@@ -126,7 +128,6 @@ public interface Tracer {
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
      * @param processKind AMQP operation kind.
-     *
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code methodName} or {@code context} or {@code processKind} is {@code null}.
      */
@@ -184,7 +185,6 @@ public interface Tracer {
      *
      * @param spanName Name to give the next span.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the name of the returned span.
      * @throws NullPointerException if {@code spanName} or {@code context} is {@code null}.
      */
@@ -214,7 +214,6 @@ public interface Tracer {
      *
      * @param diagnosticId Unique identifier for the trace information of the span.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the span context.
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
@@ -230,12 +229,26 @@ public interface Tracer {
      *
      * @param spanName Name to give the span for the created builder.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the span builder.
      * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
      */
     default Context getSharedSpanBuilder(String spanName, Context context) {
         // no-op
         return Context.NONE;
+    }
+
+    /**
+     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     */
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
     }
 }

@@ -24,7 +24,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    protected static final String CONTENTS = "T1-Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private final MessagingFactory factory;

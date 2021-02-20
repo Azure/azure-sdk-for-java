@@ -51,6 +51,8 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.throughputControl;
+    opens com.azure.cosmos.implementation.throughputControl.controller.request;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;

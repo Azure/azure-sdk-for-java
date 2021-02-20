@@ -64,7 +64,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&maxresults=2&include=&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net?comp=list&prefix=fileserviceasyncapitestslistshareswithfilter&maxresults=2&include=",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
@@ -85,7 +85,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net?prefix=fileserviceasyncapitestslistshareswithfilter&marker=/gaprastg71/fileserviceasyncapitestslistshareswithfilter3387379ecb62&maxresults=2&include=&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net?comp=list&prefix=fileserviceasyncapitestslistshareswithfilter&marker=/gaprastg71/fileserviceasyncapitestslistshareswithfilter3387379ecb62&maxresults=2&include=",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
