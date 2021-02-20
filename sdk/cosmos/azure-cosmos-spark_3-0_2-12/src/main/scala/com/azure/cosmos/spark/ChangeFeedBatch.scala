@@ -27,7 +27,15 @@ private class ChangeFeedBatch
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
 
     val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
-    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+
+    // TODO fabianm - remove the hack below as soon as we have an emulator
+    // which can handle feed range filtering on partial ranges
+    // current emulator supports it in FullFidelity mode - but not Incremental
+    val defaultMinPartitionCount = if (session.sparkContext.defaultParallelism == 1) {
+      1
+    } else {
+       1 + (2 * session.sparkContext.defaultParallelism)
+    }
 
     CosmosPartitionPlanner.createInputPartitions(
       clientConfiguration,
