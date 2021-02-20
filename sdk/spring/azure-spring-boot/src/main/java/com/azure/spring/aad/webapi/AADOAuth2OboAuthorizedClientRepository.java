@@ -166,8 +166,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                                  MsalInteractionRequiredException exception) {
         Map<String, Object> parameters = new LinkedHashMap<>();
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
-            exception.claims());
+        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, exception.claims());
         parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
         parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
             + "provided by the access token");

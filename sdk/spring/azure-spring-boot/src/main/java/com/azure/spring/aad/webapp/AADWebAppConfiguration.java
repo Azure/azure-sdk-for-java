@@ -4,10 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,8 +47,6 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
 @ConditionalOnProperty("azure.activedirectory.client-id")
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADWebAppConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
     @Autowired
     private AADAuthenticationProperties properties;

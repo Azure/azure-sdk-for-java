@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +25,14 @@ import java.util.stream.Stream;
  * Handle the {@link WebClientResponseException} in On-Behalf-Of flow.
  *
  * <p>
- * When the Web API needs re-acquire token(The request requires higher privileges than provided by the access token in
- * On-Behalf-Of flow.), it can sent a 403 with information in the WWW-Authenticate header to web client ,web client
- * will throw {@link WebClientResponseException}, Web APP can handle this exception to challenge the user.
+ * When the resource-server needs re-acquire token(The request requires higher privileges than provided by the access
+ * token in On-Behalf-Of flow.), it can sent a 403 with information in the WWW-Authenticate header to web client ,web
+ * client will throw {@link WebClientResponseException}, web-application can handle this exception to challenge the
+ * user.
  */
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADHandleConditionalAccessFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -40,53 +40,35 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            WebClientResponseException webClientResponseException =
+            Map<String, String> authParameters =
                 Optional.of(exception)
                         .map(Throwable::getCause)
                         .filter(e -> e instanceof WebClientResponseException)
                         .map(e -> (WebClientResponseException) e)
-                        .filter(AADHandleConditionalAccessFilter::isConditionalAccessExceptionFromObo)
+                        .map(WebClientResponseException::getHeaders)
+                        .map(httpHeaders -> httpHeaders.get(HttpHeaders.WWW_AUTHENTICATE))
+                        .map(list -> list.get(0))
+                        .map(AADHandleConditionalAccessFilter::parseAuthParameters)
                         .orElse(null);
-            if (webClientResponseException != null) {
-                handleConditionalAccess(webClientResponseException, request, response);
+            if (authParameters != null && authParameters.containsKey(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)) {
+                request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
+                    authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
+                response.setStatus(302);
+                try {
+                    response.sendRedirect(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI);
+                } catch (IOException e) {
+                    LOGGER.error("Failed to redirect at this response.", exception);
+                }
                 return;
             }
             throw exception;
         }
     }
 
-    private static boolean isConditionalAccessExceptionFromObo(WebClientResponseException exception) {
-        String result = Optional.of(exception)
-                                .map(WebClientResponseException::getHeaders)
-                                .map(httpHeaders -> httpHeaders.get(HttpHeaders.WWW_AUTHENTICATE))
-                                .map(list -> list.get(0))
-                                .filter(value -> value.contains(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS))
-                                .orElse(null);
-        return result != null;
-    }
-
-    static void handleConditionalAccess(WebClientResponseException exception, HttpServletRequest request,
-                                        HttpServletResponse response) {
-        Map<String, String> authParameters =
-            Optional.of(exception)
-                    .map(WebClientResponseException::getHeaders)
-                    .map(httpHeaders -> httpHeaders.get(HttpHeaders.WWW_AUTHENTICATE))
-                    .map(list -> list.get(0))
-                    .map(AADHandleConditionalAccessFilter::parseAuthParameters)
-                    .orElse(null);
-        request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
-            authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
-        response.setStatus(302);
-        try {
-            response.sendRedirect(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI);
-        } catch (IOException e) {
-            LOGGER.error("Failed to redirect at this response.", exception);
-        }
-    }
-
     private static Map<String, String> parseAuthParameters(String wwwAuthenticateHeader) {
         return Stream.of(wwwAuthenticateHeader)
                      .filter(header -> !StringUtils.isEmpty(header))
+                     .filter(header -> header.startsWith(Constants.BEARER_PREFIX))
                      .map(str -> str.substring(Constants.BEARER_PREFIX.length() + 1, str.length() - 1))
                      .map(str -> str.split(", "))
                      .flatMap(Stream::of)
