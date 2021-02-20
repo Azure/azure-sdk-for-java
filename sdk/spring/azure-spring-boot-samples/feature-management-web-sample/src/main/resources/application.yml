@@ -1,0 +1,29 @@
+spring:
+  thymeleaf:
+    cache: false
+  cloud:
+    azure:
+      appconfiguration:
+        watch:
+          enabled: True
+          delay: 5s
+config:
+  message: Hi
+feature-management::
+  beta: true
+  dark-theme:
+    enabled-for:
+      -
+        name: Random
+        parameters:
+          chance: "50"
+  beta-ab:
+    enabled-for:
+      -
+        name: Random
+        parameters:
+          chance: "50"
+      -
+        name: ClientFilter
+        parameters:
+          clientIp: 10.0.0.1 
