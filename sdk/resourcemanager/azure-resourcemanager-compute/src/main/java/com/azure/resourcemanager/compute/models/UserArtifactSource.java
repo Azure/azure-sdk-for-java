@@ -15,40 +15,21 @@ public final class UserArtifactSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserArtifactSource.class);
 
     /*
-     * Required. The fileName of the artifact.
-     */
-    @JsonProperty(value = "fileName", required = true)
-    private String fileName;
-
-    /*
-     * Required. The mediaLink of the artifact, must be a readable storage
+     * Required. The mediaLink of the artifact, must be a readable storage page
      * blob.
      */
     @JsonProperty(value = "mediaLink", required = true)
     private String mediaLink;
 
-    /**
-     * Get the fileName property: Required. The fileName of the artifact.
-     *
-     * @return the fileName value.
+    /*
+     * Optional. The defaultConfigurationLink of the artifact, must be a
+     * readable storage page blob.
      */
-    public String fileName() {
-        return this.fileName;
-    }
+    @JsonProperty(value = "defaultConfigurationLink")
+    private String defaultConfigurationLink;
 
     /**
-     * Set the fileName property: Required. The fileName of the artifact.
-     *
-     * @param fileName the fileName value to set.
-     * @return the UserArtifactSource object itself.
-     */
-    public UserArtifactSource withFileName(String fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
-     * Get the mediaLink property: Required. The mediaLink of the artifact, must be a readable storage blob.
+     * Get the mediaLink property: Required. The mediaLink of the artifact, must be a readable storage page blob.
      *
      * @return the mediaLink value.
      */
@@ -57,7 +38,7 @@ public final class UserArtifactSource {
     }
 
     /**
-     * Set the mediaLink property: Required. The mediaLink of the artifact, must be a readable storage blob.
+     * Set the mediaLink property: Required. The mediaLink of the artifact, must be a readable storage page blob.
      *
      * @param mediaLink the mediaLink value to set.
      * @return the UserArtifactSource object itself.
@@ -68,16 +49,33 @@ public final class UserArtifactSource {
     }
 
     /**
+     * Get the defaultConfigurationLink property: Optional. The defaultConfigurationLink of the artifact, must be a
+     * readable storage page blob.
+     *
+     * @return the defaultConfigurationLink value.
+     */
+    public String defaultConfigurationLink() {
+        return this.defaultConfigurationLink;
+    }
+
+    /**
+     * Set the defaultConfigurationLink property: Optional. The defaultConfigurationLink of the artifact, must be a
+     * readable storage page blob.
+     *
+     * @param defaultConfigurationLink the defaultConfigurationLink value to set.
+     * @return the UserArtifactSource object itself.
+     */
+    public UserArtifactSource withDefaultConfigurationLink(String defaultConfigurationLink) {
+        this.defaultConfigurationLink = defaultConfigurationLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (fileName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fileName in model UserArtifactSource"));
-        }
         if (mediaLink() == null) {
             throw logger
                 .logExceptionAsError(
