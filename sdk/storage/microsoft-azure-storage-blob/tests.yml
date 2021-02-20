@@ -1,8 +1,8 @@
 trigger: none
 
 stages:
-    # When migrating change path to ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
+    # When migrating change path to /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
     parameters:
       # When migrating use ServiceDirectory
       PomFilePath: './storage/data-plane/pom.xml'

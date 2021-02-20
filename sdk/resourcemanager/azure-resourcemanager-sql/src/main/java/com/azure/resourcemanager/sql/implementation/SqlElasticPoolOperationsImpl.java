@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Elastic Pool operations. */
 public class SqlElasticPoolOperationsImpl
@@ -192,12 +193,11 @@ public class SqlElasticPoolOperationsImpl
 
     @Override
     public PagedFlux<SqlElasticPool> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
-        return this
+        return PagedConverter.mapPage(this
             .manager
             .serviceClient()
             .getElasticPools()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 inner ->
                     new SqlElasticPoolImpl(
                         resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
@@ -222,12 +222,12 @@ public class SqlElasticPoolOperationsImpl
     @Override
     public PagedFlux<SqlElasticPool> listBySqlServerAsync(final SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getElasticPools()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
+            inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
 
     @Override

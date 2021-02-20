@@ -45,10 +45,10 @@ public class RegistriesImpl
 
     @Override
     public PagedFlux<Registry> listAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .inner()
-            .listAsync()
-            .mapPage(inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
+            .listAsync(),
+            inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
     }
 
     @Override

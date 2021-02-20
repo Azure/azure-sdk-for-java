@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Encryption Protector operations. */
 public class SqlEncryptionProtectorOperationsImpl
@@ -164,12 +165,11 @@ public class SqlEncryptionProtectorOperationsImpl
     public PagedFlux<SqlEncryptionProtector> listBySqlServerAsync(
         final String resourceGroupName, final String sqlServerName) {
         final SqlEncryptionProtectorOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getEncryptionProtectors()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 encryptionProtectorInner ->
                     new SqlEncryptionProtectorImpl(
                         resourceGroupName, sqlServerName, encryptionProtectorInner, self.sqlServerManager));
@@ -195,12 +195,11 @@ public class SqlEncryptionProtectorOperationsImpl
     @Override
     public PagedFlux<SqlEncryptionProtector> listBySqlServerAsync(final SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getEncryptionProtectors()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
                 encryptionProtectorInner ->
                     new SqlEncryptionProtectorImpl(
                         (SqlServerImpl) sqlServer, encryptionProtectorInner, sqlServer.manager()));

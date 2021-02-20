@@ -21,9 +21,10 @@
         <module>sdk/attestation/azure-security-attestation</module>
 
         <!-- Azure Communication Service -->
-        <module>sdk/communication/azure-communication-administration</module>
         <module>sdk/communication/azure-communication-chat</module>
         <module>sdk/communication/azure-communication-common</module>
+        <module>sdk/communication/azure-communication-identity</module>
+        <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
         <!-- Azure Core -->
@@ -44,7 +45,6 @@
 
         <!-- Digital Twins -->
         <module>sdk/digitaltwins/azure-digitaltwins-core</module>
-
 
         <!-- Event Grid -->
         <module>sdk/eventgrid/azure-messaging-eventgrid</module>
@@ -70,6 +70,9 @@
 
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
+
+        <!-- Mixed Reality -->
+        <module>sdk/mixedreality/azure-mixedreality-authentication</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -295,6 +298,14 @@
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
                   </group>
+                  <group>
+                    <title>Azure Mixed Reality Authentication</title>
+                    <packages>com.azure.mixedreality.authentication*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Communication</title>
+                    <packages>com.azure.communication.*</packages>
+                  </group>
                 </groups>
                 <links>
                   <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -391,7 +402,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <configuration>
               <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
               <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -423,7 +434,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -580,8 +591,10 @@
         <module>sdk/loganalytics</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
+        <module>sdk/mixedreality</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/netapp</module>
         <module>sdk/postgresql</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>

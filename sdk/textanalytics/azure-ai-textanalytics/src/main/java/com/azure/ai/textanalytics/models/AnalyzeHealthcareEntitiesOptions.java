@@ -10,6 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequestOptions {
+    private StringIndexType stringIndexType;
 
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -36,6 +37,28 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     @Override
     public AnalyzeHealthcareEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
+        return this;
+    }
+
+    /**
+     * Get the value of {@code stringIndexType}.
+     *
+     * @return The value of {@code stringIndexType}.
+     */
+    public StringIndexType getStringIndexType() {
+        return stringIndexType;
+    }
+
+    /**
+     * Set the value of {@code stringIndexType}.
+     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
+     *
+     * @param stringIndexType It used to set the value of string indexing type.
+     *
+     * @return the {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     */
+    public AnalyzeHealthcareEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
         return this;
     }
 }

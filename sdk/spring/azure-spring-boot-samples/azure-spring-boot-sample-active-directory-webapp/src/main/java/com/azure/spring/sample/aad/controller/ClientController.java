@@ -37,11 +37,4 @@ public class ClientController {
         return toJsonString(graphClient);
     }
 
-    @GetMapping("/office")
-    @ResponseBody
-    public String office(
-        @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient officeClient
-    ) {
-        return toJsonString(officeClient);
-    }
 }

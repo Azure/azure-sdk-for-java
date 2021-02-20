@@ -22,8 +22,11 @@ public final class ChatThreadConverter {
         ChatThread chatThread = new ChatThread()
             .setId(obj.getId())
             .setTopic(obj.getTopic())
-            .setCreatedOn(obj.getCreatedOn())
-            .setCreatedBy(new CommunicationUserIdentifier(obj.getCreatedBy()));
+            .setCreatedOn(obj.getCreatedOn());
+
+        if (obj.getCreatedBy() != null && !obj.getCreatedBy().isEmpty()) {
+            chatThread.setCreatedBy(new CommunicationUserIdentifier(obj.getCreatedBy()));
+        }
 
         return chatThread;
     }

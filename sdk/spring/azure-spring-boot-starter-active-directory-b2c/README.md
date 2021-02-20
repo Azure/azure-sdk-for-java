@@ -64,15 +64,15 @@ This starter provides following properties to be customized:
 
  | Parameter | Description |
    |---|---|
+   | `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
    | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
    | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
-   | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |
-   | `azure.activedirectory.b2c.reply-url` | The reply URL of a registered application. It's the same as the **Redirect URI** configured on Azure Portal.|   
-   | `azure.activedirectory.b2c.tenant` | The Azure AD B2C's tenant name. |
-   | `azure.activedirectory.b2c.user-flows.signUpOrSignIn` | The name of the **sign up and sign in** user flow. |
-   | `azure.activedirectory.b2c.user-flows.profileEdit` | The name of the **profile editing** user flow. |
-   | `azure.activedirectory.b2c.user-flows.passwordReset` | The name of the **password reset** user flow. |
+   | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
+   | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
+   | `azure.activedirectory.b2c.user-flows.sign-up-or-sign-in` | The name of the **sign up and sign in** user flow. |
+   | `azure.activedirectory.b2c.user-flows.profile-edit` | The name of the **profile editing** user flow. |
+   | `azure.activedirectory.b2c.user-flows.password-reset` | The name of the **password reset** user flow. |
    
 ## Examples
 ### Configure and compile your app
@@ -108,10 +108,9 @@ This starter provides following properties to be customized:
    azure:
      activedirectory:
        b2c:
-         tenant: ${your-tenant-name}
+         base-uri: ${your-tenant-authorization-server-base-uri}
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
-         reply-url: ${your-reply-url-from-aad} # should be absolute url.
          logout-success-url: ${you-logout-success-url}
          user-name-attribute-name: ${your-user-name-attribute-name}
          user-flows:
@@ -119,9 +118,9 @@ This starter provides following properties to be customized:
            profile-edit: ${your-profile-edit-user-flow}     # optional
            password-reset: ${your-password-reset-user-flow} # optional
          authenticate-additional-parameters: 
-           prompt: [login,none,consent]   # optional
-           login_hint: xxxxxxxxx          # optional
            domain_hint: xxxxxxxxx         # optional
+           login_hint: xxxxxxxxx          # optional
+           prompt: [login,none,consent]   # optional
    ```
 7. Save and close the *application.yml* file.
 

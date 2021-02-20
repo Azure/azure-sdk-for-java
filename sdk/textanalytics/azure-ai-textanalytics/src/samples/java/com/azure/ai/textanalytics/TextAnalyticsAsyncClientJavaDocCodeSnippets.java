@@ -21,6 +21,7 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -144,7 +145,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "ES")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.detectLanguageBatchWithResponse(detectLanguageInputs1, requestOptions)
@@ -232,7 +232,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -254,6 +253,39 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatchWithResponse(Iterable, RecognizeEntitiesOptions)}
+     */
+    public void recognizeBatchEntitiesMaxOverloadWithRecognizeEntitiesOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions
+        List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
+            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
+
+        RecognizeEntitiesOptions requestOptions = new RecognizeEntitiesOptions().setIncludeStatistics(true);
+
+        textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
+            .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                RecognizeEntitiesResultCollection resultCollection = response.getValue();
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                resultCollection.forEach(
+                    recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
+                        entity -> System.out.printf(
+                            "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(),
+                            entity.getCategory(),
+                            entity.getConfidenceScore())));
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions
     }
 
     // Personally Identifiable Information Entity
@@ -459,7 +491,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
             new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -485,6 +516,43 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, RecognizeLinkedEntitiesOptions)}
+     */
+    public void recognizeBatchLinkedEntitiesMaxOverloadWithRecognizeLinkedEntitiesOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions
+        List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
+            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
+
+        RecognizeLinkedEntitiesOptions requestOptions = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
+
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
+            .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                resultCollection.forEach(
+                    recognizeLinkedEntitiesResult -> recognizeLinkedEntitiesResult.getEntities().forEach(
+                        linkedEntity -> {
+                            System.out.println("Linked Entities:");
+                            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                                linkedEntity.getDataSource());
+                            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                                "Matched entity: %s, confidence score: %.2f.%n",
+                                entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        }));
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions
     }
 
     // Key Phrases
@@ -544,7 +612,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -722,7 +789,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -762,7 +828,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
-        // Request options: show statistics and model version
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
             .setIncludeOpinionMining(true).setIncludeStatistics(true);
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, options)
@@ -812,7 +877,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "over the past several months."));
         }
 
-        // Request options: show statistics and model version
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 

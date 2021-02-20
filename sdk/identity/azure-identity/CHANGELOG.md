@@ -1,6 +1,22 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
+
+
+## 1.3.0-beta.1 (2020-02-10)
+
+### New Features
+- Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.13.0
+- Upgraded `msal4j` dependency to 1.8.1
+
+## 1.2.3 (2021-02-09)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.13.0
+- Upgraded `msal4j` dependency to 1.8.1
 
 
 ## 1.2.2 (2021-01-12)

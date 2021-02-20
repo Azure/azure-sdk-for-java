@@ -37,7 +37,8 @@ public interface RedisClient
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters body to pass for resource name availability check.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
+     *     type is 'Microsoft.Cache/redis'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,7 +50,8 @@ public interface RedisClient
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters body to pass for resource name availability check.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
+     *     type is 'Microsoft.Cache/redis'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,7 +63,8 @@ public interface RedisClient
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters body to pass for resource name availability check.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
+     *     type is 'Microsoft.Cache/redis'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,7 +75,8 @@ public interface RedisClient
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters body to pass for resource name availability check.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
+     *     type is 'Microsoft.Cache/redis'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

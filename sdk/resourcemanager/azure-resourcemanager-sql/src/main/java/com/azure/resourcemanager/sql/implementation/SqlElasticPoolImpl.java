@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlElasticPool. */
 public class SqlElasticPoolImpl
@@ -214,12 +215,12 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<ElasticPoolActivity> listActivitiesAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getElasticPoolActivities()
-            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(ElasticPoolActivityImpl::new);
+            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name()),
+            ElasticPoolActivityImpl::new);
     }
 
     @Override
@@ -239,12 +240,12 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<ElasticPoolDatabaseActivity> listDatabaseActivitiesAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getElasticPoolDatabaseActivities()
-            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(ElasticPoolDatabaseActivityImpl::new);
+            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name()),
+            ElasticPoolDatabaseActivityImpl::new);
     }
 
     @Override
@@ -265,12 +266,12 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetric> listDatabaseMetricsAsync(String filter) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getElasticPools()
-            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
-            .mapPage(SqlDatabaseMetricImpl::new);
+            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter),
+            SqlDatabaseMetricImpl::new);
     }
 
     @Override
@@ -291,12 +292,12 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitionsAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getElasticPools()
-            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(SqlDatabaseMetricDefinitionImpl::new);
+            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name()),
+            SqlDatabaseMetricDefinitionImpl::new);
     }
 
     @Override
@@ -325,12 +326,11 @@ public class SqlElasticPoolImpl
     @Override
     public PagedFlux<SqlDatabase> listDatabasesAsync() {
         final SqlElasticPoolImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .listByElasticPoolAsync(self.resourceGroupName, self.sqlServerName, this.name())
-            .mapPage(
+            .listByElasticPoolAsync(self.resourceGroupName, self.sqlServerName, this.name()),
                 databaseInner ->
                     new SqlDatabaseImpl(
                         self.resourceGroupName,

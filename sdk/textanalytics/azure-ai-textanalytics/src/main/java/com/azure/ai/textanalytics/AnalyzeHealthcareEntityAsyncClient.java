@@ -13,7 +13,6 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -47,6 +46,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -82,13 +83,12 @@ class AnalyzeHealthcareEntityAsyncClient {
                 // TODO: after poller has the poll interval, use it.
                 // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
-                activationOperation(service.healthWithResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    options.getModelVersion(),
-                    // TODO: explore StringIndexType to user. https://github.com/Azure/azure-sdk-for-java/issues/18745
-                    StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
-                    finalContext).map(
-                        healthResponse -> {
+                activationOperation(
+                    service.healthWithResponseAsync(
+                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        finalContext)
+                        .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
                                 new AnalyzeHealthcareEntitiesOperationDetail();
                             AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
@@ -119,13 +119,12 @@ class AnalyzeHealthcareEntityAsyncClient {
                 // TODO: after poller has the poll interval, use it.
                 // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
-                activationOperation(service.healthWithResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    options.getModelVersion(),
-                    // TODO: explore StringIndexType to user. https://github.com/Azure/azure-sdk-for-java/issues/18745
-                    StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
-                    finalContext).map(
-                        healthResponse -> {
+                activationOperation(
+                    service.healthWithResponseAsync(
+                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        finalContext)
+                        .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
                                 new AnalyzeHealthcareEntitiesOperationDetail();
                             AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
@@ -181,12 +180,14 @@ class AnalyzeHealthcareEntityAsyncClient {
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(
             analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
         final RequestStatistics requestStatistics = healthcareResult.getStatistics();
-        final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
-            requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
-            requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount()
-        );
-        AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(
-            analyzeHealthcareEntitiesResultCollection, batchStatistic);
+        if (requestStatistics != null) {
+            final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
+                requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
+                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount()
+            );
+            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(
+                analyzeHealthcareEntitiesResultCollection, batchStatistic);
+        }
 
         final List<TextAnalyticsError> errors = healthcareJobState.getErrors();
 
@@ -318,10 +319,6 @@ class AnalyzeHealthcareEntityAsyncClient {
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
-    }
-
-    private Context getNotNullContext(Context context) {
-        return context == null ? Context.NONE : context;
     }
 
     private AnalyzeHealthcareEntitiesOptions getNotNullAnalyzeHealthcareEntitiesOptions(
