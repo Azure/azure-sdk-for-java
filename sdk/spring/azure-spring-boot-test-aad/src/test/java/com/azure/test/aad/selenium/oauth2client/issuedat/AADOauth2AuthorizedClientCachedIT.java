@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.oauth2client.issuedat;
 
+import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
 public class AADOauth2AuthorizedClientCachedIT {
@@ -31,12 +33,11 @@ public class AADOauth2AuthorizedClientCachedIT {
         properties.put(
             "azure.activedirectory.authorization-clients.office.scopes",
             "https://manage.office.com/ActivityFeed.Read, "
-                + "https://manage.office.com/ActivityFeed.ReadDlp, "
                 + "https://manage.office.com/ServiceHealth.Read");
-        properties.put(
-            "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.Read.All");
 
+        String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
+        properties.put("azure.activedirectory.authorization-clients.graph.scopes",
+            graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
 
