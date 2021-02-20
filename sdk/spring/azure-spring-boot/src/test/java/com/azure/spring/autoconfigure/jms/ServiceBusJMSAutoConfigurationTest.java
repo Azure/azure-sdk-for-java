@@ -16,34 +16,35 @@ import javax.jms.ConnectionFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceBusJMSAutoConfigurationTest {
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class));
 
     private final String connectionString = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
 
     @Test
     public void testAzureServiceBusDisabled() {
-        this.contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureServiceBusJMSPropertiesValidation() {
-        this.contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testCachingConnectionFactoryIsAutowired() {
 
-        configureContextPropertyValues();
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
 
-        this.contextRunner.run(
+        contextRunner.run(
             context -> {
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
@@ -56,9 +57,9 @@ public class ServiceBusJMSAutoConfigurationTest {
     @Test
     public void testAzureServiceBusJMSPropertiesConfigured() {
 
-        configureContextPropertyValues();
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
 
-        this.contextRunner.run(
+        contextRunner.run(
             context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getConnectionString()).isEqualTo(
@@ -69,13 +70,20 @@ public class ServiceBusJMSAutoConfigurationTest {
         );
     }
 
-    private void configureContextPropertyValues() {
+    private ApplicationContextRunner getEmptyContextRunner() {
 
-        this.contextRunner = this.contextRunner.withPropertyValues(
+        return new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class));
+    }
+
+    private ApplicationContextRunner getContextRunnerWithProperties() {
+
+        return new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withPropertyValues(
             "spring.jms.servicebus.connection-string=" + connectionString,
             "spring.jms.servicebus.topic-client-id=cid",
             "spring.jms.servicebus.idle-timeout=123"
         );
-
     }
 }
