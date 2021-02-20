@@ -77,8 +77,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def applyRestrictiveStrategy(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig
   ): Array[InputPartition] = {
     val feedRangesList = this
@@ -96,8 +95,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def applyStorageAlignedStrategy(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
       planningInfo: Array[PartitionPlanningInfo],
       splitCountMultiplier: Double,
@@ -144,8 +142,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def applyStorageAlignedStrategy(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
       changeFeedOffset: Option[ChangeFeedOffset],
       weightFactor: Double,
@@ -170,8 +167,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def applyCustomStrategy(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
       changeFeedOffset: Option[ChangeFeedOffset],
       targetPartitionCount: Int
@@ -198,8 +194,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def getPartitionPlanningInfo(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
       changeFeedOffset: Option[ChangeFeedOffset]
   ): Array[PartitionPlanningInfo] = {
@@ -272,8 +267,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def getFeedRanges(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig
   ): SMono[util.List[FeedRange]] = {
 
@@ -291,8 +285,7 @@ private object CosmosPartitionPlanner {
 
   private[this] def getPartitionMetadata(
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[
-        Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig
   ): Array[PartitionMetadata] = {
 

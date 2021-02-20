@@ -210,6 +210,7 @@ class CosmosPartitionPlannerSpec
     )
   }
 
+  //scalastyle:off magic.number
   private[this] def evaluateStrategy
   (
     strategy: String,
@@ -217,12 +218,10 @@ class CosmosPartitionPlannerSpec
     expectedPartitionCount: Int,
     currentOffset: Option[ChangeFeedOffset] = None,
 
-    //scalastyle:off magic.number 128 MB is the Spark default, can be changed via
-    // SparkSession.sessionState.conf.filesMaxPartitionBytes
+    // 128 MB is the Spark default maps to  SparkSession.sessionState.conf.filesMaxPartitionBytes
     defaultMaxPartitionSizeInMB: Int = 128,
 
-    //scalastyle:off magic.number maps to 1 + (2 * session.sparkContext.defaultParallelism)
-    // should help saturating all executor nodes
+    // maps to 1 + (2 * session.sparkContext.defaultParallelism) - should help saturating all executor nodes
     defaultMinimalPartitionCount: Int = 1,
 
     // NOTE targetPartitionCount is a best-effort while still maintaining relative storage and change feed
@@ -232,12 +231,9 @@ class CosmosPartitionPlannerSpec
     // MIN VALUE is 1 per physical partition - so effective partition count >= restrictive strategy
     customPartitionCount: Option[Int] = None
   ): Assertion = {
-
     this.reinitialize()
-
     val docCount = 50 *  rnd.nextInt(1000)
     val latestLsn = 100
-
     this.injectPartitionMetadata(docCount, docSizeInKB, latestLsn)
     val userConfig = collection.mutable.Map(this.userConfigTemplate.toSeq: _*)
     userConfig.put("spark.cosmos.partitioning.strategy", strategy)

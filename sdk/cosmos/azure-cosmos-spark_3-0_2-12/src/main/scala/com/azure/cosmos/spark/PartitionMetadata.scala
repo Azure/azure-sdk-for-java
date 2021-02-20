@@ -23,8 +23,7 @@ private object PartitionMetadata {
     s"$databaseId|$containerId|$feedRange"
 
   def apply(cosmosClientConfig: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[
-              Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: String,
             documentCount: Long,
@@ -50,8 +49,7 @@ private object PartitionMetadata {
 
 private case class PartitionMetadata(
     cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[
-      Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: String,
     documentCount: Long,
