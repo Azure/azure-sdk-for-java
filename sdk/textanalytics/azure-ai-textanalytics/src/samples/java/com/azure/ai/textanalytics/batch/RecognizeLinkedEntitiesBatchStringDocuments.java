@@ -37,7 +37,6 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
             "Mount Shasta has lenticular clouds."
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing linked entities for each document in a batch of documents

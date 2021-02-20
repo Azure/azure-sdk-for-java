@@ -77,6 +77,15 @@ public class ShareFileClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return shareFileAsyncClient.getAccountUrl();
+    }
+
+    /**
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client.

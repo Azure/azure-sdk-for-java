@@ -5,11 +5,10 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SearchResultHelper;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * Contains a document found by a search query, plus associated metadata.
@@ -53,8 +51,6 @@ public final class SearchResult {
 
     @JsonIgnore
     private JsonSerializer jsonSerializer;
-
-    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
 
     static {
         SearchResultHelper.setAccessor(new SearchResultHelper.SearchResultAccessor() {
@@ -98,8 +94,7 @@ public final class SearchResult {
     public <T> T getDocument(Class<T> modelClass) {
         if (jsonSerializer == null) {
             try {
-                String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
-                return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                return Utility.convertValue(additionalProperties, modelClass);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
             }

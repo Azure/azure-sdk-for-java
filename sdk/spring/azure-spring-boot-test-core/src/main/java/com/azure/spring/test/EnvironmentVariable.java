@@ -1,7 +1,5 @@
 package com.azure.spring.test;
 
-import org.springframework.util.Assert;
-
 public class EnvironmentVariable {
     public static final String AAD_B2C_CLIENT_ID = System.getenv("AAD_B2C_CLIENT_ID");
     public static final String AAD_B2C_CLIENT_SECRET = System.getenv("AAD_B2C_CLIENT_SECRET");

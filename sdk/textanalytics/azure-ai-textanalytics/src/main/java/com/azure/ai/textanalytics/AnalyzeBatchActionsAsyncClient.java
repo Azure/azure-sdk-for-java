@@ -23,6 +23,7 @@ import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.StringIndexTypeResponse;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
@@ -35,6 +36,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
+import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -180,7 +182,8 @@ class AnalyzeBatchActionsAsyncClient {
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion())));
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -198,7 +201,9 @@ class AnalyzeBatchActionsAsyncClient {
                                 .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
-                                        : action.getDomainFilter().toString())));
+                                        : action.getDomainFilter().toString()))
+                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType()))
+                        );
                         return piiTask;
                     }).collect(Collectors.toList()))
             .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesOptions() == null ? null
@@ -213,7 +218,8 @@ class AnalyzeBatchActionsAsyncClient {
                             // temporally set the default value to 'latest' until service correct it.
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new KeyPhrasesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion())));
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                        );
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()));
     }
@@ -475,5 +481,11 @@ class AnalyzeBatchActionsAsyncClient {
             taskNameIdPair[1] = matcher.group(2);
         }
         return taskNameIdPair;
+    }
+
+    private StringIndexTypeResponse getNonNullStringIndexTypeResponse(StringIndexType stringIndexType) {
+        return StringIndexTypeResponse.fromString(
+            stringIndexType == null ? StringIndexType.UTF16CODE_UNIT.toString()
+                                                      : stringIndexType.toString());
     }
 }
