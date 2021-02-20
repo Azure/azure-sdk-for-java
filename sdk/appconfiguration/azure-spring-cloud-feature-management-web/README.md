@@ -1,4 +1,4 @@
-# Azure Spring cloud azure appconfiguration config web client library for Java
+# Azure Spring cloud azure feature management web client library for Java
 
 ## Key concepts
 ## Getting started

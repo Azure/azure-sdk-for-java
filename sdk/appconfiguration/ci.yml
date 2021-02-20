@@ -10,6 +10,12 @@ trigger:
       - sdk/appconfiguration/ci.yml
       - sdk/appconfiguration/pom.xml
       - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
+      - sdk/appconfiguration/azure-spring-cloud-feature-management
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
 
 pr:
   branches:
@@ -25,6 +31,12 @@ pr:
       - sdk/appconfiguration/test-resources.json
       - sdk/appconfiguration/tests.yml
       - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
+      - sdk/appconfiguration/azure-spring-cloud-feature-management
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -50,6 +62,6 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudstarterappconfigurationconfig
     AdditionalModules:
-        - name: azure-spring-cloud-test-appconfiguration-config
-          groupId: com.azure.spring
-          safeName: azurespringcloudtestappconfigurationconfig
+      - name: azure-spring-cloud-test-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudtestappconfigurationconfig
