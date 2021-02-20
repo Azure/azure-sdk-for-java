@@ -57,13 +57,13 @@ public class AADTrustedIssuerRepository {
      */
     public void addB2CUserFlowIssuers(String baseUri, UserFlows userFlows) {
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        String resolveBaseUri = resolveBaseUri(baseUri);
-        creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getSignUpOrSignIn());
+        String resolvedBaseUri = resolveBaseUri(baseUri);
+        creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getSignUpOrSignIn());
         if (!StringUtils.isEmpty(userFlows.getProfileEdit())) {
-            creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getProfileEdit());
+            creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getProfileEdit());
         }
         if (!StringUtils.isEmpty(userFlows.getPasswordReset())) {
-            creatB2CUserFlowIssuer(resolveBaseUri, userFlows.getPasswordReset());
+            creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getPasswordReset());
         }
     }
 
@@ -83,6 +83,10 @@ public class AADTrustedIssuerRepository {
             .addAll(Arrays.stream(issuers).collect(Collectors.toSet()));
     }
 
+    /**
+     * Resolve the base uri to get scheme and host.
+     * @param baseUri Base uri in the configuration file.
+     */
     private String resolveBaseUri(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null");
         try {

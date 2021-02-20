@@ -56,6 +56,7 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * The name of the b2c tenant id.
      */
+    @NotBlank(message = "tenant id should not be blank")
     private String tenantId;
 
     /**
