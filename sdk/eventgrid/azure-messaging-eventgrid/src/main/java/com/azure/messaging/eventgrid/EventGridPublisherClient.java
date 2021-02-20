@@ -37,6 +37,8 @@ public final class EventGridPublisherClient<T> {
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
+     *
+     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime,
@@ -53,6 +55,8 @@ public final class EventGridPublisherClient<T> {
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
+     *
+     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
         EventGridServiceVersion apiVersion) {
