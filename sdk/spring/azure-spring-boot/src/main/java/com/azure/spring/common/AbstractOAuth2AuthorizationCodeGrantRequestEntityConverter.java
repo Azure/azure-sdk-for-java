@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * When using "auth-code" in AAD and AAD B2C, it's used to expand head and body parameters of the request.
  */
-public abstract class OAuth2AuthzCodeGrantRequestEntityConverter
+public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     protected String azureModule;

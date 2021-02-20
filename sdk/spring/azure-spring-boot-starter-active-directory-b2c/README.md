@@ -70,7 +70,7 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
    | `azure.activedirectory.b2c.sign-in-user-flow` | The name of the **sign up or sign in** user flow. |
    | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.user-flows.{user-flow-name}` | The names of all user flows except `azure.activedirectory.b2c.sign-in-user-flow` user flow. |
+   | `azure.activedirectory.b2c.user-flows.{user-flow-name}` | All other user flow names. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
    
 ## Examples

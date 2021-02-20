@@ -23,7 +23,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AADOAuth2AuthzCodeGrantRequestEntityConverterTest {
+public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
@@ -83,8 +83,8 @@ public class AADOAuth2AuthzCodeGrantRequestEntityConverterTest {
     }
 
     private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
-        AADOAuth2AuthzCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+        AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
             .map(HttpEntity::getHeaders)
@@ -92,7 +92,7 @@ public class AADOAuth2AuthzCodeGrantRequestEntityConverterTest {
     }
 
     private Object[] expectedHeaders() {
-        return new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
+        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
             .getHttpHeaders()
             .entrySet()
             .stream()
@@ -101,8 +101,8 @@ public class AADOAuth2AuthzCodeGrantRequestEntityConverterTest {
     }
 
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
-        AADOAuth2AuthzCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+        AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }

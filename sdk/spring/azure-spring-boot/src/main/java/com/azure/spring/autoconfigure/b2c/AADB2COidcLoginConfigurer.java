@@ -39,7 +39,7 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRequestEntityConverter(new AADB2COAuth2AuthzCodeGrantRequestEntityConverter());
+        result.setRequestEntityConverter(new AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter());
         return result;
     }
 }

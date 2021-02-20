@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.common.OAuth2AuthzCodeGrantRequestEntityConverter;
+import com.azure.spring.common.AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.utils.ApplicationId;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -13,12 +13,12 @@ import org.springframework.util.MultiValueMap;
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
  */
-public class AADOAuth2AuthzCodeGrantRequestEntityConverter
-    extends OAuth2AuthzCodeGrantRequestEntityConverter {
+public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
+    extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final AzureClientRegistration azureClient;
 
-    public AADOAuth2AuthzCodeGrantRequestEntityConverter(AzureClientRegistration client) {
+    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(AzureClientRegistration client) {
         this.azureModule = ApplicationId.AZURE_SPRING_AAD;
         azureClient = client;
     }
