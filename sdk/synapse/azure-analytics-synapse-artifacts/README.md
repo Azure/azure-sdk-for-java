@@ -14,7 +14,7 @@ Maven dependency for the Azure Synapse Artifacts client library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-synapse-artifacts</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

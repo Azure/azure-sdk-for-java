@@ -1,7 +1,13 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
 
+
+## 1.0.0-beta.10 (2021-02-05)
+
+### New Features
+
+- Added challenge based authentication support via `BearerTokenAuthenticationChallengePolicy` and `AccessTokenCache` classes.
 
 ## 1.0.0-beta.9 (2021-01-11)
 

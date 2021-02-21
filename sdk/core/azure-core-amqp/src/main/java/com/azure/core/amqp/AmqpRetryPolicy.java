@@ -48,7 +48,7 @@ public abstract class AmqpRetryPolicy {
      *
      * @return The set of options used to configure this retry policy.
      */
-    protected AmqpRetryOptions getRetryOptions() {
+    public AmqpRetryOptions getRetryOptions() {
         return retryOptions;
     }
 

@@ -10,8 +10,12 @@ import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+
+import java.util.Objects;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
@@ -51,12 +55,33 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedFlux<RoleAssignment> listByScopeAsync(String scope) {
-        return inner().listForScopeAsync(scope, null).mapPage(roleAssignmentInner -> wrapModel(roleAssignmentInner));
+        return PagedConverter.mapPage(inner().listForScopeAsync(scope, null), this::wrapModel);
     }
 
     @Override
     public PagedIterable<RoleAssignment> listByScope(String scope) {
         return wrapList(inner().listForScope(scope));
+    }
+
+    @Override
+    public PagedFlux<RoleAssignment> listByServicePrincipalAsync(ServicePrincipal servicePrincipal) {
+        return listByServicePrincipalAsync(Objects.requireNonNull(servicePrincipal).id());
+    }
+
+    @Override
+    public PagedIterable<RoleAssignment> listByServicePrincipal(ServicePrincipal servicePrincipal) {
+        return new PagedIterable<>(listByServicePrincipalAsync(servicePrincipal));
+    }
+
+    @Override
+    public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
+        String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
+        return PagedConverter.mapPage(inner().listAsync(filterStr), this::wrapModel);
+    }
+
+    @Override
+    public PagedIterable<RoleAssignment> listByServicePrincipal(String principalId) {
+        return new PagedIterable<>(listByServicePrincipalAsync(principalId));
     }
 
     @Override

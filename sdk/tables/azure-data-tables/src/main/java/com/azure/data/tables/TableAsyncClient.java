@@ -811,19 +811,12 @@ public final class TableAsyncClient {
             queryOptions.setSelect(select);
         }
 
-        return implementation.getTables().queryEntitiesWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKey,
+        return implementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKey,
             rowKey, timeoutInt, null, queryOptions, context)
             .handle((response, sink) -> {
-                final TableEntityQueryResponse entityQueryResponse = response.getValue();
-                if (entityQueryResponse == null) {
-                    logger.info("TableEntityQueryResponse is null. Table: {}, partition key: {}, row key: {}.",
-                        tableName, partitionKey, rowKey);
+                final Map<String, Object> matchingEntity = response.getValue();
 
-                    sink.complete();
-                    return;
-                }
-                final List<Map<String, Object>> matchingEntities = entityQueryResponse.getValue();
-                if (matchingEntities == null || matchingEntities.isEmpty()) {
+                if (matchingEntity == null || matchingEntity.isEmpty()) {
                     logger.info("There was no matching entity. Table: {}, partition key: {}, row key: {}.",
                         tableName, partitionKey, rowKey);
 
@@ -831,14 +824,8 @@ public final class TableAsyncClient {
                     return;
                 }
 
-                if (matchingEntities.size() > 1) {
-                    logger.warning("There were multiple matching entities. Table: {}, partition key: {}, row key: {}.",
-                        tableName, partitionKey, rowKey);
-                }
-
                 // Deserialize the first entity.
-                // TODO: Potentially update logic to deserialize them all.
-                final TableEntity entity = ModelHelper.createEntity(matchingEntities.get(0));
+                final TableEntity entity = ModelHelper.createEntity(matchingEntity);
                 sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     EntityHelper.convertToSubclass(entity, resultType, logger)));
             });

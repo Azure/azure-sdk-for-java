@@ -11,12 +11,14 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -38,6 +40,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.models.EncryptionModelBridgeInternal.createEncryptionItemResponse;
 
 
@@ -89,7 +92,7 @@ public class EncryptionCosmosAsyncContainer {
                 if (decryptResponse) {
                     return setByteArrayContent(rsp,
                         EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
+                            this.encryptor).map(Pair::getLeft).publishOn(encryptionScheduler));
                 }
 
                 return Mono.just(rsp);
@@ -131,7 +134,7 @@ public class EncryptionCosmosAsyncContainer {
                 if (decryptResponse) {
                     return setByteArrayContent(rsp,
                         EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
+                            this.encryptor).map(Pair::getLeft).publishOn(encryptionScheduler));
                 }
 
                 return Mono.just(rsp);
@@ -176,7 +179,7 @@ public class EncryptionCosmosAsyncContainer {
                 if (decryptResponse) {
                     return setByteArrayContent(rsp,
                         EncryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(rsp),
-                            this.encryptor).map(pair -> pair.getLeft()).publishOn(encryptionScheduler));
+                            this.encryptor).map(Pair::getLeft).publishOn(encryptionScheduler));
                 }
 
                 return Mono.just(rsp);
@@ -529,7 +532,36 @@ public class EncryptionCosmosAsyncContainer {
             new Transformer<T>() {
                 @Override
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, func);
+                    return queryDecryptionTransformer(classType, func, false);
+                }
+            });
+    }
+
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
+     * items or an error.
+     */
+    public <T> CosmosPagedFlux<T> queryChangeFeed(
+        CosmosChangeFeedRequestOptions options,
+        Class<T> classType) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        return CosmosBridgeInternal.queryChangeFeedInternal(container, options,
+            new Transformer<T>() {
+                @Override
+                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+                    return queryDecryptionTransformer(classType, func, true);
                 }
             });
     }
@@ -565,8 +597,11 @@ public class EncryptionCosmosAsyncContainer {
         );
     }
 
-    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,
-                                                                                                   Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(
+        Class<T> classType,
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func,
+        boolean useEtagAsContinuation) {
+
         return func.andThen(flux ->
             flux.publishOn(encryptionScheduler)
                 .flatMap(
@@ -589,7 +624,9 @@ public class EncryptionCosmosAsyncContainer {
                             return Mono.just(ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                                 page.getResponseHeaders(),
                                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)));
+                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                                useEtagAsContinuation,
+                                ModelBridgeInternal.noChanges(page)));
                         } else {
                             List<Mono<byte[]>> byteArrayMonoList =
                                 byteArrayList.stream().map(bytes -> decryptResponse(bytes)).collect(Collectors.toList());
@@ -601,7 +638,9 @@ public class EncryptionCosmosAsyncContainer {
                                 ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                                     page.getResponseHeaders(),
                                     BridgeInternal.queryMetricsFromFeedResponse(page),
-                                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
+                                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                                    useEtagAsContinuation,
+                                    ModelBridgeInternal.noChanges(page))
                             );
                         }
                     }

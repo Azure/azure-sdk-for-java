@@ -8,10 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Settings for SMB protocol.
- */
-@JacksonXmlRootElement(localName = "ShareSmbSettings")
+/** Settings for SMB protocol. */
+@JacksonXmlRootElement(localName = "SMB")
 @Fluent
 public final class ShareSmbSettings {
     /*

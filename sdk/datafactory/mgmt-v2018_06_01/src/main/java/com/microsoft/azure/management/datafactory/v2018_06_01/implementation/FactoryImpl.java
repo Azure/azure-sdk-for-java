@@ -17,6 +17,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryRepoConfiguration;
 import com.microsoft.azure.management.datafactory.v2018_06_01.GlobalParameterSpecification;
+import com.microsoft.azure.management.datafactory.v2018_06_01.EncryptionConfiguration;
 import com.microsoft.azure.management.datafactory.v2018_06_01.PublicNetworkAccess;
 import rx.functions.Func1;
 
@@ -82,6 +83,11 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     }
 
     @Override
+    public EncryptionConfiguration encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
     public String eTag() {
         return this.inner().eTag();
     }
@@ -125,6 +131,12 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     @Override
     public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.inner().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withEncryption(EncryptionConfiguration encryption) {
+        this.inner().withEncryption(encryption);
         return this;
     }
 

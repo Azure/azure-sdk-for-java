@@ -10,9 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.queue.models.SendMessageResult;
 import java.util.List;
 
-/**
- * Contains all response data for the enqueue operation.
- */
+/** Contains all response data for the enqueue operation. */
 public final class MessagesEnqueueResponse extends ResponseBase<MessagesEnqueueHeaders, List<SendMessageResult>> {
     /**
      * Creates an instance of MessagesEnqueueResponse.
@@ -23,13 +21,16 @@ public final class MessagesEnqueueResponse extends ResponseBase<MessagesEnqueueH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MessagesEnqueueResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<SendMessageResult> value, MessagesEnqueueHeaders headers) {
+    public MessagesEnqueueResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            List<SendMessageResult> value,
+            MessagesEnqueueHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public List<SendMessageResult> getValue() {
         return super.getValue();

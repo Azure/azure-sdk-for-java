@@ -13,6 +13,7 @@ import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthori
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationRules}.
@@ -32,17 +33,17 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     @Override
     public PagedIterable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(
         String resourceGroupName, String namespaceName, String pairingName) {
-        return inner()
-            .listAuthorizationRules(resourceGroupName, namespaceName, pairingName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner()
+            .listAuthorizationRules(resourceGroupName, namespaceName, pairingName),
+            this::wrapModel);
     }
 
     @Override
     public PagedFlux<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(
         String resourceGroupName, String namespaceName, String pairingName) {
-        return inner()
-             .listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName)
-             .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner()
+             .listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName),
+             this::wrapModel);
     }
 
     @Override

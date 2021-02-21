@@ -35,7 +35,6 @@ public class IntegrationRuntimeReference {
 
     /**
      * Creates an instance of IntegrationRuntimeReference class.
-     * @param referenceName reference integration runtime name.
      */
     public IntegrationRuntimeReference() {
         type = "IntegrationRuntimeReference";
