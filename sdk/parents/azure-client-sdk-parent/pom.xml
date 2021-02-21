@@ -899,6 +899,16 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <testRelease>11</testRelease>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+              </compilerArgs>
+            </configuration>
             <executions>
               <!-- compile first with module-info for Java 9+ -->
               <execution>
@@ -940,16 +950,7 @@
                 </configuration>
               </execution>
             </executions>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <configuration>
-              <testRelease>11</testRelease>
-              <compilerArgs combine.children="append">
-                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-              </compilerArgs>
-            </configuration>
+
           </plugin>
           <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
           <plugin>
