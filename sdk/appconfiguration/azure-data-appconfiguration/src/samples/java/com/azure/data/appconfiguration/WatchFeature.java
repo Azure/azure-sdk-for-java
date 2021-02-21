@@ -7,6 +7,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WatchFeature {
     /**
@@ -20,47 +21,77 @@ public class WatchFeature {
         String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
 
         // Instantiate a client that will be used to call the service.
-        ConfigurationClient client = new ConfigurationClientBuilder().connectionString(connectionString).buildClient();
+        ConfigurationClient client = new ConfigurationClientBuilder()
+                                         .connectionString(connectionString)
+                                         .buildClient();
 
         // Prepare a list of watching settings and update one same setting value to the service.
         String prodDBConnectionKey = "prodDBConnection";
         String prodDBConnectionLabel = "prodLabel";
 
+        // Assume we have a list of watching setting that stored somewhere.
         List<ConfigurationSetting> watchingSettings = Arrays.asList(
             client.addConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, "prodValue"),
             client.addConfigurationSetting("stageDBConnection", "stageLabel", "stageValue")
         );
 
-        ConfigurationSetting updateSetting = client.setConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, "updateProdValue");
-        System.out.printf("Updated setting's key: %s, value: %s, ETag: %s.%n",
-            updateSetting.getKey(), updateSetting.getValue(), updateSetting.getETag());
+        System.out.println("Watching settings:");
+        for (ConfigurationSetting setting : watchingSettings) {
+            System.out.printf("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+                setting.getKey(), setting.getLabel(), setting.getValue(), setting.getETag());
+        }
 
-        // Now, check to see if we need to update the list of existing watching settings. Update it if
-        // refresh of existing watching setting is needed,
-        refresh(client, watchingSettings, Arrays.asList(updateSetting));
+        // One of the watching settings is been updated by someone in other place.
+        ConfigurationSetting updatedSetting = client.setConfigurationSetting(
+            prodDBConnectionKey, prodDBConnectionLabel, "updatedProdValue");
+        System.out.println("Updated settings:");
+        System.out.printf("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+            updatedSetting.getKey(), updatedSetting.getLabel(), updatedSetting.getValue(), updatedSetting.getETag());
+
+        // Updates the watching settings if needed, and only returns a list of updated settings.
+        List<ConfigurationSetting> refreshedSettings = refresh(client, watchingSettings);
+
+        System.out.println("Refreshed settings:");
+        for (ConfigurationSetting setting : refreshedSettings) {
+            System.out.printf("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+                setting.getKey(), setting.getLabel(), setting.getValue(), setting.getETag());
+        }
 
         // Cleaning up after ourselves by deleting the values.
+        System.out.println("Deleting settings:");
         watchingSettings.forEach(setting -> {
-            System.out.printf("Deleting Setting's key: %s, value: %s.%n", setting.getKey(), setting.getValue());
             client.deleteConfigurationSetting(setting.getKey(), setting.getLabel());
+            System.out.printf("\tkey: %s, value: %s.%n", setting.getKey(), setting.getValue());
         });
     }
 
-    private static boolean refresh(ConfigurationClient client, List<ConfigurationSetting> watchSettings, List<ConfigurationSetting> latestSettings) {
-        for (ConfigurationSetting watchSetting : watchSettings) {
-            ConfigurationSetting latestSetting = client.getConfigurationSetting(watchSetting.getKey(), watchSetting.getLabel());
-            String latestETag = latestSetting.getETag();
-            String previousETag = watchSetting.getETag();
-            if (!latestETag.equals(previousETag)) {
-                System.out.printf(
-                    "Some keys in watching key store matching the key [%s] and label [%s] is updated, preview ETag value [%s] not " +
-                        "equals to current value [%s], will send refresh event.%n",
-                    watchSetting.getKey(), watchSetting.getLabel(), previousETag, latestETag);
-                // A refresh will trigger once the
-                return true;
-            }
-        }
-        // Don't need to refresh
-        return false;
+    /**
+     * A refresh method that runs every day to update settings and returns a updated settings.
+     *
+     * @param client a configuration client.
+     * @param watchSettings a list of settings in the watching store.
+     *
+     * @return a list of updated settings that doesn't match previous ETag value.
+     */
+    private static List<ConfigurationSetting> refresh(ConfigurationClient client,
+        List<ConfigurationSetting> watchSettings) {
+        return watchSettings
+                   .stream()
+                   .filter(setting -> {
+                       ConfigurationSetting retrievedSetting = client.getConfigurationSetting(setting.getKey(),
+                           setting.getLabel());
+                       String latestETag = retrievedSetting.getETag();
+                       String watchingETag = setting.getETag();
+                       if (!latestETag.equals(watchingETag)) {
+                           System.out.printf(
+                               "Some keys in watching key store matching the key [%s] and label [%s] is updated, "
+                                   + "preview ETag value [%s] not equals to current value [%s].%n",
+                               retrievedSetting.getKey(), retrievedSetting.getLabel(), watchingETag, latestETag);
+                           setting.setETag(latestETag).setValue(retrievedSetting.getValue());
+                           return true;
+                       }
+                       return false;
+                   })
+                   .collect(Collectors.toList());
     }
 }
