@@ -32,13 +32,7 @@ public class WatchFeatureAsync {
         // Prepare a list of watching settings and update one same setting value to the service.
         String prodDBConnectionKey = "prodDBConnection";
         String prodDBConnectionLabel = "prodLabel";
-
-        final List<ConfigurationSetting> toDeleteSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).collectList().block();
-        for (ConfigurationSetting setting : toDeleteSettings) {
-            System.out.printf("\tDeleting key=%s, label=%s, value=%s, ETag=%s.%n",
-                setting.getKey(), setting.getLabel(), setting.getValue(), setting.getETag());
-            client.deleteConfigurationSettingWithResponse(setting, false).block();
-        }
+        String updatedProdDBConnectionValue = "updateProdValue";
 
         // Assume we have a list of watching setting that stored somewhere.
         List<ConfigurationSetting> watchingSettings = new ArrayList<>();
@@ -46,7 +40,11 @@ public class WatchFeatureAsync {
             client.addConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, "prodValue"),
             client.addConfigurationSetting("stageDBConnection", "stageLabel", "stageValue"))
             .then(client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).collectList())
-            .subscribe(settings -> watchingSettings.addAll(settings));
+            .subscribe(
+                settings -> watchingSettings.addAll(settings),
+                error -> System.err.printf("There was an error while adding the settings: %s.%n", error),
+                () -> System.out.println("Add settings completed.")
+            );
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
@@ -61,13 +59,17 @@ public class WatchFeatureAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // One of the watching settings is been updated by someone in other place.
-        client.setConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, "updateProdValue")
-            .subscribe(updatedSetting -> {
-                System.out.println("Updated settings:");
-                System.out.printf("\tUpdated key=%s, label=%s, value=%s, ETag=%s.%n",
-                    updatedSetting.getKey(), updatedSetting.getLabel(), updatedSetting.getValue(),
-                    updatedSetting.getETag());
-            });
+        client.setConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, updatedProdDBConnectionValue)
+            .subscribe(
+                updatedSetting -> {
+                    System.out.println("Updated settings:");
+                    System.out.printf("\tUpdated key=%s, label=%s, value=%s, ETag=%s.%n",
+                        updatedSetting.getKey(), updatedSetting.getLabel(), updatedSetting.getValue(),
+                        updatedSetting.getETag());
+                },
+                error -> System.err.printf("There was an error while updating the setting: %s.%n", error),
+                () -> System.out.printf("Update setting completed, key=%s, label=%s, value=%s.%n",
+                    prodDBConnectionKey, prodDBConnectionLabel, updatedProdDBConnectionValue));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // Updates the watching settings if needed, and only returns a list of updated settings.
@@ -102,20 +104,26 @@ public class WatchFeatureAsync {
                    .stream()
                    .filter(setting -> {
                        final boolean[] isUpdated = new boolean[1];
-                       client.getConfigurationSetting(setting.getKey(), setting.getLabel())
-                           .subscribe(retrievedSetting -> {
-                               String latestETag = retrievedSetting.getETag();
-                               String watchingETag = setting.getETag();
-                               if (!latestETag.equals(watchingETag)) {
-                                   System.out.printf(
-                                       "Some keys in watching key store matching the key [%s] and label [%s] is " +
-                                           "updated, preview ETag value [%s] not equals to current value [%s].%n",
-                                       retrievedSetting.getKey(), retrievedSetting.getLabel(), watchingETag,
-                                       latestETag);
-                                   setting.setETag(latestETag).setValue(retrievedSetting.getValue());
-                                   isUpdated[0] = true;
-                               }
-                           });
+                       String key = setting.getKey();
+                       String label = setting.getLabel();
+                       client.getConfigurationSetting(key, label)
+                           .subscribe(
+                               retrievedSetting -> {
+                                   String latestETag = retrievedSetting.getETag();
+                                   String watchingETag = setting.getETag();
+                                   if (!latestETag.equals(watchingETag)) {
+                                       System.out.printf(
+                                           "Some keys in watching key store matching the key [%s] and label [%s] is "
+                                               + "updated, preview ETag value [%s] not equals to current value [%s].%n",
+                                           retrievedSetting.getKey(), retrievedSetting.getLabel(), watchingETag,
+                                           latestETag);
+                                       setting.setETag(latestETag).setValue(retrievedSetting.getValue());
+                                       isUpdated[0] = true;
+                                   }
+                               },
+                               error -> System.err.printf("There was an error while retrieving the setting: %s.%n",
+                                   error),
+                               () -> System.out.printf("Retrieve setting completed, key=%s, label=%s.%n", key, label));
 
                        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this
                        // example, we sleep the thread so the program does not end before the send operation is
