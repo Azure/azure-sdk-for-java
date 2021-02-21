@@ -138,11 +138,8 @@ public class DocumentQueryExecutionContextFactory {
         if (isScopedToSinglePartition(cosmosQueryRequestOptions)) {
             PartitionKeyInternal internalPartitionKey =
                 BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
-            Range<String> range = Range
-                                      .getPointRange(internalPartitionKey
-                                                         .getEffectivePartitionKeyString(internalPartitionKey,
-                                                                                         collection
-                                                                                             .getPartitionKey()));
+            Range<String> range = Range.getPointRange(
+                internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey,collection.getPartitionKey()));
             queryRanges = Collections.singletonList(range);
         }
 

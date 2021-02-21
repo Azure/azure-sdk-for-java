@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -112,7 +113,7 @@ implements IDocumentQueryExecutionContext<T> {
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
 
         if (partitionKeyInternal != null) {
-            request.setPartitionKeyInternal(partitionKeyInternal);
+            feedRange = new FeedRangePartitionKeyImpl(partitionKeyInternal);
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
