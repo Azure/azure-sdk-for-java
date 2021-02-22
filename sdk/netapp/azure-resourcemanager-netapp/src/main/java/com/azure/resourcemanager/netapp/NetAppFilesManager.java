@@ -50,8 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entry point to NetAppManager. Microsoft NetApp Azure Resource Provider specification. */
-public final class NetAppManager {
+/** Entry point to NetAppFilesManager. Microsoft NetApp Files Azure Resource Provider specification. */
+public final class NetAppFilesManager {
     private Operations operations;
 
     private NetAppResources netAppResources;
@@ -76,7 +76,7 @@ public final class NetAppManager {
 
     private final NetAppManagementClient clientObject;
 
-    private NetAppManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private NetAppFilesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -89,25 +89,25 @@ public final class NetAppManager {
     }
 
     /**
-     * Creates an instance of NetApp service API entry point.
+     * Creates an instance of NetAppFiles service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the NetApp service API instance.
+     * @return the NetAppFiles service API instance.
      */
-    public static NetAppManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static NetAppFilesManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create NetAppManager with optional configuration.
+     * Gets a Configurable instance that can be used to create NetAppFilesManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new NetAppManager.Configurable();
+        return new NetAppFilesManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -182,13 +182,13 @@ public final class NetAppManager {
         }
 
         /**
-         * Creates an instance of NetApp service API entry point.
+         * Creates an instance of NetAppFiles service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the NetApp service API instance.
+         * @return the NetAppFiles service API instance.
          */
-        public NetAppManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public NetAppFilesManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -232,7 +232,7 @@ public final class NetAppManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new NetAppManager(httpPipeline, profile, defaultPollInterval);
+            return new NetAppFilesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
