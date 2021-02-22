@@ -13,8 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
@@ -63,7 +61,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -73,8 +70,6 @@ import static com.azure.search.documents.implementation.util.Utility.initializeS
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
-    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
-
     /**
      * Search REST API Version
      */
@@ -516,9 +511,7 @@ public final class SearchAsyncClient {
                 .map(res -> {
                     if (serializer == null) {
                         try {
-                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
-                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
-                            return new SimpleResponse<>(res, document);
+                            return new SimpleResponse<>(res, Utility.convertValue(res.getValue(), modelClass));
                         } catch (IOException ex) {
                             throw logger.logExceptionAsError(
                                 new RuntimeException("Failed to deserialize document.", ex));

@@ -9,50 +9,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
 
-/**
- * A listed Azure Storage share item.
- */
+/** A listed Azure Storage share item. */
 @JacksonXmlRootElement(localName = "Share")
 @Fluent
 public final class ShareItemInternal {
     /*
-     * The name property.
+     * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
-     * The snapshot property.
+     * The Snapshot property.
      */
     @JsonProperty(value = "Snapshot")
     private String snapshot;
 
     /*
-     * The deleted property.
+     * The Deleted property.
      */
     @JsonProperty(value = "Deleted")
     private Boolean deleted;
 
     /*
-     * The version property.
+     * The Version property.
      */
     @JsonProperty(value = "Version")
     private String version;
 
     /*
-     * The properties property.
+     * Properties of a share.
      */
     @JsonProperty(value = "Properties", required = true)
     private SharePropertiesInternal properties;
 
     /*
-     * The metadata property.
+     * Dictionary of <string>
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The Name property.
      *
      * @return the name value.
      */
@@ -61,7 +59,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The Name property.
      *
      * @param name the name value to set.
      * @return the ShareItemInternal object itself.
@@ -72,7 +70,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Get the snapshot property: The snapshot property.
+     * Get the snapshot property: The Snapshot property.
      *
      * @return the snapshot value.
      */
@@ -81,7 +79,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the snapshot property: The snapshot property.
+     * Set the snapshot property: The Snapshot property.
      *
      * @param snapshot the snapshot value to set.
      * @return the ShareItemInternal object itself.
@@ -92,7 +90,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Get the deleted property: The deleted property.
+     * Get the deleted property: The Deleted property.
      *
      * @return the deleted value.
      */
@@ -101,7 +99,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the deleted property: The deleted property.
+     * Set the deleted property: The Deleted property.
      *
      * @param deleted the deleted value to set.
      * @return the ShareItemInternal object itself.
@@ -112,7 +110,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Get the version property: The version property.
+     * Get the version property: The Version property.
      *
      * @return the version value.
      */
@@ -121,7 +119,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the version property: The version property.
+     * Set the version property: The Version property.
      *
      * @param version the version value to set.
      * @return the ShareItemInternal object itself.
@@ -132,7 +130,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Properties of a share.
      *
      * @return the properties value.
      */
@@ -141,7 +139,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: Properties of a share.
      *
      * @param properties the properties value to set.
      * @return the ShareItemInternal object itself.
@@ -152,7 +150,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Get the metadata property: The metadata property.
+     * Get the metadata property: Dictionary of &lt;string&gt;.
      *
      * @return the metadata value.
      */
@@ -161,7 +159,7 @@ public final class ShareItemInternal {
     }
 
     /**
-     * Set the metadata property: The metadata property.
+     * Set the metadata property: Dictionary of &lt;string&gt;.
      *
      * @param metadata the metadata value to set.
      * @return the ShareItemInternal object itself.

@@ -32,19 +32,17 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.serializer.SerializationUtil;
-import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -56,7 +54,9 @@ public final class Utility {
 
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
-    private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().put("return-client-request-id", "true");
+    private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().set("return-client-request-id", "true");
+
+    private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -70,20 +70,28 @@ public final class Utility {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
 
-    /**
-     * Helper class to initialize the SerializerAdapter.
-     *
-     * @return The SerializeAdapter instance.
-     */
-    public static SerializerAdapter initializeSerializerAdapter() {
         JacksonAdapter adapter = new JacksonAdapter();
 
-        ObjectMapper mapper = adapter.serializer();
-        SerializationUtil.configureMapper(mapper);
+        UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
+        Iso8601DateDeserializer iso8601DateDeserializer = new Iso8601DateDeserializer(defaultDeserializer);
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Object.class, iso8601DateDeserializer);
 
-        return adapter;
+        adapter.serializer()
+            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            .registerModule(Iso8601DateSerializer.getModule())
+            .registerModule(module);
+
+        DEFAULT_SERIALIZER_ADAPTER = adapter;
+    }
+
+    public static JacksonAdapter getDefaultSerializerAdapter() {
+        return DEFAULT_SERIALIZER_ADAPTER;
+    }
+
+    public static <T> T convertValue(Object initialValue, Class<T> newValueType) throws IOException {
+        return DEFAULT_SERIALIZER_ADAPTER.serializer().convertValue(initialValue, newValueType);
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
@@ -96,12 +104,7 @@ public final class Utility {
         ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
 
-        String applicationId = null;
-        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
-            applicationId = buildClientOptions.getApplicationId();
-        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
-            applicationId = buildLogOptions.getApplicationId();
-        }
+        String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
@@ -122,7 +125,7 @@ public final class Utility {
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
         HttpHeaders headers = new HttpHeaders();
-        buildClientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+        buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             httpPipelinePolicies.add(new AddHeadersPolicy(headers));
         }
@@ -133,11 +136,6 @@ public final class Utility {
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
-    }
-
-    public static Stream<IndexAction<?>> createDocumentActions(Iterable<?> documents, IndexActionType actionType) {
-        return StreamSupport.stream(documents.spliterator(), false)
-            .map(document -> new IndexAction<>().setActionType(actionType).setDocument(document));
     }
 
     public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(SearchIndexClientImpl restClient,

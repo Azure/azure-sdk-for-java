@@ -47,6 +47,27 @@ public final class AdvancedFilterOperatorType extends ExpandableStringEnum<Advan
     /** Static value StringContains for AdvancedFilterOperatorType. */
     public static final AdvancedFilterOperatorType STRING_CONTAINS = fromString("StringContains");
 
+    /** Static value NumberInRange for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType NUMBER_IN_RANGE = fromString("NumberInRange");
+
+    /** Static value NumberNotInRange for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType NUMBER_NOT_IN_RANGE = fromString("NumberNotInRange");
+
+    /** Static value StringNotBeginsWith for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType STRING_NOT_BEGINS_WITH = fromString("StringNotBeginsWith");
+
+    /** Static value StringNotEndsWith for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType STRING_NOT_ENDS_WITH = fromString("StringNotEndsWith");
+
+    /** Static value StringNotContains for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType STRING_NOT_CONTAINS = fromString("StringNotContains");
+
+    /** Static value IsNullOrUndefined for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType IS_NULL_OR_UNDEFINED = fromString("IsNullOrUndefined");
+
+    /** Static value IsNotNull for AdvancedFilterOperatorType. */
+    public static final AdvancedFilterOperatorType IS_NOT_NULL = fromString("IsNotNull");
+
     /**
      * Creates or finds a AdvancedFilterOperatorType from its string representation.
      *

@@ -8,26 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * A listed file item.
- */
+/** A listed file item. */
 @JacksonXmlRootElement(localName = "File")
 @Fluent
 public final class FileItem {
     /*
-     * The name property.
+     * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
-     * The properties property.
+     * File properties.
      */
     @JsonProperty(value = "Properties", required = true)
     private FileProperty properties;
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The Name property.
      *
      * @return the name value.
      */
@@ -36,7 +34,7 @@ public final class FileItem {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The Name property.
      *
      * @param name the name value to set.
      * @return the FileItem object itself.
@@ -47,7 +45,7 @@ public final class FileItem {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: File properties.
      *
      * @return the properties value.
      */
@@ -56,7 +54,7 @@ public final class FileItem {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: File properties.
      *
      * @param properties the properties value to set.
      * @return the FileItem object itself.

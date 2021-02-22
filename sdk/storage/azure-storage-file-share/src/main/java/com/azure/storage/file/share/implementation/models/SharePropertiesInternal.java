@@ -15,123 +15,121 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * Properties of a share.
- */
+/** Properties of a share. */
 @JacksonXmlRootElement(localName = "SharePropertiesInternal")
 @Fluent
 public final class SharePropertiesInternal {
     /*
-     * The lastModified property.
+     * The Last-Modified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The eTag property.
+     * The Etag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String eTag;
 
     /*
-     * The quota property.
+     * The Quota property.
      */
     @JsonProperty(value = "Quota", required = true)
     private int quota;
 
     /*
-     * The provisionedIops property.
+     * The ProvisionedIops property.
      */
     @JsonProperty(value = "ProvisionedIops")
     private Integer provisionedIops;
 
     /*
-     * The provisionedIngressMBps property.
+     * The ProvisionedIngressMBps property.
      */
     @JsonProperty(value = "ProvisionedIngressMBps")
     private Integer provisionedIngressMBps;
 
     /*
-     * The provisionedEgressMBps property.
+     * The ProvisionedEgressMBps property.
      */
     @JsonProperty(value = "ProvisionedEgressMBps")
     private Integer provisionedEgressMBps;
 
     /*
-     * The nextAllowedQuotaDowngradeTime property.
+     * The NextAllowedQuotaDowngradeTime property.
      */
     @JsonProperty(value = "NextAllowedQuotaDowngradeTime")
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
-     * The deletedTime property.
+     * The DeletedTime property.
      */
     @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
-     * The remainingRetentionDays property.
+     * The RemainingRetentionDays property.
      */
     @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
-     * The accessTier property.
+     * The AccessTier property.
      */
     @JsonProperty(value = "AccessTier")
     private String accessTier;
 
     /*
-     * The accessTierChangeTime property.
+     * The AccessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
-     * The accessTierTransitionState property.
+     * The AccessTierTransitionState property.
      */
     @JsonProperty(value = "AccessTierTransitionState")
     private String accessTierTransitionState;
 
     /*
-     * Possible values include: 'locked', 'unlocked'
+     * The current lease status of the share.
      */
     @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
     /*
-     * Possible values include: 'available', 'leased', 'expired', 'breaking',
-     * 'broken'
+     * Lease state of the share.
      */
     @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
     /*
-     * Possible values include: 'infinite', 'fixed'
+     * When a share is leased, specifies whether the lease is of infinite or
+     * fixed duration.
      */
     @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
     /*
-     * The enabledProtocols property.
+     * The EnabledProtocols property.
      */
     @JsonProperty(value = "EnabledProtocols")
     private String enabledProtocols;
 
     /*
-     * Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+     * The RootSquash property.
      */
     @JsonProperty(value = "RootSquash")
     private ShareRootSquash rootSquash;
 
     /*
-     * The metadata property.
+     * Dictionary of <string>
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /**
-     * Get the lastModified property: The lastModified property.
+     * Get the lastModified property: The Last-Modified property.
      *
      * @return the lastModified value.
      */
@@ -143,7 +141,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the lastModified property: The lastModified property.
+     * Set the lastModified property: The Last-Modified property.
      *
      * @param lastModified the lastModified value to set.
      * @return the SharePropertiesInternal object itself.
@@ -158,7 +156,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the eTag property: The eTag property.
+     * Get the eTag property: The Etag property.
      *
      * @return the eTag value.
      */
@@ -167,7 +165,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the eTag property: The eTag property.
+     * Set the eTag property: The Etag property.
      *
      * @param eTag the eTag value to set.
      * @return the SharePropertiesInternal object itself.
@@ -178,7 +176,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the quota property: The quota property.
+     * Get the quota property: The Quota property.
      *
      * @return the quota value.
      */
@@ -187,7 +185,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the quota property: The quota property.
+     * Set the quota property: The Quota property.
      *
      * @param quota the quota value to set.
      * @return the SharePropertiesInternal object itself.
@@ -198,7 +196,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the provisionedIops property: The provisionedIops property.
+     * Get the provisionedIops property: The ProvisionedIops property.
      *
      * @return the provisionedIops value.
      */
@@ -207,7 +205,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the provisionedIops property: The provisionedIops property.
+     * Set the provisionedIops property: The ProvisionedIops property.
      *
      * @param provisionedIops the provisionedIops value to set.
      * @return the SharePropertiesInternal object itself.
@@ -218,8 +216,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the provisionedIngressMBps property: The provisionedIngressMBps
-     * property.
+     * Get the provisionedIngressMBps property: The ProvisionedIngressMBps property.
      *
      * @return the provisionedIngressMBps value.
      */
@@ -228,8 +225,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the provisionedIngressMBps property: The provisionedIngressMBps
-     * property.
+     * Set the provisionedIngressMBps property: The ProvisionedIngressMBps property.
      *
      * @param provisionedIngressMBps the provisionedIngressMBps value to set.
      * @return the SharePropertiesInternal object itself.
@@ -240,8 +236,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the provisionedEgressMBps property: The provisionedEgressMBps
-     * property.
+     * Get the provisionedEgressMBps property: The ProvisionedEgressMBps property.
      *
      * @return the provisionedEgressMBps value.
      */
@@ -250,8 +245,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the provisionedEgressMBps property: The provisionedEgressMBps
-     * property.
+     * Set the provisionedEgressMBps property: The ProvisionedEgressMBps property.
      *
      * @param provisionedEgressMBps the provisionedEgressMBps value to set.
      * @return the SharePropertiesInternal object itself.
@@ -262,8 +256,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the nextAllowedQuotaDowngradeTime property: The
-     * nextAllowedQuotaDowngradeTime property.
+     * Get the nextAllowedQuotaDowngradeTime property: The NextAllowedQuotaDowngradeTime property.
      *
      * @return the nextAllowedQuotaDowngradeTime value.
      */
@@ -275,11 +268,9 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the nextAllowedQuotaDowngradeTime property: The
-     * nextAllowedQuotaDowngradeTime property.
+     * Set the nextAllowedQuotaDowngradeTime property: The NextAllowedQuotaDowngradeTime property.
      *
-     * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime
-     * value to set.
+     * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
     public SharePropertiesInternal setNextAllowedQuotaDowngradeTime(OffsetDateTime nextAllowedQuotaDowngradeTime) {
@@ -292,7 +283,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the deletedTime property: The deletedTime property.
+     * Get the deletedTime property: The DeletedTime property.
      *
      * @return the deletedTime value.
      */
@@ -304,7 +295,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the deletedTime property: The deletedTime property.
+     * Set the deletedTime property: The DeletedTime property.
      *
      * @param deletedTime the deletedTime value to set.
      * @return the SharePropertiesInternal object itself.
@@ -319,8 +310,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the remainingRetentionDays property: The remainingRetentionDays
-     * property.
+     * Get the remainingRetentionDays property: The RemainingRetentionDays property.
      *
      * @return the remainingRetentionDays value.
      */
@@ -329,8 +319,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the remainingRetentionDays property: The remainingRetentionDays
-     * property.
+     * Set the remainingRetentionDays property: The RemainingRetentionDays property.
      *
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the SharePropertiesInternal object itself.
@@ -341,7 +330,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the accessTier property: The accessTier property.
+     * Get the accessTier property: The AccessTier property.
      *
      * @return the accessTier value.
      */
@@ -350,7 +339,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the accessTier property: The accessTier property.
+     * Set the accessTier property: The AccessTier property.
      *
      * @param accessTier the accessTier value to set.
      * @return the SharePropertiesInternal object itself.
@@ -361,8 +350,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the accessTierChangeTime property: The accessTierChangeTime
-     * property.
+     * Get the accessTierChangeTime property: The AccessTierChangeTime property.
      *
      * @return the accessTierChangeTime value.
      */
@@ -374,8 +362,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the accessTierChangeTime property: The accessTierChangeTime
-     * property.
+     * Set the accessTierChangeTime property: The AccessTierChangeTime property.
      *
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the SharePropertiesInternal object itself.
@@ -390,8 +377,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the accessTierTransitionState property: The
-     * accessTierTransitionState property.
+     * Get the accessTierTransitionState property: The AccessTierTransitionState property.
      *
      * @return the accessTierTransitionState value.
      */
@@ -400,11 +386,9 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the accessTierTransitionState property: The
-     * accessTierTransitionState property.
+     * Set the accessTierTransitionState property: The AccessTierTransitionState property.
      *
-     * @param accessTierTransitionState the accessTierTransitionState value to
-     * set.
+     * @param accessTierTransitionState the accessTierTransitionState value to set.
      * @return the SharePropertiesInternal object itself.
      */
     public SharePropertiesInternal setAccessTierTransitionState(String accessTierTransitionState) {
@@ -413,8 +397,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the leaseStatus property: Possible values include: 'locked',
-     * 'unlocked'.
+     * Get the leaseStatus property: The current lease status of the share.
      *
      * @return the leaseStatus value.
      */
@@ -423,8 +406,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the leaseStatus property: Possible values include: 'locked',
-     * 'unlocked'.
+     * Set the leaseStatus property: The current lease status of the share.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the SharePropertiesInternal object itself.
@@ -435,8 +417,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the leaseState property: Possible values include: 'available',
-     * 'leased', 'expired', 'breaking', 'broken'.
+     * Get the leaseState property: Lease state of the share.
      *
      * @return the leaseState value.
      */
@@ -445,8 +426,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the leaseState property: Possible values include: 'available',
-     * 'leased', 'expired', 'breaking', 'broken'.
+     * Set the leaseState property: Lease state of the share.
      *
      * @param leaseState the leaseState value to set.
      * @return the SharePropertiesInternal object itself.
@@ -457,8 +437,8 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the leaseDuration property: Possible values include: 'infinite',
-     * 'fixed'.
+     * Get the leaseDuration property: When a share is leased, specifies whether the lease is of infinite or fixed
+     * duration.
      *
      * @return the leaseDuration value.
      */
@@ -467,8 +447,8 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the leaseDuration property: Possible values include: 'infinite',
-     * 'fixed'.
+     * Set the leaseDuration property: When a share is leased, specifies whether the lease is of infinite or fixed
+     * duration.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the SharePropertiesInternal object itself.
@@ -479,7 +459,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the enabledProtocols property: The enabledProtocols property.
+     * Get the enabledProtocols property: The EnabledProtocols property.
      *
      * @return the enabledProtocols value.
      */
@@ -488,7 +468,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the enabledProtocols property: The enabledProtocols property.
+     * Set the enabledProtocols property: The EnabledProtocols property.
      *
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the SharePropertiesInternal object itself.
@@ -499,8 +479,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the rootSquash property: Possible values include: 'NoRootSquash',
-     * 'RootSquash', 'AllSquash'.
+     * Get the rootSquash property: The RootSquash property.
      *
      * @return the rootSquash value.
      */
@@ -509,8 +488,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the rootSquash property: Possible values include: 'NoRootSquash',
-     * 'RootSquash', 'AllSquash'.
+     * Set the rootSquash property: The RootSquash property.
      *
      * @param rootSquash the rootSquash value to set.
      * @return the SharePropertiesInternal object itself.
@@ -521,7 +499,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Get the metadata property: The metadata property.
+     * Get the metadata property: Dictionary of &lt;string&gt;.
      *
      * @return the metadata value.
      */
@@ -530,7 +508,7 @@ public final class SharePropertiesInternal {
     }
 
     /**
-     * Set the metadata property: The metadata property.
+     * Set the metadata property: Dictionary of &lt;string&gt;.
      *
      * @param metadata the metadata value to set.
      * @return the SharePropertiesInternal object itself.

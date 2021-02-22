@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * An Azure Storage file range.
- */
+/** An Azure Storage file range. */
 @JacksonXmlRootElement(localName = "Range")
 @Fluent
 public final class FileRange {
