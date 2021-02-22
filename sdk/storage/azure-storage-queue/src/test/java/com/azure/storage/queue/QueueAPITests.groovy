@@ -351,10 +351,12 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(encodedMsg)
         queueClient.sendMessage(expectMsg)
         QueueMessageItem badMessage = null
+        String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
-                badMessage = (QueueMessageItem) message
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getQueueMessageItem()
+                queueUrl = failure.getQueueUrl()
                 return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
@@ -365,6 +367,7 @@ class QueueAPITests extends APISpec {
         messageItems[0].getBody().toString() == expectMsg
         badMessage != null
         badMessage.getBody().toString() == expectMsg
+        queueUrl == queueClient.getQueueUrl()
     }
 
     def "Dequeue with handler error"() {
@@ -480,10 +483,12 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg)
         queueClient.sendMessage(encodedMsg)
         PeekedMessageItem badMessage = null
+        String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
-                badMessage = (PeekedMessageItem) message
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getPeekedMessageItem()
+                queueUrl = failure.getQueueUrl()
                 return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
@@ -494,6 +499,7 @@ class QueueAPITests extends APISpec {
         peekedMessages[0].getBody().toString() == expectMsg
         badMessage != null
         badMessage.getBody().toString() == expectMsg
+        queueUrl == queueClient.getQueueUrl()
     }
 
     def "Peek with handler exception"() {

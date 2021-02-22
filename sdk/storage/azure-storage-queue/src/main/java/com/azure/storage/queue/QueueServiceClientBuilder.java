@@ -22,6 +22,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.models.QueueMessageDecodingFailure;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public final class QueueServiceClientBuilder {
     private QueueServiceVersion version;
 
     private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
-    private Function<Object, Mono<Void>> messageDecodingFailedHandler;
+    private Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -394,7 +395,7 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code messageDecodingFailedHandler} is {@code null}.
      */
     public QueueServiceClientBuilder messageDecodingFailedHandler(
-        Function<Object, Mono<Void>> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
         this.messageDecodingFailedHandler = Objects.requireNonNull(messageDecodingFailedHandler,
             "'messageDecodingFailedHandler' cannot be null.");
         return this;

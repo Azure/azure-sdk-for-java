@@ -21,6 +21,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
+import com.azure.storage.queue.models.QueueMessageDecodingFailure;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueueStorageException;
@@ -63,7 +64,7 @@ public final class QueueServiceAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<Object, Mono<Void>> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
@@ -72,7 +73,7 @@ public final class QueueServiceAsyncClient {
      */
     QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<Object, Mono<Void>> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;

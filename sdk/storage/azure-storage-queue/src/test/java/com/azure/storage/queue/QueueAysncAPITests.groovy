@@ -417,10 +417,12 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(expectMsg).block()
         queueAsyncClient.sendMessage(encodedMsg).block()
         QueueMessageItem badMessage = null
+        String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
-                badMessage = (QueueMessageItem) message
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getQueueMessageItem()
+                queueUrl = failure.getQueueUrl()
                 return Mono.empty()
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)
@@ -431,6 +433,7 @@ class QueueAysncAPITests extends APISpec {
             assert expectMsg == it.getBody().toString()
             assert badMessage != null
             assert badMessage.getBody().toString() == expectMsg
+            assert queueUrl == queueAsyncClient.getQueueUrl()
         }.verifyComplete()
     }
 
@@ -568,10 +571,12 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(expectMsg).block()
         queueAsyncClient.sendMessage(encodedMsg).block()
         PeekedMessageItem badMessage = null
+        String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
-                badMessage = (PeekedMessageItem) message
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getPeekedMessageItem()
+                queueUrl = failure.getQueueUrl()
                 return Mono.empty()
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)
@@ -582,6 +587,7 @@ class QueueAysncAPITests extends APISpec {
             assert expectMsg == it.getBody().toString()
             assert badMessage !=null
             assert badMessage.getBody().toString() == expectMsg
+            assert queueUrl == queueAsyncClient.getQueueUrl()
         }.verifyComplete()
     }
 

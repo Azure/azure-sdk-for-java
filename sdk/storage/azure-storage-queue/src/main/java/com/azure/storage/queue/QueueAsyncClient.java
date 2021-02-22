@@ -32,6 +32,7 @@ import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageDecodingFailure;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -84,7 +85,7 @@ public final class QueueAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<Object, Mono<Void>> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -95,7 +96,7 @@ public final class QueueAsyncClient {
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<Object, Mono<Void>> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
@@ -824,7 +825,11 @@ public final class QueueAsyncClient {
             } catch (IllegalArgumentException e) {
                 if (messageDecodingFailedHandler != null) {
                     mono = mono.then(messageDecodingFailedHandler.apply(
-                        transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE)));
+                        new QueueMessageDecodingFailure(
+                            this.getQueueUrl(),
+                            transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE),
+                            null)
+                        ));
                 } else {
                     throw e;
                 }
@@ -943,7 +948,11 @@ public final class QueueAsyncClient {
             } catch (IllegalArgumentException e) {
                 if (messageDecodingFailedHandler != null) {
                     mono = mono.then(messageDecodingFailedHandler.apply(
-                        transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE)));
+                        new QueueMessageDecodingFailure(
+                            this.getQueueUrl(),
+                            null,
+                            transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE))
+                        ));
                 } else {
                     throw e;
                 }
