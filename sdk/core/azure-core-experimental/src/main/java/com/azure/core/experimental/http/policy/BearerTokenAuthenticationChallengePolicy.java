@@ -66,7 +66,6 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @return A {@link Mono} containing {@link Void}
      */
     public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
-        System.out.println("On Before Request");
         return authenticateRequest(context, defaultTokenSupplier, false);
     }
 
