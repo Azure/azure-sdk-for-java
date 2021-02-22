@@ -1,10 +1,83 @@
 parameters:
-  EnvVars: {}
+  AadOnDemandUserDisplayName: 'user$(System.JobId)-$(Build.BuildId)'
   TestName: 'LiveTestInAzureGlobal'
-  Artifacts: []
-  AadOnDemandUserDisplayName: ''
   Clouds: 'Public'
-  TestResourceDirectories: []
+  TestResourceDirectories:
+    - spring/azure-spring-boot-test-cosmos
+    - spring/azure-spring-boot-test-servicebus-jms
+    - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-boot-test-keyvault
+    - spring/azure-spring-boot-test-storage
+  Artifacts:
+    - name: azure-spring-boot-test-application
+      groupId: com.azure.spring
+      safeName: azurespringboottestapplication
+    - name: azure-spring-boot-test-core
+      groupId: com.azure.spring
+      safeName: azurespringboottestcore
+    - name: azure-spring-boot-test-cosmos
+      groupId: com.azure.spring
+      safeName: azurespringboottestcosmos
+    - name: azure-spring-boot-test-aad
+      groupId: com.azure.spring
+      safeName: azurespringboottestaad
+    - name: azure-spring-boot-test-aad-b2c
+      groupId: com.azure.spring
+      safeName: azurespringboottestaadb2c
+    - name: azure-spring-boot-test-aad-obo
+      groupId: com.azure.spring
+      safeName: azurespringboottestaadobo
+    - name: azure-spring-boot-test-aad-resource-server
+      groupId: com.azure.spring
+      safeName: azurespringboottestaadresourceserver
+    - name: azure-spring-boot-test-aad-resource-server-by-filter
+      groupId: com.azure.spring
+      safeName: azurespringboottestaadresourceserverbyfilter
+    - name: azure-spring-boot-test-keyvault
+      groupId: com.azure.spring
+      safeName: azurespringboottestkeyvault
+    - name: azure-spring-boot-test-keyvault-reactive
+      groupId: com.azure.spring
+      safeName: azurespringboottestkeyvaultreactive
+    - name: azure-spring-boot-test-parent
+      groupId: com.azure.spring
+      safeName: azurespringboottestparent
+    - name: azure-spring-boot-test-servicebus-jms
+      groupId: com.azure.spring
+      safeName: azurespringboottestservicebusjms
+    - name: azure-spring-cloud-test-eventhubs
+      groupId: com.azure.spring
+      safeName: azurespringcloudtesteventhubs
+    - name: azure-spring-boot-test-storage
+      groupId: com.azure.spring
+      safeName: azurespringbootteststorage
+  EnvVars:
+    AZURE_TEST_MODE: LIVE
+    AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
+    AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
+    AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
+    AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
+    AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
+    AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
+    AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+    AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
+    AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
+    AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
+    AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
+    AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+    AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
+    AAD_B2C_TENANT: "B2CITTest1"
+    AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
+    AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
+    AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
+    AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
+    AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
+    AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+    AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserName }}
+    AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+    AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+    AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
+    AZURE_CLOUD_TYPE: "Global"
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml

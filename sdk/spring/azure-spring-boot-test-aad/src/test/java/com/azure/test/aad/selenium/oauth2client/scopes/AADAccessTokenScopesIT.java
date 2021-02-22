@@ -30,13 +30,16 @@ public class AADAccessTokenScopesIT {
     @Test
     public void testAccessTokenScopes() {
         Map<String, String> properties = createDefaultProperties();
-
+        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientScope = armClientUrl + "user_impersonation";
+        properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
         String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
 
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
+
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
         Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
@@ -46,6 +49,10 @@ public class AADAccessTokenScopesIT {
         Assert.assertTrue(httpResponse.contains("profile"));
         Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
         Assert.assertTrue(httpResponse.contains("User.Read"));
+
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/arm");
+        Assert.assertFalse(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("user_impersonation"));
 
         httpResponse = aadSeleniumITHelper.httpGet("notExist");
         Assert.assertNotEquals(httpResponse, "notExist");
@@ -73,6 +80,15 @@ public class AADAccessTokenScopesIT {
         @GetMapping(value = "accessTokenScopes/graph")
         public Set<String> graph(
             @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient authorizedClient) {
+            return Optional.of(authorizedClient)
+                           .map(OAuth2AuthorizedClient::getAccessToken)
+                           .map(OAuth2AccessToken::getScopes)
+                           .orElse(null);
+        }
+
+        @GetMapping(value = "accessTokenScopes/arm")
+        public Set<String> arm(
+            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
                            .map(OAuth2AuthorizedClient::getAccessToken)
                            .map(OAuth2AccessToken::getScopes)
