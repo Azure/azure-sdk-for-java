@@ -273,8 +273,8 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
-      <version>5.2.10.RELEASE</version>
       <optional>true</optional> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
+      <version>5.2.10.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
