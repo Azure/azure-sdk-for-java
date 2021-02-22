@@ -3,9 +3,12 @@
 
 package com.azure.mixedreality.remoterendering.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.Duration;
 
 /** Options for a session to be created. */
+@Fluent
 public final class BeginSessionOptions {
 
     private Duration maxLeaseTime = Duration.ofMinutes(10);

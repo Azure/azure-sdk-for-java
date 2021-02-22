@@ -533,12 +533,12 @@ public final class RemoteRenderingAsyncClient {
             if (error == null) {
                 return null;
             }
-            return new RemoteRenderingServiceError()
-                .setCode(error.getCode())
-                .setMessage(error.getMessage())
-                .setTarget(error.getTarget())
-                .setInnerError(fromGenerated(error.getInnerError()))
-                .setRootErrors((error.getDetails() != null) ? error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()) : null);
+            return new RemoteRenderingServiceError(
+                error.getCode(),
+                error.getMessage(),
+                error.getTarget(),
+                fromGenerated(error.getInnerError()),
+                (error.getDetails() != null) ? error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()) : null);
         }
 
         private static AssetConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {

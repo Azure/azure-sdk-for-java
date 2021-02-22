@@ -3,7 +3,10 @@
 
 package com.azure.mixedreality.remoterendering.models;
 
+import com.azure.core.annotation.Fluent;
+
 /** Options for a conversion. */
+@Fluent
 public final class AssetConversionOptions {
 
     private String inputStorageContainerUrl;

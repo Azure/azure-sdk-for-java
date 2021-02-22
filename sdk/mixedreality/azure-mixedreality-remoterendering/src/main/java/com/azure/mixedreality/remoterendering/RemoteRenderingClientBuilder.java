@@ -64,13 +64,11 @@ public final class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingAsyncClient buildAsyncClient() {
         String scope = this.endpoint.replaceFirst("/$", "") + "/.default";
-        if (accessToken == null)
-        {
+        if (accessToken == null) {
             MixedRealityStsAsyncClient stsClient = stsBuilder.buildAsyncClient();
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
         }
-        else
-        {
+        else {
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken), scope));
         }
 

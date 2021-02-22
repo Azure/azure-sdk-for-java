@@ -3,10 +3,13 @@
 
 package com.azure.mixedreality.remoterendering.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** Holds the properties of a rendering session. */
+@Immutable
 public final class RenderingSession {
     private final String id;
     private final int arrInspectorPort;

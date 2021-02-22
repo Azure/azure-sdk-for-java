@@ -3,9 +3,12 @@
 
 package com.azure.mixedreality.remoterendering.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.Duration;
 
 /** Options for updating an existing rendering session. */
+@Fluent
 public final class UpdateSessionOptions {
     /*
      * Update to the time the session will run after it reached the 'Ready'

@@ -3,9 +3,12 @@
 
 package com.azure.mixedreality.remoterendering.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /** Holds properties of a conversion. */
+@Immutable
 public final class AssetConversion {
     private final String id;
     private final AssetConversionOptions options;

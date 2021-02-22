@@ -24,7 +24,7 @@ public class CreateClients {
 
     final ClientLogger logger = new ClientLogger(CreateClients.class);
 
-    private SampleEnvironment environment = new SampleEnvironment();
+    private final SampleEnvironment environment = new SampleEnvironment();
 
     /**
      * Obtains a client with an AzureKeyCredential.

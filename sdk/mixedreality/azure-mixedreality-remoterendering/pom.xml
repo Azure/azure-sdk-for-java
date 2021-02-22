@@ -38,11 +38,6 @@
       <artifactId>azure-mixedreality-authentication</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.2.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -87,15 +82,11 @@
       <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.2.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-      </plugin>
-    </plugins>
-  </build>
 </project>

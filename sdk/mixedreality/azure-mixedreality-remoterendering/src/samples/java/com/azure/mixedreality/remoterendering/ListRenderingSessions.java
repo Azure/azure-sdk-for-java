@@ -42,7 +42,7 @@ public class ListRenderingSessions extends SampleBase {
         client.beginSession(sessionId, options);
         try {
             Thread.sleep(10000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
 
         for (RenderingSession session : client.listSessions())
