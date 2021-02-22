@@ -4,14 +4,12 @@
 package com.azure.spring.integration.eventhub.converter;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.nio.charset.Charset;
@@ -22,6 +20,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
+
 /**
  * A converter to turn a {@link Message} to {@link EventData} and vice versa.
  *
@@ -31,9 +31,11 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
-    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(
-        new HashSet<>(Arrays.asList(AzureHeaders.PARTITION_ID, EventHubHeaders.ENQUEUED_TIME,
-            EventHubHeaders.OFFSET, EventHubHeaders.SEQUENCE_NUMBER)));
+    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+        EventHubHeaders.PARTITION_KEY,
+        EventHubHeaders.ENQUEUED_TIME,
+        EventHubHeaders.OFFSET,
+        EventHubHeaders.SEQUENCE_NUMBER)));
 
     @Override
     protected byte[] getPayload(EventData azureMessage) {
@@ -54,8 +56,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
     protected void setCustomHeaders(MessageHeaders headers, EventData azureMessage) {
         super.setCustomHeaders(headers, azureMessage);
         headers.forEach((key, value) -> {
-            if (key.equals(NativeMessageHeaderAccessor.NATIVE_HEADERS)
-                    && value instanceof LinkedMultiValueMap) {
+            if (key.equals(NATIVE_HEADERS) && value instanceof LinkedMultiValueMap) {
                 azureMessage.getProperties().put(key, toJson(value));
             } else {
                 if (SYSTEM_HEADERS.contains(key)) {
@@ -75,11 +76,9 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         headers.putAll(getSystemProperties(azureMessage));
 
         Map<String, Object> properties = azureMessage.getProperties();
-        if (properties.containsKey(NativeMessageHeaderAccessor.NATIVE_HEADERS)
-                && isValidJson(properties.get(NativeMessageHeaderAccessor.NATIVE_HEADERS))) {
-            String nativeHeader = (String) properties.remove(NativeMessageHeaderAccessor.NATIVE_HEADERS);
-            properties.put(NativeMessageHeaderAccessor.NATIVE_HEADERS,
-                    readValue(nativeHeader, LinkedMultiValueMap.class));
+        if (properties.containsKey(NATIVE_HEADERS) && isValidJson(properties.get(NATIVE_HEADERS))) {
+            String nativeHeader = (String) properties.remove(NATIVE_HEADERS);
+            properties.put(NATIVE_HEADERS, readValue(nativeHeader, LinkedMultiValueMap.class));
         }
         headers.putAll(azureMessage.getProperties());
         return headers;
