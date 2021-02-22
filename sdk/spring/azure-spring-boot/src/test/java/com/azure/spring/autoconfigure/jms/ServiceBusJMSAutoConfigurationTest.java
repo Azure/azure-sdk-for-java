@@ -18,20 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceBusJMSAutoConfigurationTest {
 
-    private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
+    private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
+        + "SharedAccessKey=sasKey";
 
     @Test
     public void testAzureServiceBusDisabled() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -82,9 +83,9 @@ public class ServiceBusJMSAutoConfigurationTest {
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
             .withPropertyValues(
-            "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
-            "spring.jms.servicebus.topic-client-id=cid",
-            "spring.jms.servicebus.idle-timeout=123"
-        );
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.topic-client-id=cid",
+                "spring.jms.servicebus.idle-timeout=123"
+            );
     }
 }
