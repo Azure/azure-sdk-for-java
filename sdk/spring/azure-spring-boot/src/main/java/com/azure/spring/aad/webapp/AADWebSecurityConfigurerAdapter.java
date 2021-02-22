@@ -15,8 +15,8 @@ import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInit
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
@@ -51,7 +51,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 .and()
-            .addFilterBefore(handleConditionalAccessFilter(), WebAsyncManagerIntegrationFilter.class);
+            .addFilterBefore(new AADHandleConditionalAccessFilter(), ExceptionTranslationFilter.class);
         // @formatter:off
     }
 
@@ -75,9 +75,5 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
         return new AADOAuth2AuthorizationRequestResolver(this.repo);
-    }
-
-    protected AADHandleConditionalAccessFilter handleConditionalAccessFilter() {
-        return new AADHandleConditionalAccessFilter();
     }
 }

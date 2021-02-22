@@ -48,7 +48,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
                         .map(WebClientResponseException::getHeaders)
                         .map(httpHeaders -> httpHeaders.get(HttpHeaders.WWW_AUTHENTICATE))
                         .map(list -> list.get(0))
-                        .map(AADHandleConditionalAccessFilter::parseAuthParameters)
+                        .map(this::parseAuthParameters)
                         .orElse(null);
             if (authParameters != null && authParameters.containsKey(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)) {
                 request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
@@ -65,7 +65,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
         }
     }
 
-    private static Map<String, String> parseAuthParameters(String wwwAuthenticateHeader) {
+    private Map<String, String> parseAuthParameters(String wwwAuthenticateHeader) {
         return Stream.of(wwwAuthenticateHeader)
                      .filter(header -> !StringUtils.isEmpty(header))
                      .filter(header -> header.startsWith(Constants.BEARER_PREFIX))

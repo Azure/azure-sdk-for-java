@@ -108,14 +108,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     .map(Throwable::getCause)
                     .filter(e -> e instanceof MsalInteractionRequiredException)
                     .map(e -> (MsalInteractionRequiredException) e)
-                    .ifPresent(
-                        msalInteractionRequiredException -> {
-                            ServletRequestAttributes attr =
-                                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-                            HttpServletResponse response = attr.getResponse();
-                            Assert.notNull(response, "HttpServletResponse should not be null.");
-                            replyForbiddenWithWwwAuthenticateHeader(response, msalInteractionRequiredException);
-                        });
+                    .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
             LOGGER.error("Failed to load authorized client.", exception);
         } catch (InterruptedException | ParseException exception) {
             LOGGER.error("Failed to load authorized client.", exception);
@@ -162,10 +155,13 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         return null;
     }
 
-    void replyForbiddenWithWwwAuthenticateHeader(HttpServletResponse response,
-                                                 MsalInteractionRequiredException exception) {
-        Map<String, Object> parameters = new LinkedHashMap<>();
+    void replyForbiddenWithWwwAuthenticateHeader(MsalInteractionRequiredException exception) {
+        ServletRequestAttributes attr =
+            (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletResponse response = attr.getResponse();
+        Assert.notNull(response, "HttpServletResponse should not be null.");
         response.setStatus(HttpStatus.FORBIDDEN.value());
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, exception.claims());
         parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
         parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
