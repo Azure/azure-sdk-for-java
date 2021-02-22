@@ -4,7 +4,6 @@ package com.azure.spring.aad.webapi;
 
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
@@ -44,12 +43,6 @@ public class AADResourceServerConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
-
-    @Bean
-    @ConditionalOnMissingBean
-    AADTrustedIssuerRepository aadTrustedIssuerRepository() {
-        return new AADTrustedIssuerRepository(aadAuthenticationProperties.getTenantId());
-    }
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
