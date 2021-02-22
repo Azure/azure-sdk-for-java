@@ -4,7 +4,10 @@
 package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
@@ -12,6 +15,7 @@ import com.azure.messaging.eventgrid.samples.models.User;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This sample code shows how to send {@link CloudEvent CloudEvents} to an Event Grid Topic that accepts cloud event schema.
@@ -24,24 +28,29 @@ public class PublishCloudEventsToTopic {
         EventGridPublisherClient publisherClient = new EventGridPublisherClientBuilder()
             .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))  // make sure it accepts CloudEvent
             .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
-            .buildClient();
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .setPrettyPrintBody(true)
+                .setAllowedQueryParamNames(Set.of("prefix", "include", "restype", "comp")))
+
+                .buildClient();
 
         // Create a CloudEvent with String data
-        String str = "FirstName: John1, LastName:James";
-        CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text", str);
+        String str = "\"FirstName: John1, LastName:James\"";
+        BinaryData binaryData = BinaryData.fromObject(str);
+        CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text", BinaryData.fromString(str));
 
         // Create a CloudEvent with Object data
         User newUser = new User("John2", "James");
-        CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object", newUser);
+        CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object", BinaryData.fromObject(newUser));
         // Create a CloudEvent with binary data
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
-        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", byteSample, "bytes");
+        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", BinaryData.fromBytes(byteSample), true, null);
 
         // Send them to the event grid topic altogether.
         List<CloudEvent> events = new ArrayList<>();
         events.add(cloudEventJson);
         events.add(cloudEventModel);
-        events.add(cloudEventBytes.addExtensionAttribute("extension", "value"));
+        events.add(cloudEventBytes.addExtensionAttribute("extension", "value".getBytes(StandardCharsets.UTF_8)));
         publisherClient.sendCloudEvents(events);
     }
 }

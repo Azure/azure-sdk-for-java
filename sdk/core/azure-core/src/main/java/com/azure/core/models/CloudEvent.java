@@ -122,16 +122,10 @@ public final class CloudEvent {
     @JsonIgnore
     private BinaryData binaryData;
 
-    /**
-     * This is a shortcut for CloudEvent(String source, String type, BinaryData.fromObject(object))
-     */
     public CloudEvent(String source, String type, Object dataObject) {
         this(source, type, dataObject instanceof String? BinaryData.fromString((String) dataObject): BinaryData.fromObject(dataObject), false, null);
     }
 
-    /**
-     * This is a shortcut for CloudEvent(String source, String type, BinaryData data, false, null)
-     */
     public CloudEvent(String source, String type, BinaryData data) {
         this(source, type, data, false, null);
     }
