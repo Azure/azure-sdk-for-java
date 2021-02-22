@@ -9,14 +9,19 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageDecodingFailure;
+import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link
@@ -83,6 +88,46 @@ public class QueueServiceJavaDocCodeSamples {
             .connectionString(connectionString)
             .buildClient();
         // END: com.azure.storage.queue.queueServiceClient.instantiation.connectionstring
+        return client;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueServiceClient}
+     * with {@link QueueServiceClientBuilder#messageDecodingFailedHandler(Function)}.
+     *
+     * @return An instance of {@link QueueServiceClient}
+     */
+    public QueueServiceClient createClientWithDecodingFailedHandler() {
+        // BEGIN: com.azure.storage.queue.QueueServiceClientBuilder#messageDecodingFailedHandler
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
+
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler =
+            (queueMessageDecodingFailure) -> {
+                QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem();
+                PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem();
+                if (queueMessageItem != null) {
+                    System.out.printf("Received badly encoded message, messageId=%s, messageBody=%s",
+                        queueMessageItem.getMessageId(),
+                        queueMessageItem.getBody().toString());
+                    return queueMessageDecodingFailure
+                        .getQueueAsyncClient()
+                        .deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
+                } else if (peekedMessageItem != null) {
+                    System.out.printf("Peeked badly encoded message, messageId=%s, messageBody=%s",
+                        peekedMessageItem.getMessageId(),
+                        peekedMessageItem.getBody().toString());
+                    return Mono.empty();
+                } else {
+                    return Mono.empty();
+                }
+            };
+
+        QueueServiceClient client = new QueueServiceClientBuilder()
+            .connectionString(connectionString)
+            .messageDecodingFailedHandler(messageDecodingFailedHandler)
+            .buildClient();
+        // END: com.azure.storage.queue.QueueServiceClientBuilder#messageDecodingFailedHandler
         return client;
     }
 

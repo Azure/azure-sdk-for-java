@@ -389,6 +389,24 @@ public final class QueueServiceClientBuilder {
     /**
      * Sets the handler that performs the tasks needed when a message is received or peaked from the queue
      * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingFailure} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingFailure#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingFailure#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p>
+     * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
+     * {@link QueueServiceAsyncClient} built by this builder.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#messageDecodingFailedHandler}
      *
      * @param messageDecodingFailedHandler the handler.
      * @return the updated QueueServiceClientBuilder object
