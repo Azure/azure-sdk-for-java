@@ -4,16 +4,23 @@
 package com.azure.spring.integration.eventhub.converter;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A converter to turn a {@link Message} to {@link EventData} and vice versa.
@@ -21,6 +28,12 @@ import java.util.Map;
  * @author Warren Zhu
  */
 public class EventHubMessageConverter extends AbstractAzureMessageConverter<EventData> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
+
+    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(AzureHeaders.PARTITION_ID, EventHubHeaders.ENQUEUED_TIME,
+            EventHubHeaders.OFFSET, EventHubHeaders.SEQUENCE_NUMBER)));
 
     @Override
     protected byte[] getPayload(EventData azureMessage) {
@@ -45,7 +58,12 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
                     && value instanceof LinkedMultiValueMap) {
                 azureMessage.getProperties().put(key, toJson(value));
             } else {
-                azureMessage.getProperties().put(key, value.toString());
+                if (SYSTEM_HEADERS.contains(key)) {
+                    LOGGER.warn("System property {}({}) is not allowed to be defined and will be ignored.",
+                        key, value);
+                } else {
+                    azureMessage.getProperties().put(key, value.toString());
+                }
             }
         });
     }
