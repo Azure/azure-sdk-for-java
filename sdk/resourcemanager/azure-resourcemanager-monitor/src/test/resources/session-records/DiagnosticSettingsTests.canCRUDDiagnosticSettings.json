@@ -78,7 +78,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_14e60398/providers/Microsoft.Storage/storageAccounts/jmonitorsa226885?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_14e60398/providers/Microsoft.Storage/storageAccounts/jmonitorsa226885?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -97,14 +97,14 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "EASTASIA:20191220T235326Z:47c3df08-5441-4bc9-a228-31f4e2b173d8",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2019-06-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2021-01-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "05a9767f-39c9-4e53-a9fc-b70da8148596",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)"
     },
@@ -122,14 +122,14 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "EASTASIA:20191220T235326Z:fcc27ba7-1b97-4547-85ca-f2c54a8ff1e1",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2019-06-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2021-01-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "27c0fbd0-3e25-4ee9-aacb-173c7d578911",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/05a9767f-39c9-4e53-a9fc-b70da8148596?monitor=true&api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)"
     },
@@ -155,7 +155,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_14e60398/providers/Microsoft.Storage/storageAccounts/jmonitorsa226885?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_14e60398/providers/Microsoft.Storage/storageAccounts/jmonitorsa226885?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)",
       "Content-Type" : "application/json; charset=utf-8"
