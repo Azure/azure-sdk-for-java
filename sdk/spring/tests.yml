@@ -1,13 +1,5 @@
 trigger: none
 
-parameters:
-- name: AadOnDemandUserName
-  type: string
-  default: 'user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com'
-- name: AadOnDemandUserNameChina
-  type: string
-  default: 'user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn'
-
 stages:
     - template: spring-test-template.yml
 
@@ -35,7 +27,7 @@ stages:
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret-cn)
           AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role-cn)
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role-cn)
-          AAD_USER_NAME_ON_DEMAND: ${{ parameters.AadOnDemandUserNameChina }}
+          AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn"
           AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1-cn)
           AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id-cn)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret-cn)
