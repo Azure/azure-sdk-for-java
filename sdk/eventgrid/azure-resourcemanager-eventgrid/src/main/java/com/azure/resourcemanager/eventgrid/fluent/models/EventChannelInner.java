@@ -25,7 +25,7 @@ public class EventChannelInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelInner.class);
 
     /*
-     * The system metadata relating to this resource.
+     * The system metadata relating to Event Channel resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -80,7 +80,7 @@ public class EventChannelInner extends ProxyResource {
     private String partnerTopicFriendlyDescription;
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: The system metadata relating to Event Channel resource.
      *
      * @return the systemData value.
      */
