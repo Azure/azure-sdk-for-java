@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayInputStream;
 import java.io.UncheckedIOException;
@@ -29,7 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-
+/**
+ * Doc to be added
+ */
 @Fluent
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
@@ -71,7 +74,7 @@ public final class CloudEvent {
      * Event data specific to the event type, encoded as a base64 string.
      */
     @JsonProperty(value = "data_base64")
-    private byte[] dataBase64;
+    private String dataBase64;
 
     /*
      * Type of event related to the originating occurrence.
@@ -119,21 +122,43 @@ public final class CloudEvent {
     @JsonIgnore
     private BinaryData binaryData;
 
-    private CloudEvent() {
-
+    /**
+     * This is a shortcut for CloudEvent(String source, String type, BinaryData.fromObject(object))
+     */
+    public CloudEvent(String source, String type, Object dataObject) {
+        this(source, type, dataObject instanceof String? BinaryData.fromString((String) dataObject): BinaryData.fromObject(dataObject), false, null);
     }
 
-    public CloudEvent(String source, String type, Object data) {
-        this(source, type, data, null);
+    /**
+     * This is a shortcut for CloudEvent(String source, String type, BinaryData data, false, null)
+     */
+    public CloudEvent(String source, String type, BinaryData data) {
+        this(source, type, data, false, null);
     }
 
-    public CloudEvent(String source, String type, Object data, String dataContentType) {
+    public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
+        this(source, type, data, format == CloudEventDataFormat.BYTES, dataContentType);
+    }
+
+    /**
+     *
+     * @param source Identifies the context in which an event happened. The combination of id and source must be unique
+     *               for each distinct event.
+     * @param type Type of event related to the originating occurrence.
+     * @param data The {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
+     * @param serializeDataToBase64 Set this param to true to serialize the data to base64 format.
+     * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
+     *                        the event subscriber how to use the data. Typically the value is of MIME types such as
+     *                        "application/json", "text/plain", "text/xml", "application/+avro", etc.
+     *
+     */
+    public CloudEvent(String source, String type, BinaryData data, boolean serializeDataToBase64, String dataContentType) {
         this.source = source;
         this.type = type;
-        if (data instanceof byte[]) {
-            this.dataBase64 = Base64.getEncoder().encode((byte[]) data);
+        if (serializeDataToBase64) {
+            this.dataBase64 = Base64.getEncoder().encodeToString(data.toBytes());
         } else {
-            this.data = data;
+            this.data = data.toString();
         }
         this.dataContentType = dataContentType;
         this.id = UUID.randomUUID().toString();
@@ -212,7 +237,7 @@ public final class CloudEvent {
                     this.binaryData = BinaryData.fromObject(this.data);
                 }
             } else if (this.dataBase64 != null) {
-                this.binaryData = BinaryData.fromBytes(this.dataBase64);
+                this.binaryData = BinaryData.fromString(this.dataBase64);
             }
         }
         return this.binaryData;
