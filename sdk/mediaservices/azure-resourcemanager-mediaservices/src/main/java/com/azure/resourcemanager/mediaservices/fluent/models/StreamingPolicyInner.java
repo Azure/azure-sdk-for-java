@@ -12,6 +12,7 @@ import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
 import com.azure.resourcemanager.mediaservices.models.EnvelopeEncryption;
 import com.azure.resourcemanager.mediaservices.models.NoEncryption;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -21,6 +22,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public class StreamingPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPolicyInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Creation time of Streaming Policy
@@ -57,6 +64,15 @@ public class StreamingPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.noEncryption")
     private NoEncryption noEncryption;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the created property: Creation time of Streaming Policy.
@@ -173,6 +189,9 @@ public class StreamingPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemData() != null) {
+            systemData().validate();
+        }
         if (envelopeEncryption() != null) {
             envelopeEncryption().validate();
         }

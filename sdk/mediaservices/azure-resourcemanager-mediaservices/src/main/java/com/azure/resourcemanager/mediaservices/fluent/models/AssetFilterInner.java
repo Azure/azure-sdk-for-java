@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,6 +21,12 @@ import java.util.List;
 @Fluent
 public class AssetFilterInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AssetFilterInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The presentation time range.
@@ -38,6 +45,15 @@ public class AssetFilterInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.tracks")
     private List<FilterTrackSelection> tracks;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the presentationTimeRange property: The presentation time range.
@@ -105,6 +121,9 @@ public class AssetFilterInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemData() != null) {
+            systemData().validate();
+        }
         if (presentationTimeRange() != null) {
             presentationTimeRange().validate();
         }

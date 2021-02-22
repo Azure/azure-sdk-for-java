@@ -65,24 +65,24 @@ public final class DomainsImpl implements Domains {
 
     public PagedIterable<Domain> list() {
         PagedIterable<DomainInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new DomainImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Domain> list(String filter, Integer top, Context context) {
         PagedIterable<DomainInner> inner = this.serviceClient().list(filter, top, context);
-        return inner.mapPage(inner1 -> new DomainImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Domain> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DomainInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new DomainImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Domain> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context) {
         PagedIterable<DomainInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return inner.mapPage(inner1 -> new DomainImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
     public DomainSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String domainName) {
