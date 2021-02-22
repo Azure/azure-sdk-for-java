@@ -111,9 +111,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                .flatMap(httpResponse -> {
                    String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                    if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                       System.out.println("Received a Challenge, woo");
                        return onChallenge(context, httpResponse).flatMap(retry -> {
-                           System.out.println("Calling On Challenge");
                            if (retry) {
                                return nextPolicy.process();
                            } else {
@@ -139,7 +137,6 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                                            boolean forceTokenRefresh) {
         return cache.getToken(tokenSupplier, forceTokenRefresh)
            .flatMap(token -> {
-               System.out.println("Setting auth header with token" + token.getToken());
                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
                return Mono.empty();
            });
