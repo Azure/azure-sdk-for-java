@@ -188,7 +188,7 @@
       "Expires" : "-1",
       "Content-Length" : "288",
       "x-ms-request-id" : "a96cf583-f229-412c-a0bc-d4699b6c5af0",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"CePmhlHjoAWmUcMUA+mGATOAkQozmrZxve/B9MPNYnk9V1KWEL3GmJSvehjrTq1+wlFhr2S2wsdzRg7EYuo95Q==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"rbC0M6fjJRo59wiCI0tZF2J50uNFUTfMWyg6BcvcbvnsNXigG7ql1N1sjFQpViKv+8WqUbTqUuyBsAy58gmqyQ==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "a9e4d7a3-16cf-41d4-84fd-2bef0ad057d9",
       "Content-Type" : "application/json"
     },
@@ -216,7 +216,7 @@
       "Expires" : "-1",
       "Content-Length" : "288",
       "x-ms-request-id" : "f641905b-8edb-4b47-9509-a944cb92351c",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"yKEx6v0sw16Lt/XN38tqubO4EUozdYQ5i/IXiwYpjBpFfzJH2Zs44sQNhy894q9o8beOcxvtvQUHXGqjwgRpbA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"rbC0M6fjJRo59wiCI0tZF2J50uNFUTfMWyg6BcvcbvnsNXigG7ql1N1sjFQpViKv+8WqUbTqUuyBsAy58gmqyQ==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "dbc04e69-6c76-4d91-9469-346c2a383ad1",
       "Content-Type" : "application/json"
     },
