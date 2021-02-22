@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CommissionedState;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,12 @@ import java.util.Map;
 @Fluent
 public class CustomIpPrefixInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixInner.class);
+
+    /*
+     * The extended location of the custom IP prefix.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -71,6 +78,26 @@ public class CustomIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the custom IP prefix.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the custom IP prefix.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -210,5 +237,8 @@ public class CustomIpPrefixInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
     }
 }

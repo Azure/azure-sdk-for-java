@@ -50,7 +50,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param parameters Network watcher in a resource group.
+     * @param parameters Parameters that define the network watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,7 +65,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param parameters Network watcher in a resource group.
+     * @param parameters Parameters that define the network watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,7 +80,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param parameters Network watcher in a resource group.
+     * @param parameters Parameters that define the network watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,7 +95,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param parameters Network watcher in a resource group.
+     * @param parameters Parameters that define the network watcher resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -993,7 +993,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1008,7 +1008,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1023,7 +1023,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1038,7 +1038,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1054,7 +1054,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1069,7 +1069,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1084,7 +1084,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param parameters Parameters that define the configuration of flow log.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1322,7 +1322,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1338,7 +1338,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1355,7 +1355,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1371,7 +1371,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1391,7 +1391,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1407,7 +1407,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1423,7 +1423,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param parameters Parameters that determine Azure reachability report configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1443,7 +1443,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1459,7 +1459,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1475,7 +1475,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1491,7 +1491,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1511,7 +1511,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1527,7 +1527,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1543,7 +1543,7 @@ public interface NetworkWatchersClient
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param parameters Parameters that scope the list of available providers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

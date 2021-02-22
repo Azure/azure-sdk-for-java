@@ -196,7 +196,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +211,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,7 +241,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,7 +257,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,7 +272,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -287,7 +287,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Custom IP prefix resource.
+     * @param parameters Parameters supplied to the create or update custom IP prefix operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

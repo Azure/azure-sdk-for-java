@@ -188,7 +188,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +207,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,7 +245,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,7 +266,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -285,7 +285,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,7 +304,7 @@ public interface VirtualApplianceSitesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
-     * @param parameters Virtual Appliance Site resource.
+     * @param parameters Parameters supplied to the create or update Network Virtual Appliance Site operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

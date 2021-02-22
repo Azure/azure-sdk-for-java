@@ -180,7 +180,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +235,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -315,7 +315,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -357,7 +357,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         } else {
             virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -382,7 +382,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -426,7 +426,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         } else {
             virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,7 +448,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -479,7 +479,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -513,7 +513,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -536,7 +536,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -561,7 +561,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,7 +585,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -611,7 +611,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -633,7 +633,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param virtualHubRouteTableV2Parameters Parameters supplied to create or update VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -688,7 +688,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -743,7 +743,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -938,7 +938,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -997,7 +997,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

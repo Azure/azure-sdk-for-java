@@ -188,7 +188,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +245,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -415,7 +415,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -456,7 +456,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -481,7 +481,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -524,7 +524,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -546,7 +546,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,7 +580,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +617,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,7 +641,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,7 +668,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -691,7 +691,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -716,7 +716,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -737,7 +737,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -792,7 +792,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -849,7 +849,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -958,7 +958,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1019,7 +1019,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

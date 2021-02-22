@@ -180,7 +180,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -195,7 +195,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,7 +210,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +225,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,7 +241,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +256,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,7 +271,7 @@ public interface ExpressRoutePortsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param parameters ExpressRoutePort resource definition.
+     * @param parameters Parameters supplied to the create ExpressRoutePort operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

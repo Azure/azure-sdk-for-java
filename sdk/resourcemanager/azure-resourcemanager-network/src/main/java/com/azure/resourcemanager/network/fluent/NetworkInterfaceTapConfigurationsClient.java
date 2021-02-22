@@ -191,7 +191,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,7 +210,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,7 +230,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -250,7 +250,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,7 +272,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -291,7 +291,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,7 +310,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -84,6 +84,7 @@ import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
+import com.azure.resourcemanager.network.fluent.NatRulesClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
@@ -1371,6 +1372,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnLinkConnections;
     }
 
+    /** The NatRulesClient object to access its operations. */
+    private final NatRulesClient natRules;
+
+    /**
+     * Gets the NatRulesClient object to access its operations.
+     *
+     * @return the NatRulesClient object.
+     */
+    public NatRulesClient getNatRules() {
+        return this.natRules;
+    }
+
     /** The P2SVpnGatewaysClient object to access its operations. */
     private final P2SVpnGatewaysClient p2SVpnGateways;
 
@@ -1601,6 +1614,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.vpnConnections = new VpnConnectionsClientImpl(this);
         this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsClientImpl(this);
         this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
+        this.natRules = new NatRulesClientImpl(this);
         this.p2SVpnGateways = new P2SVpnGatewaysClientImpl(this);
         this.vpnServerConfigurationsAssociatedWithVirtualWans =
             new VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(this);
@@ -1821,7 +1835,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -1900,7 +1914,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2067,7 +2081,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2122,7 +2136,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2353,7 +2367,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2417,7 +2431,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2566,7 +2580,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2638,7 +2652,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2776,7 +2790,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
@@ -2837,7 +2851,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
@@ -2990,7 +3004,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3038,7 +3052,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3133,7 +3147,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3180,7 +3194,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3257,7 +3271,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3288,7 +3302,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3312,7 +3326,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3347,7 +3361,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3368,7 +3382,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3396,7 +3410,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3425,7 +3439,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3446,7 +3460,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3471,7 +3485,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3492,7 +3506,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3517,7 +3531,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3537,7 +3551,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

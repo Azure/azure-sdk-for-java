@@ -36,6 +36,12 @@ public class SecurityRuleInner extends SubResource {
     private String etag;
 
     /*
+     * The type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /*
      * A description for this rule. Restricted to 140 chars.
      */
     @JsonProperty(value = "properties.description")
@@ -170,6 +176,26 @@ public class SecurityRuleInner extends SubResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**

@@ -180,7 +180,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -236,7 +236,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -436,7 +436,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -492,7 +492,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -572,7 +572,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -609,7 +609,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -634,7 +634,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -676,7 +676,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -698,7 +698,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -725,7 +725,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -758,7 +758,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -776,7 +776,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -800,7 +800,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -820,7 +820,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -845,7 +845,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -863,7 +863,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
-     * @param parameters Virtual Router Peering resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -913,7 +913,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -973,7 +973,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -155,7 +155,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @param parameters Defines web application firewall policy.
+     * @param parameters Policy to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,7 +170,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @param parameters Defines web application firewall policy.
+     * @param parameters Policy to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,7 +185,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @param parameters Defines web application firewall policy.
+     * @param parameters Policy to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -200,7 +200,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @param parameters Defines web application firewall policy.
+     * @param parameters Policy to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

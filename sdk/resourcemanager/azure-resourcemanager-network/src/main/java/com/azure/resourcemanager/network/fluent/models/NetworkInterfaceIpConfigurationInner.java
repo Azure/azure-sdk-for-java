@@ -37,6 +37,12 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     private String etag;
 
     /*
+     * Resource type.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /*
      * The reference to Virtual Network Taps.
      */
     @JsonProperty(value = "properties.virtualNetworkTaps")
@@ -143,6 +149,26 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Resource type.
+     *
+     * @param type the type value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
+     */
+    public NetworkInterfaceIpConfigurationInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
