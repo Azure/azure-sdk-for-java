@@ -85,8 +85,8 @@ public class AADOauth2AuthorizedClientCachedIT {
                            .orElse(null);
         }
 
-        @GetMapping(value = "accessTokenIssuedAt/office")
-        public String office(
+        @GetMapping(value = "accessTokenIssuedAt/arm")
+        public String arm(
             @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
                            .map(OAuth2AuthorizedClient::getAccessToken)

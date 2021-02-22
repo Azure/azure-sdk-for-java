@@ -4,10 +4,10 @@ parameters:
   Clouds: 'Public'
   TestResourceDirectories:
     - spring/azure-spring-boot-test-cosmos
-    - spring/azure-spring-boot-test-servicebus-jms
-    - spring/azure-spring-cloud-test-eventhubs
     - spring/azure-spring-boot-test-keyvault
+    - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
+    - spring/azure-spring-cloud-test-eventhubs
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
