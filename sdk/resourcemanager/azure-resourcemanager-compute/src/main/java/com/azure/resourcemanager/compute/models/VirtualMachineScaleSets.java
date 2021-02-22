@@ -17,6 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import reactor.core.publisher.Mono;
@@ -226,6 +227,29 @@ public interface VirtualMachineScaleSets
      */
     Mono<RunCommandResult> runCommandVMInstanceAsync(
         String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
+
+    /**
+     * Delete virtual machine instances.
+     *
+     * @param groupName the resource group name
+     * @param scaleSetName the virtual machine scale set name
+     * @param instanceIds instance IDs
+     * @param forceDeletion force delete without graceful shutdown
+     */
+    void deleteInstances(String groupName, String scaleSetName,
+                         Collection<String> instanceIds, boolean forceDeletion);
+
+    /**
+     * Delete virtual machine instances.
+     *
+     * @param groupName the resource group name
+     * @param scaleSetName the virtual machine scale set name
+     * @param instanceIds instance IDs
+     * @param forceDeletion force delete without graceful shutdown
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName,
+                                    Collection<String> instanceIds, boolean forceDeletion);
 
     /**
      * Force delete a resource from Azure, identifying it by its resource ID.

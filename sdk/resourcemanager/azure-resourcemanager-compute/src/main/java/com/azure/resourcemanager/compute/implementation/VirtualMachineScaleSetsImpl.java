@@ -23,6 +23,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -167,6 +168,20 @@ public class VirtualMachineScaleSetsImpl
             .getVirtualMachineScaleSetVMs()
             .runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
             .map(RunCommandResultImpl::new);
+    }
+
+    @Override
+    public void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
+        this.deleteInstancesAsync(groupName, scaleSetName, instanceIds, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
+        if (instanceIds == null || instanceIds.isEmpty()) {
+            return Mono.empty();
+        }
+        return this.manager().serviceClient().getVirtualMachineScaleSets().deleteInstancesAsync(groupName, scaleSetName,
+            new ArrayList<>(instanceIds), forceDeletion);
     }
 
     @Override
