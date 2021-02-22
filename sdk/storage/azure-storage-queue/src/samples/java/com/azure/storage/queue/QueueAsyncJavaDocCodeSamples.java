@@ -225,7 +225,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.receiveMessage
         client.receiveMessage().subscribe(
             message -> System.out.println("The message got from getMessages operation: "
-                + message.getMessageText()),
+                + message.getBody().toString()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete receiving the message!")
         );
@@ -239,7 +239,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.receiveMessages#integer
         client.receiveMessages(5).subscribe(
             message -> System.out.println("The message got from getMessages operation: "
-                + message.getMessageText()),
+                + message.getBody().toString()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete receiving the message!")
         );
@@ -254,7 +254,7 @@ public class QueueAsyncJavaDocCodeSamples {
         client.receiveMessages(5, Duration.ofSeconds(60))
             .subscribe(
                 message -> System.out.println("The message got from getMessages operation: "
-                    + message.getMessageText()),
+                    + message.getBody().toString()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete receiving the message!")
             );
@@ -268,7 +268,8 @@ public class QueueAsyncJavaDocCodeSamples {
     public void peekMessageAsync() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessage
         client.peekMessage().subscribe(
-            peekMessages -> System.out.println("The message got from peek operation: " + peekMessages.getMessageText()),
+            peekMessages -> System.out.println("The message got from peek operation: "
+                + peekMessages.getBody().toString()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
         );

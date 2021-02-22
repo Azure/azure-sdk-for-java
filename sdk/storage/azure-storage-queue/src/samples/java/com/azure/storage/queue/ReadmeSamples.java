@@ -187,7 +187,7 @@ public class ReadmeSamples {
         // @param key: The key with which the specified value should be associated.
         // @param value: The value to be associated with the specified key.
         queueClient.peekMessages(5, Duration.ofSeconds(1), new Context(key, value)).forEach(message -> {
-            System.out.println(message.getMessageText());
+            System.out.println(message.getBody().toString());
         });
     }
 
@@ -197,7 +197,7 @@ public class ReadmeSamples {
                 .buildClient();
         // Try to receive 10 mesages: Maximum number of messages to get
         queueClient.receiveMessages(10).forEach(message -> {
-            System.out.println(message.getMessageText());
+            System.out.println(message.getBody().toString());
         });
     }
 

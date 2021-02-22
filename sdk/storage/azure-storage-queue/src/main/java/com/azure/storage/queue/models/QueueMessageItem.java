@@ -7,40 +7,49 @@ package com.azure.storage.queue.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** The object returned in the QueueMessageList array when calling Get Messages on a Queue. */
+@JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
 public final class QueueMessageItem {
     /*
      * The Id of the Message.
      */
+    @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
+    @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
+    @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
     /*
      * This value is required to delete the Message. If deletion fails using
      * this popreceipt then the message has been dequeued by another client.
      */
+    @JsonProperty(value = "PopReceipt", required = true)
     private String popReceipt;
 
     /*
      * The time that the message will again become visible in the Queue.
      */
+    @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
     /*
      * The number of times the message has been dequeued.
      */
+    @JsonProperty(value = "DequeueCount", required = true)
     private long dequeueCount;
 
     /*

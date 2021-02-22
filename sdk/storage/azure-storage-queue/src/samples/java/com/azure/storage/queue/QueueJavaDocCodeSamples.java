@@ -236,7 +236,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.peekMessage
         PeekedMessageItem peekedMessageItem = client.peekMessage();
-        System.out.println("Complete peeking the message: " + peekedMessageItem.getMessageText());
+        System.out.println("Complete peeking the message: " + peekedMessageItem.getBody().toString());
         // END: com.azure.storage.queue.queueClient.peekMessage
     }
 
