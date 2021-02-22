@@ -7,7 +7,6 @@ package com.azure.storage.queue.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The object returned in the QueueMessageList array when calling Get Messages on a Queue. */
@@ -208,7 +207,7 @@ public final class QueueMessageItem {
      *
      * @param messageText the messageText value to set.
      * @return the QueueMessageItem object itself.
-     * * @deprecated use {@link #setBody(BinaryData)} instead.
+     * @deprecated use {@link #setBody(BinaryData)} instead.
      */
     @Deprecated
     public QueueMessageItem setMessageText(String messageText) {

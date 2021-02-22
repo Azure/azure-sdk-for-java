@@ -4,7 +4,6 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.storage.queue.QueueClient;
 
 import java.util.Objects;
 

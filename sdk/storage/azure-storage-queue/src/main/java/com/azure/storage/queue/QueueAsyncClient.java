@@ -707,7 +707,8 @@ public final class QueueAsyncClient {
             case BASE64:
                 return Base64.getEncoder().encodeToString(message.toBytes());
             default:
-                throw new IllegalArgumentException("Unsupported message encoding=" + messageEncoding);
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
         }
     }
 
@@ -831,7 +832,7 @@ public final class QueueAsyncClient {
                             null)
                         ));
                 } else {
-                    throw e;
+                    throw logger.logExceptionAsError(e);
                 }
             }
         }
@@ -866,7 +867,8 @@ public final class QueueAsyncClient {
             case BASE64:
                 return BinaryData.fromBytes(Base64.getDecoder().decode(messageText));
             default:
-                throw new IllegalArgumentException("Unsupported message encoding=" + messageEncoding);
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
         }
     }
 
@@ -954,7 +956,7 @@ public final class QueueAsyncClient {
                             transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE))
                         ));
                 } else {
-                    throw e;
+                    throw logger.logExceptionAsError(e);
                 }
             }
         }

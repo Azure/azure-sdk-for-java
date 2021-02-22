@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueAccessPolicy;
@@ -140,6 +141,20 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link QueueAsyncClient#sendMessage(BinaryData)}
+     */
+    public void enqueueMessageBinaryDataAsync() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.sendMessage#BinaryData
+        client.sendMessage(BinaryData.fromString("Hello, Azure")).subscribe(
+                response -> {
+                },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.sendMessage#BinaryData
+    }
+
+    /**
      * Generates a code sample for using {@link QueueAsyncClient#sendMessageWithResponse(String, Duration,
      * Duration)}
      */
@@ -156,6 +171,22 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link QueueAsyncClient#sendMessageWithResponse(BinaryData, Duration,
+     * Duration)}
+     */
+    public void enqueueMessageBinaryDataAsyncWithTimeoutOverload() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.sendMessageWithResponse#BinaryData-duration-duration
+        client.sendMessageWithResponse(BinaryData.fromString("Hello, Azure"),
+                Duration.ofSeconds(5), null).subscribe(
+                response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
+                    response.getValue().getExpirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.sendMessageWithResponse#BinaryData-duration-duration
+    }
+
+    /**
      * Generates a code sample for using {@link QueueAsyncClient#sendMessageWithResponse(String, Duration,
      * Duration)}
      */
@@ -169,6 +200,22 @@ public class QueueAsyncJavaDocCodeSamples {
                 () -> System.out.println("Complete enqueuing the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#String-Duration-Duration
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueAsyncClient#sendMessageWithResponse(BinaryData, Duration,
+     * Duration)}
+     */
+    public void enqueueMessageBinaryDataAsyncWithLiveTimeOverload() {
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#BinaryData-Duration-Duration
+        client.sendMessageWithResponse(BinaryData.fromString("Goodbye, Azure"),
+                null, Duration.ofSeconds(5)).subscribe(
+                response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
+                    response.getValue().getExpirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
+        );
+        // END: com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#BinaryData-Duration-Duration
     }
 
     /**
