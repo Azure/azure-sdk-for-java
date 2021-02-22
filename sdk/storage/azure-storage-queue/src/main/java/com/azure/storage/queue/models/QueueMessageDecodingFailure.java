@@ -4,6 +4,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.storage.queue.QueueAsyncClient;
 
 import java.util.Objects;
 
@@ -12,22 +13,22 @@ import java.util.Objects;
  */
 @Immutable
 public class QueueMessageDecodingFailure {
-    private final String queueUrl;
+    private final QueueAsyncClient queueAsyncClient;
     private final QueueMessageItem queueMessageItem;
     private final PeekedMessageItem peekedMessageItem;
 
     /**
      * Creates new {@link QueueMessageDecodingFailure}.
-     * @param queueUrl the url of the queue that has received message.
+     * @param queueAsyncClient the {@link QueueAsyncClient} of the queue that has received message.
      * @param queueMessageItem the {@link QueueMessageItem} that has been received and could not be decoded.
      * @param peekedMessageItem the {@link PeekedMessageItem} that has been peeked and could not be decoded.
      */
     public QueueMessageDecodingFailure(
-        String queueUrl,
+        QueueAsyncClient queueAsyncClient,
         QueueMessageItem queueMessageItem,
         PeekedMessageItem peekedMessageItem) {
-        Objects.requireNonNull(queueUrl, "'queueUrl' cannot be null.");
-        this.queueUrl = queueUrl;
+        Objects.requireNonNull(queueAsyncClient, "'queueAsyncClient' cannot be null.");
+        this.queueAsyncClient = queueAsyncClient;
         this.queueMessageItem = queueMessageItem;
         this.peekedMessageItem = peekedMessageItem;
     }
@@ -36,8 +37,8 @@ public class QueueMessageDecodingFailure {
      * Gets the queue client that has received message.
      * @return the queue client that has received message.
      */
-    public String getQueueUrl() {
-        return queueUrl;
+    public QueueAsyncClient getQueueAsyncClient() {
+        return queueAsyncClient;
     }
 
     /**

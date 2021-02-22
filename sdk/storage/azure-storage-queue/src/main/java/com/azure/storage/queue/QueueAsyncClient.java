@@ -827,7 +827,7 @@ public final class QueueAsyncClient {
                 if (messageDecodingFailedHandler != null) {
                     mono = mono.then(messageDecodingFailedHandler.apply(
                         new QueueMessageDecodingFailure(
-                            this.getQueueUrl(),
+                            this,
                             transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE),
                             null)
                         ));
@@ -951,7 +951,7 @@ public final class QueueAsyncClient {
                 if (messageDecodingFailedHandler != null) {
                     mono = mono.then(messageDecodingFailedHandler.apply(
                         new QueueMessageDecodingFailure(
-                            this.getQueueUrl(),
+                            this,
                             null,
                             transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE))
                         ));

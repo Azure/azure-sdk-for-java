@@ -356,7 +356,7 @@ class QueueAPITests extends APISpec {
             .messageEncoding(QueueMessageEncoding.BASE64)
             .messageDecodingFailedHandler({failure ->
                 badMessage = failure.getQueueMessageItem()
-                queueUrl = failure.getQueueUrl()
+                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
                 return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
@@ -488,7 +488,7 @@ class QueueAPITests extends APISpec {
             .messageEncoding(QueueMessageEncoding.BASE64)
             .messageDecodingFailedHandler({failure ->
                 badMessage = failure.getPeekedMessageItem()
-                queueUrl = failure.getQueueUrl()
+                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
                 return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
