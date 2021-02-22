@@ -22,6 +22,7 @@ import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,10 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
 
     public IdentityInfo identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public List<PrivateEndpointConnection> privateEndpointConnections() {

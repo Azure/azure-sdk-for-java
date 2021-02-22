@@ -32,7 +32,7 @@ public interface EventChannel {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: The system metadata relating to Event Channel resource.
      *
      * @return the systemData value.
      */

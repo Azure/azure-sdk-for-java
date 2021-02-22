@@ -30,6 +30,13 @@ public interface DomainTopic {
     String type();
 
     /**
+     * Gets the systemData property: The system metadata relating to Domain Topic resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: Provisioning state of the domain topic.
      *
      * @return the provisioningState value.
