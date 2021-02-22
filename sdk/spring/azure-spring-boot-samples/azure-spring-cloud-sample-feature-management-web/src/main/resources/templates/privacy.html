@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Feature Management with Spring Cloud Azure</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">TestFeatureFlags</a>
+        <button class="navbar-toggler" aria-expanded="false" aria-controls="navbarCollapse" aria-label="Toggle navigation" type="button" data-target="#navbarCollapse" data-toggle="collapse">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome">Home</a>
+            </li>
+            <li class="nav-item" th:if="${Beta}">
+                <a class="nav-link" href="/Beta">Beta</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/privacy">Privacy<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    </header>
+    <div class="container body-content">
+        <h1 class="mt-5">Privacy</h1>
+        <div th:classappend="${isDarkThemeS1} ? light : dark">
+            <h2 class="mt-4">Section 1</h2>
+            <p>
+                Each of these sections were checked individually to be white or black, but because 
+                FeatureManagerSnapshot was used, they will always return the same value.
+            </p>
+        </div>
+        <div th:classappend="${isDarkThemeS2} ? light : dark">
+            <h2 class="mt-4">Section 2</h2>
+        </div>
+        <div th:classappend="${isDarkThemeS3} ? light : dark">
+            <h2 class="mt-4">Section 3</h2>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+        <span class="text-muted">&copy; 2019 - Projects</span>
+    </div>
+
+    </footer>
+</body>
+</html>

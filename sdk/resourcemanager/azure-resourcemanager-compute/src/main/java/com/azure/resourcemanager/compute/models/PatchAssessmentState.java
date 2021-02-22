@@ -10,20 +10,8 @@ import java.util.Collection;
 
 /** Defines values for PatchAssessmentState. */
 public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssessmentState> {
-    /** Static value Installed for PatchAssessmentState. */
-    public static final PatchAssessmentState INSTALLED = fromString("Installed");
-
-    /** Static value Failed for PatchAssessmentState. */
-    public static final PatchAssessmentState FAILED = fromString("Failed");
-
-    /** Static value Excluded for PatchAssessmentState. */
-    public static final PatchAssessmentState EXCLUDED = fromString("Excluded");
-
-    /** Static value NotSelected for PatchAssessmentState. */
-    public static final PatchAssessmentState NOT_SELECTED = fromString("NotSelected");
-
-    /** Static value Pending for PatchAssessmentState. */
-    public static final PatchAssessmentState PENDING = fromString("Pending");
+    /** Static value Unknown for PatchAssessmentState. */
+    public static final PatchAssessmentState UNKNOWN = fromString("Unknown");
 
     /** Static value Available for PatchAssessmentState. */
     public static final PatchAssessmentState AVAILABLE = fromString("Available");

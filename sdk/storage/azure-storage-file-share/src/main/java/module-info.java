@@ -21,4 +21,7 @@ module com.azure.storage.file.share {
     opens com.azure.storage.file.share.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
+    opens com.azure.storage.file.share.implementation.util to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }

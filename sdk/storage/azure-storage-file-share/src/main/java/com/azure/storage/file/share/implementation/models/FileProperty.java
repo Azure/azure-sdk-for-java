@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * File properties.
- */
+/** File properties. */
 @JacksonXmlRootElement(localName = "FileProperty")
 @Fluent
 public final class FileProperty {
@@ -25,11 +23,9 @@ public final class FileProperty {
     private long contentLength;
 
     /**
-     * Get the contentLength property: Content length of the file. This value
-     * may not be up-to-date since an SMB client may have modified the file
-     * locally. The value of Content-Length may not reflect that fact until the
-     * handle is closed or the op-lock is broken. To retrieve current property
-     * values, call Get File Properties.
+     * Get the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client
+     * may have modified the file locally. The value of Content-Length may not reflect that fact until the handle is
+     * closed or the op-lock is broken. To retrieve current property values, call Get File Properties.
      *
      * @return the contentLength value.
      */
@@ -38,11 +34,9 @@ public final class FileProperty {
     }
 
     /**
-     * Set the contentLength property: Content length of the file. This value
-     * may not be up-to-date since an SMB client may have modified the file
-     * locally. The value of Content-Length may not reflect that fact until the
-     * handle is closed or the op-lock is broken. To retrieve current property
-     * values, call Get File Properties.
+     * Set the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client
+     * may have modified the file locally. The value of Content-Length may not reflect that fact until the handle is
+     * closed or the op-lock is broken. To retrieve current property values, call Get File Properties.
      *
      * @param contentLength the contentLength value to set.
      * @return the FileProperty object itself.

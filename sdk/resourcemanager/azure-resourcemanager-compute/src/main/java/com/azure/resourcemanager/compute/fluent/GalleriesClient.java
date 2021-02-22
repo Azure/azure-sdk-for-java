@@ -31,7 +31,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -47,7 +47,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,7 +63,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,7 +79,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -96,7 +96,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,7 +111,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,7 +126,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -142,7 +142,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,7 +158,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -174,7 +174,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,7 +190,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -207,7 +207,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,7 +222,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,7 +237,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

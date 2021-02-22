@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
@@ -54,6 +55,13 @@ public interface MediaService {
      * @return the identity value.
      */
     MediaServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the mediaServiceId property: The Media Services account ID.
@@ -316,4 +324,49 @@ public interface MediaService {
      * @return the refreshed resource.
      */
     MediaService refresh(Context context);
+
+    /**
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     *
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncStorageKeys(SyncStorageKeysInput parameters);
+
+    /**
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     *
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context);
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters);
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<EdgePolicies> listEdgePoliciesWithResponse(ListEdgePoliciesInput parameters, Context context);
 }

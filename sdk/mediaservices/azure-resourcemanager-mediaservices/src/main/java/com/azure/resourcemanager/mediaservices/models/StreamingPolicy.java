@@ -32,6 +32,13 @@ public interface StreamingPolicy {
     String type();
 
     /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the created property: Creation time of Streaming Policy.
      *
      * @return the created value.

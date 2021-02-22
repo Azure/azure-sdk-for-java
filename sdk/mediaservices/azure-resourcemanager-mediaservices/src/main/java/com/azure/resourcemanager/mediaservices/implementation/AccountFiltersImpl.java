@@ -30,12 +30,12 @@ public final class AccountFiltersImpl implements AccountFilters {
 
     public PagedIterable<AccountFilter> list(String resourceGroupName, String accountName) {
         PagedIterable<AccountFilterInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new AccountFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AccountFilterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccountFilter> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<AccountFilterInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return inner.mapPage(inner1 -> new AccountFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AccountFilterImpl(inner1, this.manager()));
     }
 
     public AccountFilter get(String resourceGroupName, String accountName, String filterName) {
