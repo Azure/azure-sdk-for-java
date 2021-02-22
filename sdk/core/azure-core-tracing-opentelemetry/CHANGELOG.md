@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.8 (Unreleased)
 - Updated versions of `opentelemetry-api` to `0.17.1` version.
-  More detailed information about the new OpenTelemetry API version can be found in [OpenTelemetry changelog](https://github.com/open-telemetry/opentelemetry-java/blob/main/CHANGELOG.md#version-0171---2021-02-19)
+  More detailed information about the new OpenTelemetry API version can be found in [OpenTelemetry changelog](https://github.com/open-telemetry/opentelemetry-java/blob/main/CHANGELOG.md#version-0171---2021-02-19).
 
 ## 1.0.0-beta.7 (2021-02-05)
 

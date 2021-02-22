@@ -6,7 +6,6 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
@@ -89,6 +88,12 @@ public class OpenTelemetryTracerTest {
         }
     };
 
+    @BeforeAll
+    public static void setUpAll() {
+        // Register the global tracer.
+        OpenTelemetrySdk.builder().buildAndRegisterGlobal();
+    }
+
     @BeforeEach
     public void setUp() {
         // Get the global singleton Tracer object.
@@ -99,12 +104,6 @@ public class OpenTelemetryTracerTest {
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
         openTelemetryTracer = new OpenTelemetryTracer();
-    }
-
-    @BeforeAll
-    public static void setUpAll() {
-        // Register the global tracer.
-        OpenTelemetrySdk.builder().buildAndRegisterGlobal();
     }
 
     @AfterEach
@@ -368,7 +367,8 @@ public class OpenTelemetryTracerTest {
         assertEquals(1, events.size());
         EventData event = events.get(0);
         assertEquals("exception", event.getName());
-        assertEquals("custom error message", event.getAttributes().get(AttributeKey.stringKey("exception.message")));
+        assertEquals("custom error message",
+            event.getAttributes().get(AttributeKey.stringKey("exception.message")));
     }
 
     @Test
