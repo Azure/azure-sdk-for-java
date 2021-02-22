@@ -16,6 +16,8 @@ public enum KnownLinuxVirtualMachineImage {
 
     /** CentOS 8.1. */
     CENTOS_8_1("OpenLogic", "CentOS", "8_1"),
+    /** CentOS 8.3. */
+    CENTOS_8_3("OpenLogic", "CentOS", "8_3"),
 
     /**
      * OpenSUSE-Leap 15.1.

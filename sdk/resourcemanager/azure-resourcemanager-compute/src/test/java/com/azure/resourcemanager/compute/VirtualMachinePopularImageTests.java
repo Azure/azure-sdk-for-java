@@ -59,7 +59,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
             vmMonos.add(mono);
