@@ -21,8 +21,8 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -33,7 +33,6 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -60,7 +59,6 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -114,11 +112,16 @@ public class DataLakePathAsyncClient {
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
         BlockBlobAsyncClient blockBlobAsyncClient) {
+        this.accountName = accountName;
+        this.fileSystemName = fileSystemName;
+        this.pathName = Utility.urlDecode(pathName);
+        this.pathResourceType = pathResourceType;
+        this.blockBlobAsyncClient = blockBlobAsyncClient;
         this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .fileSystem(fileSystemName)
-            .path(pathName)
+            .path(this.pathName)
             .version(serviceVersion.getVersion())
             .buildClient();
         this.serviceVersion = serviceVersion;
@@ -128,27 +131,13 @@ public class DataLakePathAsyncClient {
             .pipeline(pipeline)
             .url(blobUrl)
             .fileSystem(fileSystemName)
-            .path(pathName)
+            .path(this.pathName)
             .version(serviceVersion.getVersion())
             .buildClient();
 
-        this.accountName = accountName;
-        this.fileSystemName = fileSystemName;
-        this.pathName = Utility.urlEncode(Utility.urlDecode(pathName));
-        this.pathResourceType = pathResourceType;
-        this.blockBlobAsyncClient = blockBlobAsyncClient;
-
-        BlobUrlParts parts = BlobUrlParts.parse(url);
-        String fileSystemUrl;
-        try {
-            fileSystemUrl = String.format("%s/%s", BuilderHelper.getEndpoint(parts), fileSystemName);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-
         this.fileSystemDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
-            .url(fileSystemUrl)
+            .url(url)
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
@@ -190,12 +179,21 @@ public class DataLakePathAsyncClient {
     }
 
     /**
+     * Gets the URL of the storage account.
+     *
+     * @return the URL.
+     */
+    String getAccountUrl() {
+        return dataLakeStorage.getUrl();
+    }
+
+    /**
      * Gets the URL of the object represented by this client on the Data Lake service.
      *
      * @return the URL.
      */
     String getPathUrl() {
-        return dataLakeStorage.getUrl();
+        return dataLakeStorage.getUrl() + "/" + fileSystemName + "/" + Utility.urlEncode(pathName);
     }
 
     /**
@@ -217,12 +215,12 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Gets the path of this object, not including the name of the resource itself.
+     * Gets the full path of this object.
      *
      * @return The path of the object.
      */
     String getObjectPath() {
-        return (pathName == null) ? null : Utility.urlDecode(pathName);
+        return pathName;
     }
 
     /**
@@ -1121,7 +1119,7 @@ public class DataLakePathAsyncClient {
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.fileSystemName + "/" + pathName;
+        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
             null /* request id */, null /* timeout */, null /* pathResourceType */,
@@ -1145,11 +1143,8 @@ public class DataLakePathAsyncClient {
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
-        // Get current Datalake URL and replace current path with user provided path
-        String newDfsEndpoint = BlobUrlParts.parse(getPathUrl())
-            .setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
-        return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
+        return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
             prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
     }

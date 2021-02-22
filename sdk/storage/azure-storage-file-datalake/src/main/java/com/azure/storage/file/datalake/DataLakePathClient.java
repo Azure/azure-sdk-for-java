@@ -62,6 +62,15 @@ public class DataLakePathClient {
     }
 
     /**
+     * Gets the URL of the storage account.
+     *
+     * @return the URL.
+     */
+    String getAccountUrl() {
+        return dataLakePathAsyncClient.getAccountUrl();
+    }
+
+    /**
      * Gets the URL of the object represented by this client on the Data Lake service.
      *
      * @return the URL.

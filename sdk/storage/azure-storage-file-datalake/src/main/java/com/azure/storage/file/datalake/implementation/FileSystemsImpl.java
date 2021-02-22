@@ -19,8 +19,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -30,10 +28,10 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPrope
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** An instance of this class provides access to all the operations defined in FileSystems. */
 public final class FileSystemsImpl {
@@ -337,7 +335,7 @@ public final class FileSystemsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Path>> listPathsSinglePageAsync(
+    public Mono<FileSystemsListPathsResponse> listPathsWithResponseAsync(
             boolean recursive,
             String requestId,
             Integer timeout,
@@ -348,27 +346,18 @@ public final class FileSystemsImpl {
             Context context) {
         final String accept = "application/json";
         return service.listPaths(
-                        this.client.getUrl(),
-                        this.client.getFileSystem(),
-                        this.client.getResource(),
-                        requestId,
-                        timeout,
-                        this.client.getVersion(),
-                        continuation,
-                        path,
-                        recursive,
-                        maxResults,
-                        upn,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPaths(),
-                                        null,
-                                        res.getDeserializedHeaders()));
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                continuation,
+                path,
+                recursive,
+                maxResults,
+                upn,
+                accept,
+                context);
     }
 }
