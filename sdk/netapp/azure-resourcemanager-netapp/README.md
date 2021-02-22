@@ -1,8 +1,8 @@
-# Azure Resource Manager NetApp Files client library for Java
+# Azure Resource Manager NetAppFiles client library for Java
 
-Azure Resource Manager NetApp Files client library for Java.
+Azure Resource Manager NetAppFiles client library for Java.
 
-This package contains Microsoft Azure SDK for NetApp Files Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2020-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2020-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-NetAppManager manager = NetAppManager
+NetAppFilesManager manager = NetAppFilesManager
     .authenticate(credential, profile);
 ```
 

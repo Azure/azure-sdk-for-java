@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicyVolumeList;
 import java.util.Collections;
@@ -13,9 +13,9 @@ import java.util.List;
 public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeList {
     private SnapshotPolicyVolumeListInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    SnapshotPolicyVolumeListImpl(SnapshotPolicyVolumeListInner innerObject, NetAppManager serviceManager) {
+    SnapshotPolicyVolumeListImpl(SnapshotPolicyVolumeListInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,7 +33,7 @@ public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeL
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

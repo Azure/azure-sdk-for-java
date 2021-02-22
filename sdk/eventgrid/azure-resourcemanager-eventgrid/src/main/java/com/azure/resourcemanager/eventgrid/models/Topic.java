@@ -78,6 +78,13 @@ public interface Topic {
     ExtendedLocation extendedLocation();
 
     /**
+     * Gets the systemData property: The system metadata relating to Topic resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the privateEndpointConnections property: The privateEndpointConnections property.
      *
      * @return the privateEndpointConnections value.

@@ -8,7 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
@@ -22,9 +22,9 @@ public final class AccountBackupsImpl implements AccountBackups {
 
     private final AccountBackupsClient innerClient;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    public AccountBackupsImpl(AccountBackupsClient innerClient, NetAppManager serviceManager) {
+    public AccountBackupsImpl(AccountBackupsClient innerClient, NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -88,7 +88,7 @@ public final class AccountBackupsImpl implements AccountBackups {
         return this.innerClient;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }
