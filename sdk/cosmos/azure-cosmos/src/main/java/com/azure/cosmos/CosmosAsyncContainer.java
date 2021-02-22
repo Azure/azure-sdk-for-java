@@ -28,6 +28,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -949,7 +950,7 @@ public class CosmosAsyncContainer {
         CosmosPatchOperations cosmosPatchOperations,
         Class<T> itemType) {
 
-        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosItemRequestOptions(), itemType);
+        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosPatchItemRequestOptions(), itemType);
     }
 
     /**
@@ -972,7 +973,7 @@ public class CosmosAsyncContainer {
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
         checkNotNull(itemId, "expected non-null itemId");
@@ -980,11 +981,11 @@ public class CosmosAsyncContainer {
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (options == null) {
-            options = new CosmosItemRequestOptions();
+            options = new CosmosPatchItemRequestOptions();
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
 
-        final CosmosItemRequestOptions requestOptions = options;
+        final CosmosPatchItemRequestOptions requestOptions = options;
         return withContext(context -> patchItemInternal(itemId, cosmosPatchOperations, requestOptions, context, itemType));
     }
 
@@ -1219,7 +1220,7 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Context context,
         Class<T> itemType) {
 

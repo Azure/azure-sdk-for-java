@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,12 +38,75 @@ public class PatchTest extends TestSuiteBase {
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        //container = client.getDatabase("RxJava.SDKTest.SharedDatabase_20210222T161914_DIF").getContainer("2cf3c4ed-1b67-4f61-bedf-623d58f8daff");
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
+    }
+
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    public void itemConditionalPatchSuccess() {
+        ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
+
+        int originalTaskNum = testItem.taskNum;
+        int newTaskNum = originalTaskNum + 1;
+
+        assertThat(testItem.children[1].status).isNull();
+
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/children/1/CamelCase", "patched");
+        cosmosPatchOperations.remove("/description");
+        cosmosPatchOperations.replace("/taskNum", newTaskNum);
+        cosmosPatchOperations.set("/valid", false);
+
+        CosmosPatchItemRequestOptions optionsFalse = new CosmosPatchItemRequestOptions();
+        int numFalse = testItem.taskNum+1;
+        optionsFalse.setFilterPredicate("from root where root.taskNum = " + numFalse);
+        try {
+            CosmosItemResponse<ToDoActivity> responseFail = this.container.patchItem(
+                testItem.id,
+                new PartitionKey(testItem.status),
+                cosmosPatchOperations,
+                optionsFalse,
+                ToDoActivity.class);
+
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertThat(ex.getMessage()).contains("Operation cannot be performed because one of the specified precondition is not met");
+        }
+
+        CosmosPatchItemRequestOptions optionsTrue = new CosmosPatchItemRequestOptions();
+        int numTrue = testItem.taskNum;
+        optionsTrue.setFilterPredicate("from root where root.taskNum = " + numTrue);
+        CosmosItemResponse<ToDoActivity> responsePass = this.container.patchItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            cosmosPatchOperations,
+            optionsTrue,
+            ToDoActivity.class);
+
+        assertThat(responsePass.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        ToDoActivity patchedItem = responsePass.getItem();
+        assertThat(patchedItem).isNotNull();
+
+        assertThat(patchedItem.children[1].camelCase).isEqualTo("patched");
+        assertThat(patchedItem.description).isNull();
+        assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
+        assertThat(patchedItem.valid).isEqualTo(false);
+
+        // read resource to validate the patch operation
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        responsePass = this.container.readItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            options, ToDoActivity.class);
+
+        assertThat(responsePass.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(responsePass.getItem()).isEqualTo(patchedItem);
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
@@ -60,7 +124,7 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
         cosmosPatchOperations.set("/valid", false);
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
             testItem.id,
             new PartitionKey(testItem.status),
@@ -103,7 +167,7 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
         cosmosPatchOperations.set("/cost", 100);
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
         options.setContentResponseOnWriteEnabled(false);
 
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
@@ -184,7 +248,7 @@ public class PatchTest extends TestSuiteBase {
         }
 
         // precondition failure - 412 response
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        CosmosPatchItemRequestOptions requestOptions = new CosmosPatchItemRequestOptions();
         requestOptions.setIfMatchETag(UUID.randomUUID().toString());
 
         try {
