@@ -2,7 +2,6 @@ azure:
   activedirectory:
     b2c:
       base-uri: ${your-tenant-authorization-server-base-uri}
-      tenant-id: ${your-tenant-id}
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}
