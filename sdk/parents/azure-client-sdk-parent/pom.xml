@@ -292,7 +292,7 @@
                 </rule>
               </rules>
               <excludes>
-                <exclude>**/versions/9/**/*</exclude>
+                <exclude>**/versions/11/**/*</exclude>
               </excludes>
             </configuration>
           </execution>
