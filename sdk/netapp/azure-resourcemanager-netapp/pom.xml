@@ -12,8 +12,8 @@
     <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
     <packaging>jar</packaging>
 
-    <name>Microsoft Azure SDK for NetApp Files Management</name>
-    <description>This package contains Microsoft Azure SDK for NetApp Files Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2020-11-01. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
+    <name>Microsoft Azure SDK for NetAppFiles Management</name>
+    <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2020-11-01. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>

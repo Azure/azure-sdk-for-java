@@ -9,7 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner;
@@ -23,9 +23,9 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
 
     private final SnapshotPoliciesClient innerClient;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    public SnapshotPoliciesImpl(SnapshotPoliciesClient innerClient, NetAppManager serviceManager) {
+    public SnapshotPoliciesImpl(SnapshotPoliciesClient innerClient, NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -218,7 +218,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         return this.innerClient;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 

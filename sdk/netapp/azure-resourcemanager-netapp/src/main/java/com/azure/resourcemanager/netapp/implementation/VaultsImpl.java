@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.models.VaultInner;
 import com.azure.resourcemanager.netapp.models.Vault;
@@ -19,9 +19,9 @@ public final class VaultsImpl implements Vaults {
 
     private final VaultsClient innerClient;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    public VaultsImpl(VaultsClient innerClient, NetAppManager serviceManager) {
+    public VaultsImpl(VaultsClient innerClient, NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class VaultsImpl implements Vaults {
         return this.innerClient;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

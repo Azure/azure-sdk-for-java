@@ -6,7 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
@@ -20,7 +20,7 @@ import java.util.Map;
 public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Definition, NetAppAccount.Update {
     private NetAppAccountInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -80,7 +80,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -113,7 +113,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this;
     }
 
-    NetAppAccountImpl(String name, NetAppManager serviceManager) {
+    NetAppAccountImpl(String name, NetAppFilesManager serviceManager) {
         this.innerObject = new NetAppAccountInner();
         this.serviceManager = serviceManager;
         this.accountName = name;
@@ -139,7 +139,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this;
     }
 
-    NetAppAccountImpl(NetAppAccountInner innerObject, NetAppManager serviceManager) {
+    NetAppAccountImpl(NetAppAccountInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
