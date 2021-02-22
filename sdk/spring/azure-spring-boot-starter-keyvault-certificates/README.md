@@ -20,34 +20,86 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 ```
 [//]: # ({x-version-update-end})
 
+### Creating an Azure Key Vault
+
+1. Log into <https://portal.azure.com>.
+
+1. Click `Create a resource`.
+
+1. Input `Key Vault`.
+
+1. Click `Key Vault`
+    ![Find Azure Key Vault Resource 01](resource/creating-an-azure-key-vault-01.png)
+
+    ![Find Azure Key Vault Resource 02](resource/creating-an-azure-key-vault-02.png)
+
+1. Click **Create**.
+
+    ![Create new Key Vault](resource/creating-an-azure-key-vault-03.png)
+
+1. On the **Create key vault** page, input `Subscription`, `Resource group`, `Key vault name` and `Pricing tier`, then click `Review + Create`.
+
+    ![Specify the options](resource/specify-the-options.png)
+
+    ![Create Key Vault resource](resource/create-key-vault-resource.png)
+
+1. When complete, click `Go to resource`.
+
+    ![Go to resource](resource/go-to-resource.png)
+
+1. When the page for your app registration appears, copy your **Vault URI**;
+
+    ![Save vault uri](resource/save-vault-uri.png)
+
+1. Click **Certificates** in the left navigation pane.  Then click **Generate/Import**.
+
+    ![Create Certificates](resource/create-certificates.png)
+
+1. Enter a **Certificates name**, and enter a **Subject** like `CN=mydomain.com`. then click **create**.
+
+    ![Specify Certificates Info](resource/specify-certificates-info.png)
+
+1. After the certificate is successfully created, it takes a while for the status to become `Enabled`. You can click **refresh** to check current status.
+
+    ![Check Certificates status](resource/check-certificates-status.png)
+
 ## Key concepts
-This starter is based on a JCA Provider for Azure Key Vault which is a JCA provider for certificates in 
-Azure Key Vault. It is built on four principles:
- 
-1. Must be extremely thin to run within a JVM.
-1. Must not introduce any library version conflicts with Java app code dependencies.
-1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
-1. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
+This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
 
 ## Examples
 ### Server side SSL
 
-#### Using a managed identity
-
-To use the starter for server side SSL, you will need to add the following to
-your `application.properties` (if the application is using Spring Cloud Config 
-Server for its configuration add it to the `bootstrap.yml` of the application)
-
-```
-azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
-server.ssl.key-store-type=AzureKeyVault
-```
-
-Note: make sure the managed identity has access to the Azure Key Vault to access
-keys, secrets and certificates.
-
 #### Using a client ID and client secret
+
+1. Click **Show portal menu**
+
+2. Click **Azure Active Directory**.
+
+    ![Select Azure Active Directory](resource/select-azure-active-directory.png)
+
+1. From the portal menu, Click **App registrations**,
+
+1. Click **New registration**.
+
+    ![New registration](resource/new-registration.png)
+
+1. Specify your application, and then Click **Register**.
+
+    ![Specify application](resource/specify-application.png)
+
+1. When the page for your app registration appears, copy your **Application ID** and the **Tenant ID**;
+
+    ![Get info for app](resource/get-info-for-app.png)
+
+1. Click **Certificates & secrets** in the left navigation pane.  Then click **New client secret**.
+
+1. Add a **Description** and click duration in the **Expires** list.  Click **Add**. The value for the key will be automatically filled in.
+   
+    ![Create secrets](resource/create-secrets.png)
+
+1. Copy and save the value of the client secret. (You will not be able to retrieve this value later.)
+
+    ![Copy secrets](resource/copy-secrets.png)
 
 To use the starter for server side SSL, you will need to add the following to
 your `application.properties` (if the application is using Spring Cloud Config 
@@ -65,44 +117,44 @@ server.ssl.key-store-type=AzureKeyVault
 Note: make sure the client ID has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
-### Client side SSL
+Follow the steps below to grant a client with access to Azure Key Vault to access keys, secrets and certificates.
+
+1. Type your key vault name in **Search resources, services, and docs** and click your key vault created before.
+
+    ![Back to key vault](resource/back-to-key-vault.png)
+
+1. Click **Access policies** in the left navigation pane. Then click **Add Access Policy**.
+
+    ![Add Access Policy](resource/add-access-policy.png)
+
+1. Select **Key, Secret, &Certificate Management** as **Configure for template(optional)**. Permissions will be added automatically. 
+
+    ![Select configure](resource/select-configure.png)
+
+1. Click **None selected** and choose application created before, click **Select**, then click **Add**.
+
+    ![Choose application](resource/choose-application.png)
+
+1. Click **Save**.
+
+    ![Save Access Policy](resource/save-access-policy.png)
 
 #### Using a managed identity
 
-To use the starter for client side SSL, you will need to add the following to
+To use the starter for server side SSL, you will need to add the following to
 your `application.properties` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
+server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
+server.ssl.key-store-type=AzureKeyVault
 ```
+
 Note: make sure the managed identity has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
-If you are using `RestTemplate` use code similar to the example below.
-
-```java
-    @Bean
-    public RestTemplate restTemplate() throws Exception {
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .build();
-
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-
-        CloseableHttpClient httpClient = HttpClients.custom()
-            .setSSLSocketFactory(csf)
-            .build();
-
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                        new HttpComponentsClientHttpRequestFactory();
-
-        requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        return restTemplate;
-    }
-```
+### Client side SSL
 
 #### Using a client ID and client secret
 
@@ -123,28 +175,67 @@ keys, secrets and certificates.
 Then if you are using `RestTemplate` use the code below as a starting
 point:
 
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaClientSample.java#L21-L41 -->
 ```java
-    @Bean
-    public RestTemplate restTemplate() throws Exception {
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .build();
+@Bean
+public RestTemplate restTemplate() throws Exception {
+    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+    SSLContext sslContext = SSLContexts.custom()
+        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+        .build();
 
-        HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, allowAll);
+    HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
+    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, allowAll);
 
-        CloseableHttpClient httpClient = HttpClients.custom()
-            .setSSLSocketFactory(csf)
-            .build();
+    CloseableHttpClient httpClient = HttpClients.custom()
+        .setSSLSocketFactory(csf)
+        .build();
 
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                        new HttpComponentsClientHttpRequestFactory();
+    HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
 
-        requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        return restTemplate;
-    }
+    requestFactory.setHttpClient(httpClient);
+    RestTemplate restTemplate = new RestTemplate(requestFactory);
+    return restTemplate;
+}
+```
+
+#### Using a managed identity
+
+To use the starter for client side SSL, you will need to add the following to
+your `application.properties` (if the application is using Spring Cloud Config 
+Server for its configuration add it to the `bootstrap.yml` of the application)
+
+```
+azure.keyvault.uri=<the URI of the Azure Key Vault to use>
+```
+Note: make sure the managed identity has access to the Azure Key Vault to access
+keys, secrets and certificates.
+
+If you are using `RestTemplate` use code similar to the example below.
+
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L19-L38 -->
+```java
+@Bean
+public RestTemplate restTemplate() throws Exception {
+    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+    SSLContext sslContext = SSLContexts.custom()
+        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+        .build();
+
+    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+    CloseableHttpClient httpClient = HttpClients.custom()
+        .setSSLSocketFactory(csf)
+        .build();
+
+    HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+
+    requestFactory.setHttpClient(httpClient);
+    RestTemplate restTemplate = new RestTemplate(requestFactory);
+    return restTemplate;
+}
 ```
 
 ### Configuring Spring Cloud Gateway
@@ -184,49 +275,6 @@ spring:
       httpclient:
         ssl:
           useInsecureTrustManager: true
-```
-
-### Creating an Azure Key Vault
-
-To create an Azure Key Vault use the command line below:
-
-```shell
-  export KEY_VAULT=mykeyvault
-  export RESOURCE_GROUP=myresourcegroup
-  az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
-```
-
-### Create a self-signed certificate
-
-To create a self-signed certificate use the command line below:
-
-```shell
-  export CERTIFICATE_ALIAS=self-signed
-  az keyvault certificate create --vault-name ${KEY_VAULT} \
-    -n ${CERTIFICATE_ALIAS} -p "$(az keyvault certificate get-default-policy)"
-```
-
-### Assign a managed identity (to an Azure Spring Cloud application)
-
-To assign a managed identity use the command line below:
-
-```shell
-  export SPRING_CLOUD_APP=myspringcloudapp
-  az spring-cloud app identity assign --name ${SPRING_CLOUD_APP}
-  export MANAGED_IDENTITY=$(az spring-cloud app show \
-    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv)
-```
-
-### Grant a managed identity with access to Azure Key Vault
-
-To grant access use the command line below:
-
-```shell
-  az keyvault set-policy --name ${KEY_VAULT} \
-        --object-id ${MANAGED_IDENTITY} \
-        --key-permisssions get list \
-        --secret-permissions get list \
-        --certificate-permissions get list
 ```
 
 ### Side-loading certificates

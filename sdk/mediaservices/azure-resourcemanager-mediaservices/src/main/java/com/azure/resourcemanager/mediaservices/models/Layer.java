@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = Layer.class)
 @JsonTypeName("Layer")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.Media.H265VideoLayer", value = H265VideoLayer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.VideoLayer", value = VideoLayer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.JpgLayer", value = JpgLayer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.PngLayer", value = PngLayer.class)

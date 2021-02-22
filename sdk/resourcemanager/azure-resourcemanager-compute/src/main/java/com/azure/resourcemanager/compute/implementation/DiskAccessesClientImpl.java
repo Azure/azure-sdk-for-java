@@ -35,10 +35,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.DiskAccessesClient;
 import com.azure.resourcemanager.compute.fluent.models.DiskAccessInner;
+import com.azure.resourcemanager.compute.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.compute.fluent.models.PrivateLinkResourceListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.DiskAccessList;
 import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
+import com.azure.resourcemanager.compute.models.PrivateEndpointConnectionListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -182,6 +184,70 @@ public final class DiskAccessesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnection(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("diskAccessName") String diskAccessName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnection(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("diskAccessName") String diskAccessName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200, 202, 204})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnection(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("diskAccessName") String diskAccessName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<PrivateEndpointConnectionListResult>> listPrivateEndpointConnections(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("diskAccessName") String diskAccessName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
@@ -200,6 +266,16 @@ public final class DiskAccessesClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<PrivateEndpointConnectionListResult>> listPrivateEndpointConnectionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -209,7 +285,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -242,7 +318,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +343,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -301,7 +377,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -323,7 +399,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +423,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -373,7 +449,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,7 +468,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -412,7 +488,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,7 +509,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -455,7 +531,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,7 +549,7 @@ public final class DiskAccessesClientImpl
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param diskAccess disk access resource.
+     * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -521,7 +597,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         DiskAccessUpdate diskAccess = new DiskAccessUpdate();
         diskAccess.withTags(tags);
@@ -577,7 +653,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         DiskAccessUpdate diskAccess = new DiskAccessUpdate();
         diskAccess.withTags(tags);
@@ -835,7 +911,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -887,7 +963,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -995,7 +1071,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1047,7 +1123,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1239,7 +1315,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1293,7 +1369,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1398,7 +1474,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1440,7 +1516,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1543,7 +1619,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1595,7 +1671,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-09-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1669,6 +1745,1074 @@ public final class DiskAccessesClientImpl
     public Response<PrivateLinkResourceListResultInner> getPrivateLinkResourcesWithResponse(
         String resourceGroupName, String diskAccessName, Context context) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, diskAccessName, context).block();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateAPrivateEndpointConnection(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            diskAccessName,
+                            privateEndpointConnectionName,
+                            apiVersion,
+                            privateEndpointConnection,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateAPrivateEndpointConnection(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                apiVersion,
+                privateEndpointConnection,
+                accept,
+                context);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdateAPrivateEndpointConnectionAsync(
+            String resourceGroupName,
+            String diskAccessName,
+            String privateEndpointConnectionName,
+            PrivateEndpointConnectionInner privateEndpointConnection) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdateAPrivateEndpointConnectionAsync(
+            String resourceGroupName,
+            String diskAccessName,
+            String privateEndpointConnectionName,
+            PrivateEndpointConnectionInner privateEndpointConnection,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                context);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdateAPrivateEndpointConnection(
+            String resourceGroupName,
+            String diskAccessName,
+            String privateEndpointConnectionName,
+            PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginUpdateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+            .getSyncPoller();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdateAPrivateEndpointConnection(
+            String resourceGroupName,
+            String diskAccessName,
+            String privateEndpointConnectionName,
+            PrivateEndpointConnectionInner privateEndpointConnection,
+            Context context) {
+        return beginUpdateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginUpdateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        return beginUpdateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner updateAPrivateEndpointConnection(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        return updateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+            .block();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner updateAPrivateEndpointConnection(
+        String resourceGroupName,
+        String diskAccessName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        return updateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .block();
+    }
+
+    /**
+     * Gets information about a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a private endpoint connection under a disk access resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAPrivateEndpointConnection(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            diskAccessName,
+                            privateEndpointConnectionName,
+                            apiVersion,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Gets information about a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a private endpoint connection under a disk access resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getAPrivateEndpointConnection(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Gets information about a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a private endpoint connection under a disk access resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        return getAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName)
+            .flatMap(
+                (Response<PrivateEndpointConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets information about a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a private endpoint connection under a disk access resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner getAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        return getAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName, privateEndpointConnectionName)
+            .block();
+    }
+
+    /**
+     * Gets information about a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a private endpoint connection under a disk access resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionWithResponse(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        return getAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, context)
+            .block();
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteAPrivateEndpointConnection(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            diskAccessName,
+                            privateEndpointConnectionName,
+                            apiVersion,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnectionWithResponseAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .deleteAPrivateEndpointConnection(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteAPrivateEndpointConnectionWithResponseAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        return beginDeleteAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        return beginDeleteAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        return beginDeleteAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        return beginDeleteAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        deleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName, privateEndpointConnectionName).block();
+    }
+
+    /**
+     * Deletes a private endpoint connection under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
+        deleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName, privateEndpointConnectionName, context)
+            .block();
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
+        String resourceGroupName, String diskAccessName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listPrivateEndpointConnections(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            diskAccessName,
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
+        String resourceGroupName, String diskAccessName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskAccessName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listPrivateEndpointConnections(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                diskAccessName,
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
+        String resourceGroupName, String diskAccessName) {
+        return new PagedFlux<>(
+            () -> listPrivateEndpointConnectionsSinglePageAsync(resourceGroupName, diskAccessName),
+            nextLink -> listPrivateEndpointConnectionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
+        String resourceGroupName, String diskAccessName, Context context) {
+        return new PagedFlux<>(
+            () -> listPrivateEndpointConnectionsSinglePageAsync(resourceGroupName, diskAccessName, context),
+            nextLink -> listPrivateEndpointConnectionsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
+        String resourceGroupName, String diskAccessName) {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync(resourceGroupName, diskAccessName));
+    }
+
+    /**
+     * List information about private endpoint connections under a disk access resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
+        String resourceGroupName, String diskAccessName, Context context) {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync(resourceGroupName, diskAccessName, context));
     }
 
     /**
@@ -1804,6 +2948,81 @@ public final class DiskAccessesClientImpl
         context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.listPrivateEndpointConnectionsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listPrivateEndpointConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

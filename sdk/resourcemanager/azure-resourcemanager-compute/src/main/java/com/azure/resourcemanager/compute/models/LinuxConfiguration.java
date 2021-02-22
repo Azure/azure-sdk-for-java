@@ -42,6 +42,13 @@ public final class LinuxConfiguration {
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
+    /*
+     * [Preview Feature] Specifies settings related to VM Guest Patching on
+     * Linux.
+     */
+    @JsonProperty(value = "patchSettings")
+    private LinuxPatchSettings patchSettings;
+
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
      *
@@ -109,6 +116,26 @@ public final class LinuxConfiguration {
     }
 
     /**
+     * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
+     *
+     * @return the patchSettings value.
+     */
+    public LinuxPatchSettings patchSettings() {
+        return this.patchSettings;
+    }
+
+    /**
+     * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
+     *
+     * @param patchSettings the patchSettings value to set.
+     * @return the LinuxConfiguration object itself.
+     */
+    public LinuxConfiguration withPatchSettings(LinuxPatchSettings patchSettings) {
+        this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -116,6 +143,9 @@ public final class LinuxConfiguration {
     public void validate() {
         if (ssh() != null) {
             ssh().validate();
+        }
+        if (patchSettings() != null) {
+            patchSettings().validate();
         }
     }
 }

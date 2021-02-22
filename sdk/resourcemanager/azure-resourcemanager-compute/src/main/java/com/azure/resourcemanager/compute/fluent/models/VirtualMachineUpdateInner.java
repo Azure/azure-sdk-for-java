@@ -226,6 +226,21 @@ public class VirtualMachineUpdateInner extends UpdateResource {
     @JsonProperty(value = "properties.extensionsTimeBudget")
     private String extensionsTimeBudget;
 
+    /*
+     * Specifies the scale set logical fault domain into which the Virtual
+     * Machine will be created. By default, the Virtual Machine will by
+     * automatically assigned to a fault domain that best maintains balance
+     * across available fault domains.<br><li>This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The
+     * Virtual Machine Scale Set that is referenced, must have
+     * 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated
+     * once the Virtual Machine is created.<li>Fault domain assignment can be
+     * viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version:
+     * 2020‐12‐01
+     */
+    @JsonProperty(value = "properties.platformFaultDomain")
+    private Integer platformFaultDomain;
+
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
      * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
@@ -733,6 +748,38 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      */
     public VirtualMachineUpdateInner withExtensionsTimeBudget(String extensionsTimeBudget) {
         this.extensionsTimeBudget = extensionsTimeBudget;
+        return this;
+    }
+
+    /**
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @return the platformFaultDomain value.
+     */
+    public Integer platformFaultDomain() {
+        return this.platformFaultDomain;
+    }
+
+    /**
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @param platformFaultDomain the platformFaultDomain value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withPlatformFaultDomain(Integer platformFaultDomain) {
+        this.platformFaultDomain = platformFaultDomain;
         return this;
     }
 

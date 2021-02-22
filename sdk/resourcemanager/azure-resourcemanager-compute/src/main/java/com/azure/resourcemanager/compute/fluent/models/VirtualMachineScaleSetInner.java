@@ -11,6 +11,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
@@ -58,6 +60,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * The extended location of the Virtual Machine Scale Set.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The upgrade policy.
@@ -157,6 +165,12 @@ public class VirtualMachineScaleSetInner extends Resource {
     @JsonProperty(value = "properties.scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
 
+    /*
+     * Specifies the orchestration mode for the virtual machine scale set.
+     */
+    @JsonProperty(value = "properties.orchestrationMode")
+    private OrchestrationMode orchestrationMode;
+
     /**
      * Get the sku property: The virtual machine scale set sku.
      *
@@ -244,6 +258,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -527,6 +561,26 @@ public class VirtualMachineScaleSetInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @return the orchestrationMode value.
+     */
+    public OrchestrationMode orchestrationMode() {
+        return this.orchestrationMode;
+    }
+
+    /**
+     * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @param orchestrationMode the orchestrationMode value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withOrchestrationMode(OrchestrationMode orchestrationMode) {
+        this.orchestrationMode = orchestrationMode;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetInner withLocation(String location) {
@@ -555,6 +609,9 @@ public class VirtualMachineScaleSetInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (upgradePolicy() != null) {
             upgradePolicy().validate();

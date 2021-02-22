@@ -40,7 +40,7 @@ public class ResourceManagerImpl implements ResourceManager {
     @Override
     public void createDatabase() throws CosmosException {
         try {
-            LOGGER.info("Creating database {} for the ctl workload", _configuration.getDatabaseId());
+            LOGGER.info("Creating database {} for the ctl workload if one doesn't exist", _configuration.getDatabaseId());
             final ThroughputProperties throughputProperties = createManualThroughput(_configuration.getThroughput());
             _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
@@ -73,16 +73,6 @@ public class ResourceManagerImpl implements ResourceManager {
         // Delete all the containers in the database
         deleteExistingContainers();
 
-        // Followed by the main database used for testing
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        try {
-            LOGGER.info("Deleting the main database {} used in this test", _configuration.getDatabaseId());
-            database.delete()
-                .block(RESOURCE_CRUD_WAIT_TIME);
-        } catch (CosmosException e) {
-            LOGGER.error("Exception while deleting the database {}", _configuration.getDatabaseId(), e);
-            throw e;
-        }
         LOGGER.info("Resource cleanup completed");
     }
 
