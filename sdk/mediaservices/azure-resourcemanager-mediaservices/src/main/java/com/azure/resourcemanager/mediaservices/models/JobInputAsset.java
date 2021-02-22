@@ -75,6 +75,13 @@ public class JobInputAsset extends JobInputClip {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JobInputAsset withInputDefinitions(List<InputDefinition> inputDefinitions) {
+        super.withInputDefinitions(inputDefinitions);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

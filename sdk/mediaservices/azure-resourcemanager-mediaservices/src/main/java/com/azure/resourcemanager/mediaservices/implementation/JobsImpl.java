@@ -30,7 +30,7 @@ public final class JobsImpl implements Jobs {
 
     public PagedIterable<Job> list(String resourceGroupName, String accountName, String transformName) {
         PagedIterable<JobInner> inner = this.serviceClient().list(resourceGroupName, accountName, transformName);
-        return inner.mapPage(inner1 -> new JobImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Job> list(
@@ -42,7 +42,7 @@ public final class JobsImpl implements Jobs {
         Context context) {
         PagedIterable<JobInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, transformName, filter, orderby, context);
-        return inner.mapPage(inner1 -> new JobImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
     public Job get(String resourceGroupName, String accountName, String transformName, String jobName) {
