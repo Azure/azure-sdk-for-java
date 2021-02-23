@@ -16,6 +16,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.util.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
@@ -60,6 +61,8 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void openTelemetryHttpPolicyTest() {
         // Arrange
+        // reset the global object before attempting to register
+        GlobalOpenTelemetry.resetForTest();
         // Get the global singleton Tracer object.
         Tracer tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
         // Start user parent span.
