@@ -4,7 +4,7 @@
 package com.azure.test.aad.b2c.selenium;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_IN_USER_FLOW;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
 import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
@@ -41,7 +41,7 @@ public class AADB2CIT {
         String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
         Assert.assertNotNull(name);
         Assert.assertNotNull(userFlowName);
-        Assert.assertEquals(AAD_B2C_SIGN_IN_USER_FLOW, userFlowName);
+        Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
     }
 
     @Test
