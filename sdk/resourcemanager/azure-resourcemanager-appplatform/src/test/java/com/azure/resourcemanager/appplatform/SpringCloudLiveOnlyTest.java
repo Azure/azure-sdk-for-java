@@ -44,7 +44,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.MessageDigest;
@@ -165,7 +165,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         allowAllSSL();
         String cerPassword = password();
-        String resourcePath = Path.of(this.getClass().getResource("/session-records").toURI()).getParent().toString();
+        String resourcePath = Paths.get(this.getClass().getResource("/session-records").toURI()).getParent().toString();
         String cerPath = resourcePath + domainName + ".cer";
         String pfxPath = resourcePath + domainName + ".pfx";
         createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
