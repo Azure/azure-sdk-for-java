@@ -437,6 +437,31 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Dequeue and delete with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getQueueMessageItem()
+                return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
     def "Dequeue with handler error"() {
         given:
         queueAsyncClient.create().block()

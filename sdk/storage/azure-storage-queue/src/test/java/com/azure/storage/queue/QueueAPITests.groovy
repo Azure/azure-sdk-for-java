@@ -370,6 +370,30 @@ class QueueAPITests extends APISpec {
         queueUrl == queueClient.getQueueUrl()
     }
 
+    def "Dequeue and delete with handler"() {
+        given:
+        queueClient.create()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueClient.sendMessage(encodedMsg)
+        queueClient.sendMessage(expectMsg)
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .messageDecodingFailedHandler({failure ->
+                badMessage = failure.getQueueMessageItem()
+                return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            })
+            .buildClient().getQueueClient(queueName)
+        when:
+        def messageItems = encodingQueueClient.receiveMessages(10).toList()
+        then:
+        messageItems.size() == 1
+        messageItems[0].getBody().toString() == expectMsg
+        badMessage != null
+        badMessage.getBody().toString() == expectMsg
+    }
+
     def "Dequeue with handler error"() {
         given:
         queueClient.create()
