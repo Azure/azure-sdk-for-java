@@ -33,7 +33,7 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private final Tracer TRACER = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
+    private final Tracer tracer = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
@@ -285,7 +285,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return A {@link Span} with parent being the remote {@link Span} designated by the {@link SpanContext}.
      */
     private Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
-        SpanBuilder spanBuilder = TRACER.spanBuilder(spanName)
+        SpanBuilder spanBuilder = tracer.spanBuilder(spanName)
             .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(spanContext)));
 
         spanBuilder.setSpanKind(SpanKind.CONSUMER);
@@ -353,7 +353,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (parentSpan == null) {
             parentSpan = Span.current();
         }
-        return TRACER.spanBuilder(spanNameKey)
+        return tracer.spanBuilder(spanNameKey)
             .setParent(io.opentelemetry.context.Context.current().with(parentSpan));
     }
 

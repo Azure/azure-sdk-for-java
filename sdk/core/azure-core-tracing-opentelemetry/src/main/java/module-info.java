@@ -9,8 +9,6 @@ module com.azure.core.tracing.opentelemetry {
 
     opens com.azure.core.tracing.opentelemetry to com.fasterxml.jackson.databind;
 
-    opens com.azure.core.tracing.opentelemetry.implementation;
-
     exports com.azure.core.tracing.opentelemetry;
 
     provides com.azure.core.util.tracing.Tracer
