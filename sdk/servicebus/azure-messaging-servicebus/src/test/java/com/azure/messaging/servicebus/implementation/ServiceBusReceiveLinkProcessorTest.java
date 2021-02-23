@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -56,7 +57,6 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusReceiveLinkProcessorTest {
     private static final int PREFETCH = 5;
-
     @Mock
     private ServiceBusReceiveLink link1;
     @Mock
@@ -324,6 +324,8 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
+        final ClientLogger logger = new ClientLogger(ServiceBusReceiveLinkProcessorTest.class);
+
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
@@ -337,19 +339,25 @@ class ServiceBusReceiveLinkProcessorTest {
             + "-retryable-error",
             new AmqpErrorContext("test-namespace"));
         when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(null);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
 
         // Act & Assert
         // Verify that we get the first connection.
         StepVerifier.create(processor)
             .then(() -> {
-                endpointSink.next(AmqpEndpointState.ACTIVE);
+                logger.info("Emitting first message.");
                 messageProcessorSink.next(message1);
             })
-            .expectNext(message1)
+            .assertNext(message -> {
+                logger.info("Asserting first message.");
+                assertSame(message1, message);
+            })
             .then(() -> {
+                logger.info("Outputting exception.");
                 endpointSink.error(amqpException);
             })
             .expectErrorSatisfies(error -> {
+                logger.info("Asserting exception.");
                 assertTrue(error instanceof AmqpException);
                 AmqpException exception = (AmqpException) error;
 
