@@ -46,6 +46,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -818,21 +819,24 @@ public final class QueueAsyncClient {
     private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
         MessagesDequeueResponse response) {
         List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
-        List<QueueMessageItem> queueMessageItems = new ArrayList<>(queueMessageInternalItems.size());
+        List<QueueMessageItem> queueMessageItems = Collections.emptyList();
         Mono<Void> mono = Mono.empty();
-        for (QueueMessageItemInternal queueMessageItemInternal : queueMessageInternalItems) {
-            try {
-                queueMessageItems.add(transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding));
-            } catch (IllegalArgumentException e) {
-                if (messageDecodingFailedHandler != null) {
-                    mono = mono.then(messageDecodingFailedHandler.apply(
-                        new QueueMessageDecodingFailure(
-                            this,
-                            transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE),
-                            null)
+        if (queueMessageInternalItems != null) {
+            queueMessageItems = new ArrayList<>(queueMessageInternalItems.size());
+            for (QueueMessageItemInternal queueMessageItemInternal : queueMessageInternalItems) {
+                try {
+                    queueMessageItems.add(transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding));
+                } catch (IllegalArgumentException e) {
+                    if (messageDecodingFailedHandler != null) {
+                        mono = mono.then(messageDecodingFailedHandler.apply(
+                            new QueueMessageDecodingFailure(
+                                this,
+                                transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE),
+                                null)
                         ));
-                } else {
-                    throw logger.logExceptionAsError(e);
+                    } else {
+                        throw logger.logExceptionAsError(e);
+                    }
                 }
             }
         }
@@ -942,21 +946,26 @@ public final class QueueAsyncClient {
     private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
         MessagesPeekResponse response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
-        List<PeekedMessageItem> peekedMessageItems = new ArrayList<>(peekedMessageInternalItems.size());
+        List<PeekedMessageItem> peekedMessageItems = Collections.emptyList();
         Mono<Void> mono = Mono.empty();
-        for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageInternalItems) {
-            try {
-                peekedMessageItems.add(transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding));
-            } catch (IllegalArgumentException e) {
-                if (messageDecodingFailedHandler != null) {
-                    mono = mono.then(messageDecodingFailedHandler.apply(
-                        new QueueMessageDecodingFailure(
-                            this,
-                            null,
-                            transformPeekedMessageItemInternal(peekedMessageItemInternal, QueueMessageEncoding.NONE))
+        if (peekedMessageInternalItems != null) {
+            peekedMessageItems = new ArrayList<>(peekedMessageInternalItems.size());
+            for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageInternalItems) {
+                try {
+                    peekedMessageItems.add(transformPeekedMessageItemInternal(
+                        peekedMessageItemInternal, messageEncoding));
+                } catch (IllegalArgumentException e) {
+                    if (messageDecodingFailedHandler != null) {
+                        mono = mono.then(messageDecodingFailedHandler.apply(
+                            new QueueMessageDecodingFailure(
+                                this,
+                                null,
+                                transformPeekedMessageItemInternal(
+                                    peekedMessageItemInternal, QueueMessageEncoding.NONE))
                         ));
-                } else {
-                    throw logger.logExceptionAsError(e);
+                    } else {
+                        throw logger.logExceptionAsError(e);
+                    }
                 }
             }
         }
