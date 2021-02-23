@@ -52,6 +52,12 @@ public class RouteTableInner extends Resource {
     private ProvisioningState provisioningState;
 
     /*
+     * The resource GUID property of the route table.
+     */
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGuid;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -124,6 +130,15 @@ public class RouteTableInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the resourceGuid property: The resource GUID property of the route table.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.resourceGuid;
     }
 
     /**

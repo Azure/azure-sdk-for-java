@@ -41,6 +41,12 @@ public class BackendAddressPoolInner extends SubResource {
     private String type;
 
     /*
+     * The location of the backend address pool.
+     */
+    @JsonProperty(value = "properties.location")
+    private String location;
+
+    /*
      * An array of backend addresses.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddresses")
@@ -116,6 +122,26 @@ public class BackendAddressPoolInner extends SubResource {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the location property: The location of the backend address pool.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location of the backend address pool.
+     *
+     * @param location the location value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withLocation(String location) {
+        this.location = location;
+        return this;
     }
 
     /**

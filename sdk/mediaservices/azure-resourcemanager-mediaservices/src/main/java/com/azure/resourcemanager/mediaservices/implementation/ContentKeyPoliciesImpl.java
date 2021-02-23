@@ -32,14 +32,14 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
 
     public PagedIterable<ContentKeyPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<ContentKeyPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContentKeyPolicy> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ContentKeyPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName) {

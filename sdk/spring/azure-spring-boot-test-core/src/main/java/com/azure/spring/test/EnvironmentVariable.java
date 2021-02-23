@@ -23,6 +23,7 @@ public class EnvironmentVariable {
     public static final String AAD_USER_PASSWORD_1 = System.getenv("AAD_USER_PASSWORD_1");
     public static final String AAD_USER_PASSWORD_2 = System.getenv("AAD_USER_PASSWORD_2");
     public static final String AAD_USER_PASSWORD_ON_DEMAND = System.getenv("AAD_USER_PASSWORD_ON_DEMAND");
+    public static final String AZURE_CLOUD_TYPE = System.getenv("AZURE_CLOUD_TYPE");
     public static final String AZURE_KEYVAULT2_URI = System.getenv("AZURE_KEYVAULT2_URI");
     public static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
     public static final String AZURE_STORAGE_ACCOUNT_KEY = System.getenv("AZURE_STORAGE_ACCOUNT_KEY");

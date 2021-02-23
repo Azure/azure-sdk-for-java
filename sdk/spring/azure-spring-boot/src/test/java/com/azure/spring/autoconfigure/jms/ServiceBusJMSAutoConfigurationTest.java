@@ -6,58 +6,86 @@ package com.azure.spring.autoconfigure.jms;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.jms.core.JmsTemplate;
+
+import javax.jms.ConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceBusJMSAutoConfigurationTest {
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class));
+
+    private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
+        + "SharedAccessKey=sasKey";
 
     @Test
     public void testAzureServiceBusDisabled() {
-        this.contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureServiceBusJMSPropertiesValidation() {
-        this.contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test
+    public void testCachingConnectionFactoryIsAutowired() {
+
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+
+        contextRunner.run(
+            context -> {
+                assertThat(context).hasSingleBean(ConnectionFactory.class);
+                assertThat(context).hasSingleBean(JmsTemplate.class);
+                ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
+                assertTrue(connectionFactory == context.getBean(JmsTemplate.class).getConnectionFactory());
+            }
+        );
     }
 
     @Test
     public void testAzureServiceBusJMSPropertiesConfigured() {
 
-        final String connectionString = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
 
-        this.contextRunner = this.contextRunner.withPropertyValues(
-            "spring.jms.servicebus.connection-string=" + connectionString
-        );
-
-        this.contextRunner = this.contextRunner.withPropertyValues(
-            "spring.jms.servicebus.topic-client-id=cid"
-        );
-
-        this.contextRunner = this.contextRunner.withPropertyValues(
-            "spring.jms.servicebus.idle-timeout=123"
-        );
-
-        this.contextRunner.run(
+        contextRunner.run(
             context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getConnectionString()).isEqualTo(
-                    connectionString);
+                    CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
             }
         );
     }
 
+    private ApplicationContextRunner getEmptyContextRunner() {
+
+        return new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class));
+    }
+
+    private ApplicationContextRunner getContextRunnerWithProperties() {
+
+        return new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.topic-client-id=cid",
+                "spring.jms.servicebus.idle-timeout=123"
+            );
+    }
 }

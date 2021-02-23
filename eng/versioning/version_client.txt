@@ -112,6 +112,7 @@ com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2
 com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-identity-spring;1.1.0;1.2.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.1.0;3.2.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory;3.1.0;3.2.0-beta.1
@@ -187,7 +188,7 @@ com.azure.resourcemanager:azure-resourcemanager-sql;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storage;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-mediaservices;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-mediaservices;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0-beta.1;1.0.0-beta.2
@@ -197,10 +198,13 @@ com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.1;1.0.
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0-beta.1;1.0.0-beta.2
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

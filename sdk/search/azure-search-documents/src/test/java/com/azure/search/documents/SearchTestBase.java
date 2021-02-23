@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 
 import java.io.InputStreamReader;
@@ -92,7 +91,7 @@ public abstract class SearchTestBase extends TestBase {
         Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
             .getResourceAsStream(jsonFile)));
         try {
-            return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+            return setupIndex(TestHelpers.MAPPER.readValue(indexData, SearchIndex.class));
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
