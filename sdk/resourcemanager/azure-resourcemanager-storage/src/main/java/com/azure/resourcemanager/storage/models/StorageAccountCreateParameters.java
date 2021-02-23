@@ -40,6 +40,14 @@ public class StorageAccountCreateParameters {
     private String location;
 
     /*
+     * Optional. Set the extended location of the resource. If not set, the
+     * storage account will be created in Azure main region. Otherwise it will
+     * be created in the specified extended location
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
      * Gets or sets a list of key value pairs that describe the resource. These
      * tags can be used for viewing and grouping this resource (across resource
      * groups). A maximum of 15 tags can be provided for a resource. Each tag
@@ -131,6 +139,22 @@ public class StorageAccountCreateParameters {
     @JsonProperty(value = "properties.minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
+    /*
+     * Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests,
+     * including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to
+     * true.
+     */
+    @JsonProperty(value = "properties.allowSharedKeyAccess")
+    private Boolean allowSharedKeyAccess;
+
+    /*
+     * NFS 3.0 protocol support enabled if set to true.
+     */
+    @JsonProperty(value = "properties.isNfsV3Enabled")
+    private Boolean enableNfsV3;
+
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
      *
@@ -194,6 +218,28 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
+     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
+     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -485,6 +531,50 @@ public class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @return the allowSharedKeyAccess value.
+     */
+    public Boolean allowSharedKeyAccess() {
+        return this.allowSharedKeyAccess;
+    }
+
+    /**
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
+        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @return the enableNfsV3 value.
+     */
+    public Boolean enableNfsV3() {
+        return this.enableNfsV3;
+    }
+
+    /**
+     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @param enableNfsV3 the enableNfsV3 value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withEnableNfsV3(Boolean enableNfsV3) {
+        this.enableNfsV3 = enableNfsV3;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -509,6 +599,9 @@ public class StorageAccountCreateParameters {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model StorageAccountCreateParameters"));
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (identity() != null) {
             identity().validate();
