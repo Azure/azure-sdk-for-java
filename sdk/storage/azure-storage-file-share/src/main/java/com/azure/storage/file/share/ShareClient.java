@@ -62,6 +62,15 @@ public class ShareClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return client.getAccountUrl();
+    }
+
+    /**
      * Get the url of the storage share client.
      *
      * @return the url of the Storage Share.

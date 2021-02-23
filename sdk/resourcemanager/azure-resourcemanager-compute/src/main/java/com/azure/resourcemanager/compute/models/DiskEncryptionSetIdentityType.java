@@ -13,6 +13,9 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
     /** Static value SystemAssigned for DiskEncryptionSetIdentityType. */
     public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
+    /** Static value None for DiskEncryptionSetIdentityType. */
+    public static final DiskEncryptionSetIdentityType NONE = fromString("None");
+
     /**
      * Creates or finds a DiskEncryptionSetIdentityType from its string representation.
      *

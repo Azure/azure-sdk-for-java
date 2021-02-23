@@ -26,6 +26,8 @@ public class AADB2CConstants {
 
     public static final String TEST_CLIENT_ID = "fake-client-id";
 
+    public static final String TEST_TENANT_ID = "fake-tenant-id";
+
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
 
     public static final String TEST_REPLY_URL = "http://localhost:8080/index";
@@ -45,6 +47,8 @@ public class AADB2CConstants {
     public static final String USER_NAME_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "user-name-attribute-name");
 
     public static final String CLIENT_ID = String.format("%s.%s", PREFIX, "client-id");
+
+    public static final String TENANT_ID = String.format("%s.%s", PREFIX, "tenant-id");
 
     public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
 

@@ -101,6 +101,8 @@ jobs:
           versionSpec: '3.6'
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
@@ -252,6 +254,8 @@ jobs:
           goals: 'verify'
 
       - template: ../steps/upload-repository-on-failure.yml
+
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))

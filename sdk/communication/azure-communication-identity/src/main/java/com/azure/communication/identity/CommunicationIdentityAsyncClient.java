@@ -196,14 +196,14 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Generates a new token for an identity.
+     * Gets a token for an identity.
      *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued token.
+     * @return the token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessToken> issueToken(CommunicationUserIdentifier communicationUser,
+    public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(communicationUser);
@@ -220,14 +220,14 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Generates a new token for an identity with response.
+     * Gets a token for an identity with response.
      *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued token with response.
+     * @return the token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessToken>> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
+    public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(communicationUser);

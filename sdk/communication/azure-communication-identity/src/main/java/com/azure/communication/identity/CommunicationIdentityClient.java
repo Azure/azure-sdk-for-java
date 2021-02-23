@@ -168,14 +168,14 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Generates a new token for an identity.
+     * Gets a token for an identity.
      *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued token.
+     * @return the token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken issueToken(CommunicationUserIdentifier communicationUser,
+    public AccessToken getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
@@ -187,16 +187,16 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Generates a new token for an identity.
+     * Gets a token for an identity.
      *
      * @param communicationUser The CommunicationUser from whom to issue a token.
      * @param scopes The scopes that the token should have.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
-     * @return the created CommunicationUserToken.
+     * @return the token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
+    public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);

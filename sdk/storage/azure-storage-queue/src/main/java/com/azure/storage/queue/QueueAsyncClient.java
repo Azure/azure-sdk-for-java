@@ -18,10 +18,10 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
-import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
@@ -169,7 +169,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -224,7 +224,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().deleteWithRestResponseAsync(queueName,
+        return client.getQueues().deleteWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -281,7 +281,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().getPropertiesWithRestResponseAsync(queueName,
+        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getQueuePropertiesResponse);
     }
@@ -350,8 +350,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues()
-            .setMetadataWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues()
+            .setMetadataWithResponseAsync(queueName, null, metadata, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -375,8 +375,8 @@ public final class QueueAsyncClient {
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
         try {
             Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
-                marker -> this.client.queues()
-                    .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
+                marker -> this.client.getQueues()
+                    .getAccessPolicyWithResponseAsync(queueName, null, null, Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -466,8 +466,8 @@ public final class QueueAsyncClient {
             permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
-        return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null,
+        return client.getQueues()
+            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -522,7 +522,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messages().clearWithRestResponseAsync(queueName,
+        return client.getMessages().clearWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -599,8 +599,8 @@ public final class QueueAsyncClient {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
 
-        return client.messages()
-            .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
+        return client.getMessages()
+            .enqueueWithResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
                 null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
@@ -701,8 +701,8 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -774,8 +774,8 @@ public final class QueueAsyncClient {
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .peekWithResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -859,8 +859,8 @@ public final class QueueAsyncClient {
         QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
         visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
-        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, popReceipt,
-                (int) visibilityTimeout.getSeconds(), message, null, null,
+        return client.getMessageIds().updateWithResponseAsync(queueName, messageId, popReceipt,
+                (int) visibilityTimeout.getSeconds(), null, null, message,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getUpdatedMessageResponse);
     }
@@ -922,7 +922,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt,
+        return client.getMessageIds().deleteWithResponseAsync(queueName, messageId, popReceipt, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -992,9 +992,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
-        QueueGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        QueueProperties properties = new QueueProperties(propertiesHeaders.getMetadata(),
-            propertiesHeaders.getApproximateMessagesCount());
+        QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
+        QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
+            propertiesHeaders.getXMsApproximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }
 
@@ -1004,9 +1004,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
-        MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(),
-            headers.getTimeNextVisible());
+        MessageIdsUpdateHeaders headers = response.getDeserializedHeaders();
+        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
+            headers.getXMsTimeNextVisible());
         return new SimpleResponse<>(response, updateMessageResult);
     }
 }
