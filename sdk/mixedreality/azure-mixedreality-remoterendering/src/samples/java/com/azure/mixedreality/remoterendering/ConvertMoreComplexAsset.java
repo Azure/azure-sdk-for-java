@@ -32,11 +32,15 @@ public class ConvertMoreComplexAsset extends SampleBase {
      * Sample method demonstrating how to convert a complex asset.
      */
     public void convertMoreComplexAsset() {
+        // In a real world scenario you'd want these to be different.
+        String inputStorageURL = getStorageURL();
+        String outputStorageURL = getStorageURL();
+
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageURL())
+            .setInputStorageContainerUrl(inputStorageURL)
             .setInputRelativeAssetPath("bicycle.gltf")
             .setInputBlobPrefix("Bicycle")
-            .setOutputStorageContainerUrl(getStorageURL())
+            .setOutputStorageContainerUrl(outputStorageURL)
             .setOutputBlobPrefix("ConvertedBicycle");
 
         String conversionId = UUID.randomUUID().toString();

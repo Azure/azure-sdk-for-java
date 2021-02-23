@@ -211,13 +211,13 @@ We want to convert the gltf so that it has access to the other files which share
 To keep things tidy, we also want the output files to be written to a different storage container and given a common prefix: "ConvertedBicycle".
 The code is as follows:
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L35-L44 -->
+<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L39-L48 -->
 ```java
 AssetConversionOptions conversionOptions = new AssetConversionOptions()
-    .setInputStorageContainerUrl(getStorageURL())
+    .setInputStorageContainerUrl(inputStorageURL)
     .setInputRelativeAssetPath("bicycle.gltf")
     .setInputBlobPrefix("Bicycle")
-    .setOutputStorageContainerUrl(getStorageURL())
+    .setOutputStorageContainerUrl(outputStorageURL)
     .setOutputBlobPrefix("ConvertedBicycle");
 
 String conversionId = UUID.randomUUID().toString();
@@ -235,7 +235,7 @@ This code uses an existing conversionOperation and polls regularly until the con
 The default polling period is 10 seconds.
 Note that a conversionOperation can be constructed from the conversionId of an existing conversion and a client.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L46-L53 -->
+<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L50-L57 -->
 ```java
 AssetConversion conversion = conversionOperation.getFinalResult();
 if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
@@ -340,7 +340,7 @@ In this case, no exception will be thrown, but the returned objects can be inspe
 
 If the asset in a conversion is invalid, the conversion operation will return an AssetConversion object
 with a Failed status and carrying a RemoteRenderingServiceError with details.
-Once the conversion service is able to process the file, a &lt;assetName&gt;.result.json file will be written to the output container.
+Once the conversion service is able to process the file, an &lt;assetName&gt;.result.json file will be written to the output container.
 If the input asset is invalid, then that file will contain a more detailed description of the problem.
 
 Similarly, sometimes when a session is requested, the session ends up in an error state.
