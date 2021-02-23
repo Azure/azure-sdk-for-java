@@ -25,14 +25,15 @@ public class AADB2CConstants {
 
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
 
-    public static final String TEST_REPLY_URL = "http://localhost:8080/index";
-
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
+    public static final Object TEST_KEY_SIGN_IN = "sign-in";
     public static final Object TEST_SIGN_IN_NAME = "fake-sign-in";
 
+    public static final Object TEST_KEY_SIGN_UP = "sign-up";
     public static final Object TEST_SIGN_UP_NAME = "fake-sign-up";
 
+    public static final String TEST_KEY_PROFILE_EDIT = "profile-edit";
     public static final String TEST_PROFILE_EDIT_NAME = "profile_edit";
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";

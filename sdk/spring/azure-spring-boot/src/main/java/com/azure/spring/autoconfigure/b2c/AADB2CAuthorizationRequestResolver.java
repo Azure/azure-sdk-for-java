@@ -45,11 +45,15 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
+    private final String passwordResetUserFlow;
+
     private final AADB2CProperties properties;
 
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
         this.properties = properties;
+        Map.Entry<String, String> passwordResetEntry = this.properties.getPasswordReset();
+        this.passwordResetUserFlow = null == passwordResetEntry ? null : passwordResetEntry.getValue();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
@@ -61,13 +65,13 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     @Override
     public OAuth2AuthorizationRequest resolve(@NonNull HttpServletRequest request, String registrationId) {
         if (StringUtils.hasText(registrationId)) {
-            if (REQUEST_MATCHER.matches(request)) {
-                return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
+            if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
+                final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
+                return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
             }
 
-            if (isForgotPasswordAuthorizationRequest(request)) {
-                final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, registrationId);
-                return getB2CAuthorizationRequest(authRequest, registrationId);
+            if (REQUEST_MATCHER.matches(request)) {
+                return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
             }
 
             LOGGER.warn("Unrecognized registration id: {}", registrationId);

@@ -43,8 +43,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
     prefix = AADB2CProperties.PREFIX,
     value = {
         "client-id",
-        "client-secret",
-        AADB2CProperties.SIGN_IN_USER_FLOW
+        "client-secret"
     }
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
@@ -108,17 +107,19 @@ public class AADB2CAutoConfiguration {
         public ClientRegistrationRepository clientRegistrationRepository() {
             final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-            signUpOrSignInRegistrations.add(b2cClientRegistration(properties.getSignInUserFlow()));
-            for (String userFlow : properties.getUserFlows()) {
-                otherRegistrations.add(b2cClientRegistration(userFlow));
+            signUpOrSignInRegistrations.add(b2cClientRegistration(AADB2CProperties.SIGN_IN_USER_FLOW,
+                properties.getSignInUserFlow()));
+            for (String clientName : properties.getUserFlows().keySet()) {
+                otherRegistrations.add(b2cClientRegistration(clientName, properties.getUserFlows().get(clientName)));
             }
             return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }
 
-        private ClientRegistration b2cClientRegistration(String userFlow) {
+        private ClientRegistration b2cClientRegistration(String clientName, String userFlow) {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
+                                     .clientName(clientName)
                                      .clientId(properties.getClientId())
                                      .clientSecret(properties.getClientSecret())
                                      .clientAuthenticationMethod(ClientAuthenticationMethod.POST)

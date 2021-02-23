@@ -52,10 +52,10 @@ azure:
       logout-success-url: ${your-logout-success-url}
       sign-in-user-flow: ${your-sign-up-or-in-user-flow}
       user-flows:
-        - ${your-profile-edit-user-flow}    # optional
-        - ${your-password-reset-user-flow}  # optional
-        - ${your-sign-in-user-flow}         # optional
-        - ${your-sign-up-user-flow}         # optional
+        password-reset: ${your-profile-edit-user-flow}  # optional
+        profile-edit: ${your-password-reset-user-flow}  # optional
+        sign-in: ${your-sign-in-user-flow}              # optional
+        sign-up: ${your-sign-up-user-flow}              # optional
       user-name-attribute-name: ${your-user-name-claim}
 ```
 

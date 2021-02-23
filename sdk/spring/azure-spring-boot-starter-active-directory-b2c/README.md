@@ -70,7 +70,7 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
    | `azure.activedirectory.b2c.sign-in-user-flow` | The name of the **sign up or sign in** user flow. |
    | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.user-flows.{user-flow-name}` | All other user flow names. |
+   | `azure.activedirectory.b2c.user-flows.{user-flow-key}.{user-flow-name}` | The keys and names of all other policies, including built-in and user-defined. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
    
 ## Examples
@@ -117,11 +117,10 @@ This starter provides following properties to be customized:
          logout-success-url: ${you-logout-success-url}
          sign-in-user-flow: ${your-sign-up-or-in-user-flow}
          user-flows:
-           - ${your-sign-up-or-in-user-flow}   # optional
-           - ${your-profile-edit-user-flow}    # optional
-           - ${your-password-reset-user-flow}  # optional
-           - ${your-sign-in-user-flow}         # optional
-           - ${your-sign-up-user-flow}         # optional
+           password-reset: ${your-profile-edit-user-flow}  # optional
+           profile-edit: ${your-password-reset-user-flow}  # optional
+           sign-in: ${your-sign-in-user-flow}              # optional
+           sign-up: ${your-sign-up-user-flow}              # optional
          user-name-attribute-name: ${your-user-name-attribute-name}
    ```
 7. Save and close the *application.yml* file.

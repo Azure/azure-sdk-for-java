@@ -10,9 +10,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,27 @@ public class AADB2CProperties implements InitializingBean {
     public static final String PREFIX = "azure.activedirectory.b2c";
 
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
+
+    /**
+     * The sign-up-or-sign-in user flow key name.
+     * @deprecated Not limited to this name 'signUpOrSignIn' or 'sign-up-or-sign-in', users can use a custom name instead.
+     */
+    @Deprecated
+    private static final String[] KEY_SIGN_UP_OR_SIGN_IN = {"signUpOrSignIn", "sign-up-or-sign-in"};
+
+    /**
+     * The profile-edit user flow key name.
+     * @deprecated Not limited to this name 'profileEdit' or 'profile-edit', users can use a custom name instead.
+     */
+    @Deprecated
+    private static final String[] KEY_PROFILE_EDIT = {"profileEdit", "profile-edit"};
+
+    /**
+     * The password-reset user flow key name.
+     * @deprecated Not limited to this name 'passwordReset' or 'password-reset', users can use a custom name instead.
+     */
+    @Deprecated
+    private static final String[] KEY_PASSWORD_RESET = {"passwordReset", "password-reset"};
 
     /**
      * The name of the b2c tenant.
@@ -74,15 +96,11 @@ public class AADB2CProperties implements InitializingBean {
     private String baseUri;
 
     /**
-     * The all user flows which is created under b2c tenant.
-     */
-    private Set<String> userFlows = new HashSet<>();
-
-    /**
      * Specify the primary sign in flow name
      */
-    @NotBlank(message = "The primary sign in flow name should not be blank.")
     private String signInUserFlow;
+
+    private Map<String, String> userFlows = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
@@ -90,10 +108,55 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
 
-        if (userFlows.contains(signInUserFlow)) {
-            throw new AADB2CConfigurationException("Sign in user flow '" + signInUserFlow
-                + "' does not need to be configured repeatedly.");
+        if (StringUtils.hasText(signInUserFlow)) {
+            if (userFlows.keySet().contains(signInUserFlow)) {
+                throw new AADB2CConfigurationException("Sign in user flow '" + signInUserFlow
+                    + "' does not need to be configured repeatedly.");
+            }
+        } else {
+            // user flow 'signUpOrSignIn' will be the default flow for login.
+            Map.Entry<String, String> signInEntry = getSignUpOrSignIn();
+            if (null != signInEntry) {
+                signInUserFlow = userFlows.remove(signInEntry.getKey());
+            }
+            if (StringUtils.isEmpty(signInUserFlow)) {
+                throw new AADB2CConfigurationException("The primary sign in flow name "
+                    + "'sign-in-user-flow' should not be blank.");
+            }
         }
+    }
+
+    @DeprecatedConfigurationProperty(
+        reason = "Compatible with old version 'signUpOrSignIn' usage",
+        replacement = "Need to specify a specific key to get the mapping value")
+    public Map.Entry<String, String> getSignUpOrSignIn() {
+        return getUserFlowByKeys(KEY_SIGN_UP_OR_SIGN_IN).orElse(null);
+    }
+
+    @DeprecatedConfigurationProperty(
+        reason = "Compatible with old version 'profileEdit' usage",
+        replacement = "Need to specify a specific key to get the mapping value")
+    public Map.Entry<String, String> getProfileEdit() {
+        return getUserFlowByKeys(KEY_PROFILE_EDIT).orElse(null);
+    }
+
+    @DeprecatedConfigurationProperty(
+        reason = "Compatible with old version 'passwordReset' usage",
+        replacement = "Need to specify a specific key to get the mapping value")
+    public Map.Entry<String, String> getPasswordReset() {
+        return getUserFlowByKeys(KEY_PASSWORD_RESET).orElse(null);
+    }
+
+    private Optional<Map.Entry<String, String>> getUserFlowByKeys(final String[] reservedKeys) {
+        Optional<String> keyOptional = userFlows.keySet()
+                                                .stream()
+                                                .filter(key -> Arrays.stream(reservedKeys)
+                                                                     .anyMatch(reservedKey -> reservedKey.equalsIgnoreCase(key)))
+                                                .findAny();
+        return userFlows.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getKey().equals(keyOptional.orElse(null)))
+                        .findAny();
     }
 
     public String getBaseUri() {
@@ -132,11 +195,11 @@ public class AADB2CProperties implements InitializingBean {
         return tenant;
     }
 
-    public Set<String> getUserFlows() {
+    public Map<String, String> getUserFlows() {
         return userFlows;
     }
 
-    public void setUserFlows(Set<String> userFlows) {
+    public void setUserFlows(Map<String, String> userFlows) {
         this.userFlows = userFlows;
     }
 
