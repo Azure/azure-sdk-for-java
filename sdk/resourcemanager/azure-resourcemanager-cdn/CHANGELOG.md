@@ -3,7 +3,9 @@
 ## 2.2.0-beta.1 (Unreleased)
 
 - Updated `api-version` to `2020-09-01`
-- Removed `UrlSigningActionParameters` and `UrlSigningActionParametersOdataType`
+- Removed `UrlSigningActionParametersOdataType`
+- Type of `odataType` in `UrlSigningActionParameters` changed from `UrlSigningActionParametersOdataType` to `String`
+- Type of `keyId` in `UrlSigningActionParameters` removed
 
 ## 2.1.0 (2020-11-24)
 
