@@ -9,10 +9,10 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-cloud-sample-feature-management-web</artifactId>
+  <artifactId>feature-management-web-sample</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-feature-management-web;current} -->
-  <name>Azure Spring Cloud Sample Feature Management Web</name>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:feature-management-web-sample;current} -->
+  <name>Azure Spring Cloud Sample Feature Management</name>
 
   <dependencies>
     <dependency>

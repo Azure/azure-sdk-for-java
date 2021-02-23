@@ -9,10 +9,10 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-cloud-sample-appconfiguration</artifactId>
+  <artifactId>azure-appconfiguration-sample</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-appconfiguration;current} -->
-  <name>Azure Spring Cloud Sample App Configuration</name>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-appconfiguration-sample;current} -->
+  <name>Spring Cloud Azure App Configuration Sample</name>
 
 
   <dependencies>
