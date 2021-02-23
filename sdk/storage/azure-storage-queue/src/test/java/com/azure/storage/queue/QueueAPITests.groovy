@@ -532,11 +532,13 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(encodedMsg)
         PeekedMessageItem badMessage = null
         String queueUrl = null
+        Exception cause = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getPeekedMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
+                cause = failure.getCause()
                 return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
@@ -548,6 +550,7 @@ class QueueAPITests extends APISpec {
         badMessage != null
         badMessage.getBody().toString() == expectMsg
         queueUrl == queueClient.getQueueUrl()
+        cause != null
     }
 
     def "Peek with sync handler"() {
@@ -558,10 +561,12 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg)
         queueClient.sendMessage(encodedMsg)
         PeekedMessageItem badMessage = null
+        Exception cause = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingError({ failure ->
                 badMessage = failure.getPeekedMessageItem()
+                cause = failure.getCause()
                 // call some sync API here
                 failure.getQueueClient().getProperties()
             })
@@ -573,6 +578,7 @@ class QueueAPITests extends APISpec {
         peekedMessages[0].getBody().toString() == expectMsg
         badMessage != null
         badMessage.getBody().toString() == expectMsg
+        cause != null
     }
 
     def "Peek with handler exception"() {

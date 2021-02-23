@@ -21,7 +21,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
-import com.azure.storage.queue.models.QueueMessageDecodingFailure;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueueStorageException;
@@ -65,8 +65,8 @@ public final class QueueServiceAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
-    private final Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
@@ -75,14 +75,14 @@ public final class QueueServiceAsyncClient {
      */
     QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler,
-        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
-        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
-        this.messageDecodingFailedHandler = messageDecodingFailedHandler;
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
     }
 
     /**
@@ -120,7 +120,7 @@ public final class QueueServiceAsyncClient {
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
         return new QueueAsyncClient(client, queueName, accountName, serviceVersion,
-            messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -175,7 +175,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
+            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -227,7 +227,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         return new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler)
+            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler)
             .deleteWithResponse(context);
     }
 

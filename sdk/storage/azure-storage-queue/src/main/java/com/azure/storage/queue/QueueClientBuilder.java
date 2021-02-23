@@ -23,7 +23,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
-import com.azure.storage.queue.models.QueueMessageDecodingFailure;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -100,8 +100,8 @@ public final class QueueClientBuilder {
     private QueueServiceVersion version;
 
     private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
-    private Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
-    private Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
+    private Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueClient QueueClients} and {@link
@@ -149,6 +149,13 @@ public final class QueueClientBuilder {
      */
     public QueueAsyncClient buildAsyncClient() {
         StorageImplUtils.assertNotNull("queueName", queueName);
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
@@ -163,7 +170,7 @@ public final class QueueClientBuilder {
             .buildClient();
 
         return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -417,23 +424,23 @@ public final class QueueClientBuilder {
      * but there's another producer that is not encoding messages in expected way.
      * I.e. the queue contains messages with different encoding.
      * <p>
-     * {@link QueueMessageDecodingFailure} contains {@link QueueAsyncClient} for the queue that has received
-     * the message as well as {@link QueueMessageDecodingFailure#getQueueMessageItem()} or
-     * {@link QueueMessageDecodingFailure#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
      * so that body can be inspected as has been received from the queue.
      * <p>
      * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#messageDecodingFailedAsyncHandler}
+     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler}
      *
-     * @param messageDecodingFailedAsyncHandler the handler.
+     * @param processMessageDecodingErrorAsyncHandler the handler.
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder processMessageDecodingErrorAsync(
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler) {
-        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler) {
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         return this;
     }
 
@@ -445,23 +452,23 @@ public final class QueueClientBuilder {
      * but there's another producer that is not encoding messages in expected way.
      * I.e. the queue contains messages with different encoding.
      * <p>
-     * {@link QueueMessageDecodingFailure} contains {@link QueueAsyncClient} for the queue that has received
-     * the message as well as {@link QueueMessageDecodingFailure#getQueueMessageItem()} or
-     * {@link QueueMessageDecodingFailure#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
      * so that body can be inspected as has been received from the queue.
      * <p>
      * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#messageDecodingFailedHandler}
+     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler}
      *
-     * @param messageDecodingFailedHandler the handler.
+     * @param processMessageDecodingErrorHandler the handler.
      * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder processMessageDecodingError(
-        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
-        this.messageDecodingFailedHandler = messageDecodingFailedHandler;
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
         return this;
     }
 

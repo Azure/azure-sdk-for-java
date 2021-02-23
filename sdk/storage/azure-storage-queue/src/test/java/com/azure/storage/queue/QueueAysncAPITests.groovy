@@ -622,11 +622,13 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(encodedMsg).block()
         PeekedMessageItem badMessage = null
         String queueUrl = null
+        Exception cause = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getPeekedMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
+                cause = failure.getCause()
                 return Mono.empty()
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)
@@ -635,9 +637,10 @@ class QueueAysncAPITests extends APISpec {
         then:
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getBody().toString()
-            assert badMessage !=null
+            assert badMessage != null
             assert badMessage.getBody().toString() == expectMsg
             assert queueUrl == queueAsyncClient.getQueueUrl()
+            assert cause != null
         }.verifyComplete()
     }
 
@@ -649,10 +652,12 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(expectMsg).block()
         queueAsyncClient.sendMessage(encodedMsg).block()
         PeekedMessageItem badMessage = null
+        Exception cause = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingError({ failure ->
                 badMessage = failure.getPeekedMessageItem()
+                cause = failure.getCause()
                 // call some sync API
                 failure.getQueueClient().getProperties()
             })
@@ -662,8 +667,9 @@ class QueueAysncAPITests extends APISpec {
         then:
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getBody().toString()
-            assert badMessage !=null
+            assert badMessage != null
             assert badMessage.getBody().toString() == expectMsg
+            assert cause != null
         }.verifyComplete()
     }
 

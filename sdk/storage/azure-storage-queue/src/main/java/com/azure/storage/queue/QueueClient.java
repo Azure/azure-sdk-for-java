@@ -464,7 +464,8 @@ public final class QueueClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -505,7 +506,8 @@ public final class QueueClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
-import com.azure.storage.queue.models.QueueMessageDecodingFailure;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -25,6 +25,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -102,12 +103,12 @@ public class QueueJavaDocCodeSamples {
      *
      * @return An instance of {@link QueueClient}
      */
-    public QueueClient createClientWithDecodingFailedHandler() {
-        // BEGIN: com.azure.storage.queue.QueueClientBuilder#messageDecodingFailedHandler
+    public QueueClient createClientWithDecodingFailedAsyncHandler() {
+        // BEGIN: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
             + "AccountKey={key};EndpointSuffix={core.windows.net}";
 
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler =
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorHandler =
             (queueMessageDecodingFailure) -> {
                 QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem();
                 PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem();
@@ -130,9 +131,46 @@ public class QueueJavaDocCodeSamples {
 
         QueueClient client = new QueueClientBuilder()
             .connectionString(connectionString)
-            .processMessageDecodingErrorAsync(messageDecodingFailedHandler)
+            .processMessageDecodingErrorAsync(processMessageDecodingErrorHandler)
             .buildClient();
-        // END: com.azure.storage.queue.QueueClientBuilder#messageDecodingFailedHandler
+        // END: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler
+        return client;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueClient}
+     * with {@link QueueServiceClientBuilder#processMessageDecodingError(Consumer)}.
+     *
+     * @return An instance of {@link QueueClient}
+     */
+    public QueueClient createClientWithDecodingFailedHandler() {
+        // BEGIN: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
+
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler =
+            (queueMessageDecodingFailure) -> {
+                QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem();
+                PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem();
+                if (queueMessageItem != null) {
+                    System.out.printf("Received badly encoded message, messageId=%s, messageBody=%s",
+                        queueMessageItem.getMessageId(),
+                        queueMessageItem.getBody().toString());
+                    queueMessageDecodingFailure
+                        .getQueueClient()
+                        .deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
+                } else if (peekedMessageItem != null) {
+                    System.out.printf("Peeked badly encoded message, messageId=%s, messageBody=%s",
+                        peekedMessageItem.getMessageId(),
+                        peekedMessageItem.getBody().toString());
+                }
+            };
+
+        QueueClient client = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .processMessageDecodingError(processMessageDecodingErrorHandler)
+            .buildClient();
+        // END: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler
         return client;
     }
 

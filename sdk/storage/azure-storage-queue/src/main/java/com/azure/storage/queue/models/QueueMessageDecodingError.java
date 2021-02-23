@@ -13,30 +13,33 @@ import java.util.Objects;
  * Contains information about message that could not be decoded.
  */
 @Immutable
-public class QueueMessageDecodingFailure {
+public final class QueueMessageDecodingError {
     private final QueueAsyncClient queueAsyncClient;
     private final QueueClient queueClient;
     private final QueueMessageItem queueMessageItem;
     private final PeekedMessageItem peekedMessageItem;
+    private final Exception cause;
 
     /**
-     * Creates new {@link QueueMessageDecodingFailure}.
+     * Creates new {@link QueueMessageDecodingError}.
      * @param queueAsyncClient the {@link QueueAsyncClient} of the queue that has received message.
      * @param queueClient the {@link QueueClient} of the queue that has received message.
      * @param queueMessageItem the {@link QueueMessageItem} that has been received and could not be decoded.
      * @param peekedMessageItem the {@link PeekedMessageItem} that has been peeked and could not be decoded.
+     * @param cause the {@link Exception} thrown at decoding attempt if present.
      */
-    public QueueMessageDecodingFailure(
+    public QueueMessageDecodingError(
         QueueAsyncClient queueAsyncClient,
         QueueClient queueClient,
         QueueMessageItem queueMessageItem,
-        PeekedMessageItem peekedMessageItem) {
+        PeekedMessageItem peekedMessageItem, Exception cause) {
         Objects.requireNonNull(queueAsyncClient, "'queueAsyncClient' cannot be null.");
         Objects.requireNonNull(queueClient, "'queueClient' cannot be null.");
         this.queueAsyncClient = queueAsyncClient;
         this.queueClient = queueClient;
         this.queueMessageItem = queueMessageItem;
         this.peekedMessageItem = peekedMessageItem;
+        this.cause = cause;
     }
 
     /**
@@ -71,5 +74,13 @@ public class QueueMessageDecodingFailure {
      */
     public PeekedMessageItem getPeekedMessageItem() {
         return peekedMessageItem;
+    }
+
+    /**
+     * Gets the {@link Exception} thrown at decoding attempt if present.
+     * @return the {@link Exception} thrown at decoding attempt if present.
+     */
+    public Exception getCause() {
+        return cause;
     }
 }

@@ -32,7 +32,7 @@ import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
-import com.azure.storage.queue.models.QueueMessageDecodingFailure;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -88,8 +88,8 @@ public final class QueueAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
-    private final Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -100,16 +100,16 @@ public final class QueueAsyncClient {
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler,
-        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
-        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
-        this.messageDecodingFailedHandler = messageDecodingFailedHandler;
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
     }
 
     /**
@@ -628,7 +628,8 @@ public final class QueueAsyncClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
      * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
      * and other metadata about the enqueued message.
@@ -667,7 +668,8 @@ public final class QueueAsyncClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
      * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
      * and other metadata about the enqueued message.
@@ -827,23 +829,23 @@ public final class QueueAsyncClient {
             .flatMap(queueMessageItemInternal ->
                 transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
                 .onErrorResume(IllegalArgumentException.class, e -> {
-                    if (messageDecodingFailedAsyncHandler != null) {
+                    if (processMessageDecodingErrorAsyncHandler != null) {
                         return transformQueueMessageItemInternal(
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
-                            .flatMap(messageItem -> messageDecodingFailedAsyncHandler.apply(
-                                new QueueMessageDecodingFailure(
+                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
+                                new QueueMessageDecodingError(
                                     this, new QueueClient(this),
-                                    messageItem, null)))
+                                    messageItem, null, e)))
                             .then(Mono.empty());
-                    } else if (messageDecodingFailedHandler != null) {
+                    } else if (processMessageDecodingErrorHandler != null) {
                         return transformQueueMessageItemInternal(
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> {
                                 try {
-                                    messageDecodingFailedHandler.accept(
-                                        new QueueMessageDecodingFailure(
+                                    processMessageDecodingErrorHandler.accept(
+                                        new QueueMessageDecodingError(
                                             this, new QueueClient(this),
-                                            messageItem, null));
+                                            messageItem, null, e));
                                     return Mono.<QueueMessageItem>empty();
                                 } catch (RuntimeException re) {
                                     return FluxUtil.<QueueMessageItem>monoError(logger, re);
@@ -974,23 +976,23 @@ public final class QueueAsyncClient {
             .flatMap(peekedMessageItemInternal ->
                 transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
                     .onErrorResume(IllegalArgumentException.class, e -> {
-                        if (messageDecodingFailedAsyncHandler != null) {
+                        if (processMessageDecodingErrorAsyncHandler != null) {
                             return transformPeekedMessageItemInternal(
                                 peekedMessageItemInternal, QueueMessageEncoding.NONE)
-                                .flatMap(messageItem -> messageDecodingFailedAsyncHandler.apply(
-                                    new QueueMessageDecodingFailure(
+                                .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
+                                    new QueueMessageDecodingError(
                                         this,  new QueueClient(this),
-                                        null, messageItem)))
+                                        null, messageItem, e)))
                                 .then(Mono.empty());
-                        } else if (messageDecodingFailedHandler != null) {
+                        } else if (processMessageDecodingErrorHandler != null) {
                             return transformPeekedMessageItemInternal(
                                 peekedMessageItemInternal, QueueMessageEncoding.NONE)
                                 .flatMap(messageItem -> {
                                     try {
-                                        messageDecodingFailedHandler.accept(
-                                            new QueueMessageDecodingFailure(
+                                        processMessageDecodingErrorHandler.accept(
+                                            new QueueMessageDecodingError(
                                                 this,  new QueueClient(this),
-                                                null, messageItem));
+                                                null, messageItem, e));
                                         return Mono.<PeekedMessageItem>empty();
                                     } catch (RuntimeException re) {
                                         return FluxUtil.<PeekedMessageItem>monoError(logger, re);
