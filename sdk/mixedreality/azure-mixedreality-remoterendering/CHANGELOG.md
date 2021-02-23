@@ -1,6 +1,6 @@
 # Release History
 
-## Version 1.0.0-beta.1 (2021-01-18)
+## 1.0.0-beta.1 (2021-02-23)
 
 This is the initial release of Azure Mixed Reality RemoteRendering library. For more information, please see the [README][read_me] and [samples][samples].
 
