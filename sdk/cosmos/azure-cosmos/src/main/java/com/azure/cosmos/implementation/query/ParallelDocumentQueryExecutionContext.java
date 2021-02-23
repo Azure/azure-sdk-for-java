@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -105,10 +104,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-
-        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>(rangeQueryMap.keySet());
-        List<FeedRangeEpkImpl> feedRangeEpks =
-            partitionKeyRanges.stream().map(range -> new FeedRangeEpkImpl(range.toRange())).collect(Collectors.toList());
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                                                                                                         queryClient,
