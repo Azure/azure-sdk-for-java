@@ -40,6 +40,7 @@ import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -894,6 +895,42 @@ public class BlobAsyncClientBase {
             return withContext(context ->
                 downloadWithResponse(range, options, requestConditions, getRangeContentMd5,
                     context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * TODO (kasobol-msft) add sample.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
+        DownloadRetryOptions options,
+        BlobRequestConditions requestConditions) {
+        try {
+            return withContext(context ->
+                downloadWithResponse(null, options, requestConditions, false,
+                    context)
+                    .flatMap(r ->
+                        BinaryData.fromFlux(r.getValue())
+                        .map(data ->
+                            new BlobDownloadContentAsyncResponse(
+                                r.getRequest(), r.getStatusCode(),
+                                r.getHeaders(), data,
+                                r.getDeserializedHeaders())
+                        )));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

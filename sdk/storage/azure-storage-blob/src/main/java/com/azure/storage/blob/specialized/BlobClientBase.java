@@ -18,6 +18,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
@@ -635,6 +637,41 @@ public class BlobClientBase {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
                 }
             }).thenReturn(new BlobDownloadResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
+     * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * TODO (kasobol-msft) add sample.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<BlobDownloadContentResponse> download = client
+            .downloadWithResponse(null, options, requestConditions, false, context)
+            .flatMap(r ->
+                BinaryData.fromFlux(r.getValue())
+                    .map(data ->
+                        new BlobDownloadContentAsyncResponse(
+                            r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data,
+                            r.getDeserializedHeaders())
+                    ))
+            .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
     }
