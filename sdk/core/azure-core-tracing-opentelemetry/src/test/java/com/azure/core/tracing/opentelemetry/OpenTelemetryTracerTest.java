@@ -74,10 +74,9 @@ public class OpenTelemetryTracerTest {
         TRACE_ID_OFFSET + TRACE_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
     private static final int TRACE_OPTION_OFFSET =
         SPAN_ID_OFFSET + SPAN_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
-    private static OpenTelemetrySdk openTelemetry;
+    private static OpenTelemetryTracer openTelemetryTracer;
 
     private Tracer tracer;
-    private OpenTelemetryTracer openTelemetryTracer;
     private Context tracingContext;
     private Span parentSpan;
     private Scope scope;
@@ -94,13 +93,13 @@ public class OpenTelemetryTracerTest {
         // reset the global object before attempting to register
         GlobalOpenTelemetry.resetForTest();
         // Register the global tracer.
-        openTelemetry = OpenTelemetrySdk.builder().buildAndRegisterGlobal();
+        OpenTelemetrySdk.builder().buildAndRegisterGlobal();
     }
 
     @BeforeEach
     public void setUp() {
         // Get the global singleton Tracer object.
-        tracer = openTelemetry.getTracer("TracerSdkTest");
+        tracer = GlobalOpenTelemetry.getTracer("TracerSdkTest");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
         scope = parentSpan.makeCurrent();
