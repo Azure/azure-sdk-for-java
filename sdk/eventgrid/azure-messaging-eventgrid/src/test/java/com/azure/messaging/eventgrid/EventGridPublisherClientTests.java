@@ -8,7 +8,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -137,11 +139,11 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<CloudEvent> events = new ArrayList<>();
         events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
+            BinaryData.fromObject(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }}), CloudEventDataFormat.JSON, "application/json")
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
@@ -186,7 +188,7 @@ public class EventGridPublisherClientTests extends TestBase {
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-                new TestData().setName("Hello " + i))
+                BinaryData.fromObject(new TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
                 .setSubject("Test " + i)
             );
         }
@@ -249,11 +251,11 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<CloudEvent> events = new ArrayList<>();
         events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
+            BinaryData.fromObject(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }}), CloudEventDataFormat.JSON, "application/json")
             .setId(UUID.randomUUID().toString())
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));

@@ -7,7 +7,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import com.azure.core.models.CloudEvent;
@@ -110,11 +112,12 @@ public class EventGridPublisherImplTests extends TestBase {
             .buildClient();
 
         List<CloudEvent> events = Collections.singletonList(
-            new CloudEvent("TestSource", "Microsoft.MockPublisher.TestEvent", new HashMap<String, String>() {{
+            new CloudEvent("TestSource", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }}), CloudEventDataFormat.JSON, "application/json")
                 .setId(UUID.randomUUID().toString())
                 .setSubject("Test")
                 .setTime(OffsetDateTime.now())

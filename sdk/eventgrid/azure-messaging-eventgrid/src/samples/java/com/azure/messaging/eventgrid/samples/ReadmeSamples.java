@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.samples;
 import com.azure.core.credential.AzureKeyCredential;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.core.models.CloudEvent;
@@ -75,7 +76,8 @@ public class ReadmeSamples {
     public void sendCloudEventsToTopic() {
         List<CloudEvent> events = new ArrayList<>();
         User user = new User("John", "James");
-        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
+        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
+            BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
         cloudClient.sendEvents(events);
     }
 

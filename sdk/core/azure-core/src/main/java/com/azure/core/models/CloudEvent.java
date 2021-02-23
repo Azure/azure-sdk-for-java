@@ -5,7 +5,6 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -14,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayInputStream;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,11 +26,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 /**
- * Doc to be added
+ * The CloudEvent model. This represents a cloud event as specified by the
+ * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>
  */
 @Fluent
 public final class CloudEvent {
@@ -122,34 +123,42 @@ public final class CloudEvent {
     @JsonIgnore
     private BinaryData binaryData;
 
-    public CloudEvent(String source, String type, Object dataObject) {
-        this(source, type, dataObject instanceof String? BinaryData.fromString((String) dataObject): BinaryData.fromObject(dataObject), false, null);
-    }
-
-    public CloudEvent(String source, String type, BinaryData data) {
-        this(source, type, data, false, null);
-    }
-
-    public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
-        this(source, type, data, format == CloudEventDataFormat.BYTES, dataContentType);
-    }
 
     /**
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
      *               for each distinct event.
      * @param type Type of event related to the originating occurrence.
-     * @param data The {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
-     * @param serializeDataToBase64 Set this param to true to serialize the data to base64 format.
+     * @param data A {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
+     * @param format Set to {@link CloudEventDataFormat#BYTES} to serialize the data to base64 format, or
+     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON.
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
-     *                        "application/json", "text/plain", "text/xml", "application/+avro", etc.
-     *
+     *                        "application/json", "text/plain", "text/xml", "application/+avro", etc. It can be null.
+     * @throws NullPointerException if source, type, data, or format is null.
+     * @throws IllegalStateException if source isn't in a URI-formatted string.
      */
-    public CloudEvent(String source, String type, BinaryData data, boolean serializeDataToBase64, String dataContentType) {
+    public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
+        try {
+            URI.create(source);
+        } catch (NullPointerException npe) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'source' must not be null."));
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dataSchema' isn't a correct URI format",
+                illegalArgumentException));
+        }
+        if (Objects.isNull(type)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'type' must not be null."));
+        }
+        if (Objects.isNull(data)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'data' must not be null."));
+        }
+        if (Objects.isNull(format)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'format' must not be null."));
+        }
         this.source = source;
         this.type = type;
-        if (serializeDataToBase64) {
+        if (CloudEventDataFormat.BYTES == format) {
             this.dataBase64 = Base64.getEncoder().encodeToString(data.toBytes());
         } else {
             this.data = data.toString();
@@ -174,8 +183,8 @@ public final class CloudEvent {
             for (CloudEvent event : events) {
                 if (event.getSource() == null || event.getType() == null) {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'source' and 'type' are mandatory attributes for a CloudEvent. " +
-                            "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+                        "'source' and 'type' are mandatory attributes for a CloudEvent. "
+                        + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
                 }
             }
             return events;
@@ -198,10 +207,15 @@ public final class CloudEvent {
      * @param id the id to set.
      *
      * @return the cloud event itself.
+     * @throws NullPointerException if id is null.
+     * @throws IllegalArgumentException if id is empty.
      */
     public CloudEvent setId(String id) {
-        if (CoreUtils.isNullOrEmpty(id)) {
-            throw new IllegalArgumentException("id cannot be null or empty");
+        if (Objects.isNull(id)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("id cannot be null"));
+        }
+        if (id.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("id cannot be empty"));
         }
         this.id = id;
         return this;
@@ -298,6 +312,14 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     public CloudEvent setDataSchema(String dataSchema) {
+        if (!Objects.isNull(dataSchema)) {
+            try {
+                URI.create(dataSchema);
+            } catch (IllegalArgumentException illegalArgumentException) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dataSchema' isn't a correct URI format",
+                    illegalArgumentException));
+            }
+        }
         this.dataSchema = dataSchema;
         return this;
     }
@@ -341,7 +363,7 @@ public final class CloudEvent {
     /**
      * Add/Overwrite a single extension attribute to the cloud event. The property name will be transformed
      * to lowercase and must not share a name with any reserved cloud event properties.
-     * @param name  the name of the attribute.
+     * @param name the name of the attribute.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.

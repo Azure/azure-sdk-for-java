@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
@@ -32,15 +33,17 @@ public class PublishCloudEventsToTopic {
 
         // Create a CloudEvent with String data
         String str = "\"FirstName: John1, LastName:James\"";
-        BinaryData binaryData = BinaryData.fromObject(str);
-        CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text", BinaryData.fromString(str));
+        CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text",
+            BinaryData.fromString(str), CloudEventDataFormat.JSON, "application/json");
 
         // Create a CloudEvent with Object data
         User newUser = new User("John2", "James");
-        CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object", BinaryData.fromObject(newUser));
+        CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object",
+            BinaryData.fromObject(newUser), CloudEventDataFormat.JSON, "application/json");
         // Create a CloudEvent with binary data
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
-        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", BinaryData.fromBytes(byteSample), true, null);
+        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary",
+            BinaryData.fromBytes(byteSample), CloudEventDataFormat.BYTES, "bytes");
 
         // Send them to the event grid topic altogether.
         List<CloudEvent> events = new ArrayList<>();
