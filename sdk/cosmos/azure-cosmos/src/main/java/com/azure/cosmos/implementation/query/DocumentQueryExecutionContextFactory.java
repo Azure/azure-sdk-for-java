@@ -326,7 +326,6 @@ public class DocumentQueryExecutionContextFactory {
             getLazyFeedResponse,
             isContinuationExpected,
             initialPageSize,
-            new ArrayList<>(),
             queryInfo,
             cosmosQueryRequestOptions,
             correlatedActivityId,

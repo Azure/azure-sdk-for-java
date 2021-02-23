@@ -51,7 +51,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     private ParallelDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
-        List<PartitionKeyRange> partitionKeyRanges,
         ResourceType resourceTypeEnum,
         Class<T> resourceType,
         SqlQuerySpec query,
@@ -61,9 +60,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         String collectionRid,
         boolean isContinuationExpected,
         boolean getLazyFeedResponse,
-        UUID correlatedActivityId,
-        List<FeedRangeEpkImpl> feedRanges) {
-        super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
+        UUID correlatedActivityId) {
+        super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
@@ -76,7 +74,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                 client,
-                initParams.getPartitionKeyRanges(),
                 initParams.getResourceTypeEnum(),
                 initParams.getResourceType(),
                 initParams.getQuery(),
@@ -86,14 +83,12 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initParams.getCollectionRid(),
                 initParams.isContinuationExpected(),
                 initParams.isGetLazyResponseFeed(),
-                initParams.getCorrelatedActivityId(),
-                initParams.getFeedRanges());
+                initParams.getCorrelatedActivityId());
         context.setTop(initParams.getTop());
 
         try {
             context.initialize(
                     initParams.getCollectionRid(),
-                    initParams.getPartitionKeyRanges(),
                     initParams.getFeedRanges(),
                     initParams.getInitialPageSize(),
                     ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
@@ -117,7 +112,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                                                                                                         queryClient,
-                                                                                                        partitionKeyRanges,
                                                                                                         resourceTypeEnum,
                                                                                                         klass,
                                                                                                         sqlQuery,
@@ -127,8 +121,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                                                                                         collectionRid,
                                                                                                         false,
                                                                                                         false,
-                                                                                                        activityId,
-                                                                                                        feedRangeEpks);
+                                                                                                        activityId);
 
         context
             .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, cosmosQueryRequestOptions,
@@ -139,7 +132,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     private void initialize(
         String collectionRid,
-        List<PartitionKeyRange> targetRanges,
         List<FeedRangeEpkImpl> feedRanges,
         int initialPageSize,
         String continuationToken) {
@@ -194,7 +186,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             if (entry.getValue() != null) {
                 partitionKeyRangeToContinuationTokenMap.put(entry.getKey(), entry.getValue().getToken());
             } else {
-                partitionKeyRangeToContinuationTokenMap.put(entry.getKey(), null);
+                partitionKeyRangeToContinuationTokenMap.put(entry.getKey(), /*continuation*/ null);
             }
         }
     }

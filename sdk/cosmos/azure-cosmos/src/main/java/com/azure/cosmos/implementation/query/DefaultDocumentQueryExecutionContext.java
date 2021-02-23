@@ -122,12 +122,12 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     }
 
     public Mono<Range<String>> getTargetRange(String collectionRid, FeedRangeInternal feedRangeInternal) {
-        return  feedRangeInternal.getEffectiveRange(client.getPartitionKeyRangeCache(),
-                                                    null,
-                                                    this.client.getCollectionCache().resolveByRidAsync(
-                                                        null,
-                                                        collectionRid,
-                                                        null));
+        return feedRangeInternal.getEffectiveRange(client.getPartitionKeyRangeCache(),
+            /*metadataDiagnosticsCtx*/null,
+                                                   this.client.getCollectionCache().resolveByRidAsync(
+                                                       /*metadataDiagnosticsCtx*/ null,
+                                                                                  collectionRid,
+                                                       /*properties*/null));
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,

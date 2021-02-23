@@ -50,7 +50,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
     protected ParallelDocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                         IDocumentQueryClient client,
-                                                        List<PartitionKeyRange> partitionKeyRanges, ResourceType resourceTypeEnum, Class<T> resourceType,
+                                                        ResourceType resourceTypeEnum, Class<T> resourceType,
                                                         SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink, String rewrittenQuery,
                                                         boolean isContinuationExpected, boolean getLazyFeedResponse, UUID correlatedActivityId) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, getLazyFeedResponse,
@@ -66,11 +66,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     protected void initialize(String collectionRid,
-            Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap, int initialPageSize,
+            Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap, int initialPageSize,
             SqlQuerySpec querySpecForInit) {
         this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
-        for (Map.Entry<FeedRangeEpkImpl, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
+        for (Map.Entry<FeedRangeEpkImpl, String> entry : feedRangeToContinuationTokenMap.entrySet()) {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
                                                                                                            continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
@@ -100,59 +100,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             documentProducers.add(dp);
         }
 
-    }
-
-    protected <TContinuationToken> FeedRangeEpkImpl findTargetRangeAndExtractContinuationTokens(
-        List<FeedRangeEpkImpl> feedRanges, Range<String> range,
-        Utils.ValueHolder<Map<FeedRangeEpkImpl, TContinuationToken>> outPartitionRangeToContinuation,
-        TContinuationToken continuation) {
-        if (feedRanges == null) {
-            throw new IllegalArgumentException("partitionKeyRanges can not be null.");
-        }
-
-        if (feedRanges.size() < 1) {
-            throw new IllegalArgumentException("partitionKeyRanges must have atleast one element.");
-        }
-
-        for (FeedRangeEpkImpl feedRangeEpk : feedRanges) {
-            if (feedRangeEpk == null) {
-                throw new IllegalArgumentException("partitionKeyRanges can not have null elements.");
-            }
-        }
-
-        // Find the minimum index.
-        PartitionKeyRange needle = new PartitionKeyRange(/* id */ null, range.getMin(), range.getMax());
-        FeedRangeEpkImpl feedRangeEpk = null;
-        int minIndex;
-        for (minIndex = 0; minIndex < feedRanges.size(); minIndex++) {
-            feedRangeEpk = feedRanges.get(minIndex);
-            if (needle.getMinInclusive().equals(feedRanges.get(minIndex).getRange().getMin())) {
-                break;
-            }
-        }
-
-        if (minIndex == feedRanges.size()) {
-            throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
-                    String.format("Could not find partition key range for continuation token: {0}", needle));
-        }
-
-        List<FeedRangeEpkImpl> replacementRanges;
-
-        // find what ranges make up the supplied continuation token
-        replacementRanges = feedRanges.stream()
-                                .filter(p -> range.getMin().compareTo(p.getRange().getMin()) <= 0 &&
-                                                 range.getMax().compareTo(p.getRange().getMax()) >= 0)
-//                                .sorted(Comparator.comparing(PartitionKeyRange::getId))
-                                .collect(Collectors.toList());
-
-        if (replacementRanges.isEmpty()) {
-            throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
-                                                       String.format("Cannot find ranges for continuation {}", continuation));
-        }
-
-        replacementRanges.forEach(r -> outPartitionRangeToContinuation.v.put(r, continuation));
-
-        return feedRangeEpk;
     }
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,

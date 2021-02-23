@@ -61,7 +61,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private OrderByDocumentQueryExecutionContext(
             DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
-            List<PartitionKeyRange> partitionKeyRanges,
             ResourceType resourceTypeEnum,
             Class<T> klass,
             SqlQuerySpec query,
@@ -73,7 +72,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderbyRowComparer<T> consumeComparer,
             String collectionRid,
             UUID correlatedActivityId) {
-        super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
+        super(diagnosticsClientContext, client, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
                 isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
@@ -90,7 +89,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
         OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                 client,
-                initParams.getPartitionKeyRanges(),
                 initParams.getResourceTypeEnum(),
                 initParams.getResourceType(),
                 initParams.getQuery(),
@@ -161,13 +159,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             }
 
             // At this point the token is valid.
-            ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo> targetIndexAndFilters = this.getFiltersForPartitions(
-                    orderByContinuationToken,
-                    feedRanges,
-                    sortOrders,
-                    orderByExpressions);
-
-            FormattedFilterInfo formattedFilterInfo = targetIndexAndFilters.right;
+            FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
+                                                                               orderByContinuationToken
+                                                                                   .getOrderByItems(),
+                                                                               sortOrders,
+                                                                               orderByContinuationToken.getInclusive());
 
             PartitionMapper.PartitionMapping<OrderByContinuationToken> partitionMapping =
                 PartitionMapper.getPartitionMapping(feedRanges, Collections.singletonList(orderByContinuationToken));
@@ -205,30 +201,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                               querySpec.getParameters()));
 
         }
-    }
-
-    private ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo> getFiltersForPartitions(
-            OrderByContinuationToken orderByContinuationToken,
-            List<FeedRangeEpkImpl> feedRangeEpks,
-            List<SortOrder> sortOrders,
-            Collection<String> orderByExpressions) {
-
-        ValueHolder<Map<FeedRangeEpkImpl, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
-        valueHolder.v = this.targetRangeToOrderByContinuationTokenMap;
-        // Find the partition key range we left off on
-        FeedRangeEpkImpl startIndex = this.findTargetRangeAndExtractContinuationTokens(feedRangeEpks,
-                                                                                       orderByContinuationToken.getCompositeContinuationToken().getRange(),
-                                                                                       valueHolder,
-                                                                                       orderByContinuationToken);
-
-        // Get the filters.
-        FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
-                orderByContinuationToken.getOrderByItems(),
-                sortOrders,
-                orderByContinuationToken.getInclusive());
-
-        return new ImmutablePair<FeedRangeEpkImpl, FormattedFilterInfo>(startIndex,
-                formattedFilterInfo);
     }
 
     private OrderByDocumentQueryExecutionContext<T>.FormattedFilterInfo getFormattedFilters(

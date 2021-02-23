@@ -26,7 +26,6 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
     private final String resourceLink;
     private final UUID correlatedActivityId;
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
-    private final List<PartitionKeyRange> partitionKeyRanges;
     private final QueryInfo queryInfo;
     private final List<FeedRangeEpkImpl> feedRanges;
 
@@ -39,7 +38,6 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         boolean getLazyResponseFeed,
         boolean isContinuationExpected,
         int initialPageSize,
-        List<PartitionKeyRange> partitionKeyRanges,
         QueryInfo queryInfo,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         UUID correlatedActivityId,
@@ -54,7 +52,6 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         this.isContinuationExpected = isContinuationExpected;
         this.initialPageSize = initialPageSize;
         this.correlatedActivityId = correlatedActivityId;
-        this.partitionKeyRanges = partitionKeyRanges;
         this.queryInfo = queryInfo;
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.feedRanges = feedRanges;
@@ -110,10 +107,6 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
 
     public void setCosmosQueryRequestOptions(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
-    }
-
-    public List<PartitionKeyRange> getPartitionKeyRanges() {
-        return partitionKeyRanges;
     }
 
     public QueryInfo getQueryInfo() {
