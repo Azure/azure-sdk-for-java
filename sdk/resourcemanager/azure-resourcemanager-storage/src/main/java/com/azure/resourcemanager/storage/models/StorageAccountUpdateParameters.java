@@ -117,6 +117,16 @@ public class StorageAccountUpdateParameters {
     @JsonProperty(value = "properties.minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
+    /*
+     * Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests,
+     * including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to
+     * true.
+     */
+    @JsonProperty(value = "properties.allowSharedKeyAccess")
+    private Boolean allowSharedKeyAccess;
+
     /**
      * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
      * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
@@ -421,6 +431,30 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
         this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @return the allowSharedKeyAccess value.
+     */
+    public Boolean allowSharedKeyAccess() {
+        return this.allowSharedKeyAccess;
+    }
+
+    /**
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
+        this.allowSharedKeyAccess = allowSharedKeyAccess;
         return this;
     }
 

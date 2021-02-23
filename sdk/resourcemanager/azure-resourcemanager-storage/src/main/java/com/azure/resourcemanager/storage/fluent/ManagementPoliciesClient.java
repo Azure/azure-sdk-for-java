@@ -91,7 +91,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,7 +113,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,7 +169,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
