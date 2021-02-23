@@ -16,7 +16,9 @@ import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test of CDN management.
@@ -78,12 +80,9 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         }
 
         for (CdnEndpoint ep : cdnProfile.endpoints().values()) {
-            for (ResourceUsage usage : ep.listResourceUsage()) {
-                Assertions.assertNotNull(usage);
-                Assertions.assertTrue("customdomain".equals(usage.resourceType())
-                    || "geofilter".equals(usage.resourceType())
-                    || "deliveryrule".equals(usage.resourceType()));
-            }
+            Assertions.assertEquals(
+                Arrays.asList("customdomain", "geofilter", "deliveryrule"),
+                ep.listResourceUsage().stream().map(ResourceUsage::resourceType).collect(Collectors.toList()));
         }
         return cdnProfile;
     }
