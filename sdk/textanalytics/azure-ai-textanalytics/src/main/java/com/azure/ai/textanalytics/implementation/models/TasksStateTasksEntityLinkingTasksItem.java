@@ -7,21 +7,21 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TasksStateTasksKeyPhraseExtractionTasksItem model. */
+/** The TasksStateTasksEntityLinkingTasksItem model. */
 @Fluent
-public final class TasksStateTasksKeyPhraseExtractionTasksItem extends TaskState {
+public final class TasksStateTasksEntityLinkingTasksItem extends TaskState {
     /*
      * The results property.
      */
     @JsonProperty(value = "results")
-    private KeyPhraseResult results;
+    private EntityLinkingResult results;
 
     /**
      * Get the results property: The results property.
      *
      * @return the results value.
      */
-    public KeyPhraseResult getResults() {
+    public EntityLinkingResult getResults() {
         return this.results;
     }
 
@@ -29,9 +29,9 @@ public final class TasksStateTasksKeyPhraseExtractionTasksItem extends TaskState
      * Set the results property: The results property.
      *
      * @param results the results value to set.
-     * @return the TasksStateTasksKeyPhraseExtractionTasksItem object itself.
+     * @return the TasksStateTasksEntityLinkingTasksItem object itself.
      */
-    public TasksStateTasksKeyPhraseExtractionTasksItem setResults(KeyPhraseResult results) {
+    public TasksStateTasksEntityLinkingTasksItem setResults(EntityLinkingResult results) {
         this.results = results;
         return this;
     }
