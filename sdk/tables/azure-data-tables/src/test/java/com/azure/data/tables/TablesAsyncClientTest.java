@@ -281,15 +281,37 @@ public class TablesAsyncClientTest extends TestBase {
     }
 
     @Test
+    void deleteNonExistingTableAsync() {
+        // Act & Assert
+        tableClient.delete().block();
+
+        StepVerifier.create(tableClient.delete())
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void deleteTableWithResponseAsync() {
         // Arrange
         final int expectedStatusCode = 204;
 
         // Act & Assert
         StepVerifier.create(tableClient.deleteWithResponse())
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingTableWithResponseAsync() {
+        // Arrange
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        tableClient.deleteWithResponse().block();
+
+        StepVerifier.create(tableClient.deleteWithResponse())
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -313,6 +335,18 @@ public class TablesAsyncClientTest extends TestBase {
     }
 
     @Test
+    void deleteNonExistingEntityAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntity(partitionKeyValue, rowKeyValue))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void deleteEntityWithResponseAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -327,9 +361,21 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingEntityWithResponseAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }

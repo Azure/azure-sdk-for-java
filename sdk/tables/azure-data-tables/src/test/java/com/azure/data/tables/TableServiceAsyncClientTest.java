@@ -166,11 +166,37 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
+    void serviceDeleteNonExistingTableAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.deleteTable(tableName))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void serviceDeleteTableWithResponseAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
         serviceClient.createTable(tableName).block();
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
+            .assertNext(response -> {
+                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceDeleteNonExistingTableWithResponseAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        int expectedStatusCode = 404;
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
