@@ -89,6 +89,9 @@ public class Configuration {
     @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
     private String readWriteQueryPct = "90,9,1";
 
+    @Parameter(names = "-manageResources", description = "Control switch for creating/deleting underlying test resources")
+    private boolean manageResources = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -388,6 +391,10 @@ public class Configuration {
 
     public String getReadWriteQueryPct() {
         return this.readWriteQueryPct;
+    }
+
+    public boolean shouldManageResources() {
+        return this.manageResources;
     }
 
     public String toString() {

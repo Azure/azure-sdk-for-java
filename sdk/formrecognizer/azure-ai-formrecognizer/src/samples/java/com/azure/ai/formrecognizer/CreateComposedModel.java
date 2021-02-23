@@ -52,13 +52,14 @@ public class CreateComposedModel {
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
 
-        final CustomFormModel customFormModel
-            = client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
-            new CreateComposedModelOptions()
-                .setModelName("my composed model name")
-                .setPollInterval(Duration.ofSeconds(5)),
-            Context.NONE)
-            .getFinalResult();
+        final CustomFormModel customFormModel =
+            client.beginCreateComposedModel(
+                Arrays.asList(labeledModelId1, labeledModelId2),
+                new CreateComposedModelOptions()
+                    .setModelName("my composed model name")
+                    .setPollInterval(Duration.ofSeconds(5)),
+                Context.NONE)
+                .getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());

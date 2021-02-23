@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.0-beta.2 (Unreleased)
+
+
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support to log retries 
 - Removed a deep copy in PayloadSizeGate

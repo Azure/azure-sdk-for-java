@@ -16,17 +16,19 @@ import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,7 +169,7 @@ public class OpenTelemetryTracerTest {
         // verify span attributes
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
 
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -190,7 +192,7 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
 
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -225,7 +227,7 @@ public class OpenTelemetryTracerTest {
         expectedAttributeMap.put(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE);
         expectedAttributeMap.put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
-        verifySpanAttributes(attributeMap, expectedAttributeMap);
+        verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
 
     @Test
@@ -451,11 +453,97 @@ public class OpenTelemetryTracerTest {
         assertEquals(spanContext, invalidSpanContext);
     }
 
+    @Test
+    public void addEventWithNonNullEventName() {
+        // Arrange
+        final String eventName = "event-0";
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+    }
+
+    @Test
+    public void addEventWithAttributes() {
+        // Arrange
+        final String eventName = "event-0";
+        Map<String, Object> input = new HashMap<String, Object>() {{
+                put("attr1", "value1");
+                put("attr2", true);
+                put("attr3", 1L);
+                put("attr4", 1.0);
+                put("attr5", new double[] {1.0, 2.0, 3.0});
+                put("attr6", null);
+            }};
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, input, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+        Attributes attributes = eventData.get(0).getAttributes();
+        assertEquals(input.size() - 1, attributes.size());
+        Attributes expectedEventAttrs = Attributes.builder()
+            .put("attr1", "value1")
+            .put("attr2", true)
+            .put("attr3", 1L)
+            .put("attr4", 1.0)
+            .put("attr5", new double[] {1.0, 2.0, 3.0})
+            .build();
+
+        expectedEventAttrs.forEach((attributeKey, attrValue) -> assertEquals(attrValue, attributes.get(attributeKey)));
+    }
+
+    @Test
+    public void addEventWithTimeSpecification() {
+        // Arrange
+        final String eventName = "event-0";
+        OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, eventTime);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+        assertEquals(eventTime,
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(eventData.get(0).getEpochNanos() / 1000000), ZoneOffset.UTC));
+    }
+
+    @Test
+    public void addEventAfterSpanEnd() {
+        // Arrange
+        final String eventName = "event-0";
+
+        // Act
+        parentSpan.end();
+        openTelemetryTracer.addEvent(eventName, null, null);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        // no event associated once span has ended and the user tries to add an event.
+        assertEquals(0, eventData.size());
+    }
+
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {
         assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
         // verify instance created of opentelemetry-sdk (test impl), span implementation
-        // TODO: (no longer instance of ReadableSpan?
         assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
 
         final ReadableSpan recordEventsSpan =
@@ -485,8 +573,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
-    private static void verifySpanAttributes(Attributes actualAttributeMap,
-        Map<String, Object> expectedMap) {
+    private static void verifySpanAttributes(Map<String, Object> expectedMap, Attributes actualAttributeMap) {
         actualAttributeMap.forEach((attributeKey, attributeValue) ->
             assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue));
     }

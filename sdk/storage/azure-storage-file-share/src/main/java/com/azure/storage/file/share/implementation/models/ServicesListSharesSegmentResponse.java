@@ -8,10 +8,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the listSharesSegment operation.
- */
-public final class ServicesListSharesSegmentResponse extends ResponseBase<ServiceListSharesSegmentHeaders, ListSharesResponse> {
+/** Contains all response data for the listSharesSegment operation. */
+public final class ServicesListSharesSegmentResponse
+        extends ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> {
     /**
      * Creates an instance of ServicesListSharesSegmentResponse.
      *
@@ -21,13 +20,16 @@ public final class ServicesListSharesSegmentResponse extends ResponseBase<Servic
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesListSharesSegmentResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, ListSharesResponse value, ServiceListSharesSegmentHeaders headers) {
+    public ServicesListSharesSegmentResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            ListSharesResponse value,
+            ServicesListSharesSegmentHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public ListSharesResponse getValue() {
         return super.getValue();

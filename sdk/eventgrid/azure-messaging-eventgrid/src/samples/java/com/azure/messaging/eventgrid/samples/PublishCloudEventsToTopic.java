@@ -25,14 +25,10 @@ import java.util.Set;
  */
 public class PublishCloudEventsToTopic {
     public static void main(String[] args) {
-        EventGridPublisherClient publisherClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<CloudEvent> publisherClient = new EventGridPublisherClientBuilder()
             .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))  // make sure it accepts CloudEvent
             .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .setPrettyPrintBody(true)
-                .setAllowedQueryParamNames(Set.of("prefix", "include", "restype", "comp")))
-
-                .buildClient();
+            .buildCloudEventPublisherClient();
 
         // Create a CloudEvent with String data
         String str = "\"FirstName: John1, LastName:James\"";
@@ -50,7 +46,7 @@ public class PublishCloudEventsToTopic {
         List<CloudEvent> events = new ArrayList<>();
         events.add(cloudEventJson);
         events.add(cloudEventModel);
-        events.add(cloudEventBytes.addExtensionAttribute("extension", "value".getBytes(StandardCharsets.UTF_8)));
-        publisherClient.sendCloudEvents(events);
+        events.add(cloudEventBytes.addExtensionAttribute("extension", "value"));
+        publisherClient.sendEvents(events);
     }
 }

@@ -34,7 +34,7 @@ import java.util.Map;
  * Code snippet for {@link FormRecognizerClient}
  */
 public class FormRecognizerClientJavaDocCodeSnippets {
-    private FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
+    private final FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
 
     /**
      * Code snippet for creating a {@link FormRecognizerClient}
