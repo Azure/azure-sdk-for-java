@@ -15,9 +15,9 @@ import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityValue;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.http.HttpClient;
@@ -30,7 +30,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhoneNumber(HttpClient httpClient) {
@@ -60,7 +60,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
     }
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhoneNumbers(HttpClient httpClient) {
@@ -100,22 +100,23 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         AcquiredPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync").getFinalResult();
-        assertEquals(PhoneNumberCapabilityValue.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
-        assertEquals(PhoneNumberCapabilityValue.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
+        assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
+        assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
     }
-    
+
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
-        PhoneNumberSearchRequest phoneNumberSearchRequest = new PhoneNumberSearchRequest();
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
-        capabilities.setCalling(PhoneNumberCapabilityValue.INBOUND);
-        capabilities.setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
-        phoneNumberSearchRequest
-            .setAreaCode(AREA_CODE)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-            .setCapabilities(capabilities)
-            .setQuantity(1);
-        return getClientWithConnectionString(httpClient, testName).beginSearchAvailablePhoneNumbers(COUNTRY_CODE, phoneNumberSearchRequest, Context.NONE);
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
+
+        return getClientWithConnectionString(httpClient, testName).beginSearchAvailablePhoneNumbers(
+            COUNTRY_CODE,
+            PhoneNumberType.TOLL_FREE,
+            PhoneNumberAssignmentType.APPLICATION,
+            capabilities,
+            searchOptions,
+            Context.NONE);
     }
 
     private SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
@@ -133,17 +134,17 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityValue.INBOUND);
-        capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
+        capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         return this.getClientWithConnectionString(httpClient, testName)
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, Context.NONE).setPollInterval(Duration.ofSeconds(1));
     }
-    
+
     private PhoneNumbersClient getClientWithConnectionString(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderWithConnectionString(httpClient);
         return addLoggingPolicy(builder, testName).buildClient();
     }
-    
+
     private PhoneNumbersClient getClientWithManagedIdentity(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderUsingManagedIdentity(httpClient);
         return addLoggingPolicy(builder, testName).buildClient();
