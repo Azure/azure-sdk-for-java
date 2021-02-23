@@ -259,13 +259,13 @@ public class ReadmeSamples {
             alertConfigurationId,
                 startTime, endTime)
             .forEach(alert -> {
-                System.out.printf("AnomalyAlert Id: %s%n", alert.getAlertId());
+                System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
                 System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
                 // List anomalies for returned alerts
                 metricsAdvisorClient.listAnomaliesForAlert(
                     alertConfigurationId,
-                    alert.getAlertId())
+                    alert.getId())
                     .forEach(anomaly -> {
                         System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
                         System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());

@@ -32,35 +32,10 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode,FeedbackType
+custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,HardThresholdCondition,IngestionStatusType,DataFeedMetric,PeriodType,SmartDetectionCondition,SnoozeScope,SuppressCondition,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,DataFeedGranularityType,ErrorCodeException,ErrorCode,FeedbackType
 ```
 
 ### Generated types renamed and moved to model
-
-#### Severity -> AnomalySeverity
-```yaml
-directive:
-  - rename-model:
-      from: Severity
-      to: AnomalySeverity
-```
-
-#### IncidentStatus -> AnomalyIncidentStatus
-```yaml
-directive:
-  - rename-model:
-      from: IncidentStatus
-      to: AnomalyIncidentStatus
-```
-
-#### AlertResult -> AnomalyAlert
-```yaml
-directive:
-  - rename-model:
-      from: AlertResult
-      to: AnomalyAlert
-```
-
 #### IngestionStatus -> DataFeedIngestionStatus
 ```yaml
 directive:
@@ -83,38 +58,6 @@ directive:
   - rename-model:
       from: MetricDataItem
       to: MetricSeriesData
-```
-
-#### Granularity -> DataFeedGranularityType
-```yaml
-directive:
-  - rename-model:
-      from: Granularity
-      to: DataFeedGranularityType
-```
-
-#### NeedRollupEnum -> DataFeedRollupType
-```yaml
-directive:
-  - rename-model:
-      from: NeedRollupEnum
-      to: DataFeedRollupType
-```
-
-#### DataFeedDetailRollUpMethod -> DataFeedRollUpMethod
-```yaml
-directive:
-  - rename-model:
-      from: DataFeedDetailRollUpMethod
-      to: DataFeedRollUpMethod
-```
-
-#### EntityStatus -> DataFeedStatus
-```yaml
-directive:
-  - rename-model:
-      from: EntityStatus
-      to: DataFeedStatus
 ```
 
 #### Metric properties rename

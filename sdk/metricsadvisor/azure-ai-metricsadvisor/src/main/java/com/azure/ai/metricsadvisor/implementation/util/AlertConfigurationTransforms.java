@@ -10,8 +10,11 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyScope;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
 import com.azure.ai.metricsadvisor.implementation.models.MetricAlertingConfiguration;
+import com.azure.ai.metricsadvisor.implementation.models.Severity;
+import com.azure.ai.metricsadvisor.implementation.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.implementation.models.ValueCondition;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.BoundaryDirection;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
@@ -129,7 +132,19 @@ public final class AlertConfigurationTransforms {
             // 2. Set alert conditions (boundary and boundary conditions).
             final MetricAnomalyAlertConditions alertConditions = metricAnomalyAlertConfiguration.getAlertConditions();
             if (alertConditions != null) {
-                innerMetricAlertConfiguration.setSeverityFilter(alertConditions.getSeverityCondition());
+                if (alertConditions.getSeverityCondition() != null) {
+                    com.azure.ai.metricsadvisor.models.SeverityCondition severityCondition
+                        = alertConditions.getSeverityCondition();
+
+                    innerMetricAlertConfiguration
+                        .setSeverityFilter(new SeverityCondition()
+                            .setMaxAlertSeverity(severityCondition.getMaxAlertSeverity() != null
+                                ? Severity.fromString(severityCondition.getMaxAlertSeverity().toString())
+                                : null)
+                            .setMinAlertSeverity(severityCondition.getMinAlertSeverity() != null
+                                ? Severity.fromString(severityCondition.getMinAlertSeverity().toString())
+                                : null));
+                }
                 final MetricBoundaryCondition boundaryConditions = alertConditions.getMetricBoundaryCondition();
                 ValueCondition innerValueCondition = new ValueCondition();
                 if (boundaryConditions != null) {
@@ -222,7 +237,17 @@ public final class AlertConfigurationTransforms {
                     || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
-                    alertConditions.setSeverityRangeCondition(innerMetricAlertConfiguration.getSeverityFilter());
+                    if (innerMetricAlertConfiguration.getSeverityFilter() != null) {
+                        SeverityCondition innerSeverityFilter = innerMetricAlertConfiguration.getSeverityFilter();
+                        alertConditions.setSeverityRangeCondition(
+                            new com.azure.ai.metricsadvisor.models.SeverityCondition()
+                                .setMinAlertSeverity(innerSeverityFilter.getMinAlertSeverity() != null
+                                    ? AnomalySeverity.fromString(innerSeverityFilter.getMinAlertSeverity().toString())
+                                    : null)
+                                .setMaxAlertSeverity(innerSeverityFilter.getMaxAlertSeverity() != null
+                                    ? AnomalySeverity.fromString(innerSeverityFilter.getMaxAlertSeverity().toString())
+                                    : null));
+                    }
                     // Set boundary based condition.
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
                     if (innerValueCondition != null) {
