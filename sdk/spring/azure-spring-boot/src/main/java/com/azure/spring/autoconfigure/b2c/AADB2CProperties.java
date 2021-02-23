@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -45,6 +46,31 @@ public class AADB2CProperties implements InitializingBean {
      */
     @Deprecated
     private String tenant;
+
+    /**
+     * The name of the b2c tenant id.
+     */
+    private String tenantId;
+
+    /**
+     * App ID URI which might be used in the <code>"aud"</code> claim of an token.
+     */
+    private String appIdUri;
+
+    /**
+     * Connection Timeout for the JWKSet Remote URL call.
+     */
+    private int jwtConnectTimeout = RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT; /* milliseconds */
+
+    /**
+     * Read Timeout for the JWKSet Remote URL call.
+     */
+    private int jwtReadTimeout = RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT; /* milliseconds */
+
+    /**
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     */
+    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * The application ID that registered under b2c tenant.
@@ -214,5 +240,45 @@ public class AADB2CProperties implements InitializingBean {
 
     public void setReplyUrl(String replyUrl) {
         this.replyUrl = replyUrl;
+    }
+
+    public String getAppIdUri() {
+        return appIdUri;
+    }
+
+    public void setAppIdUri(String appIdUri) {
+        this.appIdUri = appIdUri;
+    }
+
+    public int getJwtConnectTimeout() {
+        return jwtConnectTimeout;
+    }
+
+    public void setJwtConnectTimeout(int jwtConnectTimeout) {
+        this.jwtConnectTimeout = jwtConnectTimeout;
+    }
+
+    public int getJwtReadTimeout() {
+        return jwtReadTimeout;
+    }
+
+    public void setJwtReadTimeout(int jwtReadTimeout) {
+        this.jwtReadTimeout = jwtReadTimeout;
+    }
+
+    public int getJwtSizeLimit() {
+        return jwtSizeLimit;
+    }
+
+    public void setJwtSizeLimit(int jwtSizeLimit) {
+        this.jwtSizeLimit = jwtSizeLimit;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }
