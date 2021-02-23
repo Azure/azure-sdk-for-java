@@ -272,7 +272,7 @@ public final class BinaryData {
 
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        return new BinaryData(serializer.serialize(data));
+        return new BinaryData(serializer.serializeToBytes(data));
     }
 
     /**
@@ -453,7 +453,7 @@ public final class BinaryData {
         Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        return serializer.deserialize(this.data, typeReference);
+        return serializer.deserializeFromBytes(this.data, typeReference);
     }
 
     /**

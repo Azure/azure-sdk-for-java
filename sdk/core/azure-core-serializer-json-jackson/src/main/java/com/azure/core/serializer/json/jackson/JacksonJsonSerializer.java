@@ -50,7 +50,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
-    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
+    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         if (data == null) {
             return null;
         }
@@ -76,8 +76,8 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
-    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserialize(data, typeReference));
+    public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
     }
 
     @Override
@@ -86,7 +86,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
-    public byte[] serialize(Object value) {
+    public byte[] serializeToBytes(Object value) {
         try {
             return mapper.writeValueAsBytes(value);
         } catch (IOException ex) {
@@ -104,8 +104,8 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
-    public Mono<byte[]> serializeAsync(Object value) {
-        return Mono.fromCallable(() -> serialize(value));
+    public Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.fromCallable(() -> this.serializeToBytes(value));
     }
 
     @Override

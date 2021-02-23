@@ -7,8 +7,6 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -25,12 +23,8 @@ public interface AvroSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized Avro byte array.
      */
     @Override
-    default <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return null;
-        }
-
-        return deserialize(new ByteArrayInputStream(data), typeReference);
+    default <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        return ObjectSerializer.super.deserializeFromBytes(data, typeReference);
     }
 
     /**
@@ -52,12 +46,8 @@ public interface AvroSerializer extends ObjectSerializer {
      * @param <T> Type of the object.
      * @return Reactive stream that emits the object represented by the deserialized Avro byte array.
      */
-    default <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return Mono.empty();
-        }
-
-        return deserializeAsync(new ByteArrayInputStream(data), typeReference);
+    default <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return ObjectSerializer.super.deserializeFromBytesAsync(data, typeReference);
     }
 
     /**
@@ -77,11 +67,8 @@ public interface AvroSerializer extends ObjectSerializer {
      * @param value The object.
      * @return The Avro binary representation of the serialized object.
      */
-    default byte[] serialize(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        serialize(stream, value);
-
-        return stream.toByteArray();
+    default byte[] serializeToBytes(Object value) {
+        return ObjectSerializer.super.serializeToBytes(value);
     }
 
     /**
@@ -100,10 +87,8 @@ public interface AvroSerializer extends ObjectSerializer {
      * @return Reactive stream that emits the Avro binary representation of the serialized object.
      */
     @Override
-    default Mono<byte[]> serializeAsync(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        return serializeAsync(stream, value).thenReturn(stream.toByteArray());
+    default Mono<byte[]> serializeToBytesAsync(Object value) {
+        return ObjectSerializer.super.serializeToBytesAsync(value);
     }
 
     /**

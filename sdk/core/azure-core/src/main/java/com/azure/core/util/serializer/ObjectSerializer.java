@@ -22,12 +22,14 @@ public interface ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized byte array.
      */
-    default <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return null;
-        }
-
-        return deserialize(new ByteArrayInputStream(data), typeReference);
+    default <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        /*
+         * If the byte array is null pass an empty one by default. This is better than returning null as a previous
+         * implementation of this may have custom handling for empty data.
+         */
+        return (data == null)
+            ? deserialize(new ByteArrayInputStream(new byte[0]), typeReference)
+            : deserialize(new ByteArrayInputStream(data), typeReference);
     }
 
     /**
@@ -48,12 +50,8 @@ public interface ObjectSerializer {
      * @param <T> Type of the object.
      * @return Reactive stream that emits the object represented by the deserialized byte array.
      */
-    default <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return Mono.empty();
-        }
-
-        return deserializeAsync(new ByteArrayInputStream(data), typeReference);
+    default <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
     }
 
     /**
@@ -72,7 +70,7 @@ public interface ObjectSerializer {
      * @param value The object.
      * @return The binary representation of the serialized object.
      */
-    default byte[] serialize(Object value) {
+    default byte[] serializeToBytes(Object value) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         serialize(stream, value);
 
@@ -93,10 +91,8 @@ public interface ObjectSerializer {
      * @param value The object.
      * @return Reactive stream that emits the binary representation of the serialized object.
      */
-    default Mono<byte[]> serializeAsync(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        return serializeAsync(stream, value).thenReturn(stream.toByteArray());
+    default Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.fromCallable(() -> serializeToBytes(value));
     }
 
     /**

@@ -18,7 +18,6 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,7 +44,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
+    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         return deserialize(data, () -> decoderFactory.binaryDecoder(data, null));
     }
 
@@ -69,22 +68,13 @@ public class ApacheAvroSerializer implements AvroSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserialize(data, typeReference));
+    public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> this.deserializeFromBytes(data, typeReference));
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
-    }
-
-    @Override
-    public byte[] serialize(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        serialize(stream, value);
-
-        return stream.toByteArray();
     }
 
     @Override
@@ -98,11 +88,6 @@ public class ApacheAvroSerializer implements AvroSerializer {
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
-    }
-
-    @Override
-    public Mono<byte[]> serializeAsync(Object value) {
-        return Mono.fromCallable(() -> serialize(value));
     }
 
     @Override

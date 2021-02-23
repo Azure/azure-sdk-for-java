@@ -48,7 +48,7 @@ public class JacksonJsonSerializerTests {
     @Test
     public void deserializeNullByteArrayReturnsNull() {
         StepVerifier.create(DEFAULT_SERIALIZER
-            .deserializeAsync((byte[]) null, TypeReference.createInstance(Person.class)))
+            .deserializeFromBytesAsync((byte[]) null, TypeReference.createInstance(Person.class)))
             .verifyComplete();
     }
 

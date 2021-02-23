@@ -5,8 +5,6 @@ package com.azure.core.util.serializer;
 
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -23,12 +21,8 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON byte array.
      */
     @Override
-    default <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return null;
-        }
-
-        return deserialize(new ByteArrayInputStream(data), typeReference);
+    default <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        return ObjectSerializer.super.deserializeFromBytes(data, typeReference);
     }
 
     /**
@@ -51,12 +45,8 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return Reactive stream that emits the object represented by the deserialized JSON byte array.
      */
     @Override
-    default <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return Mono.empty();
-        }
-
-        return deserializeAsync(new ByteArrayInputStream(data), typeReference);
+    default <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return ObjectSerializer.super.deserializeFromBytesAsync(data, typeReference);
     }
 
     /**
@@ -77,11 +67,8 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The JSON binary representation of the serialized object.
      */
     @Override
-    default byte[] serialize(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        serialize(stream, value);
-
-        return stream.toByteArray();
+    default byte[] serializeToBytes(Object value) {
+        return ObjectSerializer.super.serializeToBytes(value);
     }
 
     /**
@@ -100,10 +87,8 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return Reactive stream that emits the JSON binary representation of the serialized object.
      */
     @Override
-    default Mono<byte[]> serializeAsync(Object value) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        return serializeAsync(stream, value).thenReturn(stream.toByteArray());
+    default Mono<byte[]> serializeToBytesAsync(Object value) {
+        return ObjectSerializer.super.serializeToBytesAsync(value);
     }
 
     /**

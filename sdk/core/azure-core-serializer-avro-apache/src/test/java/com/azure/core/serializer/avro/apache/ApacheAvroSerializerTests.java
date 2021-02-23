@@ -230,7 +230,7 @@ public class ApacheAvroSerializerTests {
     @Test
     public void deserializeNullByteArrayReturnsNull() {
         StepVerifier.create(getSerializer(schemaCreator("null"))
-            .deserializeAsync((byte[]) null, createInstance(void.class)))
+            .deserializeFromBytesAsync((byte[]) null, createInstance(void.class)))
             .verifyComplete();
     }
 

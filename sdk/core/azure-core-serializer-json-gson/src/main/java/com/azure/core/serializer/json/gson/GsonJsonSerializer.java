@@ -42,15 +42,6 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
     }
 
     @Override
-    public <T> T deserialize(byte[] data, TypeReference<T> typeReference) {
-        if (data == null) {
-            return null;
-        }
-
-        return gson.fromJson(new String(data, UTF_8), typeReference.getJavaType());
-    }
-
-    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
@@ -60,18 +51,8 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
     }
 
     @Override
-    public <T> Mono<T> deserializeAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserialize(data, typeReference));
-    }
-
-    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
-    }
-
-    @Override
-    public byte[] serialize(Object value) {
-        return gson.toJson(value).getBytes(UTF_8);
     }
 
     @Override
@@ -87,8 +68,8 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
     }
 
     @Override
-    public Mono<byte[]> serializeAsync(Object value) {
-        return Mono.fromCallable(() -> serialize(value));
+    public Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.fromCallable(() -> serializeToBytes(value));
     }
 
     @Override
