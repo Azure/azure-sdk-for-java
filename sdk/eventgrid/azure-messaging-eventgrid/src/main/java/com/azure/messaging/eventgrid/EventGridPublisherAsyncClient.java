@@ -35,6 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -114,6 +115,15 @@ public final class EventGridPublisherAsyncClient<T> {
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
         EventGridServiceVersion apiVersion) {
+        if (Objects.isNull(endpoint)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
+        }
+        if (Objects.isNull(keyCredential)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'keyCredetial' cannot be null."));
+        }
+        if (Objects.isNull(expirationTime)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'expirationTime' cannot be null."));
+        }
         try {
             String resKey = "r";
             String expKey = "e";
