@@ -20,6 +20,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TablesUtils;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -219,10 +220,9 @@ public class TableServiceAsyncClient {
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
             .onErrorResume(TableServiceErrorException.class, e ->
-                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteResponse.class,
-                    TablesDeleteHeaders.class, implementation.getSerializerAdapter(), logger))
-            .map(response -> new SimpleResponse<>(response, null));
+                TablesUtils.swallowExceptionForStatusCode(404, e, logger));
     }
 
     /**

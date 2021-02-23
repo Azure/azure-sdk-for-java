@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -21,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TablesUtils;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -29,8 +31,6 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TablesDeleteEntityHeaders;
 import com.azure.data.tables.implementation.models.TablesDeleteEntityResponse;
-import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
-import com.azure.data.tables.implementation.models.TablesDeleteResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -436,16 +436,15 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
             .onErrorResume(TableServiceErrorException.class, e ->
-                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteResponse.class,
-                    TablesDeleteHeaders.class, serializerAdapter, logger))
-            .map(response -> new SimpleResponse<>(response, null));
+                TablesUtils.swallowExceptionForStatusCode(404, e, logger));
     }
 
     /**
@@ -502,10 +501,9 @@ public final class TableAsyncClient {
 
         return implementation.getTables()
             .deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam, timeoutInt, null, null, context)
+            .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
             .onErrorResume(TableServiceErrorException.class, e ->
-                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteEntityResponse.class,
-                    TablesDeleteEntityHeaders.class, serializerAdapter, logger))
-            .map(response -> new SimpleResponse<>(response, null));
+                TablesUtils.swallowExceptionForStatusCode(404, e, logger));
     }
 
     /**
