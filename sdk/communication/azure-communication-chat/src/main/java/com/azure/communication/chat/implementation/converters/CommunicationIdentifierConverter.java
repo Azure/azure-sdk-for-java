@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.chat.implementation;
+package com.azure.communication.chat.implementation.converters;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
+import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.chat.implementation.models.CommunicationCloudEnvironmentModel;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.chat.implementation.models.MicrosoftTeamsUserIdentifierModel;
-import com.azure.communication.chat.implementation.models.PhoneNumberIdentifierModel;
+
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -18,13 +16,17 @@ import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
 
-public class CommunicationIdentifierSerializer {
+import java.util.ArrayList;
+import java.util.Objects;
+
+
+public class CommunicationIdentifierConverter {
     /**
-     * Deserialize CommunicationIdentifierModel into CommunicationIdentifier
-     * @param identifier CommunicationIdentifierModel to be deserialized
-     * @return deserialized CommunicationIdentifier
+     * Convert CommunicationIdentifierModel into CommunicationIdentifier
+     * @param identifier CommunicationIdentifierModel to be converted
+     * @return CommunicationIdentifier
      */
-    public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier) {
+    public static CommunicationIdentifier convert(CommunicationIdentifierModel identifier) {
         assertSingleType(identifier);
         String rawId = identifier.getRawId();
 
@@ -42,7 +44,6 @@ public class CommunicationIdentifierSerializer {
         if (identifier.getMicrosoftTeamsUser() != null) {
             MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
             Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
-
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
@@ -50,6 +51,7 @@ public class CommunicationIdentifierSerializer {
                 .setRawId(rawId)
                 .setCloudEnvironment(new CommunicationCloudEnvironment(teamsUserIdentifierModel.getCloud().toString()));
         }
+
         Objects.requireNonNull(rawId);
         return new UnknownIdentifier(rawId);
     }
@@ -77,13 +79,13 @@ public class CommunicationIdentifierSerializer {
     }
 
     /**
-     * Serialize CommunicationIdentifier into CommunicationIdentifierModel
-     * @param identifier CommunicationIdentifier object to be serialized
+     * Convert CommunicationIdentifier into CommunicationIdentifierModel
+     * @param identifier CommunicationIdentifier object to be converted
      * @return CommunicationIdentifierModel
      * @throws IllegalArgumentException when identifier is an unknown class derived from
      *          CommunicationIdentifier
      */
-    public static CommunicationIdentifierModel serialize(CommunicationIdentifier identifier)
+    public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier)
         throws IllegalArgumentException {
 
         if (identifier instanceof CommunicationUserIdentifier) {
@@ -117,4 +119,5 @@ public class CommunicationIdentifierSerializer {
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));
     }
+
 }
