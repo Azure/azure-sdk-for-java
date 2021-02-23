@@ -93,7 +93,7 @@ public class QueueServiceJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceClient}
-     * with {@link QueueServiceClientBuilder#messageDecodingFailedHandler(Function)}.
+     * with {@link QueueServiceClientBuilder#processMessageDecodingErrorAsync(Function)}.
      *
      * @return An instance of {@link QueueServiceClient}
      */
@@ -125,7 +125,7 @@ public class QueueServiceJavaDocCodeSamples {
 
         QueueServiceClient client = new QueueServiceClientBuilder()
             .connectionString(connectionString)
-            .messageDecodingFailedHandler(messageDecodingFailedHandler)
+            .processMessageDecodingErrorAsync(messageDecodingFailedHandler)
             .buildClient();
         // END: com.azure.storage.queue.QueueServiceClientBuilder#messageDecodingFailedHandler
         return client;

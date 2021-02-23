@@ -5,6 +5,7 @@ package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.QueueClient;
 
 import java.util.Objects;
 
@@ -14,31 +15,44 @@ import java.util.Objects;
 @Immutable
 public class QueueMessageDecodingFailure {
     private final QueueAsyncClient queueAsyncClient;
+    private final QueueClient queueClient;
     private final QueueMessageItem queueMessageItem;
     private final PeekedMessageItem peekedMessageItem;
 
     /**
      * Creates new {@link QueueMessageDecodingFailure}.
      * @param queueAsyncClient the {@link QueueAsyncClient} of the queue that has received message.
+     * @param queueClient the {@link QueueClient} of the queue that has received message.
      * @param queueMessageItem the {@link QueueMessageItem} that has been received and could not be decoded.
      * @param peekedMessageItem the {@link PeekedMessageItem} that has been peeked and could not be decoded.
      */
     public QueueMessageDecodingFailure(
         QueueAsyncClient queueAsyncClient,
+        QueueClient queueClient,
         QueueMessageItem queueMessageItem,
         PeekedMessageItem peekedMessageItem) {
         Objects.requireNonNull(queueAsyncClient, "'queueAsyncClient' cannot be null.");
+        Objects.requireNonNull(queueClient, "'queueClient' cannot be null.");
         this.queueAsyncClient = queueAsyncClient;
+        this.queueClient = queueClient;
         this.queueMessageItem = queueMessageItem;
         this.peekedMessageItem = peekedMessageItem;
+    }
+
+    /**
+     * Gets the async queue client that has received message.
+     * @return the queue client that has received message.
+     */
+    public QueueAsyncClient getQueueAsyncClient() {
+        return queueAsyncClient;
     }
 
     /**
      * Gets the queue client that has received message.
      * @return the queue client that has received message.
      */
-    public QueueAsyncClient getQueueAsyncClient() {
-        return queueAsyncClient;
+    public QueueClient getQueueClient() {
+        return queueClient;
     }
 
     /**

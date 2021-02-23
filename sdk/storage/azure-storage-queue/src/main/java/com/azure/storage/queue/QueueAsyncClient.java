@@ -42,6 +42,7 @@ import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -51,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -86,7 +88,8 @@ public final class QueueAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
+    private final Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -97,13 +100,15 @@ public final class QueueAsyncClient {
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler,
+        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
+        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
         this.messageDecodingFailedHandler = messageDecodingFailedHandler;
     }
 
@@ -822,13 +827,29 @@ public final class QueueAsyncClient {
             .flatMap(queueMessageItemInternal ->
                 transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
                 .onErrorResume(IllegalArgumentException.class, e -> {
-                    if (messageDecodingFailedHandler != null) {
+                    if (messageDecodingFailedAsyncHandler != null) {
                         return transformQueueMessageItemInternal(
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
-                            .flatMap(messageItem -> messageDecodingFailedHandler.apply(
+                            .flatMap(messageItem -> messageDecodingFailedAsyncHandler.apply(
                                 new QueueMessageDecodingFailure(
-                                    this, messageItem, null)))
+                                    this, new QueueClient(this),
+                                    messageItem, null)))
                             .then(Mono.empty());
+                    } else if (messageDecodingFailedHandler != null) {
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                            .flatMap(messageItem -> {
+                                try {
+                                    messageDecodingFailedHandler.accept(
+                                        new QueueMessageDecodingFailure(
+                                            this, new QueueClient(this),
+                                            messageItem, null));
+                                    return Mono.<QueueMessageItem>empty();
+                                } catch (RuntimeException re) {
+                                    return FluxUtil.<QueueMessageItem>monoError(logger, re);
+                                }
+                            })
+                            .subscribeOn(Schedulers.boundedElastic());
                     } else {
                         return FluxUtil.monoError(logger, e);
                     }
@@ -953,13 +974,29 @@ public final class QueueAsyncClient {
             .flatMap(peekedMessageItemInternal ->
                 transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
                     .onErrorResume(IllegalArgumentException.class, e -> {
-                        if (messageDecodingFailedHandler != null) {
+                        if (messageDecodingFailedAsyncHandler != null) {
                             return transformPeekedMessageItemInternal(
                                 peekedMessageItemInternal, QueueMessageEncoding.NONE)
-                                .flatMap(messageItem -> messageDecodingFailedHandler.apply(
+                                .flatMap(messageItem -> messageDecodingFailedAsyncHandler.apply(
                                     new QueueMessageDecodingFailure(
-                                        this, null, messageItem)))
+                                        this,  new QueueClient(this),
+                                        null, messageItem)))
                                 .then(Mono.empty());
+                        } else if (messageDecodingFailedHandler != null) {
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                                .flatMap(messageItem -> {
+                                    try {
+                                        messageDecodingFailedHandler.accept(
+                                            new QueueMessageDecodingFailure(
+                                                this,  new QueueClient(this),
+                                                null, messageItem));
+                                        return Mono.<PeekedMessageItem>empty();
+                                    } catch (RuntimeException re) {
+                                        return FluxUtil.<PeekedMessageItem>monoError(logger, re);
+                                    }
+                                })
+                                .subscribeOn(Schedulers.boundedElastic());
                         } else {
                             return FluxUtil.monoError(logger, e);
                         }

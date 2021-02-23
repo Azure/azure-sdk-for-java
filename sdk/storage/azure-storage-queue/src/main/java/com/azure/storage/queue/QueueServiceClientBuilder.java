@@ -28,6 +28,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -95,7 +96,8 @@ public final class QueueServiceClientBuilder {
     private QueueServiceVersion version;
 
     private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
-    private Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
+    private Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
+    private Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -135,7 +137,7 @@ public final class QueueServiceClientBuilder {
             .buildClient();
 
         return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion,
-            messageEncoding, messageDecodingFailedHandler);
+            messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
     }
 
     /**
@@ -387,6 +389,37 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
+     * Sets the asynchronous handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingFailure} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingFailure#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingFailure#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p>
+     * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
+     * {@link QueueServiceAsyncClient} built by this builder.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#messageDecodingFailedAsyncHandler}
+     *
+     * @param messageDecodingFailedAsyncHandler the handler.
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder processMessageDecodingErrorAsync(
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler) {
+        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
+        return this;
+    }
+
+    /**
      * Sets the handler that performs the tasks needed when a message is received or peaked from the queue
      * but cannot be decoded.
      * <p>
@@ -411,8 +444,8 @@ public final class QueueServiceClientBuilder {
      * @param messageDecodingFailedHandler the handler.
      * @return the updated QueueServiceClientBuilder object
      */
-    public QueueServiceClientBuilder messageDecodingFailedHandler(
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
+    public QueueServiceClientBuilder processMessageDecodingError(
+        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
         this.messageDecodingFailedHandler = messageDecodingFailedHandler;
         return this;
     }

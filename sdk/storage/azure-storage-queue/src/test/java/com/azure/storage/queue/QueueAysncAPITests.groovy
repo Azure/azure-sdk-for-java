@@ -420,7 +420,7 @@ class QueueAysncAPITests extends APISpec {
         String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({failure ->
+            .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
                 return Mono.empty()
@@ -447,9 +447,34 @@ class QueueAysncAPITests extends APISpec {
         QueueMessageItem badMessage = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({failure ->
+            .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
                 return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
+    def "Dequeue and delete with sync handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingError({ failure ->
+                badMessage = failure.getQueueMessageItem()
+                failure.getQueueClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)
         when:
@@ -471,7 +496,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(encodedMsg).block()
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
+            .processMessageDecodingErrorAsync({ message ->
                 throw new IllegalStateException("KABOOM")
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)
@@ -599,7 +624,7 @@ class QueueAysncAPITests extends APISpec {
         String queueUrl = null
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({failure ->
+            .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getPeekedMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
                 return Mono.empty()
@@ -616,6 +641,32 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Peek with sync handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        PeekedMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingError({ failure ->
+                badMessage = failure.getPeekedMessageItem()
+                // call some sync API
+                failure.getQueueClient().getProperties()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage !=null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
     def "Peek with handler exception"() {
         given:
         queueAsyncClient.create().block()
@@ -625,7 +676,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage(encodedMsg).block()
         def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .messageDecodingFailedHandler({message ->
+            .processMessageDecodingErrorAsync({ message ->
                 throw new IllegalStateException("KABOOM")
             })
             .buildAsyncClient().getQueueAsyncClient(queueName)

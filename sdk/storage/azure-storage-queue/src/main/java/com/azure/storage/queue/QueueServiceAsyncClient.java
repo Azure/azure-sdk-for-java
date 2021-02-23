@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -64,7 +65,8 @@ public final class QueueServiceAsyncClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler;
+    private final Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler;
+    private final Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
@@ -73,11 +75,13 @@ public final class QueueServiceAsyncClient {
      */
     QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
-        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
+        Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedAsyncHandler,
+        Consumer<QueueMessageDecodingFailure> messageDecodingFailedHandler) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
+        this.messageDecodingFailedAsyncHandler = messageDecodingFailedAsyncHandler;
         this.messageDecodingFailedHandler = messageDecodingFailedHandler;
     }
 
@@ -116,7 +120,7 @@ public final class QueueServiceAsyncClient {
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
         return new QueueAsyncClient(client, queueName, accountName, serviceVersion,
-            messageEncoding, messageDecodingFailedHandler);
+            messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
     }
 
     /**
@@ -171,7 +175,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, messageDecodingFailedHandler);
+            serviceVersion, messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -223,7 +227,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         return new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, messageDecodingFailedHandler).deleteWithResponse(context);
+            serviceVersion, messageEncoding, messageDecodingFailedAsyncHandler, messageDecodingFailedHandler)
+            .deleteWithResponse(context);
     }
 
     /**
