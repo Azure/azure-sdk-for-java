@@ -7,9 +7,11 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import com.microsoft.azure.servicebus.QueueClient;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -19,6 +21,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -94,6 +97,24 @@ public class AzureServiceBusQueueAutoConfigurationTest {
                           });
     }
 
+    @Test
+    public void testMessageConverterProvided() {
+        this.contextRunner.withUserConfiguration(
+            TestConfigWithMessageConverter.class,
+            AzureServiceBusAutoConfiguration.class)
+                          .withPropertyValues(
+                              SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
+                              assertThat(context).hasSingleBean(ServiceBusQueueTemplate.class);
+
+                              ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
+                              ServiceBusQueueTemplate queueTemplate = context.getBean(ServiceBusQueueTemplate.class);
+                              assertTrue(messageConverter == queueTemplate.getMessageConverter());
+                          });
+    }
+
     @Configuration
     @EnableConfigurationProperties(AzureProperties.class)
     public static class TestConfigWithServiceBusNamespaceManager {
@@ -123,6 +144,17 @@ public class AzureServiceBusQueueAutoConfigurationTest {
         @Bean
         public AzureResourceManager azureResourceManager() {
             return mock(AzureResourceManager.class);
+        }
+
+    }
+
+    @Configuration
+    @EnableConfigurationProperties(AzureProperties.class)
+    public static class TestConfigWithMessageConverter {
+
+        @Bean
+        public ServiceBusMessageConverter messageConverter() {
+            return mock(ServiceBusMessageConverter.class);
         }
 
     }
