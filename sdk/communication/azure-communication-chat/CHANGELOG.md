@@ -3,12 +3,11 @@
 ## 1.0.0-beta.5 (Unreleased)
 ### Breaking Changes
 
-- Changed string based MRIs to `CommunicationIdentifier` class.
-- ChatMessage - `senderId` renamed to `senderCommunicationIdentifier`
-- ChatMessageReadReceipt - `senderId` renamed to `senderCommunicationIdentifier`
-- ChatParticipant - `user` renamed to `communicationIdentifier`
-- ChatThread - `createdBy` renamed to `createdByCommunicationIdentifier`
-- ChatMessageContent - `initiator` renamed to `initiatorCommunicationIdentifier`
+- ChatMessage - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageReadReceipt - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatParticipant - `user` renamed to `communicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatThread - `createdBy` renamed to `createdByCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageContent - `initiator` renamed to `initiatorCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
 
 
 ## 1.0.0-beta.4 (2021-02-09)
