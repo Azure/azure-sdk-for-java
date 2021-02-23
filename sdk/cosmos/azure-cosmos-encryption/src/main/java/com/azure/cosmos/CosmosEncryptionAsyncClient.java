@@ -12,13 +12,13 @@ import reactor.core.publisher.Mono;
 /**
  * CosmosClient with Encryption support.
  */
-public class EncryptionCosmosAsyncClient {
+public class CosmosEncryptionAsyncClient {
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
 
-    EncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+    CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
@@ -95,6 +95,11 @@ public class EncryptionCosmosAsyncClient {
             "Please make sure you have created the Client Encryption Keys", throwable)));
     }
 
+    /**
+     * Get the regular CosmosAsyncClient back.
+     *
+     * @return cosmosAsyncClient
+     */
     public CosmosAsyncClient getCosmosAsyncClient() {
         return cosmosAsyncClient;
     }
@@ -107,7 +112,7 @@ public class EncryptionCosmosAsyncClient {
      *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
-    public static EncryptionCosmosAsyncClient buildEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+    public static CosmosEncryptionAsyncClient buildEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
@@ -116,7 +121,7 @@ public class EncryptionCosmosAsyncClient {
             throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
         }
 
-        return new EncryptionCosmosAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+        return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 
     /**
@@ -125,8 +130,8 @@ public class EncryptionCosmosAsyncClient {
      * @param cosmosAsyncDatabase original database
      * @return database with encryption capabilities
      */
-    public EncryptionCosmosAsyncDatabase getEncryptedCosmosAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase) {
-        return new EncryptionCosmosAsyncDatabase(cosmosAsyncDatabase, this);
+    public CosmosEncryptionAsyncDatabase getEncryptedCosmosAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase) {
+        return new CosmosEncryptionAsyncDatabase(cosmosAsyncDatabase, this);
     }
 
     /**
@@ -135,9 +140,9 @@ public class EncryptionCosmosAsyncClient {
      * @param databaseId original database id
      * @return database with encryption capabilities
      */
-    public EncryptionCosmosAsyncDatabase getEncryptedCosmosAsyncDatabase(String databaseId) {
+    public CosmosEncryptionAsyncDatabase getEncryptedCosmosAsyncDatabase(String databaseId) {
         CosmosAsyncDatabase database = this.cosmosAsyncClient.getDatabase(databaseId);
-        return new EncryptionCosmosAsyncDatabase(database, this);
+        return new CosmosEncryptionAsyncDatabase(database, this);
     }
 
     /**

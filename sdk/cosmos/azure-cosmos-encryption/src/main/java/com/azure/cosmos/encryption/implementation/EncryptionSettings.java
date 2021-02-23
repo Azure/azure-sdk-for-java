@@ -206,6 +206,7 @@ public final class EncryptionSettings {
         encryptionSettings.setClientEncryptionKeyId(settingsForKey.clientEncryptionKeyId);
         encryptionSettings.setDataEncryptionKey(settingsForKey.getDataEncryptionKey());
         encryptionSettings.setEncryptionSettingTimeToLive(settingsForKey.getEncryptionSettingTimeToLive());
+        encryptionSettings.setEncryptionType(encryptionType);
         AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256Algorithm =
             AeadAes256CbcHmac256EncryptionAlgorithm.getOrCreate(settingsForKey.getDataEncryptionKey(), encryptionType);
         encryptionSettings.setAeadAes256CbcHmac256EncryptionAlgorithm(aeadAes256CbcHmac256Algorithm);

@@ -3,10 +3,13 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Warning;
+import reactor.core.publisher.Mono;
+import java.util.HashMap;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -35,5 +38,20 @@ public class EncryptionModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse response) {
         return response.resourceResponse;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static HashMap<String, SqlParameter> getEncryptionParamMap(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption) {
+        return sqlQuerySpecWithEncryption.getEncryptionParamMap();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Mono<Void> addEncryptionParameterAsync(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption, String path, SqlParameter sqlParameter, CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer){
+        return sqlQuerySpecWithEncryption.addEncryptionParameterAsync(path, sqlParameter, cosmosEncryptionAsyncContainer);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static SqlQuerySpec getSqlQuerySpec(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption){
+        return sqlQuerySpecWithEncryption.getSqlQuerySpec();
     }
 }

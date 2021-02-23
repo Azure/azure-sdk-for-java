@@ -15,11 +15,12 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionModelBridgeInternal;
-import com.azure.cosmos.models.EncryptionSqlQuerySpec;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -27,30 +28,32 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * CosmosAsyncContainer with encryption capabilities.
  */
-public class EncryptionCosmosAsyncContainer {
+public class CosmosEncryptionAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();
     private final CosmosAsyncContainer container;
     private EncryptionProcessor encryptionProcessor;
 
-    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
+    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
 
-    EncryptionCosmosAsyncContainer(CosmosAsyncContainer container,
-                                   EncryptionCosmosAsyncClient encryptionCosmosAsyncClient) {
+    CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
+                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
         this.container = container;
-        this.encryptionCosmosAsyncClient = encryptionCosmosAsyncClient;
-        this.encryptionProcessor = new EncryptionProcessor(this.container, encryptionCosmosAsyncClient);
+        this.cosmosEncryptionAsyncClient = cosmosEncryptionAsyncClient;
+        this.encryptionProcessor = new EncryptionProcessor(this.container, cosmosEncryptionAsyncClient);
         this.encryptionScheduler = Schedulers.parallel();
     }
 
-    public EncryptionProcessor getEncryptionProcessor() {
+    EncryptionProcessor getEncryptionProcessor() {
         return this.encryptionProcessor;
     }
 
@@ -74,7 +77,6 @@ public class EncryptionCosmosAsyncContainer {
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
-
         byte[] streamPayload = cosmosSerializerToStream(item);
         CosmosItemRequestOptions finalRequestOptions = requestOptions;
         return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.createItem(
@@ -85,7 +87,6 @@ public class EncryptionCosmosAsyncContainer {
                 this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
-
 
     /**
      * Deletes the item.
@@ -186,8 +187,6 @@ public class EncryptionCosmosAsyncContainer {
                                                     PartitionKey partitionKey,
                                                     CosmosItemRequestOptions requestOptions,
                                                     Class<T> classType) {
-
-
         Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.container.readItem(
             id,
             partitionKey,
@@ -213,7 +212,6 @@ public class EncryptionCosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options,
                                              Class<T> classType) {
-
         return this.queryItems(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
     }
 
@@ -232,7 +230,6 @@ public class EncryptionCosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
                                              Class<T> classType) {
-
         if (options == null) {
             options = new CosmosQueryRequestOptions();
         }
@@ -253,36 +250,54 @@ public class EncryptionCosmosAsyncContainer {
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param <T>       the type parameter.
-     * @param query     the query.
+     * @param sqlQuerySpecWithEncryption     the sqlQuerySpecWithEncryption.
      * @param options   the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItemsOnEncryptedProperties(EncryptionSqlQuerySpec query,
+    public <T> CosmosPagedFlux<T> queryItemsOnEncryptedProperties(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption,
                                                                   CosmosQueryRequestOptions options,
                                                                   Class<T> classType) {
-
         if (options == null) {
             options = new CosmosQueryRequestOptions();
         }
 
-        return CosmosBridgeInternal.queryItemsInternal(container, query.getSqlQuerySpec(), options,
-            new Transformer<T>() {
-                @Override
-                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, func);
-                }
-            });
+        if (EncryptionModelBridgeInternal.getEncryptionParamMap(sqlQuerySpecWithEncryption).size() > 0) {
+            List<Mono<Void>> encryptionSqlParameterMonoList = new ArrayList<>();
+            for (Map.Entry<String, SqlParameter> entry :
+                EncryptionModelBridgeInternal.getEncryptionParamMap(sqlQuerySpecWithEncryption).entrySet()) {
+                encryptionSqlParameterMonoList.add(EncryptionModelBridgeInternal.addEncryptionParameterAsync(sqlQuerySpecWithEncryption, entry.getKey(), entry.getValue(), this));
+            }
+            Mono<List<Void>> listMono = Flux.mergeSequential(encryptionSqlParameterMonoList).collectList();
+            Mono<SqlQuerySpec> sqlQuerySpecMono =
+                listMono.flatMap(ignoreVoids -> Mono.just(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption)));
+            return CosmosBridgeInternal.queryItemsInternal(container, sqlQuerySpecMono, options,
+                new Transformer<T>() {
+                    @Override
+                    public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+                        return queryDecryptionTransformer(classType, func);
+                    }
+                });
+        } else {
+            return CosmosBridgeInternal.queryItemsInternal(container, EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption),
+                options,
+                new Transformer<T>() {
+                    @Override
+                    public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+                        return queryDecryptionTransformer(classType, func);
+                    }
+                });
+        }
     }
 
     /**
-     * Get the EncryptionCosmosAsyncClient
+     * Get the CosmosEncryptionAsyncClient
      *
      * @return encrypted cosmosAsyncClient
      */
-    public EncryptionCosmosAsyncClient getEncryptionCosmosAsyncClient() {
-        return encryptionCosmosAsyncClient;
+    public CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
+        return cosmosEncryptionAsyncClient;
     }
 
     /**

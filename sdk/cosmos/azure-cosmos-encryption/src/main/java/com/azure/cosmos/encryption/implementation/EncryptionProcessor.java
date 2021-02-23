@@ -5,7 +5,7 @@ package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.EncryptionBridgeInternal;
-import com.azure.cosmos.EncryptionCosmosAsyncClient;
+import com.azure.cosmos.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -47,16 +47,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
-    private EncryptionCosmosAsyncClient encryptionCosmosClient;
+    private CosmosEncryptionAsyncClient encryptionCosmosClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
     private EncryptionSettings encryptionSettings;
-    private boolean isEncryptionSettingsInitDone;
+    private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private final static int STRING_SIZE_ENCRYPTION_LIMIT = 1024;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
-                               EncryptionCosmosAsyncClient encryptionCosmosClient) {
+                               CosmosEncryptionAsyncClient encryptionCosmosClient) {
         if (cosmosAsyncContainer == null) {
             throw new IllegalStateException("encryptionCosmosContainer is null");
         }
@@ -66,7 +66,7 @@ public class EncryptionProcessor {
         }
         this.cosmosAsyncContainer = cosmosAsyncContainer;
         this.encryptionCosmosClient = encryptionCosmosClient;
-        this.isEncryptionSettingsInitDone = false;
+        this.isEncryptionSettingsInitDone = new AtomicBoolean(false);
         this.encryptionSettings = new EncryptionSettings();
         this.encryptionKeyStoreProvider = this.encryptionCosmosClient.getEncryptionKeyStoreProvider();
     }
@@ -81,7 +81,7 @@ public class EncryptionProcessor {
      */
     public Mono<Void> initializeEncryptionSettingsAsync() {
         // update the property level setting.
-        if (this.isEncryptionSettingsInitDone) {
+        if (this.isEncryptionSettingsInitDone.get()) {
             throw new IllegalStateException("The Encrypton Processor has already been initialized. ");
         }
         Map<String, EncryptionSettings> settingsByDekId = new HashMap<>();
@@ -89,7 +89,7 @@ public class EncryptionProcessor {
             this.cosmosAsyncContainer, false).flatMap(clientEncryptionPolicy ->
         {
             if (clientEncryptionPolicy == null) {
-                this.isEncryptionSettingsInitDone = true;
+                this.isEncryptionSettingsInitDone.set(true);
                 return Mono.empty();
             }
             this.clientEncryptionPolicy = clientEncryptionPolicy;
@@ -169,13 +169,13 @@ public class EncryptionProcessor {
                     return Mono.error(ex);
                 }
             }
-            this.isEncryptionSettingsInitDone = true;
+            this.isEncryptionSettingsInitDone.set(true);
             return Mono.empty();
         });
     }
 
     public Mono<Void> initEncryptionSettingsIfNotInitializedAsync() {
-        if (!this.isEncryptionSettingsInitDone) {
+        if (!this.isEncryptionSettingsInitDone.get()) {
             return initializeEncryptionSettingsAsync().then(Mono.empty());
         }
         return Mono.empty();
@@ -203,7 +203,7 @@ public class EncryptionProcessor {
      *
      * @return encryptionCosmosClient
      */
-    public EncryptionCosmosAsyncClient getEncryptionCosmosClient() {
+    public CosmosEncryptionAsyncClient getEncryptionCosmosClient() {
         return encryptionCosmosClient;
     }
 

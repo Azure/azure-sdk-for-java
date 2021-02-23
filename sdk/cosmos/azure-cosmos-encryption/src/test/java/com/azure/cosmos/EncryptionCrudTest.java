@@ -12,11 +12,11 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.cosmos.models.EncryptionSqlQuerySpec;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,14 +35,15 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private static final int TIMEOUT = 6000_000;
-    private EncryptionCosmosAsyncClient encryptionCosmosAsyncClient;
-    private EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase;
-    private EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer;
+    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
+    private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     private EncryptionKeyWrapMetadata metadata1;
     private EncryptionKeyWrapMetadata metadata2;
 
@@ -56,24 +57,24 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        encryptionCosmosAsyncClient = EncryptionCosmosAsyncClient.buildEncryptionCosmosAsyncClient(this.client,
+        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.buildEncryptionCosmosAsyncClient(this.client,
             new TestEncryptionKeyStoreProvider());
-        encryptionCosmosAsyncDatabase =
-            encryptionCosmosAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
+        cosmosEncryptionAsyncDatabase =
+            cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
 
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);
-        encryptionCosmosAsyncDatabase.createEncryptionContainerAsync(properties).block();
-        encryptionCosmosAsyncContainer = encryptionCosmosAsyncDatabase.getEncryptedCosmosAsyncContainer(containerId);
+        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
+        cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
         metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
         metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
-        encryptionCosmosAsyncDatabase.createClientEncryptionKey("key1",
+        cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
-        encryptionCosmosAsyncDatabase.createClientEncryptionKey("key2",
+        cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
-        encryptionCosmosAsyncDatabase.rewrapClientEncryptionKey("key2", metadata2).block();
+        cosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey("key2", metadata2).block();
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -85,13 +86,13 @@ public class EncryptionCrudTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
         Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = encryptionCosmosAsyncContainer.createItem(properties,
+        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         Pojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        Pojo readItem = encryptionCosmosAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
+        Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions(), Pojo.class).block().getItem();
         validateResponse(properties, readItem);
     }
@@ -99,22 +100,21 @@ public class EncryptionCrudTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = encryptionCosmosAsyncContainer.upsertItem(properties,
+        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.upsertItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         Pojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        Pojo readItem = encryptionCosmosAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
+        Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions(), Pojo.class).block().getItem();
         validateResponse(properties, readItem);
     }
 
-
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItems() {
         Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = encryptionCosmosAsyncContainer.createItem(properties,
+        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         Pojo responseItem = itemResponse.getItem();
@@ -125,7 +125,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedFlux<Pojo> feedResponseIterator =
-            encryptionCosmosAsyncContainer.queryItems(querySpec, cosmosQueryRequestOptions, Pojo.class);
+            cosmosEncryptionAsyncContainer.queryItems(querySpec, cosmosQueryRequestOptions, Pojo.class);
         List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
         for (Pojo pojo : feedResponse) {
@@ -138,29 +138,28 @@ public class EncryptionCrudTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnEncryptedProperties() {
         Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = encryptionCosmosAsyncContainer.createItem(properties,
+        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         Pojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive = " +
-            "@nonSensitive");
+        String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
+            " " +
+            "@nonSensitive and c.sensitiveLong = @sensitiveLong");
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
-        List<SqlParameter> parameters = new ArrayList<>();
-        parameters.add(parameter1);
-        querySpec.setParameters(parameters);
+        querySpec.addSqlParameter(parameter1);
 
         SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
-        EncryptionSqlQuerySpec encryptionSqlQuerySpec = new EncryptionSqlQuerySpec(querySpec,
-            encryptionCosmosAsyncContainer);
-        encryptionSqlQuerySpec.addEncryptionParameterAsync(parameter2, "/sensitiveString").block();
+        SqlParameter parameter3 = new SqlParameter("@sensitiveLong", properties.sensitiveLong);
+        SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption = new SqlQuerySpecWithEncryption(querySpec);
+        sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveString", parameter2);
+        sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveLong", parameter3);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-
         CosmosPagedFlux<Pojo> feedResponseIterator =
-            encryptionCosmosAsyncContainer.queryItemsOnEncryptedProperties(encryptionSqlQuerySpec,
+            cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
                 cosmosQueryRequestOptions, Pojo.class);
         List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
@@ -172,18 +171,54 @@ public class EncryptionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void queryItemsOnRandomizedEncryption() {
+        Pojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        Pojo responseItem = itemResponse.getItem();
+        validateResponse(properties, responseItem);
+
+        String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
+            " " +
+            "@nonSensitive and c.sensitiveDouble = @sensitiveDouble");
+        SqlQuerySpec querySpec = new SqlQuerySpec(query);
+        SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
+        querySpec.addSqlParameter(parameter1);
+
+        SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
+        SqlParameter parameter3 = new SqlParameter("@sensitiveDouble", properties.sensitiveDouble);
+        SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption = new SqlQuerySpecWithEncryption(querySpec);
+        sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveString", parameter2);
+        sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveDouble", parameter3);
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosPagedFlux<Pojo> feedResponseIterator =
+            cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
+                cosmosQueryRequestOptions, Pojo.class);
+        try {
+            List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
+            fail("Query on randomized parameter should fail");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).contains("Path /sensitiveDouble cannot be used in the " +
+                "query because of randomized encryption");
+        }
+
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
         List<String> actualIds = new ArrayList<>();
         Pojo properties = getItem(UUID.randomUUID().toString());
-        encryptionCosmosAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions()).block();
         actualIds.add(properties.id);
         properties = getItem(UUID.randomUUID().toString());
-        encryptionCosmosAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions()).block();
         actualIds.add(properties.id);
         properties = getItem(UUID.randomUUID().toString());
-        encryptionCosmosAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions()).block();
         actualIds.add(properties.id);
 
@@ -198,7 +233,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         int finalDocumentCount = 0;
 
         CosmosPagedFlux<Pojo> feedResponseIterator =
-            encryptionCosmosAsyncContainer.queryItems(query, cosmosQueryRequestOptions, Pojo.class);
+            cosmosEncryptionAsyncContainer.queryItems(query, cosmosQueryRequestOptions, Pojo.class);
 
         do {
             Iterable<FeedResponse<Pojo>> feedResponseIterable =
@@ -311,7 +346,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         pojo.sensitiveChildPojoList.add(childPojo1);
         pojo.sensitiveChildPojoList.add(childPojo2);
 
-        pojo.sensitiveChildPojo2DArray = new Pojo[][]{{childPojo1,childPojo2}, {childPojo1,childPojo2}};
+        pojo.sensitiveChildPojo2DArray = new Pojo[][]{{childPojo1, childPojo2}, {childPojo1, childPojo2}};
 
         return pojo;
     }
@@ -422,7 +457,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
         includedPath6.clientEncryptionKeyId = "key2";
         includedPath6.path = "/sensitiveDouble";
-        includedPath6.encryptionType = CosmosEncryptionType.DETERMINISTIC;
+        includedPath6.encryptionType = CosmosEncryptionType.RANDOMIZED;
         includedPath6.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();

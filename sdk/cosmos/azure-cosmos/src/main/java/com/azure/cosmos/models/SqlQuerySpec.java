@@ -122,6 +122,26 @@ public final class SqlQuerySpec {
         return this;
     }
 
+    /**
+     * Adds the query parameter.
+     *
+     * @param parameter the query parameter.
+     * @return the SqlQuerySpec.
+     */
+    public SqlQuerySpec addSqlParameter(SqlParameter parameter) {
+        if (this.parameters == null) {
+            Collection<SqlParameter> sqlParameters = this.jsonSerializable.getCollection("parameters", SqlParameter.class);
+            if (sqlParameters == null) {
+                sqlParameters = new ArrayList<>();
+            }
+
+            this.parameters = new ArrayList<>(sqlParameters);
+        }
+
+        this.parameters.add(parameter);
+        return this;
+    }
+
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);

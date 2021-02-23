@@ -13,5 +13,3 @@ public class CosmosEncryptionAlgorithm {
      */
     public static final String AEAES_256_CBC_HMAC_SHA_256 = "AEAD_AES_256_CBC_HMAC_SHA256";
 }
-
-// TODO: moderakh enum string type?

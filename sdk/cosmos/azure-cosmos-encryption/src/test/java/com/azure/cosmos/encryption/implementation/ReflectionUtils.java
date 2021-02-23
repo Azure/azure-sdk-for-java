@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption.implementation;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReflectionUtils {
 
@@ -26,7 +27,7 @@ public class ReflectionUtils {
         }
     }
 
-    public static boolean isEncryptionSettingsInitDone(EncryptionProcessor encryptionProcessor) {
+    public static AtomicBoolean isEncryptionSettingsInitDone(EncryptionProcessor encryptionProcessor) {
         return get(encryptionProcessor, "isEncryptionSettingsInitDone");
     }
 }

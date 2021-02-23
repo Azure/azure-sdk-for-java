@@ -66,7 +66,7 @@ public class CosmosAsyncClientEncryptionKey {
      * @param keyProperties the client encryption key properties to create.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
-    public Mono<CosmosClientEncryptionKeyResponse> replace(CosmosClientEncryptionKeyProperties keyProperties) {
+    Mono<CosmosClientEncryptionKeyResponse> replace(CosmosClientEncryptionKeyProperties keyProperties) {
         return withContext(context -> replaceInternal(keyProperties, context));
     }
 

@@ -607,7 +607,7 @@ public class CosmosAsyncDatabase {
      * @param id id of the clientEncryptionKey
      * @return Cosmos ClientEncryptionKey
      */
-    public CosmosAsyncClientEncryptionKey getClientEncryptionKey(String id) {
+    CosmosAsyncClientEncryptionKey getClientEncryptionKey(String id) {
         return new CosmosAsyncClientEncryptionKey(id, this);
     }
 
@@ -621,7 +621,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * read cosmos client encryption keys or an error.
      */
-    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {
+    CosmosPagedFlux<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {
         return readAllClientEncryptionKeys(new CosmosQueryRequestOptions());
     }
 

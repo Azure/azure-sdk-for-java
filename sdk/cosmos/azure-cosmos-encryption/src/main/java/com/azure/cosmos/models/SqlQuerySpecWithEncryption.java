@@ -3,55 +3,54 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
-import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.data.encryption.cryptography.EncryptionType;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class EncryptionSqlQuerySpec {
+/**
+ * Represents a SQL query with encryption parameters in the Azure Cosmos DB database service.
+ */
+public class SqlQuerySpecWithEncryption {
     private SqlQuerySpec sqlQuerySpec;
-    private EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer;
+    private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
 
-    public EncryptionSqlQuerySpec(SqlQuerySpec sqlQuerySpec,
-                                  EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer) {
+    public SqlQuerySpecWithEncryption(SqlQuerySpec sqlQuerySpec) {
         this.sqlQuerySpec = sqlQuerySpec;
-        this.encryptionCosmosAsyncContainer = encryptionCosmosAsyncContainer;
     }
 
-    public Mono<Void> addEncryptionParameterAsync(SqlParameter sqlParameter, String path) {
+    public void addEncryptionParameter(String path,  SqlParameter sqlParameter) {
+        encryptionParamMap.put(path, sqlParameter);
+    }
+
+    Mono<Void> addEncryptionParameterAsync(String path, SqlParameter sqlParameter, CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer) {
         if (StringUtils.isEmpty(path) || path.charAt(0) != '/' || path.lastIndexOf('/') != 0) {
             return Mono.empty();
         }
+
         List<SqlParameter> parameters = sqlQuerySpec.getParameters();
         if (parameters != null) {
-            List<SqlParameter> newParameters = new ArrayList<>();
-            for (SqlParameter parameter : parameters) {
-                if (!parameter.getName().equals(sqlParameter.getName())) {
-                    newParameters.add(parameter);
-                }
-            }
+            return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer).initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
 
-            return this.encryptionCosmosAsyncContainer.getEncryptionProcessor().initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
-
-                return this.encryptionCosmosAsyncContainer.getEncryptionProcessor().getEncryptionSettings().getEncryptionSettingForPropertyAsync(sqlParameter.getName().substring(1),
-                    this.encryptionCosmosAsyncContainer.getEncryptionProcessor()).flatMap(encryptionSettings -> {            // encryptionSettings.
+                return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer).getEncryptionSettings().getEncryptionSettingForPropertyAsync(sqlParameter.getName().substring(1),
+                    EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)).flatMap(encryptionSettings -> {            // encryptionSettings.
                     if (encryptionSettings == null) {
                         // property not encrypted.
                         return Mono.empty();
                     }
                     if (encryptionSettings.getEncryptionType() == EncryptionType.Randomized) {
-                        throw new IllegalArgumentException("Unsupported argument with Path: {path} for query. For" +
-                            " executing queries on encrypted path requires the use of an encryption - enabled " +
-                            "client. Please refer to https://aka.ms/CosmosClientEncryption for more details. ");
+                        return Mono.error(new IllegalArgumentException(String.format("Path %s cannot be used in the " +
+                            "query because of randomized encryption", path)));
                     }
 
                     try {
@@ -67,8 +66,7 @@ public class EncryptionSqlQuerySpec {
                         System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
                         SqlParameter encryptedParameter = new SqlParameter(sqlParameter.getName(),
                             cipherTextWithTypeMarker);
-                        newParameters.add(encryptedParameter);
-                        this.sqlQuerySpec.setParameters(newParameters);
+                        this.sqlQuerySpec.addSqlParameter(encryptedParameter);
                     } catch (MicrosoftDataEncryptionException ex) {
                         return Mono.error(ex);
                     }
@@ -80,7 +78,11 @@ public class EncryptionSqlQuerySpec {
         return Mono.empty();
     }
 
-    public SqlQuerySpec getSqlQuerySpec() {
+    HashMap<String, SqlParameter> getEncryptionParamMap() {
+        return encryptionParamMap;
+    }
+
+    SqlQuerySpec getSqlQuerySpec() {
         return sqlQuerySpec;
     }
 }

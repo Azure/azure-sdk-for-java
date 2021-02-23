@@ -34,14 +34,14 @@ public class EncryptionCodeSnippet {
             .buildAsyncClient();
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
-        EncryptionCosmosAsyncClient encryptionCosmosAsyncClient =
-            EncryptionCosmosAsyncClient.buildEncryptionCosmosAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
-        EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase =
-            encryptionCosmosAsyncClient.getEncryptedCosmosAsyncDatabase("myDb");
-        EncryptionCosmosAsyncContainer encryptionCosmosAsyncContainer =
-            encryptionCosmosAsyncDatabase.getEncryptedCosmosAsyncContainer("myCol");
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
+            CosmosEncryptionAsyncClient.buildEncryptionCosmosAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
+        CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
+            cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase("myDb");
+        CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
+            cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer("myCol");
 
-        createClientEncryptionKey(encryptionCosmosAsyncDatabase);//create client encryption key to be store on database
+        createClientEncryptionKey(cosmosEncryptionAsyncDatabase);//create client encryption key to be store on database
 
         Pojo originalItem = new Pojo();
         originalItem.id = UUID.randomUUID().toString();
@@ -54,11 +54,11 @@ public class EncryptionCodeSnippet {
         originalItem.sensitiveLong = 1234; //"this is a secret long to be encrypted";
         originalItem.sensitiveBoolean = true; //"this is a secret boolean to be encrypted";
 
-        CosmosItemResponse<Pojo> response = encryptionCosmosAsyncContainer.createItem(originalItem,
+        CosmosItemResponse<Pojo> response = cosmosEncryptionAsyncContainer.createItem(originalItem,
             new PartitionKey(originalItem.mypk), new CosmosItemRequestOptions()).block();
 
         // read and decrypt the item
-        CosmosItemResponse<Pojo> readResponse = encryptionCosmosAsyncContainer.readItem(originalItem.id,
+        CosmosItemResponse<Pojo> readResponse = cosmosEncryptionAsyncContainer.readItem(originalItem.id,
             new PartitionKey(originalItem.mypk), null, Pojo.class).block();
         Pojo readItem = readResponse.getItem();
 
@@ -129,13 +129,13 @@ public class EncryptionCodeSnippet {
         client.getDatabase("myDb").createContainer(properties).block();
     }
 
-    void createClientEncryptionKey(EncryptionCosmosAsyncDatabase encryptionCosmosAsyncDatabase) {
+    void createClientEncryptionKey(CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase) {
         EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
         EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
         new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        encryptionCosmosAsyncDatabase.createClientEncryptionKey("key1",
+        cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block().getProperties();
-        encryptionCosmosAsyncDatabase.createClientEncryptionKey("key2",
+        cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block().getProperties();
     }
 

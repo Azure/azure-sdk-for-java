@@ -484,6 +484,22 @@ public class CosmosAsyncContainer {
         return pagedFluxOptionsFluxFunction;
     }
 
+    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+        Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
+            String spanName = this.queryItemsSpanName;
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
+
+            return sqlQuerySpecMono.flux().flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
+                .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
+                .map(response -> prepareFeedResponse(response, false, classType));
+        });
+
+        return pagedFluxOptionsFluxFunction;
+    }
+
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
