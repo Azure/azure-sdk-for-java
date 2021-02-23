@@ -39,6 +39,7 @@ public final class EventGridPublisherClient<T> {
      * {@link AzureSasCredential}.
      *
      * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime,
@@ -57,6 +58,7 @@ public final class EventGridPublisherClient<T> {
      * {@link AzureSasCredential}.
      *
      * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
         EventGridServiceVersion apiVersion) {

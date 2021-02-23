@@ -32,7 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -94,7 +94,8 @@ public final class EventGridPublisherAsyncClient<T> {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      *
-     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws NullPointerException if endpoint, keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         return generateSas(endpoint, keyCredential, expirationTime, EventGridServiceVersion.getLatest());
@@ -111,7 +112,8 @@ public final class EventGridPublisherAsyncClient<T> {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      *
-     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws NullPointerException if endpoint, keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
         EventGridServiceVersion apiVersion) {
