@@ -8,10 +8,13 @@
     azure:
       activedirectory:
         b2c:
-          sign-in-user-flow: ${your-sign-up-or-in-user-flow}
+          sign-up-or-sign-in: ${your-sign-up-or-in-user-flow-key}
           user-flows:
-            - ${your-profile-edit-user-flow}
-            - ${your-password-reset-user-flow}
+            password-reset: ${your-profile-edit-user-flow}      # optional
+            profile-edit: ${your-password-reset-user-flow}      # optional
+            sign-in: ${your-sign-in-user-flow}                  # optional
+            sign-up: ${your-sign-up-user-flow}                  # optional
+            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow} # optional
     ```
 
 ## 3.1.0 (2021-01-20)

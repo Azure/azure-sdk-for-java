@@ -20,7 +20,9 @@ public class AADB2CAutoConfigurationTest {
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
             String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-            String.format("%s=%s", AADB2CConstants.SIGN_IN_USER_FLOW, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+            String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN),
+            String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
+                AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
             String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
                 AADB2CConstants.TEST_KEY_SIGN_IN, AADB2CConstants.TEST_SIGN_IN_NAME),
             String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
@@ -55,7 +57,7 @@ public class AADB2CAutoConfigurationTest {
                 String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));
             for (String clientName: userFlows.keySet()) {
                 assertThat(userFlows.get(clientName)).isIn(AADB2CConstants.TEST_SIGN_IN_NAME,
-                    AADB2CConstants.TEST_SIGN_UP_NAME);
+                    AADB2CConstants.TEST_SIGN_UP_NAME, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
             }
             assertThat(prompt).isEqualTo(AADB2CConstants.TEST_PROMPT);
             assertThat(loginHint).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);

@@ -10,7 +10,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -24,8 +23,6 @@ import java.util.regex.Pattern;
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties implements InitializingBean {
 
-    public static final String SIGN_IN_USER_FLOW = "sign-in-user-flow";
-
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
@@ -33,25 +30,14 @@ public class AADB2CProperties implements InitializingBean {
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 
     /**
-     * The sign-up-or-sign-in user flow key name.
-     * @deprecated Not limited to this name 'signUpOrSignIn' or 'sign-up-or-sign-in', users can use a custom name instead.
+     * The default user flow key 'sign-up-or-sign-in'.
      */
-    @Deprecated
-    private static final String[] KEY_SIGN_UP_OR_SIGN_IN = {"signUpOrSignIn", "sign-up-or-sign-in"};
+    protected static final String DEFAULT_KEY_SIGN_UP_OR_SIGN_IN = "sign-up-or-sign-in";
 
     /**
-     * The profile-edit user flow key name.
-     * @deprecated Not limited to this name 'profileEdit' or 'profile-edit', users can use a custom name instead.
+     * The default user flow key 'password-reset'.
      */
-    @Deprecated
-    private static final String[] KEY_PROFILE_EDIT = {"profileEdit", "profile-edit"};
-
-    /**
-     * The password-reset user flow key name.
-     * @deprecated Not limited to this name 'passwordReset' or 'password-reset', users can use a custom name instead.
-     */
-    @Deprecated
-    private static final String[] KEY_PASSWORD_RESET = {"passwordReset", "password-reset"};
+    protected static final String DEFAULT_KEY_PASSWORD_RESET = "password-reset";
 
     /**
      * The name of the b2c tenant.
@@ -96,9 +82,9 @@ public class AADB2CProperties implements InitializingBean {
     private String baseUri;
 
     /**
-     * Specify the primary sign in flow name
+     * Specify the primary sign in flow key.
      */
-    private String signInUserFlow;
+    private String signUpOrSignIn = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     private Map<String, String> userFlows = new HashMap<>();
 
@@ -108,55 +94,18 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
 
-        if (StringUtils.hasText(signInUserFlow)) {
-            if (userFlows.keySet().contains(signInUserFlow)) {
-                throw new AADB2CConfigurationException("Sign in user flow '" + signInUserFlow
-                    + "' does not need to be configured repeatedly.");
-            }
-        } else {
-            // user flow 'signUpOrSignIn' will be the default flow for login.
-            Map.Entry<String, String> signInEntry = getSignUpOrSignIn();
-            if (null != signInEntry) {
-                signInUserFlow = userFlows.remove(signInEntry.getKey());
-            }
-            if (StringUtils.isEmpty(signInUserFlow)) {
-                throw new AADB2CConfigurationException("The primary sign in flow name "
-                    + "'sign-in-user-flow' should not be blank.");
-            }
+        if (!userFlows.keySet().contains(signUpOrSignIn)) {
+            throw new AADB2CConfigurationException("Sign in user flow key '"
+                + signUpOrSignIn + "' is not in 'user-flows' map.");
         }
     }
 
-    @DeprecatedConfigurationProperty(
-        reason = "Compatible with old version 'signUpOrSignIn' usage",
-        replacement = "Need to specify a specific key to get the mapping value")
-    public Map.Entry<String, String> getSignUpOrSignIn() {
-        return getUserFlowByKeys(KEY_SIGN_UP_OR_SIGN_IN).orElse(null);
-    }
-
-    @DeprecatedConfigurationProperty(
-        reason = "Compatible with old version 'profileEdit' usage",
-        replacement = "Need to specify a specific key to get the mapping value")
-    public Map.Entry<String, String> getProfileEdit() {
-        return getUserFlowByKeys(KEY_PROFILE_EDIT).orElse(null);
-    }
-
-    @DeprecatedConfigurationProperty(
-        reason = "Compatible with old version 'passwordReset' usage",
-        replacement = "Need to specify a specific key to get the mapping value")
-    public Map.Entry<String, String> getPasswordReset() {
-        return getUserFlowByKeys(KEY_PASSWORD_RESET).orElse(null);
-    }
-
-    private Optional<Map.Entry<String, String>> getUserFlowByKeys(final String[] reservedKeys) {
+    protected String getPasswordReset() {
         Optional<String> keyOptional = userFlows.keySet()
                                                 .stream()
-                                                .filter(key -> Arrays.stream(reservedKeys)
-                                                                     .anyMatch(reservedKey -> reservedKey.equalsIgnoreCase(key)))
+                                                .filter(key -> key.equalsIgnoreCase(DEFAULT_KEY_PASSWORD_RESET))
                                                 .findAny();
-        return userFlows.entrySet()
-                        .stream()
-                        .filter(entry -> entry.getKey().equals(keyOptional.orElse(null)))
-                        .findAny();
+        return keyOptional.isPresent() ? userFlows.get(keyOptional.get()) : null;
     }
 
     public String getBaseUri() {
@@ -203,12 +152,12 @@ public class AADB2CProperties implements InitializingBean {
         this.userFlows = userFlows;
     }
 
-    public String getSignInUserFlow() {
-        return signInUserFlow;
+    public String getSignUpOrSignIn() {
+        return signUpOrSignIn;
     }
 
-    public void setSignInUserFlow(String signInUserFlow) {
-        this.signInUserFlow = signInUserFlow;
+    public void setSignUpOrSignIn(String signUpOrSignIn) {
+        this.signUpOrSignIn = signUpOrSignIn;
     }
 
     public String getClientId() {

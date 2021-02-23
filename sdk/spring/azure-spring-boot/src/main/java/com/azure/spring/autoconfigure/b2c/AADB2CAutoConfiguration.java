@@ -107,10 +107,12 @@ public class AADB2CAutoConfiguration {
         public ClientRegistrationRepository clientRegistrationRepository() {
             final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-            signUpOrSignInRegistrations.add(b2cClientRegistration(AADB2CProperties.SIGN_IN_USER_FLOW,
-                properties.getSignInUserFlow()));
+            signUpOrSignInRegistrations.add(b2cClientRegistration(properties.getSignUpOrSignIn(),
+                properties.getUserFlows().get(properties.getSignUpOrSignIn())));
             for (String clientName : properties.getUserFlows().keySet()) {
-                otherRegistrations.add(b2cClientRegistration(clientName, properties.getUserFlows().get(clientName)));
+                if (!clientName.equals(properties.getSignUpOrSignIn())) {
+                    otherRegistrations.add(b2cClientRegistration(clientName, properties.getUserFlows().get(clientName)));
+                }
             }
             return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }

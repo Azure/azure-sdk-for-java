@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -28,8 +26,6 @@ import java.util.Optional;
  */
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CAuthorizationRequestResolver.class);
-
     private static final String REQUEST_BASE_URI =
             OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
 
@@ -52,8 +48,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
         this.properties = properties;
-        Map.Entry<String, String> passwordResetEntry = this.properties.getPasswordReset();
-        this.passwordResetUserFlow = null == passwordResetEntry ? null : passwordResetEntry.getValue();
+        this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
@@ -64,17 +59,13 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     @Override
     public OAuth2AuthorizationRequest resolve(@NonNull HttpServletRequest request, String registrationId) {
-        if (StringUtils.hasText(registrationId)) {
-            if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
-                final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
-                return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
-            }
+        if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
+            final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
+            return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
+        }
 
-            if (REQUEST_MATCHER.matches(request)) {
-                return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
-            }
-
-            LOGGER.warn("Unrecognized registration id: {}", registrationId);
+        if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
+            return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
         }
 
         // Return null may not be the good practice, but we need to align with oauth2.client.web

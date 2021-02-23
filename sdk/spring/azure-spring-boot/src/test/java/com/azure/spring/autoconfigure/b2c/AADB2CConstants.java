@@ -25,6 +25,7 @@ public class AADB2CConstants {
 
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
 
+    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-in-or-up";
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
     public static final Object TEST_KEY_SIGN_IN = "sign-in";
@@ -50,7 +51,7 @@ public class AADB2CConstants {
 
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
-    public static final String SIGN_IN_USER_FLOW = String.format("%s.%s", PREFIX, AADB2CProperties.SIGN_IN_USER_FLOW);
+    public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, "sign-up-or-sign-in");
 
     public static final String USER_FLOWS = String.format("%s.%s", PREFIX, "user-flows");
 

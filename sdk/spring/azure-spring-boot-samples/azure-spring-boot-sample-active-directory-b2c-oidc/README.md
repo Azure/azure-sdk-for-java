@@ -34,12 +34,13 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
-3. Select **User flows**, Fill in the `${your-sign-up-or-in-user-flow}` with the name of **Sign up and sign in** user flow, this configuration can be changed to sign in user flow.
+3. Fill in `${your-sign-up-or-in-user-flow-key}` with the key name of sign in user flow, the default value is `sign-up-or-sign-in`.
 4. The configuration below `user-flows` are optional, Select **User flows**, and then:
-    1. Fill in the `${your-profile-edit-user-flow}` with the name of **Profile editing** user flow.
-    2. Fill in the `${your-password-reset-user-flow}` with the name of **Password reset** user flow.
-    3. If you want to enable sign in user flow, replace in the `${your-sign-up-or-in-user-flow}` with the name of **Sign in** user flow.
-    4. If you want to enable sign up user flow, fill in the `${your-sign-up-user-flow}` with the name of **Sign up** user flow, let the browser redirect to `/oauth2/authorization/${your-sign-up-user-flow}`, then will start the sign up flow.
+    1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of **Sign up and sign in** user flow.
+    2. Fill in the `${your-profile-edit-user-flow}` with the name of **Profile editing** user flow.
+    3. Fill in the `${your-password-reset-user-flow}` with the name of **Password reset** user flow.
+    4. If you want to enable sign in user flow as the primary flow, fill in the `${your-sign-in-user-flow}` with the name of **Sign in** user flow, replace in the `${your-sign-up-or-in-user-flow-key}` with the name `sign-in`.
+    5. If you want to enable sign up user flow, fill in the `${your-sign-up-user-flow}` with the name of **Sign up** user flow, let the browser redirect to `/oauth2/authorization/${your-sign-up-user-flow}`, then will start the sign up flow.
 5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
@@ -50,12 +51,13 @@ azure:
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       logout-success-url: ${your-logout-success-url}
-      sign-in-user-flow: ${your-sign-up-or-in-user-flow}
+      sign-up-or-sign-in: ${your-sign-up-or-in-user-flow-key}
       user-flows:
-        password-reset: ${your-profile-edit-user-flow}  # optional
-        profile-edit: ${your-password-reset-user-flow}  # optional
-        sign-in: ${your-sign-in-user-flow}              # optional
-        sign-up: ${your-sign-up-user-flow}              # optional
+        password-reset: ${your-profile-edit-user-flow}      # optional
+        profile-edit: ${your-password-reset-user-flow}      # optional
+        sign-in: ${your-sign-in-user-flow}                  # optional
+        sign-up: ${your-sign-up-user-flow}                  # optional
+        sign-up-or-sign-in: ${your-sign-up-or-in-user-flow} # optional
       user-name-attribute-name: ${your-user-name-claim}
 ```
 
