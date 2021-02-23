@@ -351,8 +351,6 @@ public class TableClient {
 
     /**
      * Deletes the table within the Tables service.
-     *
-     * @throws TableServiceErrorException if no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
@@ -363,7 +361,6 @@ public class TableClient {
      * Deletes the table within the Tables service.
      *
      * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
      * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -377,7 +374,6 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
      * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -390,8 +386,6 @@ public class TableClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -406,9 +400,6 @@ public class TableClient {
      * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
      *             the delete will not occur and an exception will be thrown.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -424,10 +415,6 @@ public class TableClient {
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
      *             the delete will not occur and an exception will be thrown.
      * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity, or if the provided timeout
-     *                                    expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -445,10 +432,6 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity, or if the provided timeout
-     *                                    expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

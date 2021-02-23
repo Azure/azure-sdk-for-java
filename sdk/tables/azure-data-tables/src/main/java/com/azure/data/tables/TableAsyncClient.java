@@ -27,6 +27,10 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TablesDeleteEntityHeaders;
+import com.azure.data.tables.implementation.models.TablesDeleteEntityResponse;
+import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
+import com.azure.data.tables.implementation.models.TablesDeleteResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -419,7 +423,6 @@ public final class TableAsyncClient {
      * Deletes the table within the Tables service.
      *
      * @return An empty reactive result.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
@@ -430,7 +433,6 @@ public final class TableAsyncClient {
      * Deletes the table within the Tables service.
      *
      * @return A reactive result containing the response.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
@@ -440,6 +442,9 @@ public final class TableAsyncClient {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .onErrorResume(TableServiceErrorException.class, e ->
+                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteResponse.class,
+                    TablesDeleteHeaders.class, serializerAdapter, logger))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -450,8 +455,6 @@ public final class TableAsyncClient {
      * @param rowKey The row key of the entity.
      *
      * @return An empty reactive result.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -468,9 +471,6 @@ public final class TableAsyncClient {
      *             the delete will not occur and an exception will be thrown.
      *
      * @return An empty reactive result.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -487,9 +487,6 @@ public final class TableAsyncClient {
      *             the delete will not occur and an exception will be thrown.
      *
      * @return A reactive result containing the response.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -502,12 +499,13 @@ public final class TableAsyncClient {
         context = context == null ? Context.NONE : context;
         String matchParam = eTag == null ? "*" : eTag;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
-        context = context == null ? Context.NONE : context;
-        return implementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
-            timeoutInt, null, null, context).map(response -> {
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                null);
-            });
+
+        return implementation.getTables()
+            .deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam, timeoutInt, null, null, context)
+            .onErrorResume(TableServiceErrorException.class, e ->
+                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteEntityResponse.class,
+                    TablesDeleteEntityHeaders.class, serializerAdapter, logger))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

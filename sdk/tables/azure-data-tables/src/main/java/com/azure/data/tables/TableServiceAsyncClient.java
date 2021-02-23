@@ -27,8 +27,11 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
+import com.azure.data.tables.implementation.models.TablesDeleteResponse;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
+
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -195,7 +198,6 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to delete.
      * @return An empty reactive result.
      * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -208,7 +210,6 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to delete.
      * @return A reactive result containing the HTTP response.
      * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -218,6 +219,9 @@ public class TableServiceAsyncClient {
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .onErrorResume(TableServiceErrorException.class, e ->
+                TablesUtils.swallowExceptionForStatusCode(404, e, TablesDeleteResponse.class,
+                    TablesDeleteHeaders.class, implementation.getSerializerAdapter(), logger))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
