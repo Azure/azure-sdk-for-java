@@ -39,7 +39,7 @@ final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument
             return;
         }
 
-        gen.writeStartArray(operations.size());
+        gen.writeStartArray();
 
         for (JsonPatchOperation operation : operations) {
             gen.writeObject(operation);

@@ -598,6 +598,7 @@
         <module>sdk/postgresql</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
@@ -606,6 +607,7 @@
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
+        <module>sdk/storagecache</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>

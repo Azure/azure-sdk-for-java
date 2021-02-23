@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.OperationInner;
 import com.azure.resourcemanager.netapp.models.Operation;
 import com.azure.resourcemanager.netapp.models.OperationDisplay;
@@ -13,9 +13,9 @@ import com.azure.resourcemanager.netapp.models.ServiceSpecification;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, NetAppManager serviceManager) {
+    OperationImpl(OperationInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

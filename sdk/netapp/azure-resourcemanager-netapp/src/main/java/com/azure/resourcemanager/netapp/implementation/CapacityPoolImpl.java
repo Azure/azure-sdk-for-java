@@ -6,7 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
 import com.azure.resourcemanager.netapp.models.CapacityPoolPatch;
@@ -18,7 +18,7 @@ import java.util.Map;
 public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Definition, CapacityPool.Update {
     private CapacityPoolInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -85,7 +85,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -121,7 +121,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this;
     }
 
-    CapacityPoolImpl(String name, NetAppManager serviceManager) {
+    CapacityPoolImpl(String name, NetAppFilesManager serviceManager) {
         this.innerObject = new CapacityPoolInner();
         this.serviceManager = serviceManager;
         this.poolName = name;
@@ -150,7 +150,7 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this;
     }
 
-    CapacityPoolImpl(CapacityPoolInner innerObject, NetAppManager serviceManager) {
+    CapacityPoolImpl(CapacityPoolInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

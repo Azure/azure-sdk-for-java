@@ -15,6 +15,7 @@ import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -37,6 +38,12 @@ public class DomainInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
+
+    /*
+     * The system metadata relating to Domain resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * List of private endpoint connections.
@@ -131,6 +138,15 @@ public class DomainInner extends Resource {
     public DomainInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: The system metadata relating to Domain resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -295,6 +311,9 @@ public class DomainInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (systemData() != null) {
+            systemData().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());

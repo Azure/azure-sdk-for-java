@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
 import com.azure.resourcemanager.netapp.models.CheckAvailabilityResponse;
 import com.azure.resourcemanager.netapp.models.InAvailabilityReasonType;
@@ -12,9 +12,9 @@ import com.azure.resourcemanager.netapp.models.InAvailabilityReasonType;
 public final class CheckAvailabilityResponseImpl implements CheckAvailabilityResponse {
     private CheckAvailabilityResponseInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    CheckAvailabilityResponseImpl(CheckAvailabilityResponseInner innerObject, NetAppManager serviceManager) {
+    CheckAvailabilityResponseImpl(CheckAvailabilityResponseInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class CheckAvailabilityResponseImpl implements CheckAvailabilityRes
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

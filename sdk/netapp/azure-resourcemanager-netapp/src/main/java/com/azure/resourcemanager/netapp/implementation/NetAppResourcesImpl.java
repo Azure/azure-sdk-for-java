@@ -8,7 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
 import com.azure.resourcemanager.netapp.models.CheckAvailabilityResponse;
@@ -22,9 +22,9 @@ public final class NetAppResourcesImpl implements NetAppResources {
 
     private final NetAppResourcesClient innerClient;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    public NetAppResourcesImpl(NetAppResourcesClient innerClient, NetAppManager serviceManager) {
+    public NetAppResourcesImpl(NetAppResourcesClient innerClient, NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -105,7 +105,7 @@ public final class NetAppResourcesImpl implements NetAppResources {
         return this.innerClient;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
 import com.azure.resourcemanager.netapp.models.BackupPolicyPatch;
@@ -18,7 +18,7 @@ import java.util.Map;
 public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Definition, BackupPolicy.Update {
     private BackupPolicyInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -94,7 +94,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -130,7 +130,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this;
     }
 
-    BackupPolicyImpl(String name, NetAppManager serviceManager) {
+    BackupPolicyImpl(String name, NetAppFilesManager serviceManager) {
         this.innerObject = new BackupPolicyInner();
         this.serviceManager = serviceManager;
         this.backupPolicyName = name;
@@ -161,7 +161,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this;
     }
 
-    BackupPolicyImpl(BackupPolicyInner innerObject, NetAppManager serviceManager) {
+    BackupPolicyImpl(BackupPolicyInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

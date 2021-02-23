@@ -29,7 +29,7 @@ public class EventSubscriptionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionInner.class);
 
     /*
-     * The system metadata relating to this resource.
+     * The system metadata relating to Event Subscription resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -118,7 +118,7 @@ public class EventSubscriptionInner extends ProxyResource {
     private DeadLetterWithResourceIdentity deadLetterWithResourceIdentity;
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: The system metadata relating to Event Subscription resource.
      *
      * @return the systemData value.
      */
