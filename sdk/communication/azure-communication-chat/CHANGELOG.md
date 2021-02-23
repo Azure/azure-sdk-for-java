@@ -1,6 +1,15 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
+### Breaking Changes
+
+- Changed string based MRIs to `CommunicationIdentifier` class.
+- ChatMessage - `senderId` renamed to `senderCommunicationIdentifier`
+- ChatMessageReadReceipt - `senderId` renamed to `senderCommunicationIdentifier`
+- ChatParticipant - `user` renamed to `communicationIdentifier`
+- ChatThread - `createdBy` renamed to `createdByCommunicationIdentifier`
+- ChatMessageContent - `initiator` renamed to `initiatorCommunicationIdentifier`
+
 
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes
