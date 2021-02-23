@@ -20,9 +20,9 @@ dependency to your project and the Spring Cloud auto-configuration will kick-in:
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-  <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-  <version>2.2.0-beta.1</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
+    <version>2.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -61,7 +61,7 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.properties`:
 
-```
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
