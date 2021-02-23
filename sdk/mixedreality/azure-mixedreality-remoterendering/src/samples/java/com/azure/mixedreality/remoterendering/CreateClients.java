@@ -31,14 +31,17 @@ public class CreateClients {
      *
      * @return the RemoteRenderingClient.
      */
-    public RemoteRenderingClient createClientWithAccountKey()
-    {
-        return new RemoteRenderingClientBuilder()
+    public RemoteRenderingClient createClientWithAccountKey() {
+        AzureKeyCredential credential = new AzureKeyCredential(environment.getAccountKey());
+
+        RemoteRenderingClient client = new RemoteRenderingClientBuilder()
             .accountId(environment.getAccountId())
             .accountDomain(environment.getAccountDomain())
             .endpoint(environment.getServiceEndpoint())
-            .credential(new AzureKeyCredential(environment.getAccountKey()))
+            .credential(credential)
             .buildClient();
+
+        return client;
     }
 
     /**
@@ -46,8 +49,7 @@ public class CreateClients {
      *
      * @return the RemoteRenderingClient.
      */
-    public RemoteRenderingClient createClientWithAAD()
-    {
+    public RemoteRenderingClient createClientWithAAD() {
         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
             .tenantId(environment.getTenantId())
             .clientId(environment.getClientId())
@@ -55,12 +57,14 @@ public class CreateClients {
             .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
             .build();
 
-        return new RemoteRenderingClientBuilder()
+        RemoteRenderingClient client = new RemoteRenderingClientBuilder()
             .accountId(environment.getAccountId())
             .accountDomain(environment.getAccountDomain())
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
+
+        return client;
     }
 
     /**
@@ -68,8 +72,7 @@ public class CreateClients {
      *
      * @return the RemoteRenderingClient.
      */
-    public RemoteRenderingClient createClientWithDeviceCode()
-    {
+    public RemoteRenderingClient createClientWithDeviceCode() {
         DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
             .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
             .clientId(environment.getClientId())
@@ -77,12 +80,14 @@ public class CreateClients {
             .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
             .build();
 
-        return new RemoteRenderingClientBuilder()
+        RemoteRenderingClient client = new RemoteRenderingClientBuilder()
             .accountId(environment.getAccountId())
             .accountDomain(environment.getAccountDomain())
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
+
+        return client;
     }
 
     /**
@@ -90,16 +95,17 @@ public class CreateClients {
      *
      * @return the RemoteRenderingClient.
      */
-    public RemoteRenderingClient createClientWithDefaultAzureCredential()
-    {
+    public RemoteRenderingClient createClientWithDefaultAzureCredential() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        return new RemoteRenderingClientBuilder()
+        RemoteRenderingClient client = new RemoteRenderingClientBuilder()
             .accountId(environment.getAccountId())
             .accountDomain(environment.getAccountDomain())
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
+
+        return client;
     }
 
     /**
@@ -110,8 +116,7 @@ public class CreateClients {
      *
      * @return returns the AccessToken.
      */
-    private AccessToken getMixedRealityAccessTokenFromWebService()
-    {
+    private AccessToken getMixedRealityAccessTokenFromWebService() {
         return new AccessToken("TokenObtainedFromStsClientRunningInWebservice", OffsetDateTime.MAX);
     }
 
@@ -120,19 +125,20 @@ public class CreateClients {
      *
      * @return the RemoteRenderingClient.
      */
-    public RemoteRenderingClient createClientWithStaticAccessToken()
-    {
+    public RemoteRenderingClient createClientWithStaticAccessToken() {
         // GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
         // a Mixed Reality access token from a web service. The web service would use the
         // MixedRealityStsClient and credentials to obtain an access token to be returned
         // to the client.
         AccessToken accessToken = getMixedRealityAccessTokenFromWebService();
 
-        return new RemoteRenderingClientBuilder()
+        RemoteRenderingClient client = new RemoteRenderingClientBuilder()
             .accountId(environment.getAccountId())
             .accountDomain(environment.getAccountDomain())
             .endpoint(environment.getServiceEndpoint())
             .accessToken(accessToken)
             .buildClient();
+
+        return client;
     }
 }

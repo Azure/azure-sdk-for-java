@@ -30,8 +30,7 @@ public class ListRenderingSessions extends SampleBase {
      *
      * To avoid launching too many sessions during testing, we rely on the live tests.
      */
-    public void listRenderingSessions()
-    {
+    public void listRenderingSessions()  {
         // Ensure there's at least one session to query.
         String sessionId = UUID.randomUUID().toString();
 
@@ -45,22 +44,14 @@ public class ListRenderingSessions extends SampleBase {
         } catch (InterruptedException ignored) {
         }
 
-        for (RenderingSession session : client.listSessions())
-        {
-            if (session.getStatus() == RenderingSessionStatus.STARTING)
-            {
+        for (RenderingSession session : client.listSessions()) {
+            if (session.getStatus() == RenderingSessionStatus.STARTING) {
                 logger.info("Session {} is starting.");
-            }
-            else if (session.getStatus() == RenderingSessionStatus.READY)
-            {
+            } else if (session.getStatus() == RenderingSessionStatus.READY) {
                 logger.info("Session {} is ready at host {}", session.getId(), session.getHostname());
-            }
-            else if (session.getStatus() == RenderingSessionStatus.ERROR)
-            {
+            } else if (session.getStatus() == RenderingSessionStatus.ERROR) {
                 logger.error("Session {} encountered an error: {} {}", session.getId(), session.getError().getCode(), session.getError().getMessage());
-            }
-            else
-            {
+            } else {
                 logger.error("Session {} has unexpected status {}", session.getId(), session.getStatus());
             }
         }

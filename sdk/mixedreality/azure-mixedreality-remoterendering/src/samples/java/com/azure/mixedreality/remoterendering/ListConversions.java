@@ -26,15 +26,12 @@ public class ListConversions extends SampleBase {
     /**
      * Sample method demonstrating how to list conversions.
      */
-    public void listConversions()
-    {
+    public void listConversions() {
         logger.info("Successful conversions since yesterday:");
 
-        for (AssetConversion conversion : client.listConversions())
-        {
+        for (AssetConversion conversion : client.listConversions()) {
             if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
-                && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1))))
-            {
+                && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
                 logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
             }
         }

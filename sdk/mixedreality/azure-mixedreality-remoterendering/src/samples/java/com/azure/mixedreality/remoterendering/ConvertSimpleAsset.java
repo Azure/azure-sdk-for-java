@@ -27,8 +27,7 @@ public class ConvertSimpleAsset extends SampleBase
     /**
      * Sample method demonstrating how to convert a simple asset.
      */
-    public void convertSimpleAsset()
-    {
+    public void convertSimpleAsset() {
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .setInputStorageContainerUrl(getStorageURL())
             .setInputRelativeAssetPath("box.fbx")
@@ -40,16 +39,11 @@ public class ConvertSimpleAsset extends SampleBase
         SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
 
         AssetConversion conversion = conversionOperation.getFinalResult();
-        if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
-        {
+        if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
             logger.info("Conversion succeeded: Output written to {}", conversion.getOutputAssetUrl());
-        }
-        else if (conversion.getStatus() == AssetConversionStatus.FAILED)
-        {
+        } else if (conversion.getStatus() == AssetConversionStatus.FAILED) {
             logger.error("Conversion failed: {} {}", conversion.getError().getCode(), conversion.getError().getMessage());
-        }
-        else
-        {
+        } else {
             logger.error("Unexpected conversion status: {}", conversion.getStatus());
         }
     }

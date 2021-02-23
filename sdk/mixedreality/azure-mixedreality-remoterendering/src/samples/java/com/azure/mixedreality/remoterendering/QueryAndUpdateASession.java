@@ -31,8 +31,7 @@ public class QueryAndUpdateASession extends SampleBase {
      *
      * To avoid launching too many sessions during testing, we rely on the live tests.
      */
-    public void queryAndUpdateASession()
-    {
+    public void queryAndUpdateASession() {
         String sessionId = UUID.randomUUID().toString();
 
         BeginSessionOptions options = new BeginSessionOptions()
@@ -44,13 +43,9 @@ public class QueryAndUpdateASession extends SampleBase {
         RenderingSession currentSession = client.getSession(sessionId);
 
         Duration sessionTimeAlive = Duration.between(OffsetDateTime.now(), currentSession.getCreationTime()).abs();
-        if (currentSession.getMaxLeaseTime().minus(sessionTimeAlive).toMinutes() < 2)
-        {
+        if (currentSession.getMaxLeaseTime().minus(sessionTimeAlive).toMinutes() < 2) {
             Duration newLeaseTime = currentSession.getMaxLeaseTime().plus(Duration.ofMinutes(30));
-
-            UpdateSessionOptions longerLeaseOptions = new UpdateSessionOptions()
-                .maxLeaseTime(newLeaseTime);
-
+            UpdateSessionOptions longerLeaseOptions = new UpdateSessionOptions().maxLeaseTime(newLeaseTime);
             client.updateSession(sessionId, longerLeaseOptions);
         }
 

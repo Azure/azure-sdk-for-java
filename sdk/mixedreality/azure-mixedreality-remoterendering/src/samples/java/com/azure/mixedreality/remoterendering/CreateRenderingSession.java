@@ -31,8 +31,7 @@ public class CreateRenderingSession extends SampleBase
      *
      * To avoid launching too many sessions during testing, we rely on the live tests.
      */
-    public void createRenderingSession()
-    {
+    public void createRenderingSession() {
         BeginSessionOptions options = new BeginSessionOptions()
             .setMaxLeaseTime(Duration.ofMinutes(30))
             .setSize(RenderingSessionSize.STANDARD);
@@ -43,16 +42,11 @@ public class CreateRenderingSession extends SampleBase
         SyncPoller<RenderingSession, RenderingSession> startSessionOperation = client.beginSession(sessionId, options);
 
         RenderingSession session = startSessionOperation.getFinalResult();
-        if (session.getStatus() == RenderingSessionStatus.READY)
-        {
+        if (session.getStatus() == RenderingSessionStatus.READY) {
             logger.error("Session {} is ready.", session.getId());
-        }
-        else if (session.getStatus() == RenderingSessionStatus.ERROR)
-        {
+        } else if (session.getStatus() == RenderingSessionStatus.ERROR) {
             logger.error("Session {} encountered an error: {} {}", session.getId(), session.getError().getCode(), session.getError().getMessage());
-        }
-        else
-        {
+        } else {
             logger.error("Got unexpected session status: {}", session.getStatus());
         }
 
