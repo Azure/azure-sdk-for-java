@@ -17,7 +17,6 @@ stages:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
         TestResourceDirectories:
-          - spring/azure-spring-boot-test-cosmos
           - spring/azure-spring-boot-test-servicebus-jms
           - spring/azure-spring-cloud-test-eventhubs
           - spring/azure-spring-boot-test-keyvault
@@ -33,9 +32,6 @@ stages:
           - name: azure-spring-boot-test-core
             groupId: com.azure.spring
             safeName: azurespringboottestcore
-          - name: azure-spring-boot-test-cosmos
-            groupId: com.azure.spring
-            safeName: azurespringboottestcosmos
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring
             safeName: azurespringboottestaad
