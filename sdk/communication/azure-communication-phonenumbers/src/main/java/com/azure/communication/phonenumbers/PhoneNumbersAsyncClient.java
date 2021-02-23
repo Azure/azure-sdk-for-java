@@ -42,7 +42,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous client for Communication service phone number operations
+ * Asynchronous client for Communication service phone number operations.
  */
 @ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = true)
 public final class PhoneNumbersAsyncClient {
@@ -102,11 +102,11 @@ public final class PhoneNumbersAsyncClient {
      * Starts the search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param phoneNumberType {@link PhoneNumberType} The phone number type
-     * @param assignmentType {@link PhoneNumberAssignmentType} The phone assignment type
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number's capabilities
-     * @param searchOptions The phone number search options
-     * @return A {@link PollerFlux} object with the reservation result
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
+     * @param searchOptions The phone number search options.
+     * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -214,7 +214,7 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Starts the purchase of the phone number(s) in the search result associated with a given id.
      *
-     * @param searchId ID of the search
+     * @param searchId ID of the search.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code searchId} is null.
      */

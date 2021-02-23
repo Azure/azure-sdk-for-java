@@ -85,12 +85,12 @@ public final class PhoneNumbersClient {
      * operation is complete.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param phoneNumberType {@link PhoneNumberType} The phone number type
-     * @param assignmentType {@link PhoneNumberAssignmentType} The phone assignment type
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number's capabilities
-     * @param searchOptions The phone number search options
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
+     * @param searchOptions The phone number search options.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object with the reservation result
+     * @return A {@link SyncPoller} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
