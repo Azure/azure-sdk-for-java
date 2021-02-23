@@ -33,7 +33,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
-                </includes>
+              </includes>
             </bannedDependencies>
           </rules>
         </configuration>

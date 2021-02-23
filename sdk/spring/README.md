@@ -330,7 +330,7 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [spring-cloud-azure-appconfiguration-config-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-appconfiguration-config.svg
 [spring-cloud-azure-appconfiguration-config-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-appconfiguration-config%22
 
-[spring-cloud-azure-appconfiguration-config-web-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config-web
+[spring-cloud-azure-appconfiguration-config-web-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
 [spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-appconfiguration-config-web.svg
 [spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x]: https://search.maven.org/search?q=a:spring-cloud-azure-appconfiguration-config-web
 
