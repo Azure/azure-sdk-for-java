@@ -199,11 +199,11 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```
 
 1. Update the pom.xml file to now include.
-    [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current})
+    [//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current})
     ```xml
     <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
         <version>1.2.8-beta.1</version>
     </dependency>
     ```

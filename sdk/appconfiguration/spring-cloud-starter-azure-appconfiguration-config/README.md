@@ -9,13 +9,13 @@ This project allows Spring Application to load properties from Azure Configurati
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
+There are two libraries that can be used spring-cloud-azure-appconfiguration-config and spring-cloud-azure-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current})
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
@@ -23,11 +23,11 @@ There are two libraries that can be used azure-spring-cloud-appconfiguration-con
 
 or
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current})
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
