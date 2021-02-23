@@ -49,7 +49,9 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         if (resp.getException != null && !shouldIgnore(resp.getException)) {
           if (shouldRetry(resp.getException, contextOpt.get)) {
-            scheduleWrite(itemOperation.getPartitionKeyValue, itemOperation.getItem.asInstanceOf[ObjectNode])
+            scheduleWriteInternal(itemOperation.getPartitionKeyValue,
+              itemOperation.getItem.asInstanceOf[ObjectNode],
+              OperationContext(contextOpt.get.attemptNumber + 1))
           } else {
             captureIfFirstFailure(resp.getException)
             cancelWork()
@@ -74,7 +76,12 @@ class BulkWriter(container: CosmosAsyncContainer,
     )
   }
 
+
   def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(1))
+  }
+
+  private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
         BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue)
@@ -86,7 +93,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     activeTasks.incrementAndGet()
 
-    activeOperations.put(bulkItemOperation, new OperationContext(1))
+    activeOperations.put(bulkItemOperation, operationContext)
     bulkInputEmitter.onNext(bulkItemOperation)
   }
 
@@ -145,6 +152,6 @@ class BulkWriter(container: CosmosAsyncContainer,
       Exceptions.canBeTransientFailure(exception.asInstanceOf[CosmosException])
   }
 
-  private class OperationContext(val attemptNumber: Int /** starts from 1 **/)
+  private case class OperationContext(val attemptNumber: Int /** starts from 1 **/)
 }
 //scalastyle:on null
