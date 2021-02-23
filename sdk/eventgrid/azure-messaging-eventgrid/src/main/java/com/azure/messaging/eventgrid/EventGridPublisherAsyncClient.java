@@ -205,8 +205,7 @@ public final class EventGridPublisherAsyncClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvent(T event) {
-        List<T> events = new ArrayList<>();
-        events.add(event);
+        List<T> events = Arrays.asList(event);
         return withContext(context -> sendEvents(events, context));
     }
 
