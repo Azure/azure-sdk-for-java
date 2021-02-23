@@ -479,8 +479,7 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendMessageResult> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
         Duration timeToLive, Duration timeout, Context context) {
-        BinaryData message = messageText == null ? null : BinaryData.fromString(messageText);
-        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(message,
+        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(BinaryData.fromString(messageText),
             visibilityTimeout, timeToLive, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

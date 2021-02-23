@@ -40,11 +40,11 @@ import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -599,11 +599,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendMessageResult> sendMessage(BinaryData message) {
-        try {
-            return sendMessageWithResponse(message, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return sendMessageWithResponse(message, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -638,8 +634,8 @@ public final class QueueAsyncClient {
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
-            BinaryData message = messageText == null ? null : BinaryData.fromString(messageText);
-            return withContext(context -> sendMessageWithResponse(message, visibilityTimeout, timeToLive, context));
+            return withContext(context ->
+                sendMessageWithResponse(BinaryData.fromString(messageText), visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -687,29 +683,29 @@ public final class QueueAsyncClient {
                                                               Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        String messageText = encodeMessage(message);
-        QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
+        Context finalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+        return encodeMessage(message)
+            .flatMap(messageText -> {
+                QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
+                return client.getMessages()
+                    .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds,
+                        null, null, finalContext)
+                    .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
+            });
 
-        return client.getMessages()
-            .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds,
-                null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
     }
 
-    private String encodeMessage(BinaryData message) {
-        if (message == null) {
-            return null;
-        }
+    private Mono<String> encodeMessage(BinaryData message) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
         switch (messageEncoding) {
             case NONE:
-                return message.toString();
+                return Mono.just(message.toString());
             case BASE64:
-                return Base64.getEncoder().encodeToString(message.toBytes());
+                return Mono.just(Base64.getEncoder().encodeToString(message.toBytes()));
             default:
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+                return FluxUtil.monoError(
+                    logger, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
         }
     }
 
@@ -819,60 +815,64 @@ public final class QueueAsyncClient {
     private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
         MessagesDequeueResponse response) {
         List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
-        List<QueueMessageItem> queueMessageItems = Collections.emptyList();
-        Mono<Void> mono = Mono.empty();
-        if (queueMessageInternalItems != null) {
-            queueMessageItems = new ArrayList<>(queueMessageInternalItems.size());
-            for (QueueMessageItemInternal queueMessageItemInternal : queueMessageInternalItems) {
-                try {
-                    queueMessageItems.add(transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding));
-                } catch (IllegalArgumentException e) {
-                    if (messageDecodingFailedHandler != null) {
-                        mono = mono.then(messageDecodingFailedHandler.apply(
-                            new QueueMessageDecodingFailure(
-                                this,
-                                transformQueueMessageItemInternal(queueMessageItemInternal, QueueMessageEncoding.NONE),
-                                null)
-                        ));
-                    } else {
-                        throw logger.logExceptionAsError(e);
-                    }
-                }
-            }
+        if (queueMessageInternalItems == null) {
+            queueMessageInternalItems = Collections.emptyList();
         }
-        return mono.then(Mono.just(new PagedResponseBase<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            queueMessageItems,
-            null,
-            response.getDeserializedHeaders())));
+        return Flux.fromIterable(queueMessageInternalItems)
+            .flatMap(queueMessageItemInternal ->
+                transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
+                .onErrorResume(IllegalArgumentException.class, e -> {
+                    if (messageDecodingFailedHandler != null) {
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                            .flatMap(messageItem -> messageDecodingFailedHandler.apply(
+                                new QueueMessageDecodingFailure(
+                                    this, messageItem, null)))
+                            .then(Mono.empty());
+                    } else {
+                        return FluxUtil.monoError(logger, e);
+                    }
+                }))
+            .collectList()
+            .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                queueMessageItems,
+                null,
+                response.getDeserializedHeaders()));
     }
 
-    private QueueMessageItem transformQueueMessageItemInternal(
+    private Mono<QueueMessageItem> transformQueueMessageItemInternal(
         QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        return new QueueMessageItem()
+        QueueMessageItem queueMessageItem = new QueueMessageItem()
             .setMessageId(queueMessageItemInternal.getMessageId())
-            .setBody(decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding))
             .setDequeueCount(queueMessageItemInternal.getDequeueCount())
             .setExpirationTime(queueMessageItemInternal.getExpirationTime())
             .setInsertionTime(queueMessageItemInternal.getInsertionTime())
             .setPopReceipt(queueMessageItemInternal.getPopReceipt())
             .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
+        return decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding)
+            .map(queueMessageItem::setBody)
+            .switchIfEmpty(Mono.just(queueMessageItem));
     }
 
-    private BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+    private Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
-            return null;
+            return Mono.empty();
         }
 
         switch (messageEncoding) {
             case NONE:
-                return BinaryData.fromString(messageText);
+                return Mono.just(BinaryData.fromString(messageText));
             case BASE64:
-                return BinaryData.fromBytes(Base64.getDecoder().decode(messageText));
+                try {
+                    return Mono.just(BinaryData.fromBytes(Base64.getDecoder().decode(messageText)));
+                } catch (IllegalArgumentException e) {
+                    return FluxUtil.monoError(logger, e);
+                }
             default:
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+                return FluxUtil.monoError(
+                    logger, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
         }
     }
 
@@ -946,45 +946,43 @@ public final class QueueAsyncClient {
     private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
         MessagesPeekResponse response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
-        List<PeekedMessageItem> peekedMessageItems = Collections.emptyList();
-        Mono<Void> mono = Mono.empty();
-        if (peekedMessageInternalItems != null) {
-            peekedMessageItems = new ArrayList<>(peekedMessageInternalItems.size());
-            for (PeekedMessageItemInternal peekedMessageItemInternal : peekedMessageInternalItems) {
-                try {
-                    peekedMessageItems.add(transformPeekedMessageItemInternal(
-                        peekedMessageItemInternal, messageEncoding));
-                } catch (IllegalArgumentException e) {
-                    if (messageDecodingFailedHandler != null) {
-                        mono = mono.then(messageDecodingFailedHandler.apply(
-                            new QueueMessageDecodingFailure(
-                                this,
-                                null,
-                                transformPeekedMessageItemInternal(
-                                    peekedMessageItemInternal, QueueMessageEncoding.NONE))
-                        ));
-                    } else {
-                        throw logger.logExceptionAsError(e);
-                    }
-                }
-            }
+        if (peekedMessageInternalItems == null) {
+            peekedMessageInternalItems = Collections.emptyList();
         }
-        return mono.then(Mono.just(new PagedResponseBase<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            peekedMessageItems,
-            null,
-            response.getDeserializedHeaders())));
+        return Flux.fromIterable(peekedMessageInternalItems)
+            .flatMap(peekedMessageItemInternal ->
+                transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
+                    .onErrorResume(IllegalArgumentException.class, e -> {
+                        if (messageDecodingFailedHandler != null) {
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                                .flatMap(messageItem -> messageDecodingFailedHandler.apply(
+                                    new QueueMessageDecodingFailure(
+                                        this, null, messageItem)))
+                                .then(Mono.empty());
+                        } else {
+                            return FluxUtil.monoError(logger, e);
+                        }
+                    }))
+            .collectList()
+            .map(peekedMessageItems -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                peekedMessageItems,
+                null,
+                response.getDeserializedHeaders()));
     }
 
-    private PeekedMessageItem transformPeekedMessageItemInternal(
+    private Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
         PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        return new PeekedMessageItem()
+        PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
             .setMessageId(peekedMessageItemInternal.getMessageId())
-            .setBody(decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding))
             .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
             .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
             .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
+        return decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding)
+            .map(peekedMessageItem::setBody)
+            .switchIfEmpty(Mono.just(peekedMessageItem));
     }
 
     /**

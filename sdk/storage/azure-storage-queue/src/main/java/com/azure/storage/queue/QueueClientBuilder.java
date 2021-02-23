@@ -428,12 +428,10 @@ public final class QueueClientBuilder {
      *
      * @param messageDecodingFailedHandler the handler.
      * @return the updated QueueClientBuilder object
-     * @throws NullPointerException If {@code messageDecodingFailedHandler} is {@code null}.
      */
     public QueueClientBuilder messageDecodingFailedHandler(
         Function<QueueMessageDecodingFailure, Mono<Void>> messageDecodingFailedHandler) {
-        this.messageDecodingFailedHandler = Objects.requireNonNull(messageDecodingFailedHandler,
-            "'messageDecodingFailedHandler' cannot be null.");
+        this.messageDecodingFailedHandler = messageDecodingFailedHandler;
         return this;
     }
 
