@@ -43,7 +43,7 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
     }
 
     @Override
-    protected ObjectMapper getObjectMapper(){
+    protected ObjectMapper getObjectMapper() {
         return objectMapper;
     }
 
