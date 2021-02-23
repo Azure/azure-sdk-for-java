@@ -70,6 +70,14 @@ Use the `AzureKeyCredential` object to use an account identifier and account key
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L35-L42 -->
 ```java
+AzureKeyCredential credential = new AzureKeyCredential(environment.getAccountKey());
+
+RemoteRenderingClient client = new RemoteRenderingClientBuilder()
+    .accountId(environment.getAccountId())
+    .accountDomain(environment.getAccountDomain())
+    .endpoint(environment.getServiceEndpoint())
+    .credential(credential)
+    .buildClient();
 ```
 
 #### Authenticating with an AAD client secret
@@ -78,6 +86,19 @@ Use the `ClientSecretCredential` object to perform client secret authentication.
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L53-L65 -->
 ```java
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(environment.getTenantId())
+    .clientId(environment.getClientId())
+    .clientSecret(environment.getClientSecret())
+    .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
+    .build();
+
+RemoteRenderingClient client = new RemoteRenderingClientBuilder()
+    .accountId(environment.getAccountId())
+    .accountDomain(environment.getAccountDomain())
+    .endpoint(environment.getServiceEndpoint())
+    .credential(credential)
+    .buildClient();
 ```
 
 #### Authenticating a user using device code authentication
@@ -86,6 +107,19 @@ Use the `DeviceCodeCredential` object to perform device code authentication.
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L76-L88 -->
 ```java
+DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
+    .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
+    .clientId(environment.getClientId())
+    .tenantId(environment.getTenantId())
+    .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())
+    .build();
+
+RemoteRenderingClient client = new RemoteRenderingClientBuilder()
+    .accountId(environment.getAccountId())
+    .accountDomain(environment.getAccountDomain())
+    .endpoint(environment.getServiceEndpoint())
+    .credential(credential)
+    .buildClient();
 ```
 
 See [here](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Device-Code-Flow) for more
@@ -97,6 +131,14 @@ Use the `DefaultAzureCredential` object:
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L99-L106 -->
 ```java
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+RemoteRenderingClient client = new RemoteRenderingClientBuilder()
+    .accountId(environment.getAccountId())
+    .accountDomain(environment.getAccountDomain())
+    .endpoint(environment.getServiceEndpoint())
+    .credential(credential)
+    .buildClient();
 ```
 
 #### Authenticating with a static access token
@@ -107,6 +149,18 @@ to be used with a Mixed Reality client library:
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L129-L140 -->
 ```java
+// GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
+// a Mixed Reality access token from a web service. The web service would use the
+// MixedRealityStsClient and credentials to obtain an access token to be returned
+// to the client.
+AccessToken accessToken = getMixedRealityAccessTokenFromWebService();
+
+RemoteRenderingClient client = new RemoteRenderingClientBuilder()
+    .accountId(environment.getAccountId())
+    .accountDomain(environment.getAccountDomain())
+    .endpoint(environment.getServiceEndpoint())
+    .accessToken(accessToken)
+    .buildClient();
 ```
 
 ## Key concepts
@@ -134,6 +188,15 @@ The following snippet describes how to request that "box.fbx", found at the root
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertSimpleAsset.java#L31-L39 -->
 ```java
+AssetConversionOptions conversionOptions = new AssetConversionOptions()
+    .setInputStorageContainerUrl(getStorageURL())
+    .setInputRelativeAssetPath("box.fbx")
+    .setOutputStorageContainerUrl(getStorageURL());
+
+// A randomly generated UUID is a good choice for a conversionId.
+String conversionId = UUID.randomUUID().toString();
+
+SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
 ```
 
 The output files will be placed beside the input asset.
@@ -150,6 +213,16 @@ The code is as follows:
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L35-L44 -->
 ```java
+AssetConversionOptions conversionOptions = new AssetConversionOptions()
+    .setInputStorageContainerUrl(getStorageURL())
+    .setInputRelativeAssetPath("bicycle.gltf")
+    .setInputBlobPrefix("Bicycle")
+    .setOutputStorageContainerUrl(getStorageURL())
+    .setOutputBlobPrefix("ConvertedBicycle");
+
+String conversionId = UUID.randomUUID().toString();
+
+SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
 ```
 
 > NOTE: when a prefix is given in the input options, then the input file parameter is assumed to be relative to that prefix.
@@ -164,6 +237,14 @@ Note that a conversionOperation can be constructed from the conversionId of an e
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L46-L53 -->
 ```java
+AssetConversion conversion = conversionOperation.getFinalResult();
+if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
+    logger.info("Conversion succeeded: Output written to {}", conversion.getOutputAssetUrl());
+} else if (conversion.getStatus() == AssetConversionStatus.FAILED) {
+    logger.error("Conversion failed: {} {}", conversion.getError().getCode(), conversion.getError().getMessage());
+} else {
+    logger.error("Unexpected conversion status: {}", conversion.getStatus());
+}
 ```
 
 ### List conversions
@@ -174,6 +255,12 @@ In this example, we just list the output URLs of successful conversions started 
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ListConversions.java#L32-L37 -->
 ```java
+for (AssetConversion conversion : client.listConversions()) {
+    if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
+        && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
+        logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
+    }
+}
 ```
 
 ### Create a rendering session
@@ -183,6 +270,14 @@ The following snippet describes how to request that a new rendering session be s
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateRenderingSession.java#L35-L42 -->
 ```java
+BeginSessionOptions options = new BeginSessionOptions()
+    .setMaxLeaseTime(Duration.ofMinutes(30))
+    .setSize(RenderingSessionSize.STANDARD);
+
+// A randomly generated GUID is a good choice for a sessionId.
+String sessionId = UUID.randomUUID().toString();
+
+SyncPoller<RenderingSession, RenderingSession> startSessionOperation = client.beginSession(sessionId, options);
 ```
 
 ### Extend the lease time of a session
@@ -196,6 +291,14 @@ This example shows how to query the current properties and then extend the lease
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/QueryAndUpdateASession.java#L43-L50 -->
 ```java
+RenderingSession currentSession = client.getSession(sessionId);
+
+Duration sessionTimeAlive = Duration.between(OffsetDateTime.now(), currentSession.getCreationTime()).abs();
+if (currentSession.getMaxLeaseTime().minus(sessionTimeAlive).toMinutes() < 2) {
+    Duration newLeaseTime = currentSession.getMaxLeaseTime().plus(Duration.ofMinutes(30));
+    UpdateSessionOptions longerLeaseOptions = new UpdateSessionOptions().maxLeaseTime(newLeaseTime);
+    client.updateSession(sessionId, longerLeaseOptions);
+}
 ```
 
 ### List rendering sessions
@@ -205,6 +308,17 @@ This method may return sessions which have yet to start and sessions which are r
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ListRenderingSessions.java#L47-L57 -->
 ```java
+for (RenderingSession session : client.listSessions()) {
+    if (session.getStatus() == RenderingSessionStatus.STARTING) {
+        logger.info("Session {} is starting.");
+    } else if (session.getStatus() == RenderingSessionStatus.READY) {
+        logger.info("Session {} is ready at host {}", session.getId(), session.getHostname());
+    } else if (session.getStatus() == RenderingSessionStatus.ERROR) {
+        logger.error("Session {} encountered an error: {} {}", session.getId(), session.getError().getCode(), session.getError().getMessage());
+    } else {
+        logger.error("Session {} has unexpected status {}", session.getId(), session.getStatus());
+    }
+}
 ```
 
 ### Stop a session
@@ -213,6 +327,7 @@ The following code will stop a running session with given id.
 
 <!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateRenderingSession.java#L57-L57 -->
 ```java
+client.endSession(sessionId);
 ```
 
 ## Troubleshooting
