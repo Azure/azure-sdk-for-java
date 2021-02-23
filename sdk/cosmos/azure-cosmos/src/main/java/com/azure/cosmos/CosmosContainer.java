@@ -27,7 +27,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -352,7 +351,7 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
@@ -723,5 +722,55 @@ public class CosmosContainer {
                 throw ex;
             }
         }
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput, isDefault);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, isDefault);
     }
 }

@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.featuremanagement;
 
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +10,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
+
 @SpringBootApplication
 @EnableAutoConfiguration
 public class ConsoleApplication implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory
-        .getLogger(ConsoleApplication.class);
+            .getLogger(ConsoleApplication.class);
 
     @Autowired
     private FeatureManager featureManager;
@@ -36,6 +36,7 @@ public class ConsoleApplication implements CommandLineRunner {
             LOGGER.info("RUNNING : application");
         }
     }
+
 
 
 }

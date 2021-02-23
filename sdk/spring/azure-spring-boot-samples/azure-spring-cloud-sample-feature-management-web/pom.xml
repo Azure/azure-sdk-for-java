@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -13,18 +13,6 @@
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-feature-management-web;current} -->
   <name>Azure Spring Cloud Sample Feature Management Web</name>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Hoxton.SR8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>

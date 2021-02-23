@@ -32,6 +32,13 @@ public interface AccountFilter {
     String type();
 
     /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the presentationTimeRange property: The presentation time range.
      *
      * @return the presentationTimeRange value.

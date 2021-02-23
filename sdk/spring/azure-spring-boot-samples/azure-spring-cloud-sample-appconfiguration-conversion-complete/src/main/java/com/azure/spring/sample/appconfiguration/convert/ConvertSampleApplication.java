@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.appconfiguration.convert;
 
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class ConvertSampleApplication implements CommandLineRunner {
         final User testUser = new User("testId", "testFirstName", "testLastName",
                 "test address line one");
 
-        // Save the User class to Azure Cosmos DB database.
+        // Save the User class to Azure CosmosDB database.
         final Mono<User> saveUserMono = repository.save(testUser);
 
         final Flux<User> firstNameUserFlux = repository.findByFirstName("testFirstName");

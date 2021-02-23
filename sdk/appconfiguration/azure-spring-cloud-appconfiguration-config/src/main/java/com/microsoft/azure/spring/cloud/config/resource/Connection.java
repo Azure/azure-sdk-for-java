@@ -2,18 +2,22 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.resource;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.springframework.util.Assert;
 
-public class Connection {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-    public static final String NON_EMPTY_MSG =
-        "%s property should not be null or empty in the connection string of Azure Config Service.";
+public class Connection {
     private static final String CONN_STRING_REGEXP = "Endpoint=([^;]+);Id=([^;]+);Secret=([^;]+)";
+
     public static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.",
-        CONN_STRING_REGEXP);
+            CONN_STRING_REGEXP);
+
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
+
+    public static final String NON_EMPTY_MSG = "%s property should not be null or empty in the connection string of " +
+            "Azure Config Service.";
+
     private final String endpoint;
 
     private final String connectionString;

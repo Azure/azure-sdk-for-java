@@ -6,6 +6,6 @@ import com.azure.core.credential.TokenCredential;
 
 public interface AppConfigurationCredentialProvider {
 
-    TokenCredential getAppConfigCredential(String uri);
+    public TokenCredential getAppConfigCredential(String uri);
 
 }

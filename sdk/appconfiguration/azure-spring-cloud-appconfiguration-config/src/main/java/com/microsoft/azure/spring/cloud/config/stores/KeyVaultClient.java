@@ -1,19 +1,24 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See LICENSE in the project root for
+ * license information.
+ */
 package com.microsoft.azure.spring.cloud.config.stores;
+
+import java.net.URI;
+import java.time.Duration;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.microsoft.azure.spring.cloud.config.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.microsoft.azure.spring.cloud.config.SecretClientBuilderSetup;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
-import java.net.URI;
-import java.time.Duration;
-import org.apache.commons.lang3.StringUtils;
 
 public class KeyVaultClient {
 
@@ -27,12 +32,17 @@ public class KeyVaultClient {
 
     private TokenCredential tokenCredential;
 
-    public KeyVaultClient(
-        AppConfigurationProperties properties,
-        URI uri,
-        KeyVaultCredentialProvider tokenCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider
-    ) {
+    /**
+     * Builds an Async client to a Key Vaults Secrets
+     *
+     * @param uri Key Vault URI
+     * @param tokenCredentialProvider user created credentials for authenticating to Key
+     * Vault
+     * @param properties Azure Configuration Managed Identity credentials
+     * @param keyVaultClientProvider Key Vault Client Provider
+     */
+    public KeyVaultClient(AppConfigurationProperties properties, URI uri,
+            KeyVaultCredentialProvider tokenCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
         this.properties = properties;
         this.uri = uri;
         if (tokenCredentialProvider != null) {
@@ -75,7 +85,7 @@ public class KeyVaultClient {
      * Gets the specified secret using the Secret Identifier
      *
      * @param secretIdentifier The Secret Identifier to Secret
-     * @param timeout          How long it waits for a response from Key Vault
+     * @param timeout How long it waits for a response from Key Vault
      * @return Secret values that matches the secretIdentifier
      */
     public KeyVaultSecret getSecret(URI secretIdentifier, int timeout) {

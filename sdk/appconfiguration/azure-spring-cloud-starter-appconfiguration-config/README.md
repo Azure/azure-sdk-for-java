@@ -1,8 +1,6 @@
 # Azure Spring cloud starter App Configuration client library for Java
 
-This package helps Spring Application to load properties from Azure Configuration Store.
-
-[Package (Maven)][package] | [Samples][app_configuration_sample]
+This project allows Spring Application to load properties from Azure Configuration Store.
 
 ## Getting started
 ### Prerequisites
@@ -39,8 +37,6 @@ or
 Azure App Configuration provides a service to centrally manage application settings and feature flags. Modern programs, especially programs running in a cloud, generally have many components that are distributed in nature. Spreading configuration settings across these components can lead to hard-to-troubleshoot errors during an application deployment. Use App Configuration to store all the settings for your application and secure their accesses in one place. 
 
 ## Examples
-
-Please use this `sample` as a reference for how to use this starter.
 
 ### Supported properties
 
@@ -121,36 +117,6 @@ When using the web library, applications will attempt a refresh whenever a servl
 
 In the console library calling refreshConfiguration on `AzureCloudConfigRefresh` will result in a refresh if the cache has expired. The web library can also use this method along with servlet request method.
 
-#### Push Based Refresh
-
-The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid.
-
-```properties
-management.endpoints.web.exposure.include= appconfiguration-refresh, appconfiguration-refresh-bus
-```
-
-In addition a required query parameter has been added for security. No token name or value is set by default, but setting one is required in order to use the endpoints. We suggest you set up your token value in Key Vault and add it to your store through a key vault reference. The values should be:
-
-```properties
-/application/spring.cloud.appconfiguration.token-name
-/application/spring.cloud.appconfiguration.token-secret
-
- or
-
-/YOUR_APPLICATION_NAME/spring.cloud.appconfiguration.token-name
-/YOUR_APPLICATION_NAME/spring.cloud.appconfiguration.token-secret
-```
-
-To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and selent the Endpoint type of Web Hook. Select "Select an endpoint". You endpoint will be your look as following:
-
-`http://myApplication.azurewebsites.net/actuator/appconfiguration-refresh?myTokenName=mySecret`
-
-Your application will need to be up and running with token-name and token-secret set as Selecting Confirm Selection will validate the endpoint.
-
-Note: This validation only happens on the creation/modification of the endpoint.
-
-It is also highly recommended that filters are setup as otherwise a refresh will be triggered after every key creation and modification.
-
 #### Failfast
 
 Failfast feature decides whether throw RuntimeException or not when exception happens. If an exception does occur when false the store is skipped. Any store skipped on startup will be automatically skipped on Refresh. By default, failfast is enabled, it can be disabled with below configuration:
@@ -219,7 +185,7 @@ public class MyCredentials implements AppConfigCredentialProvider, KeyVaultCrede
 
 #### Client Builder Customization
 
-The service client builders used for connecting to App Configuration and Key Vault can be customized by implementing interfaces `ConfigurationClientBuilderSetup` and `SecretClientBuilderSetup` respectively. Generating and providing a `@Bean` of them will update the default service client builders used in [App Configuration SDK][app_configuration_SDK] and [Key Vault SDK][key_vault_SDK]. If necessary, the customization can be done per App Configuration store or Key Vault instance.
+The service client builders used for connecting to App Configuration and Key Vault can be customized by implementing interfaces `ConfigurationClientBuilderSetup` and `SecretClientBuilderSetup` respectively. Generating and providing a `@Bean` of them will update the default service client builders used in [App Configuration SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration#key-concepts) and [Key Vault SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#key-concepts). If necessary, the customization can be done per App Configuration store or Key Vault instance.
 
 ```java
 public interface ConfigurationClientBuilderSetup {
@@ -262,53 +228,17 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 ```
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
-
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
-```properties
-logging.level.root=WARN
-logging.level.org.springframework.web=DEBUG
-logging.level.org.hibernate=ERROR
-```
-
-For more information about setting logging in spring, please refer to the [official doc][logging_doc].
- 
 
 ## Next steps
 
-The following section provide a sample project illustrating how to use the starter.
-### More sample code
-- [Azure App Configuration][app_configuration_sample]
-- [Azure App Configuration Conversation Complete][app_configuration_conversation_complete_sample]
-- [Azure App Configuration Conversation Initial][app_configuration_conversation_initail_sample]
-
 ## Contributing
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here][contributing_md] to build from source or contribute.
-
-<!-- Link -->
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
-[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration
-[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete
-[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
-[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: https://maven.apache.org/
-[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration
-[azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
-[enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
-[support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
+<!-- LINKS -->
 [azure]: https://azure.microsoft.com
 [azure_active_directory]: https://azure.microsoft.com/services/active-directory/
 [azure_identity_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azure_rbac]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-[app_configuration_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration#key-concepts
-[key_vault_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#key-concepts
+[azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
+[support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
+[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration

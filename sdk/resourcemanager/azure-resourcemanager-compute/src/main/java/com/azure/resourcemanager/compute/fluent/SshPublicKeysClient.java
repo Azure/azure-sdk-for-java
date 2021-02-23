@@ -103,7 +103,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to create the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -118,7 +118,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to create the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -133,7 +133,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to create the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,7 +148,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to create the SSH public key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,7 +164,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to update the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,7 +179,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to update the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +194,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to update the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,7 +209,7 @@ public interface SshPublicKeysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Specifies information about the SSH public key.
+     * @param parameters Parameters supplied to update the SSH public key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

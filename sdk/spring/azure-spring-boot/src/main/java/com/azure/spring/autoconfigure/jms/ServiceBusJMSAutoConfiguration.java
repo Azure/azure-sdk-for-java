@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
-import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 
@@ -49,14 +48,6 @@ public class ServiceBusJMSAutoConfiguration {
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
         return new CachingConnectionFactory(jmsConnectionFactory);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsTemplate jmsTemplate(ConnectionFactory jmsConnectionFactory) {
-        final JmsTemplate jmsTemplate = new JmsTemplate();
-        jmsTemplate.setConnectionFactory(jmsConnectionFactory);
-        return jmsTemplate;
     }
 
     @Bean

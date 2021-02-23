@@ -6,6 +6,18 @@
 
   <name>Microsoft Azure Cognitive Search client for Java</name>
   <description>This package contains client functionality for Microsoft Azure Cognitive Search</description>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-search-documents-autorest-customization</artifactId>
@@ -15,13 +27,15 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.tools</groupId>
       <artifactId>azure-autorest-customization</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.2</version>
     </dependency>
   </dependencies>
 </project>

@@ -5,7 +5,6 @@ package com.microsoft.azure.spring.cloud.config.resource;
 import org.springframework.lang.Nullable;
 
 public class AppConfigManagedIdentityProperties {
-
     @Nullable
     private String clientId; // Optional: client_id of the managed identity
 

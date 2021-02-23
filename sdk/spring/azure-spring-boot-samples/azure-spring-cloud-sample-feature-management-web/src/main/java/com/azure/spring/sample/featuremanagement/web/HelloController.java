@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.featuremanagement.web;
 
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureGate;
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureGate;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
 
 @Controller
 @ConfigurationProperties("controller")
@@ -48,7 +48,6 @@ public class HelloController {
     @GetMapping(value = {"", "/", "/welcome"})
     public String mainWithParam(Model model) {
         model.addAttribute("Beta", featureManager.isEnabledAsync("beta").block());
-        model.addAttribute("Target", String.valueOf(featureManager.isEnabledAsync("target").block()));
         return "welcome";
     }
 }

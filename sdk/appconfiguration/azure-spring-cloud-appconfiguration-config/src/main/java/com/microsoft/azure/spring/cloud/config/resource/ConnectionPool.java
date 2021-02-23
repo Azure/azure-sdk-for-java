@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.resource;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Container for connection string of stores
  */
 public class ConnectionPool {
-
     private Map<String, Connection> connectionStringMap = new ConcurrentHashMap<>();
 
     public void put(String endpoint, Connection connectionString) {

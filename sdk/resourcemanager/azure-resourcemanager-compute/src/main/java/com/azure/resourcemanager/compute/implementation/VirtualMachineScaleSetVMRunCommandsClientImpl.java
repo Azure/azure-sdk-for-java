@@ -181,7 +181,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +224,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -251,7 +251,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -296,7 +296,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -320,7 +320,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -353,7 +353,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -390,7 +390,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -414,7 +414,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -441,7 +441,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,7 +466,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -494,7 +494,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -517,7 +517,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -543,7 +543,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -586,7 +586,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -613,7 +613,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -658,7 +658,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -682,7 +682,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -714,7 +714,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -749,7 +749,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -773,7 +773,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -799,7 +799,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,7 +824,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -851,7 +851,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -874,7 +874,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Describes a Virtual Machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -932,7 +932,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -992,7 +992,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1207,7 +1207,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1274,7 +1274,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1427,7 +1427,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1493,7 +1493,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service

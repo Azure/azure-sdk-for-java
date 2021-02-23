@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.featuremanagement;
+
+import org.springframework.stereotype.Component;
 
 import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import org.springframework.stereotype.Component;
 
 @Component("Random")
-public class Random implements FeatureFilter {
+public class Random implements FeatureFilter{
 
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {

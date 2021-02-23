@@ -1,21 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.featuremanagement.web.filters;
 
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 
 @Component("ClientFilter")
 public class ClientFilter implements FeatureFilter {
 
-    private static final String CLIENT_IP_KEY = "clientIp";
     private HttpServletRequest request;
+
+    private static final String CLIENT_IP_KEY = "clientIp";
 
     @Autowired
     public void setRequest(HttpServletRequest request) {

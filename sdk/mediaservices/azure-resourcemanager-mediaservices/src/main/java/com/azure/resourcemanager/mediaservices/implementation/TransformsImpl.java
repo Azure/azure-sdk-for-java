@@ -30,14 +30,14 @@ public final class TransformsImpl implements Transforms {
 
     public PagedIterable<Transform> list(String resourceGroupName, String accountName) {
         PagedIterable<TransformInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new TransformImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new TransformImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Transform> list(
         String resourceGroupName, String accountName, String filter, String orderby, Context context) {
         PagedIterable<TransformInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, orderby, context);
-        return inner.mapPage(inner1 -> new TransformImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new TransformImpl(inner1, this.manager()));
     }
 
     public Transform get(String resourceGroupName, String accountName, String transformName) {

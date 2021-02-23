@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.2.0-beta.4 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a20d7d36-4687-4c98-b716-9a60f6c9cae6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "a20d7d36-4687-4c98-b716-9a60f6c9cae6",
+      "StatusCode" : "400",
+      "Date" : "Tue, 09 Feb 2021 21:39:00 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a20d7d36-4687-4c98-b716-9a60f6c9cae6",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "236",
+      "Body" : "{\"error\":{\"code\":\"OperationNotAllowed\",\"message\":\"The request is invalid.\",\"details\":[{\"code\":\"CompoundKeysNotSupported\",\"message\":\"Found 0 key fields in index 'hotels'. Each index must have exactly one key field. Parameters: index\"}]}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "a20d7d36-4687-4c98-b716-9a60f6c9cae6",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

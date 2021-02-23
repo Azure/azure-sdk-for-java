@@ -39,6 +39,12 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     private Boolean enableAcceleratedNetworking;
 
     /*
+     * Specifies whether the network interface is FPGA networking-enabled.
+     */
+    @JsonProperty(value = "properties.enableFpga")
+    private Boolean enableFpga;
+
+    /*
      * The network security group.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
@@ -122,6 +128,26 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @return the enableFpga value.
+     */
+    public Boolean enableFpga() {
+        return this.enableFpga;
+    }
+
+    /**
+     * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @param enableFpga the enableFpga value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableFpga(Boolean enableFpga) {
+        this.enableFpga = enableFpga;
         return this;
     }
 

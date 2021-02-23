@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -36,6 +37,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*

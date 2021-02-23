@@ -7,6 +7,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
 public interface ConfigurationClientBuilderSetup {
 
-    void setup(ConfigurationClientBuilder builder, String endpoint);
+    public void setup(ConfigurationClientBuilder builder, String endpoint);
 
 }

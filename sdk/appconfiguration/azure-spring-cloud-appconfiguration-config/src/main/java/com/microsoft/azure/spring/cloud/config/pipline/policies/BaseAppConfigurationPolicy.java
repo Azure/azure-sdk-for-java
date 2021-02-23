@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.pipline.policies;
 
+import java.net.URISyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
+
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
@@ -10,9 +15,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.microsoft.azure.spring.cloud.config.HostType;
 import com.microsoft.azure.spring.cloud.config.RequestTracingConstants;
 import com.microsoft.azure.spring.cloud.config.RequestType;
-import java.net.URISyntaxException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
+
 import reactor.core.publisher.Mono;
 
 public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
@@ -20,14 +23,25 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
 
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
-        BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
+            BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
     static Boolean watchRequests = false;
 
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        String sdkUserAgent = context.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
+        context.getHttpRequest().getHeaders().put(HttpHeaders.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
+        context.getHttpRequest().getHeaders().put(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
+                getTracingInfo(context.getHttpRequest()));
+        return next.process();
+    }
+
     /**
-     * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing information.
+     * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing
+     * information.
      *
-     * @param request The http request that will be traced, used to check operation being run.
+     * @param request The http request that will be traced, used to check operation being
+     * run.
      * @return String of the value for the correlation-context header.
      * @throws URISyntaxException
      */
@@ -39,7 +53,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         String requestTypeValue = RequestType.WATCH.toString();
         if (!watchRequests) {
             requestTypeValue = request.getUrl().getPath().startsWith("/kv") ? RequestType.STARTUP.toString()
-                : RequestType.WATCH.toString();
+                    : RequestType.WATCH.toString();
         }
         if (requestTypeValue.equals(RequestType.WATCH.toString())) {
             watchRequests = true;
@@ -73,15 +87,6 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
         return hostType.toString();
 
-    }
-
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String sdkUserAgent = context.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
-        context.getHttpRequest().getHeaders().put(HttpHeaders.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
-        context.getHttpRequest().getHeaders().put(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
-            getTracingInfo(context.getHttpRequest()));
-        return next.process();
     }
 
 }

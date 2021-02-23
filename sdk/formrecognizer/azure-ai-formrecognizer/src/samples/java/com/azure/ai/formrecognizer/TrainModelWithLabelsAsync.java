@@ -38,11 +38,10 @@ public class TrainModelWithLabelsAsync {
 
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-            = client.beginTraining(trainingFilesUrl,
+        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
+            client.beginTraining(trainingFilesUrl,
             true,
-            new TrainingOptions()
-                .setModelName("model trained with labels"));
+                new TrainingOptions().setModelName("model trained with labels"));
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()

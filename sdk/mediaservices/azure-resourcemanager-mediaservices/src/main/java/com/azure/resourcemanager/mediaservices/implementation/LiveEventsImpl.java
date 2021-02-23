@@ -31,12 +31,12 @@ public final class LiveEventsImpl implements LiveEvents {
 
     public PagedIterable<LiveEvent> list(String resourceGroupName, String accountName) {
         PagedIterable<LiveEventInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new LiveEventImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveEventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LiveEvent> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<LiveEventInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return inner.mapPage(inner1 -> new LiveEventImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveEventImpl(inner1, this.manager()));
     }
 
     public LiveEvent get(String resourceGroupName, String accountName, String liveEventName) {

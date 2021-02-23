@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//entities/recognition/general?showStats=false&stringIndexType=Utf16CodeUnit",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "205a005a-0036-4bf5-8655-7c83bd7b859d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "1046",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
+      "apim-request-id" : "da6d5825-862f-4cb9-8ed2-1b2f1c2dfc5f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":14,\"length\":9,\"confidenceScore\":0.98}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
+      "Date" : "Fri, 05 Feb 2021 04:24:40 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

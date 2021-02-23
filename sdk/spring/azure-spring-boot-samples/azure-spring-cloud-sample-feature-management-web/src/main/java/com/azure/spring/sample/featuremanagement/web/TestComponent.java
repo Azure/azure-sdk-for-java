@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.sample.featuremanagement.web;
 
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
+import java.util.concurrent.ExecutionException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ExecutionException;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
 
 @Component
 public class TestComponent {

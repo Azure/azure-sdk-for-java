@@ -29,6 +29,7 @@ import reactor.util.context.Context;
 import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
@@ -56,6 +57,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
+            return next.process();
+        }
+
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(Span.current());
         HttpRequest request = context.getHttpRequest();
 
@@ -169,5 +174,5 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     // lambda that actually injects arbitrary header into the request
     private final TextMapPropagator.Setter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().put(key, value);
+        (request, key, value) -> request.getHeaders().set(key, value);
 }

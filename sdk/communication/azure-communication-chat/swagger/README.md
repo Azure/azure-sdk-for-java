@@ -27,17 +27,17 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ## Update generated files for chat service
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.2
+> autorest README.md --java --v4 --use=@autorest/java@4.0.11
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesChat/preview/2020-09-21-preview2/communicationserviceschat.json
+input-file: swagger.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,CreateChatThreadResult,PostReadReceiptOptions,SendChatMessageOptions,SendChatMessageResult,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException
+custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors,AddChatParticipantsErrors,AddChatParticipantsResult,ChatMessageContent,ChatMessageType,CommunicationError,CommunicationErrorException,CommunicationErrorResponse,CommunicationErrorResponseException
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -49,21 +49,21 @@ enable-xml: false
 required-parameter-client-methods: true
 ```
 
-### Rename AddChatThreadMembersRequest to AddChatThreadMembersOptions
+### Rename AddChatParticipantsRequest to AddChatParticipantsOptions
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.AddChatThreadMembersOptions) {
-      $.AddChatThreadMembersOptions = $.AddChatThreadMembersRequest;
-      delete $.AddChatThreadMembersRequest;
+    if (!$.AddChatParticipantsOptions) {
+      $.AddChatParticipantsOptions = $.AddChatParticipantsRequest;
+      delete $.AddChatParticipantsRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/members"].post.parameters[2]
+  where: $["paths"]["/chat/threads/{chatThreadId}/participants/:add"].post.parameters[2]
   transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatThreadMembersRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatThreadMembersOptions");
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatParticipantsRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatParticipantsOptions");
         $.schema = { "$ref": path };
     }
 ```
@@ -79,7 +79,7 @@ directive:
       delete $.CreateChatThreadRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads"].post.parameters[1]
+  where: $["paths"]["/chat/threads"].post.parameters[2]
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");

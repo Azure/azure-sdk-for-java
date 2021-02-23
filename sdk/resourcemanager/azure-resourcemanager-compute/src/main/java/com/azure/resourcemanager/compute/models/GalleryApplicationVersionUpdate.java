@@ -18,7 +18,7 @@ public class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionUpdate.class);
 
     /*
-     * The publishing profile of a gallery Image Version.
+     * The publishing profile of a gallery image version.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryApplicationVersionPublishingProfile publishingProfile;
@@ -36,7 +36,7 @@ public class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Get the publishingProfile property: The publishing profile of a gallery image version.
      *
      * @return the publishingProfile value.
      */
@@ -45,7 +45,7 @@ public class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Set the publishingProfile property: The publishing profile of a gallery image version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryApplicationVersionUpdate object itself.

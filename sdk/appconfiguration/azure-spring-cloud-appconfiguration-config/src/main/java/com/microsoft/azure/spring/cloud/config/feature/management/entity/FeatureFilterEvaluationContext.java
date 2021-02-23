@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.feature.management.entity;
 
+import java.util.LinkedHashMap;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureFilterEvaluationContext {
@@ -24,21 +25,18 @@ public class FeatureFilterEvaluationContext {
     public String getName() {
         return name;
     }
-
     /**
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-
     /**
      * @return the parameters
      */
     public LinkedHashMap<String, Object> getParameters() {
         return parameters;
     }
-
     /**
      * @param parameters the parameters to set
      */

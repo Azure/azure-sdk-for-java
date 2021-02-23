@@ -2,28 +2,32 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.pipline.policies;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
-import java.net.MalformedURLException;
-import java.net.URL;
 import org.apache.http.HttpHeaders;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
+
 public class BaseAppConfigurationPolicyTest {
 
-    private static final String PRE_USER_AGENT = "PreExistingUserAgent";
     @Mock
     HttpPipelineCallContext contextMock;
+
     @Mock
     HttpPipelineNextPolicy nextMock;
+
+    private static final String PRE_USER_AGENT = "PreExistingUserAgent";
 
     @Before
     public void setup() {
@@ -45,7 +49,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Startup",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+                contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
     }
 
     @Test
@@ -63,7 +67,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Startup",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+                contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
 
         url = new URL("https://www.test.url/revisions");
         request = new HttpRequest(HttpMethod.GET, url);
@@ -76,7 +80,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+                contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
 
         url = new URL("https://www.test.url/kv");
         request = new HttpRequest(HttpMethod.GET, url);
@@ -88,7 +92,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+                contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
     }
 
 }

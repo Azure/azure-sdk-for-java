@@ -17,15 +17,15 @@ public @interface FeatureGate {
     /**
      * @return Name of the feature that is checked.
      */
-    String feature();
+    public String feature();
 
     /**
      * @return Endpoint to be fall backed on if feature is off.
      */
-    String fallback() default "";
+    public String fallback() default "";
 
     /**
      * @return If true, feature will return the same value during the length of the request.
      */
-    boolean snapshot() default false;
+    public boolean snapshot() default false;
 }

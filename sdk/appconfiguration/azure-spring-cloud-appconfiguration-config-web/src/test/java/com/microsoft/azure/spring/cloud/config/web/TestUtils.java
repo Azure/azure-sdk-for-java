@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.web;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import java.util.List;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.microsoft.azure.spring.cloud.config.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 
 /**
  * Utility methods which can be used across different test classes
  */
-public final class TestUtils {
-
+public class TestUtils {
     private TestUtils() {
     }
 
@@ -34,7 +34,7 @@ public final class TestUtils {
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
-        String label) {
+                         String label) {
         List<ConfigStore> stores = properties.getStores();
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
