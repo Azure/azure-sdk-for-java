@@ -171,19 +171,10 @@
           <analysisConfiguration>
             <revapi.ignore>
               <item>
-                <code>java.field.removed</code>
-              </item>
-              <item>
                 <code>java.method.addedToInterface</code>
               </item>
               <item>
-                <code>java.method.returnTypeChanged</code>
-              </item>
-              <item>
                 <code>java.method.returnTypeChangedCovariantly</code>
-              </item>
-              <item>
-                <code>java.method.parameterTypeChanged</code>
               </item>
               <item>
                 <regex>true</regex>
