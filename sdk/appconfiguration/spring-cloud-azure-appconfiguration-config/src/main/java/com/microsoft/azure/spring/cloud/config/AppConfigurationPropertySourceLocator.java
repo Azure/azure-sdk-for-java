@@ -149,6 +149,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
             } catch (Exception e) {
+                delayException();
                 if (store.isFailFast() || !startup.get()) {
                     LOGGER.error(
                             "Fail fast is set and there was an error reading configuration from Azure App "
@@ -211,50 +212,45 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             Map<String, List<String>> storeContextsMap, boolean initFeatures, FeatureSet featureSet) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
-        try {
-            putStoreContext(store.getEndpoint(), context, storeContextsMap);
-            for (String label : store.getLabels()) {
-                AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                        label, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider);
+        putStoreContext(store.getEndpoint(), context, storeContextsMap);
+        for (String label : store.getLabels()) {
+            AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
+                    label, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider);
 
-                propertySource.initProperties(featureSet);
-                if (initFeatures) {
-                    propertySource.initFeatures(featureSet);
-                }
-                sourceList.add(propertySource);
+            propertySource.initProperties(featureSet);
+            if (initFeatures) {
+                propertySource.initFeatures(featureSet);
             }
-
-            // Setting new ETag values for Watch
-            String watchedKeyNames = clients.watchedKeyNames(store, context);
-            SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchedKeyNames).setLabelFilter("*");
-
-            ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
-                    store.getEndpoint());
-
-            settingSelector = new SettingSelector().setKeyFilter(FEATURE_STORE_WATCH_KEY).setLabelFilter("*");
-
-            ConfigurationSetting featureRevision = clients.getRevison(settingSelector,
-                    store.getEndpoint());
-
-            String prefix = "_" + context;
-
-            if (configurationRevision != null) {
-                StateHolder.setEtagState(store.getEndpoint() + CONFIGURATION_SUFFIX + prefix, configurationRevision);
-            } else {
-                StateHolder.setEtagState(store.getEndpoint() + CONFIGURATION_SUFFIX + prefix,
-                        new ConfigurationSetting());
-            }
-
-            if (featureRevision != null) {
-                StateHolder.setEtagState(store.getEndpoint() + FEATURE_SUFFIX, featureRevision);
-            } else {
-                StateHolder.setEtagState(store.getEndpoint() + FEATURE_SUFFIX, new ConfigurationSetting());
-            }
-            StateHolder.setLoadState(store.getEndpoint(), true);
-        } catch (RuntimeException e) {
-            delayException();
-            throw e;
+            sourceList.add(propertySource);
         }
+
+        // Setting new ETag values for Watch
+        String watchedKeyNames = clients.watchedKeyNames(store, context);
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchedKeyNames).setLabelFilter("*");
+
+        ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
+                store.getEndpoint());
+
+        settingSelector = new SettingSelector().setKeyFilter(FEATURE_STORE_WATCH_KEY).setLabelFilter("*");
+
+        ConfigurationSetting featureRevision = clients.getRevison(settingSelector,
+                store.getEndpoint());
+
+        String prefix = "_" + context;
+
+        if (configurationRevision != null) {
+            StateHolder.setEtagState(store.getEndpoint() + CONFIGURATION_SUFFIX + prefix, configurationRevision);
+        } else {
+            StateHolder.setEtagState(store.getEndpoint() + CONFIGURATION_SUFFIX + prefix,
+                    new ConfigurationSetting());
+        }
+
+        if (featureRevision != null) {
+            StateHolder.setEtagState(store.getEndpoint() + FEATURE_SUFFIX, featureRevision);
+        } else {
+            StateHolder.setEtagState(store.getEndpoint() + FEATURE_SUFFIX, new ConfigurationSetting());
+        }
+        StateHolder.setLoadState(store.getEndpoint(), true);
 
         return sourceList;
     }
