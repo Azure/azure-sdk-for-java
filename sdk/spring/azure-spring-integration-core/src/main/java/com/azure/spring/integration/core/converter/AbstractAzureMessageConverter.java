@@ -30,7 +30,7 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    protected ObjectMapper getObjectMapper(){
+    protected ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
 
