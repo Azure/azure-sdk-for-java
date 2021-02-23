@@ -73,6 +73,7 @@
 
         <!-- Mixed Reality -->
         <module>sdk/mixedreality/azure-mixedreality-authentication</module>
+        <module>sdk/mixedreality/azure-mixedreality-remoterendering</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -303,6 +304,8 @@
                     <packages>com.azure.mixedreality.authentication*</packages>
                   </group>
                   <group>
+                    <title>Azure Mixed Reality RemoteRendering</title>
+                    <packages>com.azure.mixedreality.remoterendering*</packages>
                     <title>Azure Communication</title>
                     <packages>com.azure.communication.*</packages>
                   </group>
