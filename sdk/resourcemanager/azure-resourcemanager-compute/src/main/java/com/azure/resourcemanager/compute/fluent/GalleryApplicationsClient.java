@@ -30,8 +30,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,8 +52,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -76,8 +74,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -99,8 +96,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -124,8 +120,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,8 +142,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,8 +164,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
      *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
      *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -195,7 +188,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -217,7 +210,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,7 +232,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -261,7 +254,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -285,7 +278,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,7 +300,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,7 +322,7 @@ public interface GalleryApplicationsClient {
      * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
      *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
      *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

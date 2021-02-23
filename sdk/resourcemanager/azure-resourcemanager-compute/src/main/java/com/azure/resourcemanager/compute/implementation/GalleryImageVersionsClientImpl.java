@@ -178,8 +178,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,8 +254,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -331,8 +329,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -367,8 +364,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -411,8 +407,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,8 +434,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -469,8 +463,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -498,8 +491,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -529,8 +521,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -557,8 +548,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
-     *     update.
+     * @param galleryImageVersion Parameters supplied to the create or update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -587,7 +577,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -663,7 +653,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -738,7 +728,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -773,7 +763,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -816,7 +806,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -843,7 +833,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -872,7 +862,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -900,7 +890,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -930,7 +920,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -957,7 +947,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
      * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Parameters supplied to the update gallery Image Version operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

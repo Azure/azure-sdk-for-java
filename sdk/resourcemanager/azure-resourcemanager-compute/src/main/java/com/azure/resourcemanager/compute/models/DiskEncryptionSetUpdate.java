@@ -30,11 +30,11 @@ public class DiskEncryptionSetUpdate {
     private DiskEncryptionSetType encryptionType;
 
     /*
-     * Key Vault Key Url and vault id of KeK, KeK is optional and when provided
-     * is used to unwrap the encryptionKey
+     * Key Vault Key Url to be used for server side encryption of Managed Disks
+     * and Snapshots
      */
     @JsonProperty(value = "properties.activeKey")
-    private KeyVaultAndKeyReference activeKey;
+    private KeyForDiskEncryptionSet activeKey;
 
     /**
      * Get the tags property: Resource tags.
@@ -77,23 +77,23 @@ public class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
-     * unwrap the encryptionKey.
+     * Get the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
+     * Snapshots.
      *
      * @return the activeKey value.
      */
-    public KeyVaultAndKeyReference activeKey() {
+    public KeyForDiskEncryptionSet activeKey() {
         return this.activeKey;
     }
 
     /**
-     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
-     * unwrap the encryptionKey.
+     * Set the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
+     * Snapshots.
      *
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
-    public DiskEncryptionSetUpdate withActiveKey(KeyVaultAndKeyReference activeKey) {
+    public DiskEncryptionSetUpdate withActiveKey(KeyForDiskEncryptionSet activeKey) {
         this.activeKey = activeKey;
         return this;
     }

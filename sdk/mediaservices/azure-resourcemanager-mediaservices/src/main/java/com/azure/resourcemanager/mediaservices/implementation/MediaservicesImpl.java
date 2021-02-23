@@ -34,12 +34,12 @@ public final class MediaservicesImpl implements Mediaservices {
 
     public PagedIterable<MediaService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MediaService> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public MediaService getByResourceGroup(String resourceGroupName, String accountName) {
@@ -110,12 +110,12 @@ public final class MediaservicesImpl implements Mediaservices {
 
     public PagedIterable<MediaService> list() {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MediaService> list(Context context) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public MediaService getBySubscription(String accountName) {

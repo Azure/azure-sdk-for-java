@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.ImageStorageProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,6 +24,12 @@ import java.util.Map;
 @Fluent
 public class ImageInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageInner.class);
+
+    /*
+     * The extended location of the Image.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The source virtual machine from which Image is created.
@@ -48,6 +55,26 @@ public class ImageInner extends Resource {
      */
     @JsonProperty(value = "properties.hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
+
+    /**
+     * Get the extendedLocation property: The extended location of the Image.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Image.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the ImageInner object itself.
+     */
+    public ImageInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
@@ -138,6 +165,9 @@ public class ImageInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (storageProfile() != null) {
             storageProfile().validate();
         }

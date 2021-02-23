@@ -25,6 +25,18 @@ public class DomainUpdateParameters {
     private Map<String, String> tags;
 
     /*
+     * Identity information for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
+     * The Sku pricing tier for the domain.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
      * This determines if traffic is allowed over public network. By default it
      * is enabled.
      * You can further restrict to specific IPs by configuring <seealso
@@ -58,6 +70,46 @@ public class DomainUpdateParameters {
      */
     public DomainUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity information for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the domain.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the domain.
+     *
+     * @param sku the sku value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -115,6 +167,12 @@ public class DomainUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }

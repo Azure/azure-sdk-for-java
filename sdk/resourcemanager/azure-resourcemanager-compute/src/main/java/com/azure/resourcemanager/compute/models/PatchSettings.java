@@ -9,13 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PatchSettings model. */
+/** Specifies settings related to VM Guest Patching on Windows. */
 @Fluent
 public final class PatchSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchSettings.class);
 
     /*
-     * Specifies the mode of in-guest patching to IaaS virtual machine.<br
+     * Specifies the mode of VM Guest Patching to IaaS virtual machine.<br
      * /><br /> Possible values are:<br /><br /> **Manual** - You  control the
      * application of patches to a virtual machine. You do this by applying
      * patches manually inside the VM. In this mode, automatic updates are
@@ -23,44 +23,76 @@ public final class PatchSettings {
      * be false<br /><br /> **AutomaticByOS** - The virtual machine will
      * automatically be updated by the OS. The property
      * WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br />
-     * ** AutomaticByPlatform** - the virtual machine will automatically
-     * updated by the platform. The properties provisionVMAgent and
+     * **AutomaticByPlatform** - the virtual machine will automatically updated
+     * by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true
      */
     @JsonProperty(value = "patchMode")
-    private InGuestPatchMode patchMode;
+    private WindowsVMGuestPatchMode patchMode;
+
+    /*
+     * Enables customers to patch their Azure VMs without requiring a reboot.
+     * For enableHotpatching, the 'provisionVMAgent' must be set to true and
+     * 'patchMode' must be set to 'AutomaticByPlatform'.
+     */
+    @JsonProperty(value = "enableHotpatching")
+    private Boolean enableHotpatching;
 
     /**
-     * Get the patchMode property: Specifies the mode of in-guest patching to IaaS virtual machine.&lt;br /&gt;&lt;br
+     * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine.&lt;br /&gt;&lt;br
      * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a
      * virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are
      * disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt;
      * **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property
-     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; ** AutomaticByPlatform** - the
+     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the
      * virtual machine will automatically updated by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true.
      *
      * @return the patchMode value.
      */
-    public InGuestPatchMode patchMode() {
+    public WindowsVMGuestPatchMode patchMode() {
         return this.patchMode;
     }
 
     /**
-     * Set the patchMode property: Specifies the mode of in-guest patching to IaaS virtual machine.&lt;br /&gt;&lt;br
+     * Set the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine.&lt;br /&gt;&lt;br
      * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a
      * virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are
      * disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt;
      * **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property
-     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; ** AutomaticByPlatform** - the
+     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the
      * virtual machine will automatically updated by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true.
      *
      * @param patchMode the patchMode value to set.
      * @return the PatchSettings object itself.
      */
-    public PatchSettings withPatchMode(InGuestPatchMode patchMode) {
+    public PatchSettings withPatchMode(WindowsVMGuestPatchMode patchMode) {
         this.patchMode = patchMode;
+        return this;
+    }
+
+    /**
+     * Get the enableHotpatching property: Enables customers to patch their Azure VMs without requiring a reboot. For
+     * enableHotpatching, the 'provisionVMAgent' must be set to true and 'patchMode' must be set to
+     * 'AutomaticByPlatform'.
+     *
+     * @return the enableHotpatching value.
+     */
+    public Boolean enableHotpatching() {
+        return this.enableHotpatching;
+    }
+
+    /**
+     * Set the enableHotpatching property: Enables customers to patch their Azure VMs without requiring a reboot. For
+     * enableHotpatching, the 'provisionVMAgent' must be set to true and 'patchMode' must be set to
+     * 'AutomaticByPlatform'.
+     *
+     * @param enableHotpatching the enableHotpatching value to set.
+     * @return the PatchSettings object itself.
+     */
+    public PatchSettings withEnableHotpatching(Boolean enableHotpatching) {
+        this.enableHotpatching = enableHotpatching;
         return this;
     }
 

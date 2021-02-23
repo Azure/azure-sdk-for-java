@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorContentKey;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -20,6 +21,12 @@ import java.util.UUID;
 @Fluent
 public class StreamingLocatorInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingLocatorInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Asset Name
@@ -86,6 +93,15 @@ public class StreamingLocatorInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.filters")
     private List<String> filters;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the assetName property: Asset Name.
@@ -292,6 +308,9 @@ public class StreamingLocatorInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemData() != null) {
+            systemData().validate();
+        }
         if (contentKeys() != null) {
             contentKeys().forEach(e -> e.validate());
         }
