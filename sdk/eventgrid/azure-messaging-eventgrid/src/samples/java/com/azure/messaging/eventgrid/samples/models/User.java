@@ -3,6 +3,10 @@
 
 package com.azure.messaging.eventgrid.samples.models;
 
+/**
+ * A model class that will be used to send events with in the sample code.
+ * It will be serialized into Json by default when being sent to EG.
+ */
 public class User {
     private String firstName;
     private String lastName;

@@ -112,7 +112,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-            new ListMetricSeriesDefinitionOptions()
+                new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }}), Context.NONE)
