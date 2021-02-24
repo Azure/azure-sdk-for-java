@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("integration")
-public class AppConfigurationExporterIntegrationTest extends AzureMonitorExporterTestBase {
+public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceExporterTestBase {
 
     @Test
     public void setConfigurationTest() throws InterruptedException {

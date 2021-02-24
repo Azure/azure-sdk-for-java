@@ -25,7 +25,7 @@ public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     }
 
     private String getAADB2CEndSessionUrl() {
-        final String userFlow = properties.getUserFlows().getSignUpOrSignIn();
+        final String userFlow = properties.getUserFlows().get(properties.getLoginFlow());
         final String logoutSuccessUrl = properties.getLogoutSuccessUrl();
 
         return AADB2CURL.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);

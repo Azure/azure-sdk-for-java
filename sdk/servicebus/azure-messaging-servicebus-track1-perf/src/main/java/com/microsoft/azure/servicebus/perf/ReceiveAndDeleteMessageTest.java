@@ -4,6 +4,7 @@
 package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
@@ -23,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -31,6 +33,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVEANDDELETE);
         this.options = options;
+        this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
     }
 
     @Override
@@ -44,7 +47,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
-            Message message = new Message(CONTENTS);
+            Message message = new Message(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

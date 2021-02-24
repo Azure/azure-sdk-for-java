@@ -186,6 +186,14 @@ After the unreleased version of `com.azure:azure-core` was released but before `
 - [ ] In [version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_client.txt) the the dependency version of `com.azure:azure-core` would become the released version and the "unreleased_" entry, at this time, would be removed.
 - [ ] In the pom.xml file for `com.azure:azure-storage-blob`, the dependency tag for `com.azure:azure-core` would get changed back to `{x-version-update;com.azure:azure-core-test;dependency}`
 
+## Packaging Versioning
+
+For general packaging versioning policies see [Package Versioning](https://azure.github.io/azure-sdk/policies_releases.html#package-versioning) and see [Java](https://azure.github.io/azure-sdk/policies_releases.html#java) for specific rules used in this repo.
+
+While some Java projects use SNAPSHOT versions for nightly builds, we have opted not to use that convention because it has proven to be very unreliable in our scenarios. For example, if we use SNAPSHOT versions in our pom.xml files that usually ends up becoming viral throughout our entire repo and we want to more tightly control our versioning, especially our dependency versioning. On top of the viral nature, we have experienced a lot of network reliability issues when consuming SNAPSHOT versions from Maven central so we want to avoid this reliability issue in our build pipelines. 
+
+Given we don't use SNAPSHOT versions in our pom.xml files we generally have the version currently under development committed to the repo in the pom.xml file. This means if you are looking at our active development code for the version you will see a version that is not yet published to Maven central. If you want to try out our packages under development, you should look for our latest alpha build (see Dev Feed section below).
+
 ### Dev Feed
 
 Every day our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
