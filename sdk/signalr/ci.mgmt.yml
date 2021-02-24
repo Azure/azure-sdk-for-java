@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/webpubsub/
 
 pr:
   branches:
@@ -19,9 +19,9 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/webpubsub/
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
     parameters:
-      ServiceDirectory: signalr
+      ServiceDirectory: webpubsub

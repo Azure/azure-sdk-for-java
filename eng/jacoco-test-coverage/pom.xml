@@ -213,8 +213,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-signalr</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-signalr;current} -->
+      <artifactId>azure-messaging-webpubsub</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
