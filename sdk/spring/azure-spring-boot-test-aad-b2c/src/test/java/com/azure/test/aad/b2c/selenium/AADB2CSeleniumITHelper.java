@@ -5,7 +5,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_BASE_URI;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_EMAIL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_PASSWORD;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
@@ -24,14 +24,14 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
-        defaultProperteis.put("azure.activedirectory.b2c.tenant", AAD_B2C_TENANT);
+        defaultProperteis.put("azure.activedirectory.b2c.base-uri", AAD_B2C_BASE_URI);
         defaultProperteis.put("azure.activedirectory.b2c.client-id", AAD_B2C_CLIENT_ID);
         defaultProperteis.put("azure.activedirectory.b2c.client-secret", AAD_B2C_CLIENT_SECRET);
         defaultProperteis.put("azure.activedirectory.b2c.reply-url", AAD_B2C_REPLY_URL);
         defaultProperteis
-            .put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
-        defaultProperteis
             .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        defaultProperteis
+            .put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
         return defaultProperteis;
     }
 
