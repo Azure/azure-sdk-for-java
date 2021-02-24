@@ -9,6 +9,12 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.query.ItemComparator;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -28,8 +34,10 @@ import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -50,6 +58,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
@@ -61,7 +70,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectSession")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -228,6 +237,54 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .build();
 
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByMixedTypes(String sortOrder) throws Exception {
+        List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(createdCollection.getId(),
+                                                                           BridgeInternal.getContextClient(this.client));
+        // Ensure its a cross partition query
+        assertThat(partitionKeyRanges.size()).isGreaterThan(1);
+        String query = String.format("SELECT * FROM r ORDER BY r.propMixed %s", sortOrder);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        List<InternalObjectNode> list = createdDocuments.stream()
+                                            .sorted((o1, o2) -> ItemComparator.getInstance()
+                                                                    .compare(o1.get("propMixed"),
+                                                                             o2.get("propMixed")))
+                                            .filter(d -> d.has("propMixed"))
+                                            .collect(Collectors.toList());
+        List<String> orderedIds = createdDocuments.stream()
+                                      .sorted((o1, o2) -> ItemComparator.getInstance().compare(o1.get("propMixed"),
+                                                                                               o2.get("propMixed")))
+                                      .map(Resource::getId)
+                                      .collect(Collectors.toList());
+
+        int pageSize = 20;
+        CosmosPagedFlux<InternalObjectNode> queryFlux = createdCollection.queryItems(query, options, InternalObjectNode.class);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
+        queryFlux.byPage(pageSize).subscribe(subscriber);
+
+        FeedResponseListValidator<InternalObjectNode> validator =
+            new FeedResponseListValidator.Builder<InternalObjectNode>()
+                .totalSize(orderedIds.size())
+                .exactlyContainsIdsInAnyOrder(orderedIds) // Cannot expect nulls/arrays/object types to be in a
+                // particular order
+                .build();
+        validateQuerySuccess(queryFlux.byPage(pageSize), validator);
+    }
+
+
+    @NotNull
+    private List<PartitionKeyRange> getPartitionKeyRanges(
+        String containerId, AsyncDocumentClient asyncDocumentClient) {
+        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
+        List<FeedResponse<PartitionKeyRange>> partitionFeedResponseList = asyncDocumentClient
+                                                                              .readPartitionKeyRanges("/dbs/" + createdDatabase.getId()
+                                                                                                          + "/colls/" + containerId,
+                                                                                                      new CosmosQueryRequestOptions())
+                                                                              .collectList().block();
+        partitionFeedResponseList.forEach(f -> partitionKeyRanges.addAll(f.getResults()));
+        return partitionKeyRanges;
     }
 
     @DataProvider(name = "topValue")
@@ -488,6 +545,25 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             props.put("propArray", orderByArray);
             props.put("propObject", orderByObject);
             keyValuePropsList.add(props);
+            switch (i % 5) {
+                case 0:
+                    props.put("propMixed", i);
+                    break;
+                case 1:
+                    props.put("propMixed", String.valueOf(i));
+                    break;
+                case 2:
+                    props.put("propMixed", orderByArray);
+                    break;
+                case 3:
+                    props.put("propMixed", orderByObject);
+                    break;
+                case 4:
+                    props.put("propMixed", (float)i*3.17);
+                    break;
+                default:
+                    break;
+            }
         }
 
         //undefined values
@@ -510,6 +586,20 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
+        updateCollectionIndex();
+    }
+
+    private void updateCollectionIndex() {
+        CosmosContainerProperties containerProperties = createdCollection.read().block().getProperties();
+        IndexingPolicy indexingPolicy = containerProperties.getIndexingPolicy();
+        List<IncludedPath> includedPaths = indexingPolicy.getIncludedPaths();
+        IncludedPath includedPath = new IncludedPath("/propMixed/?");
+        if (!includedPaths.contains(includedPath)) {
+            includedPaths.add(includedPath);
+            indexingPolicy.setIncludedPaths(includedPaths);
+            containerProperties.setIndexingPolicy(indexingPolicy);
+            createdCollection.replace(containerProperties).block();
+        }
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
