@@ -9,7 +9,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class CloudEventTests {
 
         // actually deserialized as a LinkedHashMap instead of generic object.
         BinaryData data = cloudEvent.getData();
-        Map<String, Object> deserializedData = data.toObject(new TypeReference<>() {
+        Map<String, Object> deserializedData = data.toObject(new TypeReference<Map<String, Object>>() {
         });
         assertEquals(deserializedData.get("Field1"), "Value1");
         assertEquals(deserializedData.get("Field2"), "Value2");
@@ -86,7 +85,9 @@ public class CloudEventTests {
             + "  \"time\": \"2020-07-21T18:41:31.166Z\",\n"
             + "  \"specversion\": \"1.0\"\n"
             + "}";
-        assertThrows(IllegalArgumentException.class, () -> {CloudEvent.fromString(cloudEventJson);});
+        assertThrows(IllegalArgumentException.class, () -> {
+            CloudEvent.fromString(cloudEventJson);
+        });
     }
 
     @Test
@@ -98,8 +99,7 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        ContosoItemReceivedEventData data = events.get(0).getData().toObject(
-            TypeReference.createInstance(ContosoItemReceivedEventData.class));
+        ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -258,8 +258,10 @@ public class CloudEventTests {
             String serializedString = SERIALIZER.serialize(cloudEvent, SerializerEncoding.JSON);
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("{\"foo\":\"value\"}", deserializedCloudEvent.getData().toString());
-            Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(new TypeReference<>() {
-            });
+            Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
+                new TypeReference<Map<String, String>>() {
+
+                });
             assertEquals("value", deserializedMap.get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
 
