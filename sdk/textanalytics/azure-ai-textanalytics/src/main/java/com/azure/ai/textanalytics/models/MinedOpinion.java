@@ -3,43 +3,56 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.MinedOpinionPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link MinedOpinion} model.
  */
 public final class MinedOpinion {
-    private final AspectSentiment aspect;
-    private final IterableStream<OpinionSentiment> opinions;
+    private TargetSentiment target;
+    private IterableStream<AssessmentSentiment> assessments;
 
-    /**
-     * Create an {@link MinedOpinion} model that describes the mined opinions.
-     *
-     * @param aspect The aspect of a product/service that the opinions is about.
-     * @param opinions The opinions of the aspect text.
-     */
-    public MinedOpinion(AspectSentiment aspect, IterableStream<OpinionSentiment> opinions) {
-        this.aspect = aspect;
-        this.opinions = opinions;
+    static {
+        MinedOpinionPropertiesHelper.setAccessor(
+            new MinedOpinionPropertiesHelper.MinedOpinionAccessor() {
+                @Override
+                public void setTarget(MinedOpinion minedOpinion, TargetSentiment target) {
+                    minedOpinion.setTarget(target);
+                }
+
+                @Override
+                public void setAssessments(MinedOpinion minedOpinion, IterableStream<AssessmentSentiment> assessments) {
+                    minedOpinion.setAssessments(assessments);
+                }
+            });
     }
 
     /**
-     * Get the aspect in text, such as the attributes of products or services. For example, if a customer leaves
+     * Get the target sentiment in text, such as the attributes of products or services. For example, if a customer leaves
      * feedback about a hotel such as "the room was great, but the staff was unfriendly", opinion mining will locate
-     * aspects in the text. The "room" and "staff" are two aspects recognized.
+     * target sentiments in the text. The "room" and "staff" are two target sentiments recognized.
      *
-     * @return The aspect in text.
+     * @return The target in text.
      */
-    public AspectSentiment getAspect() {
-        return this.aspect;
+    public TargetSentiment getTarget() {
+        return this.target;
     }
 
     /**
-     * Get the opinions of aspect text.
+     * Get the assessments of target text.
      *
-     * @return The opinions of aspect text.
+     * @return The assessments of target text.
      */
-    public IterableStream<OpinionSentiment> getOpinions() {
-        return opinions;
+    public IterableStream<AssessmentSentiment> getAssessments() {
+        return assessments;
+    }
+
+    private void setTarget(TargetSentiment target) {
+        this.target = target;
+    }
+
+    private void setAssessments(IterableStream<AssessmentSentiment> assessments) {
+        this.assessments = assessments;
     }
 }

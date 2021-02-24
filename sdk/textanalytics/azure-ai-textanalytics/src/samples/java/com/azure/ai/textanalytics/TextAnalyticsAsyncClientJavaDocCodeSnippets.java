@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -17,7 +17,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
@@ -690,14 +690,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(documentSentiment -> {
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                    sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                        AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                        System.out.printf("\tAspect sentiment: %s, aspect text: %s%n",
-                            aspectSentiment.getSentiment(), aspectSentiment.getText());
-                        for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                opinionSentiment.isNegated());
+                    sentenceSentiment.getOpinions().forEach(minedOpinions -> {
+                        TargetSentiment targetSentiment = minedOpinions.getTarget();
+                        System.out.printf("\tTarget sentiment: %s, target text: %s%n",
+                            targetSentiment.getSentiment(), targetSentiment.getText());
+                        for (AssessmentSentiment assessmentSentiment : minedOpinions.getAssessments()) {
+                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                assessmentSentiment.isNegated());
                         }
                     });
                 }
@@ -763,15 +763,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                        sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                            AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                            System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n",
-                                aspectSentiment.getSentiment(), aspectSentiment.getText());
-                            for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        sentenceSentiment.getOpinions().forEach(minedOpinions -> {
+                            TargetSentiment targetSentiment = minedOpinions.getTarget();
+                            System.out.printf("\t\tTarget sentiment: %s, target text: %s%n",
+                                targetSentiment.getSentiment(), targetSentiment.getText());
+                            for (AssessmentSentiment assessmentSentiment : minedOpinions.getAssessments()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                    opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                    opinionSentiment.isNegated());
+                                    "\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                    assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                    assessmentSentiment.isNegated());
                             }
                         });
                     });
@@ -847,15 +847,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                        sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                            AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                            System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n",
-                                aspectSentiment.getSentiment(), aspectSentiment.getText());
-                            for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        sentenceSentiment.getOpinions().forEach(minedOpinions -> {
+                            TargetSentiment targetSentiment = minedOpinions.getTarget();
+                            System.out.printf("\t\tTarget sentiment: %s, target text: %s%n",
+                                targetSentiment.getSentiment(), targetSentiment.getText());
+                            for (AssessmentSentiment assessmentSentiment : minedOpinions.getAssessments()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                    opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                    opinionSentiment.isNegated());
+                                    "\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                    assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                    assessmentSentiment.isNegated());
                             }
                         });
                     });
