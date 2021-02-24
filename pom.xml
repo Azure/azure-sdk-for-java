@@ -308,6 +308,8 @@
                   <group>
                     <title>Azure Mixed Reality RemoteRendering</title>
                     <packages>com.azure.mixedreality.remoterendering*</packages>
+                  </group>
+                  <group>
                     <title>Azure Communication</title>
                     <packages>com.azure.communication.*</packages>
                   </group>
