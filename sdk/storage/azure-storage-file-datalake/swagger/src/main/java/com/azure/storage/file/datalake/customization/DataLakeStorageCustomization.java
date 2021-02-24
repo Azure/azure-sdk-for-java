@@ -55,6 +55,11 @@ public class DataLakeStorageCustomization extends Customization {
         pathList.getProperty("paths")
             .removeAnnotation("@JsonProperty(\"Path\")")
             .addAnnotation("@JsonProperty(value = \"paths\")");
+
+        ClassCustomization aclFailedEntries = implementationModels.getClass("SetAccessControlRecursiveResponse");
+        aclFailedEntries.getProperty("failedEntries")
+            .removeAnnotation("@JsonProperty(\"AclFailedEntry\")")
+            .addAnnotation("@JsonProperty(\"failedEntries\")");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {

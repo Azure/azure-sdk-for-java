@@ -116,9 +116,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
-        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
-            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
+            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**

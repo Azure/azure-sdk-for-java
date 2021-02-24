@@ -78,9 +78,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
-        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName,
+            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 

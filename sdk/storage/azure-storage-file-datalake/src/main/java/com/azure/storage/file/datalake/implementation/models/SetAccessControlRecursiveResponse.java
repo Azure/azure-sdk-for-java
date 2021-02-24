@@ -35,7 +35,7 @@ public final class SetAccessControlRecursiveResponse {
     /*
      * The failedEntries property.
      */
-    @JsonProperty("AclFailedEntry")
+    @JsonProperty("failedEntries")
     private List<AclFailedEntry> failedEntries = new ArrayList<>();
 
     /**
