@@ -1,16 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.core.tracing.opentelemetry;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
@@ -18,6 +21,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,15 +30,17 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERA
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample to demontrate using {@link AzureMonitorTraceExporter} to export telemetry events when sending events to Event Hubs
- * using {@link EventHubProducerAsyncClient}.
+ * Sample to demonstrate using {@link JaegerGrpcSpanExporter} to export telemetry events when publishing multiple events
+ * to an eventhub instance using the {@link EventHubProducerAsyncClient}.
  */
-public class EventHubsAzureMonitorExporterSample {
-    private static final Tracer TRACER = configureAzureMonitorExporter();
+public class PublishEventsJaegerExporterSample {
+
+    private static final Tracer TRACER = configureJaegerExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
     /**
      * The main method to run the application.
+     *
      * @param args Ignored args.
      */
     public static void main(String[] args) {
@@ -42,36 +48,41 @@ public class EventHubsAzureMonitorExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link JaegerGrpcSpanExporter} to enable tracing.
+     *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
-    private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildTraceExporter();
+    private static Tracer configureJaegerExporter() {
+        // Create a channel towards Jaeger end point
+        ManagedChannel jaegerChannel =
+            ManagedChannelBuilder.forAddress("localhost", 14250).usePlaintext().build();
+        // Export traces to Jaeger
+        JaegerGrpcSpanExporter jaegerExporter =
+            JaegerGrpcSpanExporter.builder()
+                .setChannel(jaegerChannel)
+                .setTimeout(Duration.ofMinutes(30000))
+                .build();
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+        // Set to process the spans by the Jaeger Exporter
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(
+                SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(jaegerExporter)).build())
             .build();
-
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
-
-        return openTelemetrySdk.getTracer("Sample");
+        return openTelemetry.getSdkTracerProvider().get("Publish-Events-Eventhub-Sample");
     }
 
     /**
-     * Method that creates {@link EventHubProducerAsyncClient} to send events to Event Hubs with distributed
-     * telemetry enabled and using Azure Monitor exporter to export telemetry events.
+     * Send an iterable of events to specific event hub using the
+     * {@link EventHubProducerAsyncClient} with distributed tracing enabled and using the Jaeger exporter to export
+     * telemetry events.
      */
     private static void doClientWork() {
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING, "<eventHub Name>")
             .buildAsyncProducerClient();
 
-        Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = span.makeCurrent();
+        Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
+        final Scope scope = userParentSpan.makeCurrent();
         try {
             String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
@@ -125,7 +136,7 @@ public class EventHubsAzureMonitorExporterSample {
                     error -> System.out.println("Error sending events: " + error),
                     () -> {
                         System.out.println("Completed sending events.");
-                        span.end();
+                        userParentSpan.end();
                     });
 
 
@@ -140,6 +151,7 @@ public class EventHubsAzureMonitorExporterSample {
                 producer.close();
             }
         } finally {
+            userParentSpan.end();
             scope.close();
         }
     }
