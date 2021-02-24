@@ -2,19 +2,16 @@
 
 ## 3.2.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Remove `azure.activedirectory.b2c.oidc-enabled` configuration.
-- Add `azure.activedirectory.b2c.login-flow` configuration, below is the new structure:
+- Remove `azure.activedirectory.b2c.oidc-enabled` property.
+- Add `azure.activedirectory.b2c.login-flow` property. 
+- Change the type of `azure.activedirectory.b2c.user-flows` to map and below is the new structure:
     ```yaml
     azure:
       activedirectory:
         b2c:
-          login-flow: ${your-sign-up-or-in-user-flow-key}
+          login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
           user-flows:
-            password-reset: ${your-profile-edit-user-flow}      # optional
-            profile-edit: ${your-password-reset-user-flow}      # optional
-            sign-in: ${your-sign-in-user-flow}                  # optional
-            sign-up: ${your-sign-up-user-flow}                  # optional
-            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow} # optional
+            ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
     ```
 
 ## 3.1.0 (2021-01-20)
