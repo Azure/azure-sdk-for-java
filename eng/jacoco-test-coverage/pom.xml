@@ -489,9 +489,9 @@
       <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
     </dependency>
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
