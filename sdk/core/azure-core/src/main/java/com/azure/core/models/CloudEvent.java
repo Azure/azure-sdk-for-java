@@ -142,7 +142,7 @@ public final class CloudEvent {
         try {
             URI.create(source);
         } catch (NullPointerException npe) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'source' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'source' can not be null."));
         } catch (IllegalArgumentException illegalArgumentException) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dataSchema' isn't a correct URI format",
                 illegalArgumentException));
@@ -168,6 +168,9 @@ public final class CloudEvent {
         this.specVersion = CloudEvent.SPEC_VERSION;
     }
 
+    private CloudEvent() {
+
+    }
     /**
      * Deserialize the {@link CloudEvent} from a JSON string.
      * @param cloudEventsJson the JSON payload containing one or more events.
@@ -252,16 +255,6 @@ public final class CloudEvent {
     }
 
     /**
-     * Set the data content type with this event.
-     * @param dataContentType the data content type to set.
-     * @return the cloud event itself.
-     */
-    public CloudEvent setDataContentType(String dataContentType) {
-        this.dataContentType = dataContentType;
-        return this;
-    }
-
-    /**
      * Get the type of event, e.g. "Contoso.Items.ItemReceived".
      * @return the type of the event.
      */
@@ -316,8 +309,8 @@ public final class CloudEvent {
             try {
                 URI.create(dataSchema);
             } catch (IllegalArgumentException illegalArgumentException) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dataSchema' isn't a correct URI format",
-                    illegalArgumentException));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "'dataSchema' isn't a correct URI-formatte String", illegalArgumentException));
             }
         }
         this.dataSchema = dataSchema;
@@ -353,18 +346,26 @@ public final class CloudEvent {
     }
 
     /**
-     * Add/Overwrite a single extension attribute to the cloud event. The property name will be transformed
-     * to lowercase and must not share a name with any reserved cloud event properties.
-     * @param name the name of the attribute.
+     * Add/Overwrite a single extension attribute to the cloud event.
+     * @param name the name of the attribute. It must contains only alphanumeric characters and not be be any
+     *             CloudEvent reserved attribute names.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
+     * @throws IllegalArgumentException if name format isn't correct.
      */
     @JsonAnySetter
     public CloudEvent addExtensionAttribute(String name, Object value) {
+        if (Objects.isNull(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null."));
+        }
+        if (Objects.isNull(value)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'value' cannot be null."));
+        }
         if (!validateAttributeName(name)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'name' must have at most 20 alphanumeric characters and not be one of the CloudEvent attribute names"));
+                "'name' must have only small-case alphanumeric characters and not be one of the CloudEvent reserved "
+                    + "attribute names"));
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();
@@ -373,10 +374,26 @@ public final class CloudEvent {
         return this;
     }
 
+    /**
+     * Get the spec version. Users don't need to access it because it's always 1.0.
+     * Make it package level to test deserialization.
+     * @return The spec version.
+     */
+    String getSpecVersion() {
+        return this.specVersion;
+    }
+
+    /**
+     * Set the spec version. Users don't need to access it because it's always 1.0.
+     * Make it package level to test serialization.
+     * @return the cloud event itself.
+     */
+    CloudEvent setSpecVersion(String specVersion) {
+        this.specVersion = specVersion;
+        return this;
+    }
+
     private static boolean validateAttributeName(String name) {
-        if (name.length() > 20) {
-            return false;
-        }
         if (RESERVED_ATTRIBUTE_NAMES.contains(name)) {
             return false;
         }
