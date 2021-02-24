@@ -28,8 +28,6 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
-import com.azure.data.tables.implementation.models.TablesDeleteResponse;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 
