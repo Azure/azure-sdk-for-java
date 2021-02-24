@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.3.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -113,12 +113,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.1.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.1.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.0.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.0.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -145,7 +145,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
   </dependencies>
   <profiles>
@@ -212,7 +212,7 @@
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
                 <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
                 <include>commons-net:commons-net:[3.6]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
-                <include>com.github.spotbugs:spotbugs-annotations:[4.0.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -186,7 +186,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,7 +205,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +224,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -243,7 +243,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -264,7 +264,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -283,7 +283,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,7 +302,7 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
-     * @param routeFilterRuleParameters Route Filter Rule Resource.
+     * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

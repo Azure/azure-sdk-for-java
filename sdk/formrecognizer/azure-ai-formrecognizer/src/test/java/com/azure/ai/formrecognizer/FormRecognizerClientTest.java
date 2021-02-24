@@ -272,8 +272,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl,
-                new RecognizeReceiptsOptions().setFieldElementsIncluded(true)
-                    .setPollInterval(durationTestMode), Context.NONE);
+                    new RecognizeReceiptsOptions()
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
         }, RECEIPT_CONTOSO_PNG);
@@ -1213,24 +1215,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    createdModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        createdModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("custom:model1", recognizedForm.getFormType());
@@ -1254,24 +1256,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    createdModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        createdModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("custom:" + createdModel.getModelId(), recognizedForm.getFormType());
@@ -1295,24 +1297,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    createdModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        createdModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("form-0", recognizedForm.getFormType());
@@ -1335,24 +1337,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    createdModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        createdModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("form-0", recognizedForm.getFormType());
@@ -1376,40 +1378,40 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 CustomFormModel createdModel1 = syncPoller1.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                    = formTrainingClient.beginCreateComposedModel(
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
+                    formTrainingClient.beginCreateComposedModel(
                         Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
-                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+                        new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    composedModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        composedModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
@@ -1448,41 +1450,41 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                        Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                    = formTrainingClient.beginTraining(trainingFilesUrl,
-                    useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model2"),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
+                    formTrainingClient.beginTraining(trainingFilesUrl,
+                        useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model2"),
+                        Context.NONE);
                 syncPoller1.waitForCompletion();
                 CustomFormModel createdModel1 = syncPoller1.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                    = formTrainingClient.beginCreateComposedModel(
-                    Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
-                    new CreateComposedModelOptions().setPollInterval(durationTestMode)
-                        .setModelName("composedModelName"),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
+                    formTrainingClient.beginCreateComposedModel(
+                        Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
+                        new CreateComposedModelOptions().setPollInterval(durationTestMode)
+                            .setModelName("composedModelName"),
+                        Context.NONE);
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
-                    = formRecognizerClient.beginRecognizeCustomForms(
-                    composedModel.getModelId(),
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                    Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3 =
+                    formRecognizerClient.beginRecognizeCustomForms(
+                        composedModel.getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions()
+                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                        Context.NONE);
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
