@@ -62,7 +62,7 @@ parameters:
     AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
     AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
     AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
-    AAD_B2C_TENANT: "B2CITTest1"
+    AAD_B2C_BASE_URI: "https://B2CITTest1.b2clogin.com/B2CITTest1.onmicrosoft.com"
     AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
     AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
     AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
