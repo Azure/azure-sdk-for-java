@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 
 /**
  * Extracts the {@link GrantedAuthority}s from scope attributes typically found in a {@link Jwt}.
- *
- * @author Eric Deandrea
- * @since 5.2
  */
 public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
