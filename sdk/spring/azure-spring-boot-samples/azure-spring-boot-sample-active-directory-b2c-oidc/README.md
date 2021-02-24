@@ -34,11 +34,9 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
-3. Fill in `${your-sign-up-or-in-user-flow-key}` with the key name of sign in user flow, the default value is `sign-up-or-sign-in`.
-4. The following `user-flows` configuration is a map structure that can define keys and values for each user flow. 
-   By default, `sign-up-or-sign-in` and `password-reset` as the keys for **Sign up and sign in** or **Password reset** user flow, you can also override them.
-   If you want to enable sign in user flow as the login flow, fill in the `${your-sign-in-user-flow}` with the name of **Sign in** user flow, replace in the `${your-sign-up-or-in-user-flow-key}` with the name `sign-in`.
-   If you want to enable sign up user flow, fill in the `${your-sign-up-user-flow}` with the name of **Sign up** user flow, let the browser redirect to `/oauth2/authorization/${your-sign-up-user-flow}`, then will start the sign up flow.
+3. Add your user fows defined on the Azure Portal under the `user-flows` configuration, which is a map, you can give each user flow a key and the value will be the name of user flow defined in AAD B2C. 
+   By default, we use the key `sign-up-or-sign-in` for a **login** user flow and `password-reset` for the **Password reset** type user flow, you can choose to override them.
+4. Fill in `${your-login-user-flow-key}` with the key of your login user flow, we will use the value `sign-up-or-sign-in` to look up the user-flows map if this property is not provided.   
 5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
@@ -48,7 +46,7 @@ azure:
       base-uri: ${your-tenant-authorization-server-base-uri}
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
-      login-flow: ${your-sign-up-or-in-user-flow-key}
+      login-flow: ${your-login-user-flow-key}               // default to sign-up-or-sign-in
       logout-success-url: ${your-logout-success-url}
       user-flows:
         password-reset: ${your-profile-edit-user-flow}      # optional
