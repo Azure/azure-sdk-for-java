@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-mixedreality-services</artifactId>
+  <artifactId>azure-mixedreality-remoterendering-services</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <profiles>
@@ -13,13 +13,13 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-mixedreality-authentication</module>
+        <module>azure-mixedreality-remoterendering</module>
       </modules>
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-mixedreality-authentication</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+          <artifactId>azure-mixedreality-remoterendering</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
         </dependency>
       </dependencies>
       <build>
@@ -50,7 +50,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-mixedreality-authentication</module>
+        <module>azure-mixedreality-remoterendering</module>
       </modules>
     </profile>
   </profiles>
