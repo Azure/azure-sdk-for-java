@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
 import org.springframework.core.convert.converter.Converter;
@@ -9,7 +11,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -33,19 +34,18 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
     }
 
     private Collection<String> getAuthorities(Jwt jwt) {
-        List<String> authoritiesList = new ArrayList();
+        Collection<String> authoritiesList = new ArrayList<String>();
         for (String claimName : WELL_KNOWN_AUTHORITIES_CLAIM_NAMES) {
             if (jwt.containsClaim(claimName)) {
-                Object authorities = jwt.getClaim(claimName);
-                if (authorities instanceof String) {
-                    if (StringUtils.hasText((String) authorities)) {
-                        authoritiesList.addAll(Arrays.asList(((String) authorities).split(" "))
+                if (jwt.getClaim(claimName) instanceof String) {
+                    if (StringUtils.hasText(jwt.getClaim(claimName))) {
+                        authoritiesList.addAll(Arrays.asList(((String) jwt.getClaim(claimName)).split(" "))
                                                      .stream()
                                                      .map(s -> DEFAULT_SCP_AUTHORITY_PREFIX + s)
                                                      .collect(Collectors.toList()));
                     }
-                } else if (authorities instanceof Collection) {
-                    authoritiesList.addAll(((Collection<?>) authorities)
+                } else if (jwt.getClaim(claimName) instanceof Collection) {
+                    authoritiesList.addAll(((Collection<?>) jwt.getClaim(claimName))
                         .stream()
                         .filter(s -> StringUtils.hasText((String) s))
                         .map(s -> DEFAULT_ROLES_AUTHORITY_PREFIX + s)

@@ -63,7 +63,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
     }
 
     @Test
-    public void testExtractCustomScopeAuthorities() {
+    public void testExtractRoleScopeAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
         AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
