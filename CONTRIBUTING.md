@@ -99,7 +99,7 @@ Could not find artifact com.azure:sdk-build-tools:jar:1.0.0 in ossrh (https://os
 
 This is because the `sdk-build-tools` project isn't released to Maven. To resolve this issue you'll need to copy the `eng` folder locally then install `sdk-build-tools`.
 
-`mvn clean install eng/code-quality-reports/pom.xml`
+`mvn clean install -f eng/code-quality-reports/pom.xml`
 
 All code in the Azure SDKs for Java repository must pass Checkstyle before being merged. The `sdk-build-tools` is updated periodically, so if a new branch fails Checkstyle you'll need to reinstall.
 
