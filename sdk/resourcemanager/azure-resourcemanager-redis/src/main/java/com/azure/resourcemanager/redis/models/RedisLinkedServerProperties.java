@@ -29,6 +29,27 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RedisLinkedServerProperties withLinkedRedisCacheId(String linkedRedisCacheId) {
+        super.withLinkedRedisCacheId(linkedRedisCacheId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisLinkedServerProperties withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
+        super.withLinkedRedisCacheLocation(linkedRedisCacheLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisLinkedServerProperties withServerRole(ReplicationRole serverRole) {
+        super.withServerRole(serverRole);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

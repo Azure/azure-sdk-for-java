@@ -16,9 +16,14 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryEventData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
@@ -132,17 +137,17 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private void export(SpanData span, List<TelemetryItem> telemetryItems) {
-        Span.Kind kind = span.getKind();
+        SpanKind kind = span.getKind();
         String instrumentationName = span.getInstrumentationLibraryInfo().getName();
         Matcher matcher = COMPONENT_PATTERN.matcher(instrumentationName);
         String stdComponent = matcher.matches() ? matcher.group(1) : null;
-        if ("jms".equals(stdComponent) && !span.getParentSpanContext().isValid() && kind == Span.Kind.CLIENT) {
+        if ("jms".equals(stdComponent) && !span.getParentSpanContext().isValid() && kind == SpanKind.CLIENT) {
             // no need to capture these, at least is consistent with prior behavior
             // these tend to be frameworks pulling messages which are then pushed to consumers
             // where we capture them
             return;
         }
-        if (kind == Span.Kind.INTERNAL) {
+        if (kind == SpanKind.INTERNAL) {
             if (!span.getParentSpanContext().isValid()) {
                 // TODO (srnagar): revisit this decision
                 // maybe user-generated telemetry?
@@ -154,9 +159,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             } else {
                 exportRemoteDependency(stdComponent, span, true, telemetryItems);
             }
-        } else if (kind == Span.Kind.CLIENT || kind == Span.Kind.PRODUCER) {
+        } else if (kind == SpanKind.CLIENT || kind == SpanKind.PRODUCER) {
             exportRemoteDependency(stdComponent, span, false, telemetryItems);
-        } else if (kind == Span.Kind.SERVER || kind == Span.Kind.CONSUMER) {
+        } else if (kind == SpanKind.SERVER || kind == SpanKind.CONSUMER) {
             exportRequest(stdComponent, span, telemetryItems);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(kind.name()));
@@ -249,7 +254,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         remoteDependencyData
             .setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
 
-        remoteDependencyData.setSuccess(span.getStatus().isOk());
+        remoteDependencyData.setSuccess(StatusCode.OK.equals(span.getStatus().getStatusCode()));
         String description = span.getStatus().getDescription();
         if (description != null) {
             remoteDependencyData.getProperties().put("statusDescription", description);
@@ -383,12 +388,12 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         requestData.setId(span.getSpanId());
         telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), span.getTraceId());
 
-        String aiLegacyParentId = span.getTraceState().get("ai-legacy-parent-id");
+        String aiLegacyParentId = span.getSpanContext().getTraceState().get("ai-legacy-parent-id");
         if (aiLegacyParentId != null) {
             // see behavior specified at https://github.com/microsoft/ApplicationInsights-Java/issues/1174
             telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), aiLegacyParentId);
 
-            String aiLegacyOperationId = span.getTraceState().get("ai-legacy-operation-id");
+            String aiLegacyOperationId = span.getSpanContext().getTraceState().get("ai-legacy-operation-id");
             if (aiLegacyOperationId != null) {
                 telemetryItem.getTags().putIfAbsent("ai_legacyRootID", aiLegacyOperationId);
             }
@@ -406,7 +411,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         Duration duration = Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos);
         requestData.setDuration(getFormattedDuration(duration));
 
-        requestData.setSuccess(span.getStatus().isOk());
+        requestData.setSuccess(StatusCode.OK.equals(span.getStatus().getStatusCode()));
         String description = span.getStatus().getDescription();
         if (description != null) {
             requestData.getProperties().put("statusDescription", description);
@@ -521,9 +526,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 sb.append(",");
             }
             sb.append("{\"operation_Id\":\"");
-            sb.append(link.getSpanContext().getTraceIdAsHexString());
+            sb.append(link.getSpanContext().getTraceId());
             sb.append("\",\"id\":\"");
-            sb.append(link.getSpanContext().getSpanIdAsHexString());
+            sb.append(link.getSpanContext().getSpanId());
             sb.append("\"}");
             first = false;
         }

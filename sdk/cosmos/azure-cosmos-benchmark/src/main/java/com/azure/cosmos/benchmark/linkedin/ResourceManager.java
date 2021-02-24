@@ -27,7 +27,7 @@ public interface ResourceManager {
     void createContainer() throws CosmosException;
 
     /**
-     * Delete all managed resources i.e. databases and containers
+     * Delete all managed resources e.g. account, databases and/or containers etc
      */
     void deleteResources();
 }

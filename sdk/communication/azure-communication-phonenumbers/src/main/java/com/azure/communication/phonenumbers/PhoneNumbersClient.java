@@ -7,10 +7,13 @@ import java.util.Objects;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -34,7 +37,7 @@ public final class PhoneNumbersClient {
         this.client = phoneNumberAdminClient.getPhoneNumbers();
         this.asyncClient = asyncClient;
     }
-  
+
    /**
      * Gets information about an acquired phone number.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
@@ -77,26 +80,30 @@ public final class PhoneNumbersClient {
 
     /**
      * Starts the search for available phone numbers to purchase.
-     * 
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     *
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param searchRequest The search request
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
+     * @param searchOptions The phone number search options.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object with the reservation result
+     * @return A {@link SyncPoller} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
-        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, searchRequest, context).getSyncPoller();
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions, context).getSyncPoller();
     }
 
     /**
      * Starts the purchase of the phone number(s) in the search result associated with a given id.
-     * 
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     *
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      *
      * @param searchId ID of the search
@@ -112,7 +119,7 @@ public final class PhoneNumbersClient {
     /**
      * Starts the update of capabilities for an acquired phone number.
      *
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      *
      *
@@ -129,8 +136,8 @@ public final class PhoneNumbersClient {
 
     /**
      * Update capabilities of an acquired phone number.
-     * 
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     *
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.

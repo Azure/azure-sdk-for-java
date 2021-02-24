@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,10 +20,25 @@ public class DomainTopicInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicInner.class);
 
     /*
+     * The system metadata relating to Domain Topic resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * Provisioning state of the domain topic.
      */
     @JsonProperty(value = "properties.provisioningState")
     private DomainTopicProvisioningState provisioningState;
+
+    /**
+     * Get the systemData property: The system metadata relating to Domain Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the domain topic.
@@ -50,5 +66,8 @@ public class DomainTopicInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 }

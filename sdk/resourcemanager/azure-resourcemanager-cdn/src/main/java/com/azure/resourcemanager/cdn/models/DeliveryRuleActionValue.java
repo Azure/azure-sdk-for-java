@@ -31,6 +31,9 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
     /** Static value UrlSigning for DeliveryRuleActionValue. */
     public static final DeliveryRuleActionValue URL_SIGNING = fromString("UrlSigning");
 
+    /** Static value OriginGroupOverride for DeliveryRuleActionValue. */
+    public static final DeliveryRuleActionValue ORIGIN_GROUP_OVERRIDE = fromString("OriginGroupOverride");
+
     /**
      * Creates or finds a DeliveryRuleActionValue from its string representation.
      *
