@@ -3,9 +3,11 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResult;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryEventData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
@@ -103,9 +105,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 logger.verbose("exporting span: {}", span);
                 export(span, telemetryItems);
             }
-            client.export(telemetryItems)
+            client.exportWithResponse(telemetryItems)
                 .subscriberContext(Context.of(Tracer.DISABLE_TRACING_KEY, true))
-                .subscribe();
+                .subscribe(this::processResponse);
             return CompletableResultCode.ofSuccess();
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
@@ -588,5 +590,12 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 properties.put(key.toString(), val);
             }
         });
+    }
+
+    private void processResponse(Response<ExportResult> res) {
+        int statusCode = res.getStatusCode();
+        if (statusCode / 100 != 2) {
+            logger.warning("Failed to export trace. Response status " + statusCode);
+        }
     }
 }

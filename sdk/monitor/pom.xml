@@ -53,6 +53,7 @@
       </activation>
       <modules>
         <module>azure-monitor-opentelemetry-exporter</module>
+        <module>azure-monitor-opentelemetry-exporter-perf</module>
       </modules>
     </profile>
   </profiles>
