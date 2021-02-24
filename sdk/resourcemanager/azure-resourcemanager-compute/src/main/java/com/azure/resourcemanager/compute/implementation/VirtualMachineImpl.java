@@ -232,7 +232,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl update() {
         updateParameterSnapshotOnUpdate = this.deepCopyInnerToUpdateParameter();
-        return this;
+        return super.update();
     };
 
     @Override

@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public abstract class AbstractAzureMessageConverter<T> implements AzureMessageConverter<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -156,7 +156,7 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
                 OBJECT_MAPPER.readTree((String) value);
                 return true;
             }
-            LOG.warn("Not a valid json string: " + value);
+            LOGGER.warn("Not a valid json string: " + value);
             return false;
         } catch (IOException e) {
             return false;

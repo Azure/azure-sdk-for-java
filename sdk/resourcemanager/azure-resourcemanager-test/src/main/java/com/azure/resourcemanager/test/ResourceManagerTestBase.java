@@ -84,7 +84,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     };
 
-    private final ClientLogger logger = new ClientLogger(ResourceManagerTestBase.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
@@ -103,7 +103,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     public static String password() {
         // do not record
         String password = new ResourceNamer("").randomName("Pa5$", 12);
-        new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
+        LOGGER.info("Password: {}", password);
         return password;
     }
 
@@ -123,8 +123,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
                 ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
                 DataOutputStream dos = new DataOutputStream(byteOs);
-                dos.writeInt("ssh-rsa".getBytes().length);
-                dos.write("ssh-rsa".getBytes());
+                dos.writeInt("ssh-rsa".getBytes(StandardCharsets.US_ASCII).length);
+                dos.write("ssh-rsa".getBytes(StandardCharsets.US_ASCII));
                 dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
                 dos.write(rsaPublicKey.getPublicExponent().toByteArray());
                 dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
@@ -132,8 +132,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
                 sshPublicKey = "ssh-rsa " + publicKeyEncoded;
             } catch (NoSuchAlgorithmException | IOException e) {
-                throw new ClientLogger(ResourceManagerTestBase.class)
-                    .logThrowableAsError(new IllegalStateException("failed to generate ssh key", e));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
             }
         }
         return sshPublicKey;
@@ -175,10 +174,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
             }
         }
 
@@ -214,7 +213,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 try {
                     testAuthFile = AuthFile.parse(credFile);
                 } catch (IOException e) {
-                    throw logger.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
                 }
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
@@ -225,7 +224,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
                 String subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
                 if (clientId == null || tenantId == null || clientSecret == null || subscriptionId == null) {
-                    throw logger.logExceptionAsError(
+                    throw LOGGER.logExceptionAsError(
                         new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set"));
                 }
 
@@ -345,9 +344,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 }
             }
         } catch (IllegalAccessException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } catch (NoSuchFieldException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 
@@ -381,7 +380,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             | IllegalAccessException
             | InstantiationException
             | InvocationTargetException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 

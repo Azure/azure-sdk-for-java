@@ -7,6 +7,7 @@ package com.azure.communication.phonenumbers.implementation;
 import com.azure.communication.phonenumbers.implementation.models.AcquiredPhoneNumbers;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
@@ -15,7 +16,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUp
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -105,7 +105,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/operations/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelOperation(
                 @HostParam("endpoint") String endpoint,
@@ -123,7 +123,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(
                 @HostParam("endpoint") String endpoint,
@@ -142,7 +142,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Patch("/phoneNumbers/{phoneNumber}/capabilities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(
                 @HostParam("endpoint") String endpoint,

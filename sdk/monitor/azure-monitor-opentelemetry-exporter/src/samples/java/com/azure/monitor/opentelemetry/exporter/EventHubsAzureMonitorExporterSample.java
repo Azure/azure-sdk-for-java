@@ -26,7 +26,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERA
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample to demontrate using {@link AzureMonitorExporter} to export telemetry events when sending events to Event Hubs
+ * Sample to demontrate using {@link AzureMonitorTraceExporter} to export telemetry events when sending events to Event Hubs
  * using {@link EventHubProducerAsyncClient}.
  */
 public class EventHubsAzureMonitorExporterSample {
@@ -42,13 +42,13 @@ public class EventHubsAzureMonitorExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link AzureMonitorExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
