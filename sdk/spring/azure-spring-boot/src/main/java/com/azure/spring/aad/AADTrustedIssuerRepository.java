@@ -52,12 +52,12 @@ public class AADTrustedIssuerRepository {
      * Only the V2 version of Access Token is supported when using Azure AD B2C user flows.
      *
      * @param baseUri The base uri is the domain part of the endpoint.
-     * @param userFlows The all user flows which is created under b2c tenant.
+     * @param userFlows The all user flows mapping which is created under b2c tenant.
      */
     public void addB2CUserFlowIssuers(String baseUri, Map<String, String> userFlows) {
         Assert.notNull(userFlows, "userFlows cannot be null.");
         String resolvedBaseUri = resolveBaseUri(baseUri);
-        userFlows.keySet().forEach(key -> createB2CUserFlowIssuer(resolvedBaseUri, key));
+        userFlows.keySet().forEach(key -> createB2CUserFlowIssuer(resolvedBaseUri, userFlows.get(key)));
     }
 
     private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
