@@ -147,4 +147,11 @@ public final class GeoPosition {
             && Double.compare(latitude, other.latitude) == 0
             && Objects.equals(altitude, other.altitude);
     }
+
+    @Override
+    public String toString() {
+        return (altitude != null)
+            ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
+            : String.format("[%s, %s]", longitude, latitude);
+    }
 }

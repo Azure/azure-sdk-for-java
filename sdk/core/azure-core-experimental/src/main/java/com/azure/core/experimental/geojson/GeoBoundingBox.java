@@ -126,4 +126,41 @@ public final class GeoBoundingBox {
             && Objects.equals(minAltitude, other.minAltitude)
             && Objects.equals(maxAltitude, other.maxAltitude);
     }
+
+    /**
+     * Accesses the coordinates of the {@link GeoBoundingBox} as if it were in a JSON representation.
+     *
+     * @param i Index to access.
+     * @return The double value of the index.
+     * @throws IndexOutOfBoundsException If the {@link GeoBoundingBox} doesn't have altitude coordinates and {@code i}
+     * is greater than {@code 3} or {@link GeoBoundingBox} has altitude coordinates and {@code i} is greater than
+     */
+    public double get(int i) {
+        if (minAltitude != null && maxAltitude != null) {
+            switch (i) {
+                case 0: return west;
+                case 1: return south;
+                case 2: return minAltitude;
+                case 3: return east;
+                case 4: return north;
+                case 5: return maxAltitude;
+                default: throw new IndexOutOfBoundsException();
+            }
+        } else {
+            switch (i) {
+                case 0: return west;
+                case 1: return south;
+                case 2: return east;
+                case 3: return north;
+                default: throw new IndexOutOfBoundsException();
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return (minAltitude != null && maxAltitude != null)
+            ? String.format("[%s, %s, %s, %s, %s, %s]", west, south, minAltitude, east, north, maxAltitude)
+            : String.format("[%s, %s, %s, %s]", west, south, east, north);
+    }
 }

@@ -21,7 +21,8 @@ import java.util.function.UnaryOperator;
  *
  * @param <T> The type of geometry coordinates.
  */
-public class GeoArray<T> extends AbstractList<T> {
+public final class GeoArray<T> extends AbstractList<T> {
+    private static final String NO_MUTATION_MESSAGE = "GeoArray cannot be mutated.";
     private final ClientLogger logger = new ClientLogger(GeoArray.class);
 
     private final Object container;
@@ -37,8 +38,8 @@ public class GeoArray<T> extends AbstractList<T> {
             return (T) ((List<?>) container).get(index);
         } else if (container instanceof GeoPointCollection) {
             return (T) ((GeoPointCollection) container).getPoints().get(index).getCoordinates();
-        } else if (container instanceof GeoLineCollection) {
-            return (T) ((GeoLineCollection) container).getLines().get(index).getCoordinates();
+        } else if (container instanceof GeoLineStringCollection) {
+            return (T) ((GeoLineStringCollection) container).getLines().get(index).getCoordinates();
         } else if (container instanceof GeoPolygon) {
             return (T) ((GeoPolygon) container).getRings().get(index).getCoordinates();
         } else if (container instanceof GeoPolygonCollection) {
@@ -54,8 +55,8 @@ public class GeoArray<T> extends AbstractList<T> {
             return ((List<?>) container).size();
         } else if (container instanceof GeoPointCollection) {
             return ((GeoPointCollection) container).getPoints().size();
-        } else if (container instanceof GeoLineCollection) {
-            return ((GeoLineCollection) container).getLines().size();
+        } else if (container instanceof GeoLineStringCollection) {
+            return ((GeoLineStringCollection) container).getLines().size();
         } else if (container instanceof GeoPolygon) {
             return ((GeoPolygon) container).getRings().size();
         } else if (container instanceof GeoPolygonCollection) {
@@ -84,7 +85,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean add(T t) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -96,7 +97,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void add(int index, T element) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -109,7 +110,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public T set(int index, T element) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -121,7 +122,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public T remove(int index) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -131,7 +132,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void clear() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -144,7 +145,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -156,7 +157,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean remove(Object o) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -168,7 +169,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -180,7 +181,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -192,7 +193,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean retainAll(Collection<?> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -203,7 +204,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void replaceAll(UnaryOperator<T> operator) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -214,7 +215,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void sort(Comparator<? super T> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -226,7 +227,7 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean removeIf(Predicate<? super T> filter) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+        throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
     }
 
     /**
@@ -318,17 +319,17 @@ public class GeoArray<T> extends AbstractList<T> {
 
         @Override
         public void remove() {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+            throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
         }
 
         @Override
         public void set(T t) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+            throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
         }
 
         @Override
         public void add(T t) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+            throw logger.logExceptionAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
         }
     }
 }

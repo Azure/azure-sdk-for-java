@@ -15,10 +15,10 @@ import java.util.Objects;
  */
 @JsonSubTypes({
     @JsonSubTypes.Type(GeoPoint.class),
-    @JsonSubTypes.Type(GeoLine.class),
+    @JsonSubTypes.Type(GeoLineString.class),
     @JsonSubTypes.Type(GeoPolygon.class),
     @JsonSubTypes.Type(GeoPointCollection.class),
-    @JsonSubTypes.Type(GeoLineCollection.class),
+    @JsonSubTypes.Type(GeoLineStringCollection.class),
     @JsonSubTypes.Type(GeoPolygonCollection.class),
     @JsonSubTypes.Type(GeoCollection.class)
 })

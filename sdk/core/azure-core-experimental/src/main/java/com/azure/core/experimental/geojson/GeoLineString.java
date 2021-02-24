@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Represents a geometric line.
  */
-public final class GeoLine extends GeoObject {
+public final class GeoLineString extends GeoObject {
     private final GeoArray<GeoPosition> coordinates;
 
     /**
@@ -20,7 +20,7 @@ public final class GeoLine extends GeoObject {
      * @param positions Geometric positions that define the line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLine(List<GeoPosition> positions) {
+    public GeoLineString(List<GeoPosition> positions) {
         this(positions, null, null);
     }
 
@@ -32,7 +32,7 @@ public final class GeoLine extends GeoObject {
      * @param customProperties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLine(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(positions, "'positions' cannot be null.");
@@ -60,7 +60,7 @@ public final class GeoLine extends GeoObject {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GeoLine)) {
+        if (!(obj instanceof GeoLineString)) {
             return false;
         }
 
@@ -68,7 +68,7 @@ public final class GeoLine extends GeoObject {
             return true;
         }
 
-        GeoLine other = (GeoLine) obj;
+        GeoLineString other = (GeoLineString) obj;
         return super.equals(other) && Objects.equals(coordinates, other.coordinates);
     }
 }
