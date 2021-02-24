@@ -143,7 +143,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.7</version>
+      <version>0.0.7</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -293,6 +293,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.7]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.12.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>net.minidev:json-smart:[2.3]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->

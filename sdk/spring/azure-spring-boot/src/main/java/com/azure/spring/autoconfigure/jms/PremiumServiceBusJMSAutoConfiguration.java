@@ -20,14 +20,12 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import javax.jms.ConnectionFactory;
 
 /**
- * Automatic configuration class of ServiceBusJMS
+ * Automatic configuration class of ServiceBusJMS for Premium Service Bus
  */
 @Configuration
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
 @ConditionalOnExpression(value = "${spring.jms.servicebus.enabled:true} == true and '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
-//@ConditionalOnProperty(prefix = "spring.jms.servicebus", value = { "pricing-tier" }, havingValue = "premium")
-//@ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class PremiumServiceBusJMSAutoConfiguration {
 

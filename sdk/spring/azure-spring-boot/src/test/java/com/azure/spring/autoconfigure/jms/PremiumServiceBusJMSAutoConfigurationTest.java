@@ -16,7 +16,7 @@ import javax.jms.ConnectionFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ServiceBusJMSAutoConfigurationTest {
+public class PremiumServiceBusJMSAutoConfigurationTest {
 
     private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
         + "SharedAccessKey=sasKey";
