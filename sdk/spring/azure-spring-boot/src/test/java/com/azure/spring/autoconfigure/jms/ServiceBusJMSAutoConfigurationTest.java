@@ -29,6 +29,13 @@ public class ServiceBusJMSAutoConfigurationTest {
     }
 
     @Test
+    public void testAzureServiceBusNonPremium() {
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=basic")
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test
     public void testWithoutServiceBusJMSNamespace() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
@@ -75,17 +82,21 @@ public class ServiceBusJMSAutoConfigurationTest {
     private ApplicationContextRunner getEmptyContextRunner() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(PremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium"
+            );
     }
 
     private ApplicationContextRunner getContextRunnerWithProperties() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(PremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",
-                "spring.jms.servicebus.idle-timeout=123"
+                "spring.jms.servicebus.idle-timeout=123",
+                "spring.jms.servicebus.pricing-tier=premium"
             );
     }
 }

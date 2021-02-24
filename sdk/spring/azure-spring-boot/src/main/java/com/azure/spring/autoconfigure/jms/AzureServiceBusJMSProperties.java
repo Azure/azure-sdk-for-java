@@ -25,6 +25,8 @@ public class AzureServiceBusJMSProperties {
 
     private int idleTimeout = 1800000;
 
+    private String pricingTier;
+
     public String getConnectionString() {
         return connectionString;
     }
@@ -39,6 +41,14 @@ public class AzureServiceBusJMSProperties {
 
     public void setTopicClientId(String topicClientId) {
         this.topicClientId = topicClientId;
+    }
+
+    public String getPricingTier() {
+        return pricingTier;
+    }
+
+    public void setPricingTier(String pricingTier) {
+        this.pricingTier = pricingTier;
     }
 
     public int getIdleTimeout() {

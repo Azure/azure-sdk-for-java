@@ -140,7 +140,12 @@
       <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
-
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>0.0.7</version>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>qpid-jms-client</artifactId>

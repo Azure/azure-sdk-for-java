@@ -3,8 +3,10 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -23,9 +25,11 @@ import javax.jms.ConnectionFactory;
 @Configuration
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
-@ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
+@ConditionalOnExpression(value = "${spring.jms.servicebus.enabled:true} == true and '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
+//@ConditionalOnProperty(prefix = "spring.jms.servicebus", value = { "pricing-tier" }, havingValue = "premium")
+//@ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class ServiceBusJMSAutoConfiguration {
+public class PremiumServiceBusJMSAutoConfiguration {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
