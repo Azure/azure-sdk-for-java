@@ -380,10 +380,10 @@ if (data.length > chunkSize) {
         try {
             // the last chunk size is smaller than the others
             chunkSize = Math.min(data.length - offset, chunkSize);
-    
+
             // select the chunk in the byte array
             byte[] subArray = Arrays.copyOfRange(data, offset, (int) (offset + chunkSize));
-    
+
             // upload the chunk
             fileClient.uploadWithResponse(new ByteArrayInputStream(subArray), chunkSize, (long) offset, null, Context.NONE);
         } catch (RuntimeException e) {
