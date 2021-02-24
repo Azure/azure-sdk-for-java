@@ -8,21 +8,22 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_BASE_URI;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_EMAIL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_PASSWORD;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
+import com.azure.spring.test.Constant;
 import com.azure.test.aad.common.SeleniumITHelper;
 import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     private String userEmail;
     private String userPassword;
-    private boolean isAzureChina;
+    private boolean isAzureGlobal;
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
@@ -34,8 +35,6 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
             .put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
         defaultProperteis
             .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AAD_B2C_SIGN_UP_OR_SIGN_IN);
-        defaultProperteis
-            .put("logging.level.root", "DEBUG");
         return defaultProperteis;
     }
 
@@ -43,18 +42,20 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         super(appClass, properties);
         userEmail = AAD_B2C_USER_EMAIL;
         userPassword = AAD_B2C_USER_PASSWORD;
+        isAzureGlobal = Constant.AZURE_CLOUD_TYPE_GLOBAL.equalsIgnoreCase(AZURE_CLOUD_TYPE) ? true : false;
     }
 
     public void logIn() {
         driver.get(app.root());
-        try {
+        if (isAzureGlobal) {
             wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
-        } catch (TimeoutException e) {
+        } else {
             wait.until(presenceOfElementLocated(By.id("logonIdentifier"))).sendKeys(userEmail);
-            isAzureChina = true;
         }
+
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
-        if (!isAzureChina) {
+
+        if (isAzureGlobal) {
             wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).sendKeys(Keys.ENTER);
         } else {
             wait.until(presenceOfElementLocated(By.id("next"))).sendKeys(Keys.ENTER);
@@ -65,7 +66,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     public void profileEditJobTitle(String newJobTitle) {
         wait.until(presenceOfElementLocated(By.id("profileEdit"))).click();
         changeJobTile(newJobTitle);
-        if (!isAzureChina) {
+        if (isAzureGlobal) {
             wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
         } else {
             wait.until(presenceOfElementLocated(By.id("continue"))).sendKeys(Keys.ENTER);
@@ -116,7 +117,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getSignInButtonText() {
-        if (!isAzureChina) {
+        if (isAzureGlobal) {
             return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).getText();
         } else {
             return wait.until(ExpectedConditions.elementToBeClickable(By.id("next"))).getText();
