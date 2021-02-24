@@ -1441,7 +1441,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
-        if (request.getResourceType() != ResourceType.Document) {
+        if (request.getResourceType() != ResourceType.Document &&
+                request.getResourceType() != ResourceType.Conflict) {
             return false;
         }
 
