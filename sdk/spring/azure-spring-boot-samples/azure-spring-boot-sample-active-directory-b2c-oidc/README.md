@@ -71,7 +71,7 @@ mvn spring-boot:run
 2. Sign up/in.
 3. Profile edit.
 4. Password reset.
-5. Logout.
+5. Log out.
 6. Sign in.
 
 ## Troubleshooting
