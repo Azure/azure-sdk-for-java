@@ -26,10 +26,10 @@ public final class PartitionMapper {
         List<T> tokens) {
         checkNotNull(feedRangeEpkList);
         checkNotNull(tokens);
-        if (feedRangeEpkList.size() < 1) {
+        if (feedRangeEpkList.isEmpty()) {
             throw new IllegalArgumentException("feedRanges should not be empty");
         }
-        if (tokens.size() < 1) {
+        if (tokens.isEmpty()) {
             throw new IllegalArgumentException("tokens should not be empty");
         }
 

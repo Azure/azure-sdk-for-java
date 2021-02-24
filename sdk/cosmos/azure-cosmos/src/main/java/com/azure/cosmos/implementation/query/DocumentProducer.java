@@ -212,7 +212,7 @@ class DocumentProducer<T extends Resource> {
                         if (logger.isDebugEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
-                                    feedRange.toJson(),
+                                    feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
                                                                    .map(ModelBridgeInternal::toJsonFromJsonSerializable)
                                                                    .collect(Collectors.joining(", ")),
