@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.2.0 (2021-02-24)
 
 - Supported locks with API version `2016-09-01`. Added `ManagementLock` and related classes.
 
