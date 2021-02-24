@@ -344,14 +344,6 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the spec version of this CloudEvent
-     * @return the spec version, or null if the spec version was not set.
-     */
-    public String getSpecVersion() {
-        return specVersion;
-    }
-
-    /**
      * Get a map of the additional user-defined attributes associated with this event.
      * @return the extension attributes as an unmodifiable map.
      */
