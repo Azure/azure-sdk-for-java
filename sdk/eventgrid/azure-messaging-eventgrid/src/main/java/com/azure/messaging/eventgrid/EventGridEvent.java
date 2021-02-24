@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.util.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
