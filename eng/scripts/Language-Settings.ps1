@@ -5,36 +5,82 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
-function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
+function Get-java-PackageInfoFromRepo
 {
-  $projectPath = Join-Path $pkgPath "pom.xml"
+  [CmdletBinding()]
+  Param(
+    [Parameter(Position = 0)]
+    [string]$pkgDirectoryPath,
+    [Parameter(Position = 1)]
+    [string]$serviceDirectoryName,
+    $pkgPath,
+    $serviceDirectory,
+    $pkgName
+  )
 
-  if (Test-Path $projectPath)
+  if ($pkgName)
   {
-    $projectData = New-Object -TypeName XML
-    $projectData.load($projectPath)
-    $projectPkgName = $projectData.project.artifactId
-    $pkgVersion = $projectData.project.version
-    $pkgGroup = $projectData.project.groupId
-
-    if ($projectPkgName -eq $pkgName)
+    $projectPath = Join-Path $pkgPath "pom.xml"
+    if (Test-Path $projectPath)
     {
-        $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
-        if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
-        {
-          $pkgProp.SdkType = "mgmt"
-        }
-        elseif ($projectPkgName -match "spring")
-        {
-          $pkgProp.SdkType = "spring"
-        }
-        else
-        {
-          $pkgProp.SdkType = "client"
-        }
+      $projectData = New-Object -TypeName XML
+      $projectData.load($projectPath)
+      $projectPkgName = $projectData.project.artifactId
+      $pkgVersion = $projectData.project.version
+      $pkgGroup = $projectData.project.groupId
+
+      if ($projectPkgName -eq $pkgName)
+      {
+          $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+          if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+          {
+            $pkgProp.SdkType = "mgmt"
+          }
+          elseif ($projectPkgName -match "spring")
+          {
+            $pkgProp.SdkType = "spring"
+          }
+          else
+          {
+            $pkgProp.SdkType = "client"
+          }
+          $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+          $pkgProp.ArtifactName = $pkgName
+          return $pkgProp
+      }
+    }
+  }
+  else 
+  {
+    $projectPath = Join-Path $pkgDirectoryPath "pom.xml"
+    if (Test-Path $projectPath)
+    {
+      $projectData = New-Object -TypeName XML
+      $projectData.load($projectPath)
+      $projectPkgName = $projectData.project.artifactId
+      $pkgVersion = $projectData.project.version
+      $pkgGroup = $projectData.project.groupId
+  
+      $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgDirectoryPath, $serviceDirectoryName, $pkgGroup)
+      if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+      {
+        $pkgProp.SdkType = "mgmt"
+      }
+      elseif ($projectPkgName -match "spring")
+      {
+        $pkgProp.SdkType = "spring"
+      }
+      else
+      {
+        $pkgProp.SdkType = "client"
+      }
+  
+      $pkgProp.IsNewSdk = $False
+      if ($pkgGroup) {
         $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
-        $pkgProp.ArtifactName = $pkgName
-        return $pkgProp
+      }
+      $pkgProp.ArtifactName = $projectPkgName
+      return $pkgProp
     }
   }
   return $null
