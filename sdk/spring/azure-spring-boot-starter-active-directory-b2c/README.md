@@ -114,14 +114,10 @@ This starter provides following properties to be customized:
          base-uri: ${your-tenant-authorization-server-base-uri}
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
-         login-flow: ${your-login-user-flow-key}
+         login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
          logout-success-url: ${you-logout-success-url}
          user-flows:
-           password-reset: ${your-profile-edit-user-flow}      # optional
-           profile-edit: ${your-password-reset-user-flow}      # optional
-           sign-in: ${your-sign-in-user-flow}                  # optional
-           sign-up: ${your-sign-up-user-flow}                  # optional
-           sign-up-or-sign-in: ${your-sign-up-or-in-user-flow} # optional
+           ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
          user-name-attribute-name: ${your-user-name-attribute-name}
    ```
 7. Save and close the *application.yml* file.
