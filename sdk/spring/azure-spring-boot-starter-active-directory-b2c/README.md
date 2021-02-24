@@ -114,7 +114,7 @@ This starter provides following properties to be customized:
          base-uri: ${your-tenant-authorization-server-base-uri}
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
-         login-flow: ${your-sign-up-or-in-user-flow-key}
+         login-flow: ${your-login-user-flow-key}
          logout-success-url: ${you-logout-success-url}
          user-flows:
            password-reset: ${your-profile-edit-user-flow}      # optional
@@ -200,7 +200,7 @@ respectively that completed earlier.
 3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
-4. Click link with the name of `${your-sign-up-or-in-user-flow}` user flow, you should be redirected Azure AD B2C to start the authentication process.
+4. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
