@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>

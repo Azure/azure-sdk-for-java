@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -16,10 +18,10 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
-import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
@@ -124,11 +126,12 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.create}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
      * @return An empty response
      * @throws QueueStorageException If a queue with the same name already exists in the queue service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
         try {
             return createWithResponse(null).flatMap(FluxUtil::toMono);
@@ -147,7 +150,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.createWithResponse#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -155,6 +158,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If a queue with the same name and different metadata already exists in the queue
      * service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> createWithResponse(metadata, context));
@@ -165,7 +169,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -180,11 +184,12 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.delete}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         try {
             return deleteWithResponse().flatMap(FluxUtil::toMono);
@@ -203,11 +208,12 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
         try {
             return withContext(this::deleteWithResponse);
@@ -218,7 +224,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().deleteWithRestResponseAsync(queueName,
+        return client.getQueues().deleteWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -233,12 +239,13 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueProperties> getProperties() {
         try {
             return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
@@ -257,12 +264,13 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
         try {
             return withContext(this::getPropertiesWithResponse);
@@ -273,7 +281,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().getPropertiesWithRestResponseAsync(queueName,
+        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getQueuePropertiesResponse);
     }
@@ -294,12 +302,13 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMetadata#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
         try {
             return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
@@ -324,12 +333,13 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> setMetadataWithResponse(metadata, context));
@@ -340,8 +350,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues()
-            .setMetadataWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues()
+            .setMetadataWithResponseAsync(queueName, null, metadata, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -356,16 +366,17 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getAccessPolicy}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
         try {
             Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
-                marker -> this.client.queues()
-                    .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
+                marker -> this.client.getQueues()
+                    .getAccessPolicyWithResponseAsync(queueName, null, null, Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -389,13 +400,14 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#Iterable}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the queue will have more than five policies.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setAccessPolicy(Iterable<QueueSignedIdentifier> permissions) {
         try {
             return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
@@ -414,13 +426,14 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#Iterable}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the queue will have more than five policies.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions) {
         try {
             return withContext(context -> setAccessPolicyWithResponse(permissions, context));
@@ -453,8 +466,8 @@ public final class QueueAsyncClient {
             permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
-        return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null,
+        return client.getQueues()
+            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -469,11 +482,12 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMessages}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> clearMessages() {
         try {
             return clearMessagesWithResponse().flatMap(FluxUtil::toMono);
@@ -492,11 +506,12 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
             return withContext(this::clearMessagesWithResponse);
@@ -507,7 +522,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messages().clearWithRestResponseAsync(queueName,
+        return client.getMessages().clearWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -522,7 +537,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessage#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
      * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
@@ -530,6 +545,7 @@ public final class QueueAsyncClient {
      * and other metadata about the enqueued message.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendMessageResult> sendMessage(String messageText) {
         try {
             return sendMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
@@ -552,7 +568,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#String-Duration-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
@@ -566,6 +582,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
@@ -582,8 +599,8 @@ public final class QueueAsyncClient {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
 
-        return client.messages()
-            .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
+        return client.getMessages()
+            .enqueueWithResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
                 null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
@@ -599,13 +616,14 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessage}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @return The first {@link QueueMessageItem} in the queue, it contains {@link QueueMessageItem#getMessageId()
      * messageId} and {@link QueueMessageItem#getPopReceipt() popReceipt} used to interact with the message,
      * additionally it contains other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueMessageItem> receiveMessage() {
         try {
             return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).singleOrEmpty();
@@ -625,7 +643,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessages#integer}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
@@ -636,6 +654,7 @@ public final class QueueAsyncClient {
      * other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages) {
         try {
             return receiveMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
@@ -655,7 +674,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessages#integer-duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
@@ -669,6 +688,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
         try {
             return receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
@@ -681,8 +701,8 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -707,10 +727,11 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessage}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PeekedMessageItem> peekMessage() {
         try {
             return peekMessages(null).singleOrEmpty();
@@ -732,7 +753,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages#integer}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue
      * than requested all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is
@@ -741,6 +762,7 @@ public final class QueueAsyncClient {
      * contains metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PeekedMessageItem> peekMessages(Integer maxMessages) {
         try {
             return peekMessagesWithOptionalTimeout(maxMessages, null, Context.NONE);
@@ -752,8 +774,8 @@ public final class QueueAsyncClient {
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .peekWithResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -774,7 +796,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
@@ -787,6 +809,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpdateMessageResult> updateMessage(String messageId, String popReceipt, String messageText,
         Duration visibilityTimeout) {
         try {
@@ -807,7 +830,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
@@ -820,6 +843,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
             String messageText, Duration visibilityTimeout) {
         try {
@@ -835,8 +859,8 @@ public final class QueueAsyncClient {
         QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
         visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
-        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, popReceipt,
-                (int) visibilityTimeout.getSeconds(), message, null, null,
+        return client.getMessageIds().updateWithResponseAsync(queueName, messageId, popReceipt,
+                (int) visibilityTimeout.getSeconds(), null, null, message,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getUpdatedMessageResponse);
     }
@@ -851,7 +875,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
@@ -859,6 +883,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMessage(String messageId, String popReceipt) {
         try {
             return deleteMessageWithResponse(messageId, popReceipt).flatMap(FluxUtil::toMono);
@@ -877,7 +902,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
@@ -885,6 +910,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
             return withContext(context -> deleteMessageWithResponse(messageId, popReceipt,
@@ -896,7 +922,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt,
+        return client.getMessageIds().deleteWithResponseAsync(queueName, messageId, popReceipt, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -966,9 +992,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
-        QueueGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        QueueProperties properties = new QueueProperties(propertiesHeaders.getMetadata(),
-            propertiesHeaders.getApproximateMessagesCount());
+        QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
+        QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
+            propertiesHeaders.getXMsApproximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }
 
@@ -978,9 +1004,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
-        MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(),
-            headers.getTimeNextVisible());
+        MessageIdsUpdateHeaders headers = response.getDeserializedHeaders();
+        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
+            headers.getXMsTimeNextVisible());
         return new SimpleResponse<>(response, updateMessageResult);
     }
 }

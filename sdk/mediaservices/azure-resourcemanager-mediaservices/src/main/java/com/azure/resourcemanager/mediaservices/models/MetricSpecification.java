@@ -46,6 +46,12 @@ public final class MetricSpecification {
     private MetricAggregationType aggregationType;
 
     /*
+     * The metric lock aggregation type
+     */
+    @JsonProperty(value = "lockAggregationType", access = JsonProperty.Access.WRITE_ONLY)
+    private MetricAggregationType lockAggregationType;
+
+    /*
      * Supported aggregation types.
      */
     @JsonProperty(value = "supportedAggregationTypes")
@@ -100,6 +106,15 @@ public final class MetricSpecification {
      */
     public MetricAggregationType aggregationType() {
         return this.aggregationType;
+    }
+
+    /**
+     * Get the lockAggregationType property: The metric lock aggregation type.
+     *
+     * @return the lockAggregationType value.
+     */
+    public MetricAggregationType lockAggregationType() {
+        return this.lockAggregationType;
     }
 
     /**

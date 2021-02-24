@@ -10,7 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
-import com.azure.resourcemanager.compute.models.KeyVaultAndKeyReference;
+import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DiskEncryptionSetInner extends Resource {
      * The key vault key which is currently used by this disk encryption set.
      */
     @JsonProperty(value = "properties.activeKey")
-    private KeyVaultAndKeyReference activeKey;
+    private KeyForDiskEncryptionSet activeKey;
 
     /*
      * A readonly collection of key vault keys previously used by this disk
@@ -47,7 +47,7 @@ public class DiskEncryptionSetInner extends Resource {
      * there is no ongoing key rotation.
      */
     @JsonProperty(value = "properties.previousKeys", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KeyVaultAndKeyReference> previousKeys;
+    private List<KeyForDiskEncryptionSet> previousKeys;
 
     /*
      * The disk encryption set provisioning state.
@@ -102,7 +102,7 @@ public class DiskEncryptionSetInner extends Resource {
      *
      * @return the activeKey value.
      */
-    public KeyVaultAndKeyReference activeKey() {
+    public KeyForDiskEncryptionSet activeKey() {
         return this.activeKey;
     }
 
@@ -112,7 +112,7 @@ public class DiskEncryptionSetInner extends Resource {
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetInner object itself.
      */
-    public DiskEncryptionSetInner withActiveKey(KeyVaultAndKeyReference activeKey) {
+    public DiskEncryptionSetInner withActiveKey(KeyForDiskEncryptionSet activeKey) {
         this.activeKey = activeKey;
         return this;
     }
@@ -123,7 +123,7 @@ public class DiskEncryptionSetInner extends Resource {
      *
      * @return the previousKeys value.
      */
-    public List<KeyVaultAndKeyReference> previousKeys() {
+    public List<KeyForDiskEncryptionSet> previousKeys() {
         return this.previousKeys;
     }
 

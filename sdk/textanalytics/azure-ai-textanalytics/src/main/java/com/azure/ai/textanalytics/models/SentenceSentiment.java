@@ -3,20 +3,20 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
  * sentiment label, mined opinions, and offset of sentence within a document.
  */
-@Immutable
 public final class SentenceSentiment {
     private final String text;
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
     private final IterableStream<MinedOpinion> minedOpinions;
     private final int offset;
+    private int length;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
@@ -52,6 +52,11 @@ public final class SentenceSentiment {
         this.minedOpinions = minedOpinions;
         this.confidenceScores = confidenceScores;
         this.offset = offset;
+    }
+
+    static {
+        SentenceSentimentPropertiesHelper.setAccessor(
+            (sentenceSentiment, length) -> sentenceSentiment.setLength(length));
     }
 
     /**
@@ -99,5 +104,18 @@ public final class SentenceSentiment {
      */
     public int getOffset() {
         return offset;
+    }
+
+    /**
+     * Get the length of sentence.
+     *
+     * @return The length of sentence.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

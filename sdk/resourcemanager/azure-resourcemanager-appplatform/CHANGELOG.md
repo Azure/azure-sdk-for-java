@@ -1,7 +1,11 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
 
+
+## 2.2.0 (2021-02-24)
+
+- Updated `api-version` to `2020-11-01-preview`
 
 ## 2.1.0 (2020-11-24)
 

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.search.models.QueryKey;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SearchServices;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for SearchServices.
@@ -85,8 +86,8 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<QueryKey> listQueryKeysAsync(String resourceGroupName, String searchServiceName) {
-        return this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName)
-            .mapPage(QueryKeyImpl::new);
+        return PagedConverter.mapPage(this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName),
+            QueryKeyImpl::new);
     }
 
     @Override
@@ -130,8 +131,8 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listByResourceGroupAsync(String resourceGroupName) {
-        return this.inner().getServices().listByResourceGroupAsync(resourceGroupName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.inner().getServices().listByResourceGroupAsync(resourceGroupName),
+            this::wrapModel);
     }
 
     @Override
@@ -146,7 +147,7 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listAsync() {
-        return this.inner().getServices().listAsync()
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.inner().getServices().listAsync(),
+            this::wrapModel);
     }
 }

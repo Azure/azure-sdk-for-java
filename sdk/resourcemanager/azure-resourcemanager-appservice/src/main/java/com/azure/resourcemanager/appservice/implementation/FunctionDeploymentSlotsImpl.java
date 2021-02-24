@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlotBasic;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation DeploymentSlots. */
 class FunctionDeploymentSlotsImpl
@@ -110,8 +111,8 @@ class FunctionDeploymentSlotsImpl
 
     @Override
     public PagedFlux<FunctionDeploymentSlotBasic> listAsync() {
-        return innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name())
-            .mapPage(inner -> new FunctionDeploymentSlotBasicImpl(inner, parent));
+        return PagedConverter.mapPage(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name()),
+            inner -> new FunctionDeploymentSlotBasicImpl(inner, parent));
     }
 
     private FunctionDeploymentSlotImpl wrapModel(

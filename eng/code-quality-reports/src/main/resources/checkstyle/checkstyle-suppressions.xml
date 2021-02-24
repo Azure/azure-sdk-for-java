@@ -4,89 +4,33 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
-  https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
-  <suppress checks="RedundantModifier"
-            files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
-  <suppress checks="RedundantModifier"
-            files="keyvault[/\\]microsoft-azure-.*[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
-
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
-  <!-- Suppress LineLength for Track 1/management libraries. -->
-  <suppress checks="[a-zA-Z0-9]*|com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <!-- Custom checkstyle rules only check track 2 libraries -->
-  <!--  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>-->
+  
+  <!-- Suppress all checkstyle rules for Track 1/management libraries. -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- ignore missing javadoc in samples -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Files licensed with alternate license in the header -->
-  <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
-  <suppress checks="Header" files=".*AesKwTest.java"/>
-  <suppress checks="Header" files=".*SymmetricKeyBCProviderTest.java"/>
-  <suppress checks="Header" files=".*SymmetricKeyTest.java"/>
-  <suppress checks="Header" files=".*CachingKeyResolverTest.java"/>
-  <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
-  <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
+  <!-- Code was taken from Netty and uses its license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
+
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.implementation.OptionModule"/>
   <suppress checks="Header" files="com.azure.core.implementation.OptionPropertiesModifier"/>
   <suppress checks="Header" files="com.azure.core.implementation.OptionBeanPropertyWriter"/>
   <suppress checks="Header" files="com.azure.core.implementation.OptionTypeModifier"/>
   <suppress checks="Header" files="com.azure.core.implementation.OptionSerializerProvider"/>
   <suppress checks="Header" files="com.azure.core.implementation.OptionSerializer"/>
-  <suppress checks="Header" files="eventgrid[/\\](models|implementation)[/\\].*\.java"/>
-
-  <!-- Public API already released with incorrect upper-case naming pattern -->
-  <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
-  <suppress checks="MethodName" files="ISessionHandler.java"/>
-  <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
-  <suppress checks="MethodName" files="SignatureEncoding.java"/>
-  <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
-  <suppress checks="MethodName" files="RsaSignature.java"/>
 
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
-
-  <!-- Public API already released with incorrect constant variable naming -->
-  <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
-  <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
-  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
-  <suppress checks="ConstantName" files="ConnectionStringBuilder.java"/>
-  <suppress checks="ConstantName" files="JobSchedulingErrorCodes.java"/>
-  <suppress checks="ConstantName" files="MessagingFactory.java"/>
-  <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
-  <suppress checks="ConstantName" files="PoolResizeErrorCodes.java"/>
-  <suppress checks="ConstantName" files="RsaKey.java"/>
-  <suppress checks="ConstantName" files="SymmetricKey.java"/>
-  <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
-
-  <!-- Public API already released with incorrect static variable naming -->
-  <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
-  <suppress checks="StaticVariableName" files="ManagementClientConstants.java"/>
-  <suppress checks="StaticVariableName" files="TransactionContext.java"/>
-
-  <!-- Public API already released with visibility modifier -->
-  <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
-  <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
-  <suppress checks="VisibilityModifier" files="ManagementClientConstants.java"/>
-  <suppress checks="VisibilityModifier" files="TransactionContext.java"/>
-
-  <!-- Public API already released without final modifier -->
-  <suppress checks="FinalClass" files="BatchClient.java"/>
-  <suppress checks="FinalClass" files="CoreMessageReceiver.java"/>
-  <suppress checks="FinalClass" files="CoreMessageSender.java"/>
-  <suppress checks="FinalClass" files="DetailLevel.java"/>
-  <suppress checks="FinalClass" files="MessagingFactory.java"/>
-  <suppress checks="FinalClass" files="MessageBody.java"/>
-  <suppress checks="FinalClass" files="RequestResponseLink.java"/>
-  <suppress checks="FinalClass" files="Util.java"/>
 
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
@@ -122,19 +66,24 @@
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
       files=".*[/\\]implementation[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
-
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
-      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)"
       files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Don't check for JavaDocPackage in samples or tests -->
+  <!-- Don't check for JavaDocPackage in samples or tests-->
   <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for samples and tests -->
+  <!-- Suppress LineLength for samples and tests-->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
+  <!-- To allow using sysout rather than logger in samples -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- All fields are not set in constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="Receipt.java"/>
 
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
@@ -153,7 +102,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporter[/\\]azuremonitor[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -242,7 +191,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.opentelemetry.exporter.azuremonitor.AzureMonitorExporter"/>
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -369,6 +318,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(IndexBatch|ValueFacetResult|RangeFacetResult|SearchableField|SimpleField|IndexBatchException|ScoringParameter)).*)"/>
 
+  <suppress checks="."
+            files=".*[/\\]azure-quantum-jobs[/\\]src[/\\]main[/\\]java[/\\]"/>
+
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
@@ -385,15 +337,18 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporter.azuremonitor.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleDefinitionsImpl"/>
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
   <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
-  <suppress checks="LineLength" files="com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityAsyncClient.java"/>
 
   <!-- Suppress the check on synapse code-gen classes -->
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*ClientImpl" />
@@ -565,4 +520,20 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks in azure-core-experimental -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
+
+  <!-- Suppress non-conforming service builder and service clients -->
+  <!-- The clients don't end with 'Client' but instead with 'Sender' -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
+            files="com.azure.search.documents.SearchClientBuilder"
+            lines="366,398,410"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedSender"/>
+
+  <!-- Suppress checks on AutoRest generated Attestation service code -->
+  <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
+            files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
+  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+            files="com.azure.security.attestation.models.*\.java"/>
 </suppressions>

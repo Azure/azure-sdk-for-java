@@ -1,6 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.dotnet.benchmark;
 
-import com.azure.cosmos.implementation.guava25.base.Function;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -17,12 +19,12 @@ import java.util.stream.DoubleStream;
 
 public class ParallelExecutionStrategy implements IExecutionStrategy {
     private static final long OUTPUT_LOOP_DELAY_IN_MS = 1000;
-    private final Function<Void, IBenchmarkOperation> benchmarkOperation;
+    private final Supplier<IBenchmarkOperation> benchmarkOperation;
     private final BenchmarkConfig config;
     private final AtomicInteger pendingExecutorCount = new AtomicInteger();
 
     public ParallelExecutionStrategy(BenchmarkConfig config,
-                                     Function<Void, IBenchmarkOperation> benchmarkOperation) {
+                                     Supplier<IBenchmarkOperation> benchmarkOperation) {
 
         this.config = config;
         this.benchmarkOperation = benchmarkOperation;
@@ -37,7 +39,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
 
         IExecutor warmupExecutor = new SerialOperationExecutor(
             "Warmup",
-            this.benchmarkOperation.apply(null));
+            this.benchmarkOperation.get());
 
         // Block while warmup happens
         warmupExecutor.execute(
@@ -62,7 +64,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             .flatMap((i) -> {
                     executors[i] = new SerialOperationExecutor(
                         String.valueOf(i),
-                        this.benchmarkOperation.apply(null));
+                        this.benchmarkOperation.get());
 
                     return executors[i].execute(
                         serialExecutorIterationCount,

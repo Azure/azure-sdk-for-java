@@ -3,13 +3,15 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.communication.common.ConnectionString;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -26,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SmsLiveTestBase extends TestBase {
 
     protected static final String DEFAULT_ACCESS_KEY = "VGhpcyBpcyBhIHRlc3Q="; // Base64 encoded "This is a test"
-    static final TestMode TEST_MODE = initializeTestMode();  
+    static final TestMode TEST_MODE = initializeTestMode();
     static final String PHONENUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+18005555555");
 
@@ -55,7 +57,7 @@ public class SmsLiveTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        String livetestEndpoint = new ConnectionString(CONNECTION_STRING).getEndpoint();
+        String livetestEndpoint = new CommunicationConnectionString(CONNECTION_STRING).getEndpoint();
 
         builder.endpoint(livetestEndpoint)
                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -89,7 +91,7 @@ public class SmsLiveTestBase extends TestBase {
 
     protected void verifyResponse(Response<SendSmsResponse> response) {
         assertNotNull(response);
-        verifyResponse(response.getValue());      
+        verifyResponse(response.getValue());
     }
 
     protected void verifyResponse(SendSmsResponse response) {
@@ -114,9 +116,21 @@ public class SmsLiveTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
-    
+
     protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
+    }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
     }
 
     static class FakeCredentials implements TokenCredential {

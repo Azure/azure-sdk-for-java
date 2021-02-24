@@ -12,16 +12,31 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
 
     private final String userId;
     private final boolean isAnonymous;
-    private String id;
     private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
+
+    private String rawId;
 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId the string identifier representing the identity
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      * @param isAnonymous set this to true if the user is anonymous,
      *                    for example when joining a meeting with a share link
-     * @throws IllegalArgumentException thrown if id parameter fail the validation.
+     * @param cloudEnvironment the cloud environment in which this identifier is created
+     * @throws IllegalArgumentException thrown if userId parameter fail the validation.
+     */
+    public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous, CommunicationCloudEnvironment  cloudEnvironment) {
+        this(userId, isAnonymous);
+        this.cloudEnvironment = cloudEnvironment;
+    }
+
+    /**
+     * Creates a MicrosoftTeamsUserIdentifier object
+     *
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @param isAnonymous set this to true if the user is anonymous,
+     *                    for example when joining a meeting with a share link
+     * @throws IllegalArgumentException thrown if userId parameter fail the validation.
     */
     public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous) {
         if (CoreUtils.isNullOrEmpty(userId)) {
@@ -34,15 +49,16 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId the string identifier representing the identity
-     * @throws IllegalArgumentException thrown if id parameter fail the validation.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @throws IllegalArgumentException thrown if userId parameter fail the validation.
     */
     public MicrosoftTeamsUserIdentifier(String userId) {
         this(userId, false);
     }
 
     /**
-     * @return the string identifier representing the MicrosoftTeamsUserIdentifier object
+     * Get Teams User Id
+     * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      */
     public String getUserId() {
         return this.userId;
@@ -53,21 +69,6 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
      */
     public boolean isAnonymous() {
         return this.isAnonymous;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Set the string representation of this identifier
-     * @param id the string representation of this identifier
-     * @return the MicrosoftTeamsUserIdentifier object itself
-     */
-    public MicrosoftTeamsUserIdentifier setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -86,6 +87,24 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
         return cloudEnvironment;
+    }
+
+    /**
+     * Get full id of the identifier. This id is optional.
+     * @return full id of the identifier
+     */
+    public String getRawId() {
+        return rawId;
+    }
+
+    /**
+     * Set full id of the identifier
+     * @param rawId full id of the identifier
+     * @return CommunicationIdentifier object itself
+     */
+    public MicrosoftTeamsUserIdentifier setRawId(String rawId) {
+        this.rawId = rawId;
+        return this;
     }
 
     @Override
@@ -112,9 +131,9 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
             return false;
         }
 
-        return id == null
-            || thatId.id == null
-            || thatId.id.equals(this.id);
+        return getRawId() == null
+            || thatId.getRawId() == null
+            || thatId.getRawId().equals(this.getRawId());
     }
 
 

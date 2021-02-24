@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ResourceGroupProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Resource group information. */
 @Fluent
@@ -65,6 +66,20 @@ public final class ResourceGroupInner extends Resource {
      */
     public ResourceGroupInner withManagedBy(String managedBy) {
         this.managedBy = managedBy;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

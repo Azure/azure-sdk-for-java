@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Registries. */
 public class CosmosDBAccountsImpl
@@ -41,10 +42,10 @@ public class CosmosDBAccountsImpl
 
     @Override
     public PagedFlux<CosmosDBAccount> listAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .inner()
-            .listAsync()
-            .mapPage(inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
+            .listAsync(),
+            inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
     }
 
     @Override

@@ -60,6 +60,22 @@ public final class MonitoringClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the MonitoringClientBuilder.
+     */
+    public MonitoringClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -195,13 +211,16 @@ public final class MonitoringClientBuilder {
      * @return an instance of MonitoringClientImpl.
      */
     private MonitoringClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2019-11-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        MonitoringClientImpl client = new MonitoringClientImpl(pipeline, serializerAdapter, endpoint);
+        MonitoringClientImpl client = new MonitoringClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

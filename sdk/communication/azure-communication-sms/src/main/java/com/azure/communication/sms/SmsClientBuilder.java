@@ -3,12 +3,12 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.ConnectionString;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -39,12 +39,12 @@ public final class SmsClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(SmsClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential accessKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
-    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();    
-    private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);    
+    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
@@ -74,12 +74,12 @@ public final class SmsClientBuilder {
     /**
      * Set accessKeyCredential to use
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
+     * @param accessKey access key for initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.accessKeyCredential = new AzureKeyCredential(accessKey);
         return this;
     }
 
@@ -98,12 +98,12 @@ public final class SmsClientBuilder {
      /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
@@ -173,7 +173,7 @@ public final class SmsClientBuilder {
                 customPolicyArray = new HttpPipelinePolicy[customPolicies.size()];
                 customPolicyArray = customPolicies.toArray(customPolicyArray);
             }
-    
+
             builderPipeline = createHttpPipeline(httpClient,
                 createHttpPipelineAuthPolicy(),
                 customPolicyArray);
@@ -182,7 +182,7 @@ public final class SmsClientBuilder {
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
-        
+
         return clientBuilder.buildClient();
     }
 
@@ -191,11 +191,11 @@ public final class SmsClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
-        if (this.tokenCredential != null) { 
+        if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");          
+                this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
+            return new HmacAuthenticationPolicy(this.accessKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
@@ -236,5 +236,5 @@ public final class SmsClientBuilder {
             policies[4 + i] = customPolicies[i];
 
         }
-    }    
+    }
 }

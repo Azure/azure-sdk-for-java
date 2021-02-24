@@ -29,7 +29,6 @@ public class RecognizeInvoicesFromUrl {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {

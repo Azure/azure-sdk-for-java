@@ -36,7 +36,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "StringNotIn", value = StringNotInAdvancedFilter.class),
     @JsonSubTypes.Type(name = "StringBeginsWith", value = StringBeginsWithAdvancedFilter.class),
     @JsonSubTypes.Type(name = "StringEndsWith", value = StringEndsWithAdvancedFilter.class),
-    @JsonSubTypes.Type(name = "StringContains", value = StringContainsAdvancedFilter.class)
+    @JsonSubTypes.Type(name = "StringContains", value = StringContainsAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "NumberInRange", value = NumberInRangeAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "NumberNotInRange", value = NumberNotInRangeAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "StringNotBeginsWith", value = StringNotBeginsWithAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "StringNotEndsWith", value = StringNotEndsWithAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "StringNotContains", value = StringNotContainsAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "IsNullOrUndefined", value = IsNullOrUndefinedAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "IsNotNull", value = IsNotNullAdvancedFilter.class)
 })
 @Fluent
 public class AdvancedFilter {

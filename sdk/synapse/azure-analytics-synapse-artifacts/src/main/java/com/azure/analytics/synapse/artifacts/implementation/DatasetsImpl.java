@@ -62,7 +62,10 @@ public final class DatasetsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<DatasetListResponse>> getDatasetsByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/datasets/{datasetName}")
         @ExpectedResponses({200, 202})
@@ -73,6 +76,7 @@ public final class DatasetsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") DatasetResource dataset,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/datasets/{datasetName}")
@@ -83,6 +87,7 @@ public final class DatasetsImpl {
                 @PathParam("datasetName") String datasetName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/datasets/{datasetName}")
@@ -92,6 +97,7 @@ public final class DatasetsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("datasetName") String datasetName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/datasets/{datasetName}/rename")
@@ -102,6 +108,7 @@ public final class DatasetsImpl {
                 @PathParam("datasetName") String datasetName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -110,6 +117,7 @@ public final class DatasetsImpl {
         Mono<Response<DatasetListResponse>> getDatasetsByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -122,10 +130,11 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getDatasetsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -148,7 +157,8 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceSinglePageAsync(Context context) {
-        return service.getDatasetsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getDatasetsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -231,6 +241,7 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponseAsync(
             String datasetName, DatasetResource dataset, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDataset(
@@ -239,6 +250,7 @@ public final class DatasetsImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 dataset,
+                                accept,
                                 context));
     }
 
@@ -258,8 +270,9 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponseAsync(
             String datasetName, DatasetResource dataset, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifMatch, dataset, context);
+                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifMatch, dataset, accept, context);
     }
 
     /**
@@ -404,6 +417,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> getDatasetWithResponseAsync(String datasetName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDataset(
@@ -411,6 +425,7 @@ public final class DatasetsImpl {
                                 datasetName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -429,8 +444,9 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> getDatasetWithResponseAsync(
             String datasetName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -564,10 +580,11 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetWithResponseAsync(String datasetName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDataset(
-                                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -582,7 +599,9 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetWithResponseAsync(String datasetName, Context context) {
-        return service.deleteDataset(this.client.getEndpoint(), datasetName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteDataset(
+                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -654,10 +673,16 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDatasetWithResponseAsync(String datasetName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameDataset(
-                                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, context));
+                                this.client.getEndpoint(),
+                                datasetName,
+                                this.client.getApiVersion(),
+                                request,
+                                accept,
+                                context));
     }
 
     /**
@@ -674,8 +699,9 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDatasetWithResponseAsync(
             String datasetName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -752,8 +778,11 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getDatasetsByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getDatasetsByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -778,7 +807,8 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getDatasetsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getDatasetsByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

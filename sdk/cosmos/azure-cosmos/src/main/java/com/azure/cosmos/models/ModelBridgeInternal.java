@@ -319,7 +319,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+        return new FeedResponse<T>(response.getQueryResponse(cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

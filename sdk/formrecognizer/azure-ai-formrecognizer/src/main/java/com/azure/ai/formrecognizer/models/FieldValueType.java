@@ -30,5 +30,5 @@ public enum FieldValueType {
     MAP,
 
     /** Enum value selection mark state. */
-    SELECTION_MARK_STATE;
+    SELECTION_MARK_STATE
 }

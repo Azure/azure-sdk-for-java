@@ -9,6 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.RunFilterParameters;
 import com.azure.analytics.synapse.artifacts.models.TriggerRunsQueryResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -58,6 +59,7 @@ public final class TriggerRunsImpl {
                 @PathParam("triggerName") String triggerName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/triggerRuns/{runId}/cancel")
@@ -68,6 +70,7 @@ public final class TriggerRunsImpl {
                 @PathParam("triggerName") String triggerName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/queryTriggerRuns")
@@ -77,6 +80,7 @@ public final class TriggerRunsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RunFilterParameters filterParameters,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -92,10 +96,16 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(String triggerName, String runId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.rerunTriggerInstance(
-                                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                triggerName,
+                                runId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -112,8 +122,9 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(
             String triggerName, String runId, Context context) {
+        final String accept = "application/json";
         return service.rerunTriggerInstance(
-                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -190,10 +201,16 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(String triggerName, String runId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelTriggerInstance(
-                                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                triggerName,
+                                runId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -210,8 +227,9 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(
             String triggerName, String runId, Context context) {
+        final String accept = "application/json";
         return service.cancelTriggerInstance(
-                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -288,10 +306,15 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponseAsync(
             RunFilterParameters filterParameters) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.queryTriggerRunsByWorkspace(
-                                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                filterParameters,
+                                accept,
+                                context));
     }
 
     /**
@@ -307,8 +330,9 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponseAsync(
             RunFilterParameters filterParameters, Context context) {
+        final String accept = "application/json";
         return service.queryTriggerRunsByWorkspace(
-                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, accept, context);
     }
 
     /**

@@ -12,8 +12,7 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationCli
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
-
-import java.time.Duration;
+import org.junit.jupiter.api.Test;
 
 /**
  * Class contains sample code snippets that will be used in javadocs.
@@ -22,16 +21,21 @@ import java.time.Duration;
  * @see ServiceBusAdministrationClient
  */
 public class ServiceBusAdministrationClientJavaDocCodeSamples {
+    private static String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+
     /**
      * Creates {@link ServiceBusAdministrationClient} with a connection string.
      */
+    @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation
+        // Retrieve 'connectionString' from your configuration.
+
         HttpLogOptions logOptions = new HttpLogOptions()
             .setLogLevel(HttpLogDetailLevel.HEADERS);
 
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .httpLogOptions(logOptions)
             .buildClient();
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation
@@ -53,15 +57,16 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation
 
-        client.createQueue("my-new-queue").block(Duration.ofMinutes(1));
     }
 
     /**
      * Creates a queue synchronously.
      */
+    @Test
     public void createQueue() {
+        // Retrieve 'connectionString' from your configuration.
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string
@@ -74,9 +79,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Creates a queue asynchronously.
      */
+    @Test
     public void createQueueAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
@@ -94,9 +100,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Updates a subscription.
      */
+    @Test
     public void updateSubscription() {
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties
@@ -122,9 +129,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Edits a subscription asynchronously.
      */
+    @Test
     public void updateSubscriptionAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties
@@ -157,9 +165,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Lists queues.
      */
+    @Test
     public void listQueues() {
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues
@@ -173,9 +182,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Lists queues asynchronously.
      */
+    @Test
     public void listQueuesAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues

@@ -36,6 +36,8 @@ import java.util.ServiceLoader;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -462,6 +464,16 @@ public final class CosmosAsyncClient implements Closeable {
 
     TracerProvider getTracerProvider(){
         return this.tracerProvider;
+    }
+
+    /**
+     * Enable throughput control group.
+     *
+     * @param group Throughput control group going to be enabled.
+     */
+    void enableThroughputControlGroup(ThroughputControlGroup group) {
+        checkNotNull(group, "Throughput control group cannot be null");
+        this.asyncDocumentClient.enableThroughputControlGroup(group);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

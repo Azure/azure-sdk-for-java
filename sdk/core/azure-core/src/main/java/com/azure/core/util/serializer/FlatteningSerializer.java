@@ -36,10 +36,9 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Custom serializer for serializing types with wrapped properties.
- * For example, a property with annotation @JsonProperty(value = "properties.name")
- * will be mapped from a top level "name" property in the POJO model to
- * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
+ * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
+ * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
+ * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     private static final long serialVersionUID = -6130180289951110573L;
@@ -57,6 +56,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     /**
      * Creates an instance of FlatteningSerializer.
+     *
      * @param vc handled type
      * @param defaultSerializer the default JSON serializer
      * @param mapper the object mapper for default serializations
@@ -68,8 +68,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     /**
-     * Gets a module wrapping this serializer as an adapter for the Jackson
-     * ObjectMapper.
+     * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
      * @param mapper the object mapper for default serializations
      * @return a simple module to be plugged onto Jackson ObjectMapper.
@@ -79,7 +78,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
-                                                      JsonSerializer<?> serializer) {
+                JsonSerializer<?> serializer) {
                 if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
                     return new FlatteningSerializer(beanDesc.getBeanClass(), serializer, mapper);
                 }
@@ -90,7 +89,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     private List<Field> getAllDeclaredFields(Class<?> clazz) {
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
         while (clazz != null && !clazz.equals(Object.class)) {
             for (Field f : clazz.getDeclaredFields()) {
                 int mod = f.getModifiers();
@@ -163,8 +162,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         // BFS for all collapsed properties
         ObjectNode root = mapper.valueToTree(value);
         ObjectNode res = root.deepCopy();
-        Queue<ObjectNode> source = new LinkedBlockingQueue<ObjectNode>();
-        Queue<ObjectNode> target = new LinkedBlockingQueue<ObjectNode>();
+        Queue<ObjectNode> source = new LinkedBlockingQueue<>();
+        Queue<ObjectNode> target = new LinkedBlockingQueue<>();
         source.add(root);
         target.add(res);
         while (!source.isEmpty()) {
@@ -190,7 +189,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                             node = (ObjectNode) node.get(val);
                         } else {
                             ObjectNode child = new ObjectNode(JsonNodeFactory.instance);
-                            node.put(val, child);
+                            node.set(val, child);
                             node = child;
                         }
                     }
@@ -202,7 +201,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     //
                     String originalKey = key.replaceAll("\\\\.", ".");
                     resCurrent.remove(key);
-                    resCurrent.put(originalKey, outNode);
+                    resCurrent.set(originalKey, outNode);
                 }
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());
@@ -229,7 +228,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     @Override
     public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-                                  TypeSerializer typeSerializer) throws IOException {
+        TypeSerializer typeSerializer) throws IOException {
         serialize(value, gen, provider);
     }
 }
