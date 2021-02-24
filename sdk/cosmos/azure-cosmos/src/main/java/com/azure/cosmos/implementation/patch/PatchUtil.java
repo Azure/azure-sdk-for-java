@@ -15,7 +15,7 @@ import java.util.List;
 public final class PatchUtil {
 
     public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
-        if (item instanceof CosmosPatchOperations) {
+        if (item instanceof PatchSpec) {
             return cosmosPatchToJsonSerializable((PatchSpec) item);
         } else {
             throw new UnsupportedOperationException("Unknown Patch operations.");

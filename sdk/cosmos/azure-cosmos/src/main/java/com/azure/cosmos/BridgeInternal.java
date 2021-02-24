@@ -738,4 +738,9 @@ public final class BridgeInternal {
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
+        return transactionalBatchResponse.getResponseLength();
+    }
 }

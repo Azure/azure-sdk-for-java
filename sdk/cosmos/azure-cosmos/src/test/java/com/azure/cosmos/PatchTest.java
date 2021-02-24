@@ -38,7 +38,6 @@ public class PatchTest extends TestSuiteBase {
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
-        //container = client.getDatabase("RxJava.SDKTest.SharedDatabase_20210222T161914_DIF").getContainer("2cf3c4ed-1b67-4f61-bedf-623d58f8daff");
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

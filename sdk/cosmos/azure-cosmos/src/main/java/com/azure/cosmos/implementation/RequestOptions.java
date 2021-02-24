@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.TransactionalBatchPatchItemRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
