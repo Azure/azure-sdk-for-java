@@ -110,7 +110,7 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * Specify the primary sign in flow key.
      */
-    private String signUpOrSignIn = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
+    private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     private Map<String, String> userFlows = new HashMap<>();
 
@@ -120,9 +120,9 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
         }
 
-        if (!userFlows.keySet().contains(signUpOrSignIn)) {
+        if (!userFlows.keySet().contains(loginFlow)) {
             throw new AADB2CConfigurationException("Sign in user flow key '"
-                + signUpOrSignIn + "' is not in 'user-flows' map.");
+                + loginFlow + "' is not in 'user-flows' map.");
         }
     }
 
@@ -178,12 +178,12 @@ public class AADB2CProperties implements InitializingBean {
         this.userFlows = userFlows;
     }
 
-    public String getSignUpOrSignIn() {
-        return signUpOrSignIn;
+    public String getLoginFlow() {
+        return loginFlow;
     }
 
-    public void setSignUpOrSignIn(String signUpOrSignIn) {
-        this.signUpOrSignIn = signUpOrSignIn;
+    public void setLoginFlow(String loginFlow) {
+        this.loginFlow = loginFlow;
     }
 
     public String getClientId() {

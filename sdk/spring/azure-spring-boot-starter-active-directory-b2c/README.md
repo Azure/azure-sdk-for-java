@@ -67,10 +67,10 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
    | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
    | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
+   | `azure.activedirectory.b2c.login-flow` | The key name of sign in user flow. |
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
-   | `azure.activedirectory.b2c.sign-up-or-sign-in` | The key name of sign in user flow. |
    | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.user-flows.{user-flow-key}.{user-flow-name}` | The keys and names of all other policies, including built-in and user-defined. |
+   | `azure.activedirectory.b2c.user-flows.{user-flow-key}={user-flow-name}` | The keys and names of all other policies, including built-in and user-defined. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
    
 ## Examples
@@ -114,8 +114,8 @@ This starter provides following properties to be customized:
          base-uri: ${your-tenant-authorization-server-base-uri}
          client-id: ${your-client-id}
          client-secret: ${your-client-secret}
+         login-flow: ${your-sign-up-or-in-user-flow-key}
          logout-success-url: ${you-logout-success-url}
-         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow-key}
          user-flows:
            password-reset: ${your-profile-edit-user-flow}      # optional
            profile-edit: ${your-password-reset-user-flow}      # optional

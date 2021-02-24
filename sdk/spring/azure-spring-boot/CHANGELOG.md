@@ -3,12 +3,12 @@
 ## 3.2.0-beta.1 (Unreleased)
 ### Breaking Changes
 - Remove `azure.activedirectory.b2c.oidc-enabled` configuration.
-- Add `azure.activedirectory.b2c.sign-up-or-sign-in` configuration, below is the new structure:
+- Add `azure.activedirectory.b2c.login-flow` configuration, below is the new structure:
     ```yaml
     azure:
       activedirectory:
         b2c:
-          sign-up-or-sign-in: ${your-sign-up-or-in-user-flow-key}
+          login-flow: ${your-sign-up-or-in-user-flow-key}
           user-flows:
             password-reset: ${your-profile-edit-user-flow}      # optional
             profile-edit: ${your-password-reset-user-flow}      # optional

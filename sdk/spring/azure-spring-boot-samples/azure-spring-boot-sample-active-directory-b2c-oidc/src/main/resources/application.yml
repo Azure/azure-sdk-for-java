@@ -4,8 +4,8 @@ azure:
       base-uri: ${your-tenant-authorization-server-base-uri}
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
+      login-flow: ${your-sign-up-or-in-user-flow-key}
       logout-success-url: ${your-logout-success-url}
-      sign-up-or-sign-in: ${your-sign-up-or-in-user-flow-key}
       user-flows:
         password-reset: ${your-profile-edit-user-flow}      # optional
         profile-edit: ${your-password-reset-user-flow}      # optional

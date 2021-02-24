@@ -55,7 +55,7 @@ public class AADB2CConstants {
 
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
-    public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, "sign-up-or-sign-in");
+    public static final String LOGIN_FLOW = String.format("%s.%s", PREFIX, "login-flow");
 
     public static final String USER_FLOWS = String.format("%s.%s", PREFIX, "user-flows");
 
