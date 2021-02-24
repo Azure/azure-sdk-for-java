@@ -139,22 +139,17 @@ public final class CloudEvent {
      * @throws IllegalStateException if source isn't in a URI-formatted string.
      */
     public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
-        try {
-            URI.create(source);
-        } catch (NullPointerException npe) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'source' can not be null."));
-        } catch (IllegalArgumentException illegalArgumentException) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dataSchema' isn't a correct URI format",
-                illegalArgumentException));
+        if (Objects.isNull(source)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'source' cannot be null."));
         }
         if (Objects.isNull(type)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'type' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'type' cannot be null."));
         }
         if (Objects.isNull(data)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'data' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'data' cannot be null."));
         }
         if (Objects.isNull(format)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'format' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'format' cannot be null."));
         }
         this.source = source;
         this.type = type;
@@ -169,25 +164,49 @@ public final class CloudEvent {
     }
 
     private CloudEvent() {
-
+        // for deserialization
     }
+
     /**
-     * Deserialize the {@link CloudEvent} from a JSON string.
+     * Deserialize the {@link CloudEvent CloudEvents} from a JSON string and validate whether any CloudEvents have
+     * null id', 'source', or 'type'. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      * @param cloudEventsJson the JSON payload containing one or more events.
      *
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
-     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it.
+     * @throws NullPointerException if cloudEventsJson is null.
+     * @throws IllegalArgumentException if the input parameter isn't a correct JSON string for a cloud event
+     * or an array of it, or any deserialized CloudEvents have null 'id', 'source', or 'type'.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson) {
+        return fromString(cloudEventsJson, false);
+    }
+
+    /**
+     * Deserialize the {@link CloudEvent CloudEvents} from a JSON string.
+     * @param cloudEventsJson the JSON payload containing one or more events.
+     * @param skipValidation set to true if you'd like to skip the validation for the deserialized CloudEvents. A valid
+     *                       CloudEvent should have 'id', 'source' and 'type' not null.
+     *
+     * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
+     * @throws NullPointerException if cloudEventsJson is null.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it,
+     * or skipValidation is false and any CloudEvents have null id', 'source', or 'type'.
+     */
+    public static List<CloudEvent> fromString(String cloudEventsJson, boolean skipValidation) {
+        if (cloudEventsJson == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'cloudEventsJson' cannot be null"));
+        }
         try {
             List<CloudEvent> events = Arrays.asList(DESERIALIZER.deserialize(
                 new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(CloudEvent[].class)));
-            for (CloudEvent event : events) {
-                if (event.getSource() == null || event.getType() == null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'source' and 'type' are mandatory attributes for a CloudEvent. "
-                        + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+            if (!skipValidation) {
+                for (CloudEvent event : events) {
+                    if (event.getId() == null || event.getSource() == null || event.getType() == null) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
+                                + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+                    }
                 }
             }
             return events;
@@ -305,14 +324,6 @@ public final class CloudEvent {
      * @return the cloud event itself.
      */
     public CloudEvent setDataSchema(String dataSchema) {
-        if (!Objects.isNull(dataSchema)) {
-            try {
-                URI.create(dataSchema);
-            } catch (IllegalArgumentException illegalArgumentException) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "'dataSchema' isn't a correct URI-formatte String", illegalArgumentException));
-            }
-        }
         this.dataSchema = dataSchema;
         return this;
     }

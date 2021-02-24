@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -24,13 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CloudEventTests {
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
-    public void testDeserializeCloudEvents() throws JsonProcessingException {
+    public void testDeserializeCloudEvents() {
         String cloudEventJson = "{\n"
             + "  \"id\": \"9ddf9b10-fe3d-4a16-94bc-c0298924ded1\",\n"
             + " \"source\": \"/testresource\",\n"
@@ -50,7 +52,8 @@ public class CloudEventTests {
         CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
 
         assertNotNull(cloudEvent);
-        assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent.getType(), "Event types do not match");
+        assertEquals("/testresource", cloudEvent.getSource());
+        assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent.getType());
         assertEquals(OffsetDateTime.parse("2020-07-21T18:41:31.166Z"), cloudEvent.getTime());
         assertEquals("9ddf9b10-fe3d-4a16-94bc-c0298924ded1", cloudEvent.getId());
         assertEquals("1.0", cloudEvent.getSpecVersion());
@@ -65,6 +68,25 @@ public class CloudEventTests {
         assertEquals(deserializedData.get("Field1"), "Value1");
         assertEquals(deserializedData.get("Field2"), "Value2");
         assertEquals(deserializedData.get("Field3"), "Value3");
+    }
+
+    @Test
+    public void testDeserializeCloudEventsFailValidation() {
+        String cloudEventJson = "{\n"
+            + "  \"id\": \"9ddf9b10-fe3d-4a16-94bc-c0298924ded1\",\n"
+            + " \"datacontenttype\": \"application/json\",\n"
+            + " \"dataschema\": \"/testschema\",\n"
+            + " \"subject\": \"testsubject\",\n"
+            + "  \"data\": {\n"
+            + "    \"Field2\": \"Value2\",\n"
+            + "    \"Field3\": \"Value3\",\n"
+            + "    \"Field1\": \"Value1\"\n"
+            + "  },\n"
+            + "  \"type\": \"Microsoft.MockPublisher.TestEvent\",\n"
+            + "  \"time\": \"2020-07-21T18:41:31.166Z\",\n"
+            + "  \"specversion\": \"1.0\"\n"
+            + "}";
+        assertThrows(IllegalArgumentException.class, () -> {CloudEvent.fromString(cloudEventJson);});
     }
 
     @Test
@@ -156,14 +178,6 @@ public class CloudEventTests {
         assertEquals("<much wow=\"xml\"/>", xmlData);
     }
 
-    private String getTestPayloadFromFile(String fileName) throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream("CloudEvent/" + fileName)) {
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            return new String(bytes);
-        }
-    }
     @Test
     public void testSerializeByteDataAndAllAttributes() {
         BinaryData binaryData = BinaryData.fromBytes("AAA".getBytes(StandardCharsets.UTF_8));
@@ -254,6 +268,15 @@ public class CloudEventTests {
         }
     }
 
+    private String getTestPayloadFromFile(String fileName) throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream("CloudEvent/" + fileName)) {
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            return new String(bytes);
+        }
+    }
+
     private void compareCloudEventContent(CloudEvent cloudEvent, CloudEvent deserializedCloudEvent) {
         assertEquals(cloudEvent.getSpecVersion(), deserializedCloudEvent.getSpecVersion());
         assertEquals(cloudEvent.getDataSchema(), deserializedCloudEvent.getDataSchema());
@@ -265,4 +288,21 @@ public class CloudEventTests {
         assertEquals(cloudEvent.getTime().toInstant(), deserializedCloudEvent.getTime().toInstant());
         assertEquals(cloudEvent.getType(), deserializedCloudEvent.getType());
     }
+
+    private static class ContosoItemReceivedEventData {
+        @JsonProperty(value = "itemSku", access = JsonProperty.Access.WRITE_ONLY)
+        private String itemSku;
+
+        @JsonProperty(value = "itemUri", access = JsonProperty.Access.WRITE_ONLY)
+        private String itemUri;
+
+        public String getItemSku() {
+            return this.itemSku;
+        }
+
+        public String getItemUri() {
+            return this.itemUri;
+        }
+    }
+
 }
