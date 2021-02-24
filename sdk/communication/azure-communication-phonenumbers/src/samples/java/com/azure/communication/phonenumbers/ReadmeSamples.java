@@ -7,9 +7,9 @@ import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityValue;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.http.HttpClient;
@@ -95,25 +95,20 @@ public class ReadmeSamples {
      */
     public void searchAvailablePhoneNumbersandPurchasePhoneNumbers() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
-        searchRequest
-            .setAreaCode("800") // Area code is optional for toll free numbers
-            .setAssignmentType(PhoneNumberAssignmentType.PERSON)
-            .setCapabilities(new PhoneNumberCapabilities()
-                .setCalling(PhoneNumberCapabilityValue.INBOUND)
-                .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND))
-            .setPhoneNumberType(PhoneNumberType.GEOGRAPHIC)
-            .setQuantity(1); // Quantity is optional, default is 1
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
+            .setCalling(PhoneNumberCapabilityType.INBOUND)
+            .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", searchRequest, Context.NONE)
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.PERSON, capabilities, searchOptions, Context.NONE)
             .getFinalResult();
 
         System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
         System.out.println("Search expires by: " + searchResult.getSearchExpiresBy());
         System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
 
-        PollResponse<PhoneNumberOperation> purchaseResponse = 
+        PollResponse<PhoneNumberOperation> purchaseResponse =
             phoneNumberClient.beginPurchasePhoneNumbers(searchResult.getSearchId(), Context.NONE).waitForCompletion();
         System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
     }
@@ -123,7 +118,7 @@ public class ReadmeSamples {
      */
     public void releasePhoneNumber() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PollResponse<PhoneNumberOperation> releaseResponse = 
+        PollResponse<PhoneNumberOperation> releaseResponse =
             phoneNumberClient.beginReleasePhoneNumber("+18001234567", Context.NONE).waitForCompletion();
         System.out.println("Release phone number is complete: " + releaseResponse.getStatus());
     }
@@ -137,10 +132,10 @@ public class ReadmeSamples {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
         PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest();
         capabilitiesRequest
-            .setCalling(PhoneNumberCapabilityValue.INBOUND)
-            .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
+            .setCalling(PhoneNumberCapabilityType.INBOUND)
+            .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         AcquiredPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
-        
+
         System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
         System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
         return phoneNumber;

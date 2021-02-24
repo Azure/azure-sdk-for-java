@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: mixedreality
       Location: eastus2
@@ -9,3 +9,6 @@ stages:
         - name: azure-mixedreality-authentication
           groupId: com.azure
           safeName: azuremixedrealityauthentication
+        - name: azure-mixedreality-remoterendering
+          groupId: com.azure
+          safeName: azuremixedrealityremoterendering

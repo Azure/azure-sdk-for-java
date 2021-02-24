@@ -1,7 +1,11 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
 
+
+## 2.2.0 (2021-02-24)
+
+- Supported `listByServicePrincipal` in `RoleAssignments`
 - Updated API from `AAD Graph` to `Microsoft Graph`. New permission needs to be granted before calling the API, [Reference](https://docs.microsoft.com/graph/permissions-reference)
 - Removed `applicationPermissions` in `ActiveDirectoryApplication`
 - Removed `signInName` in `ActiveDirectoryUser`

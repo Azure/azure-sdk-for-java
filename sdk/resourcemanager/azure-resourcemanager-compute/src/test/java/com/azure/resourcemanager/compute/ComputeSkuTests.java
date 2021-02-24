@@ -7,11 +7,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
-import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,14 +23,14 @@ public class ComputeSkuTests extends ComputeManagementTest {
         super.initializeClients(httpPipeline, profile);
     }
 
-    @Test
-    public void foo() {
-        HashSet<EncryptionStatus> s = new HashSet<>();
-        s.add(EncryptionStatus.NOT_ENCRYPTED);
-        s.add(EncryptionStatus.NOT_ENCRYPTED);
-
-        System.out.println(s.contains(EncryptionStatus.fromString("notEncrypted")));
-    }
+//    @Test
+//    public void foo() {
+//        HashSet<EncryptionStatus> s = new HashSet<>();
+//        s.add(EncryptionStatus.NOT_ENCRYPTED);
+//        s.add(EncryptionStatus.NOT_ENCRYPTED);
+//
+//        System.out.println(s.contains(EncryptionStatus.fromString("notEncrypted")));
+//    }
 
     @Test
     public void canListSkus() throws Exception {

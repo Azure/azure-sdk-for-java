@@ -3,17 +3,17 @@
 package com.azure.spring.aad.webapi.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
-import java.util.function.Predicate;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
 
+import java.util.function.Predicate;
+
 /**
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value
  */
 public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
-
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
@@ -22,9 +22,9 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public AADJwtIssuerValidator() {
-        this.validator = new AADJwtClaimValidator(AADTokenClaim.ISS, validIssuer());
+        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
     }
 
     private Predicate<String> validIssuer() {
