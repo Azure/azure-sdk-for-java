@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -741,7 +742,8 @@ public class CosmosAsyncDatabase {
                     ModelBridgeInternal.queryMetrics(response),
                     ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
                     false,
-                    false));
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 

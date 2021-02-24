@@ -97,10 +97,8 @@ public class ReactorConnection implements AmqpConnection {
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
-        this.handler = handlerProvider.createConnectionHandler(connectionId,
-            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions(), product, clientVersion, connectionOptions.getSslVerifyMode(),
-            connectionOptions.getClientOptions());
+        this.handler = handlerProvider.createConnectionHandler(connectionId, product, clientVersion,
+            connectionOptions);
 
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         this.senderSettleMode = senderSettleMode;

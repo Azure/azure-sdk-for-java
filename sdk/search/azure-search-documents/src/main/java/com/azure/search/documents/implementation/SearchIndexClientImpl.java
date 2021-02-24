@@ -93,15 +93,17 @@ public final class SearchIndexClientImpl {
      *
      * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
+     * @param apiVersion Api Version.
      */
-    SearchIndexClientImpl(String endpoint, String indexName) {
+    SearchIndexClientImpl(String endpoint, String indexName, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                indexName);
+                indexName,
+                apiVersion);
     }
 
     /**
@@ -110,9 +112,10 @@ public final class SearchIndexClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
+     * @param apiVersion Api Version.
      */
-    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, String indexName) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, indexName);
+    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, String indexName, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, indexName, apiVersion);
     }
 
     /**
@@ -122,14 +125,19 @@ public final class SearchIndexClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
+     * @param apiVersion Api Version.
      */
     SearchIndexClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String indexName) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            String indexName,
+            String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.apiVersion = "2020-06-30";
+        this.apiVersion = apiVersion;
         this.documents = new DocumentsImpl(this);
     }
 }

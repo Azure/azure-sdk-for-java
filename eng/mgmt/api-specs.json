@@ -25,10 +25,7 @@
   },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"AppService\""
-    }
+    "args": "--multiapi --fluent"
   },
   "attestation/resource-manager": {
     "source": "specification/attestation/resource-manager/readme.md",
@@ -184,10 +181,7 @@
   },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"IoTCentral\""
-    }
+    "args": "--multiapi --fluent"
   },
   "iothub/resource-manager": {
     "source": "specification/iothub/resource-manager/readme.md",
@@ -324,6 +318,10 @@
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "resourcemover/resource-manager": {
+    "source": "specification/resourcemover/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "search/resource-manager": {
     "source": "specification/search/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -367,10 +365,7 @@
   },
   "streamanalytics/resource-manager": {
     "source": "specification/streamanalytics/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"StreamAnalytics\""
-    }
+    "args": "--multiapi --fluent"
   },
   "subscription/resource-manager": {
     "source": "specification/subscription/resource-manager/readme.md",

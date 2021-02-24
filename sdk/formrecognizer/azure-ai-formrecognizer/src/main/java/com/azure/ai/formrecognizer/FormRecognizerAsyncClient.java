@@ -16,6 +16,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
@@ -318,7 +319,8 @@ public final class FormRecognizerAsyncClient {
                 finalRecognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeLayoutAsyncWithResponseAsync(
-                        Language.fromString(finalRecognizeContentOptions.getLanguage()),
+                        finalRecognizeContentOptions.getLanguage() == null
+                            ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getPages(),
                         new SourcePath().setSource(formUrl),
                         context)
@@ -406,7 +408,8 @@ public final class FormRecognizerAsyncClient {
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
                         form,
                         length,
-                        Language.fromString(finalRecognizeContentOptions.getLanguage()),
+                        finalRecognizeContentOptions.getLanguage() == null
+                            ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getPages(),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -481,12 +484,12 @@ public final class FormRecognizerAsyncClient {
 
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final String localeInfo  = recognizeReceiptsOptions.getLocale();
+            final FormRecognizerLocale localeInfo  = recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         new SourcePath().setSource(receiptUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -573,7 +576,7 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeReceiptsOptions.getLocale();
+            final FormRecognizerLocale localeInfo = recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
@@ -582,7 +585,7 @@ public final class FormRecognizerAsyncClient {
                         receipt,
                         length,
                         isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -658,12 +661,12 @@ public final class FormRecognizerAsyncClient {
 
             recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
             final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeBusinessCardsOptions.getLocale();
+            final FormRecognizerLocale localeInfo = recognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeBusinessCardsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         new SourcePath().setSource(businessCardUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -748,7 +751,7 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
             recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
             final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeBusinessCardsOptions.getLocale();
+            final FormRecognizerLocale localeInfo = recognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeBusinessCardsOptions.getPollInterval(),
                 streamActivationOperation(
@@ -757,7 +760,7 @@ public final class FormRecognizerAsyncClient {
                         businessCard,
                         length,
                         isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -921,12 +924,12 @@ public final class FormRecognizerAsyncClient {
 
             recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
             final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
-            final String localeInfo  = recognizeInvoicesOptions.getLocale();
+            final FormRecognizerLocale localeInfo  = recognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
                 recognizeInvoicesOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         new SourcePath().setSource(invoiceUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -1013,7 +1016,7 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(invoice, "'invoice' is required and cannot be null.");
             recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
             final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeInvoicesOptions.getLocale();
+            final FormRecognizerLocale localeInfo = recognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
                 recognizeInvoicesOptions.getPollInterval(),
                 streamActivationOperation(
@@ -1022,7 +1025,7 @@ public final class FormRecognizerAsyncClient {
                         invoice,
                         length,
                         isFieldElementsIncluded,
-                        Locale.fromString(localeInfo),
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),

@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,23 +31,31 @@ public class DataLoader {
 
     private static final int MAX_BATCH_SIZE = 10000;
     private static final int BULK_OPERATION_CONCURRENCY = 5;
-    private static final Duration BULK_LOAD_WAIT_DURATION = Duration.ofSeconds(60);
+    private static final Duration BULK_LOAD_WAIT_DURATION = Duration.ofSeconds(120);
     private static final String COUNT_ALL_QUERY = "SELECT COUNT(1) FROM c";
     private static final String COUNT_ALL_QUERY_RESULT_FIELD = "$1";
 
     private final Configuration _configuration;
     private final CosmosAsyncClient _client;
+    private final DataGenerator _dataGenerator;
 
     public DataLoader(final Configuration configuration, final CosmosAsyncClient client) {
         _configuration = Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
         _client = Preconditions.checkNotNull(client,
             "The CosmosAsyncClient needed for data loading can not be null");
+        _dataGenerator = new DataGenerator(_configuration.getNumberOfPreCreatedDocuments());
     }
 
-    public void loadData(final Map<Key, ObjectNode> records) {
-        bulkCreateItems(records);
-        validateDataCreation(records.size());
+    public void loadData() {
+        LOGGER.info("Starting batched data loading, loading {} documents in each iteration", DataGenerator.BATCH_SIZE);
+        while (_dataGenerator.hasNext()) {
+            final Map<Key, ObjectNode> newDocuments = _dataGenerator.next();
+            bulkCreateItems(newDocuments);
+            newDocuments.clear();
+        }
+
+        validateDataCreation(_dataGenerator.getGeneratedKeys().size());
     }
 
     private void bulkCreateItems(final Map<Key, ObjectNode> records) {
@@ -64,7 +73,9 @@ public class DataLoader {
         container.processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions)
             .blockLast(BULK_LOAD_WAIT_DURATION);
 
-        LOGGER.info("Completed document loading into [{}:{}]", database.getId(), containerName);
+        LOGGER.info("Completed loading {} documents into [{}:{}]", cosmosItemOperations.size(),
+            database.getId(),
+            containerName);
     }
 
     private void validateDataCreation(int expectedSize) {
@@ -86,10 +97,10 @@ public class DataLoader {
             .map(objectNode -> objectNode.get(COUNT_ALL_QUERY_RESULT_FIELD).intValue())
             .orElse(0);
 
-        if (resultCount != expectedSize) {
-            throw new IllegalStateException("Expected number of records " + expectedSize
-                + " not found in the container " + containerName
-                + ". Actual count: " + resultCount);
+        if (resultCount < (expectedSize * 0.90)) {
+            throw new IllegalStateException(
+                String.format("Number of documents %d in the container %s is less than the expected threshold %f ",
+                    resultCount, containerName, (expectedSize * 0.90)));
         }
     }
 
@@ -108,5 +119,12 @@ public class DataLoader {
                 return BulkOperations.getCreateItemOperation(value, new PartitionKey(partitionKey));
             })
             .collect(Collectors.toList());
+    }
+
+    /**
+     * @return Set of Keys representing each document loaded into the test collection
+     */
+    public Set<Key> getLoadedDataKeys() {
+        return _dataGenerator.getGeneratedKeys();
     }
 }

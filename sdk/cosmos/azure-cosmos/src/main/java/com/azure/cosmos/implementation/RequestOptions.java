@@ -35,6 +35,7 @@ public class RequestOptions {
     private ThroughputProperties throughputProperties;
     private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
+    private String throughputControlGroupName;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -397,5 +398,13 @@ public class RequestOptions {
      */
     public void setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+    }
+
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
     }
 }

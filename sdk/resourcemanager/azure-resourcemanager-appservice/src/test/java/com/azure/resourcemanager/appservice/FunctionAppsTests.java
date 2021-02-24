@@ -152,7 +152,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(2, TestUtilities.getSize(functionApps));
 
         // Update
-        functionApp2.update().withNewStorageAccount(storageAccountName1, StorageAccountSkuType.STANDARD_GRS).apply();
+        functionApp2.update().withNewStorageAccount(storageAccountName1, StorageAccountSkuType.STANDARD_LRS).apply();
         Assertions.assertEquals(storageAccountName1, functionApp2.storageAccount().name());
 
         FunctionAppResource functionAppResource2 = getStorageAccount(storageManager, functionApp2);

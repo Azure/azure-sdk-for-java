@@ -8,7 +8,7 @@ package com.azure.communication.common;
 public class CommunicationTokenRefreshOptions {
     private final TokenRefresher tokenRefresher;
     private final boolean refreshProactively;
-    private final String token;
+    private final String initialToken;
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
@@ -22,7 +22,7 @@ public class CommunicationTokenRefreshOptions {
     public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
-        this.token = null;
+        this.initialToken = null;
     }
 
      /**
@@ -33,12 +33,12 @@ public class CommunicationTokenRefreshOptions {
      *                           tokenRefresher before token expiry by minutes set
      *                           with setCallbackOffsetMinutes or default value of
      *                           two minutes
-     * @param token the optional serialized JWT token
+     * @param initialToken the optional serialized JWT token
      */
-    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively, String token) {
+    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively, String initialToken) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
-        this.token = token;
+        this.initialToken = initialToken;
     }
 
     /**
@@ -59,6 +59,6 @@ public class CommunicationTokenRefreshOptions {
      * @return the serialized JWT token
      */
     public String getToken() {
-        return token;
+        return initialToken;
     }
 }

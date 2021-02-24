@@ -122,8 +122,7 @@ public class ResponseHandler<K, V> {
                     .map(JsonNode::asLong)
                     .ifPresent(entityAttributes::setTs);
                 maybeDocument.map(doc -> doc.get(Constants.Properties.TTL))
-                    .map(Object::toString)
-                    .map(Long::parseLong)
+                    .map(JsonNode::asInt)
                     .map(Duration::ofSeconds)
                     .ifPresent(entityAttributes::setTtl);
 

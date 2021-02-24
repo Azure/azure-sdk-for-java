@@ -3,15 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.LinkedEntityMatchPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -32,6 +33,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -101,7 +104,7 @@ class RecognizeLinkedEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
@@ -115,14 +118,14 @@ class RecognizeLinkedEntityAsyncClient {
      * which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param documents The list of documents to recognize linked entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The {@link RecognizeLinkedEntitiesOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
-            TextAnalyticsRequestOptions options, Context context) {
+            RecognizeLinkedEntitiesOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizedLinkedEntitiesResponse(documents, options, context);
@@ -178,8 +181,12 @@ class RecognizeLinkedEntityAsyncClient {
         for (com.azure.ai.textanalytics.implementation.models.LinkedEntity linkedEntity : linkedEntities) {
             linkedEntitiesList.add(new LinkedEntity(
                 linkedEntity.getName(),
-                new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
-                    match.getText(), match.getConfidenceScore(), match.getOffset()))
+                new IterableStream<>(linkedEntity.getMatches().stream().map(match -> {
+                    final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                        match.getText(), match.getConfidenceScore(), match.getOffset());
+                    LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch, match.getLength());
+                    return linkedEntityMatch;
+                })
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
                 linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource(), linkedEntity.getBingId()));
@@ -196,20 +203,19 @@ class RecognizeLinkedEntityAsyncClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    private Mono<Response<RecognizeLinkedEntitiesResultCollection>>
-        getRecognizedLinkedEntitiesResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options,
-            Context context) {
+    private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context) {
+        options = options == null ? new RecognizeLinkedEntitiesOptions() : options;
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            StringIndexType.UTF16CODE_UNIT,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
-                response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-            .map(this::toRecognizeLinkedEntitiesResultCollectionResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            options.getModelVersion(), options.isIncludeStatistics(),
+            getNonNullStringIndexType(options.getStringIndexType()),
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                   .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
+                       response.getValue()))
+                   .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
+                   .map(this::toRecognizeLinkedEntitiesResultCollectionResponse)
+                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

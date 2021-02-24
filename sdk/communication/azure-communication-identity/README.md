@@ -110,8 +110,8 @@ System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
 
-### Issuing or Refreshing a token for an existing user
-Use the `issueToken` function to issue or refresh a token for an existing user. The function
+### Getting a token for an existing user
+Use the `getToken` function to get a token for an existing user. The function
 also takes in a list of `CommunicationIdentityTokenScope`. Scope options include:
 - `chat` (Chat)
 - `voip` (Voice over IP)
@@ -121,7 +121,7 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 List<CommunicationTokenScope> scopes = 
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-AccessToken userToken = communicationIdentityClient.issueToken(user, scopes);
+AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
 System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
 ```

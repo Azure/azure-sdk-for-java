@@ -55,9 +55,9 @@ public class AADAuthenticationFilterTest {
     @Test
     @Ignore
     public void doFilterInternal() {
-        this.contextRunner.withPropertyValues(TestConstants.CLIENT_ID_PROPERTY, TestConstants.CLIENT_ID)
-                .withPropertyValues(TestConstants.CLIENT_SECRET_PROPERTY, TestConstants.CLIENT_SECRET)
-                .withPropertyValues(TestConstants.TARGETED_GROUPS_PROPERTY,
+        this.contextRunner.withPropertyValues("azure.activedirectory.client-id", TestConstants.CLIENT_ID)
+                .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)
+                .withPropertyValues("azure.activedirectory.client-secret",
                         TestConstants.TARGETED_GROUPS.toString()
                                                      .replace("[", "").replace("]", ""));
 

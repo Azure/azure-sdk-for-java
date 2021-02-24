@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.models.BlobErrorCode
@@ -8,6 +11,8 @@ import com.azure.storage.blob.specialized.BlockBlobClient
 import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
+
+import java.nio.file.ClosedFileSystemException
 
 class NioBlobOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -176,19 +181,19 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.write(5)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.write(new byte[5])
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.write(new byte[5], 2, 1)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     // Flush does not actually flush data right now
@@ -237,7 +242,7 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.flush()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "Close"() {
@@ -264,7 +269,7 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.close()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 }
 

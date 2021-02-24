@@ -1,8 +1,10 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.5.0-beta.2 (Unreleased)
+
+
+## 12.5.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
-- Added support to rename a file system.
 - Added support to undelete a file system. 
 
 ## 12.4.0 (2021-01-14)

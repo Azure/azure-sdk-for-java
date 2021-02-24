@@ -22,6 +22,8 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
+import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -124,8 +126,10 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .attach()
                 .create();
 
-        network.subnets().get(subnetName).innerModel().withPrivateEndpointNetworkPolicies("Disabled");
-        network.subnets().get(subnetName).innerModel().withPrivateLinkServiceNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel()
+            .withPrivateEndpointNetworkPolicies(VirtualNetworkPrivateEndpointNetworkPolicies.DISABLED);
+        network.subnets().get(subnetName).innerModel()
+            .withPrivateLinkServiceNetworkPolicies(VirtualNetworkPrivateLinkServiceNetworkPolicies.DISABLED);
 
         network.update().updateSubnet(subnetName).parent().apply();
 

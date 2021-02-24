@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
+    private ThroughputControlStore throughputControlStore;
 
     public RxGatewayStoreModel(
             DiagnosticsClientContext clientContext,
@@ -135,6 +137,21 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.POST);
     }
 
+    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
+        try {
+            URI uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri.toString();
+
+            if (this.throughputControlStore != null) {
+                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method));
+            }
+
+            return this.performRequestInternal(request, method);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
     /**
      * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
      *
@@ -142,16 +159,14 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @param method
      * @return Flux<RxDocumentServiceResponse>
      */
-    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method) {
 
         try {
-
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
             URI uri = getUri(request);
-            request.requestContext.resourcePhysicalAddress = uri.toString();
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
@@ -419,6 +434,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                     return response;
                 }
         );
+    }
+
+    @Override
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.throughputControlStore = throughputControlStore;
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
