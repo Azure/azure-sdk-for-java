@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class BookRepositoryIT {
+public class AnnotatedQueryIT {
 
     private static final Book TEST_BOOK_1 = new Book(TestConstants.ID_1, UUID.randomUUID().toString(),
                                                      "title1");
@@ -55,7 +55,6 @@ public class BookRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        repository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
         isSetupDone = true;
     }
 
@@ -66,9 +65,12 @@ public class BookRepositoryIT {
 
     @Test
     public void testAnnotatedQuery() {
+        repository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
+
         final List<Book> result = repository.annotatedFindBookById(TEST_BOOK_1.getId());
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getId()).isEqualTo(TEST_BOOK_1.getId());
     }
+
 }
