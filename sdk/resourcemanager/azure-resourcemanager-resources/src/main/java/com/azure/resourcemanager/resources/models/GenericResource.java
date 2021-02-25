@@ -317,7 +317,7 @@ public interface GenericResource extends
             /**
              * Specifies resource kind.
              *
-             * @param sku the kind of the resource
+             * @param kind the kind of the resource
              * @return the next stage of generic resource update
              */
             Update withKind(String kind);
