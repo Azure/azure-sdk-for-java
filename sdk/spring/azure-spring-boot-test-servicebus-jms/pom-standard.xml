@@ -11,7 +11,7 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
-  <artifactId>azure-spring-boot-test-servicebus-jms</artifactId>
+  <artifactId>azure-spring-boot-test-servicebus-jms-standard</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-servicebus-jms;current} -->
 
   <dependencies>

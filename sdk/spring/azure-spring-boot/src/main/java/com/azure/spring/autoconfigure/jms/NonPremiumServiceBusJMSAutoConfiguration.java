@@ -27,7 +27,7 @@ import javax.jms.ConnectionFactory;
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class NonPremiumServiceBusJMSAutoConfiguration {
 
-    private static final String AMQP_URI_FORMAT = "failover:(amqps://%s?amqp.idleTimeout=%d)";
+    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
     @Bean
     @ConditionalOnMissingBean
