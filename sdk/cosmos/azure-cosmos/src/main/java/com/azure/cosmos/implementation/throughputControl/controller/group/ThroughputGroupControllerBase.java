@@ -45,12 +45,12 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
     private final ThroughputControlGroupInternal group;
-    private final AtomicReference<Double> groupThroughput;
     private final AtomicInteger maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final AsyncCache<String, IThroughputRequestController> requestControllerAsyncCache;
     private final String targetContainerRid;
 
+    protected final AtomicReference<Double> groupThroughput;
     protected final LinkedCancellationTokenSource cancellationTokenSource;
 
     public ThroughputGroupControllerBase(
@@ -88,7 +88,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.cancellationTokenSource = new LinkedCancellationTokenSource(parentToken);
     }
 
-    public abstract double getClientThroughputShare();
+    public abstract double getClientAllocatedThroughput();
 
     public abstract void recordThroughputUsage(double loadFactor);
 
@@ -110,8 +110,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
             .flatMap(t -> this.resolveRequestController())
             .doOnSuccess(requestController -> {
-                double clientAllocatedThroughput = this.groupThroughput.get() * this.getClientThroughputShare();
-                this.recordThroughputUsage(requestController.renewThroughputUsageCycle(clientAllocatedThroughput));
+                this.recordThroughputUsage(requestController.renewThroughputUsageCycle(this.getClientAllocatedThroughput()));
             })
             .onErrorResume(throwable -> {
                 logger.warn("Reset throughput usage failed with reason ", throwable);
@@ -124,17 +123,15 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private Mono<IThroughputRequestController> createAndInitializeRequestController() {
         IThroughputRequestController requestController;
 
-        double clientAllocatedThroughput = this.groupThroughput.get() * this.getClientThroughputShare();
-
         if (this.connectionMode == ConnectionMode.DIRECT) {
             requestController = new PkRangesThroughputRequestController(
                 this.globalEndpointManager,
                 this.partitionKeyRangeCache,
                 this.targetContainerRid,
-                clientAllocatedThroughput);
+                this.getClientAllocatedThroughput());
 
         } else if (this.connectionMode == ConnectionMode.GATEWAY) {
-            requestController = new GlobalThroughputRequestController(this.globalEndpointManager, clientAllocatedThroughput);
+            requestController = new GlobalThroughputRequestController(this.globalEndpointManager, this.getClientAllocatedThroughput());
         } else {
             throw new IllegalArgumentException(String.format("Connection mode %s is not supported", this.connectionMode));
         }

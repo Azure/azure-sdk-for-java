@@ -9,17 +9,17 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class ThroughputGlobalControlClientItem extends ThroughputGlobalControlItem {
 
-    @JsonSerialize(using = ToStringSerializer.class)
     @JsonProperty(value = "initializeTime", required = true)
-    private Instant initializeTime;
+    private String initializeTime;
 
     @JsonProperty(value = "loadFactor", required = true)
     private double loadFactor;
+
+    @JsonProperty(value = "allocatedThroughput", required = true)
+    private double allocatedThroughput;
 
     /**
      * Constructor used for Json deserialization
@@ -32,15 +32,17 @@ public class ThroughputGlobalControlClientItem extends ThroughputGlobalControlIt
         String id,
         String partitionKeyValue,
         double loadFactor,
+        double allocatedThroughput,
         Duration clientItemExpireInterval) {
         super(id, partitionKeyValue);
 
         this.loadFactor = loadFactor;
-        this.initializeTime = Instant.now();
+        this.allocatedThroughput = allocatedThroughput;
+        this.initializeTime = Instant.now().toString();
         this.setTtl((int)clientItemExpireInterval.getSeconds());
     }
 
-    public Instant getInitializeTime() {
+    public String getInitializeTime() {
         return initializeTime;
     }
 
@@ -50,5 +52,13 @@ public class ThroughputGlobalControlClientItem extends ThroughputGlobalControlIt
 
     public void setLoadFactor(double loadFactor) {
         this.loadFactor = loadFactor;
+    }
+
+    public double getAllocatedThroughput() {
+        return allocatedThroughput;
+    }
+
+    public void setAllocatedThroughput(double allocatedThroughput) {
+        this.allocatedThroughput = allocatedThroughput;
     }
 }

@@ -10,14 +10,17 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.RetrySpec;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -32,7 +35,7 @@ public class ThroughputControlContainerManager {
     private static final String CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX = ".client";
     private static final String CONFIG_ITEM_ID_SUFFIX = ".info";
     private static final String CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX = ".config";
-    private static final String PARTITION_KEY_PATH = "/group";
+    private static final String PARTITION_KEY_PATH = "/groupId";
 
     private final String clientItemId;
     private final String clientItemPartitionKeyValue;
@@ -53,17 +56,22 @@ public class ThroughputControlContainerManager {
         String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
 
         this.clientItemId = encodedGroupId + UUID.randomUUID();
-        this.clientItemPartitionKeyValue = this.group.getGroupName() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.clientItemPartitionKeyValue = this.group.getId() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
         this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
-        this.configItemPartitionKeyValue = this.group.getGroupName() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.configItemPartitionKeyValue = this.group.getId() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
     }
 
-    public Mono<ThroughputGlobalControlClientItem> createGroupClientItem(double loadFactor) {
+    public Mono<ThroughputGlobalControlClientItem> createGroupClientItem(double loadFactor, double allocatedThroughput) {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
 
-        return Mono.just(new ThroughputGlobalControlClientItem(
-                                this.clientItemId, this.clientItemPartitionKeyValue, loadFactor, this.group.getControlItemExpireInterval()))
+        return Mono.just(
+                new ThroughputGlobalControlClientItem(
+                    this.clientItemId,
+                    this.clientItemPartitionKeyValue,
+                    loadFactor,
+                    allocatedThroughput,
+                    this.group.getControlItemExpireInterval()))
             .flatMap(groupClientItem -> this.globalControlContainer.createItem(groupClientItem, requestOptions))
             .flatMap(itemResponse -> {
                 this.clientItem = itemResponse.getItem();
@@ -123,17 +131,23 @@ public class ThroughputControlContainerManager {
     }
 
     /**
-     * Query the load factor of all clients for the group.
-     *
+     * Query the load factor of all other clients except itself for the group, and then add the client load factor to the final sum.
+
+     * @param clientLoadFactor The load factor for the current client.
      * @return The sum of load factor from all clients.
      */
-    public Mono<Double> queryLoadFactorFromAllClients() {
+    public Mono<Double> queryLoadFactorsOfAllClients(double clientLoadFactor) {
         // The current design is using ttl to expire client items, so there is no need to check whether the client item is expired.
-        return this.globalControlContainer.readAllItems(new PartitionKey(this.clientItemPartitionKeyValue), ThroughputGlobalControlClientItem.class)
-            .collectList()
-            .flatMapMany(clientItemList -> Flux.fromIterable(clientItemList))
-            .map(clientItem -> clientItem.getLoadFactor())
-            .reduce((x1, x2) -> x1 + x2 );
+
+        String sqlQueryTest = "SELECT VALUE SUM(c.loadFactor) FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID";
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter("@GROUPID", this.clientItemPartitionKeyValue));
+        parameters.add(new SqlParameter("@CLIENTITEMID", this.clientItemId));
+
+        SqlQuerySpec querySpec = new SqlQuerySpec(sqlQueryTest, parameters);
+        return this.globalControlContainer.queryItems(querySpec, Double.class)
+            .single()
+            .map(result -> result + clientLoadFactor);
     }
 
     /**
@@ -143,17 +157,19 @@ public class ThroughputControlContainerManager {
      * The client item may get deleted based on the ttl if the client can not keep updating the item due to unexpected failure (for example, network failure).
      *
      * @param loadFactor The new load factor of the client.
+     * @param clientAllocatedThroughput The new allocated throughput for the client.
      * @return A {@link ThroughputGlobalControlClientItem};
      */
-    public Mono<ThroughputGlobalControlClientItem> replaceOrCreateGroupClientItem(double loadFactor) {
+    public Mono<ThroughputGlobalControlClientItem> replaceOrCreateGroupClientItem(double loadFactor, double clientAllocatedThroughput) {
         CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
         itemRequestOptions.setContentResponseOnWriteEnabled(true);
 
         return Mono.just(this.clientItem)
             .flatMap(groupClientItem -> {
                 groupClientItem.setLoadFactor(loadFactor);
+                groupClientItem.setAllocatedThroughput(clientAllocatedThroughput);
                 return this.globalControlContainer.replaceItem(
-                    groupClientItem, groupClientItem.getId(), new PartitionKey(groupClientItem.getGroup()), itemRequestOptions);
+                    groupClientItem, groupClientItem.getId(), new PartitionKey(groupClientItem.getGroupId()), itemRequestOptions);
             })
             .onErrorResume(throwable -> {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);

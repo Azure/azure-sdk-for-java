@@ -94,7 +94,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void throughputGlobalControl(OperationType operationType) {
         String controlContainerId = "throughputControlContainer";
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database.createContainerIfNotExists(controlContainer.getId(), "/group").block();
+        database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
 
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =

@@ -81,7 +81,7 @@ public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlIt
         ThroughputGlobalControlConfigItem that = (ThroughputGlobalControlConfigItem) other;
 
         return StringUtils.equals(this.getId(), that.getId())
-            && StringUtils.equals(this.getGroup(), that.getGroup())
+            && StringUtils.equals(this.getGroupId(), that.getGroupId())
             && StringUtils.equals(this.targetThroughput, that.targetThroughput)
             && StringUtils.equals(this.targetThroughputThreshold, that.targetThroughputThreshold)
             && this.isDefault == that.isDefault;
@@ -89,7 +89,7 @@ public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlIt
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(this.getId(), this.getGroup(), targetThroughput, targetThroughputThreshold);
+        int result = Objects.hash(this.getId(), this.getGroupId(), targetThroughput, targetThroughputThreshold);
         result = 31 * result + Boolean.hashCode(this.isDefault);
         return result;
     }
@@ -98,7 +98,7 @@ public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlIt
     public String toString() {
         return "ThroughputGlobalControlConfigItem{" +
             "id='" + this.getId() + '\'' +
-            "group='" + this.getGroup() + '\'' +
+            "groupId='" + this.getGroupId() + '\'' +
             "targetThroughput='" + this.targetThroughput + '\'' +
             ", targetThroughputThreshold='" + this.targetThroughputThreshold + '\'' +
             ", isDefault=" + this.isDefault +

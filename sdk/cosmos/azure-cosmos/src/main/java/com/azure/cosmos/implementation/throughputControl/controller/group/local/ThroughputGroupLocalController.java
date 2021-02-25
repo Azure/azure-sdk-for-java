@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 public class ThroughputGroupLocalController extends ThroughputGroupControllerBase {
-    private static final double CLIENT_THROUGHPUT_SHARE = 1.0;
 
     public ThroughputGroupLocalController(
         ConnectionMode connectionMode,
@@ -38,8 +37,8 @@ public class ThroughputGroupLocalController extends ThroughputGroupControllerBas
     }
 
     @Override
-    public double getClientThroughputShare() {
-        return CLIENT_THROUGHPUT_SHARE;
+    public double getClientAllocatedThroughput() {
+        return this.groupThroughput.get();
     }
 
     @Override

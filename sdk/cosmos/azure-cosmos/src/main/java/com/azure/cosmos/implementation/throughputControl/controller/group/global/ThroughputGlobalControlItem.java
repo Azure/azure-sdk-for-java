@@ -10,8 +10,8 @@ public abstract class ThroughputGlobalControlItem {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    @JsonProperty(value = "group", required = true)
-    private String group;
+    @JsonProperty(value = "groupId", required = true)
+    private String groupId;
 
     @JsonProperty(value = "_etag")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,7 +27,7 @@ public abstract class ThroughputGlobalControlItem {
 
     public ThroughputGlobalControlItem(String id, String partitionKeyValue) {
         this.id = id;
-        this.group = partitionKeyValue;
+        this.groupId = partitionKeyValue;
     }
 
     public String getId() {
@@ -38,12 +38,12 @@ public abstract class ThroughputGlobalControlItem {
         this.id = id;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getEtag() {

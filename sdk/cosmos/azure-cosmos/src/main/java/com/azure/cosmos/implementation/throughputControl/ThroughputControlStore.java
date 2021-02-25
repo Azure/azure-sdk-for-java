@@ -274,4 +274,8 @@ public class ThroughputControlStore {
             );
         }
     }
+
+    public void close() {
+        this.cancellationTokenSource.close();
+    }
 }

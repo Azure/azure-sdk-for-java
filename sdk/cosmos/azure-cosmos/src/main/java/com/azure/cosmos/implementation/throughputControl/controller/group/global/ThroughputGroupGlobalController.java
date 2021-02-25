@@ -59,8 +59,8 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
             .flatMap(dummy -> this.containerManager.getOrCreateConfigItem())
             .flatMap(dummy -> {
                 double loadFactor = this.calculateLoadFactor();
-                return this.containerManager.createGroupClientItem(loadFactor)
-                    .flatMap(clientItem -> this.calculateClientThroughputShare(loadFactor));
+                return this.calculateClientThroughputShare(loadFactor)
+                    .flatMap(controller -> this.containerManager.createGroupClientItem(loadFactor, this.getClientAllocatedThroughput()));
             })
             .flatMap(dummy -> this.resolveRequestController())
             .doOnSuccess(dummy -> {
@@ -71,8 +71,8 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     }
 
     @Override
-    public double getClientThroughputShare() {
-        return this.clientThroughputShare.get();
+    public double getClientAllocatedThroughput() {
+        return this.groupThroughput.get() * this.clientThroughputShare.get();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     }
 
     private Mono<ThroughputGroupGlobalController> calculateClientThroughputShare(double loadFactor) {
-        return this.containerManager.queryLoadFactorFromAllClients()
+        return this.containerManager.queryLoadFactorsOfAllClients(loadFactor)
             .doOnSuccess(totalLoads -> this.clientThroughputShare.set(loadFactor / totalLoads))
             .thenReturn(this);
     }
@@ -110,8 +110,8 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
         return Mono.delay(controlItemRenewInterval)
             .flatMap(t -> {
                 double loadFactor = this.calculateLoadFactor();
-                return this.containerManager.replaceOrCreateGroupClientItem(loadFactor)
-                    .flatMap(clientItem -> this.calculateClientThroughputShare(loadFactor));
+                return this.calculateClientThroughputShare(loadFactor)
+                    .flatMap(dummy -> this.containerManager.replaceOrCreateGroupClientItem(loadFactor, this.getClientAllocatedThroughput()));
             })
             .onErrorResume(throwable -> {
                 logger.warn("Calculate throughput task failed ", throwable);
