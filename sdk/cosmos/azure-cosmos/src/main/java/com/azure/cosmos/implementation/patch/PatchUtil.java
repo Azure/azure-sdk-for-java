@@ -62,7 +62,7 @@ public final class PatchUtil {
         {
             String filterPredicate = cosmosPatchSpec.getRequestOptions().getFilterPredicate();
             if(filterPredicate != null) {
-                if (!filterPredicate.isBlank() && !filterPredicate.isEmpty()) {
+                if (!filterPredicate.isEmpty()) {
                     jsonSerializable.set("condition", filterPredicate);
                 }
             }
