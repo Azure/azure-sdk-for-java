@@ -3,12 +3,13 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import org.apache.qpid.jms.JmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
@@ -25,21 +26,21 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
     public void testAzureServiceBusDisabled() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testAzureServiceBusNonPremium() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=basic")
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+        contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusJmsConnectionFactory.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)

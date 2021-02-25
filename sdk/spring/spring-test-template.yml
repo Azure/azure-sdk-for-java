@@ -45,6 +45,9 @@ parameters:
     - name: azure-spring-boot-test-servicebus-jms
       groupId: com.azure.spring
       safeName: azurespringboottestservicebusjms
+    - name: azure-spring-boot-test-servicebus-jms-standard
+      groupId: com.azure.spring
+      safeName: azurespringboottestservicebusjmsstandard
     - name: azure-spring-cloud-test-eventhubs
       groupId: com.azure.spring
       safeName: azurespringcloudtesteventhubs

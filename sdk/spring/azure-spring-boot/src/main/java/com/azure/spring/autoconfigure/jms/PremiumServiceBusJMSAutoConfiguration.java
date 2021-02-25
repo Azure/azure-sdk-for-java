@@ -3,12 +3,12 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
-import org.apache.qpid.jms.JmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,17 +19,17 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import javax.jms.ConnectionFactory;
 
+import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus
  */
 @Configuration
-@ConditionalOnClass(JmsConnectionFactory.class)
+@ConditionalOnClass(ServiceBusJmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
 @ConditionalOnExpression(value = "${spring.jms.servicebus.enabled:true} == true and '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class PremiumServiceBusJMSAutoConfiguration {
-
-    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
     @Bean
     @ConditionalOnMissingBean
@@ -38,18 +38,17 @@ public class PremiumServiceBusJMSAutoConfiguration {
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
 
-        final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
-        final String host = serviceBusKey.getHost();
-        final String sasKeyName = serviceBusKey.getSharedAccessKeyName();
-        final String sasKey = serviceBusKey.getSharedAccessKey();
+        final ServiceBusJmsConnectionFactorySettings settings =
+            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+        ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
+        String[] hosts = new String[] {builder.getEndpoint().getHost()};
+        settings.setReconnectHosts(hosts);
+        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+            new SpringServiceBusJmsConnectionFactory(connectionString, settings);
+        springServiceBusJmsConnectionFactory.setClientId(clientId);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
 
-        final String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
-        final JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
-        jmsConnectionFactory.setRemoteURI(remoteUri);
-        jmsConnectionFactory.setClientID(clientId);
-        jmsConnectionFactory.setUsername(sasKeyName);
-        jmsConnectionFactory.setPassword(sasKey);
-        return new CachingConnectionFactory(jmsConnectionFactory);
+        return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
     }
 
     @Bean
