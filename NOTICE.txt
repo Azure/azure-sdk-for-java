@@ -189,7 +189,6 @@ License notice for Metrics Core
 
 Copyright (c) 2010-2013 Coda Hale, Yammer.com, 2014-2020 Dropwizard Team
 
-
 Metrics Core (https://github.com/dropwizard/metrics)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -228,7 +227,6 @@ Copyright (c) 2011-2017 Pivotal Software Inc, All Rights Reserved.
 Non-Blocking Reactive Foundation for the JVM (https://github.com/reactor/reactor-core)
 reactor-scala-extensions (https://github.com/reactor/reactor-scala-extensions)
 Reactive Streams Netty driver (https://github.com/reactor/reactor-netty)
-
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 in compliance with the License. You may obtain a copy of the License at
@@ -303,7 +301,6 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY O
 
 License notice for jakarta.xml.bind-api
 ------------------------------------------------------------------------------
-
 
 Stax2 API (http://github.com/FasterXML/stax2-api)
 Copyright (c) 2008 FasterXML LLC info@fasterxml.com
@@ -401,7 +398,6 @@ LatencyUtils (http://latencyutils.github.io/LatencyUtils/)
   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
   THE POSSIBILITY OF SUCH DAMAGE.
-
 
 
 License notice for reactive-streams
