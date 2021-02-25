@@ -272,8 +272,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
         } else {
             logger.warning(String.format(Locale.US,
-                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
-                spanScope.get() != null ? spanScope.getClass() : "null"));
+                "Process span scope type is not of type AutoCloseable, but type: %s. Not closing the scope"
+                    + " and span", spanScope.get() != null ? spanScope.getClass() : "null"));
         }
         tracerProvider.endSpan(processSpanContext, signal);
     }
