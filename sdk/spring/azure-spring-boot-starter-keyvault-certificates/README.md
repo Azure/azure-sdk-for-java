@@ -102,7 +102,7 @@ This starter allows you to securely manage and tightly control your certificates
     ![Copy secrets](resource/copy-secrets.png)
 
 To use the starter for server side SSL, you will need to add the following to
-your `application.properties` (if the application is using Spring Cloud Config 
+your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
@@ -142,7 +142,7 @@ Follow the steps below to grant a client with access to Azure Key Vault to acces
 #### Using a managed identity
 
 To use the starter for server side SSL, you will need to add the following to
-your `application.properties` (if the application is using Spring Cloud Config 
+your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
@@ -159,7 +159,7 @@ keys, secrets and certificates.
 Only some minor changes need to be done to the server side SSL example 
 mentioned above.
 
-The following additional application.properties need to be added:
+The following additional application.yml need to be added:
 
 ```
 server.ssl.client-auth=need
@@ -172,7 +172,7 @@ server.ssl.trust-store-type=AzureKeyVault
 #### Using a client ID and client secret
 
 To use the starter for client side SSL, you will need to add the following to
-your `application.properties` (if the application is using Spring Cloud Config 
+your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
@@ -216,7 +216,7 @@ public RestTemplate restTemplate() throws Exception {
 #### Using a managed identity
 
 To use the starter for client side SSL, you will need to add the following to
-your `application.properties` (if the application is using Spring Cloud Config 
+your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
@@ -353,9 +353,9 @@ To build and install the starter use the following command line:
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.yml) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
-The following example shows potential logging settings in `application.properties`:
+The following example shows potential logging settings in `application.yml`:
 
 ```properties
 logging.level.root=WARN
