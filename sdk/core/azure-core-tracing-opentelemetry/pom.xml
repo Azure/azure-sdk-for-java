@@ -116,7 +116,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.opentelemetry:opentelemetry-api:[0.17.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>prone:[2.5.1]</include> <!-- {x-include-update;com.google.errorprone:error_prone_annotations;external_dependency} -->
+                <include>com.google.errorprone:error_prone_annotations:[2.5.1]</include> <!-- {x-include-update;com.google.errorprone:error_prone_annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
