@@ -39,7 +39,7 @@ public class SeleniumITHelper {
             options.addArguments("--headless");
             options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
             driver = new ChromeDriver(options);
-            wait = new WebDriverWait(driver, 10);
+            wait = new WebDriverWait(driver, 15);
         }
     }
 
