@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -210,19 +211,24 @@ public final class CloudEvent {
         if (cloudEventsJson == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'cloudEventsJson' cannot be null"));
         }
-        List<CloudEvent> events = Arrays.asList(SERIALIZER.deserialize(
+        try {
+            List<CloudEvent> events = Arrays.asList(SERIALIZER.deserialize(
                 new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(CloudEvent[].class)));
-        if (!skipValidation) {
-            for (CloudEvent event : events) {
-                if (event.getId() == null || event.getSource() == null || event.getType() == null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
-                            + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+            if (!skipValidation) {
+                for (CloudEvent event : events) {
+                    if (event.getId() == null || event.getSource() == null || event.getType() == null) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
+                                + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+                    }
                 }
             }
+            return events;
+        } catch (UncheckedIOException uncheckedIOException) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
+                uncheckedIOException.getCause()));
         }
-        return events;
     }
 
     /**
