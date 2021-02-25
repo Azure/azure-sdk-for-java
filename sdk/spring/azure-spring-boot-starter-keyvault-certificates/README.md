@@ -105,13 +105,17 @@ To use the starter for server side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
-```
-azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenant-id=<the ID of your Azure tenant>
-azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
-azure.keyvault.client-secret=<the client secret associated wit the client ID>
-server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
-server.ssl.key-store-type=AzureKeyVault
+```yaml
+azure:
+  keyvault:
+    uri: <the URI of the Azure Key Vault to use>
+    tenant-id: <the ID of your Azure tenant>
+    client-id: <the client ID with access to Azure Key Vault>
+    client-secret: <the client secret associated wit the client ID>
+server:
+  ssl:
+    key-alias: <the name of the certificate in Azure Key Vault to use>
+    key-store-type: AzureKeyVault
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access
@@ -145,10 +149,14 @@ To use the starter for server side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
-```
-azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
-server.ssl.key-store-type=AzureKeyVault
+```yaml
+azure:
+  keyvault:
+    uri: <the URI of the Azure Key Vault to use>
+server:
+  ssl:
+    key-alias: <the name of the certificate in Azure Key Vault to use>
+    key-store-type: AzureKeyVault
 ```
 
 Note: make sure the managed identity has access to the Azure Key Vault to access
@@ -161,9 +169,11 @@ mentioned above.
 
 The following additional application.yml need to be added:
 
-```
-server.ssl.client-auth=need
-server.ssl.trust-store-type=AzureKeyVault
+```yaml
+server:
+  ssl:
+    client-auth: need
+    trust-store-type: AzureKeyVault
 ```
 
 
@@ -175,11 +185,13 @@ To use the starter for client side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
-```
-azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenant-id=<the ID of your Azure tenant>
-azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
-azure.keyvault.client-secret=<the client secret associated wit the client ID>
+```yaml
+azure:
+  keyvault:
+    uri: <the URI of the Azure Key Vault to use>
+    tenant-id: <the ID of your Azure tenant>
+    client-id: <the client ID with access to Azure Key Vault>
+    client-secret: <the client secret associated wit the client ID>
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access
@@ -219,8 +231,10 @@ To use the starter for client side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
-```
-azure.keyvault.uri=<the URI of the Azure Key Vault to use>
+```yaml
+azure:
+  keyvault:
+    uri: <the URI of the Azure Key Vault to use>
 ```
 Note: make sure the managed identity has access to the Azure Key Vault to access
 keys, secrets and certificates.
@@ -357,10 +371,13 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.yml`:
 
-```properties
-logging.level.root=WARN
-logging.level.org.springframework.web=DEBUG
-logging.level.org.hibernate=ERROR
+```yaml
+logging:
+  level:
+    root: WARN
+    org:
+      springframework.web: DEBUG
+      hibernate: ERROR
 ```
 
 For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
