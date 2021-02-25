@@ -23,6 +23,7 @@ pr:
       - master
       - main
       - feature/*
+      - feature/cosmos/spark30
       - hotfix/*
       - release/*
   paths:
