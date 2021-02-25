@@ -27,16 +27,33 @@ public final class MonitoringSettingProperties {
     private Error error;
 
     /*
-     * Indicates whether enable the trace functionality
+     * Indicates whether enable the trace functionality, which will be
+     * deprecated since api version 2020-11-01-preview. Please leverage
+     * appInsightsInstrumentationKey to indicate if monitoringSettings enabled
+     * or not
      */
     @JsonProperty(value = "traceEnabled")
     private Boolean traceEnabled;
 
     /*
-     * Target application insight instrumentation key
+     * Target application insight instrumentation key, null or whitespace
+     * include empty will disable monitoringSettings
      */
     @JsonProperty(value = "appInsightsInstrumentationKey")
     private String appInsightsInstrumentationKey;
+
+    /*
+     * Indicates the sampling rate of application insight agent, should be in
+     * range [0.0, 100.0]
+     */
+    @JsonProperty(value = "appInsightsSamplingRate")
+    private Double appInsightsSamplingRate;
+
+    /*
+     * Indicates the versions of application insight agent
+     */
+    @JsonProperty(value = "appInsightsAgentVersions")
+    private ApplicationInsightsAgentVersions appInsightsAgentVersions;
 
     /**
      * Get the provisioningState property: State of the Monitoring Setting.
@@ -68,7 +85,9 @@ public final class MonitoringSettingProperties {
     }
 
     /**
-     * Get the traceEnabled property: Indicates whether enable the trace functionality.
+     * Get the traceEnabled property: Indicates whether enable the trace functionality, which will be deprecated since
+     * api version 2020-11-01-preview. Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings
+     * enabled or not.
      *
      * @return the traceEnabled value.
      */
@@ -77,7 +96,9 @@ public final class MonitoringSettingProperties {
     }
 
     /**
-     * Set the traceEnabled property: Indicates whether enable the trace functionality.
+     * Set the traceEnabled property: Indicates whether enable the trace functionality, which will be deprecated since
+     * api version 2020-11-01-preview. Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings
+     * enabled or not.
      *
      * @param traceEnabled the traceEnabled value to set.
      * @return the MonitoringSettingProperties object itself.
@@ -88,7 +109,8 @@ public final class MonitoringSettingProperties {
     }
 
     /**
-     * Get the appInsightsInstrumentationKey property: Target application insight instrumentation key.
+     * Get the appInsightsInstrumentationKey property: Target application insight instrumentation key, null or
+     * whitespace include empty will disable monitoringSettings.
      *
      * @return the appInsightsInstrumentationKey value.
      */
@@ -97,13 +119,57 @@ public final class MonitoringSettingProperties {
     }
 
     /**
-     * Set the appInsightsInstrumentationKey property: Target application insight instrumentation key.
+     * Set the appInsightsInstrumentationKey property: Target application insight instrumentation key, null or
+     * whitespace include empty will disable monitoringSettings.
      *
      * @param appInsightsInstrumentationKey the appInsightsInstrumentationKey value to set.
      * @return the MonitoringSettingProperties object itself.
      */
     public MonitoringSettingProperties withAppInsightsInstrumentationKey(String appInsightsInstrumentationKey) {
         this.appInsightsInstrumentationKey = appInsightsInstrumentationKey;
+        return this;
+    }
+
+    /**
+     * Get the appInsightsSamplingRate property: Indicates the sampling rate of application insight agent, should be in
+     * range [0.0, 100.0].
+     *
+     * @return the appInsightsSamplingRate value.
+     */
+    public Double appInsightsSamplingRate() {
+        return this.appInsightsSamplingRate;
+    }
+
+    /**
+     * Set the appInsightsSamplingRate property: Indicates the sampling rate of application insight agent, should be in
+     * range [0.0, 100.0].
+     *
+     * @param appInsightsSamplingRate the appInsightsSamplingRate value to set.
+     * @return the MonitoringSettingProperties object itself.
+     */
+    public MonitoringSettingProperties withAppInsightsSamplingRate(Double appInsightsSamplingRate) {
+        this.appInsightsSamplingRate = appInsightsSamplingRate;
+        return this;
+    }
+
+    /**
+     * Get the appInsightsAgentVersions property: Indicates the versions of application insight agent.
+     *
+     * @return the appInsightsAgentVersions value.
+     */
+    public ApplicationInsightsAgentVersions appInsightsAgentVersions() {
+        return this.appInsightsAgentVersions;
+    }
+
+    /**
+     * Set the appInsightsAgentVersions property: Indicates the versions of application insight agent.
+     *
+     * @param appInsightsAgentVersions the appInsightsAgentVersions value to set.
+     * @return the MonitoringSettingProperties object itself.
+     */
+    public MonitoringSettingProperties withAppInsightsAgentVersions(
+        ApplicationInsightsAgentVersions appInsightsAgentVersions) {
+        this.appInsightsAgentVersions = appInsightsAgentVersions;
         return this;
     }
 
@@ -115,6 +181,9 @@ public final class MonitoringSettingProperties {
     public void validate() {
         if (error() != null) {
             error().validate();
+        }
+        if (appInsightsAgentVersions() != null) {
+            appInsightsAgentVersions().validate();
         }
     }
 }

@@ -166,9 +166,9 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.9.1
 com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
-io.opentelemetry:opentelemetry-api;0.14.1
-io.opentelemetry:opentelemetry-sdk;0.14.1
-io.opentelemetry:opentelemetry-semconv;0.14.1
+io.opentelemetry:opentelemetry-api;0.17.1
+io.opentelemetry:opentelemetry-sdk;0.17.1
+com.google.errorprone:error_prone_annotations;2.5.1
 io.projectreactor:reactor-test;3.3.14.RELEASE
 junit:junit;4.13.1
 commons-cli:commons-cli;1.3

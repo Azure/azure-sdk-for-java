@@ -14,10 +14,10 @@ import java.util.List;
 
 public class PublishEventsToDomain {
     public static void main(String[] args) {
-        EventGridPublisherClient publisherClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<EventGridEvent> publisherClient = new EventGridPublisherClientBuilder()
             .endpoint(System.getenv("AZURE_EVENTGRID_DOMAIN_ENDPOINT"))  // Event Grid Domain endpoint
             .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_DOMAIN_KEY")))
-            .buildClient();
+            .buildEventGridEventPublisherClient();
 
         User newUser = new User("John2", "James");
         EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", newUser, "0.1")
@@ -25,6 +25,6 @@ public class PublishEventsToDomain {
 
         List<EventGridEvent> events = new ArrayList<>();
         events.add(eventModelClass);
-        publisherClient.sendEventGridEvents(events);
+        publisherClient.sendEvents(events);
     }
 }

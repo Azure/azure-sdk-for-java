@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Object to define the number of days after last modification. */
+/**
+ * Object to define the number of days after object last modification Or last access. Properties
+ * daysAfterModificationGreaterThan and daysAfterLastAccessTimeGreaterThan are mutually exclusive.
+ */
 @Fluent
 public final class DateAfterModification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterModification.class);
@@ -17,15 +20,22 @@ public final class DateAfterModification {
     /*
      * Value indicating the age in days after last modification
      */
-    @JsonProperty(value = "daysAfterModificationGreaterThan", required = true)
-    private float daysAfterModificationGreaterThan;
+    @JsonProperty(value = "daysAfterModificationGreaterThan")
+    private Float daysAfterModificationGreaterThan;
+
+    /*
+     * Value indicating the age in days after last blob access. This property
+     * can only be used in conjunction with last access time tracking policy
+     */
+    @JsonProperty(value = "daysAfterLastAccessTimeGreaterThan")
+    private Float daysAfterLastAccessTimeGreaterThan;
 
     /**
      * Get the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
      *
      * @return the daysAfterModificationGreaterThan value.
      */
-    public float daysAfterModificationGreaterThan() {
+    public Float daysAfterModificationGreaterThan() {
         return this.daysAfterModificationGreaterThan;
     }
 
@@ -35,8 +45,30 @@ public final class DateAfterModification {
      * @param daysAfterModificationGreaterThan the daysAfterModificationGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
-    public DateAfterModification withDaysAfterModificationGreaterThan(float daysAfterModificationGreaterThan) {
+    public DateAfterModification withDaysAfterModificationGreaterThan(Float daysAfterModificationGreaterThan) {
         this.daysAfterModificationGreaterThan = daysAfterModificationGreaterThan;
+        return this;
+    }
+
+    /**
+     * Get the daysAfterLastAccessTimeGreaterThan property: Value indicating the age in days after last blob access.
+     * This property can only be used in conjunction with last access time tracking policy.
+     *
+     * @return the daysAfterLastAccessTimeGreaterThan value.
+     */
+    public Float daysAfterLastAccessTimeGreaterThan() {
+        return this.daysAfterLastAccessTimeGreaterThan;
+    }
+
+    /**
+     * Set the daysAfterLastAccessTimeGreaterThan property: Value indicating the age in days after last blob access.
+     * This property can only be used in conjunction with last access time tracking policy.
+     *
+     * @param daysAfterLastAccessTimeGreaterThan the daysAfterLastAccessTimeGreaterThan value to set.
+     * @return the DateAfterModification object itself.
+     */
+    public DateAfterModification withDaysAfterLastAccessTimeGreaterThan(Float daysAfterLastAccessTimeGreaterThan) {
+        this.daysAfterLastAccessTimeGreaterThan = daysAfterLastAccessTimeGreaterThan;
         return this;
     }
 

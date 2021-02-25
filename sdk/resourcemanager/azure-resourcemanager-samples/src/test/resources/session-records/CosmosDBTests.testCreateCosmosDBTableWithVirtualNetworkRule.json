@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d2c0d375-536c-44f7-8ee5-97aa6016719a",
@@ -49,7 +49,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210129T142027Z:dbacceb0-dc12-41bc-82e8-63c1e9245545",
       "Expires" : "-1",
       "Content-Length" : "2488",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/4a12893a-a717-4ccc-a274-e6433ae0d3f3?api-version=2020-07-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/4a12893a-a717-4ccc-a274-e6433ae0d3f3?api-version=2020-08-01",
       "x-ms-request-id" : "4a12893a-a717-4ccc-a274-e6433ae0d3f3",
       "Body" : "{\r\n  \"name\": \"vnetcosmosdb685115\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115\",\r\n  \"etag\": \"W/\\\"f40621be-b1c6-4e3c-a21a-94f6384b61f6\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"3b637064-4f8a-4a9e-a9e0-ad4170d771aa\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"192.168.0.0/16\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"f40621be-b1c6-4e3c-a21a-94f6384b61f6\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"192.168.1.0/24\",\r\n          \"serviceEndpoints\": [\r\n            {\r\n              \"provisioningState\": \"Updating\",\r\n              \"service\": \"Microsoft.AzureCosmosDB\",\r\n              \"locations\": [\r\n                \"*\"\r\n              ]\r\n            }\r\n          ],\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      },\r\n      {\r\n        \"name\": \"subnet2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115/subnets/subnet2\",\r\n        \"etag\": \"W/\\\"f40621be-b1c6-4e3c-a21a-94f6384b61f6\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"192.168.2.0/24\",\r\n          \"serviceEndpoints\": [\r\n            {\r\n              \"provisioningState\": \"Updating\",\r\n              \"service\": \"Microsoft.AzureCosmosDB\",\r\n              \"locations\": [\r\n                \"*\"\r\n              ]\r\n            }\r\n          ],\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false,\r\n    \"enableVmProtection\": false\r\n  }\r\n}",
       "x-ms-client-request-id" : "d2c0d375-536c-44f7-8ee5-97aa6016719a",
@@ -58,7 +58,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/4a12893a-a717-4ccc-a274-e6433ae0d3f3?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/4a12893a-a717-4ccc-a274-e6433ae0d3f3?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1ec768ba-ff73-454f-968d-42089b9a77f3"
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "abf00727-c76b-4422-8cab-a4af95ef6eda"
@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115/virtualNetworkPeerings?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115/virtualNetworkPeerings?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "439e8f4f-b6f5-4a22-a32d-4ddd9d30d400",
@@ -1094,7 +1094,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb16257dc1c/providers/Microsoft.Network/virtualNetworks/vnetcosmosdb685115?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7d48bda7-28d4-4b3f-ae95-653f6a4c6c0e",
@@ -1116,15 +1116,15 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210129T143315Z:2d66fe93-8687-40ea-84b4-976a3acbe1ce",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01",
       "x-ms-request-id" : "360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62",
       "x-ms-client-request-id" : "7d48bda7-28d4-4b3f-ae95-653f6a4c6c0e",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "25ce327f-270d-42f3-bdce-ad49edf3ad76"
@@ -1152,7 +1152,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d28d870d-20f9-43c8-bd7b-e3bd2c8de051"
@@ -1172,12 +1172,12 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210129T143326Z:65574d2c-b04e-45b3-a5e6-402244dac9e3",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01",
       "x-ms-request-id" : "360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62",
       "Body" : "",
       "x-ms-client-request-id" : "7d48bda7-28d4-4b3f-ae95-653f6a4c6c0e",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-07-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operationResults/360ddcd5-a2e6-4bbe-9b2c-fc5fc1282c62?api-version=2020-08-01"
     },
     "Exception" : null
   }, {
