@@ -38,5 +38,6 @@ public class ApplicationId {
      * 2. x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
+    public static final String AZURE_SPRING_B2C = "az-sp-b2c";
 
 }

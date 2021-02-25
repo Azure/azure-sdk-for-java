@@ -111,6 +111,9 @@
 
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
+
+        <!-- Remote Rendering -->
+        <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
       </modules>
 
       <distributionManagement>
@@ -301,6 +304,10 @@
                   <group>
                     <title>Azure Mixed Reality Authentication</title>
                     <packages>com.azure.mixedreality.authentication*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Mixed Reality RemoteRendering</title>
+                    <packages>com.azure.mixedreality.remoterendering*</packages>
                   </group>
                   <group>
                     <title>Azure Communication</title>
@@ -598,7 +605,9 @@
         <module>sdk/postgresql</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
+        <module>sdk/remoterendering</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
@@ -606,6 +615,7 @@
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
+        <module>sdk/storagecache</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>

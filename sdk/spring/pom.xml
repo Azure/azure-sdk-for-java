@@ -153,9 +153,14 @@
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-storage-resource</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
+        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-complete</module>
+        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial</module>
+        <module>azure-spring-boot-samples/azure-appconfiguration-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
+        <module>azure-spring-boot-samples/feature-management-web-sample</module>
+        <module>azure-spring-boot-samples/feature-management-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>

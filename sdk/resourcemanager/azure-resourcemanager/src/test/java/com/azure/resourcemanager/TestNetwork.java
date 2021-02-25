@@ -384,21 +384,18 @@ public class TestNetwork {
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withNewDdosProtectionPlan()
-                    .withVmProtection()
                     .create();
             Assertions.assertTrue(network.isDdosProtectionEnabled());
             Assertions.assertNotNull(network.ddosProtectionPlanId());
-            Assertions.assertTrue(network.isVmProtectionEnabled());
 
             return network;
         }
 
         @Override
         public Network updateResource(Network network) throws Exception {
-            network.update().withoutDdosProtectionPlan().withoutVmProtection().apply();
+            network.update().withoutDdosProtectionPlan().apply();
             Assertions.assertFalse(network.isDdosProtectionEnabled());
             Assertions.assertNull(network.ddosProtectionPlanId());
-            Assertions.assertFalse(network.isVmProtectionEnabled());
             return network;
         }
 

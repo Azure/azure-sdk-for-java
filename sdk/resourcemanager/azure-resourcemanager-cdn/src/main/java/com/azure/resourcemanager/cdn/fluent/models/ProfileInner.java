@@ -41,6 +41,12 @@ public class ProfileInner extends Resource {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /*
+     * The Id of the frontdoor.
+     */
+    @JsonProperty(value = "properties.frontdoorId", access = JsonProperty.Access.WRITE_ONLY)
+    private String frontdoorId;
+
     /**
      * Get the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
      *
@@ -77,6 +83,15 @@ public class ProfileInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the frontdoorId property: The Id of the frontdoor.
+     *
+     * @return the frontdoorId value.
+     */
+    public String frontdoorId() {
+        return this.frontdoorId;
     }
 
     /** {@inheritDoc} */
