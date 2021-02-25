@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -90,8 +91,10 @@ public class AnnotatedQueryIT {
 
         final AuditableEntity savedEntity = auditableRepository.save(entity);
 
-        final AuditableEntity foundEntity = auditableRepository.annotatedFindById(savedEntity.getId());
-        assertNotNull(foundEntity);
+        final List<AuditableEntity> result = auditableRepository.annotatedFindById(savedEntity.getId());
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(entity.getId());
     }
 
 }
