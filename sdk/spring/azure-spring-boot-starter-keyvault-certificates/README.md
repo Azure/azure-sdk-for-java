@@ -154,6 +154,19 @@ server.ssl.key-store-type=AzureKeyVault
 Note: make sure the managed identity has access to the Azure Key Vault to access
 keys, secrets and certificates.
 
+### Enable mutual SSL on the server side
+
+Only some minor changes need to be done to the server side SSL example 
+mentioned above.
+
+The following additional application.properties need to be added:
+
+```
+server.ssl.client-auth=need
+server.ssl.trust-store-type=AzureKeyVault
+```
+
+
 ### Client side SSL
 
 #### Using a client ID and client secret
@@ -238,6 +251,36 @@ public RestTemplate restTemplate() throws Exception {
 }
 ```
 
+### Enable mutual SSL on the client side
+
+Only some minor changes need to be done to the client side SSL example 
+mentioned above.
+
+1. The SSL context needs to take a ClientPrivateKeyStrategy
+
+An example is shown below:
+
+```java
+SSLContext sslContext = SSLContexts.custom()
+        .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
+        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+        .build();
+```
+
+2. A ClientPrivateKeyStrategy needs to be defined.
+
+An example is show below:
+
+```java
+private class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+
+    @Override
+    public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
+        return "self-signed";
+    }
+}
+```
+
 ### Configuring Spring Cloud Gateway
 
 To configure Spring Cloud Gateway for outbound SSL you will need
@@ -290,48 +333,6 @@ certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
 2. Certificates coming from Azure Key Vault take precedence over 
 side-loaded certificates.
-
-### Enable mutual SSL on the server side
-
-Only some minor changes need to be done to the server side SSL example 
-mentioned above.
-
-The following additional application.properties need to be added:
-
-```
-server.ssl.client-auth=need
-server.ssl.trust-store-type=AzureKeyVault
-```
-
-### Enable mutual SSL on the client side
-
-Only some minor changes need to be done to the client side SSL example 
-mentioned above.
-
-1. The SSL context needs to take a ClientPrivateKeyStrategy
-
-An example is shown below:
-
-```java
-SSLContext sslContext = SSLContexts.custom()
-        .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-        .build();
-```
-
-2. A ClientPrivateKeyStrategy needs to be defined.
-
-An example is show below:
-
-```java
-private class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
-
-    @Override
-    public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-        return "self-signed";
-    }
-}
-```
 
 
 ### Testing the current version under development 
