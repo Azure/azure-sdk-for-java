@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: formrecognizer
-      timeoutInMinutes: 120 # how long to run the job before automatically cancelling
+      timeoutInMinutes: 320 # how long to run the job before automatically cancelling
       SupportedClouds: 'Public,Canary,UsGov,China'
       Artifacts:
         - name: azure-ai-formrecognizer
