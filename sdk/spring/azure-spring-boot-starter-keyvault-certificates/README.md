@@ -291,7 +291,7 @@ certificate will be added with the alias of `mycert`.
 2. Certificates coming from Azure Key Vault take precedence over 
 side-loaded certificates.
 
-### Enable mutual TLS on the server side
+### Enable mutual SSL on the server side
 
 Only some minor changes need to be done to the server side SSL example 
 mentioned above.
@@ -303,7 +303,7 @@ server.ssl.client-auth=need
 server.ssl.trust-store-type=AzureKeyVault
 ```
 
-### Enable mutual TLS on the client side
+### Enable mutual SSL on the client side
 
 Only some minor changes need to be done to the client side SSL example 
 mentioned above.
