@@ -274,7 +274,7 @@ mentioned above.
 
 An example is show below:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L25-L28 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L27-L30 -->
 ```java
 SSLContext sslContext = SSLContexts.custom()
                                    .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
@@ -286,7 +286,7 @@ SSLContext sslContext = SSLContexts.custom()
 
 An example is show below:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L30-L35 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L32-L37 -->
 ```java
 private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
     @Override
