@@ -42,7 +42,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         super(appClass, properties);
         userEmail = AAD_B2C_USER_EMAIL;
         userPassword = AAD_B2C_USER_PASSWORD;
-        isAzureCloudGlobal = Constant.AZURE_CLOUD_TYPE_GLOBAL.equalsIgnoreCase(AZURE_CLOUD_TYPE) ? true : false;
+        isAzureCloudGlobal = Constant.AZURE_CLOUD_TYPE_GLOBAL.equalsIgnoreCase(AZURE_CLOUD_TYPE);
     }
 
     public void logIn() {
