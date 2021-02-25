@@ -744,7 +744,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec, returnType)
+        return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
+                   .map(jsonNode -> toDomainObject(returnType, jsonNode))
                    .collectList()
                    .block();
     }
@@ -803,15 +804,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
-    private <T> Flux<T> getJsonNodeFluxFromQuerySpec(
-        @NonNull String containerName, SqlQuerySpec sqlQuerySpec, Class<T> classType) {
+    private Flux<JsonNode> getJsonNodeFluxFromQuerySpec(
+        @NonNull String containerName, SqlQuerySpec sqlQuerySpec) {
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         return cosmosAsyncClient
                    .getDatabase(this.databaseName)
                    .getContainer(containerName)
-                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, classType)
+                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
