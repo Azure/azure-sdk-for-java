@@ -119,7 +119,8 @@ public class ThroughputControlStore {
             }
 
             if (group.isDefault()) {
-                if (groupSet.stream().anyMatch(ThroughputControlGroupInternal::isDefault)) {
+                if (groupSet.stream().anyMatch(
+                    controlGroup -> group.isDefault() && !StringUtils.equals(group.getId(), controlGroup.getId()))) {
                     throw new IllegalArgumentException("A default group already exists");
                 }
             }
@@ -226,6 +227,7 @@ public class ThroughputControlStore {
 
                     ThroughputContainerController containerController =
                         new ThroughputContainerController(
+                            this.collectionCache,
                             this.connectionMode,
                             this.globalEndpointManager,
                             groups,

@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.RetrySpec;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -28,7 +29,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class ThroughputControlContainerManager {
     private static final Logger logger = LoggerFactory.getLogger(ThroughputControlContainerManager.class);
 
-    private static final String CLINT_ITEM_ID_SUFFIX = "." + UUID.randomUUID();
     private static final String CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX = ".client";
     private static final String CONFIG_ITEM_ID_SUFFIX = ".info";
     private static final String CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX = ".config";
@@ -50,16 +50,21 @@ public class ThroughputControlContainerManager {
         this.globalControlContainer = group.getGlobalControlContainer();
         this.group = group;
 
-        this.clientItemId = this.group.getId()  + CLINT_ITEM_ID_SUFFIX;
+        String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
+
+        this.clientItemId = encodedGroupId + UUID.randomUUID();
         this.clientItemPartitionKeyValue = this.group.getGroupName() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
-        this.configItemId = this.group.getId() + CONFIG_ITEM_ID_SUFFIX;
+        this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
         this.configItemPartitionKeyValue = this.group.getGroupName() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
     }
 
     public Mono<ThroughputGlobalControlClientItem> createGroupClientItem(double loadFactor) {
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+
         return Mono.just(new ThroughputGlobalControlClientItem(
                                 this.clientItemId, this.clientItemPartitionKeyValue, loadFactor, this.group.getControlItemExpireInterval()))
-            .flatMap(groupClientItem -> this.globalControlContainer.createItem(groupClientItem))
+            .flatMap(groupClientItem -> this.globalControlContainer.createItem(groupClientItem, requestOptions))
             .flatMap(itemResponse -> {
                 this.clientItem = itemResponse.getItem();
                 return Mono.just(this.clientItem);
@@ -76,6 +81,9 @@ public class ThroughputControlContainerManager {
      * @return A {@link ThroughputGlobalControlClientItem}.
      */
     public Mono<ThroughputGlobalControlConfigItem> getOrCreateConfigItem() {
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+
         ThroughputGlobalControlConfigItem expectedConfigItem =
             new ThroughputGlobalControlConfigItem(
                 this.configItemId,
@@ -92,7 +100,7 @@ public class ThroughputControlContainerManager {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
                 if (cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     // hooray, you are the first one, needs to create the config file now
-                    return this.globalControlContainer.createItem(expectedConfigItem);
+                    return this.globalControlContainer.createItem(expectedConfigItem, requestOptions);
                 }
 
                 return Mono.error(throwable);
@@ -138,16 +146,21 @@ public class ThroughputControlContainerManager {
      * @return A {@link ThroughputGlobalControlClientItem};
      */
     public Mono<ThroughputGlobalControlClientItem> replaceOrCreateGroupClientItem(double loadFactor) {
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+        itemRequestOptions.setContentResponseOnWriteEnabled(true);
+
         return Mono.just(this.clientItem)
             .flatMap(groupClientItem -> {
                 groupClientItem.setLoadFactor(loadFactor);
-                return this.globalControlContainer.replaceItem(groupClientItem, groupClientItem.getId(), new PartitionKey(groupClientItem.getGroup()));
+                return this.globalControlContainer.replaceItem(
+                    groupClientItem, groupClientItem.getId(), new PartitionKey(groupClientItem.getGroup()), itemRequestOptions);
             })
             .onErrorResume(throwable -> {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
                 if (cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     logger.warn("Can not find the expected client item {}, will recreate a new one", this.clientItem.getId());
-                    return this.globalControlContainer.createItem(this.clientItem);
+                    return this.globalControlContainer.createItem(this.clientItem, itemRequestOptions)
+                        .retryWhen(RetrySpec.max(5));
                 }
 
                 return Mono.error(throwable);

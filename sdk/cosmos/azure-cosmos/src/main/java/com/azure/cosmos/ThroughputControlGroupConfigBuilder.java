@@ -19,16 +19,6 @@ public class ThroughputControlGroupConfigBuilder {
     private boolean isDefault;
 
     /**
-     * Get the throughput control group name.
-     *
-     * @return The throughput control group name.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getGroupName() {
-        return groupName;
-    }
-
-    /**
      * Set the throughput control group name.
      *
      * @param groupName The throughput control group name.
@@ -40,19 +30,6 @@ public class ThroughputControlGroupConfigBuilder {
 
         this.groupName = groupName;
         return this;
-    }
-
-    /**
-     * Get throughput control group target throughput.
-     * Since we allow either TargetThroughput or TargetThroughputThreshold, this value can be null.
-     *
-     * By default, it is null.
-     *
-     * @return the target throughput.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Integer getTargetThroughput() {
-        return targetThroughput;
     }
 
     /**
@@ -72,19 +49,6 @@ public class ThroughputControlGroupConfigBuilder {
     }
 
     /**
-     * Get the throughput control group target throughput threshold.
-     * Since we allow either TargetThroughput or TargetThroughputThreshold, this value can be null.
-     *
-     * By default, this value is null.
-     *
-     * @return the target throughput threshold.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Double getTargetThroughputThreshold() {
-        return targetThroughputThreshold;
-    }
-
-    /**
      * Set the throughput control group target throughput threshold.
      *
      * The target throughput threshold value should be between (0, 1].
@@ -100,18 +64,6 @@ public class ThroughputControlGroupConfigBuilder {
         return this;
     }
 
-    /**
-     * Get whether this throughput control group will be used by default.
-     *
-     * By default, it is false.
-     * If it is true, requests without explicit override of the throughput control group will be routed to this group.
-     *
-     * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public boolean isDefault() {
-        return isDefault;
-    }
 
     /**
      * Set whether this throughput control group will be used by default.

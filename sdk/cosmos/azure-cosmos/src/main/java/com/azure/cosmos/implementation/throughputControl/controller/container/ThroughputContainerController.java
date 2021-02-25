@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationTokenSource;
@@ -55,6 +56,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private static final int NO_OFFER_EXCEPTION_SUB_STATUS_CODE = HttpConstants.SubStatusCodes.OFFER_NOT_CONFIGURED;
 
     private final AsyncDocumentClient client;
+    private final RxCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
     private final AsyncCache<String, ThroughputGroupControllerBase> groupControllerCache;
@@ -72,16 +74,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private ThroughputProvisioningScope throughputProvisioningScope;
 
     public ThroughputContainerController(
+        RxCollectionCache collectionCache,
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
         Set<ThroughputControlGroupInternal> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         LinkedCancellationToken parentToken) {
 
+        checkNotNull(collectionCache, "Collection cache can not be null");
         checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
         checkArgument(groups != null && groups.size() > 0, "Throughput budget groups can not be null or empty");
         checkNotNull(partitionKeyRangeCache, "RxPartitionKeyRangeCache can not be null");
 
+        this.collectionCache = collectionCache;
         this.connectionMode = connectionMode;
         this.globalEndpointManager = globalEndpointManager;
         this.groupControllerCache = new AsyncCache<>();
@@ -144,9 +149,27 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputResponse> resolveContainerThroughput() {
-        return Mono.justOrEmpty(this.targetContainerRid)
-            .switchIfEmpty(this.resolveContainerResourceId())
-            .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid));
+        if (StringUtils.isEmpty(this.targetContainerRid)) {
+            return this.resolveContainerResourceId()
+                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid))
+                .onErrorResume(throwable -> {
+                    if (this.isOwnerResourceNotExistsException(throwable)) {
+                        // During initialization time, the collection cache may contain staled info,
+                        // refresh and retry one more time
+                        this.collectionCache.refresh(
+                            null,
+                            BridgeInternal.getLink(this.targetContainer),
+                            null
+                        );
+                    }
+
+                    return Mono.error(throwable);
+                })
+                .retryWhen(RetrySpec.max(1).filter(throwable -> this.isOwnerResourceNotExistsException(throwable)));
+        } else {
+            return Mono.just(this.targetContainerRid)
+                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid));
+        }
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
@@ -179,6 +202,13 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(throughputResponse -> {
                 this.updateMaxContainerThroughput(throughputResponse);
                 return Mono.empty();
+            })
+            .onErrorResume(throwable -> {
+                if (this.isOwnerResourceNotExistsException(throwable)) {
+                    this.cancellationTokenSource.close();
+                }
+
+                return Mono.error(throwable);
             })
             .retryWhen(
                 // Throughput can be configured on database level or container level
@@ -226,6 +256,15 @@ public class ThroughputContainerController implements IThroughputContainerContro
         return cosmosException != null
             && cosmosException.getStatusCode() == NO_OFFER_EXCEPTION_STATUS_CODE
             && cosmosException.getSubStatusCode() == NO_OFFER_EXCEPTION_SUB_STATUS_CODE;
+    }
+
+    private boolean isOwnerResourceNotExistsException(Throwable throwable) {
+        checkNotNull(throwable, "Throwable should not be null");
+
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+        return cosmosException != null
+            && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+            && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS;
     }
 
     @Override

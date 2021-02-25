@@ -68,8 +68,10 @@ public class GlobalThroughputControlConfigBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfig build() {
-        if (this.controlItemExpireInterval.getSeconds() < this.controlItemRenewInterval.getSeconds()) {
-            throw new IllegalArgumentException("Expire time should not be smaller than renew interval");
+        if (this.controlItemExpireInterval != null && this.controlItemRenewInterval != null) {
+            if (this.controlItemExpireInterval.getSeconds() < this.controlItemRenewInterval.getSeconds()) {
+                throw new IllegalArgumentException("Expire time should not be smaller than renew interval");
+            }
         }
 
         return new GlobalThroughputControlConfig(this.controlContainer, this.controlItemRenewInterval, this.controlItemExpireInterval);

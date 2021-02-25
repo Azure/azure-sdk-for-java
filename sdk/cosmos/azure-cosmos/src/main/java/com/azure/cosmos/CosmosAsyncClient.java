@@ -481,7 +481,7 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
      *
-     * @param databaseId The database if of the control container.
+     * @param databaseId The database id of the control container.
      * @param containerId The container id of the control container.
      * @return A {@link GlobalThroughputControlConfigBuilder}.
      */

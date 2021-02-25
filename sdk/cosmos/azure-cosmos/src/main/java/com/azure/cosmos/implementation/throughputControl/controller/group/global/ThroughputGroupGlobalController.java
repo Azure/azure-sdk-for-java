@@ -25,6 +25,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     private static final double INITIAL_CLIENT_THROUGHPUT_RU_SHARE = 1.0;
     private static final double INITIAL_THROUGHPUT_USAGE = 1.0;
     private static final int DEFAULT_THROUGHPUT_USAGE_QUEUE_SIZE = 300; // 5 mins windows since we refresh ru usage every 1s
+    private static final double MIN_LOAD_FACTOR = 0.1;
 
     private final Duration controlItemRenewInterval;
     private final ThroughputControlContainerManager containerManager;
@@ -101,7 +102,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
                 loadFactor += (throughputUsageSnapshot.getWeight() / totalWeight) * throughputUsageSnapshot.getThroughputUsage();
             }
 
-            return loadFactor;
+            return Math.max(MIN_LOAD_FACTOR, loadFactor);
         }
     }
 

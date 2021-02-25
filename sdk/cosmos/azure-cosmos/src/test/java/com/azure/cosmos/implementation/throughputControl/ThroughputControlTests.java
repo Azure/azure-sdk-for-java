@@ -145,7 +145,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
                 .setGroupName("group-" + UUID.randomUUID())
-                .setTargetThroughput(6)
+                .setTargetThroughput(1)
                 .build();
         container.enableThroughputLocalControlGroup(groupConfig);
         createdContainer.enableThroughputLocalControlGroup(groupConfig);

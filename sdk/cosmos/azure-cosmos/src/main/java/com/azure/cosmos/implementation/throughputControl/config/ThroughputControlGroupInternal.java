@@ -35,7 +35,7 @@ public abstract class ThroughputControlGroupInternal {
         this.isDefault = isDefault;
 
         this.id = String.format(
-            "%s.%s.%s",
+            "%s/%s/%s",
             this.targetContainer.getDatabase().getId(),
             this.targetContainer.getId(),
             this.groupName);

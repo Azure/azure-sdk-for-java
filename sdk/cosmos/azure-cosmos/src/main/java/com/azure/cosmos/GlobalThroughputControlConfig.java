@@ -34,7 +34,6 @@ public class GlobalThroughputControlConfig {
      *
      * @return The {@link CosmosAsyncContainer}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     CosmosAsyncContainer getControlContainer() {
         return controlContainer;
     }
