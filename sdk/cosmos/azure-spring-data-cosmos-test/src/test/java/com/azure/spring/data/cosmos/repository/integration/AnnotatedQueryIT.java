@@ -4,8 +4,11 @@ package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.Book;
+import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.repository.BookRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
@@ -22,10 +25,12 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class BookRepositoryIT {
+public class AnnotatedQueryIT {
 
     private static final Book TEST_BOOK_1 = new Book(TestConstants.ID_1, UUID.randomUUID().toString(),
                                                      "title1");
@@ -42,7 +47,13 @@ public class BookRepositoryIT {
     private CosmosTemplate template;
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private AuditableRepository auditableRepository;
+
+    @Autowired
+    private StubAuditorProvider stubAuditorProvider;
 
     @AfterClass
     public static void afterClassCleanup() {
@@ -55,20 +66,35 @@ public class BookRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        repository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
         isSetupDone = true;
     }
 
     @After
     public void cleanup() {
-        repository.deleteAll();
+        bookRepository.deleteAll();
     }
 
     @Test
     public void testAnnotatedQuery() {
-        final List<Book> result = repository.annotatedFindBookById(TEST_BOOK_1.getId());
+        bookRepository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
+
+        final List<Book> result = bookRepository.annotatedFindBookById(TEST_BOOK_1.getId());
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getId()).isEqualTo(TEST_BOOK_1.getId());
     }
+
+    @Test
+    public void testAnnotatedQueryWithReturnTypeContainingLocalDateTime() {
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        final AuditableEntity savedEntity = auditableRepository.save(entity);
+
+        final List<AuditableEntity> result = auditableRepository.annotatedFindById(savedEntity.getId());
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(entity.getId());
+    }
+
 }
