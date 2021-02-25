@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SmsAsyncClientTests extends SmsTestBase {
     private List<String> to;
     private String from;
-    private String body;
+    private String message;
     private SmsAsyncClient asyncClient;
 
     @Override
@@ -34,12 +34,12 @@ public class SmsAsyncClientTests extends SmsTestBase {
         from = "+18335102092";
         to = new ArrayList<String>();
         to.add("+18336388593");
-        body = "hello";
+        message = "hello";
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
         assertNotNull(asyncClient);
 
-        Mono<List<SmsSendResult>> response = asyncClient.send(from, to, body, null);
+        Mono<List<SmsSendResult>> response = asyncClient.send(from, to, message, null);
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item);
@@ -56,14 +56,14 @@ public class SmsAsyncClientTests extends SmsTestBase {
         from = "+18335102092";
         to = new ArrayList<String>();
         to.add("+18336388593");
-        body = "hello";
+        message = "hello";
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "send");
 
         // Action & Assert
 
-        Mono<List<SmsSendResult>> response = asyncClient.send(from, to, body, null);
+        Mono<List<SmsSendResult>> response = asyncClient.send(from, to, message, null);
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item);
