@@ -1441,15 +1441,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
-        if (request.getResourceType() != ResourceType.Document) {
+        if (request.getResourceType() != ResourceType.Document &&
+                request.getResourceType() != ResourceType.Conflict) {
             return false;
         }
 
         switch (request.getOperationType()) {
             case ReadFeed:
-            // TODO fabianm add EPK filtering for query as well
-            // case Query:
-            // case SqlQuery:
+            case Query:
+            case SqlQuery:
                 return request.getFeedRange() != null;
             default:
                 return false;

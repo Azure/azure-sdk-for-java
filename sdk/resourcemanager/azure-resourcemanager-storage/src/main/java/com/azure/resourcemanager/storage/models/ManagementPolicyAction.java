@@ -26,6 +26,12 @@ public final class ManagementPolicyAction {
     @JsonProperty(value = "snapshot")
     private ManagementPolicySnapShot snapshot;
 
+    /*
+     * The management policy action for version
+     */
+    @JsonProperty(value = "version")
+    private ManagementPolicyVersion version;
+
     /**
      * Get the baseBlob property: The management policy action for base blob.
      *
@@ -67,6 +73,26 @@ public final class ManagementPolicyAction {
     }
 
     /**
+     * Get the version property: The management policy action for version.
+     *
+     * @return the version value.
+     */
+    public ManagementPolicyVersion version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The management policy action for version.
+     *
+     * @param version the version value to set.
+     * @return the ManagementPolicyAction object itself.
+     */
+    public ManagementPolicyAction withVersion(ManagementPolicyVersion version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -77,6 +103,9 @@ public final class ManagementPolicyAction {
         }
         if (snapshot() != null) {
             snapshot().validate();
+        }
+        if (version() != null) {
+            version().validate();
         }
     }
 }

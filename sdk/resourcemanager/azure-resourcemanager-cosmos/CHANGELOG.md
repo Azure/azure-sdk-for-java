@@ -1,6 +1,9 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
+
+
+## 2.2.0 (2021-02-24)
 
 - Updated `api-version` to `2021-01-15`
 - Deprecated `ipRangeFilter` and `withIpRangeFilter`, replaced by `ipRules` and `withIpRules`

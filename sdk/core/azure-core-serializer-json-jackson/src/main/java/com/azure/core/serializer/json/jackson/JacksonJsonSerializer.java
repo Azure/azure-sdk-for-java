@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -155,7 +158,19 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
             && returnType != Void.class;
     }
 
-    private static String removePrefix(Method method) {
-        return BeanUtil.okNameForGetter(new AnnotatedMethod(null, method, null, null), false);
+    private String removePrefix(Method method) {
+        MapperConfig<?> config = mapper.getSerializationConfig();
+
+        AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
+            mapper.constructType(method.getDeclaringClass()), null);
+        AccessorNamingStrategy accessorNamingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
+
+        AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
+        String name = accessorNamingStrategy.findNameForIsGetter(annotatedMethod, annotatedMethod.getName());
+        if (name == null) {
+            name = accessorNamingStrategy.findNameForRegularGetter(annotatedMethod, annotatedMethod.getName());
+        }
+
+        return name;
     }
 }
