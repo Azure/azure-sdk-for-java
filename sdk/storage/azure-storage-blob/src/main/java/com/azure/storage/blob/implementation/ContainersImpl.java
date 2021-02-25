@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,18 +35,22 @@ import com.azure.storage.blob.implementation.models.ContainersGetPropertiesRespo
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersRenameResponse;
 import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersRestoreResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
+import com.azure.storage.blob.implementation.models.ContainersSubmitBatchResponse;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.PublicAccessType;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -114,6 +119,16 @@ public final class ContainersImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ContainersRestoreResponse> restore(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-container-name") String deletedContainerName, @HeaderParam("x-ms-deleted-container-version") String deletedContainerVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Put("{containerName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ContainersRenameResponse> rename(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-container-name") String sourceContainerName, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Post("{containerName}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ContainersSubmitBatchResponse> submitBatch(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -437,6 +452,84 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "undelete";
         return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
+    }
+
+    /**
+     * Renames an existing container.
+     *
+     * @param containerName The container name.
+     * @param sourceContainerName Required.  Specifies the name of the container to rename.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRenameResponse> renameWithRestResponseAsync(String containerName, String sourceContainerName, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String sourceLeaseId = null;
+        final String restype = "container";
+        final String comp = "rename";
+        return service.rename(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, restype, comp, context);
+    }
+
+    /**
+     * Renames an existing container.
+     *
+     * @param containerName The container name.
+     * @param sourceContainerName Required.  Specifies the name of the container to rename.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRenameResponse> renameWithRestResponseAsync(String containerName, String sourceContainerName, Integer timeout, String requestId, String sourceLeaseId, Context context) {
+        final String restype = "container";
+        final String comp = "rename";
+        return service.rename(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, restype, comp, context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param containerName The container name.
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(String containerName, Flux<ByteBuffer> body, long contentLength, String multipartContentType, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String restype = "container";
+        final String comp = "batch";
+        return service.submitBatch(containerName, this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param containerName The container name.
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(String containerName, Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "batch";
+        return service.submitBatch(containerName, this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**

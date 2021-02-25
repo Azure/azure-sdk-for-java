@@ -19,6 +19,7 @@ import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
@@ -63,6 +64,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final IndexingPolicy indexingPolicy;
     private final boolean autoCreateContainer;
     private final boolean autoGenerateId;
+    private final boolean persitable;
 
 
     /**
@@ -95,6 +97,16 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.timeToLive = getTimeToLive(domainType);
         this.indexingPolicy = getIndexingPolicy(domainType);
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
+        this.persitable = Persistable.class.isAssignableFrom(domainType);
+    }
+
+    @Override
+    public boolean isNew(T entity) {
+        if (persitable) {
+            return ((Persistable) entity).isNew();
+        } else {
+            return super.isNew(entity);
+        }
     }
 
     /**

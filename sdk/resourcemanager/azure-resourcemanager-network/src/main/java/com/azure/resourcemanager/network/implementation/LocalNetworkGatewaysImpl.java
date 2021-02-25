@@ -39,8 +39,8 @@ public class LocalNetworkGatewaysImpl
 
     @Override
     public PagedFlux<LocalNetworkGateway> listAsync() {
-        return PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
-            rg -> inner().listByResourceGroupAsync(rg.name())).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+            rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }
 
     @Override

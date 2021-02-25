@@ -31,19 +31,19 @@ public class EventGridPublisherImplTests extends TestBase {
     private EventGridPublisherClientImplBuilder clientBuilder;
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENTGRID_ENDPOINT";
+    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting CloudEvents schema events
-    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUD_ENDPOINT";
+    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting custom schema events
     private static final String CUSTOM_ENDPOINT = "AZURE_EVENTGRID_CUSTOM_ENDPOINT";
 
     // Event Grid access key for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENTGRID_KEY";
+    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENT_KEY";
 
     // Event Grid access key for a topic accepting CloudEvents schema events
-    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUD_KEY";
+    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUDEVENT_KEY";
 
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";

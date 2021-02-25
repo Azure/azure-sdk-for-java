@@ -7,28 +7,18 @@ package com.azure.storage.file.share.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ShareRootSquash.
- */
+/** Defines values for ShareRootSquash. */
 public enum ShareRootSquash {
-    /**
-     * Enum value NoRootSquash.
-     */
+    /** Enum value NoRootSquash. */
     NO_ROOT_SQUASH("NoRootSquash"),
 
-    /**
-     * Enum value RootSquash.
-     */
+    /** Enum value RootSquash. */
     ROOT_SQUASH("RootSquash"),
 
-    /**
-     * Enum value AllSquash.
-     */
+    /** Enum value AllSquash. */
     ALL_SQUASH("AllSquash");
 
-    /**
-     * The actual serialized value for a ShareRootSquash instance.
-     */
+    /** The actual serialized value for a ShareRootSquash instance. */
     private final String value;
 
     ShareRootSquash(String value) {

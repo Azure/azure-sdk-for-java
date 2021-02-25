@@ -52,6 +52,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     root_pom_group_id = root_pom_group_info[0]
     root_pom_artifact_id = root_pom_group_info[1]
     root_pom_version = root_pom_info[1]
+    dependency_dict[root_pom_group_id + ':' + root_pom_artifact_id] = root_pom_version
     root_pom = Pom(
         root_pom_group_id,
         root_pom_artifact_id,
@@ -60,7 +61,6 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     )
     q = queue.Queue()
     q.put(root_pom)
-    visited_pom_dict = {root_pom_group_artifact:root_pom_version}
     pom_count = 1
     log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
@@ -103,21 +103,17 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 dependency_dict[key] = version
                 log.debug('Dependency version added. key = {}, value = {}'.format(key, version))
             elif version != dependency_dict[key]:
-                log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
+                log.info('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', MAVEN_NAME_SPACE)
             artifact_scope = dependency_element.find('./maven:scope', MAVEN_NAME_SPACE)
-            if all([artifact_type, artifact_scope]) and artifact_type.text.strip() == 'pom' and artifact_scope.text.strip() == 'import':
+            if artifact_type is not None and \
+                artifact_scope is not None and \
+                artifact_type.text.strip() == 'pom' and \
+                artifact_scope.text.strip() == 'import':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
-                new_pom_group_artifact = '{}:{}'.format(group_id, artifact_id)
-                if new_pom_group_artifact not in visited_pom_dict:
-                    q.put(new_pom)
-                    visited_pom_dict[new_pom_group_artifact]=version
-                    pom_count = pom_count + 1
-                    log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
-                else:
-                    log.warn('Pom exist in visited_pom_dict. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
+                q.put(new_pom)
+                pom_count = pom_count + 1
     log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
-    return dependency_dict
 
 
 def update_property_dict(project_element, property_dict):

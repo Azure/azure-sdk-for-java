@@ -3,9 +3,11 @@
 
 package com.azure.perf.test.core;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 class ExceptionTest extends PerfStressTest<PerfStressOptions> {
+    private final ClientLogger logger = new ClientLogger(ExceptionTest.class);
 
     /**
      * Sets up the Exception test.
@@ -20,6 +22,7 @@ class ExceptionTest extends PerfStressTest<PerfStressOptions> {
         try {
             throw new IllegalArgumentException();
         } catch (Exception ex) {
+            logger.info("Test exception.", ex);
         }
     }
 

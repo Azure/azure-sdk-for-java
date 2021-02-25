@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
+import static com.azure.spring.test.EnvironmentVariable.*;
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
 public class AADMultipleTenantIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADMultipleTenantIT.class);
@@ -31,9 +28,10 @@ public class AADMultipleTenantIT {
 
     @Test
     public void multipleTenantTest() {
-        Map<String, String> properties = new HashMap<>();
+        Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         aadSeleniumITHelper.logIn();

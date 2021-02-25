@@ -3,18 +3,18 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.OpinionSentimentPropertiesHelper;
 
 /**
  * The {@link OpinionSentiment} model.
  */
-@Immutable
 public final class OpinionSentiment {
     private final String text;
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
     private final boolean isNegated;
     private final int offset;
+    private int length;
 
     /**
      * Create an {@link OpinionSentiment} model that describes opinion sentiment.
@@ -33,6 +33,10 @@ public final class OpinionSentiment {
         this.offset = offset;
         this.isNegated = isNegated;
         this.confidenceScores = confidenceScores;
+    }
+
+    static {
+        OpinionSentimentPropertiesHelper.setAccessor((opinionSentiment, length) -> opinionSentiment.setLength(length));
     }
 
     /**
@@ -64,6 +68,15 @@ public final class OpinionSentiment {
     }
 
     /**
+     * Get the length of opinion text.
+     *
+     * @return The length of opinion text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
      * Get the boolean indicator to show if the text is negative.
      *
      * @return The boolean indicator to show if the text is negative.
@@ -81,5 +94,9 @@ public final class OpinionSentiment {
      */
     public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

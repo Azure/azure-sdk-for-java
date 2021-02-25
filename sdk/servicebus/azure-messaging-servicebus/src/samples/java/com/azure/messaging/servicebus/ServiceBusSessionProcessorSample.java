@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  * to receive messages.
  */
 public class ServiceBusSessionProcessorSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Main method to start the sample application.
@@ -17,12 +21,32 @@ public class ServiceBusSessionProcessorSample {
      * @throws InterruptedException If the application is interrupted.
      */
     public static void main(String[] args) throws InterruptedException {
+        SendSessionMessageAsyncSample sample = new SendSessionMessageAsyncSample();
+        sample.run();
+    }
+
+    /**
+     * This method to start the sample application.
+     * @throws InterruptedException If the application is interrupted.
+     */
+    @Test
+    public void run() throws InterruptedException {
+        // The connection string value can be obtained by:
+        // 1. Going to your Service Bus namespace in Azure Portal.
+        // 2. Go to "Shared access policies"
+        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
+        // The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "sessionQueueName" will be the name of the session enabled Service Bus queue instance you created inside
+        //    the Service Bus namespace.
+
         // Create an instance of session-enabled processor through the ServiceBusClientBuilder that processes
         // two sessions concurrently.
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string ")
+            .connectionString(connectionString)
             .sessionProcessor()
-            .queueName("<< session-enabled queue name >>")
+            .queueName(sessionQueueName)
             .maxConcurrentSessions(2)
             .processMessage(ServiceBusSessionProcessorSample::processMessage)
             .processError(ServiceBusSessionProcessorSample::processError)

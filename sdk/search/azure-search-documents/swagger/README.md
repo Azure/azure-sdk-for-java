@@ -57,7 +57,7 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/56348ad232409e3266eaef220e88ae5d64f49ad7/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode
@@ -70,10 +70,10 @@ These settings apply only when `--tag=package-2020-06-searchservice` is specifie
 ``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/55c3979124d193ab8cd4c5409a3e9f67739ca571/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/56348ad232409e3266eaef220e88ae5d64f49ad7/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPDFTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
 ```
 
 ---
@@ -103,7 +103,7 @@ license-header: |-
 
 ### Set odata.metadata Accept header in operations
 
-searchindex.json needs odata.metadata=none and searchservice.json needs odata.metadata=minimal in the Accept header.
+searchindex.json needs odata.metadata=none and searchservice.json needs odata.metadata=minimal as the Accept header.
 
 ``` yaml $(java)
 directive:
@@ -116,14 +116,19 @@ directive:
           accept += path.startsWith("/docs") ? "none" : "minimal";
 
           var op = $[path][opName];
-          op.parameters.push({
-            name: "accept",
-            "in": "header",
-            required: true,
-            type: "string",
-            enum: [ accept ],
-            "x-ms-parameter-location": "method"
-          });
+          var param = op.parameters.find(p => p.name === "Accept");
+          if (param === null) {
+            param.enum = [ accept ];
+          } else {
+            op.parameters.push({
+              name: "Accept",
+              "in": "header",
+              required: true,
+              type: "string",
+              enum: [ accept ],
+              "x-ms-parameter-location": "method"
+            });
+          }
         }
       }
 
@@ -153,4 +158,12 @@ directive:
       $.ServiceCounters["x-ms-client-name"] = "SearchServiceCounters";
       $.ServiceLimits["x-ms-client-name"] = "SearchServiceLimits";
       $.ServiceStatistics["x-ms-client-name"] = "SearchServiceStatistics";
+```
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.PdfTextRotationAlgorithm
+    transform: >
+      $["x-ms-enum"].name = "BlobIndexerPdfTextRotationAlgorithm";
 ```

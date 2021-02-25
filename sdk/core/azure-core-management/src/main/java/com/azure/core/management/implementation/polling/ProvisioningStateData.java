@@ -127,7 +127,7 @@ final class ProvisioningStateData {
             return resource != null
                 ? resource.getProvisioningState()
                 : null;
-        } catch (IOException ignored) {
+        } catch (IOException | RuntimeException ignored) {
             return null;
         }
     }

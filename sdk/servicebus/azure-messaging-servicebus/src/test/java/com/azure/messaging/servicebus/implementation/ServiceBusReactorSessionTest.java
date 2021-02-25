@@ -3,8 +3,11 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -64,11 +67,20 @@ import static org.mockito.Mockito.when;
  */
 public class ServiceBusReactorSessionTest {
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSessionTest.class);
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+        .setTryTimeout(Duration.ofSeconds(5))
+        .setMode(AmqpRetryMode.FIXED)
+        .setMaxRetries(1);
+    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
 
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
     private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
         + ":transfer-destination-address");
+    private static final String SESSION_NAME = "sessionName";
+    private static final String ENTITY_PATH = "entityPath";
+    private static final String VIA_ENTITY_PATH = "viaEntityPath";
+    private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
 
     @Mock
     private Reactor reactor;
@@ -87,19 +99,17 @@ public class ServiceBusReactorSessionTest {
     @Mock
     Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     @Mock
-    AmqpRetryPolicy retryPolicy;
+    private TokenManager tokenManagerViaQueue;
     @Mock
-    TokenManager tokenManagerViaQueue;
+    private TokenManager tokenManagerEntity;
     @Mock
-    TokenManager tokenManagerEntity;
+    private SessionHandler handler;
     @Mock
-    SessionHandler handler;
+    private Sender senderEntity;
     @Mock
-    Sender senderEntity;
+    private Sender senderViaEntity;
     @Mock
-    Sender senderViaEntity;
-    @Mock
-    Record record;
+    private Record record;
     @Mock
     private SendLinkHandler sendViaEntityLinkHandler;
     @Mock
@@ -110,10 +120,6 @@ public class ServiceBusReactorSessionTest {
     private ReactorDispatcher dispatcher;
 
     private ServiceBusReactorSession serviceBusReactorSession;
-    private String sessionName = "sessionName";
-    private String entityPath = "entityPath";
-    private String viaEntityPath = "viaEntityPath";
-    private String viaEntityPathSenderLinkName = "VIA-" + viaEntityPath;
 
     @BeforeAll
     static void beforeAll() {
@@ -126,7 +132,7 @@ public class ServiceBusReactorSessionTest {
     }
 
     @BeforeEach
-    void setup(TestInfo testInfo) throws IOException {
+    void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
@@ -147,9 +153,9 @@ public class ServiceBusReactorSessionTest {
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
 
-        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, viaEntityPathSenderLinkName, viaEntityPath))
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
             .thenReturn(sendViaEntityLinkHandler);
-        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, entityPath, entityPath))
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
             .thenReturn(sendEntityLinkHandler);
 
         Delivery delivery = mock(Delivery.class);
@@ -164,15 +170,15 @@ public class ServiceBusReactorSessionTest {
         when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
         when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
 
-        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, viaEntityPath)).thenReturn(tokenManagerViaQueue);
-        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManagerEntity);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
         when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
 
-        when(session.sender(viaEntityPathSenderLinkName)).thenReturn(senderViaEntity);
-        when(session.sender(entityPath)).thenReturn(senderEntity);
+        when(session.sender(VIA_ENTITY_PATH_SENDER_LINK_NAME)).thenReturn(senderViaEntity);
+        when(session.sender(ENTITY_PATH)).thenReturn(senderEntity);
         doNothing().when(session).open();
         doNothing().when(senderViaEntity).setSource(any(Source.class));
         doNothing().when(senderEntity).setSource(any(Source.class));
@@ -187,9 +193,8 @@ public class ServiceBusReactorSessionTest {
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
-        Duration openTimeout = Duration.ofSeconds(60);
-        serviceBusReactorSession = new ServiceBusReactorSession(session, handler, sessionName, reactorProvider,
-            handlerProvider, cbsNodeSupplier, tokenManagerProvider, openTimeout, messageSerializer, retryPolicy);
+        serviceBusReactorSession = new ServiceBusReactorSession(session, handler, SESSION_NAME, reactorProvider,
+            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions);
     }
 
     @AfterEach
@@ -205,12 +210,11 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createViaSenderLink() throws IOException {
         // Arrange
-        final Duration timeout = Duration.ofSeconds(20);
-        final AmqpRetryPolicy retryMock = mock(AmqpRetryPolicy.class);
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
-        serviceBusReactorSession.createProducer(viaEntityPathSenderLinkName, viaEntityPath, timeout, retryMock, entityPath)
+        serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH)
             .subscribe();
 
         // Assert
@@ -224,7 +228,7 @@ public class ServiceBusReactorSessionTest {
         invocations.get(0).run();
 
         verify(senderViaEntity).setProperties(argThat(linkProperties ->
-            ((String) linkProperties.get(LINK_TRANSFER_DESTINATION_PROPERTY)).equalsIgnoreCase(entityPath)
+            ((String) linkProperties.get(LINK_TRANSFER_DESTINATION_PROPERTY)).equalsIgnoreCase(ENTITY_PATH)
         ));
     }
 
@@ -234,15 +238,14 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createViaSenderLinkDestinationEntityAuthorizeFails() throws IOException {
         // Arrange
-        final Duration timeout = Duration.ofSeconds(20);
-        final AmqpRetryPolicy retryMock = mock(AmqpRetryPolicy.class);
         final Throwable authorizeError = new RuntimeException("Failed to Authorize EntityPath");
         doNothing().when(dispatcher).invoke(any(Runnable.class));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.error(authorizeError));
 
         // Act
-        StepVerifier.create(serviceBusReactorSession.createProducer(viaEntityPathSenderLinkName, viaEntityPath, timeout,
-            retryMock, entityPath)).verifyError(RuntimeException.class);
+        StepVerifier.create(serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH))
+            .verifyError(RuntimeException.class);
 
         // Assert
         verify(tokenManagerEntity).authorize();
@@ -256,12 +259,11 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createSenderLink() throws IOException {
         // Arrange
-        final Duration timeout = Duration.ofSeconds(20);
-        final AmqpRetryPolicy retryMock = mock(AmqpRetryPolicy.class);
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
-        serviceBusReactorSession.createProducer(entityPath, entityPath, timeout, retryMock, null)
+        serviceBusReactorSession.createProducer(ENTITY_PATH, ENTITY_PATH, retryOptions.getTryTimeout(),
+            retryPolicy, null)
             .subscribe();
 
         // Assert

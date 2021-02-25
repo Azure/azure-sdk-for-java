@@ -35,7 +35,7 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
 
         final Mono<AnomalyAlertConfiguration> createdAnomalyAlertConfigMono =
             advisorAdministrationAsyncClient.createAnomalyAlertConfig(
-            new AnomalyAlertConfiguration("My Anomaly Alert config name")
+                new AnomalyAlertConfiguration("My Anomaly Alert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
                     new MetricAnomalyAlertConfiguration(detectionConfigurationId1,

@@ -3,6 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AspectSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.OpinionSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AspectConfidenceScoreLabel;
@@ -16,7 +19,6 @@ import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -44,6 +46,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -158,13 +162,15 @@ class AnalyzeSentimentAsyncClient {
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
                     sentenceSentiment.getConfidenceScores();
                 final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
-                return new SentenceSentiment(sentenceSentiment.getText(),
+                final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     toMinedOpinionList(sentenceSentiment, documentSentimentList),
                     sentenceSentiment.getOffset()
                 );
+                SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, sentenceSentiment.getLength());
+                return sentenceSentiment1;
             }).collect(Collectors.toList());
 
         // Warnings
@@ -205,24 +211,17 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
-        String modelVersion = null;
-        Boolean includeStatistics = null;
-        Boolean includeOpinionMining = null;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-            includeOpinionMining = options.isIncludeOpinionMining();
-        }
+        options = options == null ? new AnalyzeSentimentOptions() : options;
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)
-            )
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
-            .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-            .map(this::toAnalyzeSentimentResultCollectionResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            options.getModelVersion(), options.isIncludeStatistics(), options.isIncludeOpinionMining(),
+            getNonNullStringIndexType(options.getStringIndexType()),
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                   .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
+                   .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+                   .map(this::toAnalyzeSentimentResultCollectionResponse)
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /*
@@ -247,13 +246,12 @@ class AnalyzeSentimentAsyncClient {
                         findSentimentOpinion(opinionPointer, documentSentimentList)));
                 }
             });
-
-            minedOpinions.add(new MinedOpinion(
-                new AspectSentiment(sentenceAspect.getText(),
-                    TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                    sentenceAspect.getOffset(),
-                    toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
-                new IterableStream<>(opinionSentiments)));
+            final AspectSentiment aspectSentiment = new AspectSentiment(sentenceAspect.getText(),
+                TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
+                sentenceAspect.getOffset(),
+                toSentimentConfidenceScores(sentenceAspect.getConfidenceScores()));
+            AspectSentimentPropertiesHelper.setLength(aspectSentiment, sentenceAspect.getLength());
+            minedOpinions.add(new MinedOpinion(aspectSentiment, new IterableStream<>(opinionSentiments)));
         });
 
         return new IterableStream<>(minedOpinions);
@@ -272,10 +270,12 @@ class AnalyzeSentimentAsyncClient {
      * Transform type SentenceOpinion to OpinionSentiment.
      */
     private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
-        return new OpinionSentiment(sentenceOpinion.getText(),
+        final OpinionSentiment opinionSentiment = new OpinionSentiment(sentenceOpinion.getText(),
             TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
             sentenceOpinion.getOffset(), sentenceOpinion.isNegated(),
             toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
+        OpinionSentimentPropertiesHelper.setLength(opinionSentiment, sentenceOpinion.getLength());
+        return opinionSentiment;
     }
 
     /*

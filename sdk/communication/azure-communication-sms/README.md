@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.3</version> 
+  <version>1.0.0-beta.4</version> 
 </dependency>
 ```
 

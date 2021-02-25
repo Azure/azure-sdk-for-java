@@ -81,7 +81,7 @@ public class AADResourceServerOboConfiguration {
     private ClientRegistration.Builder createClientBuilder(String id) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
+        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/");
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 

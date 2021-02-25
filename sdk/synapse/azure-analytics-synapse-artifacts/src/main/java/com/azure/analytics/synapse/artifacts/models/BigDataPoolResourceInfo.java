@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** A Big Data pool. */
 @JsonFlatten
@@ -44,16 +45,22 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private Boolean isComputeIsolationEnabled;
 
     /*
-     * Whether library requirements changed.
-     */
-    @JsonProperty(value = "properties.haveLibraryRequirementsChanged")
-    private Boolean haveLibraryRequirementsChanged;
-
-    /*
      * Whether session level packages enabled.
      */
     @JsonProperty(value = "properties.sessionLevelPackagesEnabled")
     private Boolean sessionLevelPackagesEnabled;
+
+    /*
+     * The cache size
+     */
+    @JsonProperty(value = "properties.cacheSize")
+    private Integer cacheSize;
+
+    /*
+     * Dynamic Executor Allocation
+     */
+    @JsonProperty(value = "properties.dynamicExecutorAllocation")
+    private DynamicExecutorAllocation dynamicExecutorAllocation;
 
     /*
      * The Spark events folder
@@ -72,6 +79,12 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     @JsonProperty(value = "properties.libraryRequirements")
     private LibraryRequirements libraryRequirements;
+
+    /*
+     * List of custom libraries/packages associated with the spark pool.
+     */
+    @JsonProperty(value = "properties.customLibraries")
+    private List<LibraryResourceProperties> customLibraries;
 
     /*
      * Spark configuration file to specify additional properties
@@ -204,26 +217,6 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the haveLibraryRequirementsChanged property: Whether library requirements changed.
-     *
-     * @return the haveLibraryRequirementsChanged value.
-     */
-    public Boolean isHaveLibraryRequirementsChanged() {
-        return this.haveLibraryRequirementsChanged;
-    }
-
-    /**
-     * Set the haveLibraryRequirementsChanged property: Whether library requirements changed.
-     *
-     * @param haveLibraryRequirementsChanged the haveLibraryRequirementsChanged value to set.
-     * @return the BigDataPoolResourceInfo object itself.
-     */
-    public BigDataPoolResourceInfo setHaveLibraryRequirementsChanged(Boolean haveLibraryRequirementsChanged) {
-        this.haveLibraryRequirementsChanged = haveLibraryRequirementsChanged;
-        return this;
-    }
-
-    /**
      * Get the sessionLevelPackagesEnabled property: Whether session level packages enabled.
      *
      * @return the sessionLevelPackagesEnabled value.
@@ -240,6 +233,46 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     public BigDataPoolResourceInfo setSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
         this.sessionLevelPackagesEnabled = sessionLevelPackagesEnabled;
+        return this;
+    }
+
+    /**
+     * Get the cacheSize property: The cache size.
+     *
+     * @return the cacheSize value.
+     */
+    public Integer getCacheSize() {
+        return this.cacheSize;
+    }
+
+    /**
+     * Set the cacheSize property: The cache size.
+     *
+     * @param cacheSize the cacheSize value to set.
+     * @return the BigDataPoolResourceInfo object itself.
+     */
+    public BigDataPoolResourceInfo setCacheSize(Integer cacheSize) {
+        this.cacheSize = cacheSize;
+        return this;
+    }
+
+    /**
+     * Get the dynamicExecutorAllocation property: Dynamic Executor Allocation.
+     *
+     * @return the dynamicExecutorAllocation value.
+     */
+    public DynamicExecutorAllocation getDynamicExecutorAllocation() {
+        return this.dynamicExecutorAllocation;
+    }
+
+    /**
+     * Set the dynamicExecutorAllocation property: Dynamic Executor Allocation.
+     *
+     * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
+     * @return the BigDataPoolResourceInfo object itself.
+     */
+    public BigDataPoolResourceInfo setDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation) {
+        this.dynamicExecutorAllocation = dynamicExecutorAllocation;
         return this;
     }
 
@@ -300,6 +333,26 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     public BigDataPoolResourceInfo setLibraryRequirements(LibraryRequirements libraryRequirements) {
         this.libraryRequirements = libraryRequirements;
+        return this;
+    }
+
+    /**
+     * Get the customLibraries property: List of custom libraries/packages associated with the spark pool.
+     *
+     * @return the customLibraries value.
+     */
+    public List<LibraryResourceProperties> getCustomLibraries() {
+        return this.customLibraries;
+    }
+
+    /**
+     * Set the customLibraries property: List of custom libraries/packages associated with the spark pool.
+     *
+     * @param customLibraries the customLibraries value to set.
+     * @return the BigDataPoolResourceInfo object itself.
+     */
+    public BigDataPoolResourceInfo setCustomLibraries(List<LibraryResourceProperties> customLibraries) {
+        this.customLibraries = customLibraries;
         return this;
     }
 

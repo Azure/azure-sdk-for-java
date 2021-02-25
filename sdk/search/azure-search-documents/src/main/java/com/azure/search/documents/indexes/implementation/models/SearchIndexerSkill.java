@@ -36,6 +36,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.EntityRecognitionSkill", value = EntityRecognitionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SentimentSkill", value = SentimentSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SplitSkill", value = SplitSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.CustomEntityLookupSkill", value = CustomEntityLookupSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.TranslationSkill", value = TextTranslationSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })

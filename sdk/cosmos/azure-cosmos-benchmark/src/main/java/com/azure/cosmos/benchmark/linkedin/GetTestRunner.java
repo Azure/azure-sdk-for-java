@@ -21,22 +21,19 @@ import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractorImpl;
 import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
-import com.azure.cosmos.benchmark.linkedin.impl.models.Entity;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
-import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
 import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
@@ -49,17 +46,18 @@ import org.slf4j.LoggerFactory;
  * for the parallelism control.
  *
  * The Latency tracking and reposting is handled within the Accessor, and not in this method.
- *
- * TODO: Change how testData is stored. For the 10M document scenario, we should not hold it all in memory
  */
 public class GetTestRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GetTestRunner.class);
-    private static final boolean VALIDATE_RESULTS = false;
+    private static final Duration TERMINATION_WAIT_DURATION = Duration.ofSeconds(60);
 
     private final Configuration _configuration;
     private final Accessor<Key, JsonNode> _accessor;
     private final ExecutorService _executorService;
+    private final AtomicLong _successCount;
+    private final AtomicLong _errorCount;
+    private final Semaphore _semaphore;
 
     GetTestRunner(final Configuration configuration,
         final CosmosAsyncClient client,
@@ -73,66 +71,58 @@ public class GetTestRunner {
 
         _configuration = configuration;
         _accessor = createAccessor(configuration, client, metricsRegistry);
-        _executorService = Executors.newFixedThreadPool(_configuration.getConcurrency());
+        _executorService = Executors.newFixedThreadPool(configuration.getConcurrency());
+        _successCount = new AtomicLong(0);
+        _errorCount = new AtomicLong(0);
+        _semaphore = new Semaphore(configuration.getConcurrency());
     }
 
-    public void run(Map<Key, ObjectNode> testData) {
-        final ArrayList<Key> keys = new ArrayList<>(testData.keySet());
+    public void run(final Set<Key> testKeys) {
+        final ArrayList<Key> keys = new ArrayList<>(testKeys);
         Collections.shuffle(keys);
         final long runStartTime = System.currentTimeMillis();
-        final AtomicLong successCount = new AtomicLong(0);
-        final AtomicLong errorCount = new AtomicLong(0);
         long i = 0;
         for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
             int index = (int) ((i % keys.size()) % Integer.MAX_VALUE);
             final Key key = keys.get(index);
-            _executorService.submit(() -> runOperation(key, testData, successCount, errorCount));
+            try {
+                _semaphore.acquire();
+            } catch (InterruptedException e) {
+                // Continue the execution, since the check above handles checks for error thresholds
+                _errorCount.incrementAndGet();
+                continue;
+            }
+            _executorService.submit(() -> runOperation(key));
         }
 
+        // Log the completion details
+        final Instant runEndTime = Instant.now();
+        LOGGER.info("Number of iterations: {}, Errors: {}, Runtime: {} millis",
+            _successCount.get(),
+            _errorCount.get(),
+            runEndTime.minusMillis(runStartTime).toEpochMilli());
+    }
+
+    public void cleanup() {
         try {
-            _executorService.awaitTermination(60, TimeUnit.SECONDS);
+            _executorService.awaitTermination(TERMINATION_WAIT_DURATION.getSeconds(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             LOGGER.error("Error awaiting the completion of all tasks", e);
         }
 
-        final Instant runEndTime = Instant.now();
-        LOGGER.info("Number of iterations: {}, Errors: {}, Runtime: {} millis",
-            successCount.get(),
-            errorCount.get(),
-            runEndTime.minusMillis(runStartTime).toEpochMilli());
         _executorService.shutdown();
     }
 
-    private void runOperation(final Key key, final Map<Key, ObjectNode> testData,
-        final AtomicLong successCount, final AtomicLong errorCount) {
+    private void runOperation(final Key key) {
         try {
-            final Result<Key, JsonNode> result = _accessor.get(key, GetRequestOptions.EMPTY_REQUEST_OPTIONS);
-            if (VALIDATE_RESULTS && !expectedResponse(testData.get(key), result)) {
-                LOGGER.info("Result mismatch for Key {}; Actual value: {}, Expected: {}", key, result.getResult(),
-                    testData.get(key));
-                errorCount.getAndIncrement();
-            }
-            successCount.getAndIncrement();
+            _accessor.get(key, GetRequestOptions.EMPTY_REQUEST_OPTIONS);
+            _successCount.getAndIncrement();
         } catch (AccessorException e) {
-            errorCount.getAndIncrement();
+            LOGGER.error("Received running exception", e);
+            _errorCount.getAndIncrement();
+        } finally {
+            _semaphore.release();
         }
-    }
-
-    private boolean expectedResponse(final ObjectNode expectedResult, final Result<Key, JsonNode> result) {
-        final JsonNode actualValue = result.getResult()
-            .map(Entity::get)
-            .orElse(null);
-        final Iterator<String> fieldNames = expectedResult.fieldNames();
-        while (fieldNames.hasNext()) {
-            final String field = fieldNames.next();
-            final JsonNode expectedJsonNode = expectedResult.get(field);
-            final JsonNode actualJsonNode = actualValue.get(field);
-            if (!expectedJsonNode.equals(actualJsonNode)) {
-                LOGGER.info("mismatch Actual value: {}, Expected: {}", actualJsonNode, expectedJsonNode);
-                return false;
-            }
-        }
-        return true;
     }
 
     private Accessor<Key, JsonNode> createAccessor(final Configuration configuration,

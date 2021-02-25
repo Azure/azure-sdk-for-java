@@ -22,14 +22,16 @@ public final class ChatMessageConverter {
         ChatMessage chatMessage = new ChatMessage()
             .setId(obj.getId())
             .setType(obj.getType())
-            .setPriority(obj.getPriority())
             .setVersion(obj.getVersion())
             .setContent(obj.getContent())
             .setCreatedOn(obj.getCreatedOn())
-            .setSender(new CommunicationUserIdentifier(obj.getSenderId()))
             .setDeletedOn(obj.getDeletedOn())
             .setEditedOn(obj.getEditedOn())
             .setSenderDisplayName(obj.getSenderDisplayName());
+
+        if (obj.getSenderId() != null && !obj.getSenderId().isEmpty()) {
+            chatMessage.setSender(new CommunicationUserIdentifier(obj.getSenderId()));
+        }
 
         return chatMessage;
     }

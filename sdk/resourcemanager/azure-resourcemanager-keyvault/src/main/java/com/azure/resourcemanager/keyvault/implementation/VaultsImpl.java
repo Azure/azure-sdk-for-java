@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Vaults and its parent interfaces. */
 public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsClient, KeyVaultManager>
@@ -85,7 +86,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public PagedIterable<DeletedVault> listDeleted() {
-        return this.inner().listDeleted().mapPage(DeletedVaultImpl::new);
+        return PagedConverter.mapPage(this.inner().listDeleted(), DeletedVaultImpl::new);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public PagedFlux<DeletedVault> listDeletedAsync() {
-        return this.inner().listDeletedAsync().mapPage(DeletedVaultImpl::new);
+        return PagedConverter.mapPage(this.inner().listDeletedAsync(), DeletedVaultImpl::new);
     }
 
     @Override

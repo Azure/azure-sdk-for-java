@@ -22,5 +22,8 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .anyRequest().authenticated();
     }
 }
