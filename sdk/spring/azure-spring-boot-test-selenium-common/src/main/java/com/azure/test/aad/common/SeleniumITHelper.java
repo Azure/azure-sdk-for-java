@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.Map;
 
 public class SeleniumITHelper {
-    private static Logger logger = LoggerFactory.getLogger(SeleniumITHelper.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(SeleniumITHelper.class);
     private static String WEB_DRIVER_FOLDER_NAME = "webdriver";
 
     protected AppRunner app;
@@ -68,7 +68,7 @@ public class SeleniumITHelper {
 
     private void setPathExecutableRecursively(File file) {
         if (!file.exists()) {
-            logger.warn("Path " + file + " does not exist!");
+            LOGGER.warn("Path " + file + " does not exist!");
             return;
         }
 
@@ -78,7 +78,7 @@ public class SeleniumITHelper {
             }
         } else {
             if (!file.setExecutable(true)) {
-                logger.error("Failed to set executable for " + file);
+                LOGGER.error("Failed to set executable for " + file);
             }
         }
     }

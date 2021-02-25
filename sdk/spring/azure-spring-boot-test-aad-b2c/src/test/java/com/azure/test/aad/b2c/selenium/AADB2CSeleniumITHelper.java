@@ -15,11 +15,16 @@ import com.azure.spring.test.Constant;
 import com.azure.test.aad.common.SeleniumITHelper;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AADB2CSeleniumITHelper extends SeleniumITHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CSeleniumITHelper.class);
 
     private String userEmail;
     private String userPassword;
@@ -47,6 +52,8 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     public void logIn() {
         driver.get(app.root());
+        LOGGER.info("Current url is " + driver.getCurrentUrl());
+        LOGGER.info("Current page source:\n" + driver.getPageSource());
         if (isAzureCloudGlobal) {
             wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         } else {
