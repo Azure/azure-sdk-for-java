@@ -34,7 +34,7 @@ public final class ManageVirtualMachineExtension {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 10);
         final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 10);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVE", 15);
@@ -70,7 +70,7 @@ public final class ManageVirtualMachineExtension {
         final String windowsCustomScriptExtensionTypeName = "CustomScriptExtension";
         final String windowsCustomScriptExtensionVersionName = "1.7";
 
-        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/installMySQL.ps1";
+        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/installMySQL.ps1";
         final String installMySQLWindowsCommand = "powershell.exe -ExecutionPolicy Unrestricted -File installMySQL.ps1";
         final List<String> windowsScriptFileUris = new ArrayList<>();
         windowsScriptFileUris.add(mySqlWindowsInstallScript);

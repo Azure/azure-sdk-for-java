@@ -15,6 +15,8 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlContainerG
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlStoredProcedureGetResults;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlUserDefinedFunctionGetResults;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlTriggerGetResults;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleDefinitionGetResults;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleAssignmentGetResults;
 
 /**
  * Type representing SqlResources.
@@ -54,6 +56,20 @@ public interface SqlResources {
      * @return the first stage of the new Trigger definition.
      */
     SqlTriggerGetResults.DefinitionStages.Blank defineTrigger(String name);
+
+    /**
+     * Begins definition for a new SqlRoleDefinition resource.
+     * @param name resource name.
+     * @return the first stage of the new SqlRoleDefinition definition.
+     */
+    SqlRoleDefinitionGetResults.DefinitionStages.Blank defineSqlRoleDefinition(String name);
+
+    /**
+     * Begins definition for a new SqlRoleAssignment resource.
+     * @param name resource name.
+     * @return the first stage of the new SqlRoleAssignment definition.
+     */
+    SqlRoleAssignmentGetResults.DefinitionStages.Blank defineSqlRoleAssignment(String name);
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
@@ -283,5 +299,69 @@ public interface SqlResources {
      * @return the observable for the request
      */
     Completable deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlRoleDefinitionGetResults> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlRoleDefinitionGetResults> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlRoleAssignmentGetResults> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlRoleAssignmentGetResults> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName);
 
 }

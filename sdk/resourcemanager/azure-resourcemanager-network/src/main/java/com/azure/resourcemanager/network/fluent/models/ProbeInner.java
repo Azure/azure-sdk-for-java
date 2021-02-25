@@ -266,6 +266,13 @@ public class ProbeInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ProbeInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -29,7 +29,7 @@ Maven dependency for Azure Cognitive Search Client library. Add it to your proje
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.2.0-beta.3</version>
+    <version>11.2.0</version>
 </dependency>
 ```
 

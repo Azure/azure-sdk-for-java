@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
@@ -134,10 +135,20 @@ public class CosmosTemplateIT {
         cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
-    @Test(expected = CosmosAccessException.class)
-    public void testInsertDuplicateId() {
-        cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+    private void insertPerson(Person person) {
+        cosmosTemplate.insert(person,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(person)));
+    }
+
+    @Test
+    public void testInsertDuplicateIdShouldFailWithConflictException() {
+        try {
+            cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException() instanceof ConflictException);
+        }
     }
 
     @Test(expected = CosmosAccessException.class)
@@ -417,6 +428,33 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testFindWithSortAndLimit() {
+        final Person testPerson4 = new Person("id_4", "fred", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person testPerson5 = new Person("id_5", "barney", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person testPerson6 = new Person("id_6", "george", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+
+        insertPerson(testPerson4);
+        insertPerson(testPerson5);
+        insertPerson(testPerson6);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "lastName",
+            Collections.singletonList(NEW_LAST_NAME), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        query.with(Sort.by(Sort.Direction.ASC, "firstName"));
+
+        final List<Person> result = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getFirstName()).isEqualTo("barney");
+        assertThat(result.get(1).getFirstName()).isEqualTo("fred");
+        assertThat(result.get(2).getFirstName()).isEqualTo("george");
+
+        query.setLimit(1);
+        final List<Person> resultWithLimit = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(resultWithLimit.size()).isEqualTo(1);
+        assertThat(resultWithLimit.get(0).getFirstName()).isEqualTo("barney");
     }
 
     @Test

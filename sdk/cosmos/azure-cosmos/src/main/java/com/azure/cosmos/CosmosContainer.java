@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -339,6 +340,53 @@ public class CosmosContainer {
     }
 
     /**
+     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
+     *
+     * @param <T> the type parameter.
+     * @param querySpec the query spec.
+     * @param options the options.
+     * @param classType the class type.
+     * @param feedRange the feedrange
+     * @return the {@link CosmosPagedIterable}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec,
+                                                 CosmosQueryRequestOptions options,
+                                                 Class<T> classType,
+                                                 FeedRange feedRange) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType, feedRange));
+    }
+
+
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * The next page can be retrieved by calling queryChangeFeed again with a new instance of
+     * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
+     * {@link FeedResponse} instance.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one feed response page
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedIterable<T> queryChangeFeed(
+        CosmosChangeFeedRequestOptions options,
+        Class<T> classType) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        options.setMaxPrefetchPageCount(1);
+
+        return getCosmosPagedIterable(
+            this.asyncContainer
+                .queryChangeFeed(options, classType));
+    }
+
+    /**
      * Reads many documents.
      *
      * @param <T> the type parameter
@@ -456,6 +504,50 @@ public class CosmosContainer {
                                                  PartitionKey partitionKey,
                                                  CosmosItemRequestOptions options) {
         return this.blockItemResponse(asyncContainer.replaceItem(item, itemId, partitionKey, options));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param itemType the item type.
+     *
+     * @return the Cosmos item resource response with the patched item or an exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, itemType));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param options the request options.
+     * @param itemType the item type.
+     *
+     * @return the Cosmos item resource response with the patched item or an exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosItemRequestOptions options,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
     }
 
     /**
@@ -649,5 +741,55 @@ public class CosmosContainer {
                 throw ex;
             }
         }
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput, isDefault);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
+        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, isDefault);
     }
 }

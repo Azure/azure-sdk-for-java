@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Virtual Network Rule operations. */
 public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsImpl<SqlVirtualNetworkRule>
@@ -119,12 +120,11 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
     @Override
     public PagedFlux<SqlVirtualNetworkRule> listBySqlServerAsync(
         final String resourceGroupName, final String sqlServerName) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getVirtualNetworkRules()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 inner ->
                     new SqlVirtualNetworkRuleImpl(
                         resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
@@ -152,12 +152,11 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
     @Override
     public PagedFlux<SqlVirtualNetworkRule> listBySqlServerAsync(final SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getVirtualNetworkRules()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
                 inner ->
                     new SqlVirtualNetworkRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServerManager));
     }

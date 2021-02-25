@@ -7,7 +7,6 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
@@ -108,10 +107,10 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
 
                 String methodCallName =
                     FullIdent.createFullIdent(methodCallToken.findFirstToken(TokenTypes.DOT)).getText();
-                if (!LOGGER_LOG_EXCEPTION_AS_ERROR.equals(methodCallName)
-                    && !LOGGER_LOG_THROWABLE_AS_ERROR.equals(methodCallName)
-                    && !LOGGER_LOG_EXCEPTION_AS_WARNING.equals(methodCallName)
-                    && !LOGGER_LOG_THROWABLE_AS_WARNING.equals(methodCallName)) {
+                if (!LOGGER_LOG_EXCEPTION_AS_ERROR.equalsIgnoreCase(methodCallName)
+                    && !LOGGER_LOG_THROWABLE_AS_ERROR.equalsIgnoreCase(methodCallName)
+                    && !LOGGER_LOG_EXCEPTION_AS_WARNING.equalsIgnoreCase(methodCallName)
+                    && !LOGGER_LOG_THROWABLE_AS_WARNING.equalsIgnoreCase(methodCallName)) {
                     log(token, String.format(THROW_LOGGER_EXCEPTION_MESSAGE, LOGGER_LOG_EXCEPTION_AS_ERROR,
                         LOGGER_LOG_THROWABLE_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING,
                         LOGGER_LOG_THROWABLE_AS_WARNING));

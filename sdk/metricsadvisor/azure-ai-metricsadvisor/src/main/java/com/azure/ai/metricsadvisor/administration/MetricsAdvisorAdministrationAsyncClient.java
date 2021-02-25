@@ -329,21 +329,33 @@ public class MetricsAdvisorAdministrationAsyncClient {
                     ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
                 .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
                     ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-                .setNeedRollup(DataFeedDetailPatchNeedRollup.fromString(
-                    dataFeedRollupSettings.getRollupType().toString()))
+                .setNeedRollup(
+                    dataFeedRollupSettings.getRollupType() != null
+                    ? DataFeedDetailPatchNeedRollup.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    : null)
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-                .setRollUpMethod(DataFeedDetailPatchRollUpMethod.fromString(
-                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
-                        ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setRollUpMethod(
+                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
+                    ? DataFeedDetailPatchRollUpMethod.fromString(
+                        dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
+                        : null)
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointForAd(DataFeedDetailPatchFillMissingPointForAd.fromString(
-                    dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointForAd(
+                    dataFeedMissingDataPointFillSettings.getFillType() != null
+                    ? DataFeedDetailPatchFillMissingPointForAd.fromString(
+                        dataFeedMissingDataPointFillSettings.getFillType().toString())
+                        : null)
                 .setFillMissingPointForAdValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-                .setViewMode(DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode() == null
-                    ? null : dataFeedOptions.getAccessMode().toString()))
+                .setViewMode(
+                    dataFeedOptions.getAccessMode() != null
+                    ? DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                        : null)
                 .setViewers(dataFeedOptions.getViewerEmails())
                 .setAdmins(dataFeedOptions.getAdminEmails())
-                .setStatus(DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString()))
+                .setStatus(
+                    dataFeed.getStatus() != null
+                        ? DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString())
+                        : null)
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }

@@ -50,23 +50,11 @@
         "type": "string",
         "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryConnectionString]"
       },
-      "ADMINISTRATION_SERVICE_ENDPOINT": {
+      "COMMUNICATION_SERVICE_ENDPOINT": {
         "type": "string",
         "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
       },
-      "ADMINISTRATION_SERVICE_ACCESS_TOKEN": {
-        "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
-      },
-      "CHAT_SERVICE_ENDPOINT": {
-        "type": "string",
-        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
-      },
-      "COMMUNICATION_SERVICES_CONNECTION_STRING": {
-        "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
-      },
-      "COMMUNICATION_SERVICES_ACCESS_KEY": {
+      "COMMUNICATION_SERVICE_ACCESS_KEY": {
         "type": "string",
         "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
       },

@@ -4,9 +4,9 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
-      "x-ms-client-request-id" : "c913ac25-46df-440a-930b-0d3137a77d90",
-      "Content-Type" : "application/json"
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ce9389eb-f19e-4089-b642-792d7dce8705",
+      "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,14 +14,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 04 Nov 2020 23:45:51 GMT",
+      "Date" : "Tue, 09 Feb 2021 06:55:01 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test49990d310c')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test88079bdb65')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "dfccdd09-3002-00d2-3a04-b349b2000000",
+      "x-ms-request-id" : "0a5dd2be-a002-0046-2fb0-fefedb000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "c913ac25-46df-440a-930b-0d3137a77d90",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test49990d310c')"
+      "x-ms-client-request-id" : "ce9389eb-f19e-4089-b642-792d7dce8705",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test88079bdb65')"
     },
     "Exception" : null
   }, {
@@ -29,9 +29,9 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
-      "x-ms-client-request-id" : "2af894de-fa45-4e57-ab29-10a3661bf791",
-      "Content-Type" : "application/json"
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bc55f200-3528-4285-86e7-86199ece2669",
+      "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -40,15 +40,15 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "409",
-      "Date" : "Wed, 04 Nov 2020 23:45:51 GMT",
+      "Date" : "Tue, 09 Feb 2021 06:55:01 GMT",
       "Cache-Control" : "no-cache",
-      "x-ms-request-id" : "dfccdd1c-3002-00d2-4a04-b349b2000000",
-      "Body" : "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified already exists.\\nRequestId:dfccdd1c-3002-00d2-4a04-b349b2000000\\nTime:2020-11-04T23:45:51.5683719Z\"}}}",
+      "x-ms-request-id" : "0a5dd2c5-a002-0046-32b0-fefedb000000",
+      "Body" : "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified already exists.\\nRequestId:0a5dd2c5-a002-0046-32b0-fefedb000000\\nTime:2021-02-09T06:55:02.3682267Z\"}}}",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "2af894de-fa45-4e57-ab29-10a3661bf791",
+      "x-ms-client-request-id" : "bc55f200-3528-4285-86e7-86199ece2669",
       "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test49990d310c" ]
+  "variables" : [ "test88079bdb65" ]
 }

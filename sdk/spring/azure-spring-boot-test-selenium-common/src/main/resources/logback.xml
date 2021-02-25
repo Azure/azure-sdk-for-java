@@ -1,0 +1,3 @@
+<configuration>
+    <logger name="org.apache.hc" level="INFO" />
+</configuration>

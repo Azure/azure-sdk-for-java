@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class WebController {
-    private static final Logger log = LoggerFactory.getLogger(WebController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebController.class);
     private static final String STORAGE_QUEUE_NAME = "example";
 
     @Autowired
@@ -30,8 +30,10 @@ public class WebController {
 
     @PostMapping("/messages")
     public String send(@RequestParam("message") String message) {
-        this.storageQueueOperation.sendAsync(STORAGE_QUEUE_NAME, MessageBuilder.withPayload(message).build())
+        this.storageQueueOperation
+            .sendAsync(STORAGE_QUEUE_NAME, MessageBuilder.withPayload(message).build())
             .subscribe();
+        LOGGER.info("Message {} has been sent successfully.", message);
         return message;
     }
 
@@ -41,15 +43,16 @@ public class WebController {
         this.storageQueueOperation.setCheckpointMode(CheckpointMode.MANUAL);
         Message<?> message = this.storageQueueOperation.receiveAsync(STORAGE_QUEUE_NAME).block();
         if (message == null) {
-            log.info("You have no new messages.");
+            LOGGER.info("You have no new messages.");
             return null;
         }
-        log.info("Message arrived! Payload: " + message.getPayload());
+        LOGGER.info("Message arrived! Payload: " + message.getPayload());
 
         Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
         checkpointer.success()
-            .doOnError(e -> log.info("Message '{}' successfully checkpointed", message.getPayload()))
-            .subscribe();
+                    .doOnSuccess(Void -> LOGGER.info("Message '{}' successfully checkpointed", message.getPayload()))
+                    .doOnError(e -> LOGGER.error("Fail to checkpoint the message", e))
+                    .subscribe();
 
         return (String) message.getPayload();
     }

@@ -91,9 +91,20 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
- * An <b>asynchronous</b> client for managing a Service Bus namespace.
+ * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
+ * {@link ServiceBusAdministrationClientBuilder}.
  *
- * @see ServiceBusAdministrationClient ServiceBusManagementClient for a synchronous client.
+ * <p><strong>Create a queue</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string}
+ *
+ * <p><strong>Edit an existing subscription</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties}
+ *
+ * <p><strong>List all queues</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues}
+ *
+ * @see ServiceBusAdministrationClientBuilder
+ * @see ServiceBusAdministrationClient ServiceBusAdministrationClient for a synchronous client.
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
 public final class ServiceBusAdministrationAsyncClient {
@@ -2551,17 +2562,26 @@ public final class ServiceBusAdministrationAsyncClient {
 
         final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
         final ServiceBusManagementError error = managementError.getValue();
-        switch (error.getCode()) {
+        final HttpResponse errorHttpResponse = managementError.getResponse();
+
+        final int statusCode = error != null && error.getCode() != null
+            ? error.getCode()
+            : errorHttpResponse.getStatusCode();
+        final String errorDetail = error != null && error.getDetail() != null
+            ? error.getDetail()
+            : managementError.getMessage();
+
+        switch (statusCode) {
             case 401:
-                return new ClientAuthenticationException(error.getDetail(), managementError.getResponse(), exception);
+                return new ClientAuthenticationException(errorDetail, managementError.getResponse(), exception);
             case 404:
-                return new ResourceNotFoundException(error.getDetail(), managementError.getResponse(), exception);
+                return new ResourceNotFoundException(errorDetail, managementError.getResponse(), exception);
             case 409:
-                return new ResourceExistsException(error.getDetail(), managementError.getResponse(), exception);
+                return new ResourceExistsException(errorDetail, managementError.getResponse(), exception);
             case 412:
-                return new ResourceModifiedException(error.getDetail(), managementError.getResponse(), exception);
+                return new ResourceModifiedException(errorDetail, managementError.getResponse(), exception);
             default:
-                return new HttpResponseException(error.getDetail(), managementError.getResponse(), exception);
+                return new HttpResponseException(errorDetail, managementError.getResponse(), exception);
         }
     }
 

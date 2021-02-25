@@ -215,7 +215,47 @@ public class VirtualMachinesImpl
                 logger,
                 this.manager().serviceClient().getHttpPipeline(),
                 this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(),
+                Function.identity(),
+                Void.class,
+                null);
+    }
+
+    @Override
+    public void deleteById(String id, boolean forceDeletion) {
+        deleteByIdAsync(id, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
+        return deleteByResourceGroupAsync(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+    }
+
+    @Override
+    public void deleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        deleteByResourceGroupAsync(resourceGroupName, name, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name, boolean forceDeletion) {
+        return this.inner().deleteAsync(resourceGroupName, name, forceDeletion);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id, boolean forceDeletion) {
+        return beginDeleteByResourceGroup(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
                 Function.identity(),
                 Void.class,
                 null);

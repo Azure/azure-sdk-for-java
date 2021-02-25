@@ -23,7 +23,7 @@ import java.util.Objects;
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session
  * id.</p>
- * * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {

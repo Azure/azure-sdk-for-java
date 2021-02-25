@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Describes a Virtual Machine Scale Set. */
 @JsonFlatten
@@ -357,6 +358,13 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     public VirtualMachineScaleSetUpdate withProximityPlacementGroup(SubResource proximityPlacementGroup) {
         this.proximityPlacementGroup = proximityPlacementGroup;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

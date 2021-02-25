@@ -5,6 +5,7 @@ package com.azure.core.test.implementation.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class HttpBinJSON {
     private String url;
 
     @JsonProperty()
-    private Map<String, String> headers;
+    private Map<String, List<String>> headers;
 
     @JsonProperty()
     private Object data;
@@ -43,8 +44,12 @@ public class HttpBinJSON {
      *
      * @return The response headers.
      */
-    public Map<String, String> headers() {
+    public Map<String, List<String>> headers() {
         return headers;
+    }
+
+    public String getHeaderValue(String name) {
+        return headers == null ? null : headers.containsKey(name) ? headers.get(name).get(0) : null;
     }
 
     /**
@@ -52,7 +57,7 @@ public class HttpBinJSON {
      *
      * @param headers The response headers.
      */
-    public void headers(Map<String, String> headers) {
+    public void headers(Map<String, List<String>> headers) {
         this.headers = headers;
     }
 

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Specifies information about the proximity placement group. */
 @JsonFlatten
@@ -127,6 +128,20 @@ public class ProximityPlacementGroupInner extends Resource {
      */
     public ProximityPlacementGroupInner withColocationStatus(InstanceViewStatus colocationStatus) {
         this.colocationStatus = colocationStatus;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProximityPlacementGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProximityPlacementGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

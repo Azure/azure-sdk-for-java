@@ -3,15 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -32,6 +33,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -101,7 +104,7 @@ class RecognizeEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedEntitiesResponse(documents, options, context));
@@ -120,7 +123,7 @@ class RecognizeEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizedEntitiesResponse(documents, options, context);
@@ -149,11 +152,13 @@ class RecognizeEntityAsyncClient {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new CategorizedEntityCollection(
-                    new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                            entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()
-                        ))
-                        .collect(Collectors.toList())),
+                    new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                        final CategorizedEntity categorizedEntity =
+                            new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                                entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset());
+                        CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        return categorizedEntity;
+                    }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
                         .map(warning -> {
                             final WarningCodeValue warningCodeValue = warning.getCode();
@@ -178,19 +183,19 @@ class RecognizeEntityAsyncClient {
      * {@link RecognizeEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
      * @param documents The list of documents to recognize entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The {@link RecognizeEntitiesOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
+        options = options == null ? new RecognizeEntitiesOptions() : options;
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            StringIndexType.UTF16CODE_UNIT,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options.getModelVersion(), options.isIncludeStatistics(),
+            getNonNullStringIndexType(options.getStringIndexType()),
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))

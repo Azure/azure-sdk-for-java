@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
 import reactor.core.publisher.Mono;
 
 /**
@@ -31,11 +32,21 @@ public interface HttpClient {
     }
 
     /**
-     * Create default {@link HttpClient} instance.
+     * Creates a new {@link HttpClient} instance.
      *
-     * @return A new instance of the {@link HttpClient}.
+     * @return A new {@link HttpClient} instance.
      */
     static HttpClient createDefault() {
-        return HttpClientProviders.createInstance();
+        return createDefault(null);
+    }
+
+    /**
+     * Creates a new {@link HttpClient} instance.
+     *
+     * @param clientOptions Configuration options applied to the created {@link HttpClient}.
+     * @return A new {@link HttpClient} instance.
+     */
+    static HttpClient createDefault(HttpClientOptions clientOptions) {
+        return HttpClientProviders.createInstance(clientOptions);
     }
 }

@@ -25,6 +25,7 @@ class AzureEngSemanticVersion {
   [string] $BuildNumber
   [int] $PrereleaseNumber
   [bool] $IsPrerelease
+  [string] $VersionType
   [string] $RawVersion
   [bool] $IsSemVerFormat
   [string] $DefaultPrereleaseLabel
@@ -33,7 +34,6 @@ class AzureEngSemanticVersion {
   # Regex inspired but simplified from https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
   # Validation: https://regex101.com/r/vkijKf/426
   static [string] $SEMVER_REGEX = "(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:(?<presep>-?)(?<prelabel>[a-zA-Z]+)(?:(?<prenumsep>\.?)(?<prenumber>[0-9]{1,8})(?:(?<buildnumsep>\.?)(?<buildnumber>\d{1,3}))?)?)?"
-  static [string] $ParseLanguage = $Language
 
   static [AzureEngSemanticVersion] ParseVersionString([string] $versionString)
   {
@@ -67,7 +67,9 @@ class AzureEngSemanticVersion {
       $this.Minor = [int]$matches.Minor
       $this.Patch = [int]$matches.Patch
 
-      if ([AzureEngSemanticVersion]::ParseLanguage -eq "python") {
+      # If Language exists and is set to python setup the python conventions.
+      $parseLanguage = (Get-Variable -Name "Language" -ValueOnly -ErrorAction "Ignore")
+      if ($parseLanguage -eq "python") {
         $this.SetupPythonConventions()
       }
       else {
@@ -80,6 +82,10 @@ class AzureEngSemanticVersion {
         $this.PrereleaseLabel = "zzz"
         $this.PrereleaseNumber = 99999999
         $this.IsPrerelease = $false
+        $this.VersionType = "GA"
+        if ($this.Patch -ne 0) {
+          $this.VersionType = "Patch"
+        }
       }
       else
       {
@@ -88,6 +94,7 @@ class AzureEngSemanticVersion {
         $this.PrereleaseNumber = [int]$matches["prenumber"]
         $this.PrereleaseNumberSeparator = $matches["prenumsep"]
         $this.IsPrerelease = $true
+        $this.VersionType = "Beta"
 
         $this.BuildNumberSeparator = $matches["buildnumsep"]
         $this.BuildNumber = $matches["buildnumber"]
@@ -175,7 +182,7 @@ class AzureEngSemanticVersion {
   {
     $versions = $versionStrings | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
     $sortedVersions = [AzureEngSemanticVersion]::SortVersions($versions)
-    return ($sortedVersions | ForEach-Object { $_.ToString() })
+    return ($sortedVersions | ForEach-Object { $_.RawVersion })
   }
 
   static [AzureEngSemanticVersion[]] SortVersions([AzureEngSemanticVersion[]] $versions)
@@ -188,6 +195,7 @@ class AzureEngSemanticVersion {
 
   static [void] QuickTests()
   {
+    $global:Language = ""
     $versions = @(
       "1.0.1", 
       "2.0.0", 
@@ -251,7 +259,7 @@ class AzureEngSemanticVersion {
       Write-Host "Error: alpha string did not correctly round trip with ToString. Expected: $($alphaVerString), Actual: $($alphaVer)"
     }
 
-    [AzureEngSemanticVersion]::ParseLanguage = "python"
+    $global:Language = "python"
     $pythonAlphaVerString = "1.2.3a20200828009"
     $pythonAlphaVer = [AzureEngSemanticVersion]::new($pythonAlphaVerString)
     if (!$pythonAlphaVer.IsPrerelease) {
@@ -284,7 +292,7 @@ class AzureEngSemanticVersion {
       }
     }
 
-    [AzureEngSemanticVersion]::ParseLanguage = ""
+    $global:Language = ""
 
     $gaVerString = "1.2.3"
     $gaVer = [AzureEngSemanticVersion]::ParseVersionString($gaVerString)

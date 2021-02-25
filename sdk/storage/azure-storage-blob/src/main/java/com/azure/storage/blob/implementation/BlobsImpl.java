@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
@@ -113,7 +114,7 @@ public final class BlobsImpl {
         @Delete("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsDeleteResponse> delete(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<BlobsDeleteResponse> delete(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("deletetype") BlobDeleteType blobDeleteType, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
@@ -379,9 +380,10 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         final String ifTags = null;
         final String requestId = null;
+        final BlobDeleteType blobDeleteType = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, context);
+        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, context);
     }
 
     /**
@@ -400,15 +402,16 @@ public final class BlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param blobDeleteType Optional.  Only possible value is 'permanent', which specifies to permanently delete a blob if blob soft delete is enabled. Possible values include: 'Permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsDeleteResponse> deleteWithRestResponseAsync(String containerName, String blob, String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
+    public Mono<BlobsDeleteResponse> deleteWithRestResponseAsync(String containerName, String blob, String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, context);
+        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, context);
     }
 
     /**

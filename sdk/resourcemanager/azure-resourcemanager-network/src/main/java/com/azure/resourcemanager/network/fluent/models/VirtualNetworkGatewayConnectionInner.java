@@ -13,12 +13,14 @@ import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A common class for general resource information. */
 @JsonFlatten
@@ -79,6 +81,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     @JsonProperty(value = "properties.dpdTimeoutSeconds")
     private Integer dpdTimeoutSeconds;
+
+    /*
+     * The connection mode for this connection.
+     */
+    @JsonProperty(value = "properties.connectionMode")
+    private VirtualNetworkGatewayConnectionMode connectionMode;
 
     /*
      * The IPSec shared key.
@@ -346,6 +354,26 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
+     * Get the connectionMode property: The connection mode for this connection.
+     *
+     * @return the connectionMode value.
+     */
+    public VirtualNetworkGatewayConnectionMode connectionMode() {
+        return this.connectionMode;
+    }
+
+    /**
+     * Set the connectionMode property: The connection mode for this connection.
+     *
+     * @param connectionMode the connectionMode value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withConnectionMode(VirtualNetworkGatewayConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
+        return this;
+    }
+
+    /**
      * Get the sharedKey property: The IPSec shared key.
      *
      * @return the sharedKey value.
@@ -578,6 +606,20 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public VirtualNetworkGatewayConnectionInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayConnectionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayConnectionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

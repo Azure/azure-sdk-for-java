@@ -34,7 +34,6 @@ public class PipelineReference {
 
     /**
      * Creates an instance of PipelineReference class.
-     * @param referenceName reference pipeline name.
      */
     public PipelineReference() {
         type = "PipelineReference";

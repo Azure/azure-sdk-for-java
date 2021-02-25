@@ -255,6 +255,34 @@ public class MessageAndSessionPumpTests {
         // So completes will pass before links are closed by teardown
         Thread.sleep(1000);
     }
+    
+    public static void testSessionPumpLockLost(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException {
+        int numSessions = 5;
+        int numMessagePerSession = 2;
+        ArrayList<String> sessionIds = new ArrayList<>();
+        for (int i = 0; i < numSessions; i++) {
+            String sessionId = StringUtil.getRandomString();
+            sessionIds.add(sessionId);
+            for (int j = 0; j < numMessagePerSession; j++) {
+                Message message = new Message("AMQPMessage");
+                message.setSessionId(sessionId);
+                sender.send(message);
+            }
+        }
+
+        boolean autoComplete = true;
+        int sleepMinutes = 2; // This should be less than message lock duration of the queue or subscription
+        CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false, Duration.ofMinutes(sleepMinutes));
+        // Register a handler that doesn't renew session lock
+        sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(1, 1, autoComplete, Duration.ZERO), EXECUTOR_SERVICE);
+        // Sleep for a little longer than the handler sleep time.
+        // Session lock should be lost and a new session should be accepted.
+        Thread.sleep(1000 * 60 * 3);
+
+        Assert.assertTrue("Another session not received by session pump, after session lock lost", sessionHandler.getReceivedSessions().size() > 1);
+        // So completes will pass before links are closed by teardown
+        Thread.sleep(1000);
+    }
 
     private static class CountingMessageHandler extends TestMessageHandler {
         private IMessageAndSessionPump messagePump;

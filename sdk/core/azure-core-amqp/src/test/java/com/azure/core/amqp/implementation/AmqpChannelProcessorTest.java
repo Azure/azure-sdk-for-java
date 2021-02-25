@@ -10,11 +10,13 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
@@ -62,6 +64,13 @@ class AmqpChannelProcessorTest {
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
             new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"));
+    }
+
+    @AfterEach
+    void teardown() {
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     /**

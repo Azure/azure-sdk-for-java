@@ -132,7 +132,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByResource(resourceGroupName, parentType, parentName);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> listByResource(
@@ -144,7 +144,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByResource(resourceGroupName, parentType, parentName, filter, top, context);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     private PrivateEndpointConnectionsClient serviceClient() {

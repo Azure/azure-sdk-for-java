@@ -49,7 +49,7 @@ public class VpnConnectionInner extends SubResource {
     private Integer routingWeight;
 
     /*
-     * The dead peer detection timeout for a vpn connection in seconds.
+     * DPD timeout in seconds for vpn connection.
      */
     @JsonProperty(value = "properties.dpdTimeoutSeconds")
     private Integer dpdTimeoutSeconds;
@@ -217,7 +217,7 @@ public class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the dpdTimeoutSeconds property: The dead peer detection timeout for a vpn connection in seconds.
+     * Get the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
      *
      * @return the dpdTimeoutSeconds value.
      */
@@ -226,7 +226,7 @@ public class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Set the dpdTimeoutSeconds property: The dead peer detection timeout for a vpn connection in seconds.
+     * Set the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
      *
      * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
      * @return the VpnConnectionInner object itself.
@@ -492,6 +492,13 @@ public class VpnConnectionInner extends SubResource {
      */
     public VpnConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
         this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

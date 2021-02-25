@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetList;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetUpdate;
+import com.azure.resourcemanager.compute.models.ResourceUriList;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -75,11 +77,11 @@ public final class DiskEncryptionSetsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface DiskEncryptionSetsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/diskEncryptionSets/{diskEncryptionSetName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -88,9 +90,10 @@ public final class DiskEncryptionSetsClientImpl
             @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DiskEncryptionSetInner diskEncryptionSet,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/diskEncryptionSets/{diskEncryptionSetName}")
@@ -103,9 +106,10 @@ public final class DiskEncryptionSetsClientImpl
             @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DiskEncryptionSetUpdate diskEncryptionSet,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/diskEncryptionSets/{diskEncryptionSetName}")
@@ -117,9 +121,10 @@ public final class DiskEncryptionSetsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/diskEncryptionSets/{diskEncryptionSetName}")
@@ -131,9 +136,10 @@ public final class DiskEncryptionSetsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/diskEncryptionSets")
@@ -144,9 +150,10 @@ public final class DiskEncryptionSetsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
@@ -154,21 +161,53 @@ public final class DiskEncryptionSetsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}/associatedResources")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<ResourceUriList>> listAssociatedResources(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskEncryptionSetList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskEncryptionSetList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<ResourceUriList>> listAssociatedResourcesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -178,7 +217,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,7 +253,8 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -225,6 +266,7 @@ public final class DiskEncryptionSetsClientImpl
                             diskEncryptionSetName,
                             apiVersion,
                             diskEncryptionSet,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -236,7 +278,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -275,7 +318,8 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -285,6 +329,7 @@ public final class DiskEncryptionSetsClientImpl
                 diskEncryptionSetName,
                 apiVersion,
                 diskEncryptionSet,
+                accept,
                 context);
     }
 
@@ -295,7 +340,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +369,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -356,7 +403,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -375,7 +423,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -399,7 +448,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -420,7 +470,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -445,7 +496,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,7 +516,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -487,7 +540,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -522,7 +576,8 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -534,6 +589,7 @@ public final class DiskEncryptionSetsClientImpl
                             diskEncryptionSetName,
                             apiVersion,
                             diskEncryptionSet,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -545,7 +601,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -584,7 +641,8 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -594,6 +652,7 @@ public final class DiskEncryptionSetsClientImpl
                 diskEncryptionSetName,
                 apiVersion,
                 diskEncryptionSet,
+                accept,
                 context);
     }
 
@@ -604,7 +663,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -632,7 +692,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -665,7 +726,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -684,7 +746,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -707,7 +770,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -728,7 +792,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -753,7 +818,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -772,7 +838,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -823,7 +890,8 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -834,6 +902,7 @@ public final class DiskEncryptionSetsClientImpl
                             resourceGroupName,
                             diskEncryptionSetName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -874,7 +943,8 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -883,6 +953,7 @@ public final class DiskEncryptionSetsClientImpl
                 resourceGroupName,
                 diskEncryptionSetName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -983,7 +1054,8 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -994,6 +1066,7 @@ public final class DiskEncryptionSetsClientImpl
                             resourceGroupName,
                             diskEncryptionSetName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1034,7 +1107,8 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1043,6 +1117,7 @@ public final class DiskEncryptionSetsClientImpl
                 resourceGroupName,
                 diskEncryptionSetName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1225,7 +1300,8 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1235,6 +1311,7 @@ public final class DiskEncryptionSetsClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
@@ -1277,11 +1354,17 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1376,11 +1459,13 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
+                    service
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1416,10 +1501,11 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1485,6 +1571,202 @@ public final class DiskEncryptionSetsClientImpl
     }
 
     /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAssociatedResourcesSinglePageAsync(
+        String resourceGroupName, String diskEncryptionSetName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskEncryptionSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAssociatedResources(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            diskEncryptionSetName,
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<String>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAssociatedResourcesSinglePageAsync(
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (diskEncryptionSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
+        }
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAssociatedResources(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                diskEncryptionSetName,
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listAssociatedResourcesAsync(String resourceGroupName, String diskEncryptionSetName) {
+        return new PagedFlux<>(
+            () -> listAssociatedResourcesSinglePageAsync(resourceGroupName, diskEncryptionSetName),
+            nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<String> listAssociatedResourcesAsync(
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
+        return new PagedFlux<>(
+            () -> listAssociatedResourcesSinglePageAsync(resourceGroupName, diskEncryptionSetName, context),
+            nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listAssociatedResources(String resourceGroupName, String diskEncryptionSetName) {
+        return new PagedIterable<>(listAssociatedResourcesAsync(resourceGroupName, diskEncryptionSetName));
+    }
+
+    /**
+     * Lists all resources that are encrypted with this disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listAssociatedResources(
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
+        return new PagedIterable<>(listAssociatedResourcesAsync(resourceGroupName, diskEncryptionSetName, context));
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1498,8 +1780,16 @@ public final class DiskEncryptionSetsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1528,9 +1818,16 @@ public final class DiskEncryptionSetsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1556,8 +1853,15 @@ public final class DiskEncryptionSetsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1585,9 +1889,88 @@ public final class DiskEncryptionSetsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAssociatedResourcesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listAssociatedResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<String>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List resources which are encrypted with the disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAssociatedResourcesNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAssociatedResourcesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

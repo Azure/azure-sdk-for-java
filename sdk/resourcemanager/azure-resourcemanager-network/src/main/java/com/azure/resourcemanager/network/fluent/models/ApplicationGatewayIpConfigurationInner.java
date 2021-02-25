@@ -120,6 +120,13 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

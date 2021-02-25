@@ -201,6 +201,20 @@ public final class NetworkRule extends FirewallPolicyRule {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkRule withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkRule withDescription(String description) {
+        super.withDescription(description);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

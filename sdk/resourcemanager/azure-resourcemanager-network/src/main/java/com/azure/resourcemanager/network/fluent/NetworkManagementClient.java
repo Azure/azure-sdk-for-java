@@ -122,11 +122,25 @@ public interface NetworkManagementClient {
     AzureFirewallFqdnTagsClient getAzureFirewallFqdnTags();
 
     /**
+     * Gets the WebCategoriesClient object to access its operations.
+     *
+     * @return the WebCategoriesClient object.
+     */
+    WebCategoriesClient getWebCategories();
+
+    /**
      * Gets the BastionHostsClient object to access its operations.
      *
      * @return the BastionHostsClient object.
      */
     BastionHostsClient getBastionHosts();
+
+    /**
+     * Gets the CustomIpPrefixesClient object to access its operations.
+     *
+     * @return the CustomIpPrefixesClient object.
+     */
+    CustomIpPrefixesClient getCustomIpPrefixes();
 
     /**
      * Gets the DdosCustomPoliciesClient object to access its operations.
@@ -141,6 +155,13 @@ public interface NetworkManagementClient {
      * @return the DdosProtectionPlansClient object.
      */
     DdosProtectionPlansClient getDdosProtectionPlans();
+
+    /**
+     * Gets the DscpConfigurationsClient object to access its operations.
+     *
+     * @return the DscpConfigurationsClient object.
+     */
+    DscpConfigurationsClient getDscpConfigurations();
 
     /**
      * Gets the AvailableEndpointServicesClient object to access its operations.
@@ -393,6 +414,13 @@ public interface NetworkManagementClient {
      * @return the VirtualApplianceSkusClient object.
      */
     VirtualApplianceSkusClient getVirtualApplianceSkus();
+
+    /**
+     * Gets the InboundSecurityRuleOperationsClient object to access its operations.
+     *
+     * @return the InboundSecurityRuleOperationsClient object.
+     */
+    InboundSecurityRuleOperationsClient getInboundSecurityRuleOperations();
 
     /**
      * Gets the NetworkWatchersClient object to access its operations.
@@ -696,6 +724,13 @@ public interface NetworkManagementClient {
     VpnLinkConnectionsClient getVpnLinkConnections();
 
     /**
+     * Gets the NatRulesClient object to access its operations.
+     *
+     * @return the NatRulesClient object.
+     */
+    NatRulesClient getNatRules();
+
+    /**
      * Gets the P2SVpnGatewaysClient object to access its operations.
      *
      * @return the P2SVpnGatewaysClient object.
@@ -791,6 +826,19 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BastionShareableLinkInner> putBastionShareableLink(String resourceGroupName, String bastionHostname);
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -801,19 +849,6 @@ public interface NetworkManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context);
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> putBastionShareableLink(String resourceGroupName, String bastionHostname);
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
@@ -923,6 +958,18 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteBastionShareableLink(String resourceGroupName, String bastionHostname);
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -932,18 +979,6 @@ public interface NetworkManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteBastionShareableLink(String resourceGroupName, String bastionHostname);
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
@@ -978,6 +1013,19 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BastionShareableLinkInner> getBastionShareableLink(String resourceGroupName, String bastionHostname);
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -988,19 +1036,6 @@ public interface NetworkManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context);
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> getBastionShareableLink(String resourceGroupName, String bastionHostname);
 
     /**
      * Returns the list of currently active sessions on the Bastion.
@@ -1076,6 +1111,19 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BastionSessionStateInner> disconnectActiveSessions(String resourceGroupName, String bastionHostname);
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param sessionIdsSessionIds List of session IDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1086,19 +1134,6 @@ public interface NetworkManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
         String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionSessionStateInner> disconnectActiveSessions(String resourceGroupName, String bastionHostname);
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
@@ -1221,7 +1256,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1237,7 +1272,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1254,7 +1289,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1271,7 +1306,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1292,7 +1327,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1308,7 +1343,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1324,7 +1359,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

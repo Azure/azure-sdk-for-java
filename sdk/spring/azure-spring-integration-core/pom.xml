@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-integration-core</artifactId>
-  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
 
   <name>Azure Spring Integration Core</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -26,7 +26,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -47,6 +47,11 @@
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>io.reactivex</groupId>
+      <artifactId>rxjava</artifactId>
+      <version>1.3.8</version> <!-- {x-version-update;io.reactivex:rxjava;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -59,6 +64,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>io.reactivex:rxjava:[1.3.8]</include> <!-- {x-include-update;io.reactivex:rxjava;external_dependency} -->
                 <include>org.springframework.integration:spring-integration-core:[5.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
                 <include>org.springframework:spring-messaging:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>

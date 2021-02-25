@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.VirtualHubId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** ExpressRoute gateway resource. */
 @JsonFlatten
@@ -142,6 +143,20 @@ public class ExpressRouteGatewayInner extends Resource {
      */
     public ExpressRouteGatewayInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

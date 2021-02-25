@@ -44,6 +44,12 @@ public final class ApplicationRule extends FirewallPolicyRule {
     private List<String> targetFqdns;
 
     /*
+     * List of Urls for this rule condition.
+     */
+    @JsonProperty(value = "targetUrls")
+    private List<String> targetUrls;
+
+    /*
      * List of FQDN Tags for this rule.
      */
     @JsonProperty(value = "fqdnTags")
@@ -54,6 +60,18 @@ public final class ApplicationRule extends FirewallPolicyRule {
      */
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
+
+    /*
+     * Terminate TLS connections for this rule.
+     */
+    @JsonProperty(value = "terminateTLS")
+    private Boolean terminateTls;
+
+    /*
+     * List of destination azure web categories.
+     */
+    @JsonProperty(value = "webCategories")
+    private List<String> webCategories;
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
@@ -136,6 +154,26 @@ public final class ApplicationRule extends FirewallPolicyRule {
     }
 
     /**
+     * Get the targetUrls property: List of Urls for this rule condition.
+     *
+     * @return the targetUrls value.
+     */
+    public List<String> targetUrls() {
+        return this.targetUrls;
+    }
+
+    /**
+     * Set the targetUrls property: List of Urls for this rule condition.
+     *
+     * @param targetUrls the targetUrls value to set.
+     * @return the ApplicationRule object itself.
+     */
+    public ApplicationRule withTargetUrls(List<String> targetUrls) {
+        this.targetUrls = targetUrls;
+        return this;
+    }
+
+    /**
      * Get the fqdnTags property: List of FQDN Tags for this rule.
      *
      * @return the fqdnTags value.
@@ -172,6 +210,60 @@ public final class ApplicationRule extends FirewallPolicyRule {
      */
     public ApplicationRule withSourceIpGroups(List<String> sourceIpGroups) {
         this.sourceIpGroups = sourceIpGroups;
+        return this;
+    }
+
+    /**
+     * Get the terminateTls property: Terminate TLS connections for this rule.
+     *
+     * @return the terminateTls value.
+     */
+    public Boolean terminateTls() {
+        return this.terminateTls;
+    }
+
+    /**
+     * Set the terminateTls property: Terminate TLS connections for this rule.
+     *
+     * @param terminateTls the terminateTls value to set.
+     * @return the ApplicationRule object itself.
+     */
+    public ApplicationRule withTerminateTls(Boolean terminateTls) {
+        this.terminateTls = terminateTls;
+        return this;
+    }
+
+    /**
+     * Get the webCategories property: List of destination azure web categories.
+     *
+     * @return the webCategories value.
+     */
+    public List<String> webCategories() {
+        return this.webCategories;
+    }
+
+    /**
+     * Set the webCategories property: List of destination azure web categories.
+     *
+     * @param webCategories the webCategories value to set.
+     * @return the ApplicationRule object itself.
+     */
+    public ApplicationRule withWebCategories(List<String> webCategories) {
+        this.webCategories = webCategories;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationRule withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationRule withDescription(String description) {
+        super.withDescription(description);
         return this;
     }
 

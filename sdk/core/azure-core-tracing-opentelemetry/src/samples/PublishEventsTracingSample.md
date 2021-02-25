@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.6.0</version>
+    <version>0.17.1</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
-    <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.6.0</version>
+    <artifactId>opentelemetry-exporter-logging</artifactId>
+    <version>0.17.1</version>
 </dependency>
 ```
 
@@ -24,12 +24,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.1.2</version>
+    <version>5.3.1</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,13 +41,12 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import io.opentelemetry.exporters.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,9 +69,16 @@ public class Sample {
 
     private static Tracer configureOpenTelemetryAndLoggingExporter() {
         LoggingSpanExporter exporter = new LoggingSpanExporter();
-        TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
-        tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
-        return tracerSdkProvider.get("Sample");
+        // Tracer provider configured to export spans with SimpleSpanProcessor using
+        // the logging exporter.
+        SdkTracerProvider tracerProvider =
+            SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+                .build();
+        return OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal()
+            .getTracer("Sample");
     }
 
     private static void doClientWork() {

@@ -11,10 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
+import com.azure.resourcemanager.compute.fluent.DiskAccessesClient;
 import com.azure.resourcemanager.compute.fluent.DiskEncryptionSetsClient;
+import com.azure.resourcemanager.compute.fluent.DiskRestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient;
@@ -32,10 +33,12 @@ import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesEdgeZonesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
@@ -220,6 +223,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineImages;
     }
 
+    /** The VirtualMachineImagesEdgeZonesClient object to access its operations. */
+    private final VirtualMachineImagesEdgeZonesClient virtualMachineImagesEdgeZones;
+
+    /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    public VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones() {
+        return this.virtualMachineImagesEdgeZones;
+    }
+
     /** The UsagesClient object to access its operations. */
     private final UsagesClient usages;
 
@@ -244,6 +259,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachines;
     }
 
+    /** The VirtualMachineScaleSetsClient object to access its operations. */
+    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
+        return this.virtualMachineScaleSets;
+    }
+
     /** The VirtualMachineSizesClient object to access its operations. */
     private final VirtualMachineSizesClient virtualMachineSizes;
 
@@ -266,18 +293,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public ImagesClient getImages() {
         return this.images;
-    }
-
-    /** The VirtualMachineScaleSetsClient object to access its operations. */
-    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
-
-    /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetsClient object.
-     */
-    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
-        return this.virtualMachineScaleSets;
     }
 
     /** The VirtualMachineScaleSetExtensionsClient object to access its operations. */
@@ -352,6 +367,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineRunCommands;
     }
 
+    /** The VirtualMachineScaleSetVMRunCommandsClient object to access its operations. */
+    private final VirtualMachineScaleSetVMRunCommandsClient virtualMachineScaleSetVMRunCommands;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMRunCommandsClient object.
+     */
+    public VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands() {
+        return this.virtualMachineScaleSetVMRunCommands;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -398,6 +425,30 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public DiskEncryptionSetsClient getDiskEncryptionSets() {
         return this.diskEncryptionSets;
+    }
+
+    /** The DiskAccessesClient object to access its operations. */
+    private final DiskAccessesClient diskAccesses;
+
+    /**
+     * Gets the DiskAccessesClient object to access its operations.
+     *
+     * @return the DiskAccessesClient object.
+     */
+    public DiskAccessesClient getDiskAccesses() {
+        return this.diskAccesses;
+    }
+
+    /** The DiskRestorePointsClient object to access its operations. */
+    private final DiskRestorePointsClient diskRestorePoints;
+
+    /**
+     * Gets the DiskRestorePointsClient object to access its operations.
+     *
+     * @return the DiskRestorePointsClient object.
+     */
+    public DiskRestorePointsClient getDiskRestorePoints() {
+        return this.diskRestorePoints;
     }
 
     /** The GalleriesClient object to access its operations. */
@@ -460,18 +511,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
-    /** The ContainerServicesClient object to access its operations. */
-    private final ContainerServicesClient containerServices;
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     *
-     * @return the ContainerServicesClient object.
-     */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
-    }
-
     /**
      * Initializes an instance of ComputeManagementClient client.
      *
@@ -505,26 +544,29 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesClientImpl(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);
         this.virtualMachineImages = new VirtualMachineImagesClientImpl(this);
+        this.virtualMachineImagesEdgeZones = new VirtualMachineImagesEdgeZonesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
         this.images = new ImagesClientImpl(this);
-        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
+        this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.disks = new DisksClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
         this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
+        this.diskAccesses = new DiskAccessesClientImpl(this);
+        this.diskRestorePoints = new DiskRestorePointsClientImpl(this);
         this.galleries = new GalleriesClientImpl(this);
         this.galleryImages = new GalleryImagesClientImpl(this);
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
-        this.containerServices = new ContainerServicesClientImpl(this);
     }
 }

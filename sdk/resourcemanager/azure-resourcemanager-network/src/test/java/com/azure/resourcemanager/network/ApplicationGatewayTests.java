@@ -40,6 +40,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
         String appPublicIp = generateRandomResourceName("pip", 15);
+
         PublicIpAddress pip =
             networkManager
                 .publicIpAddresses()
@@ -59,10 +60,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
-                .fromFrontendHttpsPort(443)
-                .withSslCertificateFromPfxFile(
-                    new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
-                .withSslCertificatePassword("Abc123")
+                .fromFrontendHttpPort(80)
                 .toBackendHttpPort(8080)
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")

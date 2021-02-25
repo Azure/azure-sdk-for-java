@@ -9,6 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListRespon
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -54,7 +55,10 @@ public final class IntegrationRuntimesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<IntegrationRuntimeListResponse>> list(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200})
@@ -63,6 +67,7 @@ public final class IntegrationRuntimesImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("integrationRuntimeName") String integrationRuntimeName,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -75,8 +80,9 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -90,7 +96,8 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync(Context context) {
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -172,12 +179,14 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(String integrationRuntimeName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 integrationRuntimeName,
+                                accept,
                                 context));
     }
 
@@ -194,7 +203,9 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(
             String integrationRuntimeName, Context context) {
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), integrationRuntimeName, context);
+        final String accept = "application/json";
+        return service.get(
+                this.client.getEndpoint(), this.client.getApiVersion(), integrationRuntimeName, accept, context);
     }
 
     /**

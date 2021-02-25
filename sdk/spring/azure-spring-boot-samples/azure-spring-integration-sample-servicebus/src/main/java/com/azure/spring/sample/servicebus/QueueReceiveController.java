@@ -33,10 +33,10 @@ public class QueueReceiveController {
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         String message = new String(payload);
-        System.out.println(String.format("New message received: '%s'", message));
+        System.out.printf("New message received: '%s'%n", message);
         checkpointer.success().handle((r, ex) -> {
             if (ex == null) {
-                System.out.println(String.format("Message '%s' successfully checkpointed", message));
+                System.out.printf("Message '%s' successfully checkpointed.%n", message);
             }
             return null;
         });

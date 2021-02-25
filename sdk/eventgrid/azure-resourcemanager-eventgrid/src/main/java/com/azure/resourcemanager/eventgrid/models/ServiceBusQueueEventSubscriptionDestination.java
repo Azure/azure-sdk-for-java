@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Information about the service bus destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
@@ -26,6 +27,12 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
      */
     @JsonProperty(value = "properties.resourceId")
     private String resourceId;
+
+    /*
+     * Delivery attribute details.
+     */
+    @JsonProperty(value = "properties.deliveryAttributeMappings")
+    private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
@@ -50,6 +57,27 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
     }
 
     /**
+     * Get the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @return the deliveryAttributeMappings value.
+     */
+    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
+        return this.deliveryAttributeMappings;
+    }
+
+    /**
+     * Set the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
+     * @return the ServiceBusQueueEventSubscriptionDestination object itself.
+     */
+    public ServiceBusQueueEventSubscriptionDestination withDeliveryAttributeMappings(
+        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+        this.deliveryAttributeMappings = deliveryAttributeMappings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -57,5 +85,8 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
     @Override
     public void validate() {
         super.validate();
+        if (deliveryAttributeMappings() != null) {
+            deliveryAttributeMappings().forEach(e -> e.validate());
+        }
     }
 }

@@ -1,4 +1,5 @@
 $Language = "java"
+$LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
@@ -18,14 +19,29 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 
     if ($projectPkgName -eq $pkgName)
     {
-        return [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+        {
+          $pkgProp.SdkType = "mgmt"
+        }
+        elseif ($projectPkgName -match "spring")
+        {
+          $pkgProp.SdkType = "spring"
+        }
+        else
+        {
+          $pkgProp.SdkType = "client"
+        }
+        $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+        $pkgProp.ArtifactName = $pkgName
+        return $pkgProp
     }
   }
   return $null
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
-function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId) 
+function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   try 
   {
@@ -58,10 +74,12 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 }
 
 # Parse out package publishing information given a maven POM file
-function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
+function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
+{
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
+  $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
   $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
@@ -90,6 +108,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
+    DocsReadMeName = $docsReadMeName
   }
 }
 
@@ -156,7 +175,8 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-GithubIoDocIndex() {
+function Get-java-GithubIoDocIndex()
+{
   # Update the main.js and docfx.json language content
   UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
@@ -175,7 +195,8 @@ function Get-java-GithubIoDocIndex() {
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
-function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null){
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
+{
   $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
   
   if (-not (Test-Path $pkgJsonLoc)) {
@@ -217,7 +238,6 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }
 
-
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
 {
@@ -241,4 +261,31 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
   }
 
   return $packages
+}
+
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
+{
+  if($null -eq $ReleaseDate)
+  {
+    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
+  }
+  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
+  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+}
+
+function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+{
+  try {
+    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
+    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
+    $existingVersion = $existingVersion.response.docs.v
+    [Array]::Reverse($existingVersion)
+    return $existingVersion
+  }
+  catch {
+    LogError "Failed to retrieve package versions. `n$_"
+    return $null
+  }
 }

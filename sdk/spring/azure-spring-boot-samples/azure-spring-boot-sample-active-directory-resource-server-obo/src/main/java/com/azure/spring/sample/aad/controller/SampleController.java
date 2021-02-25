@@ -37,12 +37,12 @@ public class SampleController {
     private OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     /**
-     * Call the graph resource only, return user information
+     * Call the graph resource, return user information
      * @return Response with graph data
      */
-    @GetMapping("call-graph-only")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
-    public String callGraphOnly() {
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
+    @GetMapping("call-graph-with-repository")
+    public String callGraphWithRepository() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) requestAttributes;
@@ -52,28 +52,26 @@ public class SampleController {
     }
 
     /**
-     * Call the graph resource only with annotation, return user information
+     * Call the graph resource with annotation, return user information
      * @param graph authorized client for Graph
      * @return Response with graph data
      */
-    @GetMapping("call-graph-only-with-annotation")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
-    public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
+    @GetMapping("call-graph")
+    public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
     }
 
     /**
-     * Call the graph and custom(local) resources, combine all the response and return.
-     * @param graph authorized client for Graph
+     * Call custom resources, combine all the response and return.
      * @param custom authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.read')")
-    @GetMapping("call-graph-and-custom-resources")
-    public String callGraphAndCustomResources(
-        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
+    @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
+    @GetMapping("call-custom")
+    public String callCustom(
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-        return callMicrosoftGraphMeEndpoint(graph) + " " + callCustomLocalFileEndpoint(custom);
+        return callCustomLocalFileEndpoint(custom);
     }
 
     /**
@@ -82,15 +80,19 @@ public class SampleController {
      * @return Response string data.
      */
     private String callMicrosoftGraphMeEndpoint(OAuth2AuthorizedClient graph) {
-        String body = webClient
-            .get()
-            .uri(GRAPH_ME_ENDPOINT)
-            .attributes(oauth2AuthorizedClient(graph))
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        LOGGER.info("Response from Graph: {}", body);
-        return "Graph response " + (null != body ? "success." : "failed.");
+        if (null != graph) {
+            String body = webClient
+                .get()
+                .uri(GRAPH_ME_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(graph))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+            LOGGER.info("Response from Graph: {}", body);
+            return "Graph response " + (null != body ? "success." : "failed.");
+        } else {
+            return "Graph response failed.";
+        }
     }
 
     /**
@@ -99,14 +101,18 @@ public class SampleController {
      * @return Response string data.
      */
     private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient custom) {
-        String body = webClient
-            .get()
-            .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-            .attributes(oauth2AuthorizedClient(custom))
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        LOGGER.info("Response from Custom(local): {}", body);
-        return "Custom(local) response " + (null != body ? "success." : "failed.");
+        if (null != custom) {
+            String body = webClient
+                .get()
+                .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(custom))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+            LOGGER.info("Response from Custom: {}", body);
+            return "Custom response " + (null != body ? "success." : "failed.");
+        } else {
+            return "Custom response failed.";
+        }
     }
 }

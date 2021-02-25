@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The base implementation for web apps and function apps.
@@ -159,12 +160,11 @@ abstract class AppServiceBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getWebApps()
-            .listHostnameBindingsAsync(resourceGroupName(), name())
-            .mapPage(
+            .listHostnameBindingsAsync(resourceGroupName(), name()),
                 hostNameBindingInner ->
                     new HostnameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
             .collectList()

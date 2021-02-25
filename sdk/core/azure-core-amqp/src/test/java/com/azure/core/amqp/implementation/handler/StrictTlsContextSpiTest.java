@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.net.ssl.SSLContext;
@@ -48,6 +50,13 @@ class StrictTlsContextSpiTest {
     void beforeEach() {
         MockitoAnnotations.initMocks(this);
         contextSpi = new StrictTlsContextSpi(sslContext);
+    }
+
+    @AfterEach
+    void teardown() {
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test

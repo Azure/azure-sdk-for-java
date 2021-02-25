@@ -12,6 +12,9 @@ import java.util.Map;
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a {@link
  * ServiceBusMessage}.
+ *
+ * @see CreateRuleOptions#setAction(RuleAction)
+ * @see RuleProperties#setAction(RuleAction)
  */
 public class SqlRuleAction extends RuleAction {
     private final Map<String, Object> properties = new HashMap<>();

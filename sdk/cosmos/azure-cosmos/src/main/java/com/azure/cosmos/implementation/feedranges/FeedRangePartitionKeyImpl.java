@@ -3,21 +3,28 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
+public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     private final PartitionKeyInternal partitionKey;
 
     public FeedRangePartitionKeyImpl(PartitionKeyInternal partitionKey) {
@@ -30,85 +37,14 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
-    public void accept(FeedRangeVisitor visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this);
-    }
-
-    @Override
-    public <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this, input);
-    }
-
-    @Override
-    public <T> Mono<T> accept(FeedRangeAsyncVisitor<T> visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        return visitor.visit(this);
-    }
-
-    @Override
-    public Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
-        IRoutingMapProvider routingMapProvider,
-        String containerRid,
-        PartitionKeyDefinition partitionKeyDefinition) {
-
-        String effectivePartitionKey = this.partitionKey.getEffectivePartitionKeyString(
-            this.partitionKey,
-            partitionKeyDefinition);
-        Range<String> range = Range.getPointRange(effectivePartitionKey);
-        ArrayList<Range<String>> rangeList = new ArrayList<>();
-        rangeList.add(range);
-
-        return Mono.just((UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(rangeList));
-    }
-
-    @Override
-    public Mono<UnmodifiableList<String>> getPartitionKeyRanges(
-        IRoutingMapProvider routingMapProvider,
-        String containerRid,
-        PartitionKeyDefinition partitionKeyDefinition) {
-
-        String effectivePartitionKey = this.partitionKey.getEffectivePartitionKeyString(
-            this.partitionKey,
-            partitionKeyDefinition);
-        return routingMapProvider
-            .tryGetOverlappingRangesAsync(
-                null,
-                containerRid,
-                Range.getPointRange(effectivePartitionKey),
-                false,
-                null)
-            .flatMap(pkRangeHolder -> {
-                ArrayList<String> rangeList = new ArrayList<>();
-
-                if (pkRangeHolder != null) {
-                    String rangeId = pkRangeHolder.v.get(0).getId();
-                    rangeList.add(rangeId);
-                }
-
-                return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(rangeList));
-            });
-    }
-
-    public void populatePropertyBag() {
-        super.populatePropertyBag();
-
-        if (this.partitionKey != null) {
-            setProperty(this, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return this.partitionKey.toJson();
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FeedRangePartitionKeyImpl that = (FeedRangePartitionKeyImpl) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FeedRangePartitionKeyImpl that = (FeedRangePartitionKeyImpl)o;
         return Objects.equals(this.partitionKey, that.partitionKey);
     }
 
@@ -117,25 +53,136 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         return Objects.hash(partitionKey);
     }
 
-    /* TODO fabianm - not needed yet
-    private static Mono<PartitionKeyRange> tryGetRangeByEffectivePartitionKey(
+    @Override
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        String containerRid,
-        String effectivePartitionKey) {
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
-        return routingMapProvider
-            .tryGetOverlappingRangesAsync(
-                null,
-                containerRid,
-                Range.getPointRange(effectivePartitionKey),
-                false,
-                null)
-            .flatMap((pkRangeHolder) -> {
-                if (pkRangeHolder == null) {
-                    return Mono.empty();
+        checkNotNull(
+            collectionResolutionMono,
+            "Argument 'collectionResolutionMono' must not be null");
+
+        return collectionResolutionMono
+            .flatMap(documentCollectionResourceResponse -> {
+
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    throw new IllegalStateException("Collection cannot be null");
                 }
 
-                return Mono.just(pkRangeHolder.v.get(0));
+                final String effectivePartitionKey =
+                    this.partitionKey.getEffectivePartitionKeyString(
+                    this.partitionKey,
+                    collection.getPartitionKey());
+
+                Range<String> range = Range.getPointRange(effectivePartitionKey);
+                return Mono.just(range);
             });
-    }*/
+    }
+
+    @Override
+    public Mono<List<String>> getPartitionKeyRanges(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+
+        checkNotNull(
+            routingMapProvider,
+            "Argument 'routingMapProvider' must not be null");
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+        checkNotNull(
+            collectionResolutionMono,
+            "Argument 'collectionResolutionMono' must not be null");
+
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        return collectionResolutionMono
+            .flatMap(documentCollectionResourceResponse -> {
+
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    throw new IllegalStateException("Collection cannot be null");
+                }
+
+                final String containerRid = collection.getResourceId();
+                final String effectivePartitionKey =
+                    this.partitionKey.getEffectivePartitionKeyString(
+                    this.partitionKey,
+                    collection.getPartitionKey());
+
+                return routingMapProvider
+                    .tryGetOverlappingRangesAsync(
+                        metadataDiagnosticsCtx,
+                        containerRid,
+                        Range.getPointRange(effectivePartitionKey),
+                        false,
+                        null)
+                    .flatMap(pkRangeHolder -> {
+                        ArrayList<String> rangeList = new ArrayList<>(1);
+
+                        if (pkRangeHolder.v != null) {
+                            String rangeId = pkRangeHolder.v.get(0).getId();
+                            rangeList.add(rangeId);
+                        }
+
+                        return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(rangeList));
+                    });
+            });
+    }
+
+    @Override
+    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.PARTITION_KEY,
+            this.partitionKey.toJson());
+        request.setPartitionKeyInternal(this.partitionKey);
+
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        return this
+            .getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .map(effectiveRange -> {
+                request.setEffectiveRange(effectiveRange);
+
+                return request;
+            });
+    }
+
+    @Override
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+        setProperties(this, false);
+    }
+
+    @Override
+    public void removeProperties(JsonSerializable serializable) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY);
+    }
+
+    @Override
+    public void setProperties(JsonSerializable serializable, boolean populateProperties) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        if (populateProperties) {
+            super.populatePropertyBag();
+        }
+
+        if (this.partitionKey != null) {
+            setProperty(serializable, Constants.Properties.FEED_RANGE_PARTITION_KEY,
+                this.partitionKey);
+        }
+    }
 }

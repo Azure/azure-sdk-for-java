@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** A flow log resource. */
 @JsonFlatten
@@ -245,6 +246,20 @@ public class FlowLogInner extends Resource {
      */
     public FlowLogInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FlowLogInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FlowLogInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

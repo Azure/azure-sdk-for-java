@@ -1,52 +1,52 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin032840?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin930225?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "97b026ea-f55a-4510-b73a-18815805447e"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "356a53e9-cbda-4e14-b05f-ce35503b68e0"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "275",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomWithWifiTwin032840. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:42:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomWithWifiTwin930225. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifiroom;1064973?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifiroom;1811381?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2371ad3c-6c5a-4f81-a6ba-63859d4dd7b9"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35a3b50e-6f56-41bc-b1a3-570221468f98"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "214",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:wifiroom;1064973. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:42:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:wifiroom;1811381. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifi;1279727?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifi;1058816?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9a46152e-fd14-42c5-a56e-5ec73ae653d8"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55587ac4-8a91-49d7-a30b-f7b56658769a"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:wifi;1279727. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:42:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:wifi;1058816. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -54,8 +54,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "209e3eb6-2b08-4228-908b-82c264ec0146",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b705f61-fd6d-4155-9be6-c16efcbf09a9",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -63,109 +63,109 @@
       "retry-after" : "0",
       "Content-Length" : "317",
       "StatusCode" : "201",
-      "Body" : "[{\"id\":\"dtmi:example:wifi;1279727\",\"description\":{},\"displayName\":{\"en\":\"Wifi\"},\"decommissioned\":false,\"uploadTime\":\"2020-11-02T22:42:56.6932822+00:00\"},{\"id\":\"dtmi:example:wifiroom;1064973\",\"description\":{},\"displayName\":{\"en\":\"RoomWithWifi\"},\"decommissioned\":false,\"uploadTime\":\"2020-11-02T22:42:56.6933851+00:00\"}]",
-      "Date" : "Mon, 02 Nov 2020 22:42:55 GMT",
+      "Body" : "[{\"id\":\"dtmi:example:wifi;1058816\",\"description\":{},\"displayName\":{\"en\":\"Wifi\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:40.5000597+00:00\"},{\"id\":\"dtmi:example:wifiroom;1811381\",\"description\":{},\"displayName\":{\"en\":\"RoomWithWifi\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:40.5000946+00:00\"}]",
+      "Date" : "Wed, 13 Jan 2021 20:05:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin032840?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin930225?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "65fc0e6d-ecad-4b6a-aa0c-ca57e3c150e4",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3a980b52-ed97-4898-952c-7b34c4b5868f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"6f59c3bb-a419-4433-8a48-8d0a7fc2cca2\"",
+      "ETag" : "W/\"29e25bd5-b0bb-4c28-a295-b717411292d5\"",
       "retry-after" : "0",
       "Content-Length" : "664",
       "StatusCode" : "200",
-      "Body" : "{\"$dtId\":\"roomWithWifiTwin032840\",\"$etag\":\"W/\\\"6f59c3bb-a419-4433-8a48-8d0a7fc2cca2\\\"\",\"IsOccupied\":true,\"Temperature\":80,\"Humidity\":25,\"EmployeeId\":\"Employee1\",\"wifiAccessPoint\":{\"RouterName\":\"Cisco1\",\"Network\":\"Room1\",\"$metadata\":{\"RouterName\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"},\"Network\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"}}},\"$metadata\":{\"$model\":\"dtmi:example:wifiroom;1064973\",\"IsOccupied\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"},\"Temperature\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"},\"Humidity\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2020-11-02T22:42:56.8972798Z\"}}}",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT",
+      "Body" : "{\"$dtId\":\"roomWithWifiTwin930225\",\"$etag\":\"W/\\\"29e25bd5-b0bb-4c28-a295-b717411292d5\\\"\",\"IsOccupied\":true,\"Temperature\":80,\"Humidity\":25,\"EmployeeId\":\"Employee1\",\"wifiAccessPoint\":{\"RouterName\":\"Cisco1\",\"Network\":\"Room1\",\"$metadata\":{\"RouterName\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"},\"Network\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"}}},\"$metadata\":{\"$model\":\"dtmi:example:wifiroom;1811381\",\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"},\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:40.5786576Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin032840/components/wifiAccessPoint?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin930225/components/wifiAccessPoint?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ff7f3c2d-4c47-4b59-8075-726baa41e7f8",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "92265a12-616a-4b2c-a440-d68b916ea907",
       "Content-Type" : "application/json-patch+json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"84c53582-1417-4cad-ab07-7f55459464b6\"",
+      "ETag" : "W/\"32ba4a62-b6e5-45a5-9b7f-18bc46e2778f\"",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin032840/components/wifiAccessPoint?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin930225/components/wifiAccessPoint?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c881bf50-46da-4a8f-a22d-fe1425259fff",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3e15531e-bcbd-4016-9a85-ddd65917b03b",
       "Content-Type" : "application/json-patch+json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"3c5eb293-d4db-4b15-bdb8-f4731cc174d9\"",
+      "ETag" : "W/\"20b1fb76-b2e6-4977-ada3-1c074e0d3256\"",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin032840?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomWithWifiTwin930225?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "646c02d0-1bdd-49e1-bdc8-1cb1287cd335"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "addbd45a-0932-46f6-8800-dc5c8f8bbc94"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifiroom;1064973?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifiroom;1811381?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "13355888-2d08-477b-bae6-5815c274afd6"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "54723fbd-e113-4caa-807b-2ceef519478f"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifi;1279727?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:wifi;1058816?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "54a7efe0-97fc-466d-944b-94663fc75b20"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c1ebb298-58be-4494-9264-d177936d4755"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:42:56 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:40 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "25406d", "286195", "491949" ]
+  "variables" : [ "152447", "033503", "270038" ]
 }

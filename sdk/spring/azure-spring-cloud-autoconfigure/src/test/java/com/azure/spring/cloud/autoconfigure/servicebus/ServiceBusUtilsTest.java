@@ -14,4 +14,9 @@ public class ServiceBusUtilsTest {
             + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
         Assert.assertEquals("namespace", ServiceBusUtils.getNamespace(connectionString));
     }
+
+    @Test
+    public void testGetNamespaceWithInvalidConnectionString() {
+        Assert.assertNull(ServiceBusUtils.getNamespace("fake-connection-str"));
+    }
 }

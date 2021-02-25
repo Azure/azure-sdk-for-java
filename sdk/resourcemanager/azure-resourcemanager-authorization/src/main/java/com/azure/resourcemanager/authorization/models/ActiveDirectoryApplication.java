@@ -4,28 +4,36 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /** An immutable client-side representation of an Azure AD application. */
 @Fluent
 public interface ActiveDirectoryApplication
-    extends ActiveDirectoryObject, HasInnerModel<ApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
+    extends ActiveDirectoryObject,
+        HasInnerModel<MicrosoftGraphApplicationInner>,
+        Updatable<ActiveDirectoryApplication.Update> {
     /** @return the application ID */
     String applicationId();
 
-    /** @return the application permissions */
-    List<String> applicationPermissions();
-
-    /** @return whether the application is be available to other tenants */
+    /**
+     * @return whether the application is be available to other tenants
+     * @deprecated use {@link #accountType()}, false only when account type is "AzureADMyOrg"
+     */
+    @Deprecated
     boolean availableToOtherTenants();
+
+    /**
+     * @return the application account type
+     */
+    ApplicationAccountType accountType();
 
     /** @return a collection of URIs for the application */
     Set<String> identifierUris();
@@ -53,7 +61,7 @@ public interface ActiveDirectoryApplication
     /** Grouping of all the application definition stages. */
     interface DefinitionStages {
         /** The first stage of the application definition. */
-        interface Blank extends WithSignOnUrl {
+        interface Blank extends WithCreate {
         }
 
         /** The stage of application definition allowing specifying the sign on URL. */
@@ -110,15 +118,40 @@ public interface ActiveDirectoryApplication
 
         /**
          * The stage of application definition allowing specifying if the application can be used in multiple tenants.
+         * @deprecated use {@link WithAccountType}
          */
+        @Deprecated
         interface WithMultiTenant {
             /**
              * Specifies if the application can be used in multiple tenants.
              *
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application definition
+             * @deprecated use {@link WithAccountType#withAccountType(ApplicationAccountType)}
              */
+            @Deprecated
             WithCreate withAvailableToOtherTenants(boolean availableToOtherTenants);
+        }
+
+        /**
+         * The stage of application definition allowing specifying the application account type.
+         */
+        interface WithAccountType {
+            /**
+             * Specifies the application account type.
+             *
+             * @param accountType the application account type
+             * @return the next stage in application definition
+             */
+            WithCreate withAccountType(ApplicationAccountType accountType);
+
+            /**
+             * Specifies the application account type.
+             *
+             * @param accountType the application account type
+             * @return the next stage in application definition
+             */
+            WithCreate withAccountType(String accountType);
         }
 
         /**
@@ -127,9 +160,11 @@ public interface ActiveDirectoryApplication
          */
         interface WithCreate
             extends Creatable<ActiveDirectoryApplication>,
+                WithSignOnUrl,
                 WithIdentifierUrl,
                 WithReplyUrl,
                 WithCredential,
+                WithAccountType,
                 WithMultiTenant {
         }
     }
@@ -193,7 +228,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+            CertificateCredential.DefinitionStages.Blank<? extends Update>
                 defineCertificateCredential(String name);
 
             /**
@@ -202,7 +237,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a key.
@@ -213,15 +248,42 @@ public interface ActiveDirectoryApplication
             Update withoutCredential(String name);
         }
 
-        /** The stage of application update allowing specifying if the application can be used in multiple tenants. */
+        /**
+         * The stage of application update allowing specifying if the application can be used in multiple tenants.
+         * @deprecated use {@link WithAccountType}
+         */
+        @Deprecated
         interface WithMultiTenant {
             /**
              * Specifies if the application can be used in multiple tenants.
              *
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application update
+             * @deprecated use {@link WithAccountType#withAccountType(ApplicationAccountType)}
              */
+            @Deprecated
             Update withAvailableToOtherTenants(boolean availableToOtherTenants);
+        }
+
+        /**
+         * The stage of application update allowing specifying the application account type.
+         */
+        interface WithAccountType {
+            /**
+             * Specifies the application account type.
+             *
+             * @param accountType the application account type
+             * @return the next stage in application update
+             */
+            Update withAccountType(ApplicationAccountType accountType);
+
+            /**
+             * Specifies the application account type.
+             *
+             * @param accountType the application account type
+             * @return the next stage in application update
+             */
+            Update withAccountType(String accountType);
         }
     }
 
@@ -232,6 +294,7 @@ public interface ActiveDirectoryApplication
             UpdateStages.WithIdentifierUrl,
             UpdateStages.WithReplyUrl,
             UpdateStages.WithCredential,
+            UpdateStages.WithAccountType,
             UpdateStages.WithMultiTenant {
     }
 }

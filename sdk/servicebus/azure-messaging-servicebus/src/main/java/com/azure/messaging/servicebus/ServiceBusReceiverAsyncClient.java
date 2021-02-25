@@ -46,8 +46,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
- * topic subscription on Azure Service Bus.
+ * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
+ * queue or topic subscription.
  *
  * <p><strong>Create an instance of receiver</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation}

@@ -3,8 +3,15 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationProperties;
+import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,22 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.ClassUtils;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
-public class AADAuthenticationProperties {
+public class AADAuthenticationProperties implements InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
@@ -85,9 +84,9 @@ public class AADAuthenticationProperties {
     /**
      * Azure Tenant ID.
      */
-    private String tenantId = "common";
+    private String tenantId;
 
-    private String postLogoutRedirectUri = "{baseUrl}";
+    private String postLogoutRedirectUri;
 
     /**
      * If Telemetry events should be published to Azure AD.
@@ -100,11 +99,13 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    private String authorizationServerUri = "https://login.microsoftonline.com/";
+    private String baseUri;
 
-    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
+    private String graphBaseUri;
 
-    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
+    private String graphMembershipUri;
+
+    private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -141,28 +142,6 @@ public class AADAuthenticationProperties {
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
                        .map(allowedGroups -> !allowedGroups.isEmpty())
                        .orElse(false);
-    }
-
-    /**
-     * Validates at least one of the user group properties are populated.
-     *
-     * @throws IllegalArgumentException If no allowed-groups is configured when stateful filter is enabled.
-     */
-    @PostConstruct
-    public void validateUserGroupProperties() {
-        // current implementation is not required, this is only used for compatibility with the previous usage
-        if (authorization.size() > 0 || isResourceServer()) {
-            return;
-        }
-
-        if (this.sessionStateless) {
-            if (allowedGroupsConfigured()) {
-                LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
-            }
-        } else if (!allowedGroupsConfigured()) {
-            throw new IllegalArgumentException("One of the User Group Properties must be populated. "
-                + "Please populate azure.activedirectory.user-group.allowed-groups");
-        }
     }
 
     public boolean isResourceServer() {
@@ -294,12 +273,20 @@ public class AADAuthenticationProperties {
         this.sessionStateless = sessionStateless;
     }
 
-    public String getAuthorizationServerUri() {
-        return authorizationServerUri;
+    public String getBaseUri() {
+        return baseUri;
     }
 
-    public void setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    public String getGraphBaseUri() {
+        return graphBaseUri;
+    }
+
+    public void setGraphBaseUri(String graphBaseUri) {
+        this.graphBaseUri = graphBaseUri;
     }
 
     public String getGraphMembershipUri() {
@@ -310,12 +297,12 @@ public class AADAuthenticationProperties {
         this.graphMembershipUri = graphMembershipUri;
     }
 
-    public Map<String, AuthorizationProperties> getAuthorization() {
-        return authorization;
+    public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
+        return authorizationClients;
     }
 
-    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
-        this.authorization = authorization;
+    public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
+        this.authorizationClients = authorizationClients;
     }
 
     public boolean isAllowedGroup(String group) {
@@ -323,5 +310,50 @@ public class AADAuthenticationProperties {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+        if (!StringUtils.hasText(baseUri)) {
+            baseUri = "https://login.microsoftonline.com/";
+        } else {
+            baseUri = addSlash(baseUri);
+        }
+
+        if (!StringUtils.hasText(graphBaseUri)) {
+            graphBaseUri = "https://graph.microsoft.com/";
+        } else {
+            graphBaseUri = addSlash(graphBaseUri);
+        }
+
+        if (!StringUtils.hasText(graphMembershipUri)) {
+            graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
+        }
+
+        if (!graphMembershipUri.startsWith(graphBaseUri)) {
+            throw new IllegalStateException("azure.activedirectory.graph-base-uri should be "
+                + "the prefix of azure.activedirectory.graph-membership-uri. "
+                + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
+                + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+
+        if (!StringUtils.hasText(tenantId)) {
+            tenantId = "common";
+        }
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
+                + "azure.activedirectory.user-group.allowed-groups should be empty. "
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
+        }
+    }
+
+    private boolean isMultiTenantsApplication(String tenantId) {
+        return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
+    }
+
+    private String addSlash(String uri) {
+        return uri.endsWith("/") ? uri : uri + "/";
     }
 }

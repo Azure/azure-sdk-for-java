@@ -12,6 +12,7 @@ import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Hello world!
@@ -57,7 +58,7 @@ public class ReadmeSamples {
         System.out.println("MessageId: " + response.getMessageId());
     }
 
-    public void createCommunicationIdentityClientWithConnectionString() {
+    public void createSmsClienttWithConnectionString() {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
@@ -68,5 +69,26 @@ public class ReadmeSamples {
             .connectionString(connectionString)
             .httpClient(httpClient)
             .buildClient();
+    }
+
+    /**
+     * Sample code for creating a sync Communication Identity Client using AAD authentication.
+     *
+     * @return the Communication Identity Client.
+     */
+    public SmsClient createCommunicationIdentityClientWithAAD() {
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        SmsClient smsClient = new SmsClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(httpClient)
+            .buildClient();
+
+        return smsClient;
     }
 }

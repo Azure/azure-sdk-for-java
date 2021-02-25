@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The implementation of Subscriptions.
@@ -26,7 +27,7 @@ public final class SubscriptionsImpl
 
     @Override
     public PagedIterable<Subscription> list() {
-        return client.list().mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mapPage(client.list(), inner -> wrapModel(inner));
     }
 
 
@@ -38,7 +39,7 @@ public final class SubscriptionsImpl
 
     @Override
     public PagedFlux<Subscription> listAsync() {
-        return client.listAsync().mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mapPage(client.listAsync(), inner -> wrapModel(inner));
     }
 
     private SubscriptionImpl wrapModel(SubscriptionInner subscriptionInner) {

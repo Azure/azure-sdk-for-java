@@ -249,6 +249,13 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCircuitConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

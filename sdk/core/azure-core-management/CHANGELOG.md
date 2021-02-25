@@ -1,6 +1,19 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
+
+
+## 1.1.1 (2021-02-05)
+
+- Fixed long-running operation, PUT method, response 200 and Azure-AsyncOperation.
+
+## 1.1.0 (2021-01-11)
+
+### New Features
+
+- Added `MICROSOFT_GRAPH` to `AzureEnvironment`.
+
+### Bug Fixes
 
 - Added `SystemData` to `ProxyResource` class.
 - Fixed long-running operation, PUT method, response 201 and Location, succeeded without poll.

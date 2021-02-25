@@ -57,7 +57,7 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
 
     @Override
     public PagedFlux<ComputeSku> listByRegionAsync(final Region region) {
-        return inner().listAsync(String.format("location eq '%s'", region.name())).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(String.format("location eq '%s'", region.name())), this::wrapModel);
     }
 
     public ResourceSkusClient inner() {

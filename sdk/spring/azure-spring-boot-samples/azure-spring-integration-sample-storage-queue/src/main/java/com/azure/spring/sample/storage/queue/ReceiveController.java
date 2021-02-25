@@ -31,9 +31,7 @@ public class ReceiveController {
         storageQueueOperation.setCheckpointMode(CheckpointMode.MANUAL);
         storageQueueOperation.setVisibilityTimeoutInSeconds(10);
 
-        StorageQueueMessageSource messageSource =
-            new StorageQueueMessageSource(STORAGE_QUEUE_NAME, storageQueueOperation);
-        return messageSource;
+        return new StorageQueueMessageSource(STORAGE_QUEUE_NAME, storageQueueOperation);
     }
 
     /**
@@ -43,10 +41,10 @@ public class ReceiveController {
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         String message = new String(payload);
-        System.out.println(String.format("New message received: '%s'", message));
+        System.out.printf("New message received: '%s'%n", message);
         checkpointer.success()
             .doOnError(Throwable::printStackTrace)
-            .doOnSuccess(t -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
+            .doOnSuccess(t -> System.out.printf("Message '%s' successfully checkpointed%n", message))
             .subscribe();
 
     }

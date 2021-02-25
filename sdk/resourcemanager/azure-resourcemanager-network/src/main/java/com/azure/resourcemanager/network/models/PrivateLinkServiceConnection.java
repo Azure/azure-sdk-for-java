@@ -206,6 +206,13 @@ public class PrivateLinkServiceConnection extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceConnection withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

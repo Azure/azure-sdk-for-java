@@ -54,8 +54,8 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
 
     public boolean isClientNeedConsentWhenLogin(ClientRegistration client) {
         return otherClients.contains(client)
-            && properties.getAuthorization().get(client.getClientName()) != null
-            && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
+            && properties.getAuthorizationClients().get(client.getClientName()) != null
+            && !properties.getAuthorizationClients().get(client.getClientName()).isOnDemand();
     }
 
     public boolean isClientNeedConsentWhenLogin(String id) {

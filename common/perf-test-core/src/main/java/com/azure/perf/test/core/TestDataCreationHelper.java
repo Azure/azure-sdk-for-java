@@ -89,6 +89,24 @@ public class TestDataCreationHelper {
         outputStream.write(RANDOM_BYTES, 0, remainder);
     }
 
+    /**
+     * Generate random string of given {@code targetLength length}. The string will only have lower case alphabets.
+     *
+     * @param targetLength of the string to be generated.
+     * @return the generated string.
+     */
+    public static String generateRandomString(int targetLength) {
+        int leftLimit = 97;
+        int rightLimit = 122;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+            .limit(targetLength)
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+        return generatedString;
+    }
+
     private static final class RepeatingInputStream extends InputStream {
         private final int size;
 

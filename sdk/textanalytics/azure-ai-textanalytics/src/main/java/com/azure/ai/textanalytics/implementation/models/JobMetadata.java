@@ -19,12 +19,6 @@ public class JobMetadata {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The displayName property.
-     */
-    @JsonProperty(value = "displayName")
-    private String displayName;
-
-    /*
      * The expirationDateTime property.
      */
     @JsonProperty(value = "expirationDateTime")
@@ -65,26 +59,6 @@ public class JobMetadata {
      */
     public JobMetadata setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
-        return this;
-    }
-
-    /**
-     * Get the displayName property: The displayName property.
-     *
-     * @return the displayName value.
-     */
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: The displayName property.
-     *
-     * @param displayName the displayName value to set.
-     * @return the JobMetadata object itself.
-     */
-    public JobMetadata setDisplayName(String displayName) {
-        this.displayName = displayName;
         return this;
     }
 

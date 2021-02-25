@@ -504,6 +504,7 @@ public class ExtensionsInner {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -949,6 +950,7 @@ public class ExtensionsInner {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

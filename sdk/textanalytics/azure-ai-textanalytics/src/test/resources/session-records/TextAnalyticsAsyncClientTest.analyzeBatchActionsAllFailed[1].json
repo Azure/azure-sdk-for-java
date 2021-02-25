@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "27479bd6-7653-465f-b162-29d634d132b1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "739",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://centralustiers.cognitiveservices.azure.com/text/analytics/v3.1-preview.3/analyze/jobs/19f94acf-8a23-4eb8-8a72-3d7eac4634f4_637480800000000000",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8bac9c98-f2da-43de-9342-b2a96b8b043d",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 05 Feb 2021 18:06:48 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/19f94acf-8a23-4eb8-8a72-3d7eac4634f4_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4eff84f-904b-43c2-8ef6-dd69dc1e7938",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "379",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fde09e84-a13f-4b31-b6b5-0c5c3ba29839",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"19f94acf-8a23-4eb8-8a72-3d7eac4634f4_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50Z\",\"createdDateTime\":\"2021-02-05T18:06:48Z\",\"expirationDateTime\":\"2021-02-06T18:06:48Z\",\"status\":\"failed\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidaVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value 2929 is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/1\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type NamedEntityRecognition. Supported values latest,2020-04-01,2021-01-15.\",\"target\":\"#/tasks/entityRecognitionTasks/0\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type KeyPhraseExtraction. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/keyPhraseExtractionTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50Z\"},\"completed\":0,\"failed\":4,\"inProgress\":0,\"total\":4,\"entityRecognitionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}},{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:06:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//analyze/jobs/19f94acf-8a23-4eb8-8a72-3d7eac4634f4_637480800000000000?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e65bc9ed-6c1d-493a-a2f1-496cda13ea23",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "728",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "4738a8fa-4869-4884-baf3-ab6c6fa54dfe",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"19f94acf-8a23-4eb8-8a72-3d7eac4634f4_637480800000000000\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50Z\",\"createdDateTime\":\"2021-02-05T18:06:48Z\",\"expirationDateTime\":\"2021-02-06T18:06:48Z\",\"status\":\"failed\",\"errors\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidaVersion is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/0\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value 2929 is not supported for model-version parameter for job task type PersonallyIdentifiableInformation. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/entityRecognitionPiiTasks/1\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type NamedEntityRecognition. Supported values latest,2020-04-01,2021-01-15.\",\"target\":\"#/tasks/entityRecognitionTasks/0\"},{\"code\":\"InvalidRequest\",\"message\":\"Job task parameter value invalidVersion is not supported for model-version parameter for job task type KeyPhraseExtraction. Supported values latest,2020-07-01.\",\"target\":\"#/tasks/keyPhraseExtractionTasks/0\"}],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50Z\"},\"completed\":0,\"failed\":4,\"inProgress\":0,\"total\":4,\"entityRecognitionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"entityRecognitionPiiTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}},{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}],\"keyPhraseExtractionTasks\":[{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-02-05T18:06:50.1237317Z\",\"results\":{\"documents\":[],\"errors\":[],\"modelVersion\":\"\"}}]}}",
+      "Date" : "Fri, 05 Feb 2021 18:06:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -35,9 +35,11 @@ import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
 import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -479,6 +481,35 @@ public class EncryptionTests extends TestSuiteBase {
         // ORDER BY query
         query = query + " ORDER BY c._ts";
         EncryptionTests.validateQueryResultsMultipleDocuments(EncryptionTests.encryptionContainer, testDoc1, testDoc2, query);
+    }
+
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void encryptionDecryptChangeFeedResultMultipleDocs() {
+        String partitionKey = UUID.randomUUID().toString();
+        TestDoc testDoc1 =  EncryptionTests
+            .createItem(
+                EncryptionTests.encryptionContainer,
+                EncryptionTests.dekId,
+                TestDoc.PathsToEncrypt,
+                partitionKey)
+            .getItem();
+        TestDoc testDoc2 =  EncryptionTests
+            .createItem(
+                EncryptionTests.encryptionContainer,
+                EncryptionTests.dekId,
+                TestDoc.PathsToEncrypt,
+                partitionKey)
+            .getItem();
+
+        CosmosChangeFeedRequestOptions options =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(new PartitionKey(partitionKey)));
+
+        EncryptionTests.validateChangeFeedResultsMultipleDocuments(
+            EncryptionTests.encryptionContainer,
+            testDoc1,
+            testDoc2,
+            options);
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
@@ -1047,6 +1078,29 @@ public class EncryptionTests extends TestSuiteBase {
         validateQueryResultsMultipleDocuments(container, testDoc1, testDoc2, query, null);
     }
 
+    private static void validateChangeFeedResultsMultipleDocuments(
+        EncryptionCosmosAsyncContainer container,
+        TestDoc testDoc1,
+        TestDoc testDoc2,
+        CosmosChangeFeedRequestOptions requestOptions) {
+        CosmosPagedFlux<TestDoc> pageFlux = container.queryChangeFeed(requestOptions, TestDoc.class);
+        List<TestDoc> readDocs = pageFlux.collectList().block();
+
+        assertThat(readDocs.size()).isEqualTo(2);
+        assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
+
+
+        CosmosPagedFlux<DecryptableItem> lazyDecryptablePageFlux = container.queryChangeFeed(requestOptions, DecryptableItem.class);
+        List<DecryptableItem> lazyDecryptableItems = lazyDecryptablePageFlux.collectList().block();
+
+        assertThat(readDocs.size()).isEqualTo(2);
+        assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
+
+
+        assertThat(lazyDecryptableItems.size()).isEqualTo(2);
+        assertThat(lazyDecryptableItems.stream().map(ldi -> ldi.getDecryptionResult(TestDoc.class).block().getDecryptedItem())).containsExactlyInAnyOrder(testDoc1, testDoc2);
+    }
+    
     private static void validateQueryResultsMultipleDocuments(
         EncryptionCosmosAsyncContainer container,
         TestDoc testDoc1,
@@ -1060,15 +1114,15 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
 
 
-        CosmosPagedFlux<DecryptableItem> lazyDecraptablePageFlux = container.queryItems(new SqlQuerySpec(query), requestOptions, DecryptableItem.class);
-        List<DecryptableItem> lazyDecreptableItems = lazyDecraptablePageFlux.collectList().block();
+        CosmosPagedFlux<DecryptableItem> lazyDecryptablePageFlux = container.queryItems(new SqlQuerySpec(query), requestOptions, DecryptableItem.class);
+        List<DecryptableItem> lazyDecryptableItems = lazyDecryptablePageFlux.collectList().block();
 
         assertThat(readDocs.size()).isEqualTo(2);
         assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
 
 
-        assertThat(lazyDecreptableItems.size()).isEqualTo(2);
-        assertThat(lazyDecreptableItems.stream().map(ldi -> ldi.getDecryptionResult(TestDoc.class).block().getDecryptedItem())).containsExactlyInAnyOrder(testDoc1, testDoc2);
+        assertThat(lazyDecryptableItems.size()).isEqualTo(2);
+        assertThat(lazyDecryptableItems.stream().map(ldi -> ldi.getDecryptionResult(TestDoc.class).block().getDecryptedItem())).containsExactlyInAnyOrder(testDoc1, testDoc2);
     }
 
     private static <T> void validateQueryResponse(EncryptionCosmosAsyncContainer container,

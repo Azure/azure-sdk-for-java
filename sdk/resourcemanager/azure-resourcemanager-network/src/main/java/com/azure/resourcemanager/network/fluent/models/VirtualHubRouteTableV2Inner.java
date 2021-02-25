@@ -131,6 +131,13 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubRouteTableV2Inner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

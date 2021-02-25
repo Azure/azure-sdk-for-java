@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Collect service name and subscription, then return properties could be sent directly.
@@ -57,7 +56,7 @@ public final class TelemetryCollector {
         this.propertiesByService.putIfAbsent(service, new HashMap<>());
         this.propertiesByService.get(service).put(key, value);
         if (propertiesNeedHash.contains(key)) {
-            this.propertiesByService.get(service).put("hashed" + key, DigestUtils.sha256Hex(value));
+            this.propertiesByService.get(service).put("hashed" + key, GetHashMac.hash(value));
         }
     }
 
@@ -75,7 +74,7 @@ public final class TelemetryCollector {
 
     private void buildProperties() {
         commonProperties.put(VERSION, PROJECT_INFO);
-        commonProperties.put(INSTALLATION_ID, MacAddressHelper.getHashedMacAddress());
+        commonProperties.put(INSTALLATION_ID, GetHashMac.getHashMac());
     }
 
     public String getName() {

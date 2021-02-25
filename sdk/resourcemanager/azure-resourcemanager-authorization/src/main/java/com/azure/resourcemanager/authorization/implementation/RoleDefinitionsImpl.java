@@ -12,6 +12,7 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of RoleDefinitions and its parent interfaces. */
 public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
@@ -61,9 +62,9 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public PagedFlux<RoleDefinition> listByScopeAsync(String scope) {
-        return inner()
-            .listAsync(scope, null)
-            .mapPage(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
+        return PagedConverter.mapPage(inner()
+            .listAsync(scope, null),
+            roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
     @Override

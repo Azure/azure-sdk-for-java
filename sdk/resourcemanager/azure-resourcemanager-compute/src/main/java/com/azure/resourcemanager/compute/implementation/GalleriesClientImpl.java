@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -75,7 +76,7 @@ public final class GalleriesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface GalleriesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}")
@@ -88,9 +89,10 @@ public final class GalleriesClientImpl
             @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryInner gallery,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}")
@@ -103,9 +105,10 @@ public final class GalleriesClientImpl
             @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryUpdate gallery,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}")
@@ -117,9 +120,10 @@ public final class GalleriesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}")
@@ -131,9 +135,10 @@ public final class GalleriesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
@@ -142,9 +147,10 @@ public final class GalleriesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
@@ -152,21 +158,28 @@ public final class GalleriesClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -175,7 +188,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,6 +222,7 @@ public final class GalleriesClientImpl
             gallery.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -220,6 +234,7 @@ public final class GalleriesClientImpl
                             galleryName,
                             apiVersion,
                             gallery,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -230,7 +245,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -265,6 +280,7 @@ public final class GalleriesClientImpl
             gallery.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -274,6 +290,7 @@ public final class GalleriesClientImpl
                 galleryName,
                 apiVersion,
                 gallery,
+                accept,
                 context);
     }
 
@@ -283,7 +300,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,7 +323,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -331,7 +348,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -349,7 +366,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -368,7 +385,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,7 +404,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -408,7 +425,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,7 +442,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to create or update.
+     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -444,7 +461,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,6 +495,7 @@ public final class GalleriesClientImpl
             gallery.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -489,6 +507,7 @@ public final class GalleriesClientImpl
                             galleryName,
                             apiVersion,
                             gallery,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -499,7 +518,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -534,6 +553,7 @@ public final class GalleriesClientImpl
             gallery.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -543,6 +563,7 @@ public final class GalleriesClientImpl
                 galleryName,
                 apiVersion,
                 gallery,
+                accept,
                 context);
     }
 
@@ -552,7 +573,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,7 +595,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -599,7 +620,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -617,7 +638,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -636,7 +657,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -655,7 +676,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -676,7 +697,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -693,7 +714,7 @@ public final class GalleriesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
      *     dots and periods allowed in the middle. The maximum length is 80 characters.
-     * @param gallery Specifies information about the Shared Image Gallery that you want to update.
+     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -738,6 +759,7 @@ public final class GalleriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -748,6 +770,7 @@ public final class GalleriesClientImpl
                             resourceGroupName,
                             galleryName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -786,6 +809,7 @@ public final class GalleriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -794,6 +818,7 @@ public final class GalleriesClientImpl
                 resourceGroupName,
                 galleryName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -884,6 +909,7 @@ public final class GalleriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -894,6 +920,7 @@ public final class GalleriesClientImpl
                             resourceGroupName,
                             galleryName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -932,6 +959,7 @@ public final class GalleriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -940,6 +968,7 @@ public final class GalleriesClientImpl
                 resourceGroupName,
                 galleryName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1104,6 +1133,7 @@ public final class GalleriesClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1113,6 +1143,7 @@ public final class GalleriesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<GalleryInner>>map(
                 res ->
@@ -1156,10 +1187,16 @@ public final class GalleriesClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1255,10 +1292,12 @@ public final class GalleriesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
+                    service
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<GalleryInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1295,9 +1334,10 @@ public final class GalleriesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1376,8 +1416,16 @@ public final class GalleriesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GalleryInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1405,9 +1453,16 @@ public final class GalleriesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1433,8 +1488,15 @@ public final class GalleriesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GalleryInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1462,9 +1524,16 @@ public final class GalleriesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

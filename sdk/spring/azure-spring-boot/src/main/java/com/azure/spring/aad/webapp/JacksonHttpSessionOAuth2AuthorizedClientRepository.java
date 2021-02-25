@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.webapp.jackson.OAuth2ClientJackson2Module;
+import com.azure.spring.aad.webapp.jackson.AADDatabindModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.jackson2.CoreJackson2Module;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.util.Assert;
 
@@ -23,18 +22,16 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores
- * {@link OAuth2AuthorizedClient}'s in the {@code HttpSession}. To make it compatible
- * with different spring versions.
- * Refs: https://github.com/spring-projects/spring-security/issues/9204
+ * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores {@link OAuth2AuthorizedClient}'s in the
+ * {@code HttpSession}. To make it compatible with different spring versions. Refs:
+ * https://github.com/spring-projects/spring-security/issues/9204
  *
  * @see OAuth2AuthorizedClientRepository
  * @see OAuth2AuthorizedClient
  */
 public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
-    private static final String DEFAULT_AUTHORIZED_CLIENTS_ATTR_NAME =
-        HttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
-    private final String sessionAttributeName = DEFAULT_AUTHORIZED_CLIENTS_ATTR_NAME;
+    private static final String AUTHORIZED_CLIENTS_ATTR_NAME =
+        JacksonHttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
     private final ObjectMapper objectMapper;
     private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE =
         new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
@@ -44,7 +41,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         objectMapper = new ObjectMapper();
         // TODO: Use OAuth2ClientJackson2Module in spring-security
         // after min spring-security version we need to support >=5.3.0
-        objectMapper.registerModule(new OAuth2ClientJackson2Module());
+        objectMapper.registerModule(new AADDatabindModule());
         objectMapper.registerModule(new CoreJackson2Module());
         objectMapper.registerModule(new JavaTimeModule());
     }
@@ -67,7 +64,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.notNull(response, "response cannot be null");
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
-        request.getSession().setAttribute(this.sessionAttributeName, toString(authorizedClients));
+        request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));
     }
 
     @Override
@@ -79,9 +76,9 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         if (!authorizedClients.isEmpty()) {
             if (authorizedClients.remove(clientRegistrationId) != null) {
                 if (!authorizedClients.isEmpty()) {
-                    request.getSession().setAttribute(this.sessionAttributeName, toString(authorizedClients));
+                    request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));
                 } else {
-                    request.getSession().removeAttribute(this.sessionAttributeName);
+                    request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
                 }
             }
         }
@@ -100,7 +97,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         String authorizedClientsString = (String) Optional.ofNullable(session)
-                                                          .map(s -> s.getAttribute(this.sessionAttributeName))
+                                                          .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
                                                           .orElse(null);
         if (authorizedClientsString == null) {
             return new HashMap<>();

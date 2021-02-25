@@ -13,6 +13,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public final class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMReimageParameters.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {
+        super.withTempDisk(tempDisk);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -3,20 +3,15 @@
 
 package com.azure.test.aad.webapi;
 
-import com.azure.test.oauth.OAuthResponse;
-import com.azure.test.oauth.OAuthUtils;
-import com.azure.test.utils.AppRunner;
+import com.azure.spring.test.AppRunner;
+import com.azure.spring.test.aad.AADWebApiITHelper;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,56 +29,49 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 public class AADWebApiOboIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADWebApiOboIT.class);
-
     private static final String GRAPH_ME_ENDPOINT = "https://graph.microsoft.com/v1.0/me";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private AADWebApiITHelper aadWebApiITHelper;
+
+    @Before
+    public void init() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put("azure.activedirectory.authorization-clients.graph.scopes",
+            "https://graph.microsoft.com/User.Read");
+        aadWebApiITHelper = new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            AAD_MULTI_TENANT_CLIENT_ID,
+            AAD_MULTI_TENANT_CLIENT_SECRET,
+            Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
+    }
 
     @Test
     public void testCallGraph() {
-        this.runApp(app -> {
-            final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(
-                System.getenv(AAD_MULTI_TENANT_CLIENT_ID), System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
-            assertNotNull(authResponse);
-
-            final HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", String.format("Bearer %s", authResponse.getAccessToken()));
-            HttpEntity<Object> entity = new HttpEntity<>(headers);
-            final ResponseEntity<String> response = restTemplate.exchange(
-                app.root() + "/call-graph",
-                HttpMethod.GET,
-                entity,
-                String.class,
-                new HashMap<>()
-            );
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals("Graph response success.", response.getBody());
-        });
+        assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
     private void runApp(Consumer<AppRunner> command) {
         try (AppRunner app = new AppRunner(AADWebApiOboIT.DumbApp.class)) {
-            final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
-            final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
-            app.property("azure.activedirectory.client-id", clientId);
-            app.property("azure.activedirectory.client-secret", clientSecret);
-            app.property("azure.activedirectory.app-id-uri", "api://" + clientId);
-            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read");
             app.start();
             command.accept(app);
         }
