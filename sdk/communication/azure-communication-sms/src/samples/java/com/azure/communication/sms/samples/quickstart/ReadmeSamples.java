@@ -5,25 +5,28 @@ package com.azure.communication.sms.samples.quickstart;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
+
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
-import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.models.SmsSendOptions;
+
+import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Hello world!
- *
  */
 public class ReadmeSamples {
-    public static void main(String[] args) {
+
+
+    public void createSmsClient() {
 
         // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
+        //Enter your azureKeyCredential
+        AzureKeyCredential azureKeyCredential = null;
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -33,32 +36,16 @@ public class ReadmeSamples {
 
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
-            .accessKey(accessKey)
+            .credential(azureKeyCredential)
             .httpClient(httpClient);
 
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
 
-        // Currently Sms services only supports one phone number
-        List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
-        to.add(new PhoneNumberIdentifier("<to-phone-number>"));
 
-        // SendSmsOptions is an optional field. It can be used
-        // to enable a delivery report to the Azure Event Grid
-        SendSmsOptions options = new SendSmsOptions();
-        options.setEnableDeliveryReport(true);
-
-        // Send the message and check the response for a message id
-        SendSmsResponse response = smsClient.sendMessage(
-            new PhoneNumberIdentifier("<leased-phone-number>"), 
-            to, 
-            "your message",
-            options /* Optional */);
-
-        System.out.println("MessageId: " + response.getMessageId());
     }
 
-    public void createSmsClienttWithConnectionString() {
+    public void createSmsClientWithConnectionString() {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
@@ -71,24 +58,52 @@ public class ReadmeSamples {
             .buildClient();
     }
 
-    /**
-     * Sample code for creating a sync Communication Identity Client using AAD authentication.
-     *
-     * @return the Communication Identity Client.
-     */
-    public SmsClient createCommunicationIdentityClientWithAAD() {
-        // You can find your endpoint and access key from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+    public void sendMessageToOneRecipient(SmsClient smsClient) {
+        //Send an sms to only one phone number
+        String to = "<to-phone-number>";
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        // to enable a delivery report to the Azure Event Grid
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        //addionaly you can ad a tag you wish to identify the messages for this tag.
+        options.setTag("Tag"); /* Optional */
 
-        SmsClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(httpClient)
-            .buildClient();
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        SmsSendResult response = smsClient.send(
+            "<leased-phone-number>",
+            to,
+            "your message",
+            options /* Optional */);
 
-        return smsClient;
+        System.out.println("MessageId: " + response.getMessageId());
+
     }
+
+    public void sendMessageToMultipleRecipients(SmsClient smsClient) {
+        //Send an sms to multiple phone numbers
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
+
+        // to enable a delivery report to the Azure Event Grid
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        //addionaly you can ad a tag you wish to identify the messages for this tag.
+        options.setTag("Tag"); /* Optional */
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        List<SmsSendResult> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
+            toMultiplePhones,
+            "your message",
+            options /* Optional */,
+            null);
+
+        for (SmsSendResult messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+    }
+
+
 }
