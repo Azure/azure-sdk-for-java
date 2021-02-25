@@ -8,7 +8,6 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_
 import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import com.azure.spring.autoconfigure.b2c.AADB2CProperties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -80,10 +79,10 @@ public class AADB2CIT {
 
         private final AADB2COidcLoginConfigurer configurer;
 
-        private final AADB2CProperties aadb2CProperties;
+        private final String profileEdit;
 
-        public DumbApp(AADB2CProperties aadb2CProperties, AADB2COidcLoginConfigurer configurer) {
-            this.aadb2CProperties = aadb2CProperties;
+        public DumbApp(AADB2COidcLoginConfigurer configurer) {
+            this.profileEdit = AAD_B2C_PROFILE_EDIT;
             this.configurer = configurer;
         }
 
@@ -109,7 +108,7 @@ public class AADB2CIT {
                 model.addAttribute("grant_type", user.getAuthorities());
                 model.addAllAttributes(user.getAttributes());
             }
-            model.addAttribute("aadb2c_profileedit", aadb2CProperties.getUserFlows().getProfileEdit());
+            model.addAttribute("aadb2c_profileedit", profileEdit);
         }
     }
 }

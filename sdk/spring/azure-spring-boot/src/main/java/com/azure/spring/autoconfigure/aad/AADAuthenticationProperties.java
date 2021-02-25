@@ -144,18 +144,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .orElse(false);
     }
 
-    public boolean isResourceServer() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken",
-            this.getClass().getClassLoader());
-    }
-
-    public boolean isWebApplication() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
-            this.getClass().getClassLoader());
-    }
-
     public UserGroupProperties getUserGroup() {
         return userGroup;
     }

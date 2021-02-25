@@ -23,7 +23,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     private String userEmail;
     private String userPassword;
-    private boolean isAzureGlobal;
+    private boolean isAzureCloudGlobal;
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
@@ -42,12 +42,12 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         super(appClass, properties);
         userEmail = AAD_B2C_USER_EMAIL;
         userPassword = AAD_B2C_USER_PASSWORD;
-        isAzureGlobal = Constant.AZURE_CLOUD_TYPE_GLOBAL.equalsIgnoreCase(AZURE_CLOUD_TYPE) ? true : false;
+        isAzureCloudGlobal = Constant.AZURE_CLOUD_TYPE_GLOBAL.equalsIgnoreCase(AZURE_CLOUD_TYPE) ? true : false;
     }
 
     public void logIn() {
         driver.get(app.root());
-        if (isAzureGlobal) {
+        if (isAzureCloudGlobal) {
             wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         } else {
             wait.until(presenceOfElementLocated(By.id("logonIdentifier"))).sendKeys(userEmail);
@@ -55,7 +55,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
 
-        if (isAzureGlobal) {
+        if (isAzureCloudGlobal) {
             wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).sendKeys(Keys.ENTER);
         } else {
             wait.until(presenceOfElementLocated(By.id("next"))).sendKeys(Keys.ENTER);
@@ -66,7 +66,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     public void profileEditJobTitle(String newJobTitle) {
         wait.until(presenceOfElementLocated(By.id("profileEdit"))).click();
         changeJobTile(newJobTitle);
-        if (isAzureGlobal) {
+        if (isAzureCloudGlobal) {
             wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
         } else {
             wait.until(presenceOfElementLocated(By.id("continue"))).sendKeys(Keys.ENTER);
@@ -117,7 +117,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getSignInButtonText() {
-        if (isAzureGlobal) {
+        if (isAzureCloudGlobal) {
             return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).getText();
         } else {
             return wait.until(ExpectedConditions.elementToBeClickable(By.id("next"))).getText();
