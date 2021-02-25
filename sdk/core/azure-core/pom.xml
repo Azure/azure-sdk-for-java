@@ -102,13 +102,6 @@
       <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <!-- Use it as external_dependency to workaround circular dependency with azure-core. We'll have a long term solution -->
-      <version>1.1.2</version> <!-- {x-version-update;azure-core-serializer-json-jackson;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->

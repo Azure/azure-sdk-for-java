@@ -4,8 +4,6 @@
 package com.azure.core.models;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CloudEventTests {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final CloudEvent.JacksonSerializer SERIALIZER = new CloudEvent.JacksonSerializer();
 
     @Test
     public void testDeserializeCloudEvents() {
@@ -63,7 +61,7 @@ public class CloudEventTests {
         // actually deserialized as a LinkedHashMap instead of generic object.
         BinaryData data = cloudEvent.getData();
         Map<String, Object> deserializedData = data.toObject(new TypeReference<Map<String, Object>>() {
-        });
+        }, SERIALIZER);
         assertEquals(deserializedData.get("Field1"), "Value1");
         assertEquals(deserializedData.get("Field2"), "Value2");
         assertEquals(deserializedData.get("Field3"), "Value3");
@@ -99,7 +97,7 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class);
+        ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class, SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -150,7 +148,8 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class);
+        ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class,
+            SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -188,7 +187,7 @@ public class CloudEventTests {
             .setSpecVersion("1.0")
             .addExtensionAttribute("foo", "value");
         try {
-            String serializedString = SERIALIZER.serialize(cloudEvent, SerializerEncoding.JSON);
+            String serializedString = SERIALIZER.getJacksonAdapter().serialize(cloudEvent, SerializerEncoding.JSON);
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals(cloudEvent.getData().toString(), deserializedCloudEvent.getData().toString());
             assertEquals(new String(Base64.getDecoder().decode(cloudEvent.getData().toBytes())), "AAA");
@@ -206,7 +205,7 @@ public class CloudEventTests {
                 put("Field2", "Value2");
             }
         };
-        BinaryData binaryData = BinaryData.fromObject(mapData);
+        BinaryData binaryData = BinaryData.fromObject(mapData, SERIALIZER);
         CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -214,10 +213,10 @@ public class CloudEventTests {
             .setSpecVersion("1.0")
             .addExtensionAttribute("foo", "value");
         try {
-            String serializedString = SERIALIZER.serialize(cloudEvent, SerializerEncoding.JSON);
+            String serializedString = SERIALIZER.getJacksonAdapter().serialize(cloudEvent, SerializerEncoding.JSON);
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals(mapData, deserializedCloudEvent.getData().toObject(new TypeReference<Map<String, Object>>() {
-            }));
+            }, SERIALIZER));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
 
         } catch (IOException e) {
@@ -235,7 +234,7 @@ public class CloudEventTests {
             .setSpecVersion("1.0")
             .addExtensionAttribute("foo", "value");
         try {
-            String serializedString = SERIALIZER.serialize(cloudEvent, SerializerEncoding.JSON);
+            String serializedString = SERIALIZER.getJacksonAdapter().serialize(cloudEvent, SerializerEncoding.JSON);
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("AAA", deserializedCloudEvent.getData().toString());
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
@@ -255,13 +254,13 @@ public class CloudEventTests {
             .setSpecVersion("1.0")
             .addExtensionAttribute("foo", "value");
         try {
-            String serializedString = SERIALIZER.serialize(cloudEvent, SerializerEncoding.JSON);
+            String serializedString = SERIALIZER.getJacksonAdapter().serialize(cloudEvent, SerializerEncoding.JSON);
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("{\"foo\":\"value\"}", deserializedCloudEvent.getData().toString());
             Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
                 new TypeReference<Map<String, String>>() {
 
-                });
+                }, SERIALIZER);
             assertEquals("value", deserializedMap.get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
 

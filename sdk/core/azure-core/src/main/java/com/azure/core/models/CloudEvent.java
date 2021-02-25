@@ -6,16 +6,21 @@ package com.azure.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
-import java.io.UncheckedIOException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -36,7 +41,18 @@ import java.util.UUID;
 @Fluent
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
-    private static final JsonSerializer DESERIALIZER = JsonSerializerProviders.createInstance();
+    private static final JsonSerializer SERIALIZER;
+
+    static {
+        JsonSerializer tmp;
+        try {
+            tmp = JsonSerializerProviders.createInstance();
+        } catch (IllegalStateException e) {
+            tmp = new JacksonSerializer();
+        }
+        SERIALIZER = tmp;
+    }
+
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
     private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>(Arrays.asList(
         "specversion",
@@ -195,24 +211,19 @@ public final class CloudEvent {
         if (cloudEventsJson == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'cloudEventsJson' cannot be null"));
         }
-        try {
-            List<CloudEvent> events = Arrays.asList(DESERIALIZER.deserialize(
+        List<CloudEvent> events = Arrays.asList(SERIALIZER.deserialize(
                 new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(CloudEvent[].class)));
-            if (!skipValidation) {
-                for (CloudEvent event : events) {
-                    if (event.getId() == null || event.getSource() == null || event.getType() == null) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
-                                + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
-                    }
+        if (!skipValidation) {
+            for (CloudEvent event : events) {
+                if (event.getId() == null || event.getSource() == null || event.getType() == null) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
+                            + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
                 }
             }
-            return events;
-        } catch (UncheckedIOException uncheckedIOException) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
-                uncheckedIOException.getCause()));
         }
+        return events;
     }
 
     /**
@@ -263,7 +274,7 @@ public final class CloudEvent {
                 } else if (this.data instanceof byte[]) {
                     this.binaryData = BinaryData.fromBytes((byte[]) this.data);
                 } else {
-                    this.binaryData = BinaryData.fromObject(this.data);
+                    this.binaryData = BinaryData.fromObject(this.data, SERIALIZER);
                 }
             } else if (this.dataBase64 != null) {
                 this.binaryData = BinaryData.fromString(this.dataBase64);
@@ -414,5 +425,41 @@ public final class CloudEvent {
             }
         }
         return true;
+    }
+
+    static class JacksonSerializer implements JsonSerializer {
+        private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            try {
+                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.defer(() -> Mono.just(deserialize(stream, typeReference)));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+
+        JacksonAdapter getJacksonAdapter() {
+            return jacksonAdapter;
+        }
     }
 }
