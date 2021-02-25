@@ -94,6 +94,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.7]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-common:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
