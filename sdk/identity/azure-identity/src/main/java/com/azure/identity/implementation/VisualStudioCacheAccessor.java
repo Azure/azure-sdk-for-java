@@ -7,6 +7,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -28,12 +29,14 @@ public class VisualStudioCacheAccessor {
     private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
-
     private JsonNode getUserSettings() {
         JsonNode output = null;
         String homeDir = System.getProperty("user.home");
         String settingsPath = "";
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
         try {
             if (Platform.isWindows()) {
                 settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json")
@@ -85,8 +88,6 @@ public class VisualStudioCacheAccessor {
         details.put("cloud", cloud);
         return details;
     }
-
-
 
     /**
      * Get the credential for the specified service and account name.
