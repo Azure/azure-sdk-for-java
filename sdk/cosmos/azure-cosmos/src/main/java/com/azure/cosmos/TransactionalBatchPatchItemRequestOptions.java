@@ -35,7 +35,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
+        super.setIfMatchETag(ifMatchETag);
         return this;
     }
 
@@ -47,14 +47,12 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        this.ifNoneMatchETag = ifNoneMatchEtag;
+        super.setIfNoneMatchETag(ifNoneMatchEtag);
         return this;
     }
 
     RequestOptions toRequestOptions() {
-        final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchETag(getIfMatchETag());
-        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
+        final RequestOptions requestOptions = super.toRequestOptions();
         requestOptions.setFilterPredicate(getFilterPredicate());
         return requestOptions;
     }

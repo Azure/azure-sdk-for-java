@@ -52,7 +52,7 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        super.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         return this;
     }
 
@@ -64,7 +64,7 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        this.ifNoneMatchETag = ifNoneMatchEtag;
+        super.setIfNoneMatchETag(ifNoneMatchEtag);
         return this;
     }
 
@@ -76,15 +76,12 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
+        super.setIfMatchETag(ifMatchETag);
         return this;
     }
 
     RequestOptions toRequestOptions() {
-        final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchETag(getIfMatchETag());
-        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
-        requestOptions.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled());
+        final RequestOptions requestOptions = super.toRequestOptions();
         requestOptions.setFilterPredicate(getFilterPredicate());
         return requestOptions;
     }

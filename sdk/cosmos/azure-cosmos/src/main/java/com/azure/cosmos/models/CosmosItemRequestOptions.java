@@ -13,16 +13,16 @@ import java.util.List;
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
 public class CosmosItemRequestOptions {
-    protected ConsistencyLevel consistencyLevel;
-    protected IndexingDirective indexingDirective;
-    protected List<String> preTriggerInclude;
-    protected List<String> postTriggerInclude;
-    protected String sessionToken;
-    protected PartitionKey partitionKey;
-    protected String ifMatchETag;
-    protected String ifNoneMatchETag;
-    protected Boolean contentResponseOnWriteEnabled;
-    protected String throughputControlGroupName;
+    private ConsistencyLevel consistencyLevel;
+    private IndexingDirective indexingDirective;
+    private List<String> preTriggerInclude;
+    private List<String> postTriggerInclude;
+    private String sessionToken;
+    private PartitionKey partitionKey;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
+    private String throughputControlGroupName;
 
     /**
      * copy constructor
