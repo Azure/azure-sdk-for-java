@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.MinedOpinionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
@@ -24,7 +24,7 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.TargetSentiment;
-import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -168,7 +168,7 @@ class AnalyzeSentimentAsyncClient {
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
                 SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1,
-                    toMinedOpinionList(sentenceSentiment, documentSentimentList));
+                    toSentenceOpinionList(sentenceSentiment, documentSentimentList));
                 SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, sentenceSentiment.getOffset());
                 SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, sentenceSentiment.getLength());
                 return sentenceSentiment1;
@@ -228,7 +228,7 @@ class AnalyzeSentimentAsyncClient {
     /*
      * Transform SentenceSentiment's opinion mining to output that user can use.
      */
-    private IterableStream<MinedOpinion> toMinedOpinionList(
+    private IterableStream<SentenceOpinion> toSentenceOpinionList(
         com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
         List<DocumentSentiment> documentSentimentList) {
         // If include opinion mining indicator is false, the service return null for the target list.
@@ -236,7 +236,7 @@ class AnalyzeSentimentAsyncClient {
         if (sentenceTargets == null) {
             return null;
         }
-        final List<MinedOpinion> minedOpinions = new ArrayList<>();
+        final List<SentenceOpinion> sentenceOpinions = new ArrayList<>();
         sentenceTargets.forEach(sentenceTarget -> {
             final List<AssessmentSentiment> assessmentSentiments = new ArrayList<>();
             sentenceTarget.getRelations().forEach(targetRelation -> {
@@ -256,13 +256,13 @@ class AnalyzeSentimentAsyncClient {
             TargetSentimentPropertiesHelper.setOffset(targetSentiment, sentenceTarget.getOffset());
             TargetSentimentPropertiesHelper.setLength(targetSentiment, sentenceTarget.getLength());
 
-            final MinedOpinion minedOpinion = new MinedOpinion();
-            MinedOpinionPropertiesHelper.setTarget(minedOpinion, targetSentiment);
-            MinedOpinionPropertiesHelper.setAssessments(minedOpinion, new IterableStream<>(assessmentSentiments));
-            minedOpinions.add(minedOpinion);
+            final SentenceOpinion sentenceOpinion = new SentenceOpinion();
+            SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion, targetSentiment);
+            SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion, new IterableStream<>(assessmentSentiments));
+            sentenceOpinions.add(sentenceOpinion);
         });
 
-        return new IterableStream<>(minedOpinions);
+        return new IterableStream<>(sentenceOpinions);
     }
 
     /*

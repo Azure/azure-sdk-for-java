@@ -17,7 +17,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -1324,7 +1324,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
-            validateSentenceMinedOpinions(expectedSentiment.getOpinions().stream().collect(Collectors.toList()),
+            validateSentenceOpinions(expectedSentiment.getOpinions().stream().collect(Collectors.toList()),
                 actualSentiment.getOpinions().stream().collect(Collectors.toList()));
         } else {
             assertNull(actualSentiment.getOpinions());
@@ -1332,20 +1332,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate sentence's mined opinions.
+     * Helper method to validate sentence's opinions.
      *
-     * @param expectedMinedOpinions a list of mined opinions returned by the service.
-     * @param actualMinedOpinions a list of mined opinions returned by the API.
+     * @param expectedSentenceOpinions a list of sentence opinions returned by the service.
+     * @param actualSentenceOpinions a list of sentence opinions returned by the API.
      */
-    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
-        List<MinedOpinion> actualMinedOpinions) {
-        assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
-        for (int i = 0; i < actualMinedOpinions.size(); i++) {
-            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
-            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
-            validateTargetSentiment(expectedMinedOpinion.getTarget(), actualMinedOpinion.getTarget());
-            validateAssessmentList(expectedMinedOpinion.getAssessments().stream().collect(Collectors.toList()),
-                actualMinedOpinion.getAssessments().stream().collect(Collectors.toList()));
+    static void validateSentenceOpinions(List<SentenceOpinion> expectedSentenceOpinions,
+        List<SentenceOpinion> actualSentenceOpinions) {
+        assertEquals(expectedSentenceOpinions.size(), actualSentenceOpinions.size());
+        for (int i = 0; i < actualSentenceOpinions.size(); i++) {
+            final SentenceOpinion expectedSentenceOpinion = expectedSentenceOpinions.get(i);
+            final SentenceOpinion actualSentenceOpinion = actualSentenceOpinions.get(i);
+            validateTargetSentiment(expectedSentenceOpinion.getTarget(), actualSentenceOpinion.getTarget());
+            validateAssessmentList(expectedSentenceOpinion.getAssessments().stream().collect(Collectors.toList()),
+                actualSentenceOpinion.getAssessments().stream().collect(Collectors.toList()));
         }
     }
 

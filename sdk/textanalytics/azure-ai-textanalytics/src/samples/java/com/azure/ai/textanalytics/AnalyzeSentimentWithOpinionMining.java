@@ -42,11 +42,11 @@ public class AnalyzeSentimentWithOpinionMining {
             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
             System.out.printf("\tSentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                 sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
-            sentenceSentiment.getOpinions().forEach(minedOpinions -> {
-                TargetSentiment targetSentiment = minedOpinions.getTarget();
+            sentenceSentiment.getOpinions().forEach(opinion -> {
+                TargetSentiment targetSentiment = opinion.getTarget();
                 System.out.printf("\t\tTarget sentiment: %s, target text: %s%n", targetSentiment.getSentiment(),
                     targetSentiment.getText());
-                for (AssessmentSentiment assessmentSentiment : minedOpinions.getAssessments()) {
+                for (AssessmentSentiment assessmentSentiment : opinion.getAssessments()) {
                     System.out.printf("\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
                         assessmentSentiment.getSentiment(), assessmentSentiment.getText(), assessmentSentiment.isNegated());
                 }

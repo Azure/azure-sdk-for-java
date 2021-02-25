@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.core.util.IterableStream;
 
@@ -19,7 +19,7 @@ public final class SentenceSentimentPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link SentenceSentiment} instance.
      */
     public interface SentenceSentimentAccessor {
-        void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<MinedOpinion> opinions);
+        void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<SentenceOpinion> opinions);
         void setOffset(SentenceSentiment sentenceSentiment, int offset);
         void setLength(SentenceSentiment sentenceSentiment, int length);
     }
@@ -33,7 +33,7 @@ public final class SentenceSentimentPropertiesHelper {
         accessor = sentenceSentimentAccessor;
     }
 
-    public static void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<MinedOpinion> opinions) {
+    public static void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<SentenceOpinion> opinions) {
         accessor.setOpinions(sentenceSentiment, opinions);
     }
 

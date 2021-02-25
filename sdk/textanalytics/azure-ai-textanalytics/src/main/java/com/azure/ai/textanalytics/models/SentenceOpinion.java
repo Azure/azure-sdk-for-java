@@ -3,27 +3,27 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.MinedOpinionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link MinedOpinion} model.
+ * The {@link SentenceOpinion} model.
  */
-public final class MinedOpinion {
+public final class SentenceOpinion {
     private TargetSentiment target;
     private IterableStream<AssessmentSentiment> assessments;
 
     static {
-        MinedOpinionPropertiesHelper.setAccessor(
-            new MinedOpinionPropertiesHelper.MinedOpinionAccessor() {
+        SentenceOpinionPropertiesHelper.setAccessor(
+            new SentenceOpinionPropertiesHelper.SentenceOpinionAccessor() {
                 @Override
-                public void setTarget(MinedOpinion minedOpinion, TargetSentiment target) {
-                    minedOpinion.setTarget(target);
+                public void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target) {
+                    sentenceOpinion.setTarget(target);
                 }
 
                 @Override
-                public void setAssessments(MinedOpinion minedOpinion, IterableStream<AssessmentSentiment> assessments) {
-                    minedOpinion.setAssessments(assessments);
+                public void setAssessments(SentenceOpinion sentenceOpinion, IterableStream<AssessmentSentiment> assessments) {
+                    sentenceOpinion.setAssessments(assessments);
                 }
             });
     }

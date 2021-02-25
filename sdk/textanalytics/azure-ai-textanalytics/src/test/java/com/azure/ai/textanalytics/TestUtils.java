@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.MinedOpinionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
@@ -18,6 +18,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultProper
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -34,7 +35,6 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -450,9 +450,9 @@ final class TestUtils {
         TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment1,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         TargetSentimentPropertiesHelper.setOffset(targetSentiment1, 4);
-        final MinedOpinion minedOpinion1 = new MinedOpinion();
-        MinedOpinionPropertiesHelper.setTarget(minedOpinion1, targetSentiment1);
-        MinedOpinionPropertiesHelper.setAssessments(minedOpinion1,
+        final SentenceOpinion sentenceOpinion1 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion1, targetSentiment1);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion1,
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final TargetSentiment targetSentiment2 = new TargetSentiment();
@@ -461,22 +461,22 @@ final class TestUtils {
         TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment2,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         TargetSentimentPropertiesHelper.setOffset(targetSentiment2, 59);
-        final MinedOpinion minedOpinion2 = new MinedOpinion();
-        MinedOpinionPropertiesHelper.setTarget(minedOpinion2, targetSentiment2);
-        MinedOpinionPropertiesHelper.setAssessments(minedOpinion2,
+        final SentenceOpinion sentenceOpinion2 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
-        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(minedOpinion1)));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
         SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
-        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(minedOpinion2)));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(sentenceOpinion2)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment2, 32);
         SentenceSentimentPropertiesHelper.setLength(sentenceSentiment2, 35);
 
@@ -523,9 +523,9 @@ final class TestUtils {
         TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment1,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         TargetSentimentPropertiesHelper.setOffset(targetSentiment1, 27);
-        final MinedOpinion minedOpinion1 = new MinedOpinion();
-        MinedOpinionPropertiesHelper.setTarget(minedOpinion1, targetSentiment1);
-        MinedOpinionPropertiesHelper.setAssessments(minedOpinion1,
+        final SentenceOpinion sentenceOpinion1 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion1, targetSentiment1);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion1,
             new IterableStream<>(asList(assessmentSentiment3)));
 
         final TargetSentiment targetSentiment2 = new TargetSentiment();
@@ -534,22 +534,22 @@ final class TestUtils {
         TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment2,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         TargetSentimentPropertiesHelper.setOffset(targetSentiment2, 40);
-        final MinedOpinion minedOpinion2 = new MinedOpinion();
-        MinedOpinionPropertiesHelper.setTarget(minedOpinion2, targetSentiment2);
-        MinedOpinionPropertiesHelper.setAssessments(minedOpinion2,
+        final SentenceOpinion sentenceOpinion2 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
-        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(minedOpinion1)));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
         SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
-        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(minedOpinion2)));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(sentenceOpinion2)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment2, 36);
         SentenceSentimentPropertiesHelper.setLength(sentenceSentiment2, 31);
 

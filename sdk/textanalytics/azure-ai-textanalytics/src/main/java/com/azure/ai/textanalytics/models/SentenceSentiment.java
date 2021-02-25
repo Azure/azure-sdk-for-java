@@ -8,13 +8,13 @@ import com.azure.core.util.IterableStream;
 
 /**
  * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
- * sentiment label, mined opinions, and offset of sentence within a document.
+ * sentiment label, sentence opinions, and offset of sentence within a document.
  */
 public final class SentenceSentiment {
     private final String text;
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
-    private IterableStream<MinedOpinion> opinions;
+    private IterableStream<SentenceOpinion> opinions;
     private int offset;
     private int length;
 
@@ -36,7 +36,7 @@ public final class SentenceSentiment {
         SentenceSentimentPropertiesHelper.setAccessor(
             new SentenceSentimentPropertiesHelper.SentenceSentimentAccessor() {
                 @Override
-                public void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<MinedOpinion> opinions) {
+                public void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<SentenceOpinion> opinions) {
                     sentenceSentiment.setOpinions(opinions);
                 }
 
@@ -81,12 +81,12 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the mined opinions of sentence sentiment.
+     * Get the sentence opinions of sentence sentiment.
      * This is only returned if you pass the opinion mining parameter to the analyze sentiment APIs.
      *
-     * @return The mined opinions of sentence sentiment.
+     * @return The sentence opinions of sentence sentiment.
      */
-    public IterableStream<MinedOpinion> getOpinions() {
+    public IterableStream<SentenceOpinion> getOpinions() {
         return opinions;
     }
 
@@ -108,7 +108,7 @@ public final class SentenceSentiment {
         return length;
     }
 
-    private void setOpinions(IterableStream<MinedOpinion> opinions) {
+    private void setOpinions(IterableStream<SentenceOpinion> opinions) {
         this.opinions = opinions;
     }
 

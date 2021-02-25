@@ -1421,7 +1421,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result excludes request statistics and mined options when given a batch of
+     * Verify that the collection result excludes request statistics and sentence options when given a batch of
      * String documents with null TextAnalyticsRequestOptions and null language code which will use the default language
      * code, 'en'.
      *
@@ -1439,7 +1439,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result excludes request statistics and mined options when given a batch of
+     * Verify that the collection result excludes request statistics and sentence options when given a batch of
      * String documents with null TextAnalyticsRequestOptions and given a language code.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
@@ -1456,7 +1456,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes request statistics but not mined options when given a batch of
+     * Verify that the collection result includes request statistics but not sentence options when given a batch of
      * String documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
@@ -1473,7 +1473,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes mined options but not request statistics when given a batch of
+     * Verify that the collection result includes sentence options but not request statistics when given a batch of
      * String documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
@@ -1492,7 +1492,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes mined options and request statistics when given a batch of
+     * Verify that the collection result includes sentence options and request statistics when given a batch of
      * String documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
@@ -1509,7 +1509,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result excludes request statistics and mined options when given a batch of
+     * Verify that the collection result excludes request statistics and sentence options when given a batch of
      * TextDocumentInput documents with null TextAnalyticsRequestOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
@@ -1543,7 +1543,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result excludes request statistics and mined options when given a batch of
+     * Verify that the collection result excludes request statistics and sentence options when given a batch of
      * TextDocumentInput documents with null AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
@@ -1560,7 +1560,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes request statistics but not mined options when given a batch of
+     * Verify that the collection result includes request statistics but not sentence options when given a batch of
      * TextDocumentInput documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
@@ -1577,7 +1577,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes mined options but not request statistics when given a batch of
+     * Verify that the collection result includes sentence options but not request statistics when given a batch of
      * TextDocumentInput documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
@@ -1597,7 +1597,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that the collection result includes mined options and request statistics when given a batch of
+     * Verify that the collection result includes sentence options and request statistics when given a batch of
      * TextDocumentInput documents with AnalyzeSentimentOptions.
      *
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
@@ -1641,12 +1641,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(25, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(opinionSentiment -> {
                                 assertEquals(7, opinionSentiment.getLength());
                                 assertEquals(17, opinionSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(7, targetSentiment.getOffset());
                         });
@@ -1671,12 +1671,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                             sentenceSentiment -> {
                                 assertEquals(24, sentenceSentiment.getLength());
                                 assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                                    minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                        assertEquals(7, opinionSentiment.getLength());
-                                        assertEquals(16, opinionSentiment.getOffset());
+                                sentenceSentiment.getOpinions().forEach(opinion -> {
+                                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                                        assertEquals(7, assessmentSentiment.getLength());
+                                        assertEquals(16, assessmentSentiment.getOffset());
                                     });
-                                    final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                                    final TargetSentiment targetSentiment = opinion.getTarget();
                                     assertEquals(5, targetSentiment.getLength());
                                     assertEquals(6, targetSentiment.getOffset());
                                 });
@@ -1697,12 +1697,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(27, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(19, opinionSentiment.getOffset());
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(assessmentSentiment -> {
+                                assertEquals(7, assessmentSentiment.getLength());
+                                assertEquals(19, assessmentSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(9, targetSentiment.getOffset());
                         });
@@ -1725,12 +1725,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                             sentenceSentiment -> {
                                 assertEquals(34, sentenceSentiment.getLength());
                                 assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                                    minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                        assertEquals(7, opinionSentiment.getLength());
-                                        assertEquals(26, opinionSentiment.getOffset());
+                                sentenceSentiment.getOpinions().forEach(opinion -> {
+                                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                                        assertEquals(7, assessmentSentiment.getLength());
+                                        assertEquals(26, assessmentSentiment.getOffset());
                                     });
-                                    final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                                    final TargetSentiment targetSentiment = opinion.getTarget();
                                     assertEquals(5, targetSentiment.getLength());
                                     assertEquals(16, targetSentiment.getOffset());
                                 });
@@ -1755,12 +1755,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                             sentenceSentiment -> {
                                 assertEquals(42, sentenceSentiment.getLength());
                                 assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                                    minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                        assertEquals(7, opinionSentiment.getLength());
-                                        assertEquals(34, opinionSentiment.getOffset());
+                                sentenceSentiment.getOpinions().forEach(opinion -> {
+                                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                                        assertEquals(7, assessmentSentiment.getLength());
+                                        assertEquals(34, assessmentSentiment.getOffset());
                                     });
-                                    final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                                    final TargetSentiment targetSentiment = opinion.getTarget();
                                     assertEquals(5, targetSentiment.getLength());
                                     assertEquals(24, targetSentiment.getOffset());
                                 });
@@ -1781,12 +1781,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(26, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(18, opinionSentiment.getOffset());
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(assessmentSentiment -> {
+                                assertEquals(7, assessmentSentiment.getLength());
+                                assertEquals(18, assessmentSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(8, targetSentiment.getOffset());
                         });
@@ -1808,12 +1808,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         sentenceSentiment -> {
                             assertEquals(27, sentenceSentiment.getLength());
                             assertEquals(0, sentenceSentiment.getOffset());
-                            sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                                minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                    assertEquals(7, opinionSentiment.getLength());
-                                    assertEquals(19, opinionSentiment.getOffset());
+                            sentenceSentiment.getOpinions().forEach(opinion -> {
+                                opinion.getAssessments().forEach(assessmentSentiment -> {
+                                    assertEquals(7, assessmentSentiment.getLength());
+                                    assertEquals(19, assessmentSentiment.getOffset());
                                 });
-                                final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                                final TargetSentiment targetSentiment = opinion.getTarget();
                                 assertEquals(5, targetSentiment.getLength());
                                 assertEquals(9, targetSentiment.getOffset());
                             });
@@ -1834,12 +1834,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(25, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(17, opinionSentiment.getOffset());
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(assessmentSentiment -> {
+                                assertEquals(7, assessmentSentiment.getLength());
+                                assertEquals(17, assessmentSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(7, targetSentiment.getOffset());
                         });
@@ -1860,12 +1860,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(25, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(17, opinionSentiment.getOffset());
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(assessmentSentiment -> {
+                                assertEquals(7, assessmentSentiment.getLength());
+                                assertEquals(17, assessmentSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(7, targetSentiment.getOffset());
                         });
@@ -1886,12 +1886,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                         assertEquals(138, sentenceSentiment.getLength());
                         assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(minedOpinion -> {
-                            minedOpinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(130, opinionSentiment.getOffset());
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            opinion.getAssessments().forEach(assessmentSentiment -> {
+                                assertEquals(7, assessmentSentiment.getLength());
+                                assertEquals(130, assessmentSentiment.getOffset());
                             });
-                            final TargetSentiment targetSentiment = minedOpinion.getTarget();
+                            final TargetSentiment targetSentiment = opinion.getTarget();
                             assertEquals(5, targetSentiment.getLength());
                             assertEquals(120, targetSentiment.getOffset());
                         });
