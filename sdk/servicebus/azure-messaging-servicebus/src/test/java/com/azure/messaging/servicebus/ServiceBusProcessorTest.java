@@ -291,14 +291,16 @@ public class ServiceBusProcessorTest {
 
         Flux<ServiceBusMessageContext> messageFlux =
             Flux.create(emitter -> {
-                for (int i = 0; i < 5; i++) {
-                    ServiceBusReceivedMessage serviceBusReceivedMessage =
-                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
-                }
+                emitter.onRequest(request -> {
+                    for (int i = 0; i < 5; i++) {
+                        ServiceBusReceivedMessage serviceBusReceivedMessage =
+                            new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                        serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                        ServiceBusMessageContext serviceBusMessageContext =
+                            new ServiceBusMessageContext(serviceBusReceivedMessage);
+                        emitter.next(serviceBusMessageContext);
+                    }
+                });
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
@@ -318,15 +320,14 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             serviceBusProcessErrorContext -> {
-                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusErrorContext);
                 ServiceBusException exception = (ServiceBusException) serviceBusProcessErrorContext.getException();
-                assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
+                assertEquals(ServiceBusErrorSource.USER_CALLBACK, exception.getErrorSource());
                 countDownLatch.countDown();
             },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setDisableAutoComplete(true));
 
         serviceBusProcessorClient.start();
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean success = countDownLatch.await(30, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
         assertTrue(success, "Failed to receive all expected messages");
 
