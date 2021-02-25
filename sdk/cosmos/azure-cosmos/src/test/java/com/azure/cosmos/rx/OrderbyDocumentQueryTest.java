@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.IncludedPath;
@@ -35,6 +36,7 @@ import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +72,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -245,14 +247,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                                                                            BridgeInternal.getContextClient(this.client));
         // Ensure its a cross partition query
         assertThat(partitionKeyRanges.size()).isGreaterThan(1);
-        String query = String.format("SELECT * FROM r ORDER BY r.propMixed %s", sortOrder);
+        // We are inserting documents with int, float, string, array, object and missing propMixed.
+        String query = String.format("SELECT r.id, r.propMixed FROM r ORDER BY r.propMixed ", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        List<InternalObjectNode> list = createdDocuments.stream()
-                                            .sorted((o1, o2) -> ItemComparator.getInstance()
-                                                                    .compare(o1.get("propMixed"),
-                                                                             o2.get("propMixed")))
-                                            .filter(d -> d.has("propMixed"))
-                                            .collect(Collectors.toList());
         List<String> orderedIds = createdDocuments.stream()
                                       .sorted((o1, o2) -> ItemComparator.getInstance().compare(o1.get("propMixed"),
                                                                                                o2.get("propMixed")))
@@ -267,8 +264,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         FeedResponseListValidator<InternalObjectNode> validator =
             new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(orderedIds.size())
-                .exactlyContainsIdsInAnyOrder(orderedIds) // Cannot expect nulls/arrays/object types to be in a
-                // particular order
+                .exactlyContainsIdsInAnyOrder(orderedIds) // Cannot expect orderby nulls/arrays/object types to be in a
+                // particular order so just testing to make sure all the documents exist.
                 .build();
         validateQuerySuccess(queryFlux.byPage(pageSize), validator);
     }
