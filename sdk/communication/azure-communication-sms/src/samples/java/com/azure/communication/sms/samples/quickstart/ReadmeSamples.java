@@ -4,9 +4,18 @@ package com.azure.communication.sms.samples.quickstart;
 
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
+=======
+
+
+import com.azure.communication.sms.SmsClient;
+import com.azure.communication.sms.SmsClientBuilder;
+import com.azure.communication.sms.models.SmsSendOptions;
+
+>>>>>>> 94f7a8b318 (draft of the implementation)
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -73,6 +82,7 @@ public class ReadmeSamples {
             options /* Optional */);
 
         System.out.println("MessageId: " + response.getMessageId());
+<<<<<<< HEAD
 
     }
 
@@ -102,5 +112,36 @@ public class ReadmeSamples {
         }
     }
 
+=======
+
+    }
+
+    public void sendMessageToMultipleRecipients(SmsClient smsClient) {
+        //Send an sms to multiple phone numbers
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
+
+        // to enable a delivery report to the Azure Event Grid
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        //addionaly you can ad a tag you wish to identify the messages for this tag.
+        options.setTag("Tag"); /* Optional */
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        List<SmsSendResult> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
+            toMultiplePhones,
+            "your message",
+            options /* Optional */,
+            null);
+
+        for (SmsSendResult messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+    }
+
+>>>>>>> 94f7a8b318 (draft of the implementation)
 
 }

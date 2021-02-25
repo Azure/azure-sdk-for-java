@@ -6,6 +6,10 @@ package com.azure.communication.sms.implementation;
 
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.communication.sms.models.SendMessageRequest;
+<<<<<<< HEAD
+=======
+import com.azure.communication.sms.models.SmsSendResponse;
+>>>>>>> 94f7a8b318 (draft of the implementation)
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;

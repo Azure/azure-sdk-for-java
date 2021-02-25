@@ -4,7 +4,10 @@
 
 package com.azure.communication.sms.models;
 
+<<<<<<< HEAD
 import com.azure.communication.sms.implementation.models.SmsSendResultRepeatabilityResult;
+=======
+>>>>>>> 94f7a8b318 (draft of the implementation)
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -115,9 +118,15 @@ public final class SmsSendResult {
      *
      * @return the repeatabilityResult value.
      */
+<<<<<<< HEAD
     /*public SmsSendResultRepeatabilityResult getRepeatabilityResult() {
         return this.repeatabilityResult;
     }*/
+=======
+    public SmsSendResultRepeatabilityResult getRepeatabilityResult() {
+        return this.repeatabilityResult;
+    }
+>>>>>>> 94f7a8b318 (draft of the implementation)
 
     /**
      * Set the repeatabilityResult property: The result of a repeatable request with one of the case-insensitive values
@@ -126,10 +135,17 @@ public final class SmsSendResult {
      * @param repeatabilityResult the repeatabilityResult value to set.
      * @return the SmsSendResult object itself.
      */
+<<<<<<< HEAD
     /*public SmsSendResult setRepeatabilityResult(SmsSendResultRepeatabilityResult repeatabilityResult) {
         this.repeatabilityResult = repeatabilityResult;
         return this;
     }*/
+=======
+    public SmsSendResult setRepeatabilityResult(SmsSendResultRepeatabilityResult repeatabilityResult) {
+        this.repeatabilityResult = repeatabilityResult;
+        return this;
+    }
+>>>>>>> 94f7a8b318 (draft of the implementation)
 
     /**
      * Get the successful property: Indicates if the message is processed successfully or not.

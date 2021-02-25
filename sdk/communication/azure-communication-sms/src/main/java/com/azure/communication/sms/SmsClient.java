@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.sms;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 94f7a8b318 (draft of the implementation)
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
@@ -10,6 +15,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> 94f7a8b318 (draft of the implementation)
 
 
 /**
@@ -69,7 +78,11 @@ public final class SmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message,
                               SmsSendOptions smsOptions, Context context) {
+<<<<<<< HEAD
         return smsAsyncClient.send(from, to, message, smsOptions).block();
+=======
+        return null;
+>>>>>>> 94f7a8b318 (draft of the implementation)
     }
 
     /**
@@ -81,7 +94,11 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message) {
+=======
+    public List<SmsSendResult> send(String from, Iterable<String> to, String message) {
+>>>>>>> 94f7a8b318 (draft of the implementation)
         return smsAsyncClient.send(from, to, message).block();
     }
 
@@ -98,7 +115,11 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message,
+=======
+    public List<SmsSendResult> send(String from, Iterable<String> to, String message,
+>>>>>>> 94f7a8b318 (draft of the implementation)
                                     SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message,
             smsOptions).block();

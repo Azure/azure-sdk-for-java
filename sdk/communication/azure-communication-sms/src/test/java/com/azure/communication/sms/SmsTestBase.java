@@ -38,6 +38,7 @@ public class SmsTestBase extends TestBase {
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
+<<<<<<< HEAD
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("FROM_PHONE_NUMBER", "+18335260208");
@@ -60,6 +61,18 @@ public class SmsTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
+=======
+
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("id")
+        .add("token");
+
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
+
+>>>>>>> 94f7a8b318 (draft of the implementation)
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential(ACCESSKEY);
         SmsClientBuilder builder = new SmsClientBuilder();
@@ -75,7 +88,31 @@ public class SmsTestBase extends TestBase {
 
         return builder;
     }
+<<<<<<< HEAD
 
+=======
+
+    /*protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new FakeCredentials());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }*/
+>>>>>>> 94f7a8b318 (draft of the implementation)
 
     protected SmsClientBuilder getSmsClientUsingConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
@@ -102,6 +139,7 @@ public class SmsTestBase extends TestBase {
             } catch (IllegalArgumentException var3) {
                 logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 return TestMode.PLAYBACK;
+<<<<<<< HEAD
             }
         } else {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
@@ -126,6 +164,32 @@ public class SmsTestBase extends TestBase {
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {
                 content = content.replace(matcher.group(1), replacement);
             }
+=======
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
+        }
+    }
+
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
+>>>>>>> 94f7a8b318 (draft of the implementation)
         }
 
         return content;
