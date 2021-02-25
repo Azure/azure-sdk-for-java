@@ -19,9 +19,6 @@ public class ProxyResource {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /**
      * Get the id value.
      *
@@ -47,14 +44,5 @@ public class ProxyResource {
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the systemData value.
-     *
-     * @return the metadata pertaining to creation and last modification of the resource.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 }

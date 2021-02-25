@@ -2,6 +2,7 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+- Added `SystemData`.
 
 ## 1.1.1 (2021-02-05)
 
@@ -15,7 +16,6 @@
 
 ### Bug Fixes
 
-- Added `SystemData` to `ProxyResource` class.
 - Fixed long-running operation, PUT method, response 201 and Location, succeeded without poll.
 
 ## 1.0.0 (2020-09-24)
