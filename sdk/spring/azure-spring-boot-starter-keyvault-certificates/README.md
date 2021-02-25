@@ -276,10 +276,10 @@ An example is show below:
 
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L25-L28 -->
 ```java
-    SSLContext sslContext = SSLContexts.custom()
-                                       .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-                                       .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                                       .build();
+SSLContext sslContext = SSLContexts.custom()
+                                   .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                   .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+                                   .build();
 ```
 
 2. A ClientPrivateKeyStrategy needs to be defined.
@@ -288,12 +288,12 @@ An example is show below:
 
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L30-L35 -->
 ```java
-    private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
-        @Override
-        public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "self-signed";
-        }
+private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+    @Override
+    public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
+        return "self-signed";
     }
+}
 ```
 
 ### Configuring Spring Cloud Gateway
