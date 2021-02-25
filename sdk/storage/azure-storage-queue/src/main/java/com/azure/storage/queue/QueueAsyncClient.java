@@ -826,7 +826,7 @@ public final class QueueAsyncClient {
             queueMessageInternalItems = Collections.emptyList();
         }
         return Flux.fromIterable(queueMessageInternalItems)
-            .flatMap(queueMessageItemInternal ->
+            .flatMapSequential(queueMessageItemInternal ->
                 transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
                 .onErrorResume(IllegalArgumentException.class, e -> {
                     if (processMessageDecodingErrorAsyncHandler != null) {
@@ -973,7 +973,7 @@ public final class QueueAsyncClient {
             peekedMessageInternalItems = Collections.emptyList();
         }
         return Flux.fromIterable(peekedMessageInternalItems)
-            .flatMap(peekedMessageItemInternal ->
+            .flatMapSequential(peekedMessageItemInternal ->
                 transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
                     .onErrorResume(IllegalArgumentException.class, e -> {
                         if (processMessageDecodingErrorAsyncHandler != null) {
