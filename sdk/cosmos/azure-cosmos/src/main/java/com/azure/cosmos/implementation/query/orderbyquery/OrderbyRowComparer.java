@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.implementation.query.ItemType;
 import com.azure.cosmos.implementation.query.ItemTypeHelper;
@@ -70,7 +71,8 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 }
             }
 
-            return r1.getSourcePartitionKeyRange().getMinInclusive().compareTo(r2.getSourcePartitionKeyRange().getMinInclusive());
+            return r1.getSourceRange().getRange().getMin()
+                       .compareTo(r2.getSourceRange().getRange().getMin());
         } catch (Exception e) {
             // Due to a bug in rxjava-extras <= 0.8.0.15 dependency,
             // if OrderbyRowComparer throws an unexpected exception,

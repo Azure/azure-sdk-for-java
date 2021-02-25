@@ -27,6 +27,7 @@ public class CosmosQueryRequestOptions {
     private boolean queryMetricsEnabled;
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
+    private FeedRange feedRange;
     private String throughputControlGroupName;
 
     /**
@@ -374,6 +375,14 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
+    }
+
+    FeedRange getFeedRange() {
+        return feedRange;
+    }
+
+    void setFeedRange(FeedRange feedRange) {
+        this.feedRange = feedRange;
     }
 
     /**
