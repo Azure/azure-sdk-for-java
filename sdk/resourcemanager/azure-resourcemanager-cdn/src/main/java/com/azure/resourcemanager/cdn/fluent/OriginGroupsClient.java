@@ -136,8 +136,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,8 +158,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -182,8 +180,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,8 +202,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -230,8 +226,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,8 +248,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,8 +270,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroup Origin group comprising of origins is used for load balancing to origins when the content
-     *     cannot be served from CDN.
+     * @param originGroup Origin group properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -301,7 +294,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +316,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,7 +338,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -367,7 +360,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -391,7 +384,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,7 +406,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +428,7 @@ public interface OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @param originGroupUpdateProperties Origin group properties needed for origin group creation or update.
+     * @param originGroupUpdateProperties Origin group properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
