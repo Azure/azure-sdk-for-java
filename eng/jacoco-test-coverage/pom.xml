@@ -569,8 +569,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.4]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
               </includes>
             </bannedDependencies>
           </rules>
