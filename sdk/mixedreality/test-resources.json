@@ -1,6 +1,6 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "baseName": {
       "type": "string",
@@ -28,28 +28,27 @@
     "apiVersion": "2020-05-01",
     "asaAccountName": "[concat(parameters('baseName'), '-asa-account')]"
   },
-    "resources": [
-        {
-            "type": "Microsoft.MixedReality/spatialAnchorsAccounts",
-            "name": "[variables('asaAccountName')]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[parameters('location')]",
-            "properties": {}
-        }
-    ],
-    "outputs": {
-        "MIXEDREALITY_ACCOUNT_ID": {
-            "type": "string",
-            "value": "[reference(variables('asaAccountName')).accountId]"
-        },
-        "MIXEDREALITY_ACCOUNT_DOMAIN": {
-            "type": "string",
-            "value": "[reference(variables('asaAccountName')).accountDomain]"
-        },
-        "MIXEDREALITY_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.MixedReality/spatialAnchorsAccounts', variables('asaAccountName')), variables('apiVersion')).primaryKey]"
-        }
-      }
+  "resources": [
+    {
+      "type": "Microsoft.MixedReality/spatialAnchorsAccounts",
+      "name": "[variables('asaAccountName')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[parameters('location')]",
+      "properties": {}
     }
+  ],
+  "outputs": {
+    "MIXEDREALITY_ACCOUNT_ID": {
+      "type": "string",
+      "value": "[reference(variables('asaAccountName')).accountId]"
+    },
+    "MIXEDREALITY_ACCOUNT_DOMAIN": {
+      "type": "string",
+      "value": "[reference(variables('asaAccountName')).accountDomain]"
+    },
+    "MIXEDREALITY_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.MixedReality/spatialAnchorsAccounts', variables('asaAccountName')), variables('apiVersion')).primaryKey]"
+    }
+  }
 }
