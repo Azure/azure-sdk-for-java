@@ -600,11 +600,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        return runQuery(querySpec, domainType)
+            .map(cosmosItemProperties -> toDomainObject(returnType, cosmosItemProperties));
+    }
+
+    private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
         String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)
-                   .queryItems(querySpec, options, returnType)
+                   .queryItems(querySpec, options, JsonNode.class)
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
