@@ -40,9 +40,7 @@ public class PremiumServiceBusJMSAutoConfiguration {
 
         final ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
-        ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-        String[] hosts = new String[] {builder.getEndpoint().getHost()};
-        settings.setReconnectHosts(hosts);
+        settings.setShouldReconnect(false);
         final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
