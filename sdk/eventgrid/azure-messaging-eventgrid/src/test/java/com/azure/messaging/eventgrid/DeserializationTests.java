@@ -4,7 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemReceivedEventData;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemSentEventData;
