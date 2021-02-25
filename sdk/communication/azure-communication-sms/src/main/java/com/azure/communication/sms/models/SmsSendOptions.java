@@ -15,7 +15,7 @@ public final class SmsSendOptions {
      * Azure Resource EventGrid.
      */
     @JsonProperty(value = "enableDeliveryReport", required = true)
-    private boolean enableDeliveryReport;
+    private boolean deliveryReportEnabled;
 
     /*
      * Use this field to provide metadata that will then be sent back in the
@@ -25,24 +25,24 @@ public final class SmsSendOptions {
     private String tag;
 
     /**
-     * Get the enableDeliveryReport property: Enable this flag to receive a delivery report for this message on the
+     * Get the deliveryReportEnabled property: Enable this flag to receive a delivery report for this message on the
      * Azure Resource EventGrid.
      *
-     * @return the enableDeliveryReport value.
+     * @return the deliveryReportEnabled value.
      */
     public boolean isDeliveryReportEnabled() {
-        return this.enableDeliveryReport;
+        return this.deliveryReportEnabled;
     }
 
     /**
-     * Set the enableDeliveryReport property: Enable this flag to receive a delivery report for this message on the
+     * Set the deliveryReportEnabled property: Enable this flag to receive a delivery report for this message on the
      * Azure Resource EventGrid.
      *
-     * @param enableDeliveryReport the enableDeliveryReport value to set.
+     * @param deliveryReportEnabled the deliveryReportEnabled value to set.
      * @return the SmsSendOptions object itself.
      */
-    public SmsSendOptions setDeliveryReportEnabled(boolean enableDeliveryReport) {
-        this.enableDeliveryReport = enableDeliveryReport;
+    public SmsSendOptions setDeliveryReportEnabled(boolean deliveryReportEnabled) {
+        this.deliveryReportEnabled = deliveryReportEnabled;
         return this;
     }
 

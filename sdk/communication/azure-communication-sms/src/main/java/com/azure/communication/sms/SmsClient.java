@@ -9,8 +9,6 @@ import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
-
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -40,7 +38,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message) {
-        return null;
+        return smsAsyncClient.send(from, to, message).block();
     }
 
     /**
@@ -50,13 +48,14 @@ public final class SmsClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
+     *                   for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message,
-                                    SmsSendOptions smsOptions) {
-        return null;
+                              SmsSendOptions smsOptions) {
+        return smsAsyncClient.send(from, to, message,
+            smsOptions).block();
     }
 
     /**
@@ -66,13 +65,13 @@ public final class SmsClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
+     *                   for this message to the Azure Resource Event Grid.
      * @param context context to use
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message,
-                              SmsSendOptions smsOptions,Context context) {
+                              SmsSendOptions smsOptions, Context context) {
         return null;
     }
 
@@ -85,10 +84,8 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SmsSendResult> send(String from, Iterable<String> to, String message) {
-
-
-        return null;
+    public List<SmsSendResult> send(String from, Iterable<String> to, String message) {
+        return smsAsyncClient.send(from, to, message).block();
     }
 
 
@@ -99,18 +96,16 @@ public final class SmsClient {
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
+     *                   for this message to the Azure Resource Event Grid.
      * @param context sets the context for the call
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SmsSendResult> send(String from, Iterable<String> to, String message,
-                                                        SmsSendOptions smsOptions, Context context ) {
-
-
-        return null;
+    public List<SmsSendResult> send(String from, Iterable<String> to, String message,
+                                    SmsSendOptions smsOptions, Context context) {
+        return smsAsyncClient.send(from, to, message,
+            smsOptions).block();
     }
-
 
 
 }

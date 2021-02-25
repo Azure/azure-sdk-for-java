@@ -68,7 +68,7 @@ public final class SmsClientBuilder {
      * Set endpoint of the service
      *
      * @param pipeline HttpPipeline to use, if a pipeline is not
-     * supplied, the credential and httpClient fields must be set
+     *                 supplied, the credential and httpClient fields must be set
      * @return SmsClientBuilder
      */
     public SmsClientBuilder pipeline(HttpPipeline pipeline) {
@@ -121,7 +121,7 @@ public final class SmsClientBuilder {
      * Set httpClient to use
      *
      * @param httpClient httpClient to use, overridden by the pipeline
-     * field.
+     *                   field.
      * @return SmsClientBuilder
      */
     public SmsClientBuilder httpClient(HttpClient httpClient) {
@@ -133,7 +133,7 @@ public final class SmsClientBuilder {
      * Apply additional HttpPipelinePolicy
      *
      * @param customPolicy HttpPipelinePolicy object to be applied after
-     * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
+     *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return SmsClientBuilder
      */
     public SmsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -204,7 +204,7 @@ public final class SmsClientBuilder {
     /**
      * Allows the user to set a variety of client-related options, such as user-agent string, headers, etc.
      *
-     * @param clientOptions  object to be applied
+     * @param clientOptions object to be applied
      * @return SmsClientBuilder
      */
     public SmsClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -215,14 +215,15 @@ public final class SmsClientBuilder {
     /**
      * Sets the retry policy to use (using the RetryPolicy type).
      *
-     * @param retryPolicy  object to be applied
+     * @param retryPolicy object to be applied
      * @return SmsClientBuilder
      */
     public SmsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
-    private AzureCommunicationSMSServiceImpl  createServiceImpl() {
+
+    private AzureCommunicationSMSServiceImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -232,7 +233,7 @@ public final class SmsClientBuilder {
                 customPolicies);
         }
 
-        AzureCommunicationSMSServiceImplBuilder  clientBuilder = new AzureCommunicationSMSServiceImplBuilder ();
+        AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
 

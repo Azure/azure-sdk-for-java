@@ -5,20 +5,20 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
+import com.azure.communication.sms.models.SendMessageRequest;
+import com.azure.communication.sms.models.SmsRecipient;
+import com.azure.communication.sms.models.SmsSendResponse;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -39,6 +39,7 @@ public final class SmsAsyncClient {
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
      * Phone number has to be in the format 000 - 00 - 00
+     *
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
@@ -46,7 +47,7 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResult> send(String from, String to, String message) {
-        return null;
+        return send(from, to, message, null);
     }
 
     /**
@@ -56,13 +57,36 @@ public final class SmsAsyncClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
+     *                   for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResult> send(String from, String to, String message,
-                                          SmsSendOptions smsOptions) {
-        return null;
+                                    SmsSendOptions smsOptions) {
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(to);
+
+        SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
+
+        try {
+            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
+
+            List<SmsSendResult> result = smsSendResponse.getValue();
+            if (result.size() == 1) {
+                return Mono.just(result.get(0));
+            } else {
+                return monoError(logger, new NullPointerException("no response"));
+            }
+
+        } catch (NullPointerException ex) {
+            return monoError(logger, ex);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
+
     }
 
     /**
@@ -74,10 +98,10 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message) {
+    public Mono<List<SmsSendResult>> send(String from, Iterable<String> to, String message) {
 
 
-        return null;
+        return send(from, to, message, null);
     }
 
     /**
@@ -87,18 +111,48 @@ public final class SmsAsyncClient {
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid
+     *                   for this message to the Azure Resource Event Grid
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
+    public Mono<List<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
+
+        SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
+
+        try {
+            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
+
+            List<SmsSendResult> result = smsSendResponse.getValue();
+            return Mono.just(result);
+
+        } catch (NullPointerException ex) {
+            return monoError(logger, ex);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
 
 
-        return null;
     }
 
 
+    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message,
+                                                        SmsSendOptions smsOptions) {
+        SendMessageRequest request = new SendMessageRequest();
+        List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
+        for (String s : smsRecipient) {
+            recipients.add(new SmsRecipient().setTo(s));
 
+        }
+        request.setFrom(from);
+        request.setSmsRecipients(recipients);
+        request.setMessage(message);
+        request.setSmsSendOptions(smsOptions);
+
+        return request;
+
+    }
 
 
 }

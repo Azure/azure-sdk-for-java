@@ -31,18 +31,17 @@ To update generated files for Sms service, run the following command
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/tree/users/shamkh/featureSendSmsChanges/specification/communication/data-plane/Microsoft.CommunicationServicesSms/stable/2021-03-07/communicationservicessms.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/communication/data-plane/Microsoft.CommunicationServicesSms/stable/2021-03-07/communicationservicessms.json
 java: true
 output-folder: ..\
-generate-client-as-impl: true
-namespace: com.azure.communication.sms
-sync-methods: none
-license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true	
-models-subpackage: implementation.models
-context-client-method-parameter: true	
+sync-methods: all
+license-header: MICROSOFT_MIT_SMALL	
+namespace: com.azure.communication.sms	
+generate-client-as-impl: true	
 custom-types-subpackage: models
-custom-types: SmsSendResultRepeatabilityResult,SmsSendResult,SmsSendOptions
+add-context-parameter: true
+context-client-method-parameter: true
+
 ```
 
 ### Rename SendSmsResponseItem to SmsSendResult
@@ -52,4 +51,13 @@ directive:
     - rename-model:
         from: SmsSendResponseItem
         to: SmsSendResult
+```
+### Directive renaming "id" property to "identifier"
+
+``` yaml
+directive:
+    from: swagger-document
+    where: '$.definitions.SmsSendOptions.properties.enableDeliveryReport'
+    transform: >
+        $["x-ms-client-name"] = "deliveryReportEnabled";
 ```

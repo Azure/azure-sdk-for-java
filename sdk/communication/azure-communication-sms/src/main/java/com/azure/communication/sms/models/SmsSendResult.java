@@ -4,7 +4,6 @@
 
 package com.azure.communication.sms.models;
 
-import com.azure.communication.sms.implementation.models.SmsSendResultRepeatabilityResult;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SmsSendResult {
     /*
-     * The recipients's phone number in E.164 format.
+     * The recipient's phone number in E.164 format.
      */
     @JsonProperty(value = "to", required = true)
     private String to;
 
     /*
-     * The identifier of the outgoing SMS message. Only present if message
+     * The identifier of the outgoing Sms message. Only present if message
      * processed.
      */
     @JsonProperty(value = "messageId")
@@ -44,13 +43,13 @@ public final class SmsSendResult {
     private boolean successful;
 
     /*
-     * Optional error message in case of 4xx/5xx/repeatibility errors.
+     * Optional error message in case of 4xx/5xx/repeatable errors.
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
-     * Get the to property: The recipients's phone number in E.164 format.
+     * Get the to property: The recipient's phone number in E.164 format.
      *
      * @return the to value.
      */
@@ -59,7 +58,7 @@ public final class SmsSendResult {
     }
 
     /**
-     * Set the to property: The recipients's phone number in E.164 format.
+     * Set the to property: The recipient's phone number in E.164 format.
      *
      * @param to the to value to set.
      * @return the SmsSendResult object itself.
@@ -70,7 +69,7 @@ public final class SmsSendResult {
     }
 
     /**
-     * Get the messageId property: The identifier of the outgoing SMS message. Only present if message processed.
+     * Get the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
      *
      * @return the messageId value.
      */
@@ -79,7 +78,7 @@ public final class SmsSendResult {
     }
 
     /**
-     * Set the messageId property: The identifier of the outgoing SMS message. Only present if message processed.
+     * Set the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
      *
      * @param messageId the messageId value to set.
      * @return the SmsSendResult object itself.
@@ -152,7 +151,7 @@ public final class SmsSendResult {
     }
 
     /**
-     * Get the errorMessage property: Optional error message in case of 4xx/5xx/repeatibility errors.
+     * Get the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
      *
      * @return the errorMessage value.
      */
@@ -161,7 +160,7 @@ public final class SmsSendResult {
     }
 
     /**
-     * Set the errorMessage property: Optional error message in case of 4xx/5xx/repeatibility errors.
+     * Set the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
      *
      * @param errorMessage the errorMessage value to set.
      * @return the SmsSendResult object itself.
