@@ -151,7 +151,6 @@ public final class CloudEvent {
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
      *                        "application/json", "text/plain", "text/xml", "application/+avro", etc. It can be null.
      * @throws NullPointerException if source, type, data, or format is null.
-     * @throws IllegalStateException if source isn't in a URI-formatted string.
      */
     public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
         if (Objects.isNull(source)) {
@@ -183,7 +182,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Deserialize the {@link CloudEvent CloudEvents} from a JSON string and validate whether any CloudEvents have
+     * Deserialize a list of {@link CloudEvent CloudEvents} from a JSON string and validate whether any CloudEvents have
      * null id', 'source', or 'type'. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      * @param cloudEventsJson the JSON payload containing one or more events.
      *
@@ -197,7 +196,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Deserialize the {@link CloudEvent CloudEvents} from a JSON string.
+     * Deserialize a list of {@link CloudEvent CloudEvents} from a JSON string.
      * @param cloudEventsJson the JSON payload containing one or more events.
      * @param skipValidation set to true if you'd like to skip the validation for the deserialized CloudEvents. A valid
      *                       CloudEvent should have 'id', 'source' and 'type' not null.
