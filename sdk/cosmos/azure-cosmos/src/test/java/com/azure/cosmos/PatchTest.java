@@ -72,9 +72,9 @@ public class PatchTest extends TestSuiteBase {
                 optionsFalse,
                 ToDoActivity.class);
 
+            fail("Patch operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
-            assertThat(ex.getMessage()).contains("Operation cannot be performed because one of the specified precondition is not met");
         }
 
         CosmosPatchItemRequestOptions optionsTrue = new CosmosPatchItemRequestOptions();
