@@ -187,7 +187,7 @@ public class ReadmeSamples {
 
     public void searchWithSearchOptions() {
         SearchOptions options = new SearchOptions()
-            .setFilter(String.format("rating ge %s", 4))
+            .setFilter("rating ge 4")
             .setOrderBy("rating desc")
             .setTop(5);
         SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);

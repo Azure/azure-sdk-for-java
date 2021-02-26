@@ -307,7 +307,7 @@ Let's search for the top 5 luxury hotels with a good rating.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L189-L194 -->
 ```java
 SearchOptions options = new SearchOptions()
-    .setFilter(String.format("rating ge %s", 4))
+    .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
