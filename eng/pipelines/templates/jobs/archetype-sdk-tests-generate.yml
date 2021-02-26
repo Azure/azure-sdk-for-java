@@ -20,6 +20,8 @@ jobs:
     vmImage: MMSUbuntu18.04
   displayName: Generate Job Matrix
   steps:
+    - checkout: none
+
     - ${{ each config in parameters.MatrixConfigs }}:
       - ${{ if eq(config.GenerateVMJobs, 'true') }}:
         - task: Powershell@2
