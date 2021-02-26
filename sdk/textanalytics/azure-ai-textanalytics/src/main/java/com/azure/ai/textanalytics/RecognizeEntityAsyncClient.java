@@ -196,7 +196,7 @@ class RecognizeEntityAsyncClient {
             options.getModelVersion(), options.isIncludeStatistics(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))

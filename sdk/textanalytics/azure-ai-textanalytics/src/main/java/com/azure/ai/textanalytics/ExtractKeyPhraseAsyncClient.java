@@ -185,7 +185,7 @@ class ExtractKeyPhraseAsyncClient {
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
             .map(this::toExtractKeyPhrasesResultCollectionResponse)

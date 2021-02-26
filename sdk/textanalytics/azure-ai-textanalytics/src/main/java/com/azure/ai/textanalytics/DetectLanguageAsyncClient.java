@@ -154,7 +154,7 @@ class DetectLanguageAsyncClient {
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
