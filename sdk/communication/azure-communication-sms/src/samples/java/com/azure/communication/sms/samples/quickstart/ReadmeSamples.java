@@ -22,7 +22,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ReadmeSamples {
     public static void main(String[] args) {
 
-        // Your can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
@@ -63,7 +63,7 @@ public class ReadmeSamples {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-        // Your can find your connection string from your resource in the Azure Portal
+        // You can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
         SmsClient smsClient = new SmsClientBuilder()

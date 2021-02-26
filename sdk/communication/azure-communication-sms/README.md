@@ -38,7 +38,7 @@ via the endpoint() and httpClient() functions respectively.
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L92 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L81-L91 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -64,7 +64,7 @@ functions respectively.
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L25-L41 -->
 ```java
 
-// Your can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
@@ -87,7 +87,7 @@ SmsClient smsClient = smsClientBuilder.buildClient();
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L66-L72 -->
 ```java
-// Your can find your connection string from your resource in the Azure Portal
+// You can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
 SmsClient smsClient = new SmsClientBuilder()

@@ -36,8 +36,9 @@ A `DefaultAzureCredential` object must be passed to the `CommunicationIdentityCl
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L67-L76 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L67-L77 -->
 ```java
+// You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
 // Create an HttpClient builder of your choice and customize it
