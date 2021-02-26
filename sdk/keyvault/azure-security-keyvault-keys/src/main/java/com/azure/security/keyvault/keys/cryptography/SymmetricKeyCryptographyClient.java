@@ -19,11 +19,12 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private static final int CBC_BLOCK_SIZE = 16;
-    private static final int GCM_NONCE_SIZE = 12;
+    static final int AES_BLOCK_SIZE = 16;
+    static final int GCM_NONCE_SIZE = 12;
 
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
 
@@ -72,24 +73,20 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         byte[] iv = encryptOptions.getIv();
         byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = generateRandomByteArray(GCM_NONCE_SIZE);
 
         if (iv == null) {
-            if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
-                || algorithm == EncryptionAlgorithm.A256GCM) {
-
+            if (isGcm(algorithm)) {
                 iv = generateRandomByteArray(GCM_NONCE_SIZE);
-            } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
-                || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
-                || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
-
-                iv = generateRandomByteArray(CBC_BLOCK_SIZE);
+            } else if (isAes(algorithm)) {
+                iv = generateRandomByteArray(AES_BLOCK_SIZE);
+            } else {
+                throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
             }
         }
 
         try {
             transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData,
-                authenticationTag);
+                null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -102,7 +99,21 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(e);
         }
 
-        return Mono.just(new EncryptResult(encrypted, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
+        byte[] cipherText;
+        byte[] authenticationTag;
+
+        if (isGcm(algorithm)) {
+            cipherText = Arrays.copyOfRange(encrypted, 0, encryptOptions.getPlainText().length);
+            authenticationTag = Arrays.copyOfRange(encrypted, encryptOptions.getPlainText().length, encrypted.length);
+        } else if(isAes(algorithm)) {
+            cipherText = encrypted;
+            authenticationTag = null;
+        } else {
+            // Should never reach this.
+            throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+        }
+
+        return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
             authenticationTag));
     }
 
@@ -137,9 +148,20 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         byte[] decrypted;
+        byte[] cipherText;
+
+        if (isGcm(algorithm)) {
+            cipherText = new byte[decryptOptions.getCipherText().length + authenticationTag.length];
+            System.arraycopy(decryptOptions.getCipherText(), 0, cipherText, 0, decryptOptions.getCipherText().length);
+            System.arraycopy(authenticationTag, 0, cipherText, decryptOptions.getCipherText().length, authenticationTag.length);
+        } else if (isAes(algorithm)) {
+            cipherText = decryptOptions.getCipherText();
+        } else {
+            throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+        }
 
         try {
-            decrypted = transform.doFinal(decryptOptions.getCipherText());
+            decrypted = transform.doFinal(cipherText);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -249,5 +271,20 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         return iv;
+    }
+
+    private boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
+        return (encryptionAlgorithm == EncryptionAlgorithm.A128GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A192GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A256GCM);
+    }
+
+    private boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {
+        return (encryptionAlgorithm == EncryptionAlgorithm.A128CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A192CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A256CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A128CBCPAD
+            || encryptionAlgorithm == EncryptionAlgorithm.A192CBCPAD
+            || encryptionAlgorithm == EncryptionAlgorithm.A256CBCPAD);
     }
 }
