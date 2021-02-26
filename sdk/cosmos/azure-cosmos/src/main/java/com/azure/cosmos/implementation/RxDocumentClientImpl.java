@@ -279,6 +279,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
+        this.throughputControlEnabled = new AtomicBoolean(false);
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -349,7 +350,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
-            this.throughputControlEnabled = new AtomicBoolean(false);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
