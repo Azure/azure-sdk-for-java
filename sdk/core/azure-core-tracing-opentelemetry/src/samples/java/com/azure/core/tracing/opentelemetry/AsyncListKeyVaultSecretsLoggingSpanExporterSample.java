@@ -4,13 +4,12 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
@@ -19,12 +18,12 @@ import reactor.util.context.Context;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
- * Sample to demonstrate using {@link AzureMonitorExporter} to export telemetry events when asynchronously creating
+ * Sample to demonstrate using {@link LoggingSpanExporter} to export telemetry events when asynchronously creating
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
-public class AsyncListKeyVaultSecretsAzureMonitorExporterSample {
+public class AsyncListKeyVaultSecretsLoggingSpanExporterSample {
 
-    private static final Tracer TRACER = configureAzureMonitorExporter();
+    private static final Tracer TRACER = configureLoggingSpanExporter();
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
 
     /**
@@ -37,26 +36,22 @@ public class AsyncListKeyVaultSecretsAzureMonitorExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link AzureMonitorExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link LoggingSpanExporter} to enable tracing.
      *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
-    private static Tracer configureAzureMonitorExporter() {
+    private static Tracer configureLoggingSpanExporter() {
         // Tracer provider configured to export spans with SimpleSpanProcessor using
         // the Azure Monitor exporter.
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildExporter();
+        SdkTracerProvider tracerProvider =
+            SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+                .build();
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-            .build();
-
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+        return OpenTelemetrySdk.builder()
             .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
-
-        return openTelemetrySdk.getTracer("Sample");
+            .buildAndRegisterGlobal()
+            .getTracer("Async-List-KV-Secrets-Sample");
     }
 
     /**
