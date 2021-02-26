@@ -192,6 +192,6 @@ class ExtractKeyPhraseAsyncClient {
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
             .map(this::toExtractKeyPhrasesResultCollectionResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

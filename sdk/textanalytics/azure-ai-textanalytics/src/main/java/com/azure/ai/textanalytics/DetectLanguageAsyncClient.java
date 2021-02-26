@@ -162,6 +162,6 @@ class DetectLanguageAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(this::toTextAnalyticsResultDocumentResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

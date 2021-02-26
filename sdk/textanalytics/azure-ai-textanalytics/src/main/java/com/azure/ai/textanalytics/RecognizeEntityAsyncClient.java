@@ -38,7 +38,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -204,6 +203,6 @@ class RecognizeEntityAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
             .map(this::toRecognizeEntitiesResultCollectionResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

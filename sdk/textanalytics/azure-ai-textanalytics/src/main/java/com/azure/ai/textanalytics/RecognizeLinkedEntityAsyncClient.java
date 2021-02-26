@@ -219,6 +219,6 @@ class RecognizeLinkedEntityAsyncClient {
                        response.getValue()))
                    .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
                    .map(this::toRecognizeLinkedEntitiesResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }
