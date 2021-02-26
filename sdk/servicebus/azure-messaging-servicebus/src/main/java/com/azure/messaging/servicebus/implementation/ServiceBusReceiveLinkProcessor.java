@@ -107,6 +107,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     }
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+        logger.info("updateDisposition  !!!! lockToken{} , deliveryState {}", lockToken, deliveryState);
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
@@ -119,12 +120,18 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         return link.updateDisposition(lockToken, deliveryState)
+            /*.onErrorResume(err -> {
+                synchronized (queueLock) {
+                    pendingMessages.decrementAndGet();
+                }
+                checkAndAddCredits(link);
+                return Mono.error(err);
+            })*/
             .then(Mono.fromRunnable(() -> {
                 // Check if we should add more credits.
                 synchronized (queueLock) {
                     pendingMessages.decrementAndGet();
                 }
-
                 checkAndAddCredits(link);
             }));
     }
@@ -241,7 +248,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         }
                     }));
         }
-
+        logger.info("[!!!! onNext  calling checkAndAddCredits]");
         checkAndAddCredits(next);
 
         if (oldChannel != null) {
@@ -490,7 +497,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     // These don't have to be settled because they're automatically settled by the link, so we
                     // decrement the count.
-                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
+                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK ||
+                        (receiveMode == ServiceBusReceiveMode.PEEK_LOCK  && prefetch == 0)) {
                         pendingMessages.decrementAndGet();
                     }
                     if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
@@ -545,7 +553,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         synchronized (lock) {
             final int linkCredits = link.getCredits();
             final int credits = getCreditsToAdd(linkCredits);
-            logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
+            logger.info("[!!!!checkAndAddCredits] Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
                 link.addCredits(credits);
@@ -581,7 +589,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         } else {
             expectedTotalCredit = prefetch;
         }
-        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
+        logger.info(" [!!!!getCreditsToAdd] linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
@@ -595,7 +603,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     ? Math.max(expectedTotalCredit - pending, 0)
                     : 0;
             }
-            logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
+            logger.info("[!!!!getCreditsToAdd] prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
                     + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
                 expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }
