@@ -10,36 +10,32 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.query.ItemComparator;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -60,7 +56,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
@@ -270,8 +265,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryFlux.byPage(pageSize), validator);
     }
 
-
-    @NotNull
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, AsyncDocumentClient asyncDocumentClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
