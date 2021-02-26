@@ -195,10 +195,6 @@
                 <code>.*</code>
                 <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
               </item>
-
-              <item>
-                <code>java.method.returnTypeChangedCovariantly</code>
-              </item>
             </revapi.ignore>
           </analysisConfiguration>
         </configuration>
