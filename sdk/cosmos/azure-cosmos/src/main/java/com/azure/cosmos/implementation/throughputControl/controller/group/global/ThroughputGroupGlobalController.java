@@ -109,9 +109,13 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     private Flux<Void> calculateClientThroughputShareTask(LinkedCancellationToken cancellationToken) {
         return Mono.delay(controlItemRenewInterval)
             .flatMap(t -> {
-                double loadFactor = this.calculateLoadFactor();
-                return this.calculateClientThroughputShare(loadFactor)
-                    .flatMap(dummy -> this.containerManager.replaceOrCreateGroupClientItem(loadFactor, this.getClientAllocatedThroughput()));
+                if (cancellationToken.isCancellationRequested()) {
+                    return Mono.empty();
+                } else {
+                    double loadFactor = this.calculateLoadFactor();
+                    return this.calculateClientThroughputShare(loadFactor)
+                        .flatMap(dummy -> this.containerManager.replaceOrCreateGroupClientItem(loadFactor, this.getClientAllocatedThroughput()));
+                }
             })
             .onErrorResume(throwable -> {
                 logger.warn("Calculate throughput task failed ", throwable);

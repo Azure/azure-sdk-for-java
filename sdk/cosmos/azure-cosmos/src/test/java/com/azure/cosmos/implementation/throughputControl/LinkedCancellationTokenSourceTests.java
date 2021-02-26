@@ -17,6 +17,8 @@ public class LinkedCancellationTokenSourceTests {
         LinkedCancellationTokenSource source3 = new LinkedCancellationTokenSource(source2.getToken());
         LinkedCancellationToken source3Token = source3.getToken();
 
+        source1.close();
+
         assertThat(source2.isClosed()).isTrue();
         assertThat(source2Token.isCancellationRequested()).isTrue();
         assertThat(source3.isClosed()).isTrue();

@@ -359,7 +359,13 @@ public class ThroughputContainerController implements IThroughputContainerContro
         }
 
         return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL)
-            .flatMap(t -> this.resolveContainerMaxThroughput())
+            .flatMap(t -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Mono.empty();
+                } else {
+                    return this.resolveContainerMaxThroughput();
+                }
+            })
             .flatMapIterable(controller -> this.groups)
             .flatMap(group -> this.resolveThroughputGroupController(group))
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))

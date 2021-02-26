@@ -108,9 +108,17 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     public Flux<Void> throughputUsageCycleRenewTask(LinkedCancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
         return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
-            .flatMap(t -> this.resolveRequestController())
+            .flatMap(t -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Mono.empty();
+                } else {
+                    return this.resolveRequestController();
+                }
+            })
             .doOnSuccess(requestController -> {
-                this.recordThroughputUsage(requestController.renewThroughputUsageCycle(this.getClientAllocatedThroughput()));
+                if (requestController != null) {
+                    this.recordThroughputUsage(requestController.renewThroughputUsageCycle(this.getClientAllocatedThroughput()));
+                }
             })
             .onErrorResume(throwable -> {
                 logger.warn("Reset throughput usage failed with reason ", throwable);
