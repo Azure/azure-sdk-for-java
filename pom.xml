@@ -579,6 +579,7 @@
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/batch</module>
+        <module>sdk/blockchain</module>
         <module>sdk/boms</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
