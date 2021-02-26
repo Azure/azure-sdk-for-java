@@ -45,20 +45,14 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -94,51 +88,6 @@ public final class Utility {
         if (!iterator.hasNext()) {
             throw new IllegalArgumentException("'documents' cannot be empty.");
         }
-    }
-
-    /**
-     * Get a mock {@link HttpResponse} that only return status code 400.
-     *
-     * @param response A {@link SimpleResponse} with any type
-     * @return A mock {@link HttpResponse} that only return status code 400.
-     */
-    public static HttpResponse getEmptyErrorIdHttpResponse(SimpleResponse<?> response) {
-        return new HttpResponse(response.getRequest()) {
-            @Override
-            public int getStatusCode() {
-                return 400;
-            }
-
-            @Override
-            public String getHeaderValue(String s) {
-                return null;
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return null;
-            }
-
-            @Override
-            public Flux<ByteBuffer> getBody() {
-                return null;
-            }
-
-            @Override
-            public Mono<byte[]> getBodyAsByteArray() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString(Charset charset) {
-                return null;
-            }
-        };
     }
 
     /**
@@ -566,5 +515,23 @@ public final class Utility {
      */
     public static Context getNotNullContext(Context context) {
         return context == null ? Context.NONE : context;
+    }
+
+    /**
+     * Helper function which retrieves the size of an {@link Iterable}.
+     *
+     * @param documents The iterable of documents.
+     * @return Count of documents in the iterable.
+     */
+    public static int getDocumentCount(Iterable<?> documents) {
+        if (documents instanceof Collection) {
+            return ((Collection<?>) documents).size();
+        } else {
+            int count = 0;
+            for (Object ignored : documents) {
+                count += 1;
+            }
+            return count;
+        }
     }
 }
