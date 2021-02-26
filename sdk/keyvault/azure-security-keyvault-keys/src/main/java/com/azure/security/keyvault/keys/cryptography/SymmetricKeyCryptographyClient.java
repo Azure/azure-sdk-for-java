@@ -80,7 +80,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             } else if (isAes(algorithm)) {
                 iv = generateRandomByteArray(AES_BLOCK_SIZE);
             } else {
-                throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
             }
         }
 
@@ -105,12 +106,13 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (isGcm(algorithm)) {
             cipherText = Arrays.copyOfRange(encrypted, 0, encryptOptions.getPlainText().length);
             authenticationTag = Arrays.copyOfRange(encrypted, encryptOptions.getPlainText().length, encrypted.length);
-        } else if(isAes(algorithm)) {
+        } else if (isAes(algorithm)) {
             cipherText = encrypted;
             authenticationTag = null;
         } else {
             // Should never reach this.
-            throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
@@ -157,7 +159,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         } else if (isAes(algorithm)) {
             cipherText = decryptOptions.getCipherText();
         } else {
-            throw new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         try {
