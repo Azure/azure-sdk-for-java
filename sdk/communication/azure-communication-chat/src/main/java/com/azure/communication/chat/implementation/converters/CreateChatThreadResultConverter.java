@@ -21,9 +21,8 @@ public final class CreateChatThreadResultConverter {
             return null;
         }
 
-        CreateChatThreadResult createChatThreadResult = new CreateChatThreadResult()
-            .setChatThread(ChatThreadConverter.convert(obj.getChatThread()))
-            .setErrors(obj.getErrors());
+        CreateChatThreadResult createChatThreadResult = new CreateChatThreadResult(
+            ChatThreadConverter.convert(obj.getChatThread()), obj.getErrors());
 
         return createChatThreadResult;
     }

@@ -21,6 +21,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -39,6 +40,7 @@ public final class ChatClientBuilder {
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline httpPipeline;
     private Configuration configuration;
+    private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
 
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
@@ -80,6 +82,17 @@ public final class ChatClientBuilder {
     }
 
     /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Apply additional {@link HttpPipelinePolicy}
      *
      * @param customPolicy HttpPipelinePolicy objects to be applied after
@@ -88,6 +101,19 @@ public final class ChatClientBuilder {
      */
     public ChatClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpPipelinePolicy} that will attempt to retry requests when needed.
+     * <p>
+     * A default retry policy will be supplied if one isn't provided.
+     *
+     * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -143,18 +169,6 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryPolicy User's retry policy applied to each request.
-     * @return The updated {@link ChatClientBuilder} object.
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
-     */
-    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
-        return this;
-    }
-
-    /**
      * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
@@ -184,6 +198,10 @@ public final class ChatClientBuilder {
             Objects.requireNonNull(httpClient);
             CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
+
+            if (this.retryPolicy != null) {
+                customPolicies.add(this.retryPolicy);
+            }
 
             pipeline = createHttpPipeline(httpClient,
                 new BearerTokenAuthenticationPolicy(tokenCredential, ""),
@@ -216,7 +234,7 @@ public final class ChatClientBuilder {
 
     private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
         policies.add(getUserAgentPolicy());
-        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
+        policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
     }

@@ -22,23 +22,22 @@ public final class CreateChatThreadResult {
     private CreateChatThreadErrors errors;
 
     /**
+     * Constructs a new instance of CreateChatThreadResult
+     * @param chatThread The chat thread that was created.
+     * @param errors List of errors that occurred when attempting to create the chat thread.
+     */
+    public CreateChatThreadResult(ChatThread chatThread, CreateChatThreadErrors errors) {
+        this.chatThread = chatThread;
+        this.errors = errors;
+    }
+
+    /**
      * Get the chatThread property: The chatThread property.
      *
      * @return the chatThread value.
      */
     public ChatThread getChatThread() {
         return this.chatThread;
-    }
-
-    /**
-     * Set the chatThread property: The chatThread property.
-     *
-     * @param chatThread the thread value to set.
-     * @return the CreateChatThreadResult object itself.
-     */
-    public CreateChatThreadResult setChatThread(ChatThread chatThread) {
-        this.chatThread = chatThread;
-        return this;
     }
 
     /**
@@ -50,14 +49,4 @@ public final class CreateChatThreadResult {
         return this.errors;
     }
 
-    /**
-     * Set the errors property: The errors property.
-     *
-     * @param errors the errors value to set.
-     * @return the CreateChatThreadResult object itself.
-     */
-    public CreateChatThreadResult setErrors(CreateChatThreadErrors errors) {
-        this.errors = errors;
-        return this;
-    }
 }
