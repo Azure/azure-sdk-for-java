@@ -527,11 +527,9 @@ public final class Utility {
         if (documents instanceof Collection) {
             return ((Collection<?>) documents).size();
         } else {
-            int count = 0;
-            for (Object ignored : documents) {
-                count += 1;
-            }
-            return count;
+            final int[] count = new int[] { 0 };
+            documents.forEach(ignored -> count[0] += 1);
+            return count[0];
         }
     }
 }
