@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class LinkedCancellationTokenSource implements Closeable {
     private AtomicBoolean tokenSourceClosed;
+    private LinkedCancellationToken parentToken;
 
     public LinkedCancellationTokenSource() {
         this(null);
@@ -23,6 +24,7 @@ public class LinkedCancellationTokenSource implements Closeable {
         this.tokenSourceClosed = new AtomicBoolean(false);
         if (parent != null) {
             parent.register(this);
+            this.parentToken = parent;
         }
     }
 
@@ -30,7 +32,9 @@ public class LinkedCancellationTokenSource implements Closeable {
         return new LinkedCancellationToken(this);
     }
 
-    public boolean isClosed() { return this.tokenSourceClosed.get(); }
+    public boolean isClosed() {
+        return this.tokenSourceClosed.get() || (this.parentToken != null && this.parentToken.isCancellationRequested());
+    }
     @Override
     public void close() {
         this.tokenSourceClosed.set(true);
