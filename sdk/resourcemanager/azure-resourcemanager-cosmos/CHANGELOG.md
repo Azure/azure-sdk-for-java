@@ -2,6 +2,7 @@
 
 ## 2.3.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2021-01-15`
 
 ## 2.2.0 (2021-02-24)
 
