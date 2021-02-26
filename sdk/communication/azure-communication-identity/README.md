@@ -103,7 +103,7 @@ For this option, a list of communication tokens scopes must be defined.
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
 ```java
 // Define a list of communication token scopes
-List<CommunicationTokenScope> scopes = 
+List<CommunicationTokenScope> scopes =
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
 CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
@@ -119,7 +119,7 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L125 -->
 ```java
-List<CommunicationTokenScope> scopes = 
+List<CommunicationTokenScope> scopes =
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
 AccessToken userToken = communicationIdentityClient.getToken(user, scopes);

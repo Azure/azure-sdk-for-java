@@ -51,8 +51,6 @@ SmsClient smsClient = new SmsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(httpClient)
     .buildClient();
-
-return smsClient;
 ```
 
 ### Access Key Authentication
@@ -63,7 +61,6 @@ functions respectively.
 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L25-L41 -->
 ```java
-
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
@@ -81,7 +78,6 @@ smsClientBuilder.endpoint(endpoint)
 
 // Build a new SmsClient
 SmsClient smsClient = smsClientBuilder.buildClient();
-
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
@@ -117,8 +113,8 @@ options.setEnableDeliveryReport(true);
 
 // Send the message and check the response for a message id
 SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumberIdentifier("<leased-phone-number>"), 
-    to, 
+    new PhoneNumberIdentifier("<leased-phone-number>"),
+    to,
     "your message",
     options /* Optional */);
 
