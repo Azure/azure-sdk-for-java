@@ -53,7 +53,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     public void logIn() {
         driver.get(app.root());
         LOGGER.info("Current url is " + driver.getCurrentUrl());
-        LOGGER.info("Current page source:\n" + driver.getPageSource());
+        wait.until(ExpectedConditions.urlMatches("^https://"));
         if (isAzureCloudGlobal) {
             wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         } else {
