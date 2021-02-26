@@ -4,38 +4,29 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Content of a chat message. */
+/**
+ * Content of a chat message.
+ */
 @Fluent
 public final class ChatMessageContent {
-    /*
-     * Chat message content for messages of types text or html.
-     */
+
     @JsonProperty(value = "message")
     private String message;
 
-    /*
-     * Chat message content for messages of type topicUpdated.
-     */
     @JsonProperty(value = "topic")
     private String topic;
 
-    /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
-     */
     @JsonProperty(value = "participants")
     private List<ChatParticipant> participants;
 
-    /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
-     */
-    @JsonProperty(value = "initiator")
-    private String initiator;
+    @JsonProperty(value = "initiatorCommunicationIdentifier")
+    private CommunicationIdentifier initiatorCommunicationIdentifier;
 
     /**
      * Get the message property: Chat message content for messages of types text or html.
@@ -102,18 +93,19 @@ public final class ChatMessageContent {
      *
      * @return the initiator value.
      */
-    public String getInitiator() {
-        return this.initiator;
+    public CommunicationIdentifier getInitiatorCommunicationIdentifier() {
+        return this.initiatorCommunicationIdentifier;
     }
 
     /**
      * Set the initiator property: Chat message content for messages of types participantAdded or participantRemoved.
      *
-     * @param initiator the initiator value to set.
+     * @param initiatorCommunicationIdentifier the initiator value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setInitiator(String initiator) {
-        this.initiator = initiator;
+    public ChatMessageContent setInitiatorCommunicationIdentifier(
+        CommunicationIdentifier initiatorCommunicationIdentifier) {
+        this.initiatorCommunicationIdentifier = initiatorCommunicationIdentifier;
         return this;
     }
 }
