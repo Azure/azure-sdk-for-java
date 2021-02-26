@@ -26,8 +26,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DeploymentsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
@@ -369,5 +374,45 @@ public class DeploymentsTests extends ResourceManagementTest {
         } finally {
             resourceClient.resourceGroups().beginDeleteByName(newRgName);
         }
+    }
+
+    @Test
+    public void canGetErrorWhenDeploymentFail() throws Exception {
+        final String dpName = "dpG" + testId;
+
+        String templateJson;    // template fails at Subnet2
+        try (InputStream templateStream = this.getClass().getResourceAsStream("/deployTemplateWithError.json")) {
+            templateJson = new BufferedReader(new InputStreamReader(templateStream, StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
+        }
+
+        ManagementError deploymentError = null;
+        try {
+            resourceClient.deployments()
+                .define(dpName)
+                .withExistingResourceGroup(rgName)
+                .withTemplate(templateJson)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .create();
+        } catch (ManagementException deploymentException) {
+            // verify ManagementException
+            Assertions.assertTrue(deploymentException.getValue().getDetails().stream()
+                .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
+
+            Deployment failedDeployment = resourceClient.deployments()
+                .getByResourceGroup(rgName, dpName);
+            deploymentError = failedDeployment.error();
+
+            // verify deployment operations
+            PagedIterable<DeploymentOperation> operations = failedDeployment.deploymentOperations().list();
+            Assertions.assertTrue(operations.stream()
+                .anyMatch(operation -> "BadRequest".equals(operation.statusCode())
+                    && operation.targetResource().resourceName().contains("Subnet2")));
+        }
+        // verify Deployment.error()
+        Assertions.assertNotNull(deploymentError);
+        Assertions.assertTrue(deploymentError.getDetails().stream()
+            .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
     }
 }
