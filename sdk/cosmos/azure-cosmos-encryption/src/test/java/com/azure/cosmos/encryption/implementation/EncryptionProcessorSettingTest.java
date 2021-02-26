@@ -25,8 +25,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class EncryptionProcessorTest {
-    private static final int TIMEOUT = 600000_000;
+public class EncryptionProcessorSettingTest {
+    private static final int TIMEOUT = 60000_000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void initializeEncryptionSettingsAsync() {

@@ -4,8 +4,8 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.EncryptionBridgeInternal;
 import com.azure.cosmos.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.EncryptionBridgeInternal;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -84,7 +85,7 @@ public class EncryptionProcessor {
         if (this.isEncryptionSettingsInitDone.get()) {
             throw new IllegalStateException("The Encrypton Processor has already been initialized. ");
         }
-        Map<String, EncryptionSettings> settingsByDekId = new HashMap<>();
+        Map<String, EncryptionSettings> settingsByDekId = new ConcurrentHashMap<>();
         return EncryptionBridgeInternal.getClientEncryptionPolicyAsync(this.encryptionCosmosClient,
             this.cosmosAsyncContainer, false).flatMap(clientEncryptionPolicy ->
         {
@@ -95,7 +96,8 @@ public class EncryptionProcessor {
             this.clientEncryptionPolicy = clientEncryptionPolicy;
             AtomicReference<Mono<List<Object>>> sequentialList = new AtomicReference<>();
             List<Mono<Object>> monoList = new ArrayList<>();
-            this.clientEncryptionPolicy.getIncludedPaths().stream().map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.clientEncryptionKeyId).distinct().forEach(clientEncryptionKeyId -> {
+            this.clientEncryptionPolicy.getIncludedPaths().stream()
+                .map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.clientEncryptionKeyId).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
                 Mono<Object> clientEncryptionPropertiesMono =
                     EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
@@ -140,8 +142,8 @@ public class EncryptionProcessor {
                         return Flux.error(throwable);
                     }))));
                 monoList.add(clientEncryptionPropertiesMono);
-                sequentialList.set(Flux.mergeSequential(monoList).collectList());
             });
+            sequentialList.set(Flux.mergeSequential(monoList).collectList());
             return sequentialList.get().map(objects -> {
                 return Mono.empty();
             });
@@ -335,38 +337,37 @@ public class EncryptionProcessor {
         ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
 
         assert (itemJObj != null);
-
-        for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-            if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
-                return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+        return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
+                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+                }
             }
-        }
-        List<Mono<Void>> encryptionMonoList = new ArrayList<>();
-        for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-            String propertyName = includedPath.path.substring(1);
-            // TODO: moderakh should support JPath
-            JsonNode propertyValueHolder = itemJObj.get(propertyName);
+            List<Mono<Void>> encryptionMonoList = new ArrayList<>();
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                String propertyName = includedPath.path.substring(1);
+                // TODO: moderakh should support JPath
+                JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
-            // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
-            if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
-                // itemJObj.remove(propertyName);
-
-                Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
-                    this).flatMap(settings -> {
-                    try {
-                        decryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
-                    } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
-                        return Mono.error(ex);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return Mono.empty();
-                });
-                encryptionMonoList.add(voidMono);
+                // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
+                if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
+                    Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                        this).flatMap(settings -> {
+                        try {
+                            decryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
+                        } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
+                            return Mono.error(ex);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return Mono.empty();
+                    });
+                    encryptionMonoList.add(voidMono);
+                }
             }
-        }
-        Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-        return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+            Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
+            return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+        }));
     }
 
     public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,

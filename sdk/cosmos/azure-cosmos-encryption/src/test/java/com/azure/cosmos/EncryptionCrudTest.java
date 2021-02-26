@@ -299,7 +299,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
 
     }
 
-    private Pojo getItem(String documentId) {
+    public static Pojo getItem(String documentId) {
         Pojo pojo = new Pojo();
         pojo.id = documentId;
         pojo.mypk = documentId;
@@ -423,7 +423,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         }
     }
 
-    private List<ClientEncryptionIncludedPath> getPaths() {
+    public static List<ClientEncryptionIncludedPath> getPaths() {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.clientEncryptionKeyId = "key1";
         includedPath1.path = "/sensitiveString";
