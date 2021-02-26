@@ -33,8 +33,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
@@ -376,12 +374,12 @@ class PartitionPumpManager {
         }
 
         Object spanObject = spanScope.get();
-        if (spanObject instanceof Closeable) {
-            Closeable close = (Closeable) spanObject;
+        if (spanObject instanceof AutoCloseable) {
+            AutoCloseable close = (AutoCloseable) spanObject;
             try {
                 close.close();
-            } catch (IOException ioException) {
-                logger.error(Messages.EVENT_PROCESSOR_RUN_END, ioException);
+            } catch (Exception exception) {
+                logger.error(Messages.EVENT_PROCESSOR_RUN_END, exception);
             }
 
         } else {
