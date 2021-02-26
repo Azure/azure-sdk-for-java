@@ -35,7 +35,7 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
     private final ObjectMapper objectMapper;
 
     public ServiceBusMessageConverter() {
-        objectMapper = new ObjectMapper();
+        objectMapper = OBJECT_MAPPER;
     }
 
     public ServiceBusMessageConverter(ObjectMapper objectMapper) {

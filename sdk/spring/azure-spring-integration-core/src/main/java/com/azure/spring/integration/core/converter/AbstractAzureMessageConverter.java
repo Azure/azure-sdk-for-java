@@ -28,7 +28,7 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     protected ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
