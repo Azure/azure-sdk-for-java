@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
@@ -154,11 +155,10 @@ class DetectLanguageAsyncClient {
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+            .doOnSuccess(response -> logger.verbose("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(this::toTextAnalyticsResultDocumentResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 }
