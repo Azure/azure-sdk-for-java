@@ -276,6 +276,7 @@ public class ThroughputControlStore {
     }
 
     public void close() {
+        this.cancellationTokenMap.values().forEach(cancellationToken -> cancellationToken.cancel());
         this.cancellationTokenSource.close();
     }
 }
