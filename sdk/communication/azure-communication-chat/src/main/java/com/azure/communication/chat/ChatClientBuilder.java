@@ -41,7 +41,7 @@ public final class ChatClientBuilder {
     private HttpPipeline httpPipeline;
     private Configuration configuration;
     private ClientOptions clientOptions;
-    private RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy = new RetryPolicy();
 
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
     private static final String SDK_NAME = "name";
@@ -199,18 +199,15 @@ public final class ChatClientBuilder {
             CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
-            if (this.retryPolicy != null) {
-                customPolicies.add(this.retryPolicy);
-            }
-
             pipeline = createHttpPipeline(httpClient,
                 new BearerTokenAuthenticationPolicy(tokenCredential, ""),
                 customPolicies);
         }
 
-        AzureCommunicationChatServiceImplBuilder clientBuilder = new AzureCommunicationChatServiceImplBuilder();
-        clientBuilder.endpoint(endpoint)
+        AzureCommunicationChatServiceImplBuilder clientBuilder = new AzureCommunicationChatServiceImplBuilder()
+            .endpoint(endpoint)
             .pipeline(pipeline);
+
         return new ChatAsyncClient(clientBuilder.buildClient());
     }
 
@@ -234,7 +231,7 @@ public final class ChatClientBuilder {
 
     private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
         policies.add(getUserAgentPolicy());
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
     }
@@ -250,7 +247,11 @@ public final class ChatClientBuilder {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        return new UserAgentPolicy(
-            logOptions.getApplicationId(), clientName, clientVersion, configuration);
+        String applicationId = logOptions.getApplicationId();
+        if (this.clientOptions != null) {
+            applicationId = this.clientOptions.getApplicationId();
+        }
+
+        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 }
