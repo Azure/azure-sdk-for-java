@@ -79,6 +79,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
                               assertThat(context).doesNotHaveBean(ServiceBusTopicSubscriptionManager.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicClientFactory.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicOperation.class);
+                              assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
                           });
     }
 
