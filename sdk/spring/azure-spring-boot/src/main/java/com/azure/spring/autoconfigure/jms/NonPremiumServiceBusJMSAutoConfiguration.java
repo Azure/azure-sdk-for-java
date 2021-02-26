@@ -23,7 +23,7 @@ import javax.jms.ConnectionFactory;
 @Configuration
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
-@ConditionalOnExpression(value = "${spring.jms.servicebus.enabled:true} == true and '${spring.jms.servicebus.pricing-tier}'.matches('(?i)standard|basic')")
+@ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class NonPremiumServiceBusJMSAutoConfiguration {
 

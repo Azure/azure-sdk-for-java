@@ -194,8 +194,7 @@
         <module>azure-spring-boot-test-keyvault/pom.xml</module>
         <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
         <module>azure-spring-boot-test-parent</module>
-        <module>azure-spring-boot-test-servicebus-jms/pom.xml</module>
-        <module>azure-spring-boot-test-servicebus-jms/pom-standard.xml</module>
+        <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>

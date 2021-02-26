@@ -22,13 +22,6 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
         + "SharedAccessKey=sasKey";
 
     @Test
-    public void testAzureServiceBusDisabled() {
-        ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
-    }
-
-    @Test
     public void testAzureServiceBusPremium() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=premium")

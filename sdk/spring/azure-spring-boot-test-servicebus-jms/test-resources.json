@@ -125,17 +125,9 @@
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     },
-    "SPRING_JMS_STANDARD_SERVICEBUS_PRICING_TIER": {
-      "type": "string",
-      "value": "standard"
-    },
     "SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_premium'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
-    },
-    "SPRING_JMS_PREMIUM_SERVICEBUS_PRICING_TIER": {
-      "type": "string",
-      "value": "premium"
     }
   }
 }
