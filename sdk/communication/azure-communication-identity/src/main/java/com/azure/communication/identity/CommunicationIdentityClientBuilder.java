@@ -89,18 +89,18 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
-     * Set credential to use
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
-     * @return CommunicationIdentityClientBuilder
+    * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CommunicationIdentityClientBuilder accessKey(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.azureKeyCredential = new AzureKeyCredential(accessKey);
+    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
+        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
-     /**
+    /**
      * Set endpoint and credential to use
      *
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
@@ -113,7 +113,7 @@ public final class CommunicationIdentityClientBuilder {
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 

@@ -8,6 +8,7 @@ import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
@@ -81,7 +82,7 @@ public class ChatClientTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(ACCESS_KEY)
+            .credential(new AzureKeyCredential(ACCESS_KEY))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
