@@ -4,23 +4,18 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -29,14 +24,13 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 /**
- * The CloudEvent model. This represents a cloud event as specified by the
+ * Represents the CloudEvent model defined by the
  * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>
  */
 @Fluent
@@ -54,6 +48,9 @@ public final class CloudEvent {
         SERIALIZER = tmp;
     }
 
+    private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
+        new TypeReference<List<CloudEvent>>() {
+        };
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
     private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>(Arrays.asList(
         "specversion",
@@ -64,7 +61,8 @@ public final class CloudEvent {
         "dataschema",
         "subject",
         "time",
-        "data"
+        "data",
+        "data_base64"
     ));
 
     /*
@@ -150,28 +148,21 @@ public final class CloudEvent {
      *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON.
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
-     *                        "application/json", "text/plain", "text/xml", "application/+avro", etc. It can be null.
+     *                        "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
      * @throws NullPointerException if source, type, data, or format is null.
      */
     public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
-        if (Objects.isNull(source)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'source' cannot be null."));
-        }
-        if (Objects.isNull(type)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'type' cannot be null."));
-        }
-        if (Objects.isNull(data)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'data' cannot be null."));
-        }
-        if (Objects.isNull(format)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'format' cannot be null."));
-        }
+        Objects.requireNonNull(source, "'source' cannot be null.");
+        Objects.requireNonNull(type, "'type' cannot be null.");
         this.source = source;
         this.type = type;
-        if (CloudEventDataFormat.BYTES == format) {
-            this.dataBase64 = Base64.getEncoder().encodeToString(data.toBytes());
-        } else {
-            this.data = data.toString();
+        if (data != null) {
+            Objects.requireNonNull(format, "'format' cannot be null when 'data' isn't null.");
+            if (CloudEventDataFormat.BYTES == format) {
+                this.dataBase64 = Base64.getEncoder().encodeToString(data.toBytes());
+            } else {
+                this.data = data.toString();
+            }
         }
         this.dataContentType = dataContentType;
         this.id = UUID.randomUUID().toString();
@@ -208,20 +199,19 @@ public final class CloudEvent {
      * or skipValidation is false and any CloudEvents have null id', 'source', or 'type'.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson, boolean skipValidation) {
-        if (cloudEventsJson == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'cloudEventsJson' cannot be null"));
-        }
+        Objects.requireNonNull(cloudEventsJson, "'cloudEventsJson' cannot be null");
         try {
-            List<CloudEvent> events = Arrays.asList(SERIALIZER.deserialize(
+            List<CloudEvent> events = SERIALIZER.deserialize(
                 new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(CloudEvent[].class)));
-            if (!skipValidation) {
-                for (CloudEvent event : events) {
-                    if (event.getId() == null || event.getSource() == null || event.getType() == null) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
-                                + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
-                    }
+                DESERIALIZER_TYPE_REFERENCE);
+            if (skipValidation) {
+                return events;
+            }
+            for (CloudEvent event : events) {
+                if (event.getId() == null || event.getSource() == null || event.getType() == null) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
+                            + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
                 }
             }
             return events;
@@ -248,11 +238,9 @@ public final class CloudEvent {
      * @throws IllegalArgumentException if id is empty.
      */
     public CloudEvent setId(String id) {
-        if (Objects.isNull(id)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("id cannot be null"));
-        }
+        Objects.requireNonNull(id, "'id' cannot be null");
         if (id.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("id cannot be empty"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'id' cannot be empty"));
         }
         this.id = id;
         return this;
@@ -279,7 +267,7 @@ public final class CloudEvent {
                 } else if (this.data instanceof byte[]) {
                     this.binaryData = BinaryData.fromBytes((byte[]) this.data);
                 } else {
-                    this.binaryData = BinaryData.fromObject(this.data, SERIALIZER);
+                    this.binaryData = BinaryData.fromObject(this.data);
                 }
             } else if (this.dataBase64 != null) {
                 this.binaryData = BinaryData.fromString(this.dataBase64);
@@ -373,30 +361,27 @@ public final class CloudEvent {
 
     /**
      * Add/Overwrite a single extension attribute to the cloud event.
-     * @param name the name of the attribute. It must contains only alphanumeric characters and not be be any
+     * @param name the name of the attribute. It must contains only lower-case alphanumeric characters and not be be any
      *             CloudEvent reserved attribute names.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
+     * @throws NullPointerException if name or value is null.
      * @throws IllegalArgumentException if name format isn't correct.
      */
     @JsonAnySetter
     public CloudEvent addExtensionAttribute(String name, Object value) {
-        if (Objects.isNull(name)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null."));
-        }
-        if (Objects.isNull(value)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'value' cannot be null."));
-        }
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
         if (!validateAttributeName(name)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'name' must have only small-case alphanumeric characters and not be one of the CloudEvent reserved "
+                "'name' must have only lower-case alphanumeric characters and not be one of the CloudEvent reserved "
                     + "attribute names"));
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();
         }
-        this.extensionAttributes.put(name.toLowerCase(Locale.ENGLISH), value);
+        this.extensionAttributes.put(name, value);
         return this;
     }
 
@@ -430,41 +415,5 @@ public final class CloudEvent {
             }
         }
         return true;
-    }
-
-    static class JacksonSerializer implements JsonSerializer {
-        private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
-
-        @Override
-        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-            try {
-                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        @Override
-        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-            return Mono.defer(() -> Mono.just(deserialize(stream, typeReference)));
-        }
-
-        @Override
-        public void serialize(OutputStream stream, Object value) {
-            try {
-                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        @Override
-        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
-            return Mono.fromRunnable(() -> serialize(stream, value));
-        }
-
-        JacksonAdapter getJacksonAdapter() {
-            return jacksonAdapter;
-        }
     }
 }
