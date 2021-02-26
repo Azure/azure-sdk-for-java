@@ -169,7 +169,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
 
         // Step 5: read operation which will trigger cache refresh and a new container controller to be built
-        performDocumentOperation(createdContainer, OperationType.Read, createdItem, null);
+        createdItem = createdContainer.createItem(getDocumentDefinition()).block().getItem();
 
         // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
         CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
