@@ -542,7 +542,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             props.put("propArray", orderByArray);
             props.put("propObject", orderByObject);
             keyValuePropsList.add(props);
-            switch (i % 5) {
+            switch (i % 7) {
                 case 0:
                     props.put("propMixed", i);
                     break;
@@ -558,7 +558,11 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 case 4:
                     props.put("propMixed", (float)i*3.17);
                     break;
+                case 5:
+                    props.put("propMixed", null);
+                    break;
                 default:
+                    // skips the propMixed
                     break;
             }
         }
