@@ -28,19 +28,19 @@ class KeyOperationParameters {
      * Initialization vector for symmetric algorithms.
      */
     @JsonProperty(value = "iv")
-    private byte[] iv;
+    private Base64Url iv;
 
     /**
      * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     @JsonProperty(value = "aad")
-    private byte[] additionalAuthenticatedData;
+    private Base64Url additionalAuthenticatedData;
 
     /**
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     @JsonProperty(value = "tag")
-    private byte[] authenticationTag;
+    private Base64Url authenticationTag;
 
     /**
      * Get the algorithm value.
@@ -59,6 +59,7 @@ class KeyOperationParameters {
      */
     public KeyOperationParameters setAlgorithm(EncryptionAlgorithm algorithm) {
         this.algorithm = algorithm;
+
         return this;
     }
 
@@ -71,6 +72,7 @@ class KeyOperationParameters {
         if (this.value == null) {
             return new byte[0];
         }
+
         return this.value.decodedBytes();
     }
 
@@ -86,6 +88,7 @@ class KeyOperationParameters {
         } else {
             this.value = Base64Url.encode(value);
         }
+
         return this;
     }
 
@@ -95,7 +98,11 @@ class KeyOperationParameters {
      * @return The initialization vector.
      */
     public byte[] getIv() {
-        return iv;
+        if (this.iv == null) {
+            return new byte[0];
+        }
+
+        return this.iv.decodedBytes();
     }
 
     /**
@@ -105,7 +112,12 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setIv(byte[] iv) {
-        this.iv = iv;
+        if (iv == null) {
+            this.iv = null;
+        } else {
+            this.iv = Base64Url.encode(iv);
+        }
+
         return this;
     }
 
@@ -115,7 +127,11 @@ class KeyOperationParameters {
      * @return The additional authenticated data.
      */
     public byte[] getAdditionalAuthenticatedData() {
-        return additionalAuthenticatedData;
+        if (this.additionalAuthenticatedData == null) {
+            return new byte[0];
+        }
+
+        return this.additionalAuthenticatedData.decodedBytes();
     }
 
     /**
@@ -125,7 +141,12 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
-        this.additionalAuthenticatedData = additionalAuthenticatedData;
+        if (additionalAuthenticatedData == null) {
+            this.additionalAuthenticatedData = null;
+        } else {
+            this.additionalAuthenticatedData = Base64Url.encode(additionalAuthenticatedData);
+        }
+
         return this;
     }
 
@@ -135,7 +156,11 @@ class KeyOperationParameters {
      * @return The authentication tag.
      */
     public byte[] getAuthenticationTag() {
-        return authenticationTag;
+        if (this.authenticationTag == null) {
+            return new byte[0];
+        }
+
+        return this.authenticationTag.decodedBytes();
     }
 
     /**
@@ -145,7 +170,12 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setAuthenticationTag(byte[] authenticationTag) {
-        this.authenticationTag = authenticationTag;
+        if (authenticationTag == null) {
+            this.authenticationTag = null;
+        } else {
+            this.authenticationTag = Base64Url.encode(authenticationTag);
+        }
+
         return this;
     }
 }
