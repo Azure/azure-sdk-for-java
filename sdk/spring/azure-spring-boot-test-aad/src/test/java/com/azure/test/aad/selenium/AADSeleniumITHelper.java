@@ -4,6 +4,8 @@ import com.azure.test.aad.common.SeleniumITHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,8 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
 
     private String username;
     private String password;
@@ -43,6 +47,10 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     public void logIn() {
         driver.get(app.root() + "oauth2/authorization/azure");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
+        String passwdUrl = driver.getCurrentUrl();
+        LOGGER.info(passwdUrl);
+        String pageSource = driver.getPageSource();
+        LOGGER.info(pageSource);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
