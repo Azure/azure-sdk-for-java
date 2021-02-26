@@ -17,6 +17,7 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageHeaders;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
@@ -101,6 +102,53 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
         IMessage servicebusMessage = getConverter().fromMessage(springMessage, IMessage.class);
         assertNotNull(servicebusMessage);
         assertNotNull(servicebusMessage.getScheduledEnqueueTimeUtc());
+
+    }
+
+    @Test
+    public void messageIdTest() {
+        org.springframework.messaging.Message<String> springMessage;
+        IMessage serviceBusMessage;
+        org.springframework.messaging.Message<String> convertedSpringMessage;
+
+        // springMessage can not set header: MessageHeaders.ID
+        // case 1: RAW_ID not set.
+        springMessage = MessageBuilder.withPayload(payload).build();
+        assertTrue(springMessage.getHeaders().containsKey(MessageHeaders.ID)); // spring message always have an id.
+        assertFalse(springMessage.getHeaders().containsKey(AzureHeaders.RAW_ID));
+
+        serviceBusMessage = getConverter().fromMessage(springMessage, IMessage.class);
+        assertTrue(serviceBusMessage.getProperties().containsKey(MessageHeaders.ID));
+        assertFalse(serviceBusMessage.getProperties().containsKey(AzureHeaders.RAW_ID));
+        assertNotNull(serviceBusMessage.getMessageId());
+        assertEquals(springMessage.getHeaders().get(MessageHeaders.ID).toString(), serviceBusMessage.getMessageId());
+
+        convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
+        assertTrue(convertedSpringMessage.getHeaders().containsKey(MessageHeaders.ID));
+        assertTrue(convertedSpringMessage.getHeaders().containsKey(AzureHeaders.RAW_ID));
+        assertNotEquals(springMessage.getHeaders().get(MessageHeaders.ID), convertedSpringMessage.getHeaders().get(MessageHeaders.ID)); // spring message id always not equal to another message. See MessageHeaderAccessor#isReadOnly() for more detail
+        assertNotEquals(serviceBusMessage.getMessageId(), convertedSpringMessage.getHeaders().get(MessageHeaders.ID));
+        assertEquals(serviceBusMessage.getMessageId(), convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID)); // convertedSpringMessage always have header: AzureHeaders.RAW_ID, equal to serviceBusMessage.getMessageId().
+
+        // case 2: ID not set. RAW_ID set.
+        springMessage = MessageBuilder.withPayload(payload).setHeader(AzureHeaders.RAW_ID, UUID.randomUUID().toString()).build();
+        assertTrue(springMessage.getHeaders().containsKey(MessageHeaders.ID)); // spring message always have an id.
+        assertTrue(springMessage.getHeaders().containsKey(AzureHeaders.RAW_ID));
+
+        serviceBusMessage = getConverter().fromMessage(springMessage, IMessage.class);
+        assertTrue(serviceBusMessage.getProperties().containsKey(MessageHeaders.ID));
+        assertTrue(serviceBusMessage.getProperties().containsKey(AzureHeaders.RAW_ID));
+        assertNotNull(serviceBusMessage.getMessageId());
+        assertNotEquals(springMessage.getHeaders().get(MessageHeaders.ID).toString(), serviceBusMessage.getMessageId());
+        assertEquals(springMessage.getHeaders().get(AzureHeaders.RAW_ID).toString(), serviceBusMessage.getMessageId());
+
+        convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
+        assertTrue(convertedSpringMessage.getHeaders().containsKey(MessageHeaders.ID));
+        assertTrue(convertedSpringMessage.getHeaders().containsKey(AzureHeaders.RAW_ID));
+        assertNotEquals(springMessage.getHeaders().get(MessageHeaders.ID), convertedSpringMessage.getHeaders().get(MessageHeaders.ID)); // spring message id always not equal to another message. See MessageHeaderAccessor#isReadOnly() for more detail
+        assertEquals(springMessage.getHeaders().get(AzureHeaders.RAW_ID), convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID));
+        assertEquals(serviceBusMessage.getMessageId(), convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID)); // convertedSpringMessage always have header: AzureHeaders.RAW_ID, equal to serviceBusMessage.getMessageId().
+
 
     }
 }

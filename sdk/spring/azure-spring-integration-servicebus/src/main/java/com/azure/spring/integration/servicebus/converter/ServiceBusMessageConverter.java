@@ -3,11 +3,11 @@
 
 package com.azure.spring.integration.servicebus.converter;
 
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.MessageBody;
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
@@ -21,7 +21,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage}
@@ -74,9 +74,11 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
             }
         }
 
-        if (headers.containsKey(MessageHeaders.ID)) {
-            serviceBusMessage.setMessageId(String.valueOf(headers.get(MessageHeaders.ID, UUID.class)));
-        }
+        Stream.of(AzureHeaders.RAW_ID, MessageHeaders.ID)
+              .filter(headers::containsKey)
+              .findFirst()
+              .map(id -> String.valueOf(headers.get(id)))
+              .ifPresent(serviceBusMessage::setMessageId);
 
         if (headers.containsKey(MessageHeaders.REPLY_CHANNEL)) {
             serviceBusMessage.setReplyTo(headers.get(MessageHeaders.REPLY_CHANNEL, String.class));
