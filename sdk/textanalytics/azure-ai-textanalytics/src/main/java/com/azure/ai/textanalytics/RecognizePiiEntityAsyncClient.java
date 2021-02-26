@@ -36,7 +36,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -220,6 +220,6 @@ class RecognizePiiEntityAsyncClient {
                    .doOnError(error -> logger.warning(
                        "Failed to recognize Personally Identifiable Information entities - {}", error))
                    .map(this::toRecognizePiiEntitiesResultCollectionResponse)
-                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExists(throwable));
     }
 }

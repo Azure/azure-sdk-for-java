@@ -203,6 +203,6 @@ class RecognizeEntityAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
             .map(this::toRecognizeEntitiesResultCollectionResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

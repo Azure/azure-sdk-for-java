@@ -223,7 +223,7 @@ class AnalyzeSentimentAsyncClient {
                    .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
                    .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                    .map(this::toAnalyzeSentimentResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
     /*

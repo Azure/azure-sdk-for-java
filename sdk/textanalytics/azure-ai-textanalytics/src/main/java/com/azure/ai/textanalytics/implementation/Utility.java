@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
@@ -97,11 +98,16 @@ public final class Utility {
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
-    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+    public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorException = (ErrorResponseException) throwable;
+            final ErrorResponse errorResponse = errorException.getValue();
+            com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
+            if (errorResponse != null && errorResponse.getError() != null) {
+                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+            }
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                toTextAnalyticsError(errorException.getValue().getError()));
+                textAnalyticsError);
         }
         return throwable;
     }
