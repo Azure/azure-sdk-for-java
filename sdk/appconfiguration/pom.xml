@@ -52,8 +52,9 @@
       </activation>
       <modules>
         <module>azure-data-appconfiguration</module>
-        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>azure-resourcemanager-appconfiguration</module>
         <module>azure-spring-cloud-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
         <module>spring-cloud-azure-appconfiguration-config-web</module>
         <module>spring-cloud-azure-feature-management</module>
         <module>spring-cloud-azure-feature-management-web</module>
