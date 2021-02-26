@@ -10,6 +10,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,14 +24,14 @@ public class ReadmeSamples {
     public CommunicationIdentityClient createCommunicationIdentityClient() {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .endpoint(endpoint)
-            .accessKey(accessKey)
+            .credential(keyCredential)
             .httpClient(httpClient)
             .buildClient();
 
@@ -98,7 +99,7 @@ public class ReadmeSamples {
     public CommunicationUserIdentifierWithTokenResult createNewUserWithToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         // Define a list of communication token scopes
-        List<CommunicationTokenScope> scopes = 
+        List<CommunicationTokenScope> scopes =
             new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
@@ -116,7 +117,7 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
          // Define a list of communication token scopes
-        List<CommunicationTokenScope> scopes = 
+        List<CommunicationTokenScope> scopes =
             new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         AccessToken userToken = communicationIdentityClient.getToken(user, scopes);

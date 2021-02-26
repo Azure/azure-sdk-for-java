@@ -10,6 +10,7 @@ import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,7 +24,7 @@ public class ReadmeSamples {
 
         // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -33,7 +34,7 @@ public class ReadmeSamples {
 
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
-            .accessKey(accessKey)
+            .credential(keyCredential)
             .httpClient(httpClient);
 
         // Build a new SmsClient
@@ -50,8 +51,8 @@ public class ReadmeSamples {
 
         // Send the message and check the response for a message id
         SendSmsResponse response = smsClient.sendMessage(
-            new PhoneNumberIdentifier("<leased-phone-number>"), 
-            to, 
+            new PhoneNumberIdentifier("<leased-phone-number>"),
+            to,
             "your message",
             options /* Optional */);
 
