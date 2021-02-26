@@ -168,7 +168,7 @@ ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint
 ```
 
 ### Share
-The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy). Getting and setting ACL (Access policy) can only be used by the ShareClient with ConnectionString. 
+The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy). Getting and setting ACL (Access policy) can only be used by ShareClient with ConnectionString. 
 
 #### Share With SASToken
 Once you have the SASToken, you can construct the share client with `${accountName}`, `${shareName}`, `${sasToken}`
