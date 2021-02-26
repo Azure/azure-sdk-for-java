@@ -3,6 +3,7 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatThreadImpl;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,6 @@ import com.azure.communication.chat.implementation.converters.ChatMessageConvert
 import com.azure.communication.chat.implementation.converters.ChatParticipantConverter;
 import com.azure.communication.chat.implementation.converters.ChatMessageReadReceiptConverter;
 import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.chat.implementation.converters.SendChatMessageResultConverter;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
@@ -23,6 +23,7 @@ import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -350,10 +351,10 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> sendMessage(SendChatMessageOptions options) {
+    public Mono<SendChatMessageResult> sendMessage(SendChatMessageOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> sendMessage(options, context)
@@ -369,10 +370,10 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> sendMessageWithResponse(SendChatMessageOptions options) {
+    public Mono<Response<SendChatMessageResult>> sendMessageWithResponse(SendChatMessageOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> sendMessage(options, context));
@@ -387,15 +388,15 @@ public final class ChatThreadAsyncClient {
      *
      * @param options Options for sending the message.
      * @param context The context to associate with this operation.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
-    Mono<Response<String>> sendMessage(SendChatMessageOptions options, Context context) {
+    Mono<Response<SendChatMessageResult>> sendMessage(SendChatMessageOptions options, Context context) {
         context = context == null ? Context.NONE : context;
 
         return this.chatThreadClient.sendChatMessageWithResponseAsync(
             chatThreadId, options, context).map(
-                result -> new SimpleResponse<String>(
-                    result, SendChatMessageResultConverter.convert(result.getValue())));
+                result -> new SimpleResponse<SendChatMessageResult>(
+                    result, (result.getValue())));
     }
 
     /**

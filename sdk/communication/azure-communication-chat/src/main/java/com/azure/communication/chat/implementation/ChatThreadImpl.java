@@ -12,7 +12,7 @@ import com.azure.communication.chat.implementation.models.ChatMessagesCollection
 import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.chat.implementation.models.SendChatMessageResult;
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.CommunicationErrorResponseException;

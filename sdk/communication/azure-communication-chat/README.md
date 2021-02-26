@@ -182,7 +182,7 @@ Use the `sendMessage` method to sends a chat message to a chat thread identified
 - Use `priority` to specify the chat message priority level, such as 'Normal' or 'High';
 - Use `senderDisplayName` to specify the display name of the sender;
 
-A `String` response returned from sending a chat message, it contains an id, which is the unique ID of the message.
+A `SendChatMessageResult` response returned from sending a chat message, it contains an id, which is the unique ID of the message.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L142-L148 -->
 ```Java
@@ -192,7 +192,7 @@ SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
     .setSenderDisplayName("Sender Display Name");
 
 
-String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
+SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
 ```
 
 #### Get a chat message

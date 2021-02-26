@@ -11,6 +11,7 @@ import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -205,10 +206,10 @@ public final class ChatThreadClient {
      *
      * @param options Options for sending the message.
      * @param context The context to associate with this operation.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> sendMessageWithResponse(SendChatMessageOptions options, Context context) {
+    public Response<SendChatMessageResult> sendMessageWithResponse(SendChatMessageOptions options, Context context) {
 
         return this.client.sendMessage(options, context).block();
     }
@@ -217,10 +218,10 @@ public final class ChatThreadClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String sendMessage(SendChatMessageOptions options) {
+    public SendChatMessageResult sendMessage(SendChatMessageOptions options) {
 
         return this.client.sendMessage(options).block();
     }

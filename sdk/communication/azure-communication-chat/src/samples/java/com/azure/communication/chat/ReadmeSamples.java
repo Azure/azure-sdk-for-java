@@ -5,7 +5,7 @@ package com.azure.communication.chat;
 
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
-
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
@@ -145,7 +145,7 @@ public class ReadmeSamples {
             .setSenderDisplayName("Sender Display Name");
 
 
-        String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
+        SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
     /**
