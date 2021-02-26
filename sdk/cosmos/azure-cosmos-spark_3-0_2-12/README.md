@@ -8,7 +8,6 @@ developers to work with data using a variety of standard APIs, such as SQL, Mong
 ## Getting started
 TBD
 
-
 ### Prerequisites
 
 - Java Development Kit 11
