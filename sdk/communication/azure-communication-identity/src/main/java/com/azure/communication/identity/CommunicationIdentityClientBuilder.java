@@ -87,7 +87,7 @@ public final class CommunicationIdentityClientBuilder {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
-    
+
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
