@@ -90,12 +90,6 @@
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk</artifactId>
-      <version>0.17.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-logging</artifactId>
       <version>0.17.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
       <scope>test</scope>
@@ -122,6 +116,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.5.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
