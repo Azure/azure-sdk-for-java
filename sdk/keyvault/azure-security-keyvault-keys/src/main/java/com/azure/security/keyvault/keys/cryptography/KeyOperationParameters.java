@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The key operations parameters.
  */
 class KeyOperationParameters {
+    private static final byte[] EMPTY_ARRAY = new byte[0];
+
     /**
      * algorithm identifier. Possible values include: 'RSA-OAEP',
      * 'RSA-OAEP-256', 'RSA1_5'.
@@ -70,7 +72,7 @@ class KeyOperationParameters {
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.value.decodedBytes();
@@ -99,7 +101,7 @@ class KeyOperationParameters {
      */
     public byte[] getIv() {
         if (this.iv == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.iv.decodedBytes();
@@ -128,7 +130,7 @@ class KeyOperationParameters {
      */
     public byte[] getAdditionalAuthenticatedData() {
         if (this.additionalAuthenticatedData == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.additionalAuthenticatedData.decodedBytes();
@@ -157,7 +159,7 @@ class KeyOperationParameters {
      */
     public byte[] getAuthenticationTag() {
         if (this.authenticationTag == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.authenticationTag.decodedBytes();

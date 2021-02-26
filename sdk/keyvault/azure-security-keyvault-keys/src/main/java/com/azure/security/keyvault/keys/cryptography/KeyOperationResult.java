@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The key operation result.
  */
 class KeyOperationResult {
+    private static final byte[] EMPTY_ARRAY = new byte[0];
+
     /**
      * Key identifier.
      */
@@ -56,7 +58,7 @@ class KeyOperationResult {
      */
     public byte[] getResult() {
         if (this.result == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.result.decodedBytes();
@@ -69,7 +71,7 @@ class KeyOperationResult {
      */
     public byte[] getIv() {
         if (this.iv == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.iv.decodedBytes();
@@ -82,7 +84,7 @@ class KeyOperationResult {
      */
     public byte[] getAuthenticationTag() {
         if (this.authenticationTag == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.authenticationTag.decodedBytes();
@@ -95,7 +97,7 @@ class KeyOperationResult {
      */
     public byte[] getAdditionalAuthenticatedData() {
         if (this.additionalAuthenticatedData == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
 
         return this.additionalAuthenticatedData.decodedBytes();
