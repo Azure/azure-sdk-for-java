@@ -21,7 +21,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
  * Sample to demonstrate using {@link LoggingSpanExporter} to export telemetry events when asynchronously creating
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
-public class AsyncListKeyVaultSecretsLoggingSpanExporterSample {
+public class AsyncListKeyVaultSecretsLoggingExporterSample {
 
     private static final Tracer TRACER = configureLoggingSpanExporter();
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
