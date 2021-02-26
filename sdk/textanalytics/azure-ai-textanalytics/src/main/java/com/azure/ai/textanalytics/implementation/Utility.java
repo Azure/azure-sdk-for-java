@@ -97,11 +97,15 @@ public final class Utility {
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
-    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+    public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorException = (ErrorResponseException) throwable;
-            return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                toTextAnalyticsError(errorException.getValue().getError()));
+            if (errorException.getValue() != null) {
+                return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
+                    toTextAnalyticsError(errorException.getValue().getError()));
+            } else {
+                return new HttpResponseException(errorException.getMessage(), errorException.getResponse(), null);
+            }
         }
         return throwable;
     }
