@@ -33,7 +33,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
                 .setTargetThroughput(10)
                 .setDefault(true)
                 .build();
-        container.enableThroughputLocalControlGroup(groupConfig);
+        container.enableLocalThroughputControlGroup(groupConfig);
 
         ThroughputControlGroupConfig groupConfig2 =
             new ThroughputControlGroupConfigBuilder()
@@ -41,7 +41,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
                 .setTargetThroughputThreshold(1.0)
                 .setDefault(true)
                 .build();
-        assertThatThrownBy(() -> container.enableThroughputLocalControlGroup(groupConfig2))
+        assertThatThrownBy(() -> container.enableLocalThroughputControlGroup(groupConfig2))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("A default group already exists");
     }

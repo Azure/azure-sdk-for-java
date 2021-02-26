@@ -747,22 +747,26 @@ public class CosmosContainer {
     /**
      * Enable the throughput control group with local control mode.
      *
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     *
      * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig) {
-        this.asyncContainer.enableThroughputLocalControlGroup(groupConfig);
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableLocalThroughputControlGroup(groupConfig);
     }
 
     /**
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     *
      * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputGlobalControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
-        this.asyncContainer.enableThroughputGlobalControlGroup(groupConfig, globalControlConfig);
+    public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
+        this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 }

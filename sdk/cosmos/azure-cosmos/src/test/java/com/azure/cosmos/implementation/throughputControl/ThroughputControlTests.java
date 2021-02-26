@@ -71,7 +71,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 .setGroupName("group-" + UUID.randomUUID())
                 .setTargetThroughput(6)
                 .build();
-        container.enableThroughputLocalControlGroup(groupConfig);
+        container.enableLocalThroughputControlGroup(groupConfig);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
@@ -107,7 +107,7 @@ public class ThroughputControlTests extends TestSuiteBase {
             .setControlItemRenewInterval(Duration.ofSeconds(5))
             .setControlItemExpireInterval(Duration.ofSeconds(10))
             .build();
-        container.enableThroughputGlobalControlGroup(groupConfig, globalControlConfig);
+        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
@@ -147,8 +147,8 @@ public class ThroughputControlTests extends TestSuiteBase {
                 .setGroupName("group-" + UUID.randomUUID())
                 .setTargetThroughput(1)
                 .build();
-        container.enableThroughputLocalControlGroup(groupConfig);
-        createdContainer.enableThroughputLocalControlGroup(groupConfig);
+        container.enableLocalThroughputControlGroup(groupConfig);
+        createdContainer.enableLocalThroughputControlGroup(groupConfig);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);

@@ -1439,10 +1439,12 @@ public class CosmosAsyncContainer {
     /**
      * Enable the throughput control group with local control mode.
      *
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     *
      * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig) {
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         ThroughputLocalControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
         this.database.getClient().enableThroughputControlGroup(localControlGroup);
     }
@@ -1451,11 +1453,13 @@ public class CosmosAsyncContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     *
      * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputGlobalControlGroup(
+    public void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig) {
 
