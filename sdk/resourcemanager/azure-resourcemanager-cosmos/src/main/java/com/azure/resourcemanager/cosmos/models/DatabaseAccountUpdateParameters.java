@@ -38,6 +38,12 @@ public class DatabaseAccountUpdateParameters {
     private String location;
 
     /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * The consistency policy for the Cosmos DB account.
      */
     @JsonProperty(value = "properties.consistencyPolicy")
@@ -151,6 +157,19 @@ public class DatabaseAccountUpdateParameters {
     @JsonProperty(value = "properties.cors")
     private List<CorsPolicy> cors;
 
+    /*
+     * Indicates what services are allowed to bypass firewall checks.
+     */
+    @JsonProperty(value = "properties.networkAclBypass")
+    private NetworkAclBypass networkAclBypass;
+
+    /*
+     * An array that contains the Resource Ids for Network Acl Bypass for the
+     * Cosmos DB account.
+     */
+    @JsonProperty(value = "properties.networkAclBypassResourceIds")
+    private List<String> networkAclBypassResourceIds;
+
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
      * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
@@ -196,6 +215,26 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -560,11 +599,56 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @return the networkAclBypass value.
+     */
+    public NetworkAclBypass networkAclBypass() {
+        return this.networkAclBypass;
+    }
+
+    /**
+     * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @param networkAclBypass the networkAclBypass value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
+        this.networkAclBypass = networkAclBypass;
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @return the networkAclBypassResourceIds value.
+     */
+    public List<String> networkAclBypassResourceIds() {
+        return this.networkAclBypassResourceIds;
+    }
+
+    /**
+     * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
+        this.networkAclBypassResourceIds = networkAclBypassResourceIds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (consistencyPolicy() != null) {
             consistencyPolicy().validate();
         }

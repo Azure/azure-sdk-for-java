@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 
 /**
@@ -21,7 +20,8 @@ public final class ChatMessageReadReceiptConverter {
         }
 
         ChatMessageReadReceipt readReceipt = new ChatMessageReadReceipt()
-            .setSender(new CommunicationUserIdentifier(obj.getSenderId()))
+            .setSenderCommunicationIdentifier(
+                CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()))
             .setChatMessageId(obj.getChatMessageId())
             .setReadOn(obj.getReadOn());
 

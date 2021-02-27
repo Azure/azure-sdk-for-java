@@ -52,6 +52,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -98,11 +99,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         if (interceptorManager.isPlaybackMode()) {
-            durationTestMode = Duration.ofNanos(1);
+            durationTestMode = Duration.ofMillis(1);
         } else {
             durationTestMode = DEFAULT_POLL_INTERVAL;
         }
         interceptorManagerTestBase = interceptorManager;
+    }
+
+    protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
+        return syncPoller.setPollInterval(durationTestMode);
     }
 
     // Detect Language

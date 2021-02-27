@@ -228,7 +228,7 @@ class AnalyzeBatchActionsAsyncClient {
         activationOperation(Mono<AnalyzeBatchActionsOperationDetail> operationResult) {
         return pollingContext -> {
             try {
-                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -247,7 +247,7 @@ class AnalyzeBatchActionsAsyncClient {
                 final String operationId = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(operationId)
                     .flatMap(modelResponse -> processAnalyzedModelResponse(modelResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -299,11 +299,11 @@ class AnalyzeBatchActionsAsyncClient {
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
             return service.analyzeStatusWithResponseAsync(operationId, showStats, topValue, skipValue, context)
                 .map(this::toAnalyzeTasksPagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } else {
             return service.analyzeStatusWithResponseAsync(operationId, showStats, top, skip, context)
                 .map(this::toAnalyzeTasksPagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
     }
 

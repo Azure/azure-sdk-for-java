@@ -132,6 +132,7 @@ org.springframework:spring-messaging;5.2.10.RELEASE
 org.springframework:spring-tx;5.2.10.RELEASE
 org.springframework:spring-web;5.2.10.RELEASE
 org.springframework:spring-webmvc;5.2.10.RELEASE
+org.springframework:spring-webflux;5.2.10.RELEASE
 
 # spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
 org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
