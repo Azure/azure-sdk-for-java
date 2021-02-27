@@ -43,7 +43,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 # Returns the maven (really sonatype) publish status of a package id and version.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  try 
+  try
   {
     $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
     $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
@@ -52,12 +52,12 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
     {
       return $true
     }
-    else 
+    else
     {
       return $false
     }
   }
-  catch 
+  catch
   {
     $statusCode = $_.Exception.Response.StatusCode.value__
     $statusDescription = $_.Exception.Response.StatusDescription
@@ -157,7 +157,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
-      $releaseTag = RetrieveReleaseTag $PublicArtifactLocation 
+      $releaseTag = RetrieveReleaseTag $PublicArtifactLocation
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
     }
@@ -182,7 +182,7 @@ function Get-java-GithubIoDocIndex()
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
-  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' } 
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
@@ -198,7 +198,7 @@ function Get-java-GithubIoDocIndex()
 function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
 {
   $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
-  
+
   if (-not (Test-Path $pkgJsonLoc)) {
     Write-Error "Unable to locate package json at location $pkgJsonLoc, exiting."
     exit(1)
@@ -220,7 +220,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
       $existingPackageDef.packageVersion = $releasingPkg.PackageVersion
     }
     else {
-      $newItem = New-Object PSObject -Property @{ 
+      $newItem = New-Object PSObject -Property @{
         packageDownloadUrl = "https://repo1.maven.org/maven2"
         packageGroupId = $releasingPkg.GroupId
         packageArtifactId = $releasingPkg.PackageId
@@ -255,7 +255,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
     Write-Host "No of Packages $($files.Count)"
     return $null
   }
-  
+
   $packages = @{
     $files[0].Name = $files[0].FullName
   }
@@ -263,8 +263,22 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
   return $packages
 }
 
-function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
+  if ($PackageProperties)
+  {
+    $GroupId = $PackageProperties.Group
+    if ($PackageProperties.SdkType -eq "client")
+    {
+      if ($PackageProperties.IsNewSDK) {
+        $BuildType = "client"
+      }
+      else {
+        $BuildType = "data"
+      }
+    }
+  }
+
   if($null -eq $ReleaseDate)
   {
     $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
