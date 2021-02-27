@@ -8,7 +8,6 @@ $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=con
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"
-
   if (Test-Path $projectPath)
   {
     $projectData = New-Object -TypeName XML
@@ -17,25 +16,30 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
     $pkgVersion = $projectData.project.version
     $pkgGroup = $projectData.project.groupId
 
-    if ($projectPkgName -eq $pkgName)
+    if ($pkgName -and ($projectPkgName -ne $pkgName))
     {
-        $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
-        if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
-        {
-          $pkgProp.SdkType = "mgmt"
-        }
-        elseif ($projectPkgName -match "spring")
-        {
-          $pkgProp.SdkType = "spring"
-        }
-        else
-        {
-          $pkgProp.SdkType = "client"
-        }
-        $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
-        $pkgProp.ArtifactName = $pkgName
-        return $pkgProp
+      return $null
     }
+
+    $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+    if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+    {
+      $pkgProp.SdkType = "mgmt"
+    }
+    elseif ($projectPkgName -match "spring")
+    {
+      $pkgProp.SdkType = "spring"
+    }
+    else
+    {
+      $pkgProp.SdkType = "client"
+    }
+    $pkgProp.IsNewSdk = $False
+    if ($pkgGroup) {
+      $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+    }
+    $pkgProp.ArtifactName = $projectPkgName
+    return $pkgProp
   }
   return $null
 }
