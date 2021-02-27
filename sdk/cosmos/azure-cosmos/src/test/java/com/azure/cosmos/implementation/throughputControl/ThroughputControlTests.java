@@ -105,7 +105,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
             .setControlItemRenewInterval(Duration.ofSeconds(5))
-            .setControlItemExpireInterval(Duration.ofSeconds(10))
+            .setControlItemExpireInterval(Duration.ofSeconds(20))
             .build();
         container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
 
