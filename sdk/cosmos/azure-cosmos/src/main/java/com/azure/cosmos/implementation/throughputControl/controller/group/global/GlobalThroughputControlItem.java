@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group.globa
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class ThroughputGlobalControlItem {
+public abstract class GlobalThroughputControlItem {
     @JsonProperty(value = "id", required = true)
     private String id;
 
@@ -21,11 +21,11 @@ public abstract class ThroughputGlobalControlItem {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer ttl;
 
-    public ThroughputGlobalControlItem() {
+    public GlobalThroughputControlItem() {
 
     }
 
-    public ThroughputGlobalControlItem(String id, String partitionKeyValue) {
+    public GlobalThroughputControlItem(String id, String partitionKeyValue) {
         this.id = id;
         this.groupId = partitionKeyValue;
     }

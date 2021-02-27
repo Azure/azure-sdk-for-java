@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -762,7 +762,7 @@ public class CosmosContainer {
      *
      * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
      *
-     * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

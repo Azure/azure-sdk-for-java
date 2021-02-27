@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ThroughputGroupGlobalController extends ThroughputGroupControllerBase {
-    private static final Logger logger = LoggerFactory.getLogger(ThroughputGroupGlobalController.class);
+public class GlobalThroughputControlGroupController extends ThroughputGroupControllerBase {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalThroughputControlGroupController.class);
     private static final double INITIAL_CLIENT_THROUGHPUT_RU_SHARE = 1.0;
     private static final double INITIAL_THROUGHPUT_USAGE = 1.0;
     private static final int DEFAULT_THROUGHPUT_USAGE_QUEUE_SIZE = 300; // 5 mins windows since we refresh ru usage every 1s
@@ -33,10 +33,10 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
     private final Object throughputUsageSnapshotQueueLock;
     private AtomicReference<Double> clientThroughputShare;
 
-    public ThroughputGroupGlobalController(
+    public GlobalThroughputControlGroupController(
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
-        ThroughputGlobalControlGroup group,
+        GlobalThroughputControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
@@ -82,7 +82,7 @@ public class ThroughputGroupGlobalController extends ThroughputGroupControllerBa
         }
     }
 
-    private Mono<ThroughputGroupGlobalController> calculateClientThroughputShare(double loadFactor) {
+    private Mono<GlobalThroughputControlGroupController> calculateClientThroughputShare(double loadFactor) {
         return this.containerManager.queryLoadFactorsOfAllClients(loadFactor)
             .doOnSuccess(totalLoads -> this.clientThroughputShare.set(loadFactor / totalLoads))
             .thenReturn(this);

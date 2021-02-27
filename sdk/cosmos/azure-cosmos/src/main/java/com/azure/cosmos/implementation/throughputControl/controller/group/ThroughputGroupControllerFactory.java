@@ -8,10 +8,10 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputLocalControlGroup;
-import com.azure.cosmos.implementation.throughputControl.controller.group.global.ThroughputGroupGlobalController;
-import com.azure.cosmos.implementation.throughputControl.controller.group.local.ThroughputGroupLocalController;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlGroupController;
+import com.azure.cosmos.implementation.throughputControl.controller.group.local.LocalThroughputControlGroupController;
 
 public class ThroughputGroupControllerFactory {
 
@@ -24,20 +24,20 @@ public class ThroughputGroupControllerFactory {
         String targetCollectionRid,
         LinkedCancellationToken parentToken) {
 
-        if (group instanceof ThroughputLocalControlGroup) {
-            return new ThroughputGroupLocalController(
+        if (group instanceof LocalThroughputControlGroup) {
+            return new LocalThroughputControlGroupController(
                 connectionMode,
                 globalEndpointManager,
-                (ThroughputLocalControlGroup) group,
+                (LocalThroughputControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
                 targetCollectionRid,
                 parentToken);
-        } else if (group instanceof ThroughputGlobalControlGroup) {
-            return new ThroughputGroupGlobalController(
+        } else if (group instanceof GlobalThroughputControlGroup) {
+            return new GlobalThroughputControlGroupController(
                 connectionMode,
                 globalEndpointManager,
-                (ThroughputGlobalControlGroup) group,
+                (GlobalThroughputControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
                 targetCollectionRid,

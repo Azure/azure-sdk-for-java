@@ -17,7 +17,6 @@ public class GlobalThroughputControlConfig {
     private final Duration controlItemRenewInterval;
     private final Duration controlItemExpireInterval;
 
-
     GlobalThroughputControlConfig(
         CosmosAsyncContainer controlContainer,
         Duration controlItemRenewInterval,
@@ -46,6 +45,8 @@ public class GlobalThroughputControlConfig {
      *
      * In short words, it controls how quickly the shared throughput will reload balanced across different clients.
      *
+     * By default, it is 5s.
+     *
      * @return The control item renew interval.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -58,7 +59,9 @@ public class GlobalThroughputControlConfig {
      *
      * A client may be offline due to various reasons (being shutdown, network issue... ).
      * This controls how quickly we will detect the client has been offline and hence allow its throughput share to be taken by other clients.
-     **
+     *
+     * By default, it is 11s.
+     *
      * @return The control item renew interval.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

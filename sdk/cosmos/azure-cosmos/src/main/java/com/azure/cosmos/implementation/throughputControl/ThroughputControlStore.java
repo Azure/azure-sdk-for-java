@@ -112,10 +112,10 @@ public class ThroughputControlStore {
     public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group cannot be null");
 
-        String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
-        this.groupMapByContainer.compute(collectionLink, (key, groupSet) -> {
+        String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
+        this.groupMapByContainer.compute(containerNameLink, (key, groupSet) -> {
             if (groupSet == null) {
-                groupSet = new HashSet<>();
+                groupSet = ConcurrentHashMap.newKeySet();
             }
 
             if (group.isDefault()) {
@@ -133,7 +133,7 @@ public class ThroughputControlStore {
             if (groupSet.size() == 1) {
                 // This is the first enabled group for the target container
                 // Clean the current cache in case we have built EmptyThroughputContainerController.
-                this.containerControllerCache.remove(collectionLink);
+                this.containerControllerCache.remove(containerNameLink);
             }
 
             return groupSet;
@@ -150,31 +150,31 @@ public class ThroughputControlStore {
             return originalRequestMono;
         }
 
-        String collectionLink = Utils.getCollectionName(request.getResourceAddress());
-        return this.resolveContainerController(collectionLink)
+        String collectionNameLink = Utils.getCollectionName(request.getResourceAddress());
+        return this.resolveContainerController(collectionNameLink)
             .flatMap(containerController -> {
                 if (containerController.canHandleRequest(request)) {
                     return containerController.processRequest(request, originalRequestMono)
-                        .doOnError(throwable -> this.handleException(collectionLink, request, throwable));
+                        .doOnError(throwable -> this.handleException(collectionNameLink, request, throwable));
                 }
 
                 // Unable to find container controller to handle the request,
                 // It is caused by control store out of sync or the request has staled info.
                 // We will handle the first scenario by creating a new container controller,
                 // while fall back to original request Mono for the second scenario.
-                return this.updateControllerAndRetry(collectionLink, request, originalRequestMono);
+                return this.updateControllerAndRetry(collectionNameLink, request, originalRequestMono);
             });
     }
 
     private <T> Mono<T> updateControllerAndRetry(
-        String collectionLink,
+        String containerNameLink,
         RxDocumentServiceRequest request,
         Mono<T> originalRequestMono) {
 
-        return this.shouldRefreshContainerController(collectionLink, request)
+        return this.shouldRefreshContainerController(containerNameLink, request)
             .flatMap(shouldRefresh -> {
                 if (shouldRefresh) {
-                    this.cancellationTokenMap.compute(collectionLink, (key, cancellationToken) -> {
+                    this.cancellationTokenMap.compute(containerNameLink, (key, cancellationToken) -> {
                         if (cancellationToken != null) {
                             cancellationToken.cancel();
                         }
@@ -182,12 +182,12 @@ public class ThroughputControlStore {
                         return null;
                     });
 
-                    this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
-                    return this.resolveContainerController(collectionLink)
+                    this.containerControllerCache.refresh(containerNameLink, () -> this.createAndInitContainerController(containerNameLink));
+                    return this.resolveContainerController(containerNameLink)
                         .flatMap(updatedContainerController -> {
                             if (updatedContainerController.canHandleRequest(request)) {
                                 return updatedContainerController.processRequest(request, originalRequestMono)
-                                    .doOnError(throwable -> this.handleException(collectionLink, request, throwable));
+                                    .doOnError(throwable -> this.handleException(containerNameLink, request, throwable));
                             } else {
                                 // still can not handle the request
                                 logger.warn(
@@ -204,25 +204,25 @@ public class ThroughputControlStore {
             });
     }
 
-    private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {
-        checkArgument(StringUtils.isNotEmpty(collectionLink), "Collection link can not be null or empty");
+    private Mono<IThroughputContainerController> resolveContainerController(String containerNameLink) {
+        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Container name link can not be null or empty");
 
         return this.containerControllerCache.getAsync(
-            collectionLink,
+            containerNameLink,
             null,
-            () -> this.createAndInitContainerController(collectionLink)
+            () -> this.createAndInitContainerController(containerNameLink)
         );
     }
 
-    private Mono<IThroughputContainerController> createAndInitContainerController(String containerLink) {
-        checkArgument(StringUtils.isNotEmpty(containerLink), "Container link should not be null or empty");
+    private Mono<IThroughputContainerController> createAndInitContainerController(String containerNameLink) {
+        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Container link should not be null or empty");
 
-        if (this.groupMapByContainer.containsKey(containerLink)) {
-            return Mono.just(this.groupMapByContainer.get(containerLink))
+        if (this.groupMapByContainer.containsKey(containerNameLink)) {
+            return Mono.just(this.groupMapByContainer.get(containerNameLink))
                 .flatMap(groups -> {
                     LinkedCancellationToken parentToken =
                         this.cancellationTokenMap.compute(
-                            containerLink,
+                            containerNameLink,
                             (key, cancellationToken) -> this.cancellationTokenSource.getToken());
 
                     ThroughputContainerController containerController =
@@ -249,7 +249,8 @@ public class ThroughputControlStore {
                 Mono.just(StringUtils.equals(documentCollection.getResourceId(), request.requestContext.resolvedCollectionRid)));
     }
 
-    private void handleException(String collectionLink, RxDocumentServiceRequest request, Throwable throwable) {
+    private void handleException(String containerNameLink, RxDocumentServiceRequest request, Throwable throwable) {
+        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Container name link can not be null nor empty");
         checkNotNull(request, "Request can not be null");
         checkNotNull(throwable, "Exception can not be null");
 
@@ -258,7 +259,7 @@ public class ThroughputControlStore {
         if (cosmosException != null &&
             (isNameCacheStale(cosmosException) || isPartitionKeyMismatchException(cosmosException))) {
 
-            this.cancellationTokenMap.compute(collectionLink,(key, cancellationToken) -> {
+            this.cancellationTokenMap.compute(containerNameLink,(key, cancellationToken) -> {
                 if (cancellationToken != null) {
                     cancellationToken.cancel();
                 }

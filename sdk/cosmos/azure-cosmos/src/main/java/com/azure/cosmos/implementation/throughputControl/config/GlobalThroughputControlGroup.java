@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -6,14 +9,14 @@ import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ThroughputGlobalControlGroup extends ThroughputControlGroupInternal {
-    private static final Duration DEFAULT_CONTROL_ITEM_RENEW_INTERVAL = Duration.ofSeconds(10);
+public class GlobalThroughputControlGroup extends ThroughputControlGroupInternal {
+    private static final Duration DEFAULT_CONTROL_ITEM_RENEW_INTERVAL = Duration.ofSeconds(5);
 
     private final CosmosAsyncContainer globalControlContainer;
     private final Duration controlItemRenewInterval;
     private final Duration controlItemExpireInterval;
 
-    public ThroughputGlobalControlGroup(
+    public GlobalThroughputControlGroup(
         String groupName,
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
@@ -28,9 +31,21 @@ public class ThroughputGlobalControlGroup extends ThroughputControlGroupInternal
         checkNotNull(globalControlContainer, "Global control container can not be null");
 
         this.globalControlContainer = globalControlContainer;
-        this.controlItemRenewInterval = controlItemRenewInterval != null ? controlItemRenewInterval : DEFAULT_CONTROL_ITEM_RENEW_INTERVAL;
+        this.controlItemRenewInterval = getDefaultControlItemRenewInterval(controlItemRenewInterval, controlItemRenewInterval);
         this.controlItemExpireInterval =
-            controlItemExpireInterval != null ? controlItemExpireInterval : Duration.ofSeconds(2 * this.controlItemRenewInterval.getSeconds());
+            controlItemExpireInterval != null ? controlItemExpireInterval : Duration.ofSeconds(2 * this.controlItemRenewInterval.getSeconds() + 1);
+    }
+
+    private Duration getDefaultControlItemRenewInterval(Duration controlItemRenewInterval, Duration controlItemExpireInterval) {
+        if (controlItemRenewInterval != null) {
+            return controlItemRenewInterval;
+        }
+
+        if (controlItemExpireInterval != null) {
+            return Duration.ofSeconds((controlItemExpireInterval.getSeconds() - 1) / 2);
+        }
+
+        return DEFAULT_CONTROL_ITEM_RENEW_INTERVAL;
     }
 
     /**

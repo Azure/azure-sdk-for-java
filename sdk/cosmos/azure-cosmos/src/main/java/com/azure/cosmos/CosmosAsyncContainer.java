@@ -22,8 +22,8 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputLocalControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -1445,7 +1445,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
-        ThroughputLocalControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
+        LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
         this.database.getClient().enableThroughputControlGroup(localControlGroup);
     }
 
@@ -1455,7 +1455,7 @@ public class CosmosAsyncContainer {
      *
      * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
      *
-     * @param groupConfig The throughput control group configuration, see {@link ThroughputGlobalControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -1463,7 +1463,7 @@ public class CosmosAsyncContainer {
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig) {
 
-        ThroughputGlobalControlGroup globalControlGroup =
+        GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
         this.database.getClient().enableThroughputControlGroup(globalControlGroup);

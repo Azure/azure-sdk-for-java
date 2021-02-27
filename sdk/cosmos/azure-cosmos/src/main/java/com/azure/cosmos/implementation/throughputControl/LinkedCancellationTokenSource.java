@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.throughputControl;
 
 import java.io.Closeable;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Used in the throughput controller hierarchy.
@@ -13,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * A {@link LinkedCancellationToken} will be passed down to lower level controller so to cancel all the underlying tasks.
  */
 public class LinkedCancellationTokenSource implements Closeable {
-    private AtomicBoolean tokenSourceClosed;
+    private boolean tokenSourceClosed;
     private LinkedCancellationToken parentToken;
 
     public LinkedCancellationTokenSource() {
@@ -21,7 +20,7 @@ public class LinkedCancellationTokenSource implements Closeable {
     }
 
     public LinkedCancellationTokenSource(LinkedCancellationToken parent) {
-        this.tokenSourceClosed = new AtomicBoolean(false);
+        this.tokenSourceClosed = false;
         if (parent != null) {
             parent.register(this);
             this.parentToken = parent;
@@ -29,14 +28,24 @@ public class LinkedCancellationTokenSource implements Closeable {
     }
 
     public LinkedCancellationToken getToken() {
-        return new LinkedCancellationToken(this);
+        synchronized (this) {
+            if (this.tokenSourceClosed) {
+                throw new IllegalStateException("The cancellation token resource has been closed");
+            }
+
+            return new LinkedCancellationToken(this);
+        }
     }
 
     public boolean isClosed() {
-        return this.tokenSourceClosed.get() || (this.parentToken != null && this.parentToken.isCancellationRequested());
+        synchronized (this) {
+            return this.tokenSourceClosed || (this.parentToken != null && this.parentToken.isCancellationRequested());
+        }
     }
     @Override
     public void close() {
-        this.tokenSourceClosed.set(true);
+        synchronized (this) {
+            this.tokenSourceClosed = true;
+        }
     }
 }

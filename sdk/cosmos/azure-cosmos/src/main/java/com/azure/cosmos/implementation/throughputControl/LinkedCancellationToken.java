@@ -15,11 +15,17 @@ public class LinkedCancellationToken {
     public LinkedCancellationToken(LinkedCancellationTokenSource tokenSource) {
         this.childTokenSourceList = new ArrayList<>();
         this.tokenSource = tokenSource;
-        cancellationRequested = new AtomicBoolean(false);
+        this.cancellationRequested = new AtomicBoolean();
     }
 
-    public synchronized void register(LinkedCancellationTokenSource childTokenSource) {
-        this.childTokenSourceList.add(childTokenSource);
+    public void register(LinkedCancellationTokenSource childTokenSource) {
+        synchronized (this) {
+            if (this.cancellationRequested.get()) {
+                throw new IllegalStateException("The cancellation token has been cancelled");
+            }
+
+            this.childTokenSourceList.add(childTokenSource);
+        }
     }
 
     public void cancel() {
@@ -28,7 +34,9 @@ public class LinkedCancellationToken {
                 childTokenSource.close();
             }
 
-            childTokenSourceList.clear();
+            synchronized (this) {
+                childTokenSourceList.clear();
+            }
         }
     }
 

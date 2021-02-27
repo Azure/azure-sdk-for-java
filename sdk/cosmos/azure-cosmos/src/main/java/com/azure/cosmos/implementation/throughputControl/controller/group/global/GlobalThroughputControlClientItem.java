@@ -4,13 +4,11 @@
 package com.azure.cosmos.implementation.throughputControl.controller.group.global;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.time.Duration;
 import java.time.Instant;
 
-public class ThroughputGlobalControlClientItem extends ThroughputGlobalControlItem {
+public class GlobalThroughputControlClientItem extends GlobalThroughputControlItem {
 
     @JsonProperty(value = "initializeTime", required = true)
     private String initializeTime;
@@ -24,11 +22,11 @@ public class ThroughputGlobalControlClientItem extends ThroughputGlobalControlIt
     /**
      * Constructor used for Json deserialization
      */
-    public ThroughputGlobalControlClientItem() {
+    public GlobalThroughputControlClientItem() {
 
     }
 
-    public ThroughputGlobalControlClientItem(
+    public GlobalThroughputControlClientItem(
         String id,
         String partitionKeyValue,
         double loadFactor,

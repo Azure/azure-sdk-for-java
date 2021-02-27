@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.BridgeInternal;
@@ -9,11 +12,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class ThroughputControlGroupFactory {
 
-    public static ThroughputLocalControlGroup createThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig, CosmosAsyncContainer targetContainer) {
+    public static LocalThroughputControlGroup createThroughputLocalControlGroup(ThroughputControlGroupConfig groupConfig, CosmosAsyncContainer targetContainer) {
         checkNotNull(groupConfig, "Throughput control group config can not be null");
         checkNotNull(targetContainer, "Throughput target container can not be null");
 
-        return new ThroughputLocalControlGroup(
+        return new LocalThroughputControlGroup(
             groupConfig.getGroupName(),
             targetContainer,
             groupConfig.getTargetThroughput(),
@@ -21,7 +24,7 @@ public class ThroughputControlGroupFactory {
             groupConfig.isDefault());
     }
 
-    public static ThroughputGlobalControlGroup createThroughputGlobalControlGroup(
+    public static GlobalThroughputControlGroup createThroughputGlobalControlGroup(
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig,
         CosmosAsyncContainer targetContainer) {
@@ -30,7 +33,7 @@ public class ThroughputControlGroupFactory {
         checkNotNull(globalControlConfig, "Throughput global control config can not be null");
         checkNotNull(targetContainer, "Throughput target container can not be null");
 
-        return new ThroughputGlobalControlGroup(
+        return new GlobalThroughputControlGroup(
                 groupConfig.getGroupName(),
                 targetContainer,
                 groupConfig.getTargetThroughput(),

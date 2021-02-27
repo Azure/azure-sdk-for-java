@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputGlobalControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -42,12 +42,12 @@ public class ThroughputControlContainerManager {
     private final String configItemId;
     private final String configItemPartitionKeyValue;
     private final CosmosAsyncContainer globalControlContainer;
-    private final ThroughputGlobalControlGroup group;
+    private final GlobalThroughputControlGroup group;
 
-    private ThroughputGlobalControlConfigItem configItem;
-    private ThroughputGlobalControlClientItem clientItem;
+    private GlobalThroughputControlConfigItem configItem;
+    private GlobalThroughputControlClientItem clientItem;
 
-    public ThroughputControlContainerManager(ThroughputGlobalControlGroup group) {
+    public ThroughputControlContainerManager(GlobalThroughputControlGroup group) {
         checkNotNull(group, "Global control group config can not be null");
 
         this.globalControlContainer = group.getGlobalControlContainer();
@@ -61,12 +61,12 @@ public class ThroughputControlContainerManager {
         this.configItemPartitionKeyValue = this.group.getId() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
     }
 
-    public Mono<ThroughputGlobalControlClientItem> createGroupClientItem(double loadFactor, double allocatedThroughput) {
+    public Mono<GlobalThroughputControlClientItem> createGroupClientItem(double loadFactor, double allocatedThroughput) {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
 
         return Mono.just(
-                new ThroughputGlobalControlClientItem(
+                new GlobalThroughputControlClientItem(
                     this.clientItemId,
                     this.clientItemPartitionKeyValue,
                     loadFactor,
@@ -86,14 +86,14 @@ public class ThroughputControlContainerManager {
      * The config item in the control container will be used as the source of truth.
      * If the client has a different config, it will be overwritten by the one in the control container.
      *
-     * @return A {@link ThroughputGlobalControlClientItem}.
+     * @return A {@link GlobalThroughputControlClientItem}.
      */
-    public Mono<ThroughputGlobalControlConfigItem> getOrCreateConfigItem() {
+    public Mono<GlobalThroughputControlConfigItem> getOrCreateConfigItem() {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
 
-        ThroughputGlobalControlConfigItem expectedConfigItem =
-            new ThroughputGlobalControlConfigItem(
+        GlobalThroughputControlConfigItem expectedConfigItem =
+            new GlobalThroughputControlConfigItem(
                 this.configItemId,
                 this.configItemPartitionKeyValue,
                 this.group.getTargetThroughput(),
@@ -103,7 +103,7 @@ public class ThroughputControlContainerManager {
         return this.globalControlContainer.readItem(
                     this.configItemId,
                     new PartitionKey(this.configItemPartitionKeyValue),
-                    ThroughputGlobalControlConfigItem.class)
+                    GlobalThroughputControlConfigItem.class)
             .onErrorResume(throwable -> {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
                 if (cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -158,9 +158,9 @@ public class ThroughputControlContainerManager {
      *
      * @param loadFactor The new load factor of the client.
      * @param clientAllocatedThroughput The new allocated throughput for the client.
-     * @return A {@link ThroughputGlobalControlClientItem};
+     * @return A {@link GlobalThroughputControlClientItem};
      */
-    public Mono<ThroughputGlobalControlClientItem> replaceOrCreateGroupClientItem(double loadFactor, double clientAllocatedThroughput) {
+    public Mono<GlobalThroughputControlClientItem> replaceOrCreateGroupClientItem(double loadFactor, double clientAllocatedThroughput) {
         CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
         itemRequestOptions.setContentResponseOnWriteEnabled(true);
 

@@ -69,8 +69,10 @@ public class GlobalThroughputControlConfigBuilder {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfig build() {
         if (this.controlItemExpireInterval != null && this.controlItemRenewInterval != null) {
-            if (this.controlItemExpireInterval.getSeconds() < this.controlItemRenewInterval.getSeconds()) {
-                throw new IllegalArgumentException("Expire time should not be smaller than renew interval");
+            // expireInterval will be used as the ttl of ThroughputGlobalControlClientItem, it should be a reasonable value
+            // to make sure the item is not get deleted too fast
+            if (this.controlItemExpireInterval.getSeconds() < 2 * this.controlItemRenewInterval.getSeconds() + 1) {
+                throw new IllegalArgumentException("ControlItemExpireInterval is too small compared to ControlItemExpireInterval");
             }
         }
 

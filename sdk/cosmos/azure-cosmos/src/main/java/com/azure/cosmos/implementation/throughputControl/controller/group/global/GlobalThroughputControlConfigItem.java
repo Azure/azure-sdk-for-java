@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlItem {
+public class GlobalThroughputControlConfigItem extends GlobalThroughputControlItem {
 
     @JsonProperty(value = "targetThroughput")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,11 +26,11 @@ public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlIt
     /**
      * Constructor used for Json deserialization
      */
-    public ThroughputGlobalControlConfigItem() {
+    public GlobalThroughputControlConfigItem() {
 
     }
 
-    public ThroughputGlobalControlConfigItem(
+    public GlobalThroughputControlConfigItem(
         String id,
         String partitionKeyValue,
         Integer targetThroughput,
@@ -78,7 +78,7 @@ public class ThroughputGlobalControlConfigItem extends ThroughputGlobalControlIt
             return false;
         }
 
-        ThroughputGlobalControlConfigItem that = (ThroughputGlobalControlConfigItem) other;
+        GlobalThroughputControlConfigItem that = (GlobalThroughputControlConfigItem) other;
 
         return StringUtils.equals(this.getId(), that.getId())
             && StringUtils.equals(this.getGroupId(), that.getGroupId())

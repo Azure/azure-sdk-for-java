@@ -130,7 +130,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void throughputLocalControlForContainerCreateDeleteWithSameName(OperationType operationType) throws InterruptedException {
         ConnectionMode connectionMode = BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode();
         if (connectionMode == ConnectionMode.GATEWAY) {
-            // for gateway connection mode, gateway will handle the 410/1000 and retry. Hence the collection cache and container controller will be refreshed.
+            // for gateway connection mode, gateway will handle the 410/1000 and retry. Hence the collection cache and container controller will not be refreshed.
             // There is no point for this tests for gateway mode.
             return;
         }
@@ -168,7 +168,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         // step 4: recreate the container with the same name
         createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
 
-        // Step 5: read operation which will trigger cache refresh and a new container controller to be built
+        // Step 5: operation which will trigger cache refresh and a new container controller to be built
         createdItem = createdContainer.createItem(getDocumentDefinition()).block().getItem();
 
         // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
