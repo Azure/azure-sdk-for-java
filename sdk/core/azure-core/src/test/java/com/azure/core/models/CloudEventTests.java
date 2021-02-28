@@ -7,17 +7,25 @@ import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -26,15 +34,38 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CloudEventTests {
     private static final JacksonSerializer SERIALIZER = new JacksonSerializer();
 
     @Test
     public void testRoundTripCloudEvents() throws IOException {
-        String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
-        CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
+        final String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
+        final CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
+        final Map<String, Object> map = new HashMap<>() {
+            {
+                put("str", "str value");
+                put("number", 1.3);
+                put("integer", 1);
+                put("bool", true);
+                //put("null", null);
+                put("array", new ArrayList<>() {
+                    {
+                        add(1);
+                        add(2);
+                        add(3);
+                    }
+                });
+                put("object", new HashMap<>() {
+                    {
+                        put("okey", "ovalue");
+                    }
+                });
+            }
+        };
 
+        // Check if deserialized CloudEvent has the correct properties.
         assertNotNull(cloudEvent);
         assertEquals("/testresource", cloudEvent.getSource());
         assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent.getType());
@@ -44,22 +75,16 @@ public class CloudEventTests {
         assertEquals("testsubject", cloudEvent.getSubject());
         assertEquals("/testschema", cloudEvent.getDataSchema());
         assertEquals("application/json", cloudEvent.getDataContentType());
-
-        // actually deserialized as a LinkedHashMap instead of generic object.
-        BinaryData data = cloudEvent.getData();
-        Map<String, Object> deserializedData = data.toObject(new TypeReference<Map<String, Object>>() {
-        });
-        assertEquals(deserializedData.get("str"), "str value");
-        assertEquals(deserializedData.get("number"), 1.3);
-        assertEquals(deserializedData.get("integer"), 1);
-        assertEquals(deserializedData.get("bool"), true);
-        assertNull(deserializedData.get("null"));
-        assertEquals(((Map<?, ?>) deserializedData.get("object")).get("okey"), "ovalue");
+        assertEquals(map, cloudEvent.getData().toObject(Map.class));
 
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             String serialized = bos.toString();
 
+            // Check if the original map matches the raw deserialized JsonNode from the serialized String
+            assertMapAndJsonNode(map, serialized);
+
+            // Check if the original CloudEvent matches the deserialized CloudEvent from the serialized String
             CloudEvent cloudEvent2 = CloudEvent.fromString(serialized).get(0);
             assertEquals("/testresource", cloudEvent2.getSource());
             assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent2.getType());
@@ -73,17 +98,14 @@ public class CloudEventTests {
             BinaryData data2 = cloudEvent.getData();
             Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<Map<String, Object>>() {
             });
-            assertEquals(deserializedData2.get("str"), "str value");
-            assertEquals(deserializedData2.get("number"), 1.3);
-            assertEquals(deserializedData2.get("integer"), 1);
-            assertEquals(deserializedData2.get("bool"), true);
-            assertNull(deserializedData2.get("null"));
-            assertEquals(((Map<?, ?>) deserializedData2.get("object")).get("okey"), "ovalue");
+
+            // Check if the original map matches the deserialized data map from the serialized String
+            assertEquals(map, deserializedData2);
         }
     }
 
     @Test
-    public void testDeserializeCloudEventsFailValidation() throws IOException {
+    public void deserializeCloudEventsFailValidation() throws IOException {
         String cloudEventJson = getTestPayloadFromFile("CloudEventNoType.json");
         assertThrows(IllegalArgumentException.class, () -> {
             CloudEvent.fromString(cloudEventJson);
@@ -91,7 +113,7 @@ public class CloudEventTests {
     }
 
     @Test
-    public void testDeserializeCloudEventsSkipValidation() throws IOException {
+    public void deserializeCloudEventsSkipValidation() throws IOException {
         String cloudEventJson = getTestPayloadFromFile("CloudEventNoType.json");
         assertDoesNotThrow(() -> {
             CloudEvent.fromString(cloudEventJson, true);
@@ -99,10 +121,10 @@ public class CloudEventTests {
     }
 
     @Test
-    public void consumeCloudEventWithoutArrayBrackets() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventNoArray.json");
+    public void deserializeCloudEventWithoutArrayBrackets() throws IOException {
+        String cloudEventJson = getTestPayloadFromFile("CloudEventNoArray.json");
 
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
+        List<CloudEvent> events = CloudEvent.fromString(cloudEventJson);
 
         assertNotNull(events);
         assertEquals(1, events.size());
@@ -120,10 +142,10 @@ public class CloudEventTests {
     }
 
     @Test
-    public void consumeCloudEventWithNullData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventNullData.json");
+    public void deserializeCloudEventWithNullData() throws IOException {
+        String cloudEventJson = getTestPayloadFromFile("CloudEventNullData.json");
 
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
+        List<CloudEvent> events = CloudEvent.fromString(cloudEventJson);
 
         assertNotNull(events);
         assertEquals(1, events.size());
@@ -132,12 +154,9 @@ public class CloudEventTests {
     }
 
     @Test
-    public void consumeCloudEventWithBinaryData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventBinaryData.json");
-
-        byte[] data = "c2FtcGxlYmluYXJ5ZGF0YQ==".getBytes(StandardCharsets.UTF_8);
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
+    public void deserializeCloudEventWithBinaryData() throws IOException {
+        String cloudEventJson = getTestPayloadFromFile("CloudEventBinaryData.json");
+        List<CloudEvent> events = CloudEvent.fromString(cloudEventJson);
 
         assertNotNull(events);
         assertEquals(1, events.size());
@@ -146,14 +165,14 @@ public class CloudEventTests {
 
         assertNotNull(eventData);
 
-        assertArrayEquals(data, eventData);
+        assertArrayEquals(Base64.getDecoder().decode("c2FtcGxlYmluYXJ5ZGF0YQ=="), eventData);
     }
 
     @Test
-    public void consumeCloudEventJsonData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventJsonData.json");
+    public void deserializeCloudEventJsonData() throws IOException {
+        String cloudEventJson = getTestPayloadFromFile("CloudEventJsonData.json");
 
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
+        List<CloudEvent> events = CloudEvent.fromString(cloudEventJson);
 
         assertNotNull(events);
         assertEquals(1, events.size());
@@ -171,23 +190,23 @@ public class CloudEventTests {
     }
 
     @Test
-    public void consumeCloudEventXmlData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventXmlData.json");
+    public void deserializeCloudEventXmlData() throws IOException {
+        String cloudEventJson = getTestPayloadFromFile("CloudEventXmlData.json");
 
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
+        List<CloudEvent> events = CloudEvent.fromString(cloudEventJson);
 
         assertNotNull(events);
         assertEquals(1, events.size());
 
         assertEquals(events.get(0).getExtensionAttributes().get("comexampleothervalue"), 5);
 
-        String xmlData = events.get(0).getData().toString();
+        String xmlData = events.get(0).getData().toObject(String.class);
 
         assertEquals("<much wow=\"xml\"/>", xmlData);
     }
 
     @Test
-    public void testSerializeByteDataAndAllAttributes() throws IOException {
+    public void serializeByteData() throws IOException {
         final String dataPayload = "AAA";
         BinaryData binaryData = BinaryData.fromBytes(dataPayload.getBytes(StandardCharsets.UTF_8));
         CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.BYTES, "bytes")
@@ -201,13 +220,13 @@ public class CloudEventTests {
             String serializedString = bos.toString();
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals(cloudEvent.getData().toString(), deserializedCloudEvent.getData().toString());
-            assertEquals(new String(Base64.getDecoder().decode(cloudEvent.getData().toBytes())), dataPayload);
+            assertEquals(dataPayload, cloudEvent.getData().toString());
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
 
     @Test
-    public void testSerializeJsonData() throws IOException {
+    public void serializeJsonData() throws IOException {
         Map<String, Object> mapData = new HashMap<String, Object>() {
             {
                 put("Field1", "Value1");
@@ -231,10 +250,52 @@ public class CloudEventTests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("primitiveDataValues")
+    public void serializePrimitiveData(Object dataValue) throws IOException {
+        BinaryData binaryData = BinaryData.fromObject(dataValue);
+        CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
+            .setDataSchema("/testSchema")
+            .setSubject("testSubject")
+            .setTime(OffsetDateTime.now())
+            .setSpecVersion("1.0");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            SERIALIZER.serialize(bos, cloudEvent);
+            String serializedString = bos.toString();
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // check the "data" value of the serialized String
+            JsonNode jsonNode = objectMapper.readTree(serializedString).get("data");
+            if (jsonNode.isInt()) {
+                assertEquals(dataValue, jsonNode.asInt());
+            } else if (jsonNode.isDouble()) {
+                assertEquals(dataValue, jsonNode.asDouble());
+            } else if (jsonNode.isBoolean()) {
+                assertEquals(dataValue, jsonNode.asBoolean());
+            } else {
+                fail("Wrong JsonNode type. The serialized String might be wrong.");
+            }
+
+            // Deserialized the serialized String and check back the CloudEvent.getData()
+            CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
+            assertEquals(dataValue, deserializedCloudEvent.getData().toObject(dataValue.getClass()));
+            compareCloudEventContent(cloudEvent, deserializedCloudEvent);
+        }
+    }
+
+    private static Stream<Arguments> primitiveDataValues() {
+        return Stream.of(
+            Arguments.of(1),
+            Arguments.of(1.1),
+            Arguments.of(true),
+            Arguments.of(false)
+        );
+    }
+
     @Test
-    public void testSerializeStringData() throws IOException {
+    public void serializeStringDataAsObject() throws IOException {
         final String dataPayload = "AAA";
-        BinaryData binaryData = BinaryData.fromString(dataPayload);
+        BinaryData binaryData = BinaryData.fromObject(dataPayload);
         CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -245,13 +306,27 @@ public class CloudEventTests {
             SERIALIZER.serialize(bos, cloudEvent);
             String serializedString = bos.toString();
             CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
-            assertEquals(dataPayload, deserializedCloudEvent.getData().toString());
+            assertEquals(dataPayload, deserializedCloudEvent.getData().toObject(String.class));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
 
     @Test
-    public void testSerializeStringDataJsonLiteral() throws IOException {
+    public void serializeStringDataNonJsonLiteral() {
+        final String dataPayload = "AAA";
+        BinaryData binaryData = BinaryData.fromString(dataPayload);
+        assertThrows(IllegalArgumentException.class, () -> {
+            CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
+                .setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
+        });
+    }
+
+    @Test
+    public void serializeStringDataJsonLiteral() throws IOException {
         BinaryData binaryData = BinaryData.fromString("{\"foo\":\"value\"}");
         CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
@@ -270,7 +345,43 @@ public class CloudEventTests {
                 });
             assertEquals("value", deserializedMap.get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
+        }
+    }
 
+    @Test
+    public void serializeNullBinaryData() throws IOException {
+        CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", null, CloudEventDataFormat.JSON, "application/json")
+            .setDataSchema("/testSchema")
+            .setSubject("testSubject")
+            .setTime(OffsetDateTime.now())
+            .setSpecVersion("1.0")
+            .addExtensionAttribute("foo", "value");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            SERIALIZER.serialize(bos, cloudEvent);
+            String serializedString = bos.toString();
+            CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
+            assertNull(deserializedCloudEvent.getData());
+            assertEquals("value", deserializedCloudEvent.getExtensionAttributes().get("foo"));
+            compareCloudEventContent(cloudEvent, deserializedCloudEvent);
+        }
+    }
+
+    @Test
+    public void serializeBinaryDataFromNull() throws IOException {
+        CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", BinaryData.fromObject(null),
+            CloudEventDataFormat.JSON, "application/json")
+            .setDataSchema("/testSchema")
+            .setSubject("testSubject")
+            .setTime(OffsetDateTime.now())
+            .setSpecVersion("1.0")
+            .addExtensionAttribute("foo", "value");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            SERIALIZER.serialize(bos, cloudEvent);
+            String serializedString = bos.toString();
+            CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
+            assertNull(deserializedCloudEvent.getData());
+            assertEquals("value", deserializedCloudEvent.getExtensionAttributes().get("foo"));
+            compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
 
@@ -293,6 +404,35 @@ public class CloudEventTests {
         assertEquals(cloudEvent.getSubject(), deserializedCloudEvent.getSubject());
         assertEquals(cloudEvent.getTime().toInstant(), deserializedCloudEvent.getTime().toInstant());
         assertEquals(cloudEvent.getType(), deserializedCloudEvent.getType());
+    }
+
+    private void assertMapAndJsonNode(Map<String, Object> map, String jsonString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(jsonString);
+        assertMapAndJsonNode(map, jsonNode.get("data"));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void assertMapAndJsonNode(Map<String, Object> map, JsonNode jsonNode) {
+        map.forEach((key, value) -> {
+            if (value instanceof Map) {
+                assertMapAndJsonNode((Map<String, Object>) map.get(key), jsonNode.get(key));
+            } else if (value instanceof String) {
+                assertEquals(value, jsonNode.get(key).asText());
+            } else if (value instanceof Boolean) {
+                assertEquals(value, jsonNode.get(key).asBoolean());
+            } else if (value instanceof Integer) {
+                assertEquals(value, jsonNode.get(key).asInt());
+            } else if (value instanceof Double) {
+                assertEquals(value, jsonNode.get(key).asDouble());
+            } else if (value instanceof List) {
+                List<?> elements = (List<?>) value;
+                JsonNode arrayNode = jsonNode.get(key);
+                for (int i = 0; i < elements.size(); i++) {
+                    assertEquals(elements.get(i), arrayNode.get(i).asInt());
+                }
+            }
+        });
     }
 
     private static class ContosoItemReceivedEventData {

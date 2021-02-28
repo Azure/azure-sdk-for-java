@@ -14,8 +14,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -37,6 +39,8 @@ import java.util.UUID;
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
     private static final JsonSerializer SERIALIZER;
+    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
+    // May get SERIALIZER's object mapper in the future.
 
     static {
         JsonSerializer tmp;
@@ -80,13 +84,14 @@ public final class CloudEvent {
     private String source;
 
     /*
-     * Event data specific to the event type.
+     * Event data specific to the event type. This is internal only for data serialization.
      */
     @JsonProperty(value = "data")
     private Object data;
 
     /*
-     * Event data specific to the event type, encoded as a base64 string.
+     * Event data specific to the event type, encoded as a base64 string. This is internal only for
+     * data_base64 serialization.
      */
     @JsonProperty(value = "data_base64")
     private String dataBase64;
@@ -161,12 +166,18 @@ public final class CloudEvent {
             if (CloudEventDataFormat.BYTES == format) {
                 this.dataBase64 = Base64.getEncoder().encodeToString(data.toBytes());
             } else {
-                this.data = data.toString();
+                try {
+                    this.data = BINARY_DATA_OBJECT_MAPPER.readTree(data.toBytes());
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
+                        e.getCause()));
+                }
             }
         }
         this.dataContentType = dataContentType;
         this.id = UUID.randomUUID().toString();
         this.specVersion = CloudEvent.SPEC_VERSION;
+        this.binaryData = data;
     }
 
     private CloudEvent() {
@@ -262,15 +273,9 @@ public final class CloudEvent {
     public BinaryData getData() {
         if (this.binaryData == null) {
             if (this.data != null) {
-                if (this.data instanceof String) {
-                    this.binaryData = BinaryData.fromString((String) this.data);
-                } else if (this.data instanceof byte[]) {
-                    this.binaryData = BinaryData.fromBytes((byte[]) this.data);
-                } else {
-                    this.binaryData = BinaryData.fromObject(this.data);
-                }
+                this.binaryData = BinaryData.fromObject(this.data);
             } else if (this.dataBase64 != null) {
-                this.binaryData = BinaryData.fromString(this.dataBase64);
+                this.binaryData = BinaryData.fromBytes(Base64.getDecoder().decode(this.dataBase64));
             }
         }
         return this.binaryData;
