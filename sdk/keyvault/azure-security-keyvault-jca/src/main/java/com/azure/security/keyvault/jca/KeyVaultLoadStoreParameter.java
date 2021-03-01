@@ -59,7 +59,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
         this.uri = uri;
-        this.aadAuthenticationUrl = DEFAULT_AAD_AUTHENTICATION_URL;
+        this.aadAuthenticationUrl = null;
         this.tenantId = null;
         this.clientId = null;
         this.clientSecret = null;
