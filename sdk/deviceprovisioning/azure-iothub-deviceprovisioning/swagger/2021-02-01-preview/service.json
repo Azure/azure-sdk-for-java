@@ -1,0 +1,2045 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2021-02-01-preview",
+    "title": "ProvisioningServiceClient",
+    "description": "API for service operations with the Azure IoT Hub Device Provisioning Service"
+  },
+  "host": "your-dps.azure-devices-provisioning.net",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/deviceGroups/{deviceGroupId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a device group. This operation requires the deviceGroups/read permission.",
+        "operationId": "GetDeviceGroup",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceGroup"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Create or replace the device group. This operation requires the deviceGroups/write permission.",
+        "operationId": "CreateOrReplaceDeviceGroup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceGroup",
+            "in": "body",
+            "description": "The device group.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceGroup"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device group.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceGroup"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DELETE"
+        ],
+        "summary": "Delete the device group. This operation requires the deviceGroups/delete permission.",
+        "operationId": "DeleteDeviceGroup",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device group.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/ServiceOperation"
+            },
+            "headers": {
+              "location": {
+                "description": "The location of the resource.",
+                "type": "string"
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/{deviceGroupId}/deviceRecords/{deviceId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a device authentication record. This operation requires the deviceRecords/read or deviceRecords/write permission.",
+        "operationId": "GetDeviceRecord",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Properties to optionally expand in response.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "symmetricKey",
+              "x509Certificate",
+              "all"
+            ]
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceRecord"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Create or replace the device authentication record. This operation requires the deviceRecords/write permission.",
+        "operationId": "CreateOrReplaceDeviceRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceRecord",
+            "in": "body",
+            "description": "The device Record.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceRecord"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device Record.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceRecord"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DELETE"
+        ],
+        "summary": "Delete the device record. This operation requires the deviceRecords/delete permission.",
+        "operationId": "DeleteDeviceRecord",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device record.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/ServiceOperation"
+            },
+            "headers": {
+              "location": {
+                "description": "The location of the resource.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/{deviceGroupId}/deviceRecords/{deviceId}/deviceTransfer": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a device transfer information. This operation requires the deviceTransfers/read permission.",
+        "operationId": "GetDeviceTransfer",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceTransferInfo"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Create or replace the device transfer record. This operation requires the deviceTransfers/write permission.",
+        "operationId": "CreateOrReplaceDeviceTransfer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceTransferInfo",
+            "in": "body",
+            "description": "The device transfer info.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceTransferInfo"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device transfer info.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceTransferInfo"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DELETE"
+        ],
+        "summary": "Delete the device record. This operation requires the deviceTransfers/delete permission.",
+        "operationId": "DeleteDeviceTransfer",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the device record.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/linkedHubs/{linkedHubId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a linked hub. This operation requires the linkedHubs/read permission.",
+        "operationId": "GetLinkedHub",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkedHubId",
+            "in": "path",
+            "description": "The linked hub ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LinkedHub"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Create or replace the linked hub. This operation requires the linkedHubs/write permission.",
+        "operationId": "CreateOrReplaceLinkedHub",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkedHubId",
+            "in": "path",
+            "description": "The linked hub ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "linkedHub",
+            "in": "body",
+            "description": "The linked hub.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LinkedHub"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the linked hub.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LinkedHub"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DELETE"
+        ],
+        "summary": "Delete the linked hub record. This operation requires the linkedHubs/delete permission.",
+        "operationId": "DeleteLinkedHub",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "linkedHubId",
+            "in": "path",
+            "description": "The linked hub ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the linked hub record.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/provisioningSettings/{provisioningSettingsId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a provisioning settings. This operation requires the provisioningSettings/read permissions.",
+        "operationId": "GetProvisioningSettings",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "provisioningSettingsId",
+            "in": "path",
+            "description": "The provisioning settings ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningSettings"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Create or replace the provisioning settings. This operation requires the provisioningSettings/write permission.",
+        "operationId": "CreateOrReplaceProvisioningSettings",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "provisioningSettingsId",
+            "in": "path",
+            "description": "The provisioning settings ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end..",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "provisioningSettings",
+            "in": "body",
+            "description": "The provisioning settings.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProvisioningSettings"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the provisioning settings.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningSettings"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DELETE"
+        ],
+        "summary": "Delete the provisioning settings. This operation requires the provisioningSettings/delete permission.",
+        "operationId": "DeleteProvisioningSettings",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "provisioningSettingsId",
+            "in": "path",
+            "description": "The provisioning settings ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag of the provisioning settings.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/{deviceGroupId}/deviceRecords/{deviceId}/provisioningRecord": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Get a device provisioning record. This operation requires the provisioningRecords/read permission.",
+        "operationId": "GetProvisioningRecord",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "The device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningRecord"
+            },
+            "headers": {
+              "ETag": {
+                "description": "The ETag of the resource to update.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/operations/{operationId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "operationId": "GetOperationStatus",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "operationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceOperationInfo"
+            },
+            "headers": {
+              "retry-after": {
+                "description": "The retry interval in seconds.",
+                "type": "string"
+              },
+              "location": {
+                "description": "The location of the resource.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/{deviceGroupId}/:acceptTransfer": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Redeem the device record transfer token at the target DPS. This operation requires the deviceRecords/write permission.",
+        "operationId": "AcceptDeviceRecordTransfer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "transferToken",
+            "in": "body",
+            "description": "Device record transfer token to redeem.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransferToken"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/ServiceOperation"
+            },
+            "headers": {
+              "location": {
+                "description": "The location of the resource.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/:query": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Retrieves a list of the device groups and a continuation token to retrieve the next page. This operation requires the deviceGroup/read permission.",
+        "operationId": "QueryDeviceGroups",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-ms-max-item-count",
+            "in": "header",
+            "description": "Maximum number of results to return in a page. If not specified with {Query} the service will return up to 100 results.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "query",
+            "in": "body",
+            "description": "The {Query} to match the device groups.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Query"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceGroupQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/deviceGroups/{deviceGroupId}/deviceRecords/:query": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Retrieves a list of the device record in the specified device group and a continuation token to retrieve the next page. This operation requires the deviceRecords/read or deviceRecords/write permission.",
+        "operationId": "QueryDeviceRecords",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceGroupId",
+            "in": "path",
+            "description": "The device group in which the query operation is performed.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-ms-max-item-count",
+            "in": "header",
+            "description": "Maximum number of results to return in a page. If not specified with {Query} the service will return up to 100 results.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "query",
+            "in": "body",
+            "description": "The {Query} to match the device records.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Query"
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Properties to optionally expand in the response. If not specified the service will not expand the optional properties.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "symmetricKey",
+              "x509Certificate",
+              "all"
+            ]
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/DeviceRecordQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/linkedHubs/:query": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Retrieves a list of the linked IoTHubs and a continuation token to retrieve the next page. This operation requires the linkedHubs/read permission.",
+        "operationId": "QueryLinkedHubs",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-ms-max-item-count",
+            "in": "header",
+            "description": "Maximum number of results to return in a page. If not specified with {Query} the service will return up to 100 results.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "query",
+            "in": "body",
+            "description": "The {Query} to match the linked IoTHubs.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Query"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LinkedHubQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "/provisioningSettings/:query": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Retrieves a list of the provisioning settings and a continuation token to retrieve the next page. This operation requires the provisioningSettings/read permission.",
+        "operationId": "QueryProvisioningSettings",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-ms-max-item-count",
+            "in": "header",
+            "description": "Maximum number of results to return in a page. If not specified with {Query} the service will return up to 100 results.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "query",
+            "in": "body",
+            "description": "The {Query} to match the provisioning settings.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Query"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningSettingsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "schema": {
+              "$ref": "#/definitions/ProvisioningServiceErrorDetails"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ServiceOperation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Operation ID.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "ProvisioningServiceErrorDetails": {
+      "description": "Contains the properties of an error returned by the Azure IoT Hub Provisioning Service.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "trackingId": {
+          "type": "string"
+        },
+        "innerError": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DeviceGroup": {
+      "required": [
+        "provisioningSettingsId"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The device group ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string",
+          "readOnly": true
+        },
+        "provisioningSettingsId": {
+          "description": "The Name of the provisioning settings to apply to this device group.",
+          "type": "string"
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "etag": {
+          "description": "The ETag of the device group.",
+          "type": "string",
+          "readOnly": true
+        },
+        "groupStatus": {
+          "description": "The status for this device group.",
+          "enum": [
+            "enabled",
+            "deleting"
+          ],
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "DeviceRecord": {
+      "required": [
+        "authenticationMechanisms"
+      ],
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "description": "The individual device ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string",
+          "readOnly": true
+        },
+        "originDpsIdScope": {
+          "description": "IdScope of the origin DPS. This is a readonly property and will only be set when the device is transferred from another DPS resource.",
+          "type": "string",
+          "readOnly": true
+        },
+        "isEdge": {
+          "description": "If set to {True} will provision the device as edge device.",
+          "default": false,
+          "type": "boolean"
+        },
+        "deviceStatus": {
+          "description": "The status for this device. Setting to {DeviceStatus.Disabled} will block provisioning the device with this authentication.",
+          "default": "enabled",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "type": "string"
+        },
+        "authenticationMechanisms": {
+          "description": "Authentication mechanism used by the device to provision.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceAuthenticationMechanism"
+          }
+        },
+        "deviceGroupId": {
+          "description": "Name of the device group of which this device is a member.",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "etag": {
+          "description": "The ETag of the device record.",
+          "type": "string",
+          "readOnly": true
+        },
+        "optionalDeviceInformation": {
+          "$ref": "#/definitions/TwinCollection",
+          "description": "The additional information about this device. This is an optional property."
+        }
+      }
+    },
+    "DeviceAuthenticationMechanism": {
+      "description": "Device authentication type for the device record. Supported types of authentication mechanisms are: X509Certificate, SymmetricKey and Tpm.",
+      "required": [
+        "id",
+        "deviceAuthenticationKind"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The device authentication mechanism ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string"
+        },
+        "deviceAuthenticationKind": {
+          "type": "string"
+        }
+      },
+      "discriminator": "deviceAuthenticationKind"
+    },
+    "DeviceTransferInfo": {
+      "required": [
+        "validityPeriod"
+      ],
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "description": "The Device Id. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string",
+          "readOnly": true
+        },
+        "targetDpsIdScope": {
+          "description": "Id Scope of target DPS of the transfer request.",
+          "type": "string"
+        },
+        "validityPeriod": {
+          "description": "The desired validity time period of the device record transfer token, in ISO8601 format. Example: 'P6DT5H5M'.",
+          "type": "string"
+        },
+        "token": {
+          "description": "Token containing information for claiming a device belonging to another DPS instance. This is returned upon a successful creation of device transfer record.",
+          "type": "string",
+          "readOnly": true
+        },
+        "etag": {
+          "description": "The ETag of the device record.",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "LinkedHub": {
+      "description": "The IoT hub(s) linked to this device provisioning service.",
+      "required": [
+        "linkedHubKind"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The linked hub ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "etag": {
+          "description": "The ETag of the linked hub.",
+          "type": "string",
+          "readOnly": true
+        },
+        "linkedHubKind": {
+          "type": "string"
+        }
+      },
+      "discriminator": "linkedHubKind"
+    },
+    "ProvisioningSettings": {
+      "description": "The provisioning settings.",
+      "required": [
+        "assignmentMethod"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The provisioning settings ID. A case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+          "type": "string",
+          "readOnly": true
+        },
+        "initialTwin": {
+          "$ref": "#/definitions/InitialTwin",
+          "description": "Initial device twin for devices provisioned using this settings."
+        },
+        "reprovisioningSettings": {
+          "$ref": "#/definitions/ReprovisioningSettings",
+          "description": "The behavior when a device is re-provisioned to an IoT hub."
+        },
+        "assignmentMethod": {
+          "$ref": "#/definitions/AssignmentMethod",
+          "description": "The method of assigning to an IoT hub."
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "etag": {
+          "description": "The ETag of the provisioning settings.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "InitialTwin": {
+      "description": "Initial device twin. Contains a subset of the properties of Twin.",
+      "type": "object",
+      "properties": {
+        "tags": {
+          "$ref": "#/definitions/TwinCollection",
+          "description": "Twin tags."
+        },
+        "properties": {
+          "$ref": "#/definitions/InitialTwinProperties",
+          "description": "Twin desired properties."
+        }
+      }
+    },
+    "ReprovisioningSettings": {
+      "description": "The behavior of the service when a device is re-provisioned to an IoT hub.",
+      "type": "object",
+      "properties": {
+        "updateHubAssignment": {
+          "description": "When set to true (default), the Device Provisioning Service will evaluate the device's IoT Hub assignment and update it if necessary for any provisioning requests beyond the first from a given device. If set to false, the device will stay assigned to its current IoT hub.",
+          "default": true,
+          "type": "boolean"
+        },
+        "migrateDeviceData": {
+          "description": "When set to true (default), the Device Provisioning Service will migrate the device's data (twin, device capabilities, and device ID) from one IoT hub to another during an IoT hub assignment update. If set to false, the Device Provisioning Service will reset the device's data to the initial desired configuration stored in the corresponding enrollment list.",
+          "default": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "AssignmentMethod": {
+      "required": [
+        "assignmentKind"
+      ],
+      "type": "object",
+      "properties": {
+        "assignmentKind": {
+          "type": "string"
+        }
+      },
+      "discriminator": "assignmentKind"
+    },
+    "InitialTwinProperties": {
+      "description": "Represents the InitialTwin properties.",
+      "type": "object",
+      "properties": {
+        "desired": {
+          "$ref": "#/definitions/TwinCollection",
+          "description": "Initial twin desired properties."
+        }
+      }
+    },
+    "ProvisioningRecord": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "description": "Device Id.",
+          "type": "string",
+          "readOnly": true
+        },
+        "assignedHub": {
+          "description": "Assigned IoT Hub.",
+          "type": "string",
+          "readOnly": true
+        },
+        "assignedFromProvisioningSettings": {
+          "description": "The ID of provisioning settings used to assign this device to an IoT hub.",
+          "type": "string",
+          "readOnly": true
+        },
+        "provisioningStatus": {
+          "description": "Provisioning status.",
+          "enum": [
+            "unassigned",
+            "assigning",
+            "assigned",
+            "failed",
+            "disabled"
+          ],
+          "type": "string",
+          "readOnly": true
+        },
+        "provisioningSubstatus": {
+          "description": "Sub status for 'Assigned' devices. Possible values include - 'initialAssignment': Device has been assigned to an IoT hub for the first time, 'deviceDataMigrated': Device has been assigned to a different IoT hub and its device data was migrated from the previously assigned IoT hub. Device data was removed from the previously assigned IoT hub, 'deviceDataReset':  Device has been assigned to a different IoT hub and its device data was populated from the initial state stored in the enrollment. Device data was removed from the previously assigned IoT hub, 'reprovisionedToInitialAssignment': Device has been re-provisioned to a previously assigned IoT hub.",
+          "enum": [
+            "initialAssignment",
+            "deviceDataMigrated",
+            "deviceDataReset",
+            "reprovisionedToInitialAssignment"
+          ],
+          "type": "string",
+          "readOnly": true
+        },
+        "payload": {
+          "description": "Custom data returned from the web hook to the device.",
+          "type": "object",
+          "readOnly": true
+        },
+        "authenticationMetadata": {
+          "$ref": "#/definitions/AuthenticationMetadata",
+          "description": "Authentication metadata.",
+          "readOnly": true
+        },
+        "errorCode": {
+          "format": "int32",
+          "description": "Error code.",
+          "type": "integer",
+          "readOnly": true
+        },
+        "errorMessage": {
+          "description": "Error message.",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created in UTC.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastUpdatedOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated in UTC.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "AuthenticationMetadata": {
+      "required": [
+        "authenticationMetadataKind"
+      ],
+      "type": "object",
+      "properties": {
+        "authenticationMetadataKind": {
+          "type": "string"
+        }
+      },
+      "discriminator": "authenticationMetadataKind"
+    },
+    "ServiceOperationInfo": {
+      "type": "object",
+      "properties": {
+        "serviceOperationStatus": {
+          "description": "The status of the long running operation.",
+          "enum": [
+            "unknown",
+            "notstarted",
+            "running",
+            "succeeded",
+            "failed"
+          ],
+          "type": "string",
+          "readOnly": true
+        },
+        "location": {
+          "description": "The final response will be available at the location uri pointed. This value is set when status is {ServiceOperationStatus.succeeded}.",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was created.",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastActionOn": {
+          "format": "date-time",
+          "description": "The DateTime this resource was last updated.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "TransferToken": {
+      "required": [
+        "token"
+      ],
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "Token containing information for claiming a device belonging to another DPS instance.",
+          "type": "string"
+        }
+      }
+    },
+    "Query": {
+      "type": "object",
+      "properties": {
+        "continuationToken": {
+          "description": "The continuation token to get the next page results.",
+          "type": "string"
+        }
+      }
+    },
+    "DeviceGroupQueryResponse": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "description": "The query results.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceGroup"
+          },
+          "readOnly": true
+        },
+        "continuationToken": {
+          "description": "The continuation token for requesting the next page of results for this query.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "DeviceRecordQueryResponse": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "description": "The query results.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceRecord"
+          },
+          "readOnly": true
+        },
+        "continuationToken": {
+          "description": "The continuation token for requesting the next page of results for this query.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "LinkedHubQueryResponse": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "description": "The query results.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LinkedHub"
+          },
+          "readOnly": true
+        },
+        "continuationToken": {
+          "description": "The continuation token for requesting the next page of results for this query.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "ProvisioningSettingsQueryResponse": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "description": "The query results.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProvisioningSettings"
+          },
+          "readOnly": true
+        },
+        "continuationToken": {
+          "description": "The continuation token for requesting the next page of results for this query.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "TwinCollection": {
+      "description": "Represents a collection of properties within a Twin",
+      "type": "object",
+      "properties": {
+        "version": {
+          "format": "int64",
+          "description": "Version of the TwinCollection",
+          "type": "integer"
+        },
+        "count": {
+          "description": "Number of properties in the TwinCollection",
+          "type": "integer"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "Metadata for the TwinCollection"
+        }
+      },
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "Metadata": {
+      "description": "Metadata for the TwinCollection",
+      "type": "object",
+      "properties": {
+        "lastUpdated": {
+          "format": "date-time",
+          "description": "Last time the TwinCollection was updated",
+          "type": "string"
+        },
+        "lastUpdatedVersion": {
+          "format": "int64",
+          "description": "This is null for Reported properties metadata and is not null for Desired properties metadata.",
+          "type": "integer"
+        }
+      }
+    },
+    "AutoGeneratedSymmetricKeyDeviceAuthenticationMechanism": {
+      "description": "Auto-generated Symmetric Key authentication method. Device will have the symmetric key auto generated by the service.",
+      "required": [
+        "id"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/DeviceAuthenticationMechanism"
+        }
+      ],
+      "properties": {
+        "length": {
+          "format": "int32",
+          "description": "The desired length for autogenerated symmetric key in bytes. The supported key length is between 16 and 64.",
+          "type": "integer"
+        }
+      }
+    },
+    "CertificateAuthenticationMetadata": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AuthenticationMetadata"
+        }
+      ],
+      "properties": {
+        "deviceCertificateMetadata": {
+          "$ref": "#/definitions/CertificateMetadata",
+          "description": "Device certificate metadata.",
+          "readOnly": true
+        },
+        "certificateAuthorityMetadata": {
+          "$ref": "#/definitions/CertificateMetadata",
+          "description": "Certificate authority metadata.",
+          "readOnly": true
+        }
+      }
+    },
+    "CertificateMetadata": {
+      "type": "object",
+      "properties": {
+        "subjectName": {
+          "type": "string",
+          "readOnly": true
+        },
+        "sha1Thumbprint": {
+          "type": "string",
+          "readOnly": true
+        },
+        "sha256Thumbprint": {
+          "type": "string",
+          "readOnly": true
+        },
+        "issuerName": {
+          "type": "string",
+          "readOnly": true
+        },
+        "notBeforeUtc": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "notAfterUtc": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "serialNumber": {
+          "type": "string",
+          "readOnly": true
+        },
+        "version": {
+          "format": "int32",
+          "type": "integer",
+          "readOnly": true
+        }
+      }
+    },
+    "ConnectionStringLinkedHub": {
+      "description": "The linked hub.",
+      "required": [
+        "connectionString",
+        "location"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/LinkedHub"
+        }
+      ],
+      "properties": {
+        "connectionString": {
+          "description": "The string used to connect to the IoT hub.",
+          "type": "string"
+        },
+        "location": {
+          "description": "Location of the IoT hub.",
+          "type": "string"
+        }
+      }
+    },
+    "CustomAssignmentMethod": {
+      "description": "Devices are provisioned to an IoT hub based on your own custom logic. The provisioning service passes information about the device to a webhook with your custom logic, and the webhook returns the desired IoT hub as well as the desired initial configuration. We recommend using Azure Functions to host your webhook.",
+      "required": [
+        "webhookUrl",
+        "apiVersion"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AssignmentMethod"
+        }
+      ],
+      "properties": {
+        "webhookUrl": {
+          "description": "The web hook URL used for IoT Hub assignment requests.",
+          "type": "string"
+        },
+        "apiVersion": {
+          "description": "The API version of the provisioning service types (such as DeviceInfo) sent in the custom assignment request. Minimum supported version: \\\"2018-09-01-preview\\\".",
+          "type": "string"
+        },
+        "targetHubs": {
+          "description": "The list of linked IoT hubs the device(s) in this resource can be assigned to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "GeoLatencyAssignmentMethod": {
+      "description": "Devices are provisioned to an IoT hub with the lowest latency to the device. If multiple linked IoT hubs would provide the same lowest latency, the provisioning service hashes devices across those hubs.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AssignmentMethod"
+        }
+      ],
+      "properties": {
+        "targetHubs": {
+          "description": "The list of linked IoT hubs the device(s) in this resource can be assigned to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "HashedAssignmentMethod": {
+      "description": "Target IoT hubs are each equally likely to have devices provisioned to them.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AssignmentMethod"
+        }
+      ],
+      "properties": {
+        "targetHubs": {
+          "description": "The list of linked IoT hubs the device(s) in this resource can be assigned to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "StaticAssignmentMethod": {
+      "description": "Specify the desired IoT hub as the sole target hub.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AssignmentMethod"
+        }
+      ],
+      "properties": {
+        "targetHub": {
+          "description": "The linked IoT hub the device(s) in this resource will be assigned to.",
+          "type": "string"
+        }
+      }
+    },
+    "SymmetricKeyAuthenticationMetadata": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AuthenticationMetadata"
+        }
+      ],
+      "properties": {}
+    },
+    "SymmetricKeyDeviceAuthenticationMechanism": {
+      "required": [
+        "symmetricKey",
+        "id"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/DeviceAuthenticationMechanism"
+        }
+      ],
+      "properties": {
+        "symmetricKey": {
+          "description": "The symmetric key used by device.",
+          "type": "string"
+        }
+      }
+    },
+    "TpmAuthenticationMetadata": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AuthenticationMetadata"
+        }
+      ],
+      "properties": {
+        "endorsementKey": {
+          "description": "Tpm endorsement key.",
+          "type": "string",
+          "readOnly": true
+        },
+        "storageRootKey": {
+          "description": "Tpm storage root key.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "TpmDeviceAuthenticationMechanism": {
+      "required": [
+        "endorsementKey",
+        "id"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/DeviceAuthenticationMechanism"
+        }
+      ],
+      "properties": {
+        "endorsementKey": {
+          "description": "TPM endorsement key.",
+          "type": "string"
+        },
+        "storageRootKey": {
+          "description": "TPM storage root key.",
+          "type": "string"
+        }
+      }
+    },
+    "X509CertificateDeviceAuthenticationMechanism": {
+      "description": "Device identity is matched with X509 certificate presented to the service.",
+      "required": [
+        "certificate",
+        "id"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/DeviceAuthenticationMechanism"
+        }
+      ],
+      "properties": {
+        "certificate": {
+          "description": "Device identity is matched with X509 certificate presented to the service.",
+          "type": "string"
+        },
+        "certificateMetadata": {
+          "$ref": "#/definitions/CertificateMetadata",
+          "description": "The certificate metadata.",
+          "readOnly": true
+        }
+      }
+    }
+  },
+  "parameters": {
+    "ApiVersionParameter": {
+      "name": "api-version",
+      "in": "query",
+      "description": "The API version to use for the request. Supported versions include: 2021-02-01-preview",
+      "required": true,
+      "type": "string",
+      "default": "2021-02-01-preview"
+    }
+  },
+  "tags": []
+}
