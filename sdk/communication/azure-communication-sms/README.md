@@ -38,7 +38,7 @@ via the endpoint() and httpClient() functions respectively.
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L92 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L81-L91 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -51,8 +51,6 @@ SmsClient smsClient = new SmsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(httpClient)
     .buildClient();
-
-return smsClient;
 ```
 
 ### Access Key Authentication
@@ -61,12 +59,11 @@ SMS messaging also uses HMAC authentication with a resource access key. The acce
 via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
 functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L23-L39 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L25-L41 -->
 ```java
-
-// Your can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-String accessKey = "SECRET";
+AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -76,16 +73,17 @@ SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
 
 // Set the endpoint, access key, and the HttpClient
 smsClientBuilder.endpoint(endpoint)
-    .accessKey(accessKey)
+    .credential(keyCredential)
     .httpClient(httpClient);
 
 // Build a new SmsClient
+SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L65-L71 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L66-L72 -->
 ```java
-// Your can find your connection string from your resource in the Azure Portal
+// You can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
 SmsClient smsClient = new SmsClientBuilder()
@@ -102,7 +100,7 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L42-L58 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L43-L59 -->
 ```java
 // Currently Sms services only supports one phone number
 List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
@@ -115,8 +113,8 @@ options.setEnableDeliveryReport(true);
 
 // Send the message and check the response for a message id
 SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumberIdentifier("<leased-phone-number>"), 
-    to, 
+    new PhoneNumberIdentifier("<leased-phone-number>"),
+    to,
     "your message",
     options /* Optional */);
 

@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -15,6 +16,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -170,6 +172,12 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure.spring
+      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
+        groupId: com.azure.spring
+      - name: azure-appconfiguration-convert-sample-initial
+        groupId: com.azure.spring
+      - name: azure-appconfiguration-sample
+        groupId: com.azure.spring
       - name: azure-spring-cloud-sample-cache
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-binder
@@ -181,6 +189,10 @@ extends:
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-operation
+        groupId: com.azure.spring
+      - name: feature-management-sample
+        groupId: com.azure.spring
+      - name: feature-management-web-sample
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-messaging
         groupId: com.azure.spring

@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
@@ -45,20 +46,14 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -97,62 +92,22 @@ public final class Utility {
     }
 
     /**
-     * Get a mock {@link HttpResponse} that only return status code 400.
-     *
-     * @param response A {@link SimpleResponse} with any type
-     * @return A mock {@link HttpResponse} that only return status code 400.
-     */
-    public static HttpResponse getEmptyErrorIdHttpResponse(SimpleResponse<?> response) {
-        return new HttpResponse(response.getRequest()) {
-            @Override
-            public int getStatusCode() {
-                return 400;
-            }
-
-            @Override
-            public String getHeaderValue(String s) {
-                return null;
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return null;
-            }
-
-            @Override
-            public Flux<ByteBuffer> getBody() {
-                return null;
-            }
-
-            @Override
-            public Mono<byte[]> getBodyAsByteArray() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString(Charset charset) {
-                return null;
-            }
-        };
-    }
-
-    /**
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
      * original {@link Throwable}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
-    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+    public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorException = (ErrorResponseException) throwable;
+            final ErrorResponse errorResponse = errorException.getValue();
+            com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
+            if (errorResponse != null && errorResponse.getError() != null) {
+                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+            }
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                toTextAnalyticsError(errorException.getValue().getError()));
+                textAnalyticsError);
         }
         return throwable;
     }
@@ -566,5 +521,21 @@ public final class Utility {
      */
     public static Context getNotNullContext(Context context) {
         return context == null ? Context.NONE : context;
+    }
+
+    /**
+     * Helper function which retrieves the size of an {@link Iterable}.
+     *
+     * @param documents The iterable of documents.
+     * @return Count of documents in the iterable.
+     */
+    public static int getDocumentCount(Iterable<?> documents) {
+        if (documents instanceof Collection) {
+            return ((Collection<?>) documents).size();
+        } else {
+            final int[] count = new int[] { 0 };
+            documents.forEach(ignored -> count[0] += 1);
+            return count[0];
+        }
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -41,8 +42,7 @@ public final class PeekedMessageItem {
     /*
      * The content of the Message.
      */
-    @JsonProperty(value = "MessageText", required = true)
-    private String messageText;
+    private BinaryData body;
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -142,9 +142,11 @@ public final class PeekedMessageItem {
      * Get the messageText property: The content of the Message.
      *
      * @return the messageText value.
+     * @deprecated use {@link #getBody()} instead.
      */
+    @Deprecated
     public String getMessageText() {
-        return this.messageText;
+        return this.body == null ? null : this.body.toString();
     }
 
     /**
@@ -152,9 +154,32 @@ public final class PeekedMessageItem {
      *
      * @param messageText the messageText value to set.
      * @return the PeekedMessageItem object itself.
+     * @deprecated use {@link #setBody(BinaryData)} instead.
      */
+    @Deprecated
     public PeekedMessageItem setMessageText(String messageText) {
-        this.messageText = messageText;
+        this.body = messageText == null ? null : BinaryData.fromString(messageText);
+        return this;
+    }
+
+
+    /**
+     * Get the body property: The content of the Message.
+     *
+     * @return the body value.
+     */
+    public BinaryData getBody() {
+        return this.body;
+    }
+
+    /**
+     * Set the body property: The content of the Message.
+     *
+     * @param body the body value to set.
+     * @return the PeekedMessageItem object itself.
+     */
+    public PeekedMessageItem setBody(BinaryData body) {
+        this.body = body;
         return this;
     }
 }

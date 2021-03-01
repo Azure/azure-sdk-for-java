@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.BadRequestException;
@@ -30,7 +31,7 @@ class OrderByUtils {
                                                                               RequestChargeTracker tracker,
                                                                               List<DocumentProducer<T>> documentProducers,
                                                                               Map<String, QueryMetrics> queryMetricsMap,
-                                                                              Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
+                                                                              Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
                                                                               List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         @SuppressWarnings("unchecked")
         Flux<OrderByRowResult<T>>[] fluxes = documentProducers
@@ -48,7 +49,7 @@ class OrderByUtils {
                                                                                                  DocumentProducer<T> producer,
                                                                                                  RequestChargeTracker tracker,
                                                                                                  Map<String, QueryMetrics> queryMetricsMap,
-                                                                                                 Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
+                                                                                                 Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
                                                                                                  List<SortOrder> sortOrders,
                                                                                                  List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
@@ -63,13 +64,13 @@ class OrderByUtils {
         private final RequestChargeTracker tracker;
         private final Class<T> klass;
         private final Map<String, QueryMetrics> queryMetricsMap;
-        private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
+        private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
         private final List<SortOrder> sortOrders;
         private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
 
         public PageToItemTransformer(
             Class<T> klass, RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
-            Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
+            Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
             List<SortOrder> sortOrders, List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
             this.klass = klass;
             this.tracker = tracker;
@@ -96,7 +97,8 @@ class OrderByUtils {
                     }
                 }
                 List<T> results = documentProducerFeedResponse.pageResult.getResults();
-                OrderByContinuationToken orderByContinuationToken = targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourcePartitionKeyRange.getId());
+                OrderByContinuationToken orderByContinuationToken =
+                    targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourceFeedRange);
                 if (orderByContinuationToken != null) {
                     Pair<Boolean, ResourceId> booleanResourceIdPair = ResourceId.tryParse(orderByContinuationToken.getRid());
                     if (!booleanResourceIdPair.getLeft()) {
@@ -156,7 +158,7 @@ class OrderByUtils {
                 return x.map(r -> new OrderByRowResult<T>(
                         klass,
                         ModelBridgeInternal.toJsonFromJsonSerializable(r),
-                        documentProducerFeedResponse.sourcePartitionKeyRange,
+                        documentProducerFeedResponse.sourceFeedRange,
                         documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);
         }
