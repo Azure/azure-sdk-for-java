@@ -50,14 +50,14 @@ public class CloudEventTests {
                 put("integer", 1);
                 put("bool", true);
                 put("null", null);
-                put("array", new ArrayList<>() {
+                put("array", new ArrayList<Integer>() {
                     {
                         add(1);
                         add(2);
                         add(3);
                     }
                 });
-                put("object", new HashMap<>() {
+                put("object", new HashMap<String, String>() {
                     {
                         put("okey", "ovalue");
                     }
