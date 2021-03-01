@@ -3,7 +3,6 @@
 
 package com.azure.core.experimental.http.policy;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.implementation.AuthenticationChallenge;
@@ -68,7 +67,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
         } else {
             trc = new TokenRequestContext().addScopes(scopes);
         }
-        return authenticateRequest(context, trc)
+        return authorizeRequest(context, trc)
             .then(Mono.defer(() -> super.process(context, next)));
     }
 

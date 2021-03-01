@@ -40,9 +40,9 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
 
 
     /**
-     * Hanles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
      * challenge header is received after the initial request and returns appropriate {@link TokenRequestContext} to
-     * be used to re-authentication.
+     * be used for re-authentication.
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
@@ -64,7 +64,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
                    String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                    if (httpResponse.getStatusCode() == 401 && authHeader != null) {
                        return tryGetTokenRequestContext(context, httpResponse)
-                           .flatMap(trc -> authenticateRequest(context, trc)
+                           .flatMap(trc -> authorizeRequest(context, trc)
                                .then(Mono.defer(() -> nextPolicy.process())))
                            .switchIfEmpty(Mono.just(httpResponse));
                    }
@@ -73,13 +73,13 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     }
 
     /**
-     * Authenticates the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
      *
      * @param context the HTTP pipeline context.
      * @param tokenRequestContext the token request conext to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
-    public Mono<Void> authenticateRequest(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return cache.getToken(tokenRequestContext)
            .flatMap(token -> {
                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
@@ -88,13 +88,13 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     }
 
     /**
-     * Authenticates the request with the bearer token acquired using the default {@link TokenRequestContext} containing
+     * Authorizes the request with the bearer token acquired using the default {@link TokenRequestContext} containing
      * the scopes specified at policy construction time.
      *
      * @param context the HTTP pipeline context.
      * @return a {@link Mono} containing {@link Void}
      */
-    public Mono<Void> authenticateRequest(HttpPipelineCallContext context) {
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return cache.getToken(defaultTokenRequestContext)
             .flatMap(token -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
