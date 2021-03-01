@@ -1,8 +1,6 @@
 # Release History
-
-## 1.0.0-beta.4 (Unreleased)
-### Added
-- Added Azure Active Directory authentication support
+## 1.0.0-beta.5 (Unreleased)
+###Added
 - Support for creating SmsClient with TokenCredential.
 - Added support for 1:N SMS messaging.
 - Added support for tagging SMS messages.
@@ -12,6 +10,9 @@
 to `Task<Response<SmsSendResult>> SendAsync(string from, string to, string message, Models.SmsSendOptions options = default)`
 - Replaced `SendSmsResponse` with `SmsSendResult`
 
+## 1.0.0-beta.4 (Skipped)
+### Added
+- Added Azure Active Directory authentication support
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added
