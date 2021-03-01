@@ -8,7 +8,8 @@ import com.azure.cosmos.models.PartitionKey
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
-import scala.collection.mutable.Map
+
+import scala.collection.mutable
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -19,16 +20,16 @@ import java.util.UUID
 class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
-  "Bulk Writer" can "upsert item" taggedAs (RequiresCosmosEndpoint) in {
-    val container = getContainer()
+  "Bulk Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
+    val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = true)
 
     val bulkWriter = new BulkWriter(container, writeConfig)
 
-    val items = Map[String, ObjectNode]()
-    for(i <- 0 until 100) {
-      val item = getItem()
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 100) {
+      val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
       bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
@@ -41,18 +42,40 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
-      val expectedItem = items.get(itemFromDB.get("id").textValue()).get
-
-      for (expectedField <- expectedItem.fields().asScala) {
-        itemFromDB.get(expectedField.getKey).equals(expectedField.getValue)
-      }
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
   }
 
-  private def getItem(): ObjectNode = {
-    val objectNode = objectMapper.createObjectNode()
-    objectNode.put("id", UUID.randomUUID().toString)
+  "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
+    val container = getContainer
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = true)
+    val bulkWriter = new BulkWriter(container, writeConfig)
+    val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
+    for(i <- 0 until 1000) {
+      val item = getItem((i % 100).toString)
+      val id = item.get("id").textValue()
+      items.addBinding(id, item)
+      bulkWriter.scheduleWrite(new PartitionKey(id), item)
+    }
+
+    bulkWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val itemsWithSameIdList = items(itemFromDB.get("id").textValue())
+      itemsWithSameIdList.toStream.exists(itemOriginallyAttemptedToBeInserted =>
+        secondObjectNodeHasAllFieldsOfFirstObjectNode(itemOriginallyAttemptedToBeInserted, itemFromDB)) shouldEqual true
+    }
+  }
+
+  private def getItem(id: String): ObjectNode = {
+    val objectNode = objectMapper.createObjectNode()
+    objectNode.put("id", id)
     objectNode.put("propString", UUID.randomUUID().toString)
     objectNode.put("propInt", RandomUtils.nextInt())
     objectNode.put("propBoolean", RandomUtils.nextBoolean())
@@ -60,7 +83,14 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
     objectNode
   }
 
-  private def getContainer(): CosmosAsyncContainer = {
+  def secondObjectNodeHasAllFieldsOfFirstObjectNode(originalInsertedItem: ObjectNode, itemReadFromDatabase: ObjectNode): Boolean = {
+    !originalInsertedItem.fields().asScala.exists(expectedField => {
+      itemReadFromDatabase.get(expectedField.getKey) == null ||
+        !itemReadFromDatabase.get(expectedField.getKey).equals(expectedField.getValue)
+    })
+  }
+
+  private def getContainer: CosmosAsyncContainer = {
     cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
   }
 }
