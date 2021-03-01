@@ -26,6 +26,12 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     private DatabaseAccountKind kind;
 
     /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * The consistency policy for the Cosmos DB account.
      */
     @JsonProperty(value = "properties.consistencyPolicy")
@@ -145,6 +151,19 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     @JsonProperty(value = "properties.cors")
     private List<CorsPolicy> cors;
 
+    /*
+     * Indicates what services are allowed to bypass firewall checks.
+     */
+    @JsonProperty(value = "properties.networkAclBypass")
+    private NetworkAclBypass networkAclBypass;
+
+    /*
+     * An array that contains the Resource Ids for Network Acl Bypass for the
+     * Cosmos DB account.
+     */
+    @JsonProperty(value = "properties.networkAclBypassResourceIds")
+    private List<String> networkAclBypassResourceIds;
+
     /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
     public DatabaseAccountCreateUpdateParameters() {
         databaseAccountOfferType = "Standard";
@@ -167,6 +186,26 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
      */
     public DatabaseAccountCreateUpdateParameters withKind(DatabaseAccountKind kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -552,6 +591,49 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         return this;
     }
 
+    /**
+     * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @return the networkAclBypass value.
+     */
+    public NetworkAclBypass networkAclBypass() {
+        return this.networkAclBypass;
+    }
+
+    /**
+     * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @param networkAclBypass the networkAclBypass value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
+        this.networkAclBypass = networkAclBypass;
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @return the networkAclBypassResourceIds value.
+     */
+    public List<String> networkAclBypassResourceIds() {
+        return this.networkAclBypassResourceIds;
+    }
+
+    /**
+     * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withNetworkAclBypassResourceIds(
+        List<String> networkAclBypassResourceIds) {
+        this.networkAclBypassResourceIds = networkAclBypassResourceIds;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DatabaseAccountCreateUpdateParameters withLocation(String location) {
@@ -574,6 +656,9 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     @Override
     public void validate() {
         super.validate();
+        if (identity() != null) {
+            identity().validate();
+        }
         if (consistencyPolicy() != null) {
             consistencyPolicy().validate();
         }

@@ -6,6 +6,7 @@ package com.azure.communication.sms;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
@@ -58,7 +59,7 @@ public class SmsTestBase {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(PROTOCOL + ENDPOINT)
-            .accessKey(ACCESSKEY)
+            .credential(new AzureKeyCredential(ACCESSKEY))
             .httpClient(httpClient);
 
         if (policy != null) {

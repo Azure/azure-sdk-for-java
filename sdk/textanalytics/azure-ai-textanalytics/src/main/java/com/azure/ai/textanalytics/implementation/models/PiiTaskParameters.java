@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The PiiTaskParameters model. */
 @Fluent
@@ -21,6 +22,12 @@ public final class PiiTaskParameters {
      */
     @JsonProperty(value = "model-version")
     private String modelVersion;
+
+    /*
+     * (Optional) describes the PII categories to return
+     */
+    @JsonProperty(value = "piiCategories")
+    private List<PiiCategory> piiCategories;
 
     /*
      * The stringIndexType property.
@@ -65,6 +72,26 @@ public final class PiiTaskParameters {
      */
     public PiiTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the piiCategories property: (Optional) describes the PII categories to return.
+     *
+     * @return the piiCategories value.
+     */
+    public List<PiiCategory> getPiiCategories() {
+        return this.piiCategories;
+    }
+
+    /**
+     * Set the piiCategories property: (Optional) describes the PII categories to return.
+     *
+     * @param piiCategories the piiCategories value to set.
+     * @return the PiiTaskParameters object itself.
+     */
+    public PiiTaskParameters setPiiCategories(List<PiiCategory> piiCategories) {
+        this.piiCategories = piiCategories;
         return this;
     }
 

@@ -15,25 +15,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class AADSampleConfiguration {
 
     @Bean
-    public OAuth2AuthorizedClientManager authorizedClientManager(
-        ClientRegistrationRepository clientRegistrationRepository,
-        OAuth2AuthorizedClientRepository authorizedClientRepository) {
-        OAuth2AuthorizedClientProvider authorizedClientProvider =
-            OAuth2AuthorizedClientProviderBuilder.builder()
-                                                 .refreshToken()
-                                                 .build();
-        DefaultOAuth2AuthorizedClientManager authorizedClientManager =
-            new DefaultOAuth2AuthorizedClientManager(clientRegistrationRepository, authorizedClientRepository);
-        authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
-        return authorizedClientManager;
-    }
-
-    @Bean
-    public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
-        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
-            new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+    public static WebClient webClient(ClientRegistrationRepository clientRegistrationRepository,
+                                      OAuth2AuthorizedClientRepository authorizedClientRepository) {
+        ServletOAuth2AuthorizedClientExchangeFilterFunction function =
+            new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrationRepository,
+                authorizedClientRepository);
         return WebClient.builder()
-                        .apply(oauth2Client.oauth2Configuration())
+                        .apply(function.oauth2Configuration())
                         .build();
     }
 }

@@ -30,6 +30,7 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.4.0
+com.microsoft.azure:azure-servicebus-jms;0.0.7
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
@@ -132,6 +133,7 @@ org.springframework:spring-messaging;5.2.10.RELEASE
 org.springframework:spring-tx;5.2.10.RELEASE
 org.springframework:spring-web;5.2.10.RELEASE
 org.springframework:spring-webmvc;5.2.10.RELEASE
+org.springframework:spring-webflux;5.2.10.RELEASE
 
 # spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
 org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
@@ -166,9 +168,9 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.8.1
 com.microsoft.azure:msal4j-persistence-extension;1.0.0
 com.sun.activation:jakarta.activation;1.2.2
-io.opentelemetry:opentelemetry-api;0.14.1
-io.opentelemetry:opentelemetry-sdk;0.14.1
-io.opentelemetry:opentelemetry-semconv;0.14.1
+io.opentelemetry:opentelemetry-api;0.17.1
+io.opentelemetry:opentelemetry-sdk;0.17.1
+com.google.errorprone:error_prone_annotations;2.5.1
 io.projectreactor:reactor-test;3.3.12.RELEASE
 junit:junit;4.13.1
 commons-cli:commons-cli;1.3
