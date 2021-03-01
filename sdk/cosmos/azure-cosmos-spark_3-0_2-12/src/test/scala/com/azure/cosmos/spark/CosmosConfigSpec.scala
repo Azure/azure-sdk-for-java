@@ -174,7 +174,8 @@ class CosmosConfigSpec extends UnitSpec {
     } catch {
       case e: Exception => e.getMessage shouldEqual
         "mandatory option spark.cosmos.partitioning.targetedCount is missing." +
-          " Config description: An optional targeted Partition Count. If set along with strategy==Custom the " +
+          " Config description: The targeted Partition Count. This parameter is optional and ignored unless " +
+          "strategy==Custom is used. In this case the " +
           "Spark Connector won't dynamically calculate number of partitions but stick with this value."
     }
   }

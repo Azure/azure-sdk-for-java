@@ -17,13 +17,8 @@ private case class ChangeFeedOffset
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  @transient private lazy val jsonPersisted = String.format(
-    "{\"%s\":\"%s\",\"%s\":\"%s\"}",
-    IdPropertyName,
-    V1Identifier,
-    StatePropertyName,
-    changeFeedState
-  )
+  @transient private lazy val jsonPersisted =
+    raw"""{"$IdPropertyName":"$V1Identifier","$StatePropertyName":"$changeFeedState"}"""
 
   override def json(): String = jsonPersisted
 }
@@ -46,6 +41,8 @@ private object ChangeFeedOffset {
 
       Some(ChangeFeedOffset(parsedNode.get(StatePropertyName).asText))
     } else {
+      // TODO @fabianm check whether other Spark connectors would ignore offsets
+      // they can not parse or throw an error and keep behavior consistent
       None
     }
   }

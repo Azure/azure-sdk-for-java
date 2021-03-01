@@ -22,6 +22,10 @@ import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.util
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 private object CosmosPartitionPlanner {
   def createInputPartitions(
       cosmosClientConfig: CosmosClientConfiguration,
@@ -86,11 +90,7 @@ private object CosmosPartitionPlanner {
                      cosmosContainerConfig)
       .block()
 
-    val feedRanges = new Array[FeedRange](feedRangesList.size())
-    feedRangesList.toArray(feedRanges)
-
-    feedRanges
-      .map(feedRange => ChangeFeedInputPartition(feedRange.toString))
+    feedRangesList.asScala.map(feedRange => ChangeFeedInputPartition(feedRange.toString)).toArray
   }
 
   private[this] def applyStorageAlignedStrategy(
@@ -135,9 +135,7 @@ private object CosmosPartitionPlanner {
           inputPartitions.add(ChangeFeedInputPartition(feedRange)))
     })
 
-    val returnValue = new Array[InputPartition](inputPartitions.size())
-    inputPartitions.toArray(returnValue)
-    returnValue
+    inputPartitions.asScala.toArray
   }
 
   private[this] def applyStorageAlignedStrategy(

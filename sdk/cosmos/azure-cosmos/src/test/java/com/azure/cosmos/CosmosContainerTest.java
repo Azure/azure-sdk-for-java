@@ -294,6 +294,26 @@ public class CosmosContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void trySplitRanges_for_NonExistingContainer() throws Exception {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosAsyncContainer nonExistingContainer =
+            createdDatabase.getContainer("NonExistingContainer").asyncContainer;
+
+        CosmosException cosmosException = null;
+        try {
+            List<FeedRange> splitFeedRanges = nonExistingContainer.trySplitFeedRange(
+                FeedRange.forFullRange(),
+                3
+            ).block();
+        } catch (CosmosException error) {
+            cosmosException = error;
+        }
+
+        assertThat(cosmosException).isNotNull();
+        assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void getFeedRanges_withMultiplePartitions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);

@@ -18,7 +18,7 @@ private[cosmos] object SparkBridgeInternal {
       .block
 
     val array = new Array[String](list.size)
-    for (i <- 0 to list.size - 1) {
+    for (i <- 0 until list.size) {
       array(i) = list.get(i).toString
     }
     array

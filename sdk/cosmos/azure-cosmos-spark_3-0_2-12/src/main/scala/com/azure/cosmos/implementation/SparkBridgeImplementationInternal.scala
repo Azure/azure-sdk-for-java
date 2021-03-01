@@ -22,6 +22,8 @@ private[cosmos] object SparkBridgeImplementationInternal {
       .getCurrentContinuationToken
       .getToken
 
+    // the continuation from the backend is encoded as '"<LSN>"' where LSN is a long integer
+    // removing the first and last characters - which are the quotes
     lsnToken.substring(1, lsnToken.length - 1).toLong
   }
 }

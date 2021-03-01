@@ -24,15 +24,19 @@ import scala.collection.concurrent.TrieMap
 private object PartitionMetadataCache extends CosmosLoggingTrait {
   private[this] val Nothing = 0
   private[this] val cache = new TrieMap[String, PartitionMetadata]
+  // TODO @fabianm reevaluate usage of test hooks over reflection and/or making the fields vars
+  // so that they can simply be changed under test
   private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
 
   // purpose of the time is to update partition metadata
   // additional throughput when more RUs are getting provisioned
   private[this] val timerName = "partition-metadata-refresh-timer"
   private[this] val timerOverrideName = "partition-metadata-refresh-timerOverride"
+  // TODO @fabianm consider switching to ScheduledThreadExecutor or ExecutorService
+  // see https://stackoverflow.com/questions/409932/java-timer-vs-executorservice
   private[this] val timer: Timer = new Timer(timerName, true)
   private[this] var testTimerOverride: Option[Timer] = None
-  private[this] val refreshIntervalInMsDefault : Long = 1 * 1000 // refresh cache every minute after initialization
+  private[this] val refreshIntervalInMsDefault : Long = 60 * 1000 // refresh cache every minute after initialization
   private[this] var refreshIntervalInMsOverride: Option[Long] = None
   private[this] def refreshIntervalInMs : Long= refreshIntervalInMsOverride.getOrElse(refreshIntervalInMsDefault)
 
@@ -247,6 +251,8 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   private def startRefreshTimer() : Unit = {
     logInfo(s"$timerName: scheduling timer - delay: $refreshIntervalInMs ms, period: $refreshIntervalInMs ms")
+    // TODO @fabianm consider switching to ScheduledThreadExecutor or ExecutorService
+    // see https://stackoverflow.com/questions/409932/java-timer-vs-executorservice
     testTimerOverride.getOrElse(timer).schedule(
       new TimerTask { def run(): Unit = onRunRefreshTimer() },
       refreshIntervalInMs,

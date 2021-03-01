@@ -66,10 +66,10 @@ class CosmosPartitionPlannerSpec
   it should "create exactly 3 times more partitions than with Default for Aggressive" in {
 
     // Min is still 1 (not 3) to avoid wasting compute resources where not necessary
-    evaluateStrategy("Aggressive",0, 1)
+    evaluateStrategy("Aggressive", 0, 1)
 
     // 3 Spark partitions for every 128 MB
-    evaluateStrategy("Aggressive",10 * 128 * 1024, 3 * 10)
+    evaluateStrategy("Aggressive", 10 * 128 * 1024, 3 * 10)
 
     // change feed progress is honored
     evaluateStrategy(

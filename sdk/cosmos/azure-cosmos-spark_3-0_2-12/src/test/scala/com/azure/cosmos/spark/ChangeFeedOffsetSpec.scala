@@ -32,7 +32,9 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     val offset = ChangeFeedOffset.fromJson(offsetJson)
     offset.isEmpty shouldEqual false
     val serializedString = offset.get.json()
-    serializedString==null shouldEqual false
+    //scalastyle:off null
+    serializedString should not be null
+    //scalastyle:on null
     serializedString shouldEqual offsetJson
   }
 
@@ -43,7 +45,9 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     val offset = ChangeFeedOffset.fromJson(offsetJsonWithWhitespaces)
     offset.isEmpty shouldEqual false
     val serializedString = offset.get.json()
-    serializedString==null shouldEqual false
+    //scalastyle:off null
+    serializedString should not be null
+    //scalastyle:on null
     serializedString shouldEqual offsetJson
   }
 

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -449,8 +450,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.compositeContinuationTokens);
     }
 
-    static class PartitionKeyRangeMinInclusiveComparator implements Comparator<PartitionKeyRange> {
-        static Comparator<PartitionKeyRange> SingletonInstance = new PartitionKeyRangeMinInclusiveComparator();
+    static class PartitionKeyRangeMinInclusiveComparator implements Comparator<PartitionKeyRange>, Serializable {
+        final static Comparator<PartitionKeyRange> SingletonInstance = new PartitionKeyRangeMinInclusiveComparator();
 
         private PartitionKeyRangeMinInclusiveComparator() {
         }

@@ -94,6 +94,17 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         setProperties(this, false);
     }
 
+    @Override
+    public String toString() {
+        String json = this.toJson();
+
+        if (json == null) {
+            return "";
+        }
+
+        return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
+    }
+
     public abstract void removeProperties(JsonSerializable serializable);
 
     public void setProperties(
@@ -103,6 +114,67 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         if (populateProperties) {
             super.populatePropertyBag();
         }
+    }
+
+    public static FeedRangeInternal tryParse(final String jsonString) {
+        checkNotNull(jsonString, "Argument 'jsonString' must not be null");
+        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+
+        try {
+            return mapper.readValue(jsonString, FeedRangeInternal.class);
+        } catch (final IOException ioError) {
+            LOGGER.debug("Failed to parse feed range JSON {}", jsonString, ioError);
+            return null;
+        }
+    }
+
+    public Mono<List<FeedRange>> trySplit(
+        IRoutingMapProvider routingMapProvider,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        int targetedSplitCount) {
+
+        return Mono.zip(
+            this.getEffectiveRange(
+                routingMapProvider,
+                metadataDiagnosticsCtx,
+                collectionResolutionMono),
+            collectionResolutionMono)
+                   .map(tuple -> {
+
+                       Range<String> effectiveRange = tuple.getT1();
+                       Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
+
+                       if (collectionValueHolder.v == null) {
+                           throw new IllegalStateException("Collection should have been resolved.");
+                       }
+
+                       PartitionKeyDefinition pkDefinition =
+                           collectionValueHolder.v.getPartitionKey();
+
+                       if (targetedSplitCount <= 1 ||
+                           effectiveRange.isSingleValue() ||
+                           // splitting ranges into sub ranges only possible for hash partitioning
+                           pkDefinition.getKind() != PartitionKind.HASH) {
+
+                           return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
+                       }
+
+                       PartitionKeyDefinitionVersion effectivePKVersion =
+                           pkDefinition.getVersion() != null
+                           ? pkDefinition.getVersion()
+                           : PartitionKeyDefinitionVersion.V1;
+                       switch (effectivePKVersion) {
+                           case V1:
+                               return trySplitWithHashV1(effectiveRange, targetedSplitCount);
+
+                           case V2:
+                               return trySplitWithHashV2(effectiveRange, targetedSplitCount);
+
+                           default:
+                               return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
+                       }
+                   });
     }
 
     static List<FeedRange> trySplitWithHashV1(
@@ -127,8 +199,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String minRange = effectiveRange.getMin();
         long diff = max - min;
         List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
-        for(int i = 1; i < targetedSplitCount; i++) {
-
+        for (int i = 1; i < targetedSplitCount; i++) {
             long splitPoint = min + (i * (diff / targetedSplitCount));
             String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
                 new NumberPartitionKeyComponent[] {
@@ -187,7 +258,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         Int128 diff = Int128.subtract(max, min);
         Int128 splitCountInt128 = new Int128(targetedSplitCount);
         List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
-        for(int i = 1; i < targetedSplitCount; i++) {
+        for (int i = 1; i < targetedSplitCount; i++) {
             byte[] currentBlob = Int128.add(
                 min,
                 Int128.multiply(new Int128(i), Int128.div(diff, splitCountInt128))
@@ -216,51 +287,41 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return splitFeedRanges;
     }
 
-    public Mono<List<FeedRange>> trySplit(
-        IRoutingMapProvider routingMapProvider,
-        MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
-        int targetedSplitCount) {
+    private static double decodeDoubleFromUInt64Long(long value) {
+        value = (value < UINT64_TO_DOUBLE_MASK) ? -value : value ^ UINT64_TO_DOUBLE_MASK;
+        return Double.longBitsToDouble(value);
+    }
 
-        return Mono.zip(
-            this.getEffectiveRange(
-                routingMapProvider,
-                metadataDiagnosticsCtx,
-                collectionResolutionMono),
-            collectionResolutionMono)
-            .map(tuple -> {
+    private static long fromHexEncodedBinaryString(String hexBinary) {
+        byte[] byteString = hexBinaryToByteArray(hexBinary);
+        if (byteString.length < 2 || byteString[0] != 5) {
+            throw new IllegalStateException("Invalid hex-byteString");
+        }
+        int byteStringOffset = 1;
+        int offset = 64;
+        long payload = 0;
 
-                Range<String> effectiveRange = tuple.getT1();
-                Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
+        // Decode first 8-bit chunk
+        offset -= 8;
+        payload |= (((long)byteString[byteStringOffset++]) & 0x00FF) << offset;
 
-                if (collectionValueHolder.v == null) {
-                    throw new IllegalStateException("Collection should have been resolved.");
-                }
+        // Decode remaining 7-bit chunks
+        while (true) {
+            if (byteStringOffset >= byteString.length) {
+                throw new IllegalStateException("Incorrect byte string without termination");
+            }
 
-                PartitionKeyDefinition pkDefinition = collectionValueHolder.v.getPartitionKey();
+            byte currentByte = byteString[byteStringOffset++];
 
-                if (targetedSplitCount <= 1 ||
-                    effectiveRange.isSingleValue() ||
-                    // splitting ranges into sub ranges only possible for hash partitioning
-                    pkDefinition.getKind() != PartitionKind.HASH) {
+            offset -= 7;
+            payload |= (((long)(currentByte >> 1)) & 0x00FF) << offset;
 
-                    return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
-                }
+            if ((currentByte & 0x01) == 0) {
+                break;
+            }
+        }
 
-                PartitionKeyDefinitionVersion effectivePKVersion = pkDefinition.getVersion() != null
-                    ? pkDefinition.getVersion()
-                    : PartitionKeyDefinitionVersion.V1;
-                switch (effectivePKVersion) {
-                    case V1:
-                        return trySplitWithHashV1(effectiveRange, targetedSplitCount);
-
-                    case V2:
-                        return trySplitWithHashV2(effectiveRange, targetedSplitCount);
-
-                    default:
-                        return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
-                }
-            });
+        return (long)decodeDoubleFromUInt64Long(payload);
     }
 
     private static byte[] hexBinaryToByteArray(String hexBinary) {
@@ -273,76 +334,10 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
         byte[] blob = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            blob[i / 2] = (byte) ((Character.digit(hexBinary.charAt(i), 16) << 4)
-                + Character.digit(hexBinary.charAt(i+1), 16));
+            blob[i / 2] = (byte)((Character.digit(hexBinary.charAt(i), 16) << 4)
+                + Character.digit(hexBinary.charAt(i + 1), 16));
         }
 
         return blob;
-    }
-
-    @Override
-    public String toString() {
-        String json = this.toJson();
-
-        if (json == null) {
-            return "";
-        }
-
-        return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public static FeedRangeInternal tryParse(final String jsonString) {
-        checkNotNull(jsonString, "Argument 'jsonString' must not be null");
-        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
-        try {
-            return mapper.readValue(jsonString, FeedRangeInternal.class);
-        } catch (final IOException ioError) {
-            LOGGER.debug("Failed to parse feed range JSON {}", jsonString, ioError);
-            return null;
-        }
-    }
-
-    private static long fromHexEncodedBinaryString(String hexBinary)
-    {
-        byte[] byteString = hexBinaryToByteArray(hexBinary);
-        if (byteString.length < 2 || byteString[0] != 5)
-        {
-            throw new IllegalStateException("Invalid hex-byteString");
-        }
-        int byteStringOffset = 1;
-        int offset = 64;
-        long payload = 0;
-
-        // Decode first 8-bit chunk
-        offset -= 8;
-        payload |= (((long)byteString[byteStringOffset++]) & 0x00FF) << offset;
-
-        // Decode remaining 7-bit chunks
-        while (true)
-        {
-            if (byteStringOffset >= byteString.length)
-            {
-                throw new IllegalStateException("Incorrect byte string without termination");
-            }
-
-            byte currentByte = byteString[byteStringOffset++];
-
-            offset -= 7;
-            payload |= (((long)(currentByte >> 1)) & 0x00FF) << offset;
-
-            if ((currentByte & 0x01) == 0)
-            {
-                break;
-            }
-        }
-
-        return (long)decodeDoubleFromUInt64Long(payload);
-    }
-
-    private static double decodeDoubleFromUInt64Long(long value)
-    {
-        value = (value < UINT64_TO_DOUBLE_MASK) ? -value : value ^ UINT64_TO_DOUBLE_MASK;
-        return Double.longBitsToDouble(value);
     }
 }

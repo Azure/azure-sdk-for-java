@@ -20,7 +20,7 @@ private object PartitionMetadata {
   def createKey(databaseId: String,
                 containerId: String,
                 feedRange: String): String =
-    s"$databaseId|$containerId|$feedRange"
+    s"$databaseId/$containerId/$feedRange"
 
   def apply(cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
