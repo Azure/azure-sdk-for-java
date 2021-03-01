@@ -76,7 +76,7 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
      * @param cloudEnvironment the cloud environment in which this identifier is created
      * @return this object
      */
-    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment  cloudEnvironment) {
+    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
         this.cloudEnvironment = cloudEnvironment;
         return this;
     }

@@ -51,7 +51,7 @@ public class CommunicationTokenRefreshOptions {
     /**
      * @return whether or not to refresh token proactively
      */
-    public boolean getRefreshProactively() {
+    public boolean isRefreshProactively() {
         return refreshProactively;
     }
 
