@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +61,11 @@ import java.util.ArrayList;
  */
 
 public final class FilesAndDirectoriesListSegmentDeserializer extends JsonDeserializer<FilesAndDirectoriesListSegment> {
+    @Override
+    public FilesAndDirectoriesListSegment getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+        return new FilesAndDirectoriesListSegment();
+    }
+
     @Override
     public FilesAndDirectoriesListSegment deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ArrayList<DirectoryItem> directoryItems = new ArrayList<>();
