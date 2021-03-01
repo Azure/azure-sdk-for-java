@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
@@ -45,6 +44,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -58,6 +58,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
+    public static final String PROPTYPE = "proptype";
+    public static final String PROP_MIXED = "propMixed";
     private final double minQueryRequestChargePerPartition = 2.0;
 
     private CosmosAsyncClient client;
@@ -236,33 +238,103 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByMixedTypes(String sortOrder) throws Exception {
         List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(createdCollection.getId(),
-                                                                           BridgeInternal.getContextClient(this.client));
+                                                                           BridgeInternal
+                                                                               .getContextClient(this.client));
         // Ensure its a cross partition query
         assertThat(partitionKeyRanges.size()).isGreaterThan(1);
         // We are inserting documents with int, float, string, array, object and missing propMixed.
-        String query = String.format("SELECT r.id, r.propMixed FROM r ORDER BY r.propMixed ", sortOrder);
+        String query = String.format("SELECT * FROM r ORDER BY r.propMixed ", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        List<String> orderedIds = createdDocuments.stream()
-                                      .sorted((o1, o2) -> ItemComparator.getInstance().compare(o1.get("propMixed"),
-                                                                                               o2.get("propMixed")))
-                                      .map(Resource::getId)
-                                      .collect(Collectors.toList());
+        List<String> sourceIds = createdDocuments.stream()
+                                     .map(Resource::getId)
+                                     .collect(Collectors.toList());
 
         int pageSize = 20;
-        CosmosPagedFlux<InternalObjectNode> queryFlux = createdCollection.queryItems(query, options, InternalObjectNode.class);
+        CosmosPagedFlux<InternalObjectNode> queryFlux = createdCollection
+                                                            .queryItems(query, options, InternalObjectNode.class);
         TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
         queryFlux.byPage(pageSize).subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertComplete();
+        subscriber.assertNoErrors();
+        List<InternalObjectNode> results = new ArrayList<>();
+        subscriber.values().forEach(feedResponse -> results.addAll(feedResponse.getResults()));
+        // Make sure all elements inserted are returned
+        assertThat(results.size()).isEqualTo(createdDocuments.size());
 
-        FeedResponseListValidator<InternalObjectNode> validator =
-            new FeedResponseListValidator.Builder<InternalObjectNode>()
-                .totalSize(orderedIds.size())
-                .exactlyContainsIdsInAnyOrder(orderedIds) // Cannot expect orderby nulls/arrays/object types to be in a
-                // particular order so just testing to make sure all the documents exist.
-                .build();
-        validateQuerySuccess(queryFlux.byPage(pageSize), validator);
+        // Make sure all ids are present
+        List<String> resultIds = results.stream().map(Resource::getId).collect(Collectors.toList());
+        assertThat(resultIds).containsExactlyInAnyOrderElementsOf(sourceIds);
+
+        // Make sure the below defined group order for mixed types match with the result grouping
+        final List<String> typeList = Arrays.asList("undefined", "null", "boolean", "number", "string", "array",
+                                                    "object");
+        List<String> observedTypes = new ArrayList<>();
+
+        results.forEach(item -> {
+            String propType = "undefined";
+            if (item.has(PROPTYPE)) {
+                propType = item.getString(PROPTYPE);
+            }
+            System.out.println("item.get(PROPTYPE) = " + item.get(PROPTYPE));
+            System.out.println("propType = " + propType);
+            if (!observedTypes.contains(propType)) {
+                observedTypes.add(propType);
+            } else {
+                boolean equals = observedTypes.get(observedTypes.size() - 1).equals(propType);
+                assertThat(equals).isTrue().as("Items of same type should be contiguous");
+            }
+        });
+
+        // Esuring that the returned results are grouped in the expected order
+        assertThat(observedTypes).containsExactlyElementsOf(typeList);
+
+        // Now check ordering inside each type group
+        for (String type : typeList) {
+            List<InternalObjectNode> items = results.stream().filter(r -> {
+                if ("undefined".equals(type)) {
+                    return !r.has(PROPTYPE);
+                }
+                return type.equals(r.getString(PROPTYPE));
+            }).collect(Collectors.toList());
+
+            // Skip comparing undefined types
+            // Skip comparing null types
+            // Skip comparing Array and object types
+            // Compare booleans, number and String types among their own groups to check if they are sorted
+            if ("boolean".equals(type)) {
+                List<Boolean> sourceList =
+                    items.stream().map(n -> n.getBoolean(PROP_MIXED)).collect(Collectors.toList());
+                List<Boolean> toBeSortedList = new ArrayList<>(sourceList);
+                toBeSortedList.sort(Comparator.comparing(Boolean::booleanValue));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(sourceList);
+            }
+            if ("number".equals(type)) {
+                List<Number> numberList =
+                    items.stream().map(n -> (Number) n.get(PROP_MIXED)).collect(Collectors.toList());
+                List<Number> toBeSortedList = new ArrayList<>(numberList);
+                Collections.copy(toBeSortedList, numberList);
+                toBeSortedList.sort(Comparator.comparingDouble(Number::doubleValue));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(numberList);
+            }
+            if ("string".equals(type)) {
+                List<String> sourceList =
+                    items.stream().map(n -> n.getString(PROP_MIXED)).collect(Collectors.toList());
+                List<String> toBeSortedList = new ArrayList<>(sourceList);
+                Collections.copy(toBeSortedList, sourceList);
+                toBeSortedList.sort(Comparator.comparing(String::valueOf));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(sourceList);
+            }
+        }
     }
 
     private List<PartitionKeyRange> getPartitionKeyRanges(
@@ -519,6 +591,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();
         Map<String, Object> props;
+        boolean flag = false;
 
         for(int i = 0; i < 30; i++) {
             props = new HashMap<>();
@@ -534,30 +607,41 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             }
             props.put("propArray", orderByArray);
             props.put("propObject", orderByObject);
-            keyValuePropsList.add(props);
-            switch (i % 7) {
+            switch (i % 8) {
                 case 0:
-                    props.put("propMixed", i);
+                    props.put(PROP_MIXED, i);
+                    props.put(PROPTYPE, "number");
                     break;
                 case 1:
-                    props.put("propMixed", String.valueOf(i));
+                    props.put(PROP_MIXED, String.valueOf(i));
+                    props.put(PROPTYPE, "string");
                     break;
                 case 2:
-                    props.put("propMixed", orderByArray);
+                    props.put(PROP_MIXED, orderByArray);
+                    props.put(PROPTYPE, "array");
                     break;
                 case 3:
-                    props.put("propMixed", orderByObject);
+                    props.put(PROP_MIXED, orderByObject);
+                    props.put(PROPTYPE, "object");
                     break;
                 case 4:
-                    props.put("propMixed", (float)i*3.17);
+                    props.put(PROP_MIXED, (float)i*3.17);
+                    props.put(PROPTYPE, "number");
                     break;
                 case 5:
-                    props.put("propMixed", null);
+                    props.put(PROP_MIXED, null);
+                    props.put(PROPTYPE, "null");
+                    break;
+                case 6:
+                    flag = !flag;
+                    props.put(PROP_MIXED, flag);
+                    props.put(PROPTYPE, "boolean");
                     break;
                 default:
                     // skips the propMixed
                     break;
             }
+            keyValuePropsList.add(props);
         }
 
         //undefined values
