@@ -1,20 +1,18 @@
 package com.azure.identity.implementation;
 
 
-import com.azure.identity.implementation.JsonHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.aad.msal4j.ITokenCache;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
+
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.microsoft.aad.msal4jextensions.PersistenceSettings;
-import com.nimbusds.jose.util.StandardCharset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -58,7 +56,7 @@ public class TokenCacheImpl implements ITokenCacheAccessAspect {
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
         Mono.defer(() -> {
             if (wip.compareAndSet(false, true)) {
-                iTokenCacheAccessContext.tokenCache().deserialize(new String(data, StandardCharset.UTF_8));
+                iTokenCacheAccessContext.tokenCache().deserialize(new String(data, StandardCharsets.UTF_8));
                 cacheAccess.put(iTokenCacheAccessContext.tokenCache(), OffsetDateTime.now());
                 return Mono.just(true);
             }
@@ -79,19 +77,19 @@ public class TokenCacheImpl implements ITokenCacheAccessAspect {
             if (wip.compareAndSet(false, true)) {
                 if (!cacheAccess.containsKey(tokenCache) || cacheAccess.get(tokenCache).compareTo(lastUpdated) < 0) {
                     com.microsoft.aad.msal4j.TokenCache deserializedCache =
-                        JsonHelper.convertJsonToObject(new String(data, StandardCharset.UTF_8),
+                        JsonHelper.convertJsonToObject(new String(data, StandardCharsets.UTF_8),
                             com.microsoft.aad.msal4j.TokenCache.class);
                     try {
-                        JsonNode cache = JsonHelper.mapper.readTree(new String(data, StandardCharset.UTF_8));
+                        JsonNode cache = JsonHelper.mapper.readTree(new String(data, StandardCharsets.UTF_8));
                         JsonNode cacheB = JsonHelper.mapper.readTree(tokenCache.serialize());
                         mergeJsonObjects(cache, cacheB);
-                        data = cache.toString().getBytes(StandardCharset.UTF_8);
+                        data = cache.toString().getBytes(StandardCharsets.UTF_8);
                     } catch (JsonProcessingException e) {
                         return Mono.error(e);
                     }
 
                 } else {
-                    data = tokenCache.serialize().getBytes(StandardCharset.UTF_8);
+                    data = tokenCache.serialize().getBytes(StandardCharsets.UTF_8);
                 }
                 lastUpdated = cacheAccess.put(tokenCache, OffsetDateTime.now());
                 return Mono.just(true);
