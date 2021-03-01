@@ -14,7 +14,7 @@ public class NativeQueryGenerator {
     }
 
     public SqlQuerySpec generateSortedQuery(SqlQuerySpec querySpec, Sort sort) {
-        if (sort.isUnsorted()) {
+        if (sort == null || sort.isUnsorted()) {
             return querySpec;
         } else {
             String querySort = AbstractQueryGenerator.generateQuerySort(sort);

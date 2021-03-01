@@ -648,9 +648,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
-        String containerName = getContainerName(domainType);
-        SqlQuerySpec countQuerySpec = nativeQueryGenerator.generateCountQuery(querySpec);
-        return paginationQuery(querySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
+        final String containerName = getContainerName(domainType);
+        final SqlQuerySpec sortedQuerySpec = nativeQueryGenerator.generateSortedQuery(querySpec, pageable.getSort());
+        final SqlQuerySpec countQuerySpec = nativeQueryGenerator.generateCountQuery(querySpec);
+        return paginationQuery(sortedQuerySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
     }
 
     @Override
