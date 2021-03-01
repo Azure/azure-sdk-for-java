@@ -3,21 +3,29 @@
 
 package com.azure.core.management;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /** Metadata pertaining to creation and last modification of the resource. */
 public final class SystemData {
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private ResourceAuthorIdentityType createdByType;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private ResourceAuthorIdentityType lastModifiedByType;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedAt;
 
     /**
