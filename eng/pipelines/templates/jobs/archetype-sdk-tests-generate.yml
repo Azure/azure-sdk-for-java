@@ -10,6 +10,13 @@ parameters:
 - name: MatrixFilters
   type: object
   default: []
+- name: JobTemplatePath
+  type: string
+  default: './archetype-sdk-tests.yml'
+# Set this to false to do a full checkout for private repositories with the azure pipelines service connection
+- name: SparseCheckout
+  type: boolean
+  default: true
 
 jobs:
 - job: generate_matrix
@@ -20,25 +27,27 @@ jobs:
     vmImage: MMSUbuntu18.04
   displayName: Generate Job Matrix
   steps:
-    - checkout: none
+    - ${{ if parameters.SparseCheckout }}:
+      - checkout: none
 
-    - pwsh: |
-        git clone --no-checkout --filter=tree:0 git://github.com/$(Build.Repository.Name).git .
-        git sparse-checkout init
-        if ("${{ parameters.AdditionalParameters.ServiceDirectory }}") {
-          git sparse-checkout set eng sdk/${{ parameters.AdditionalParameters.ServiceDirectory}}
-        } else {
-          git sparse-checkout set eng
-        }
-        git checkout $(Build.SourceVersion)
-      workingDirectory: $(Build.Repository.LocalPath)
+      - pwsh: |
+          git clone --no-checkout --filter=tree:0 git://github.com/$(Build.Repository.Name).git .
+          git sparse-checkout init
+          if ("${{ parameters.AdditionalParameters.ServiceDirectory }}") {
+            git sparse-checkout set eng sdk/${{ parameters.AdditionalParameters.ServiceDirectory}}
+          } else {
+            git sparse-checkout set eng
+          }
+          git checkout $(Build.SourceVersion)
+        workingDirectory: $(Build.Repository.LocalPath)
 
     - ${{ each config in parameters.MatrixConfigs }}:
       - ${{ if eq(config.GenerateVMJobs, 'true') }}:
         - task: Powershell@2
           inputs:
             pwsh: true
-            workingDirectory: $(Build.Repository.LocalPath)
+            ${{ if parameters.SparseCheckout }}:
+              workingDirectory: $(Build.Repository.LocalPath)
             filePath: eng/common/scripts/job-matrix/Create-JobMatrix.ps1
             arguments: >
               -ConfigPath ${{ config.Path }}
@@ -53,7 +62,8 @@ jobs:
         - task: Powershell@2
           inputs:
             pwsh: true
-            workingDirectory: $(Build.Repository.LocalPath)
+            ${{ if parameters.SparseCheckout }}:
+              workingDirectory: $(Build.Repository.LocalPath)
             filePath: eng/common/scripts/job-matrix/Create-JobMatrix.ps1
             arguments: >
               -ConfigPath ${{ config.Path }}
@@ -66,7 +76,7 @@ jobs:
 
 - ${{ each config in parameters.MatrixConfigs }}:
   - ${{ if eq(config.GenerateVMJobs, 'true') }}:
-    - template: ./archetype-sdk-tests.yml
+    - template: ${{ parameters.JobTemplatePath }}
       parameters:
         UsePlatformContainer: false
         Matrix: dependencies.generate_matrix.outputs['generate_vm_job_matrix_${{ config.Name }}.matrix']
@@ -76,7 +86,7 @@ jobs:
           ${{ param.key }}: ${{ param.value }}
 
   - ${{ if eq(config.GenerateContainerJobs, 'true') }}:
-    - template: ./archetype-sdk-tests.yml
+    - template: ${{ parameters.JobTemplatePath }}
       parameters:
         UsePlatformContainer: true
         Matrix: dependencies.generate_matrix.outputs['generate_container_job_matrix_${{ config.Name }}.matrix']
