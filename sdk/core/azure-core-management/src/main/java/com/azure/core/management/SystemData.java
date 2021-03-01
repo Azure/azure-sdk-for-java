@@ -10,13 +10,13 @@ public final class SystemData {
 
     private String createdBy;
 
-    private CreatedByType createdByType;
+    private ResourceAuthorIdentityType createdByType;
 
     private OffsetDateTime createdAt;
 
     private String lastModifiedBy;
 
-    private CreatedByType lastModifiedByType;
+    private ResourceAuthorIdentityType lastModifiedByType;
 
     private OffsetDateTime lastModifiedAt;
 
@@ -34,7 +34,7 @@ public final class SystemData {
      *
      * @return the type of identity that created the resource.
      */
-    public CreatedByType createdByType() {
+    public ResourceAuthorIdentityType createdByType() {
         return this.createdByType;
     }
 
@@ -61,7 +61,7 @@ public final class SystemData {
      *
      * @return the type of identity that last modified the resource.
      */
-    public CreatedByType lastModifiedByType() {
+    public ResourceAuthorIdentityType lastModifiedByType() {
         return this.lastModifiedByType;
     }
 

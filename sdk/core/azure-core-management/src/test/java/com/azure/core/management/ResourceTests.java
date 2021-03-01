@@ -55,7 +55,7 @@ public class ResourceTests {
         Assertions.assertNotNull(cosmosAccountResource.systemData());
         Assertions.assertNotNull(cosmosAccountResource.systemData().createdAt());
         Assertions.assertEquals("johndoe", cosmosAccountResource.systemData().createdBy());
-        Assertions.assertEquals(CreatedByType.USER, cosmosAccountResource.systemData().createdByType());
+        Assertions.assertEquals(ResourceAuthorIdentityType.USER, cosmosAccountResource.systemData().createdByType());
         Assertions.assertNull(cosmosAccountResource.systemData().lastModifiedAt());
         Assertions.assertNull(cosmosAccountResource.systemData().lastModifiedBy());
         Assertions.assertNull(cosmosAccountResource.systemData().lastModifiedByType());
@@ -64,7 +64,7 @@ public class ResourceTests {
         Assertions.assertNotNull(proxyResource.systemData());
         Assertions.assertNotNull(proxyResource.systemData().createdAt());
         Assertions.assertEquals("johndoe", proxyResource.systemData().createdBy());
-        Assertions.assertEquals(CreatedByType.USER, proxyResource.systemData().createdByType());
+        Assertions.assertEquals(ResourceAuthorIdentityType.USER, proxyResource.systemData().createdByType());
         Assertions.assertNull(proxyResource.systemData().lastModifiedAt());
         Assertions.assertNull(proxyResource.systemData().lastModifiedBy());
         Assertions.assertNull(proxyResource.systemData().lastModifiedByType());

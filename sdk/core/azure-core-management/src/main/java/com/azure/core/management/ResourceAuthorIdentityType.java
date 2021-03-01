@@ -7,34 +7,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreatedByType. */
-public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
+/** Defines values for identity type of resource author. */
+public final class ResourceAuthorIdentityType extends ExpandableStringEnum<ResourceAuthorIdentityType> {
 
-    /** Static value User for CreatedByType, represents an AAD user. */
-    public static final CreatedByType USER = fromString("User");
+    /** Static value User for ResourceAuthorIdentityType, represents an AAD user. */
+    public static final ResourceAuthorIdentityType USER = fromString("User");
 
-    /** Static value Application for CreatedByType, represents an AAD application. */
-    public static final CreatedByType APPLICATION = fromString("Application");
+    /** Static value Application for ResourceAuthorIdentityType, represents an AAD application. */
+    public static final ResourceAuthorIdentityType APPLICATION = fromString("Application");
 
-    /** Static value ManagedIdentity for CreatedByType, represents a Managed Identity. */
-    public static final CreatedByType MANAGED_IDENTITY = fromString("ManagedIdentity");
+    /** Static value ManagedIdentity for ResourceAuthorIdentityType, represents a Managed Identity. */
+    public static final ResourceAuthorIdentityType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
-    /** Static value Key for CreatedByType. */
-    public static final CreatedByType KEY = fromString("Key");
+    /** Static value Key for ResourceAuthorIdentityType. */
+    public static final ResourceAuthorIdentityType KEY = fromString("Key");
 
     /**
-     * Creates or finds a CreatedByType from its string representation.
+     * Creates or finds a ResourceAuthorIdentityType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding CreatedByType.
+     * @return the corresponding ResourceAuthorIdentityType.
      */
     @JsonCreator
-    public static CreatedByType fromString(String name) {
-        return fromString(name, CreatedByType.class);
+    public static ResourceAuthorIdentityType fromString(String name) {
+        return fromString(name, ResourceAuthorIdentityType.class);
     }
 
-    /** @return known CreatedByType values. */
-    public static Collection<CreatedByType> values() {
-        return values(CreatedByType.class);
+    /** @return known ResourceAuthorIdentityType values. */
+    public static Collection<ResourceAuthorIdentityType> values() {
+        return values(ResourceAuthorIdentityType.class);
     }
 }
