@@ -22,12 +22,24 @@ jobs:
   steps:
     - checkout: none
 
+    - pwsh: |
+        git clone --no-checkout --filter=tree:0 git://github.com/$(Build.Repository.Name).git .
+        git sparse-checkout init
+        if ("${{ parameters.AdditionalParameters.ServiceDirectory }}") {
+          git sparse-checkout set eng sdk/${{ parameters.AdditionalParameters.ServiceDirectory}}
+        } else {
+          git sparse-checkout set eng
+        }
+        git checkout $(Build.SourceVersion)
+      workingDirectory: $(Build.Repository.LocalPath)
+
     - ${{ each config in parameters.MatrixConfigs }}:
       - ${{ if eq(config.GenerateVMJobs, 'true') }}:
         - task: Powershell@2
           inputs:
             pwsh: true
-            filePath: eng/scripts/job-matrix/Create-JobMatrix.ps1
+            workingDirectory: $(Build.Repository.LocalPath)
+            filePath: eng/common/scripts/job-matrix/Create-JobMatrix.ps1
             arguments: >
               -ConfigPath ${{ config.Path }}
               -Selection ${{ config.Selection }}
@@ -41,7 +53,8 @@ jobs:
         - task: Powershell@2
           inputs:
             pwsh: true
-            filePath: eng/scripts/job-matrix/Create-JobMatrix.ps1
+            workingDirectory: $(Build.Repository.LocalPath)
+            filePath: eng/common/scripts/job-matrix/Create-JobMatrix.ps1
             arguments: >
               -ConfigPath ${{ config.Path }}
               -Selection ${{ config.Selection }}
