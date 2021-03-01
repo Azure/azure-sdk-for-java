@@ -385,7 +385,7 @@ public class CloudEventTests {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
-            assertNull(deserializedCloudEvent.getData());
+            assertNull(deserializedCloudEvent.getData().toObject(Object.class, SERIALIZER));  // any class works here.
             assertEquals("value", deserializedCloudEvent.getExtensionAttributes().get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
