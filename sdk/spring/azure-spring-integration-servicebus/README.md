@@ -30,6 +30,9 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 
 This project provides inbound and outbound channel adapters for Azure Service Bus.
 
+### Configure ServiceBusMessageConverter to customize ObjectMapper
+`ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
+
 ## Examples
 
 
