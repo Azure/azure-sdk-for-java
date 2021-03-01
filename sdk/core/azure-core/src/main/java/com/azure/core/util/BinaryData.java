@@ -214,13 +214,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
-        if (Objects.isNull(data)) {
-            return EMPTY_DATA;
-        }
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        getDefaultSerializer().serialize(outputStream, data);
-
-        return new BinaryData(outputStream.toByteArray());
+        return fromObject(data, getDefaultSerializer());
     }
 
     /**
@@ -241,7 +235,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        return Mono.fromCallable(() -> fromObject(data));
+        return fromObjectAsync(data, getDefaultSerializer());
     }
 
     /**
@@ -278,9 +272,7 @@ public final class BinaryData {
 
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.serialize(outputStream, data);
-        return new BinaryData(outputStream.toByteArray());
+        return new BinaryData(serializer.serializeToBytes(data));
     }
 
     /**
@@ -461,8 +453,7 @@ public final class BinaryData {
         Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return serializer.deserialize(jsonStream, typeReference);
+        return serializer.deserializeFromBytes(this.data, typeReference);
     }
 
     /**
@@ -515,7 +506,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> toObject(typeReference));
+        return toObjectAsync(typeReference, getDefaultSerializer());
     }
 
     /**

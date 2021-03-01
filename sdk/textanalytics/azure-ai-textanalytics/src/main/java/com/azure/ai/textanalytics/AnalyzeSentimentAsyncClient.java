@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
@@ -217,11 +218,12 @@ class AnalyzeSentimentAsyncClient {
             options.getModelVersion(), options.isIncludeStatistics(), options.isIncludeOpinionMining(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                       getDocumentCount(documents)))
                    .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
                    .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                    .map(this::toAnalyzeSentimentResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
     /*
