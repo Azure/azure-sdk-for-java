@@ -116,7 +116,7 @@ public final class MixedRealityRemoteRenderingImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01-preview";
+        this.apiVersion = "2021-01-01";
         this.remoteRenderings = new RemoteRenderingsImpl(this);
     }
 }
