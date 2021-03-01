@@ -763,6 +763,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
+    public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        return runQuery(querySpec, Sort.unsorted(), domainType, returnType);
+    }
+
+    @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = nativeQueryGenerator.generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)

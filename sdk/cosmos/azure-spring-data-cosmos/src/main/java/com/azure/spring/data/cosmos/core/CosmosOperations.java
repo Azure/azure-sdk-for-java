@@ -303,8 +303,28 @@ public interface CosmosOperations {
      * @param returnType the return type
      * @return the Iterable
      */
+    <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType);
+
+    /**
+     * Run the query.
+     *
+     * @param querySpec the query spec
+     * @param sort the sort order
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the Iterable
+     */
     <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType);
 
+    /**
+     * Run the query.
+     *
+     * @param querySpec the query spec
+     * @param pageable the pageable
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the Page
+     */
     <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType);
 
 }
