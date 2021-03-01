@@ -39,6 +39,8 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium, standard and basic.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 #### Use Service Bus topic
@@ -49,6 +51,8 @@ Append the following code to the end of the *application.properties* file. Repla
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium and standard.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 ### Implement basic Service Bus functionality

@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import org.apache.qpid.jms.JmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -16,29 +16,35 @@ import javax.jms.ConnectionFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ServiceBusJMSAutoConfigurationTest {
+public class PremiumServiceBusJMSAutoConfigurationTest {
 
     private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
         + "SharedAccessKey=sasKey";
 
     @Test
-    public void testAzureServiceBusDisabled() {
+    public void testAzureServiceBusPremiumAutoConfiguration() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=basic")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
         contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
+        contextRunner.withPropertyValues("spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+                     .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testAzureServiceBusJMSPropertiesValidation() {
-        ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+        contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusJmsConnectionFactory.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
@@ -75,17 +81,21 @@ public class ServiceBusJMSAutoConfigurationTest {
     private ApplicationContextRunner getEmptyContextRunner() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(PremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium"
+            );
     }
 
     private ApplicationContextRunner getContextRunnerWithProperties() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(PremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",
-                "spring.jms.servicebus.idle-timeout=123"
+                "spring.jms.servicebus.idle-timeout=123",
+                "spring.jms.servicebus.pricing-tier=premium"
             );
     }
 }
