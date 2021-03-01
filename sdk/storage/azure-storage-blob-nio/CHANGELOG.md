@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.0.0-beta.4 (Unreleased)
+- Made AzurePath.toBlobClient public
 - Added support for Azurite
 - Change FileSystem configuration to accept an endpoint and credential types instead of a string for the account name, key, and token
 
