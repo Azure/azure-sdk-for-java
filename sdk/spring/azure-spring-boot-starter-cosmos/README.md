@@ -9,6 +9,7 @@
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
+- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-cosmos;current})
@@ -299,3 +300,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java
+[build-beta-version-dependencies-if-needed]: ../build-beta-version-dependencies-if-needed.md 

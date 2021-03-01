@@ -8,6 +8,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
+- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-cache;current})
@@ -65,3 +66,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[build-beta-version-dependencies-if-needed]: ../build-beta-version-dependencies-if-needed.md 
