@@ -105,20 +105,6 @@ public class IdentityClient {
     private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    private static final String DEFAULT_PUBLIC_CACHE_FILE_NAME = "msal.cache";
-    private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
-    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
-        ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
-        : Paths.get(System.getProperty("user.home"), ".IdentityService");
-    private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
-    private static final String DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT = "MSALCache";
-    private static final String DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT = "MSALConfidentialCache";
-    private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final String DEFAULT_KEYRING_SCHEMA = "msal.cache";
-    private static final String DEFAULT_PUBLIC_KEYRING_ITEM_NAME = DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
-    private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
     private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
     private static final String ADFS_TENANT = "adfs";
@@ -174,7 +160,7 @@ public class IdentityClient {
             getConfidentialClientApplication());
     }
 
-    private ConfidentialClientApplication getConfidentialClientApplication() {
+    private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
         if (clientId == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
@@ -237,105 +223,63 @@ public class IdentityClient {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
-        if (options.isSharedTokenCacheEnabled()) {
+        PersistentTokenCacheImpl tokenCache = options.getTokenCache();
+        if (tokenCache != null) {
             try {
-                PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-                    DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
-                if (Platform.isMac()) {
-                    persistenceSettingsBuilder.setMacKeychain(
-                        DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT);
-                }
-                if (Platform.isLinux()) {
-                    try {
-                        persistenceSettingsBuilder
-                            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                                DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME,
-                                DEFAULT_KEYRING_ATTR_VALUE, null, null);
-                        applicationBuilder.setTokenCacheAccessAspect(
-                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                    } catch (KeyRingAccessException e) {
-                        if (!options.getAllowUnencryptedCache()) {
-                            throw logger.logExceptionAsError(e);
-                        }
-                        persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
-                        applicationBuilder.setTokenCacheAccessAspect(
-                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                    }
-                }
+                tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.CONFIDENTIAL);
+                applicationBuilder.setTokenCacheAccessAspect(tokenCache);
             } catch (Throwable t) {
                 throw logger.logExceptionAsError(new ClientAuthenticationException(
                     "Shared token cache is unavailable in this environment.", null, t));
             }
         }
-        return applicationBuilder.build();
+        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+        return tokenCache.registerCache()
+            .map(ignored -> confidentialClientApplication);
     }
 
-    private PublicClientApplication getPublicClientApplication(boolean sharedTokenCacheCredential) {
-        if (clientId == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "A non-null value for client ID must be provided for user authentication."));
-        }
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-        try {
-            publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(new IllegalStateException(e));
-        }
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            publicClientApplicationBuilder.executorService(options.getExecutorService());
-        }
-
-        Set<String> set = new HashSet<>(1);
-        set.add("CP1");
-        publicClientApplicationBuilder.clientCapabilities(set);
-        if (options.isSharedTokenCacheEnabled()) {
-            try {
-                PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-                        DEFAULT_PUBLIC_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
-                if (Platform.isWindows()) {
-                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                        new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                } else if (Platform.isMac()) {
-                    persistenceSettingsBuilder.setMacKeychain(
-                        DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT);
-                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                        new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                } else if (Platform.isLinux()) {
-                    try {
-                        persistenceSettingsBuilder
-                            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                                DEFAULT_PUBLIC_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE,
-                                null, null);
-                        publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                    } catch (KeyRingAccessException e) {
-                        if (!options.getAllowUnencryptedCache()) {
-                            throw logger.logExceptionAsError(e);
-                        }
-                        persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
-                        publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
-                    }
-                }
-            } catch (Throwable t) {
-                String message = "Shared token cache is unavailable in this environment.";
-                if (sharedTokenCacheCredential) {
-                    throw logger.logExceptionAsError(new CredentialUnavailableException(message, t));
-                } else {
-                    throw logger.logExceptionAsError(new ClientAuthenticationException(message, null, t));
-                }
+    private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
+        return Mono.defer(() -> {
+            if (clientId == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "A non-null value for client ID must be provided for user authentication."));
             }
-        }
-        return publicClientApplicationBuilder.build();
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+            PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
+            try {
+                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsWarning(new IllegalStateException(e));
+            }
+
+            initializeHttpPipelineAdapter();
+            if (httpPipelineAdapter != null) {
+                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+            } else {
+                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                publicClientApplicationBuilder.executorService(options.getExecutorService());
+            }
+
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            publicClientApplicationBuilder.clientCapabilities(set);
+            return Mono.just(publicClientApplicationBuilder);
+        }).flatMap(builder -> {
+            PersistentTokenCacheImpl tokenCache = new PersistentTokenCacheImpl();
+            try {
+                tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.PUBLIC);
+                builder.setTokenCacheAccessAspect(tokenCache);
+            } catch (Throwable t) {
+                throw logger.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t));
+            }
+            PublicClientApplication publicClientApplication = builder.build();
+            return tokenCache.registerCache()
+                .map(ignored -> publicClientApplication);
+        });
     }
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {

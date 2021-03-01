@@ -37,25 +37,14 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
-     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
-     *
-     * @return An updated instance of this builder.
-     */
-    DeviceCodeCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.setAllowUnencryptedCache(true);
-        return this;
-    }
-
-    /**
-     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
-     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
-     * and processes.
+     * Configures the persistent shared token cache which is disabled by default. If configured, the credential will
+     * store tokens in a cache persisted to the machine, protected to the current user, which can be shared by other
+     * credentials and processes.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    DeviceCodeCredentialBuilder enablePersistentCache() {
-        this.identityClientOptions.enablePersistentCache();
+    public DeviceCodeCredentialBuilder tokenCache(PersistentTokenCache persistentTokenCache) {
+        this.identityClientOptions.setTokenCache(persistentTokenCache.getTokenCacheImpl());
         return this;
     }
 

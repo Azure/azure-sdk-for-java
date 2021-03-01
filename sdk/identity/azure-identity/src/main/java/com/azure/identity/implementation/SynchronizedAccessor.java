@@ -20,9 +20,9 @@ public class SynchronizedAccessor<T> {
     private volatile T cache;
     private final ReplayProcessor<T> replayProcessor = ReplayProcessor.create(1);
     private final FluxSink<T> sink = replayProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final Supplier<T> supplier;
+    private final Supplier<Mono<T>> supplier;
 
-    public SynchronizedAccessor(Supplier<T> supplier) {
+    public SynchronizedAccessor(Supplier<Mono<T>> supplier) {
         this.wip = new AtomicBoolean(false);
         this.supplier = supplier;
     }
@@ -38,12 +38,11 @@ public class SynchronizedAccessor<T> {
                 return Mono.just(cache);
             }
             if (!wip.getAndSet(true)) {
-                try {
-                    cache = supplier.get();
-                    sink.next(cache);
-                } catch (Exception e) {
-                    sink.error(e);
-                }
+                return supplier.get()
+                    .doOnNext(val -> cache = val)
+                    .doOnNext(sink::next)
+                    .doOnError(sink::error)
+                    .then(Mono.defer(() -> replayProcessor.next()));
             }
             return replayProcessor.next();
         });

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.PersistentTokenCache;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
@@ -33,6 +34,7 @@ public final class IdentityClientOptions {
     private String keePassDatabasePath;
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
+    private PersistentTokenCacheImpl tokenCache;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -271,5 +273,14 @@ public final class IdentityClientOptions {
      */
     public AuthenticationRecord getAuthenticationRecord() {
         return authenticationRecord;
+    }
+
+    public IdentityClientOptions setTokenCache(PersistentTokenCacheImpl persistentTokenCache) {
+        this.tokenCache = persistentTokenCache;
+        return this;
+    }
+
+    public PersistentTokenCacheImpl getTokenCache() {
+        return this.tokenCache;
     }
 }
