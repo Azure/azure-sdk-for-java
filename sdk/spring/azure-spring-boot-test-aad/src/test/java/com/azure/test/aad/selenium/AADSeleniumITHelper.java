@@ -19,8 +19,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
-
     private String username;
     private String password;
 
@@ -48,20 +46,10 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         driver.get(app.root() + "oauth2/authorization/azure");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
         try {
-            try {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
-            } catch (Exception exception) {
-                LOGGER.warn("===============================================================================");
-                LOGGER.warn("===============================================================================");
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aadTileTitle"))).click();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
-            }
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
         } catch (Exception exception) {
-            String passwdUrl = driver.getCurrentUrl();
-            LOGGER.info(passwdUrl);
-            String pageSource = driver.getPageSource();
-            LOGGER.info(pageSource);
-            throw exception;
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aadTileTitle"))).click();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
         }
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
