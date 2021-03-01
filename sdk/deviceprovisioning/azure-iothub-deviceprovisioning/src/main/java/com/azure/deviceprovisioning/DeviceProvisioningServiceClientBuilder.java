@@ -124,12 +124,10 @@ public final class DeviceProvisioningServiceClientBuilder
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
-            credentialPolicy =  null;
+            throw new IllegalArgumentException("Must set either SAS token or AzureSasCredential before a client can be built");
         }
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
-        }
+        policies.add(credentialPolicy);
 
         policies.addAll(additionalPolicies);
 

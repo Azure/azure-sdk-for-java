@@ -37,8 +37,6 @@ import com.azure.deviceprovisioning.implementation.models.DeviceGroupQueryRespon
 import com.azure.deviceprovisioning.implementation.models.DeviceRecord;
 import com.azure.deviceprovisioning.implementation.models.DeviceRecordQueryResponse;
 import com.azure.deviceprovisioning.implementation.models.DeviceTransferInfo;
-import com.azure.deviceprovisioning.implementation.models.Enum1;
-import com.azure.deviceprovisioning.implementation.models.Enum6;
 import com.azure.deviceprovisioning.implementation.models.GetDeviceGroupResponse;
 import com.azure.deviceprovisioning.implementation.models.GetDeviceRecordResponse;
 import com.azure.deviceprovisioning.implementation.models.GetDeviceTransferResponse;
@@ -48,6 +46,7 @@ import com.azure.deviceprovisioning.implementation.models.GetProvisioningRecordR
 import com.azure.deviceprovisioning.implementation.models.GetProvisioningSettingsResponse;
 import com.azure.deviceprovisioning.implementation.models.LinkedHub;
 import com.azure.deviceprovisioning.implementation.models.LinkedHubQueryResponse;
+import com.azure.deviceprovisioning.implementation.models.PropertiesToExpand;
 import com.azure.deviceprovisioning.implementation.models.ProvisioningServiceErrorDetailsException;
 import com.azure.deviceprovisioning.implementation.models.ProvisioningSettings;
 import com.azure.deviceprovisioning.implementation.models.ProvisioningSettingsQueryResponse;
@@ -201,7 +200,7 @@ public final class ProvisioningServiceClientImpl {
                 @HostParam("$host") String host,
                 @PathParam("deviceGroupId") String deviceGroupId,
                 @PathParam("deviceId") String deviceId,
-                @QueryParam("$expand") Enum1 expand,
+                @QueryParam("$expand") PropertiesToExpand expand,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -383,7 +382,7 @@ public final class ProvisioningServiceClientImpl {
                 @HostParam("$host") String host,
                 @PathParam("deviceGroupId") String deviceGroupId,
                 @HeaderParam("x-ms-max-item-count") Integer xMsMaxItemCount,
-                @QueryParam("$expand") Enum6 expand,
+                @QueryParam("$expand") PropertiesToExpand expand,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") Query query,
                 @HeaderParam("Accept") String accept,
@@ -512,7 +511,7 @@ public final class ProvisioningServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetDeviceRecordResponse> getDeviceRecordWithResponseAsync(
-            String deviceGroupId, String deviceId, Enum1 expand, Context context) {
+            String deviceGroupId, String deviceId, PropertiesToExpand expand, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1020,7 +1019,7 @@ public final class ProvisioningServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeviceRecordQueryResponse>> queryDeviceRecordsWithResponseAsync(
-            String deviceGroupId, Query query, Integer xMsMaxItemCount, Enum6 expand, Context context) {
+            String deviceGroupId, Query query, Integer xMsMaxItemCount, PropertiesToExpand expand, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }

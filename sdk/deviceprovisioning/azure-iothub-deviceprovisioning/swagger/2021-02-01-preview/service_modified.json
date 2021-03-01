@@ -196,6 +196,10 @@
             "type": "string"
           },
           {
+            "x-ms-enum": {
+              "name": "propertiesToExpand",
+              "modelAsString": true
+            },
             "name": "$expand",
             "in": "query",
             "description": "Properties to optionally expand in response.",
@@ -1041,6 +1045,10 @@
             }
           },
           {
+            "x-ms-enum": {
+              "name": "propertiesToExpand",
+              "modelAsString": true
+            },
             "name": "$expand",
             "in": "query",
             "description": "Properties to optionally expand in the response. If not specified the service will not expand the optional properties.",
