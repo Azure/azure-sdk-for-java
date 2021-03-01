@@ -13,12 +13,15 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
@@ -334,8 +337,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < entityRecognitionTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionTasksItem taskItem = entityRecognitionTasksItems.get(i);
                 final RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
-                RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
-                    toRecognizeEntitiesResultCollectionResponse(taskItem.getResults()));
+                final EntitiesResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                        toRecognizeEntitiesResultCollectionResponse(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeEntitiesActionResults.add(actionResult);
@@ -345,8 +351,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < piiTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionPiiTasksItem taskItem = piiTasksItems.get(i);
                 final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
-                RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
-                    toRecognizePiiEntitiesResultCollection(taskItem.getResults()));
+                final PiiResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                        toRecognizePiiEntitiesResultCollection(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizePiiEntitiesActionResults.add(actionResult);
@@ -356,8 +365,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < keyPhraseExtractionTasks.size(); i++) {
                 final TasksStateTasksKeyPhraseExtractionTasksItem taskItem = keyPhraseExtractionTasks.get(i);
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
-                ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
-                    toExtractKeyPhrasesResultCollection(taskItem.getResults()));
+                final KeyPhraseResult results = taskItem.getResults();
+                if (results != null) {
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
+                        toExtractKeyPhrasesResultCollection(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractKeyPhrasesActionResults.add(actionResult);
