@@ -1,90 +1,161 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
-import com.azure.communication.sms.models.SendSmsOptions;
+
+import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import com.azure.core.http.HttpClient;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import reactor.test.StepVerifier;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SmsAsyncClientTests extends SmsTestBase {
+    private List<String> to;
+    private SmsAsyncClient asyncClient;
 
-    private List<PhoneNumberIdentifier> to;
-    private PhoneNumberIdentifier from;
-    private String body;
-
-    @BeforeEach
-    public void beforeEach() {
-        to = new ArrayList<PhoneNumberIdentifier>();
-        body = "Hello";
-        from = new PhoneNumberIdentifier("+18443394604");
-        to.add(new PhoneNumberIdentifier("+18006427676"));
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
     }
 
-    @Test
-    public void sendSmsRequestAsync() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(true);
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        StepVerifier.create(smsClient.sendMessage(from, to, body, smsOptions))
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createAsyncClientUsingConnectionString(HttpClient httpClient) {
+
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
+        assertNotNull(asyncClient);
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE, null);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
+
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToMultipleUsers(HttpClient httpClient) {
+
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE, null);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
             .verifyComplete();
     }
 
-    @Test
-    public void sendSmsRequestAsyncNoDeliveryReport() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        StepVerifier.create(smsClient.sendMessage(from, to, body))
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToSingleUser(HttpClient httpClient) {
+
+
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, null);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
             .verifyComplete();
     }
 
-    @Test
-    public void sendSmsRequestAsyncSingleNumberNoDeliveryReport() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        StepVerifier.create(smsClient.sendMessage(from, to.get(0), body))
-            .verifyComplete();
-    }    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToSingleUserWithOptions(HttpClient httpClient) {
 
-    @Test
-    public void sendSmsRequestAsyncNullFrom() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        StepVerifier.create(smsClient.sendMessage(null, to.get(0), body))
-            .verifyError(NullPointerException.class);
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
+
+
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
     }
 
-    @Test
-    public void sendSmsRequestAsyncNullTo() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        PhoneNumberIdentifier toNull = null;
-        StepVerifier.create(smsClient.sendMessage(from, toNull, body))
-            .verifyError(NullPointerException.class);
-    }    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToMultipleUsersWithOptions(HttpClient httpClient) {
 
-    @Test
-    public void sendSmsRequestAsyncNullToList() {
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        List<PhoneNumberIdentifier> toNull = null;
-        StepVerifier.create(smsClient.sendMessage(from, toNull, body))
-            .verifyError(NullPointerException.class);
-    }   
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
 
-    private SmsAsyncClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, 
-        SendSmsOptions smsOptions) {
-        return getTestSmsClientBuilder(from, to, body, smsOptions).buildAsyncClient();
-    }  
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE, options);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToIncorrectPhoneNumber(HttpClient httpClient) {
+
+        to = new ArrayList<String>();
+        to.add(FAIL_PHONE_NUMBER);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
+        assertNotNull(asyncClient);
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE, null);
+        assertNotNull(response);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
+    }
+
+
+
+
+
+
+    private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
+    }
+
+
 }
