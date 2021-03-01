@@ -43,7 +43,7 @@ public class CloudEventTests {
     public void testRoundTripCloudEvents() throws IOException {
         final String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
         final CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
-        final Map<String, Object> map = new HashMap<>() {
+        final Map<String, Object> map = new HashMap<String, Object>() {
             {
                 put("str", "str value");
                 put("number", 1.3);
