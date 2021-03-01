@@ -113,7 +113,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
                               ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
                               ServiceBusTopicTemplate topicTemplate = context.getBean(ServiceBusTopicTemplate.class);
-                              assertSame(messageConverter,topicTemplate.getMessageConverter());
+                              assertSame(messageConverter, topicTemplate.getMessageConverter());
                           });
     }
 
