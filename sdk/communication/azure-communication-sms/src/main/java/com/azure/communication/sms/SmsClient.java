@@ -15,10 +15,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-<<<<<<< HEAD
-=======
 import java.util.List;
->>>>>>> 94f7a8b318 (draft of the implementation)
+
 
 
 /**
