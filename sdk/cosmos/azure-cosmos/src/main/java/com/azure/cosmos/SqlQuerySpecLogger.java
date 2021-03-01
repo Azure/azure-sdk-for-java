@@ -28,7 +28,7 @@ public class SqlQuerySpecLogger {
                 .append(p.getValue(Object.class))
             );
             LOGGER.debug(queryLogBuilder.toString());
-        } else {
+        } else if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(querySpec.getQueryText());
         }
     }
