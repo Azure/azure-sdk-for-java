@@ -303,4 +303,7 @@ public interface CosmosOperations {
      * @return the Iterable
      */
     <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType);
+
+    <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType);
+
 }

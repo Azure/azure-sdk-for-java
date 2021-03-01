@@ -38,6 +38,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -643,29 +645,53 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType,
-                                       String containerName) {
-        Assert.isTrue(query.getPageable().getPageSize() > 0,
+    public <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
+        String containerName = getContainerName(domainType);
+        SqlQuerySpec countQuerySpec = createCountQuerySpec(querySpec);
+        return paginationQuery(querySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
+    }
+
+    private SqlQuerySpec createCountQuerySpec(SqlQuerySpec querySpec) {
+        String queryText = querySpec.getQueryText();
+        int fromIndex = queryText.toLowerCase().indexOf(" from ");
+        Assert.isTrue(fromIndex >= 0, "query missing from keyword, query=" + queryText);
+
+        String countQueryText = "select value count(1) " + queryText.substring(fromIndex);
+        SqlQuerySpec countQuerySpec = new SqlQuerySpec();
+        countQuerySpec.setQueryText(countQueryText);
+        countQuerySpec.setParameters(querySpec.getParameters());
+        return countQuerySpec;
+    }
+
+    @Override
+    public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+        final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        final SqlQuerySpec countQuerySpec = new CountQueryGenerator().generateCosmos(query);
+        return paginationQuery(querySpec, countQuerySpec, query.getPageable(), query.getSort(), domainType, containerName);
+    }
+
+    private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
+                                       Pageable pageable, Sort sort,
+                                       Class<T> returnType, String containerName) {
+        Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
-        final Pageable pageable = query.getPageable();
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         CosmosAsyncContainer container =
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
 
         Flux<FeedResponse<JsonNode>> feedResponseFlux;
         if (pageable instanceof CosmosPageRequest) {
             feedResponseFlux = container
-                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
+                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(((CosmosPageRequest) pageable).getRequestContinuation(),
                     pageable.getPageSize());
         } else {
             feedResponseFlux = container
-                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
+                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(pageable.getPageSize());
         }
 
@@ -691,11 +717,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 continue;
             }
 
-            final T entity = mappingCosmosConverter.read(domainType, jsonNode);
+            final T entity = mappingCosmosConverter.read(returnType, jsonNode);
             result.add(entity);
         }
 
-        final long total = count(query, containerName);
+        final long total = getCountValue(countQuerySpec, containerName);
         final int contentSize = result.size();
 
         int pageSize;
@@ -716,7 +742,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             pageable.getPageNumber(),
             pageSize,
             feedResponse.getContinuationToken(),
-            query.getSort());
+            sort);
 
         return new CosmosPageImpl<>(result, pageRequest, total);
     }
@@ -761,7 +787,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     private Long getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
-        final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        return getCountValue(querySpec, containerName);
+    }
+
+    private Long getCountValue(SqlQuerySpec querySpec, String containerName) {
+         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         return executeQuery(querySpec, containerName, options)
