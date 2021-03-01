@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 
+import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,12 +15,11 @@ import com.azure.core.http.HttpClient;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SmsClientTests extends SmsTestBase {
     private List<String> to;
-    private String from;
-    private String body;
     private SmsClient client;
 
     @Override
@@ -31,16 +31,15 @@ public class SmsClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncClientUsingConnectionString(HttpClient httpClient) {
 
-        from = "+18335102092";
+
         to = new ArrayList<String>();
-        to.add("+18336388593");
-        body = "hello";
+        to.add(TO_PHONE_NUMBER);
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         client = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
         assertNotNull(client);
 
 
-        List<SmsSendResult> response = client.send(from, to, body, null, Context.NONE);
+        Iterable<SmsSendResult> response = client.send(FROM_PHONE_NUMBER, to, MESSAGE, null, Context.NONE);
         assertNotNull(response);
 
 
@@ -54,19 +53,43 @@ public class SmsClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void send(HttpClient httpClient) {
+    public void sendToIncorrectPhoneNumber(HttpClient httpClient) {
 
-        from = "+18335102092";
+
         to = new ArrayList<String>();
-        to.add("+18336388593");
-        body = "hello";
+        to.add(FAIL_PHONE_NUMBER);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
+        assertNotNull(client);
+
+
+        Iterable<SmsSendResult> response = client.send(FROM_PHONE_NUMBER, to, MESSAGE, null, Context.NONE);
+        assertNotNull(response);
+
+
+        for (SmsSendResult r : response) {
+            assertFalse(r.isSuccessful());
+
+        }
+
+
+    }
+
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToMultipleUsers(HttpClient httpClient) {
+
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         client = setupAsyncClient(builder, "send");
 
         // Action & Assert
 
-        List<SmsSendResult> response = client.send(from, to, body, null, Context.NONE);
+        Iterable<SmsSendResult> response = client.send(FROM_PHONE_NUMBER, to, MESSAGE);
         assertNotNull(response);
 
 
@@ -74,6 +97,72 @@ public class SmsClientTests extends SmsTestBase {
             assertTrue(r.isSuccessful());
 
         }
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToMultipleUsersWithOptions(HttpClient httpClient) {
+
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
+
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        client = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        Iterable<SmsSendResult> response = client.send(FROM_PHONE_NUMBER, to, MESSAGE, options, Context.NONE);
+        assertNotNull(response);
+
+
+        for (SmsSendResult r : response) {
+            assertTrue(r.isSuccessful());
+
+        }
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToSingleUser(HttpClient httpClient) {
+
+
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        client = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        SmsSendResult response = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        assertNotNull(response);
+        assertTrue(response.isSuccessful());
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToSingleUserWithOptions(HttpClient httpClient) {
+
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
+
+        to = new ArrayList<String>();
+        to.add(TO_PHONE_NUMBER);
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        client = setupAsyncClient(builder, "send");
+
+        // Action & Assert
+
+        SmsSendResult response = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
+        assertNotNull(response);
+        assertTrue(response.isSuccessful());
 
     }
 

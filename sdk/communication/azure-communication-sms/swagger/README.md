@@ -34,11 +34,13 @@ To update generated files for Sms service, run the following command
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/communication/data-plane/Microsoft.CommunicationServicesSms/stable/2021-03-07/communicationservicessms.json
 java: true
 output-folder: ..\
-sync-methods: all
 license-header: MICROSOFT_MIT_SMALL	
 namespace: com.azure.communication.sms	
 generate-client-as-impl: true	
+custom-types: SendMessageRequest,SmsSendOptions,SmsSendResult
 custom-types-subpackage: models
+models-subpackage: implementation.models
+sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 

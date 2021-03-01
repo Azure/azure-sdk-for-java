@@ -39,6 +39,18 @@ public class SmsTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
+    protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("FROM_PHONE_NUMBER", "+18335260208");
+
+    protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("TO_PHONE_NUMBER", "+18335260208");
+
+    protected static final String FAIL_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("FAIL_PHONE_NUMBER", "+183352602038");
+
+    protected static final String MESSAGE = Configuration.getGlobalConfiguration()
+        .get("MESSAGE", "Hello");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("id")
@@ -64,26 +76,6 @@ public class SmsTestBase extends TestBase {
         return builder;
     }
 
-    /*protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
-        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder
-            .endpoint(ENDPOINT)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
-        } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-
-        return builder;
-    }*/
 
     protected SmsClientBuilder getSmsClientUsingConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();

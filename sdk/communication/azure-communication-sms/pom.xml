@@ -41,8 +41,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.40</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -103,6 +103,12 @@
       <artifactId>azure-identity</artifactId>
       <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.13.0</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>

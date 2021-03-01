@@ -12,4 +12,5 @@ module com.azure.communication.sms {
 
     // exporting some packages specifically for Jackson
     opens com.azure.communication.sms.models to com.fasterxml.jackson.databind;
+    opens com.azure.communication.sms.implementation.models to com.fasterxml.jackson.databind;
 }

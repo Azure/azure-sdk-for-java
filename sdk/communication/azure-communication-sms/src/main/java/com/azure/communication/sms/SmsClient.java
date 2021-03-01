@@ -12,7 +12,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.List;
 
 
 /**
@@ -72,7 +71,7 @@ public final class SmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message,
                               SmsSendOptions smsOptions, Context context) {
-        return null;
+        return smsAsyncClient.send(from, to, message, smsOptions).block();
     }
 
     /**
@@ -84,7 +83,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SmsSendResult> send(String from, Iterable<String> to, String message) {
+    public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message) {
         return smsAsyncClient.send(from, to, message).block();
     }
 
@@ -101,7 +100,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SmsSendResult> send(String from, Iterable<String> to, String message,
+    public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message,
                                     SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message,
             smsOptions).block();

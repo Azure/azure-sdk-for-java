@@ -4,6 +4,7 @@
 
 package com.azure.communication.sms.models;
 
+import com.azure.communication.sms.implementation.models.SmsRecipient;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

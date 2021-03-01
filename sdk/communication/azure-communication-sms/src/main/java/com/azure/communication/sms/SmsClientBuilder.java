@@ -91,12 +91,12 @@ public final class SmsClientBuilder {
     /**
      * Set credential to use
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
+     * @param keyCredential access key for initalizing CommunicationClientCredential
      * @return SmsClientBuilder
      */
-    public SmsClientBuilder credential(AzureKeyCredential accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.azureKeyCredential = accessKey;
+    public SmsClientBuilder credential(AzureKeyCredential keyCredential) {
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        this.azureKeyCredential = keyCredential;
         return this;
     }
 

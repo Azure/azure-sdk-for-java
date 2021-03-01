@@ -6,8 +6,8 @@ package com.azure.communication.sms;
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SmsRecipient;
-import com.azure.communication.sms.models.SmsSendResponse;
+import com.azure.communication.sms.implementation.models.SmsRecipient;
+import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
@@ -98,7 +98,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SmsSendResult>> send(String from, Iterable<String> to, String message) {
+    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
 
 
         return send(from, to, message, null);
@@ -115,7 +115,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
+    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
 
         SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
 
@@ -124,7 +124,7 @@ public final class SmsAsyncClient {
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
 
-            List<SmsSendResult> result = smsSendResponse.getValue();
+            Iterable<SmsSendResult> result = smsSendResponse.getValue();
             return Mono.just(result);
 
         } catch (NullPointerException ex) {

@@ -92,7 +92,7 @@ public class ReadmeSamples {
         options.setTag("Tag"); /* Optional */
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        List<SmsSendResult> responseMultiplePhones = smsClient.send(
+        Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
             "<leased-phone-number>",
             toMultiplePhones,
             "your message",
