@@ -99,7 +99,7 @@ SmsSendResult response = smsClient.send(
 
 System.out.println("MessageId: " + response.getMessageId());
 ```
-### Sending a message to multiples recipients
+### Sending a message to multiple recipients
 Use the `send` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a PagedIterable response where you can access several
 properties such as the message id with the `messageResponseItem.getMessageId()` function.
