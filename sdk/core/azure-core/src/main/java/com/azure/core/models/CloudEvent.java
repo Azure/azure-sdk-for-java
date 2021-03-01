@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
@@ -87,7 +88,7 @@ public final class CloudEvent {
      * Event data specific to the event type. This is internal only for data serialization.
      */
     @JsonProperty(value = "data")
-    private Object data;
+    private JsonNode data;
 
     /*
      * Event data specific to the event type, encoded as a base64 string. This is internal only for
@@ -272,7 +273,7 @@ public final class CloudEvent {
      */
     public BinaryData getData() {
         if (this.binaryData == null) {
-            if (this.data != null) {
+            if (this.data != null && !this.data.isNull()) {
                 this.binaryData = BinaryData.fromObject(this.data, SERIALIZER);
             } else if (this.dataBase64 != null) {
                 this.binaryData = BinaryData.fromBytes(Base64.getDecoder().decode(this.dataBase64));

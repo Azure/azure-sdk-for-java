@@ -49,7 +49,7 @@ public class CloudEventTests {
                 put("number", 1.3);
                 put("integer", 1);
                 put("bool", true);
-                //put("null", null);
+                put("null", null);
                 put("array", new ArrayList<>() {
                     {
                         add(1);
