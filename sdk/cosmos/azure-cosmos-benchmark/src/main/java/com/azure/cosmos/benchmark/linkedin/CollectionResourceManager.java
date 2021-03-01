@@ -10,8 +10,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributes;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
+import com.azure.cosmos.benchmark.linkedin.impl.Constants;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.util.List;
@@ -19,19 +19,21 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.azure.cosmos.benchmark.linkedin.impl.Constants.PARTITION_KEY_PATH;
-import static com.azure.cosmos.models.ThroughputProperties.createManualThroughput;
 
-
-public class ResourceManagerImpl implements ResourceManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManagerImpl.class);
+/**
+ * Implementation for managing only the Collections for this test. This class facilitates
+ * container creation after the CTL environment has provisioned the database with the
+ * required throughput
+ */
+public class CollectionResourceManager implements ResourceManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionResourceManager.class);
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
     private final Configuration _configuration;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
 
-    public ResourceManagerImpl(final Configuration configuration,
+    public CollectionResourceManager(final Configuration configuration,
         final EntityConfiguration entityConfiguration,
         final CosmosAsyncClient client) {
         Preconditions.checkNotNull(configuration,
@@ -39,54 +41,38 @@ public class ResourceManagerImpl implements ResourceManager {
         Preconditions.checkNotNull(entityConfiguration,
             "The Test Entity specific configuration can not be null");
         Preconditions.checkNotNull(client, "Need a non-null client for "
-            + "setting up the Database and containers for the test");
+            + "setting up the Database and collections for the test");
         _configuration = configuration;
         _entityConfiguration = entityConfiguration;
         _client = client;
     }
 
     @Override
-    public void createDatabase() throws CosmosException {
-        try {
-            LOGGER.info("Creating database {} for the ctl workload if one doesn't exist", _configuration.getDatabaseId());
-            final ThroughputProperties throughputProperties = createManualThroughput(_configuration.getThroughput());
-            _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
-                .block(RESOURCE_CRUD_WAIT_TIME);
-        } catch (CosmosException e) {
-            LOGGER.error("Exception while creating database {}", _configuration.getDatabaseId(), e);
-            throw e;
-        }
-
-        deleteExistingContainers();
-    }
-
-    @Override
-    public void createContainer() throws CosmosException {
+    public void createResources() throws CosmosException {
         final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final CollectionAttributes collectionAttributes = _entityConfiguration.collectionAttributes();
         try {
             LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
             final CosmosContainerProperties containerProperties =
-                new CosmosContainerProperties(containerName, PARTITION_KEY_PATH)
+                new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH)
                     .setIndexingPolicy(collectionAttributes.indexingPolicy());
             database.createContainerIfNotExists(containerProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
-            LOGGER.error("Exception while creating container {}", containerName, e);
+            LOGGER.error("Exception while creating collection {}", containerName, e);
             throw e;
         }
     }
 
     @Override
     public void deleteResources() {
-        // Delete all the containers in the database
-        deleteExistingContainers();
+        deleteExistingCollections();
 
-        LOGGER.info("Resource cleanup completed");
+        LOGGER.info("Collection resource cleanup completed");
     }
 
-    private void deleteExistingContainers() {
+    private void deleteExistingCollections() {
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final List<CosmosAsyncContainer> cosmosAsyncContainers = database.readAllContainers()
             .byPage()
@@ -98,12 +84,12 @@ public class ResourceManagerImpl implements ResourceManager {
 
         // Run a best effort attempt to delete all existing containers and data there-in
         for (CosmosAsyncContainer cosmosAsyncContainer : cosmosAsyncContainers) {
-            LOGGER.info("Deleting container {} in the Database {}", cosmosAsyncContainer.getId(), _configuration.getDatabaseId());
+            LOGGER.info("Deleting collection {} in the Database {}", cosmosAsyncContainer.getId(), _configuration.getDatabaseId());
             try {
                 cosmosAsyncContainer.delete()
                     .block(RESOURCE_CRUD_WAIT_TIME);
             } catch (CosmosException e) {
-                LOGGER.error("Error deleting container {} in the Database {}",
+                LOGGER.error("Error deleting collection {} in the Database {}",
                     cosmosAsyncContainer.getId(), _configuration.getDatabaseId(), e);
             }
         }

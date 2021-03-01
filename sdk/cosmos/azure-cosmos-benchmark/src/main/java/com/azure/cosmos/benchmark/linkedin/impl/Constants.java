@@ -9,6 +9,7 @@ public class Constants {
     public static final String PARTITION_KEY_PATH = "/" + PARTITION_KEY;
 
     public final static String METHOD_GET = "GET";
+    public final static String METHOD_SQL_QUERY = "SQL_QUERY";
     public final static String ERROR_COUNT = "ErrorCount";
     public final static String TOO_MANY_REQUESTS = "TooManyRequests";
     public final static String DELETED_INDICATOR = "__deletedTs__";
