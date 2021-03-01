@@ -12,6 +12,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.SqlQuerySpecLogger;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -735,6 +736,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ResourceType resourceTypeEnum,
             IDocumentQueryClient queryClient,
             UUID activityId) {
+
+        SqlQuerySpecLogger.getInstance().logQuery(sqlQuery);
 
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
