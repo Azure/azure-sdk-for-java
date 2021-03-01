@@ -5,12 +5,16 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
-import com.azure.cosmos.spark.CosmosWriteConfig.bulkEnabled
+import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 
 import java.net.URL
 import java.util.Locale
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -50,7 +54,7 @@ private case class CosmosAccountConfig(
   useGatewayMode: Boolean)
 
 private object CosmosAccountConfig {
-  private[spark] val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
+  private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
       new URL(accountEndpointUri)
@@ -58,12 +62,12 @@ private object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Endpoint Uri")
 
-  private[spark] val CosmosKey = CosmosConfigEntry[String](key = "spark.cosmos.accountKey",
+  private val CosmosKey = CosmosConfigEntry[String](key = "spark.cosmos.accountKey",
     mandatory = true,
     parseFromStringFunction = accountKey => accountKey,
     helpMessage = "Cosmos DB Account Key")
 
-  private[spark] val CosmosAccountName = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
+  private val CosmosAccountName = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
       val url = new URL(accountEndpointUri)
@@ -76,18 +80,18 @@ private object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Name")
 
-  private[spark] val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
+  private val ApplicationName = CosmosConfigEntry[String](key = "spark.cosmos.applicationName",
     mandatory = false,
     parseFromStringFunction = applicationName => applicationName,
     helpMessage = "Application name")
 
-  private[spark] val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
+  private val UseGatewayMode = CosmosConfigEntry[Boolean](key = "spark.cosmos.useGatewayMode",
     mandatory = false,
     defaultValue = Some(false),
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
-  private[spark] def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+  def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
@@ -108,10 +112,10 @@ private object CosmosAccountConfig {
   }
 }
 
-private[spark] case class CosmosReadConfig(forceEventualConsistency: Boolean)
+private case class CosmosReadConfig(forceEventualConsistency: Boolean)
 
-private[spark] object CosmosReadConfig {
-  val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
+private object CosmosReadConfig {
+  private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
     mandatory = false,
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
@@ -124,7 +128,7 @@ private[spark] object CosmosReadConfig {
   }
 }
 
-private[spark] case class CosmosContainerConfig(database: String, container: String)
+private case class CosmosContainerConfig(database: String, container: String)
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -135,7 +139,7 @@ private object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-private[spark] case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
+private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
@@ -178,8 +182,8 @@ private object CosmosWriteConfig {
 }
 
 private object CosmosContainerConfig {
-  private[spark] val DATABASE_NAME_KEY = "spark.cosmos.database"
-  private[spark] val CONTAINER_NAME_KEY = "spark.cosmos.container"
+  private val DATABASE_NAME_KEY = "spark.cosmos.database"
+  private val CONTAINER_NAME_KEY = "spark.cosmos.container"
 
   private val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
     mandatory = true,
@@ -241,27 +245,174 @@ private object CosmosSchemaInferenceConfig {
     }
 }
 
+private object PartitioningStrategies extends Enumeration {
+  type PartitioningStrategy = Value
+
+  val Restrictive: PartitioningStrategies.Value = Value("Restrictive")
+  val Default: PartitioningStrategies.Value  = Value("Default")
+  val Aggressive: PartitioningStrategies.Value  = Value("Aggressive")
+  val Custom: PartitioningStrategies.Value  = Value("Custom")
+}
+
+private case class CosmosPartitioningConfig
+(
+  partitioningStrategy: PartitioningStrategy,
+  targetedPartitionCount: Option[Int]
+)
+
+private object CosmosPartitioningConfig {
+  private val DefaultPartitioningStrategy: PartitioningStrategy = PartitioningStrategies.Default
+
+  private val targetedPartitionCount = CosmosConfigEntry[Int](
+    key = "spark.cosmos.partitioning.targetedCount",
+    keySuffix = Option.apply("(if strategy is custom)"),
+    mandatory = true,
+    parseFromStringFunction = targetedCountText => targetedCountText.toInt,
+    helpMessage = "The targeted Partition Count. This parameter is optional and ignored unless " +
+      "strategy==Custom is used. In this case the Spark Connector won't dynamically calculate " +
+      "number of partitions but stick with this value.")
+
+  private val partitioningStrategy = CosmosConfigEntry[PartitioningStrategy](
+    key = "spark.cosmos.partitioning.strategy",
+    mandatory = false,
+    parseFromStringFunction = strategyNotYetParsed => this.validatePartitioningStrategy(strategyNotYetParsed),
+    helpMessage = "The partitioning strategy used (Default, Custom, Restrictive or Aggressive)")
+
+  private def validatePartitioningStrategy(partitioningStrategyName: String): PartitioningStrategy = {
+    Option(partitioningStrategyName).fold(DefaultPartitioningStrategy)(p => {
+      val strategyName = p.trim
+
+      if (strategyName.isEmpty) {
+        DefaultPartitioningStrategy
+      } else {
+        PartitioningStrategies
+          .values
+          .find(_.toString.equalsIgnoreCase(strategyName))
+          .getOrElse(throw new IllegalArgumentException(s"Invalid partitioning strategy '$partitioningStrategyName'"))
+      }
+    })
+  }
+
+  def parseCosmosPartitioningConfig(cfg: Map[String, String]): CosmosPartitioningConfig = {
+    val partitioningStrategyParsed = CosmosConfigEntry
+      .parse(cfg, partitioningStrategy)
+      .getOrElse(DefaultPartitioningStrategy)
+
+    val targetedPartitionCountParsed = if (partitioningStrategyParsed == PartitioningStrategies.Custom) {
+      CosmosConfigEntry.parse(cfg, targetedPartitionCount)
+    } else {
+      None
+    }
+
+    CosmosPartitioningConfig(
+      partitioningStrategyParsed,
+      targetedPartitionCountParsed
+    )
+  }
+}
+
 private object ChangeFeedModes extends Enumeration {
   type ChangeFeedMode = Value
 
-  private[spark] val incremental = Value("Incremental")
-  private[spark] val fullFidelity = Value("FullFidelity")
+  val Incremental: ChangeFeedModes.Value = Value("Incremental")
+  val FullFidelity: ChangeFeedModes.Value = Value("FullFidelity")
 }
 
-private case class CosmosChangeFeedConfig(changeFeedMode: ChangeFeedMode)
+private object ChangeFeedStartFromModes extends Enumeration {
+  type ChangeFeedStartFromMode = Value
+
+  val Beginning: ChangeFeedStartFromModes.Value = Value("Beginning")
+  val Now: ChangeFeedStartFromModes.Value = Value("Now")
+  val PointInTime: ChangeFeedStartFromModes.Value = Value("PointInTime")
+}
+
+private case class CosmosChangeFeedConfig
+(
+  changeFeedMode: ChangeFeedMode,
+  startFrom: ChangeFeedStartFromMode,
+  startFromPointInTime: Option[Instant],
+  maxItemCountPerTrigger: Option[Long]
+)
 
 private object CosmosChangeFeedConfig {
-  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.incremental
+  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
+  private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
 
-  private[spark] val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](key = "spark.cosmos.changeFeed.mode",
+  private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
+    key = "spark.cosmos.changeFeed.startFrom",
     mandatory = false,
-    parseFromStringFunction = changeFeedModeString => ChangeFeedModes.withName(changeFeedModeString),
+    parseFromStringFunction = startFromNotYetValidated => this.validateStartFromMode(startFromNotYetValidated),
+    helpMessage = "ChangeFeed Start from settings (Now, Beginning  or a certain point in " +
+      "time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'.")
+
+  private val startFromPointInTime = CosmosConfigEntry[Instant](
+    key = "spark.cosmos.changeFeed.startFrom",
+    keySuffix = Option.apply("(for point in time)"),
+    mandatory = true,
+    parseFromStringFunction = startFrom => Instant.from(DateTimeFormatter
+      .ISO_INSTANT
+      .parse(startFrom.trim)),
+    helpMessage = "ChangeFeed Start from settings (Now, Beginning  or a certain point in " +
+      "time (UTC) for example 2020-02-10T14:15:03Z) - the default value is 'Beginning'.")
+
+  private val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](
+    key = "spark.cosmos.changeFeed.mode",
+    mandatory = false,
+    parseFromStringFunction = changeFeedModeString => validateChangeFeedMode(changeFeedModeString),
     helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
 
-  private[spark] def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
-    val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
+  private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
+    key = "spark.cosmos.changeFeed.maxItemCountPerTriggerHint",
+    mandatory = false,
+    parseFromStringFunction = maxItemCount => maxItemCount.toInt,
+    helpMessage = "Approximate maximum number of items read from change feed for each trigger")
 
-    CosmosChangeFeedConfig(changeFeedModeParsed.getOrElse(DefaultChangeFeedMode))
+  private def validateChangeFeedMode(mode: String): ChangeFeedMode = {
+    Option(mode).fold(DefaultChangeFeedMode)(p => {
+      val modeName = p.trim
+
+      if (modeName.isEmpty) {
+        DefaultChangeFeedMode
+      } else {
+        ChangeFeedModes
+          .values
+          .find(_.toString.equalsIgnoreCase(modeName))
+          .getOrElse(throw new IllegalArgumentException(s"Invalid change feed mode '$modeName'"))
+      }
+    })
+  }
+
+  // TODO @fabianm consider normalizing on single enum parsing implementation
+  private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
+    Option(startFrom).fold(DefaultStartFromMode)(sf => {
+      val trimmed = sf.trim
+
+      if (trimmed.isEmpty) {
+        DefaultStartFromMode
+      } else if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Beginning.toString)) {
+        ChangeFeedStartFromModes.Beginning
+      } else if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Now.toString)) {
+        ChangeFeedStartFromModes.Now
+      } else {
+        ChangeFeedStartFromModes.PointInTime
+      }
+    })
+  }
+
+  def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
+    val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
+    val startFromModeParsed = CosmosConfigEntry.parse(cfg, startFrom)
+    val maxItemCountPerTriggerHintParsed = CosmosConfigEntry.parse(cfg, maxItemCountPerTriggerHint)
+    val startFromPointInTimeParsed = startFromModeParsed match {
+      case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
+      case _ => None
+    }
+
+    CosmosChangeFeedConfig(
+      changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
+      startFromModeParsed.getOrElse(DefaultStartFromMode),
+      startFromPointInTimeParsed,
+      maxItemCountPerTriggerHintParsed)
   }
 }
 
@@ -269,8 +420,9 @@ private case class CosmosConfigEntry[T](key: String,
                                         mandatory: Boolean,
                                         defaultValue: Option[T] = Option.empty,
                                         parseFromStringFunction: String => T,
-                                        helpMessage: String) {
-  CosmosConfigEntry.configEntriesDefinitions.put(key, this)
+                                        helpMessage: String,
+                                        keySuffix: Option[String] = None) {
+  CosmosConfigEntry.configEntriesDefinitions.put(key + keySuffix.getOrElse(""), this)
 
   def parse(paramAsString: String) : T = {
     try {

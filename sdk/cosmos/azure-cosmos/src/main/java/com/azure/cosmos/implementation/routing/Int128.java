@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.routing;
 
-
 import java.math.BigInteger;
 
 public class Int128 {
@@ -71,11 +70,10 @@ public class Int128 {
         byte[] bytes = this.value.toByteArray();
         if (bytes.length < 16) {
             byte[] paddedBytes = new byte[16];
-            System.arraycopy(bytes, 0, paddedBytes, 0, bytes.length);
+            System.arraycopy(bytes, 0, paddedBytes, 16 - bytes.length, bytes.length);
             return paddedBytes;
         }
 
         return bytes;
     }
-
 }

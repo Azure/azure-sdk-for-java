@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{Table, TableProvider}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.sources.DataSourceRegister
@@ -28,7 +30,9 @@ class CosmosChangeFeedDataSource
    * @return StructType inferred schema
    */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    new ChangeFeedTable(Array.empty, options).schema()
+    assertOnSparkDriver()
+    val session = SparkSession.active
+    new ChangeFeedTable(session, Array.empty, options).schema()
   }
 
   /**
@@ -48,12 +52,15 @@ class CosmosChangeFeedDataSource
    *                     insensitively. It should be able to identify a table, e.g. file path, Kafka
    *                     topic name, etc.
    */
-  override def getTable(
-                         schema: StructType,
-                         partitioning: Array[Transform],
-                         properties: util.Map[String, String]): Table = {
+  override def getTable(schema: StructType,
+                        partitioning: Array[Transform],
+                        properties: util.Map[String, String]): Table = {
+
+    assertOnSparkDriver()
+    val session = SparkSession.active
     // getTable - This is used for loading table with user specified schema and other transformations.
     new ChangeFeedTable(
+      session,
       partitioning,
       CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava,
       Option.apply(schema))

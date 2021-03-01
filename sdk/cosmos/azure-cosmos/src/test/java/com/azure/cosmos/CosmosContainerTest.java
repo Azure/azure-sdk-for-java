@@ -6,7 +6,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.HexConvert;
+import com.azure.cosmos.implementation.routing.Int128;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -26,6 +32,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -284,6 +291,101 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Base64.getUrlEncoder().encodeToString(
                 "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
             ));
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void trySplitRanges_for_NonExistingContainer() throws Exception {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosAsyncContainer nonExistingContainer =
+            createdDatabase.getContainer("NonExistingContainer").asyncContainer;
+
+        CosmosException cosmosException = null;
+        try {
+            List<FeedRange> splitFeedRanges = nonExistingContainer.trySplitFeedRange(
+                FeedRange.forFullRange(),
+                3
+            ).block();
+        } catch (CosmosException error) {
+            cosmosException = error;
+        }
+
+        assertThat(cosmosException).isNotNull();
+        assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges_withMultiplePartitions() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(
+            containerProperties,
+            ThroughputProperties.createManualThroughput(18000));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+            .isNotNull()
+            .hasSize(3);
+        assertThat(feedRanges.get(0).toString())
+            .isNotNull()
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(
+                "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
+            ));
+        assertThat(feedRanges.get(1).toString())
+            .isNotNull()
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(
+                "{\"PKRangeId\":\"1\"}".getBytes(StandardCharsets.UTF_8)
+            ));
+        assertThat(feedRanges.get(2).toString())
+            .isNotNull()
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(
+                "{\"PKRangeId\":\"2\"}".getBytes(StandardCharsets.UTF_8)
+            ));
+
+
+        Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
+        Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
+        Range<String> thirdEpkRange = getEffectiveRange(syncContainer, feedRanges.get(2));
+
+        List<FeedRange> feedRangesAfterSplit = syncContainer
+            .asyncContainer
+            .trySplitFeedRange(FeedRange.forFullRange(), 3)
+            .block();
+        assertThat(feedRangesAfterSplit)
+            .isNotNull()
+            .hasSize(3);
+
+        String leftMin = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMin();
+        String rightMin = firstEpkRange.getMin();
+        String leftMax = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMax();
+        String rightMax = firstEpkRange.getMax();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(1)).equals(secondEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(2)).equals(thirdEpkRange))
+            .isTrue();
+    }
+
+    private static Range<String> getEffectiveRange(CosmosContainer container, FeedRange feedRange) {
+        AsyncDocumentClient clientWrapper = container.asyncContainer.getDatabase().getDocClientWrapper();
+        return FeedRangeInternal
+            .convert(feedRange)
+            .getEffectiveRange(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                Mono.just(Utils.ValueHolder.initialize(
+                    clientWrapper.getCollectionCache().resolveByNameAsync(
+                        null,
+                        container.asyncContainer.getLink(),
+                        null
+                    ).block()))).block();
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -20,6 +21,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -1436,6 +1438,33 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Attempts to split a feedrange into {@lparamtargetedCountAfterAplit} sub ranges. This is a best
+     * effort - it is possible that the list of feed ranges returned has less than {@lparamtargetedCountAfterAplit}
+     * sub ranges
+     * @param feedRange
+     * @param targetedCountAfterSplit
+     * @return list of feed ranges after attempted split operation
+     */
+    Mono<List<FeedRange>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
+            .getCollectionCache()
+            .resolveByNameAsync(null, this.link, null)
+            .map(collection -> Utils.ValueHolder.initialize(collection));
+
+        return FeedRangeInternal
+            .convert(feedRange)
+            .trySplit(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                getCollectionObservable,
+                targetedCountAfterSplit
+            );
+    }
+
+     /**
      *
      * @param groupName The throughput control group name.
      * @param targetThroughput The target throughput for the control group.
