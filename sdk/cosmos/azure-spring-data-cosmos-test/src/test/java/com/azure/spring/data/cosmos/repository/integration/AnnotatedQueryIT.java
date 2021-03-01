@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,6 +30,7 @@ import java.util.UUID;
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateNonLastPage;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -116,6 +118,24 @@ public class AnnotatedQueryIT {
             .stream()
             .filter(address -> address.getCity().equals(city))
             .count()).isEqualTo(page.getContent().size());
+    }
+
+    @Test
+    public void testAnnotatedQueryWithSort() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1));
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCity(TestConstants.CITY, Sort.by(Sort.Direction.ASC, "street"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+
+        final List<Address> resultsDesc = addressRepository.annotatedFindByCity(TestConstants.CITY, Sort.by(Sort.Direction.DESC, "street"));
+        assertAddressOrder(resultsDesc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    private void assertAddressOrder(List<Address> actualResults, Address ... expectedResults) {
+        assertThat(actualResults.size()).isEqualTo(expectedResults.length);
+        for (int i = 0; i < expectedResults.length; i++) {
+            assertThat(expectedResults[i]).isEqualTo(actualResults.get(i));
+        }
     }
 
 }

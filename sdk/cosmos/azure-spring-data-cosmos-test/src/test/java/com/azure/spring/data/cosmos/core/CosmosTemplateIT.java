@@ -575,7 +575,7 @@ public class CosmosTemplateIT {
         Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
                                                    Part.IgnoreCaseType.NEVER);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
-        List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class));
+        List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Sort.unsorted(), Person.class, Person.class));
         assertThat(people).containsExactly(TEST_PERSON);
     }
 
@@ -588,7 +588,7 @@ public class CosmosTemplateIT {
 
         Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
+        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Sort.unsorted(), AuditableEntity.class, AuditableEntity.class));
         assertEquals(results.size(), 1);
         AuditableEntity foundEntity = results.get(0);
         assertEquals(entity.getId(), foundEntity.getId());

@@ -22,6 +22,7 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
+import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -51,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -69,6 +69,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
+    private final NativeQueryGenerator nativeQueryGenerator;
 
     /**
      * Initialization
@@ -118,6 +119,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.databaseName = cosmosFactory.getDatabaseName();
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
+        this.nativeQueryGenerator = new NativeQueryGenerator();
     }
 
     /**
@@ -647,20 +649,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
         String containerName = getContainerName(domainType);
-        SqlQuerySpec countQuerySpec = createCountQuerySpec(querySpec);
+        SqlQuerySpec countQuerySpec = nativeQueryGenerator.generateCountQuery(querySpec);
         return paginationQuery(querySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
-    }
-
-    private SqlQuerySpec createCountQuerySpec(SqlQuerySpec querySpec) {
-        String queryText = querySpec.getQueryText();
-        int fromIndex = queryText.toLowerCase().indexOf(" from ");
-        Assert.isTrue(fromIndex >= 0, "query missing from keyword, query=" + queryText);
-
-        String countQueryText = "select value count(1) " + queryText.substring(fromIndex);
-        SqlQuerySpec countQuerySpec = new SqlQuerySpec();
-        countQuerySpec.setQueryText(countQueryText);
-        countQuerySpec.setParameters(querySpec.getParameters());
-        return countQuerySpec;
     }
 
     @Override
@@ -772,7 +762,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+    public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
+        querySpec = nativeQueryGenerator.generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
                    .map(jsonNode -> toDomainObject(returnType, jsonNode))
                    .collectList()
