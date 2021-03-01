@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -608,11 +607,7 @@ public final class BinaryData {
         if (defaultJsonSerializer == null) {
             synchronized (LOCK) {
                 if (defaultJsonSerializer == null) {
-                    try {
-                        defaultJsonSerializer = JsonSerializerProviders.createInstance();
-                    } catch (IllegalStateException e) {
-                        defaultJsonSerializer = new JacksonSerializer();
-                    }
+                    defaultJsonSerializer = JsonSerializerProviders.createInstance();
                 }
             }
         }

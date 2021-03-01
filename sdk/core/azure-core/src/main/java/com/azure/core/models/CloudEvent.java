@@ -273,7 +273,7 @@ public final class CloudEvent {
     public BinaryData getData() {
         if (this.binaryData == null) {
             if (this.data != null) {
-                this.binaryData = BinaryData.fromObject(this.data);
+                this.binaryData = BinaryData.fromObject(this.data, SERIALIZER);
             } else if (this.dataBase64 != null) {
                 this.binaryData = BinaryData.fromBytes(Base64.getDecoder().decode(this.dataBase64));
             }

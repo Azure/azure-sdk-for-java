@@ -75,7 +75,7 @@ public class CloudEventTests {
         assertEquals("testsubject", cloudEvent.getSubject());
         assertEquals("/testschema", cloudEvent.getDataSchema());
         assertEquals("application/json", cloudEvent.getDataContentType());
-        assertEquals(map, cloudEvent.getData().toObject(Map.class));
+        assertEquals(map, cloudEvent.getData().toObject(Map.class, SERIALIZER));
 
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
@@ -97,7 +97,7 @@ public class CloudEventTests {
 
             final BinaryData data2 = cloudEvent.getData();
             final Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<Map<String, Object>>() {
-            });
+            }, SERIALIZER);
 
             // Check if the original map matches the deserialized data map from the serialized String
             assertEquals(map, deserializedData2);
@@ -129,7 +129,8 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class);
+        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class,
+            SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -177,7 +178,8 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class);
+        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class,
+            SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -200,7 +202,7 @@ public class CloudEventTests {
 
         assertEquals(events.get(0).getExtensionAttributes().get("comexampleothervalue"), 5);
 
-        final String xmlData = events.get(0).getData().toObject(String.class);
+        final String xmlData = events.get(0).getData().toObject(String.class, SERIALIZER);
 
         assertEquals("<much wow=\"xml\"/>", xmlData);
     }
@@ -233,7 +235,7 @@ public class CloudEventTests {
                 put("Field2", "Value2");
             }
         };
-        final BinaryData binaryData = BinaryData.fromObject(mapData);
+        final BinaryData binaryData = BinaryData.fromObject(mapData, SERIALIZER);
         final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -245,7 +247,7 @@ public class CloudEventTests {
             final String serializedString = bos.toString();
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals(mapData, deserializedCloudEvent.getData().toObject(new TypeReference<Map<String, Object>>() {
-            }));
+            }, SERIALIZER));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
@@ -253,7 +255,7 @@ public class CloudEventTests {
     @ParameterizedTest
     @MethodSource("primitiveDataValues")
     public void serializePrimitiveData(Object dataValue) throws IOException {
-        final BinaryData binaryData = BinaryData.fromObject(dataValue);
+        final BinaryData binaryData = BinaryData.fromObject(dataValue, SERIALIZER);
         final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -280,7 +282,7 @@ public class CloudEventTests {
 
             // Deserialized the serialized String and check back the CloudEvent.getData()
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
-            assertEquals(dataValue, deserializedCloudEvent.getData().toObject(dataValue.getClass()));
+            assertEquals(dataValue, deserializedCloudEvent.getData().toObject(dataValue.getClass(), SERIALIZER));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
@@ -298,7 +300,7 @@ public class CloudEventTests {
     @Test
     public void serializeStringDataAsObject() throws IOException {
         final String dataPayload = "AAA";
-        final BinaryData binaryData = BinaryData.fromObject(dataPayload);
+        final BinaryData binaryData = BinaryData.fromObject(dataPayload, SERIALIZER);
         final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -309,7 +311,7 @@ public class CloudEventTests {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
-            assertEquals(dataPayload, deserializedCloudEvent.getData().toObject(String.class));
+            assertEquals(dataPayload, deserializedCloudEvent.getData().toObject(String.class, SERIALIZER));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
     }
@@ -345,7 +347,7 @@ public class CloudEventTests {
             final Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
                 new TypeReference<Map<String, String>>() {
 
-                });
+                }, SERIALIZER);
             assertEquals("value", deserializedMap.get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
@@ -371,7 +373,8 @@ public class CloudEventTests {
 
     @Test
     public void serializeBinaryDataFromNull() throws IOException {
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", BinaryData.fromObject(null),
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test",
+            BinaryData.fromObject(null, SERIALIZER),
             CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
