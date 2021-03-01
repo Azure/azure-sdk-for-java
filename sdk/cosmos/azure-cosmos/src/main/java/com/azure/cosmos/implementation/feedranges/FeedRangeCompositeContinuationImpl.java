@@ -451,6 +451,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     static class PartitionKeyRangeMinInclusiveComparator implements Comparator<PartitionKeyRange>, Serializable {
+        private static final long serialVersionUID = 1L;
         final static Comparator<PartitionKeyRange> SingletonInstance = new PartitionKeyRangeMinInclusiveComparator();
 
         private PartitionKeyRangeMinInclusiveComparator() {
