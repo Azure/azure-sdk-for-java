@@ -6,6 +6,12 @@ import org.springframework.util.Assert;
 
 public class NativeQueryGenerator {
 
+    private static final NativeQueryGenerator INSTANCE = new NativeQueryGenerator();
+
+    public static NativeQueryGenerator getInstance() {
+        return INSTANCE;
+    }
+
     private SqlQuerySpec cloneWithQueryText(SqlQuerySpec querySpec, String queryText) {
         SqlQuerySpec clone = new SqlQuerySpec();
         clone.setQueryText(queryText);

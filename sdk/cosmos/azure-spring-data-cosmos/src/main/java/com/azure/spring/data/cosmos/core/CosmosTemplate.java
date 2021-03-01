@@ -69,7 +69,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
-    private final NativeQueryGenerator nativeQueryGenerator;
 
     /**
      * Initialization
@@ -119,7 +118,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.databaseName = cosmosFactory.getDatabaseName();
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
-        this.nativeQueryGenerator = new NativeQueryGenerator();
     }
 
     /**
@@ -649,8 +647,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
         final String containerName = getContainerName(domainType);
-        final SqlQuerySpec sortedQuerySpec = nativeQueryGenerator.generateSortedQuery(querySpec, pageable.getSort());
-        final SqlQuerySpec countQuerySpec = nativeQueryGenerator.generateCountQuery(querySpec);
+        final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, pageable.getSort());
+        final SqlQuerySpec countQuerySpec = NativeQueryGenerator.getInstance().generateCountQuery(querySpec);
         return paginationQuery(sortedQuerySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
     }
 
@@ -769,7 +767,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
-        querySpec = nativeQueryGenerator.generateSortedQuery(querySpec, sort);
+        querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
                    .map(jsonNode -> toDomainObject(returnType, jsonNode))
                    .collectList()

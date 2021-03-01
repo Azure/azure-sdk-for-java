@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
@@ -26,10 +27,12 @@ import java.util.Arrays;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveRoleRepositoryIT {
 
-    private static final Role TEST_ROLE_1 = new Role(TestConstants.ID_1, true, TestConstants.LEVEL,
-                                                     TestConstants.ROLE_NAME);
-    private static final Role TEST_ROLE_2 = new Role(TestConstants.ID_2, false, TestConstants.LEVEL,
-                                                     TestConstants.ROLE_NAME);
+    private static final Role TEST_ROLE_1 = new Role(TestConstants.ID_1, true,
+                                                     TestConstants.ROLE_NAME, TestConstants.LEVEL);
+    private static final Role TEST_ROLE_2 = new Role(TestConstants.ID_2, false,
+                                                     TestConstants.ROLE_NAME, TestConstants.LEVEL);
+    private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true,
+                                                     TestConstants.ROLE_NAME, TestConstants.LEVEL);
 
     private static final CosmosEntityInformation<Role, String> entityInformation =
         new CosmosEntityInformation<>(Role.class);
@@ -51,7 +54,7 @@ public class ReactiveRoleRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        final Flux<Role> savedFlux = repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2));
+        final Flux<Role> savedFlux = repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3));
         StepVerifier.create(savedFlux).thenConsumeWhile(role -> true).expectComplete().verify();
         isSetupDone = true;
     }
@@ -67,4 +70,20 @@ public class ReactiveRoleRepositoryIT {
         Flux<Role> roleFlux = repository.annotatedFindRoleById(TestConstants.ID_1);
         StepVerifier.create(roleFlux).expectNext(TEST_ROLE_1).verifyComplete();
     }
+
+    @Test
+    public void testAnnotatedQueryWithSort() {
+        final Flux<Role> roleAscFlux = repository.annotatedFindDeveloperByLevel(TestConstants.LEVEL, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_3)
+            .verifyComplete();
+
+        final Flux<Role> roleDescFlux = repository.annotatedFindDeveloperByLevel(TestConstants.LEVEL, Sort.by(Sort.Direction.DESC, "id"));
+        StepVerifier.create(roleDescFlux)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_1)
+            .verifyComplete();
+    }
+
 }
