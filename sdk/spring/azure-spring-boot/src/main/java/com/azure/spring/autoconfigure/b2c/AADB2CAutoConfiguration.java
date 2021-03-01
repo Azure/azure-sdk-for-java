@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -47,6 +48,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
     }
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
+@Import(AADB2CResourceServerAutoConfiguration.class)
 public class AADB2CAutoConfiguration {
 
     private final ClientRegistrationRepository repository;
