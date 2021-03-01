@@ -103,21 +103,20 @@ public class AnnotatedQueryIT {
         final Page<Address> page = addressRepository.annotatedFindByCity(TestConstants.CITY, pageRequest);
 
         assertThat(page.getContent().size()).isEqualTo(PAGE_SIZE_1);
-        validateResultCityMatch(page, TestConstants.CITY);
+        validateResultStreetMatch(page, Address.TEST_ADDRESS1_PARTITION1.getStreet());
         validateNonLastPage(page, PAGE_SIZE_1);
 
         final Page<Address> nextPage = addressRepository.annotatedFindByCity(TestConstants.CITY, page.nextPageable());
 
         assertThat(nextPage.getContent().size()).isEqualTo(PAGE_SIZE_1);
-        validateResultCityMatch(page, TestConstants.CITY);
+        validateResultStreetMatch(nextPage, Address.TEST_ADDRESS2_PARTITION1.getStreet());
         validateLastPage(nextPage, PAGE_SIZE_1);
     }
 
-    private void validateResultCityMatch(Page<Address> page, String city) {
-        assertThat((int) page.getContent()
-            .stream()
-            .filter(address -> address.getCity().equals(city))
-            .count()).isEqualTo(page.getContent().size());
+    private void validateResultStreetMatch(Page<Address> page, String street) {
+        for (Address result : page.getContent()) {
+            assertThat(result.getStreet()).isEqualTo(street);
+        }
     }
 
     @Test
