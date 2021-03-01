@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -20,7 +21,9 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
+      - feature/cosmos/spark30
       - hotfix/*
       - release/*
   paths:

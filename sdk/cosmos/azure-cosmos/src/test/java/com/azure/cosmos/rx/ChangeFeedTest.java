@@ -266,7 +266,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     public void changeFeed_fullFidelity_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(true);
@@ -415,7 +415,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         return new Range<>(maxInclusiveRange.getMin(), max, true, false);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         ArrayList<Range<String>> ranges = new ArrayList<>();

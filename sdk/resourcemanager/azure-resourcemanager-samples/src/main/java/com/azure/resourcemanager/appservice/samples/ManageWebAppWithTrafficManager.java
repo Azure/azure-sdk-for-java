@@ -36,7 +36,7 @@ import java.io.IOException;
  */
 public final class ManageWebAppWithTrafficManager {
     private static String rgName;
-
+    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
     private static final String CERT_PASSWORD = "StrongPass!12";
 
     private static AzureResourceManager azureResourceManager;

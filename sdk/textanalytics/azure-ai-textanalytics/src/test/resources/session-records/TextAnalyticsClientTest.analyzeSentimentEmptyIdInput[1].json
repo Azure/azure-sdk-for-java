@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.3//sentiment?showStats=false&opinionMining=false&stringIndexType=Utf16CodeUnit",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.4 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "42374b7e-5de8-4ad0-b9be-c66e3db5e38d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "bf885e45-fa9a-4764-8003-582e08d53f6a",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one document is missing an Id attribute.\"}}}",
+      "Date" : "Mon, 08 Feb 2021 07:37:04 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

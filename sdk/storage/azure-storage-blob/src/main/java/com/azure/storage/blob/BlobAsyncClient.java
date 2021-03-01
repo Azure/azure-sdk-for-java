@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
@@ -73,7 +75,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * <p>
  * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 public class BlobAsyncClient extends BlobAsyncClientBase {
@@ -263,6 +265,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return upload(data, parallelTransferOptions, false);
@@ -304,6 +307,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should the blob already exist.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -371,6 +375,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
@@ -416,6 +421,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * expected to produce the same values across subscriptions.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         /*
         The following is catalogue of all the places we allocate memory/copy in any upload method a justifaction for
@@ -563,6 +569,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -584,6 +591,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> overwriteCheck = Mono.empty();
@@ -628,6 +636,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
@@ -651,6 +660,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
         StorageImplUtils.assertNotNull("options", options);
         Long originalBlockSize = (options.getParallelTransferOptions() == null)

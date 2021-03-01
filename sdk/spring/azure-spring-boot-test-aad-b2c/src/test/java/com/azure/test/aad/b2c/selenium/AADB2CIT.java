@@ -85,11 +85,12 @@ public class AADB2CIT {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            // @formatter:off
             http.authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
+                    .anyRequest().authenticated()
+                    .and()
                 .apply(configurer);
+            // @formatter:on
         }
 
         @GetMapping(value = "/")

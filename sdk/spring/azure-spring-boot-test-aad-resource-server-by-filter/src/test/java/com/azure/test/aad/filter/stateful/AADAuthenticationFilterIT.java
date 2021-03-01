@@ -31,6 +31,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static org.junit.Assert.assertEquals;
 
 public class AADAuthenticationFilterIT {
@@ -47,6 +48,7 @@ public class AADAuthenticationFilterIT {
 
     private AADWebApiITHelper getAADWebApiITHelper(String clientId, String clientSecret) {
         Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1");

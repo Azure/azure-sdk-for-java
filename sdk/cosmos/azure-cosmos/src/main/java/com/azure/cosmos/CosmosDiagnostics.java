@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Utils;
@@ -80,6 +81,9 @@ public final class CosmosDiagnostics {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<URI> getRegionsContacted() {
+        if (this.feedResponseDiagnostics != null) {
+            return null;
+        }
         return this.clientSideRequestStatistics.getRegionsContacted();
     }
 
@@ -111,5 +115,9 @@ public final class CosmosDiagnostics {
                 }
             }
         }
+    }
+
+    void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+        this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 }

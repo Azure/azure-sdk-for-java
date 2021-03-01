@@ -125,14 +125,16 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
 
+    static final long DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS = 60;
+
     private TestUtils() {
     }
 
     static DataFeed getSQLDataFeedSample() {
         return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric().setName("cost"),
+                new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
                 new DataFeedDimension().setName("city"),
                 new DataFeedDimension().setName("category"))))
@@ -144,8 +146,8 @@ public final class TestUtils {
     static DataFeed getAzureBlobDataFeedSample() {
         return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric().setName("cost"),
+                new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
                 new DataFeedDimension().setName("city"),
                 new DataFeedDimension().setName("category"))))

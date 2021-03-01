@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.ListChatThreadsOptions;
 import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatThreadInfo;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatThreadsOptions;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -54,11 +56,8 @@ public final class ChatClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThreadClient createChatThread(CreateChatThreadOptions options) {
-
-        ChatThreadAsyncClient chatThreadAsyncClient = this.client.createChatThread(options).block();
-
-        return chatThreadAsyncClient == null ? null : new ChatThreadClient(chatThreadAsyncClient);
+    public CreateChatThreadResult createChatThread(CreateChatThreadOptions options) {
+        return this.client.createChatThread(options).block();
     }
 
     /**
@@ -69,11 +68,11 @@ public final class ChatClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatThreadClient> createChatThreadWithResponse(CreateChatThreadOptions options, Context context) {
+    public Response<CreateChatThreadResult> createChatThreadWithResponse(CreateChatThreadOptions options,
+                                                                         Context context) {
 
         return this.client.createChatThread(options, context).map(
-            result -> new SimpleResponse<ChatThreadClient>(
-                result, new ChatThreadClient(result.getValue()))).block();
+            result -> new SimpleResponse<CreateChatThreadResult>(result, result.getValue())).block();
     }
 
     /**

@@ -6,7 +6,7 @@
     "eventType": "Microsoft.AppConfiguration.KeyValueDeleted",
     "eventTime": "2018-01-02T19:17:44.4383997Z",
     "data": {
-	"key":"key1",
+	      "key":"key1",
         "label":"label1",
         "etag":"etag1"
     },

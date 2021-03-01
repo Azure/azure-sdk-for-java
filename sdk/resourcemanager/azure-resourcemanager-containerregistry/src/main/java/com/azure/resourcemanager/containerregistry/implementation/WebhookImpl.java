@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Webhook. */
 public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner, RegistryImpl, Registry>
@@ -222,12 +223,12 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
     public PagedFlux<WebhookEventInfo> listEventsAsync() {
         final WebhookImpl self = this;
 
-        return this
+        return PagedConverter.mapPage(this
             .containerRegistryManager
             .serviceClient()
             .getWebhooks()
-            .listEventsAsync(self.resourceGroupName, self.registryName, self.name())
-            .mapPage(inner -> new WebhookEventInfoImpl(inner));
+            .listEventsAsync(self.resourceGroupName, self.registryName, self.name()),
+            inner -> new WebhookEventInfoImpl(inner));
     }
 
     @Override

@@ -90,22 +90,4 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
   </dependencies>
-  <build>
-    <finalName>app</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <systemPropertyVariables>
-            <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
-            <azure.keyvault.tenant-id>${azure.keyvault.tenant-id}</azure.keyvault.tenant-id>
-            <azure.keyvault.client-id>${azure.keyvault.client-id}</azure.keyvault.client-id>
-            <azure.keyvault.client-secret>${azure.keyvault.client-secret}</azure.keyvault.client-secret>
-            <server.ssl.key-alias>${server.ssl.key-alias}</server.ssl.key-alias>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

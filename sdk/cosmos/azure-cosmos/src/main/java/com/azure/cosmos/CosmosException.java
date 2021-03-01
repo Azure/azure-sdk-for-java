@@ -309,7 +309,7 @@ public class CosmosException extends AzureException {
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
-        return Double.valueOf(value);
+        return Double.parseDouble(value);
     }
 
     @Override

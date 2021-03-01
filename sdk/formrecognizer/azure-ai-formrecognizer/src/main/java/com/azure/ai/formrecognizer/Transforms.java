@@ -236,8 +236,8 @@ final class Transforms {
                                     ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
                                 dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                                 dataTableCell.getConfidence(),
-                                dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
-                                dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
+                                dataTableCell.isHeader() != null && dataTableCell.isHeader(),
+                                dataTableCell.isFooter() != null && dataTableCell.isFooter(),
                                 pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
                             .collect(Collectors.toList()), pageNumber);
 
@@ -386,7 +386,7 @@ final class Transforms {
                 } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
-                    // TODO: (ServiceBug)
+                    // TODO: (ServiceBug) https://github.com/Azure/azure-sdk-for-java/issues/18967
                     // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
                     // Use the fieldValue's text as the temperately solution.
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(

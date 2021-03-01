@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>6.0.1</version> <!-- {x-version-update;eventhubs_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -105,7 +105,7 @@
 <!--      <plugin>-->
 <!--        <groupId>org.apache.maven.plugins</groupId>-->
 <!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--        <version>3.1.1</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+<!--        <version>3.1.2</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
 <!--        <configuration>-->
 <!--          <failsOnError>true</failsOnError>-->
 <!--          <failOnViolation>true</failOnViolation>-->

@@ -19,7 +19,22 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 
     if ($projectPkgName -eq $pkgName)
     {
-        return [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+        {
+          $pkgProp.SdkType = "mgmt"
+        }
+        elseif ($projectPkgName -match "spring")
+        {
+          $pkgProp.SdkType = "spring"
+        }
+        else
+        {
+          $pkgProp.SdkType = "client"
+        }
+        $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+        $pkgProp.ArtifactName = $pkgName
+        return $pkgProp
     }
   }
   return $null
@@ -64,6 +79,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
+  $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
   $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
@@ -92,6 +108,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
+    DocsReadMeName = $docsReadMeName
   }
 }
 

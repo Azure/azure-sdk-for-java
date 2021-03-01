@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.METRIC_ID;
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -44,7 +45,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll

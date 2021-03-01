@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AvailabilitySets. */
 public class AvailabilitySetsImpl
@@ -25,12 +26,12 @@ public class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return manager().serviceClient().getAvailabilitySets().list().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(manager().serviceClient().getAvailabilitySets().list(), this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return this.manager().serviceClient().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.manager().serviceClient().getAvailabilitySets().listAsync(), this::wrapModel);
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +103,7 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toListFromList() {
-        List<FormField> inputList = new ArrayList<>(Arrays.asList(new FormField(null, null, null, null, 0)));
+        List<FormField> inputList = new ArrayList<>(Collections.singletonList(new FormField(null, null, null, null, 0)));
         FormField formField = new FormField(null, null, null,
             new FieldValue(inputList, FieldValueType.LIST), 0);
         List<FormField> actualList = formField.getValue().asList();

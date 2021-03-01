@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -52,6 +53,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -463,6 +465,32 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
+    /**
+     * Query for items in the current container using a {@link SqlQuerySpec} and {@link CosmosQueryRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param querySpec the SQL query specification.
+     * @param options the query request options.
+     * @param classType the class type.
+     * @param feedRange the feedrange to query
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options,
+                                             Class<T> classType, FeedRange feedRange) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
+        ModelBridgeInternal.setFeedRange(options, feedRange);
+        return queryItemsInternal(querySpec, options, classType);
+    }
+
     <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));
@@ -579,17 +607,19 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.queryMetrics(response),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
                 useEtagAsContinuation,
-                isNoChangesResponse);
+                isNoChangesResponse,
+                response.getCosmosDiagnostics()                                                     );
 
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                classType))
-                     .collect(Collectors.toList())), response.getResponseHeaders(),
+                                                                                                             classType))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
-            isNoChangesResponse);
+            isNoChangesResponse,
+            response.getCosmosDiagnostics());
     }
 
     private <T> T transform(Object object, Class<T> classType) {
@@ -1432,5 +1462,68 @@ public class CosmosAsyncContainer {
                 getCollectionObservable,
                 targetedCountAfterSplit
             );
+    }
+
+     /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
+        return this.enableThroughputLocalControlGroup(groupName, targetThroughput, false);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
+        return this.enableThroughputControlGroup(groupName, targetThroughput, null, ThroughputControlMode.LOCAL, isDefault);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
+        return this.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, false);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @param isDefault Flag to indicate whether this group will be used as default.
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
+        return this.enableThroughputControlGroup(groupName, null, targetThroughputThreshold, ThroughputControlMode.LOCAL, isDefault);
+    }
+
+    private ThroughputControlGroup enableThroughputControlGroup(
+        String groupName,
+        Integer targetThroughput,
+        Double targetThroughputThreshold,
+        ThroughputControlMode controlMode,
+        boolean isDefault) {
+
+        ThroughputControlGroup throughputControlGroup = new ThroughputControlGroup(
+            groupName, this, targetThroughput, targetThroughputThreshold, controlMode, isDefault);
+        this.database.getClient().enableThroughputControlGroup(throughputControlGroup);
+
+        return throughputControlGroup;
     }
 }

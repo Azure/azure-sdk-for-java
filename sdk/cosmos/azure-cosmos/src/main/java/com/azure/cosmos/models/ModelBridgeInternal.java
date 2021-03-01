@@ -319,7 +319,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+        return new FeedResponse<T>(response.getQueryResponse(cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -830,5 +830,15 @@ public final class ModelBridgeInternal {
 
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setFeedRange(CosmosQueryRequestOptions options, FeedRange feedRange) {
+        options.setFeedRange(feedRange);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static FeedRange getFeedRange(CosmosQueryRequestOptions options) {
+        return options.getFeedRange();
     }
 }

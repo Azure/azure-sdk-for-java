@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
+/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu
 
 # BOM
 # PRLabel: %Azure.Core
@@ -35,13 +35,13 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
+/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mbhaskar
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mbhaskar
 
-# PRLabel: %DigitalTwins
+# PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
 
 # PRLabel: %Event Grid
@@ -66,7 +66,7 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
-/sdk/monitor/azure-opentelemetry-exporter-azuremonitor    @trask @joshfree @srnagar
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
@@ -81,7 +81,7 @@
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
 # PRLabel: %Tables
-/sdk/tables/                                        @bsiegel @conniey
+/sdk/tables/                                        @vcolin7 @conniey
 
 # PRLabel: %EngSys
 /sdk/template/                                      @Azure/azure-sdk-eng
@@ -102,9 +102,9 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
-/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
-/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz
+/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz
+/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz
 
 ###########
 # Eng Sys
@@ -114,7 +114,7 @@
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @JimSuplizio @mitchdenny @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
-/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity
+/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay
 /parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek

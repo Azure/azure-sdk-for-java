@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,18 +16,34 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderClient}.
  */
 public class ServiceBusSenderClientJavaDocCodeSamples {
+
+    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+    // We are reading 'connectionString/queueName' from environment variable.
+    // You can configure them as it fits suitable for your application.
+    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+    //    inside the Service Bus namespace.
+    private String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    private String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    private ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+        .connectionString(connectionString)
+        .sender()
+        .queueName(queueName)
+        .buildClient();
+
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderClient}.
      */
+    @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.instantiation
-        // The required parameter is a way to authenticate with Service Bus using credentials.
-        // The connectionString provides a way to authenticate with Service Bus.
+        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .sender()
-            .queueName("queue-name")
+            .queueName(queueName)
             .buildClient();
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 
@@ -38,11 +55,8 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      *
      * @throws IllegalArgumentException if an message is too large.
      */
+    @Test
     public void sendBatch() {
-        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString("fake-string")
-            .sender()
-            .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
         List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))),
@@ -69,13 +83,8 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      *
      * @throws IllegalArgumentException if an message is too large for an empty batch.
      */
+    @Test
     public void batchSizeLimited() {
-        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
 
         ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");
