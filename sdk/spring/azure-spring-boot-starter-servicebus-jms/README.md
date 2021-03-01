@@ -231,4 +231,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-beta-version-dependencies-if-needed]: ../build-beta-version-dependencies-if-needed.md 
+[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+

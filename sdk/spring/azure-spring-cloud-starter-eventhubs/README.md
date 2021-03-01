@@ -70,4 +70,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [maven]: https://maven.apache.org/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-beta-version-dependencies-if-needed]: ../build-beta-version-dependencies-if-needed.md 
+[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+

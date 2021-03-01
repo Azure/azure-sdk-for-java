@@ -212,4 +212,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[build-beta-version-dependencies-if-needed]: ../build-beta-version-dependencies-if-needed.md 
+[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+
