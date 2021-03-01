@@ -143,7 +143,6 @@ public final class SmsAsyncClient {
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
         for (String s : smsRecipient) {
             recipients.add(new SmsRecipient().setTo(s));
-
         }
         request.setFrom(from);
         request.setSmsRecipients(recipients);
