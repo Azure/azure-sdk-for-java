@@ -18,7 +18,7 @@ public class SqlQuerySpecLogger {
     }
 
     public void logQuery(SqlQuerySpec querySpec) {
-        if (LOGGER.isTraceEnabled() && querySpec.getParameters().size() > 0) {
+        if (LOGGER.isTraceEnabled() && !querySpec.getParameters().isEmpty()) {
             StringBuilder queryLogBuilder = new StringBuilder(1000);
             queryLogBuilder.append(querySpec.getQueryText());
             querySpec.getParameters().forEach(p -> queryLogBuilder.append(LINE_SEPARATOR)
