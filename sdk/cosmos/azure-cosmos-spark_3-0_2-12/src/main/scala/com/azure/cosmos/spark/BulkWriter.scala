@@ -16,7 +16,7 @@ import scala.collection.concurrent.TrieMap
 
 //scalastyle:off null
 class BulkWriter(container: CosmosAsyncContainer,
-                 writeConfig: CosmosWriteConfig) {
+                 writeConfig: CosmosWriteConfig) extends CosmosLoggingTrait {
 
   private val activeTasks = new AtomicInteger(0)
   private val lock = new ReentrantLock
@@ -47,16 +47,30 @@ class BulkWriter(container: CosmosAsyncContainer,
         val contextOpt = activeOperations.remove(itemOperation)
         assume(contextOpt.isDefined) // can't find the operation context!
 
-        if (resp.getException != null && !shouldIgnore(resp.getException)) {
-          if (shouldRetry(resp.getException, contextOpt.get)) {
-            scheduleWriteInternal(itemOperation.getPartitionKeyValue,
-              itemOperation.getItem.asInstanceOf[ObjectNode],
-              OperationContext(contextOpt.get.attemptNumber + 1))
-          } else {
-            captureIfFirstFailure(resp.getException)
-            cancelWork()
+        if (resp.getException != null) {
+          Option(resp.getException) match {
+            case Some(cosmosException: CosmosException) => {
+              if (shouldIgnore(cosmosException)) {
+                logDebug(s"ignoring ${cosmosException.getMessage} in ingesting item with" +
+                  s" id = ${itemOperation.getId}, partitionKeyValue = ${itemOperation.getPartitionKeyValue}")
+                // work done
+              } else if (shouldRetry(cosmosException, contextOpt.get)) {
+                // requeue
+                logDebug(s"failed attempt ${contextOpt.get.attemptNumber}, ${cosmosException.getMessage} in" +
+                  s" ingesting item with" +
+                  s" id = ${itemOperation.getId}, partitionKeyValue = ${itemOperation.getPartitionKeyValue}." +
+                  s" will retry")
+                scheduleWriteInternal(itemOperation.getPartitionKeyValue,
+                  itemOperation.getItem.asInstanceOf[ObjectNode],
+                  OperationContext(contextOpt.get.attemptNumber + 1))
+              }
+            }
+            case _ =>
+              captureIfFirstFailure(resp.getException)
+              cancelWork()
           }
         }
+
         markTaskCompletion()
       },
       errorConsumer = Option.apply(
@@ -75,7 +89,6 @@ class BulkWriter(container: CosmosAsyncContainer,
       )
     )
   }
-
 
   def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(1))
@@ -139,17 +152,15 @@ class BulkWriter(container: CosmosAsyncContainer,
     subscriptionDisposable.dispose()
   }
 
-  private def shouldIgnore(exception: Exception) : Boolean = {
+  private def shouldIgnore(cosmosException: CosmosException) : Boolean = {
     // ignore 409 on create-item
     writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemAppend &&
-      exception.isInstanceOf[CosmosException] &&
-      Exceptions.isResourceExistsException(exception.asInstanceOf[CosmosException])
+      Exceptions.isResourceExistsException(cosmosException)
   }
 
-  private def shouldRetry(exception: Exception, operationContext: OperationContext) : Boolean = {
+  private def shouldRetry(cosmosException: CosmosException, operationContext: OperationContext) : Boolean = {
     operationContext.attemptNumber < writeConfig.maxRetryCount &&
-      exception.isInstanceOf[CosmosException] &&
-      Exceptions.canBeTransientFailure(exception.asInstanceOf[CosmosException])
+      Exceptions.canBeTransientFailure(cosmosException)
   }
 
   private case class OperationContext(val attemptNumber: Int /** starts from 1 **/)
