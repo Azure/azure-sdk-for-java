@@ -22,10 +22,31 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
         + "SharedAccessKey=sasKey";
 
     @Test
-    public void testAzureServiceBusPremium() {
+    public void testAzureServiceBusNonPremiumAutoConfiguration() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=premium")
                      .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
+        contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
+        contextRunner.withPropertyValues("spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+                     .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAzureServiceBusJMSPropertiesPricingTireValidation() {
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.withPropertyValues(
+            "spring.jms.servicebus.pricing-tier=fake",
+            "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+                     .run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
@@ -33,12 +54,6 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
                      .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testAzureServiceBusJMSPropertiesValidation() {
-        ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test

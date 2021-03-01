@@ -13,6 +13,8 @@
           user-flows:
             ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
     ```
+
+### New Features
 - Enable MessageConverter bean customization.
 - Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
 

@@ -1,7 +1,7 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
-### Breaking Changes 
+### New Features
 - Enable MessageConverter bean customization.
 - Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
 

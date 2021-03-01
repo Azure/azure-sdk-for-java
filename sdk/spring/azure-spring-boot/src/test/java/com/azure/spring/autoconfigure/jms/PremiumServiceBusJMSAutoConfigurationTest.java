@@ -22,10 +22,22 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
         + "SharedAccessKey=sasKey";
 
     @Test
-    public void testAzureServiceBusNonPremium() {
+    public void testAzureServiceBusPremiumAutoConfiguration() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=basic")
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
+        contextRunner.withPropertyValues("spring.jms.servicebus.enabled=false")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+
+        contextRunner.withPropertyValues("spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+                     .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
+        ApplicationContextRunner contextRunner = getEmptyContextRunner();
+        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
@@ -33,12 +45,6 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusJmsConnectionFactory.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testAzureServiceBusJMSPropertiesValidation() {
-        ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
 
     @Test
