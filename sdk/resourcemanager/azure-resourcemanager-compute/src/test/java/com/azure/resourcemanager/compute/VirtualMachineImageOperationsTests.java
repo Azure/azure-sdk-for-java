@@ -12,13 +12,16 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSku;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
     @Test
     public void canListVirtualMachineImages() throws Exception {
+        /*
         PagedIterable<VirtualMachineImage> images = computeManager.virtualMachineImages().listByRegion(Region.US_EAST);
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
+         */
 
         PagedIterable<VirtualMachinePublisher> publishers =
             computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
