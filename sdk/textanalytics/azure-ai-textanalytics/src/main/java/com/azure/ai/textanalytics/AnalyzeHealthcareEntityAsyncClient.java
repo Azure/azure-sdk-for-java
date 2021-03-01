@@ -158,11 +158,11 @@ class AnalyzeHealthcareEntityAsyncClient {
                 final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
                 return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
-                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {
                 return service.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
-                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -215,7 +215,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                             Mono<AnalyzeHealthcareEntitiesOperationDetail> operationResult) {
         return pollingContext -> {
             try {
-                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -233,7 +233,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(resultUuid)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -269,7 +269,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
                             parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
                         return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }

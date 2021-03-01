@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.ServiceBusTemplateSendTest;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.ITopicClient;
@@ -27,7 +28,7 @@ public class TopicTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBus
         when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
         when(this.mockClient.sendAsync(isA(IMessage.class))).thenReturn(future);
 
-        this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory);
+        this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
     }
 
 }

@@ -266,7 +266,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     public void changeFeed_fullFidelity_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(true);

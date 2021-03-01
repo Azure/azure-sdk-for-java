@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.SubscriptionClient;
@@ -33,7 +34,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
 
     @Before
     public void setUp() {
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory);
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateSubscriptionClient(this.destination, this.consumerGroup))
             .thenReturn(this.subscriptionClient);
         when(this.mockClientFactory.getOrCreateSubscriptionClient(this.destination, this.anotherConsumerGroup))

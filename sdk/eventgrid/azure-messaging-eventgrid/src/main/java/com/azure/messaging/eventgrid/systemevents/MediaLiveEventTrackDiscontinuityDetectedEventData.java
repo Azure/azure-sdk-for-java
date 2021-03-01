@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaLiveEventTrackDiscontinuityDetectedEventData model. */
+/** Ingest track discontinuity detected event data. */
 @Immutable
 public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
     /*

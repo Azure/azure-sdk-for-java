@@ -51,13 +51,13 @@ public final class AcquiredPhoneNumber {
     /*
      * The date and time that the phone number was purchased.
      */
-    @JsonProperty(value = "purchaseDate")
+    @JsonProperty(value = "purchaseDate", required = true)
     private OffsetDateTime purchaseDate;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost")
+    @JsonProperty(value = "cost", required = true)
     private PhoneNumberCost cost;
 
     /**

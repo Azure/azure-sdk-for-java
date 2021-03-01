@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -248,6 +249,10 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
                 .listByResourceGroupAsync(resourceGroupName),
             res -> (GenericResourceInner) res));
