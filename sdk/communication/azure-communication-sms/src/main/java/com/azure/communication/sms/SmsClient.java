@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.sms;
-
-
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;

@@ -3,7 +3,6 @@
 
 package com.azure.communication.sms;
 
-
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
