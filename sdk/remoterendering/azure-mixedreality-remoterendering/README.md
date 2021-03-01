@@ -20,7 +20,7 @@ the lifetime of remote rendering sessions.
 
 ### Install the package
 
-**Note:** This version targets Azure Remote Rendering service API version v2021-01-01-preview.
+**Note:** This version targets Azure Remote Rendering service API version v2021-01-01.
 
 Add the following Maven dependency:
 
