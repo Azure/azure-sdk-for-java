@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 
 public class AzureServiceBusTopicAutoConfigurationTest {
@@ -113,7 +113,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
                               ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
                               ServiceBusTopicTemplate topicTemplate = context.getBean(ServiceBusTopicTemplate.class);
-                              assertTrue(messageConverter == topicTemplate.getMessageConverter());
+                              assertSame(messageConverter,topicTemplate.getMessageConverter());
                           });
     }
 
