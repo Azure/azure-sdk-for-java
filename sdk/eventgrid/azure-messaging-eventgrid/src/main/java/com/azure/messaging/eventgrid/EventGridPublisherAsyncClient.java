@@ -73,6 +73,7 @@ public final class EventGridPublisherAsyncClient<T> {
         ObjectSerializer eventDataSerializer, Class<T> eventClass) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
+            .apiVersion(serviceVersion.getVersion())
             .buildClient();
 
         // currently the service version is hardcoded into the Impl client, but once another service version gets

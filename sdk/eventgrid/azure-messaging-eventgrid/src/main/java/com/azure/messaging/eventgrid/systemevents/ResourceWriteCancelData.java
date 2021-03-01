@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceWriteCancelData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is raised
+ * when a resource create or update operation is canceled.
+ */
 @Fluent
 public final class ResourceWriteCancelData {
     /*
