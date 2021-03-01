@@ -594,6 +594,7 @@
         <module>sdk/healthbot</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
         <module>sdk/kusto</module>
         <module>sdk/loganalytics</module>
