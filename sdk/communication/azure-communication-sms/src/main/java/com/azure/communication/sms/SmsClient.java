@@ -5,7 +5,6 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.models.SmsSendOptions;
-import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -101,7 +100,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message,
-                                    SmsSendOptions smsOptions, Context context) {
+                                        SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message,
             smsOptions).block();
     }

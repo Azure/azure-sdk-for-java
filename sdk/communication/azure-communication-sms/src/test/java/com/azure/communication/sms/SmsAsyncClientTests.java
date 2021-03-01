@@ -5,7 +5,6 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.models.SmsSendOptions;
-import com.azure.communication.sms.models.SmsSendResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;

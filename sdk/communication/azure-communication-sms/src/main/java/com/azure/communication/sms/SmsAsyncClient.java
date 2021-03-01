@@ -5,11 +5,11 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
+import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.communication.sms.models.SmsSendOptions;
-import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -73,7 +73,7 @@ public final class SmsAsyncClient {
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
 
-            List<SmsSendResult> result = smsSendResponse.getValue();
+            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
             if (result.size() == 1) {
                 return Mono.just(result.get(0));
             } else {
@@ -124,7 +124,7 @@ public final class SmsAsyncClient {
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
 
-            Iterable<SmsSendResult> result = smsSendResponse.getValue();
+            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
             return Mono.just(result);
 
         } catch (NullPointerException ex) {
@@ -136,6 +136,15 @@ public final class SmsAsyncClient {
 
     }
 
+    private List<SmsSendResult>  convertSmsResults(Iterable<SmsSendResponseItem> resultsIterable) {
+        List <SmsSendResult> iterableWrapper = new ArrayList<>();
+        for (SmsSendResponseItem item : resultsIterable
+             ) {
+            iterableWrapper.add(new SmsSendResult(item));
+        }
+
+        return iterableWrapper;
+    }
 
     private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message,
                                                         SmsSendOptions smsOptions) {

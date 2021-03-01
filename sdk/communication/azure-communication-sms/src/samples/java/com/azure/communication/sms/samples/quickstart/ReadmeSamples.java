@@ -7,7 +7,7 @@ import java.util.List;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
-import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.communication.sms.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
