@@ -87,42 +87,6 @@ public class User implements Serializable {
 }
 ```
 
-By default, Spring framework uses 4 types of jms messages including `TextMessage`, `BytesMessage`, `MapMessage` and `ObjectMessage` for different message objects, and `Serializable` is implemented to use the `send` method in `JmsTemplate` in this sample which will generate `ObjectMessage`. Otherwise, a customized `MessageConverter` bean should be defined to serialize the content to json in text format. For more information about `MessageConverter`, see the official [Spring JMS starter project](https://spring.io/guides/gs/messaging-jms/).
-
-#### Configure bean of customized MessageConverter to modify Content Type of jms messages 
-Amqp protocol sets Content Type of each JmsMessage object according to its type.
-Developers can use customized MessageConverter to override content-type of messages. Define a customized MessageConverter and modify methods of creating jms messages, developers can use `AmqpJmsMessageFacade` to modify `Content Type`.
-
-For example, below code snippet sets Content Type of `BytesMessage` as `application/json`.
-
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L12-L35 -->
-```java
-import org.apache.qpid.jms.message.JmsBytesMessage;
-import org.apache.qpid.jms.provider.amqp.message.AmqpJmsMessageFacade;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.springframework.jms.support.converter.SimpleMessageConverter;
-import org.springframework.stereotype.Component;
-
-import javax.jms.BytesMessage;
-import javax.jms.JMSException;
-import javax.jms.Session;
-
-@Component
-public class CustomizedMessageConverter extends SimpleMessageConverter {
-    public static final String CONTENT_TYPE = "application/json";
-
-    @Override
-    protected BytesMessage createMessageForByteArray(byte[] bytes, Session session) throws JMSException {
-        BytesMessage bytesMessage = super.createMessageForByteArray(bytes, session);
-        JmsBytesMessage jmsBytesMessage = (JmsBytesMessage) bytesMessage;
-        AmqpJmsMessageFacade facade = (AmqpJmsMessageFacade) jmsBytesMessage.getFacade();
-        facade.setContentType(Symbol.valueOf(CONTENT_TYPE));
-        return jmsBytesMessage;
-    }
-
-}
-```
-
 #### Create a new class for the message send controller
 
 1. Create a Java file named *SendController.java* in the package directory of your app. Add the following code to the new file:
@@ -216,7 +180,39 @@ public class CustomizedMessageConverter extends SimpleMessageConverter {
         }
     }
     ```
+### Optional Service Bus functionality
+A customized `MessageConverter` bean can be used to convert between Java objects and JMS messages.
 
+#### Set [content-type][servicebus-message-payloads] of messages 
+
+Below code snippet sets content-type of `BytesMessage` as `application/json`.
+
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L25-L45 -->
+```java
+@Component
+public class CustomMessageConverter extends MappingJackson2MessageConverter {
+
+    private static final String TYPE_ID_PROPERTY = "_type";
+    private static final Symbol CONTENT_TYPE = Symbol.valueOf("application/json");
+
+    public CustomMessageConverter() {
+        this.setTargetType(MessageType.BYTES);
+        this.setTypeIdPropertyName(TYPE_ID_PROPERTY);
+    }
+
+    @Override
+    protected BytesMessage mapToBytesMessage(Object object, Session session, ObjectWriter objectWriter)
+        throws JMSException, IOException {
+        final BytesMessage bytesMessage = super.mapToBytesMessage(object, session, objectWriter);
+        JmsBytesMessage jmsBytesMessage = (JmsBytesMessage) bytesMessage;
+        AmqpJmsMessageFacade facade = (AmqpJmsMessageFacade) jmsBytesMessage.getFacade();
+        facade.setContentType(CONTENT_TYPE);
+        return jmsBytesMessage;
+    }
+}
+```
+
+For more information about `MessageConverter`, see the official [Spring JMS guide][spring_jms_guide].
 ## Troubleshooting
 If the JDK version you use is greater than 1.8, You may meet this problem: 
 ```
@@ -268,3 +264,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
+[spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
