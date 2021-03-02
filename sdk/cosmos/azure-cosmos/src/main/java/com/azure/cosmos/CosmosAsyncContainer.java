@@ -679,7 +679,8 @@ public class CosmosAsyncContainer {
             final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, transactionalBatchRequestOptions);
             final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
 
-            return database.getClient().getTracerProvider().traceEnabledBatchResponsePublisher(responseMono,
+            return database.getClient().getTracerProvider().
+                traceEnabledBatchResponsePublisher(responseMono,
                 context,
                 this.batchSpanName,
                 this.getId(),
