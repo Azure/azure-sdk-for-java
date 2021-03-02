@@ -114,7 +114,7 @@ public class DataLoader {
         return records.entrySet()
             .stream()
             .map(record -> {
-                final String partitionKey = String.valueOf(record.getKey().getPartitioningKey());
+                final String partitionKey = record.getKey().getPartitioningKey();
                 final ObjectNode value = record.getValue();
                 return BulkOperations.getCreateItemOperation(value, new PartitionKey(partitionKey));
             })

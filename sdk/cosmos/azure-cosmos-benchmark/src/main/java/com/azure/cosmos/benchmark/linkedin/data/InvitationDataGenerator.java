@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark.linkedin.data;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -35,6 +36,7 @@ public class InvitationDataGenerator implements Generator {
     private static final String CREATED = "created";
     private static final String LAST_MODIFIED = "lastModified";
     private static final String DELETED = "deleted";
+    private static final String TTL = "ttl";
 
     private static final JsonNodeFactory JSON_NODE_FACTORY_INSTANCE = JsonNodeFactory.withExactBigDecimals(true);
     private static final Random RANDOM_GENERATOR = new Random();
@@ -60,10 +62,10 @@ public class InvitationDataGenerator implements Generator {
         // Generate the intended number of records
         final Map<Key, ObjectNode> records = new HashMap<>();
         for (int index = 0; index < recordCount;) {
-            final long inviter = selectUser();
-            final long invitee = selectUser();
+            final String inviter = selectUser();
+            final String invitee = selectUser();
             final Key key = new Key(inviter, invitee);
-            if (inviter == invitee || records.containsKey(key)) {
+            if (inviter.equals(invitee) || records.containsKey(key)) {
                 continue;
             }
 
@@ -75,20 +77,19 @@ public class InvitationDataGenerator implements Generator {
         return records;
     }
 
-    private long selectUser() {
-        return (long) (RANDOM_GENERATOR.nextFloat() * (_modeledUserCount));
+    private String selectUser() {
+        final long userId = (long) (RANDOM_GENERATOR.nextFloat() * (_modeledUserCount));
+        return String.valueOf(userId);
     }
 
-    private ObjectNode generateRecord(final long inviter, final long invitee) {
+    private ObjectNode generateRecord(final String inviter, final String invitee) {
         final ObjectNode record = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        final String inviterValue = String.valueOf(inviter);
-        final String inviteeValue = String.valueOf(invitee);
-        record.set(ID, new TextNode(inviterValue));
-        record.set(PARTITIONING_KEY, new TextNode(inviteeValue));
+        record.set(ID, new TextNode(inviter));
+        record.set(PARTITIONING_KEY, new TextNode(invitee));
         record.set(ACTIVE, BooleanNode.getTrue());
         record.set(INVITATION_ID, new LongNode(RANDOM_GENERATOR.nextLong()));
-        record.set(INVITER, new TextNode(inviterValue));
-        record.set(INVITEE, new TextNode(inviteeValue));
+        record.set(INVITER, new TextNode(inviter));
+        record.set(INVITEE, new TextNode(invitee));
         record.set(INVITATION_STATE, new TextNode(INVITATION_STATE_PENDING));
         final long currentTimeMillis = System.currentTimeMillis();
         record.set(CREATED_AT, new LongNode(currentTimeMillis));
