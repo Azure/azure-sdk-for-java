@@ -391,6 +391,49 @@ public class CloudEventTests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("addAttributeIllegalArgumentTestData")
+    public void addAttributeIllegalArgument(String attributeName, Object value) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
+                CloudEventDataFormat.JSON, "application/json")
+                .addExtensionAttribute(attributeName, value);
+        });
+    }
+
+    private static Stream<Arguments> addAttributeIllegalArgumentTestData() {
+        return Stream.of(
+            Arguments.of("a_b", "value"),
+            Arguments.of("Ab", 1)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("addAttributeNullPointerTestData")
+    public void addAttributeNullPointer(String attributeName, Object value) {
+        assertThrows(NullPointerException.class, () -> {
+            new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
+                CloudEventDataFormat.JSON, "application/json")
+                .addExtensionAttribute(attributeName, value);
+        });
+    }
+
+    private static Stream<Arguments> addAttributeNullPointerTestData() {
+        return Stream.of(
+            Arguments.of(null, "value"),
+            Arguments.of("name", null)
+        );
+    }
+
+    @Test
+    public void addAttribute() {
+        assertDoesNotThrow(() -> {
+            new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
+                CloudEventDataFormat.JSON, "application/json")
+                .addExtensionAttribute("name", "value");
+        });
+    }
+
     private String getTestPayloadFromFile(String fileName) throws IOException {
         final ClassLoader classLoader = getClass().getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream("CloudEvent/" + fileName)) {

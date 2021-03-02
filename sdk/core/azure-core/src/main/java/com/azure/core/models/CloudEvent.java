@@ -391,8 +391,8 @@ public final class CloudEvent {
         Objects.requireNonNull(value, "'value' cannot be null.");
         if (!validateAttributeName(name)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'name' must have only lower-case alphanumeric characters and not be one of the CloudEvent reserved "
-                    + "attribute names"));
+                "Extension attribute 'name' must have only lower-case alphanumeric characters and not be one of the "
+                    + "CloudEvent reserved attribute names: " + String.join(",", RESERVED_ATTRIBUTE_NAMES)));
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();
