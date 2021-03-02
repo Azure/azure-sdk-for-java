@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -112,9 +113,10 @@ public final class Permission extends Resource {
      * @param partitionkey the partition key.
      */
     public void setResourcePartitionKey(PartitionKey partitionkey) {
-        BridgeInternal.setProperty(this,
-                                   Constants.Properties.RESOURCE_PARTITION_KEY,
-                                   BridgeInternal.getPartitionKeyInternal(partitionkey)
-                                       .toJson());
+        if(ModelBridgeInternal.getPartitionKeyObject(partitionkey) != null) {
+            BridgeInternal.setProperty(this,
+                Constants.Properties.RESOURCE_PARTITION_KEY,
+                new Object[]{ModelBridgeInternal.getPartitionKeyObject(partitionkey)});
+        }
     }
 }

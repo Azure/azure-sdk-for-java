@@ -171,6 +171,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Permission getPermission(CosmosPermissionProperties permissionProperties) {
+        return permissionProperties.getPermission();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromResults(List<Permission> results) {
         return CosmosPermissionProperties.getPermissions(results);
     }
