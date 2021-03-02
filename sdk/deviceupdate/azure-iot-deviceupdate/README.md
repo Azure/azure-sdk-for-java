@@ -40,7 +40,7 @@ All Device Update for IoT Hub service operations will throw a ErrorResponseExcep
 
 For example, if you use the `getUpdateAsync` operation and the model you are looking for doesn't exist, you can catch that specific [HttpStatusCode](https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode?view=netcore-3.1) to decide the operation that follows in that case.
 
-```csharp
+``` java
 try {
     Update update = client.getUpdates().getUpdateAsync(
       "provider", "name", "1.0.0.0")
@@ -65,3 +65,6 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
+<!-- LINKS -->
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdeviceupdate%2Fazure-iot-deviceupdate%2FREADME.png)
