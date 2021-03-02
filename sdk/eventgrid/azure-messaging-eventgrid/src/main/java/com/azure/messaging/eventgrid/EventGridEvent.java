@@ -3,14 +3,23 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.models.CloudEvent;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.TypeReference;
 
+import java.io.ByteArrayInputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * The EventGridEvent model. This represents events in the EventGrid schema to be used with the EventGrid service.
@@ -30,6 +39,12 @@ public final class EventGridEvent {
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
 
     private static final ClientLogger logger = new ClientLogger(EventGridEvent.class);
+    private static final JsonSerializer DESERIALIZER = JsonSerializerProviders.createInstance();
+
+    /*
+     * Cache serialized data for getData()
+     */
+    private BinaryData binaryData;
 
     /**
      * Create a new instance of the EventGridEvent, with the given required fields.
@@ -68,7 +83,24 @@ public final class EventGridEvent {
      * @throws NullPointerException if eventGridJsonString is {@code null}.
      */
     public static List<EventGridEvent> fromString(String eventGridJsonString) {
-        return EventGridDeserializer.deserializeEventGridEvents(eventGridJsonString);
+        try {
+            return Arrays.stream(DESERIALIZER
+                .deserialize(new ByteArrayInputStream(eventGridJsonString.getBytes(StandardCharsets.UTF_8)),
+                    TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class)))
+                .map(internalEvent -> {
+                    if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
+                        || internalEvent.getData() == null) {
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "'subject', 'type', and 'data' are mandatory attributes for an EventGridEvent. " +
+                                "Check if the input param is a JSON string for an EventGridEvent or an array of it."));
+                    }
+                    return new EventGridEvent(internalEvent);
+                })
+                .collect(Collectors.toList());
+        } catch (UncheckedIOException uncheckedIOException) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
+                uncheckedIOException.getCause()));
+        }
     }
 
 
@@ -127,7 +159,18 @@ public final class EventGridEvent {
      * @return A {@link BinaryData} that wraps the this event's data payload.
      */
     public BinaryData getData() {
-        return EventGridDeserializer.getData(event.getData());
+        if (this.binaryData == null) {
+            Object data = this.event.getData();
+            if (data instanceof byte[]) {
+                this.binaryData = BinaryData.fromBytes((byte[]) data);
+            }
+            if (data instanceof String) {
+                this.binaryData = BinaryData.fromString((String) data);
+            } else {
+                this.binaryData = BinaryData.fromObject(data);
+            }
+        }
+        return this.binaryData;
     }
 
     /**

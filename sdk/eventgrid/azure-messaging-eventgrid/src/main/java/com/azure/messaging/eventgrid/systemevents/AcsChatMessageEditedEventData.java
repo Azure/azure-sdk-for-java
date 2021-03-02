@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsChatMessageEditedEventData model. */
+/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageEdited event. */
 @Fluent
 public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBaseProperties {
     /*
@@ -60,6 +60,71 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      */
     public AcsChatMessageEditedEventData setEditTime(OffsetDateTime editTime) {
         this.editTime = editTime;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setSenderCommunicationIdentifier(
+            CommunicationIdentifierModel senderCommunicationIdentifier) {
+        super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setSenderDisplayName(String senderDisplayName) {
+        super.setSenderDisplayName(senderDisplayName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setComposeTime(OffsetDateTime composeTime) {
+        super.setComposeTime(composeTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setType(String type) {
+        super.setType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }
