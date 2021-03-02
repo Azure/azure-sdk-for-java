@@ -409,18 +409,6 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
         "Microsoft.Communication.ChatThreadWithUserDeleted";
 
-
-    put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
-    put(COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
-    put(COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
-    put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
-    put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER, AcsChatParticipantAddedToThreadWithUserEventData.class);
-    put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
-    put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);
-    put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
-    put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
-    put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
-
     public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED =
         "Microsoft.Communication.SMSDeliveryReportReceived";
     public static final String COMMUNICATION_SMS_RECEIVED =
@@ -530,8 +518,6 @@ public final class SystemEventNames {
         // ServiceBus events.
         put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS , ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
         put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER , ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
-        put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
-        put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
         //
         // Storage events.
         put(STORAGE_BLOB_CREATED , StorageBlobCreatedEventData.class);
@@ -547,16 +533,6 @@ public final class SystemEventNames {
         put(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER, AcsChatThreadCreatedWithUserEventData.class);
         put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER, AcsChatThreadPropertiesUpdatedPerUserEventData.class);
         put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatParticipantAddedToThreadEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatParticipantAddedToThreadWithUserEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatParticipantRemovedFromThreadWithUserEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatThreadCreatedEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatThreadDeletedEventData.class);
-        put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatThreadPropertiesUpdatedEventData.class);
         put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
         put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
 
