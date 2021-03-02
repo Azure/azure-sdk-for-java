@@ -52,7 +52,7 @@
       },
       "COMMUNICATION_SERVICE_ENDPOINT": {
         "type": "string",
-        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
+        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), parameters('endpointSuffix'))]"
       },
       "COMMUNICATION_SERVICE_ACCESS_KEY": {
         "type": "string",
