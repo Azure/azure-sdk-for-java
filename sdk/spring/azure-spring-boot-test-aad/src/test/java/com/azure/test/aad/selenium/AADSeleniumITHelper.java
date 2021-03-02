@@ -19,6 +19,8 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
+
     private String username;
     private String password;
 
@@ -46,10 +48,21 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         driver.get(app.root() + "oauth2/authorization/azure");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+            try {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+            } catch (Exception exception) {
+                // Sometimes AAD cannot locate the user account and will ask to select it's a work account or personal account.
+                // Here select work accout.
+                // https://docs.microsoft.com/azure/devops/organizations/accounts/faq-azure-access?view=azure-devops#q-why-do-i-have-to-choose-between-a-work-or-school-account-and-my-personal-account
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aadTileTitle"))).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+            }
         } catch (Exception exception) {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aadTileTitle"))).click();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+            String passwdUrl = driver.getCurrentUrl();
+            LOGGER.info(passwdUrl);
+            String pageSource = driver.getPageSource();
+            LOGGER.info(pageSource);
+            throw exception;
         }
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
