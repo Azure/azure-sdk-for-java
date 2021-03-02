@@ -1,21 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation.throughputControl.config;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
-import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-/**
- * Group configuration which will be used in Throughput control.
- */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class ThroughputControlGroup {
-    private final ThroughputControlMode controlMode;
+public abstract class ThroughputControlGroupInternal {
     private final String groupName;
     private final String id;
     private final boolean isDefault;
@@ -23,12 +17,11 @@ public class ThroughputControlGroup {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
 
-    ThroughputControlGroup(
+    public ThroughputControlGroupInternal(
         String groupName,
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
-        ThroughputControlMode controlMode,
         boolean isDefault) {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
@@ -42,10 +35,13 @@ public class ThroughputControlGroup {
         this.targetContainer = targetContainer;
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
-        this.controlMode = controlMode;
         this.isDefault = isDefault;
 
-        this.id = this.getId();
+        this.id = String.format(
+            "%s/%s/%s",
+            this.targetContainer.getDatabase().getId(),
+            this.targetContainer.getId(),
+            this.groupName);
     }
 
     /**
@@ -53,7 +49,6 @@ public class ThroughputControlGroup {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.groupName;
     }
@@ -63,7 +58,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link CosmosAsyncContainer}.
      */
-    CosmosAsyncContainer getTargetContainer() {
+    public CosmosAsyncContainer getTargetContainer() {
         return this.targetContainer;
     }
 
@@ -75,7 +70,6 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.targetThroughput;
     }
@@ -88,7 +82,6 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput threshold.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
@@ -97,20 +90,16 @@ public class ThroughputControlGroup {
      * Get whether this throughput control group will be used by default.
      *
      * By default, it is false.
+     * If it is true, requests without explicit override of the throughput control group will be routed to this group.
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
     }
 
-    ThroughputControlMode getControlMode() {
-        return this.controlMode;
-    }
-
-    private String getId() {
-        return this.targetContainer.getDatabase().getId() + "." + this.targetContainer.getId() + "." + this.groupName;
+    public String getId() {
+        return this.id;
     }
 
     @Override
@@ -123,7 +112,7 @@ public class ThroughputControlGroup {
             return false;
         }
 
-        ThroughputControlGroup that = (ThroughputControlGroup) other;
+        ThroughputControlGroupInternal that = (ThroughputControlGroupInternal) other;
 
         return StringUtils.equals(this.id, that.id);
     }
