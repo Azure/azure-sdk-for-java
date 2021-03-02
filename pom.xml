@@ -578,6 +578,7 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
+        <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
         <module>sdk/boms</module>
         <module>sdk/cognitiveservices</module>
