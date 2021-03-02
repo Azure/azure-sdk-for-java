@@ -15,6 +15,10 @@ public class Constants {
     public final static String TOO_MANY_REQUESTS = "TooManyRequests";
     public final static String DELETED_INDICATOR = "__deletedTs__";
 
+    // IndexingPolicy Constants
+    public static final String PARTITIONING_KEY_INDEXING_INCLUDE_PATH = "/" + PARTITION_KEY + "/*";
+    public static final String WILDCARD_INDEXING_EXCLUDE_PATH = "/*";
+
     private Constants() {
     }
 }

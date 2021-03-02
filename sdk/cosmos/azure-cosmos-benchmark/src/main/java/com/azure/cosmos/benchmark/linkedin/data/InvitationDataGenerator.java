@@ -20,7 +20,7 @@ import java.util.UUID;
 import static com.azure.cosmos.benchmark.linkedin.impl.Constants.PARTITION_KEY;
 
 
-public class InvitationDataGenerator {
+public class InvitationDataGenerator implements Generator {
 
     private static final String ID = Constants.ID;
     private static final String PARTITIONING_KEY = PARTITION_KEY;
@@ -51,16 +51,17 @@ public class InvitationDataGenerator {
     }
 
     /**
-     * Generates the desired batch of records
+     * Generates the desired batch of records for the Invitation entity
      *
-     * @param invitationRecordCount Number of records we want to create in this invocation
+     * @param recordCount Number of records we want to create in this invocation
      * @return Map containing desired count of record key to value entries
      */
-    public Map<Key, ObjectNode> generate(int invitationRecordCount) {
+    @Override
+    public Map<Key, ObjectNode> generate(int recordCount) {
 
         // Generate the intended number of records
         final Map<Key, ObjectNode> records = new HashMap<>();
-        for (int index = 0; index < invitationRecordCount;) {
+        for (int index = 0; index < recordCount;) {
             final String inviter = selectUser();
             final String invitee = selectUser();
             final Key key = new Key(inviter, invitee);
@@ -94,10 +95,6 @@ public class InvitationDataGenerator {
         record.set(CREATED_AT, new LongNode(currentTimeMillis));
         record.set(VALIDATION_TOKEN, new TextNode(UUID.randomUUID().toString()));
         record.set(CHANGE_TIMESTAMPS, generateChangeTimestamp(currentTimeMillis));
-        // TTL Field is an integer on the CosmosDB storage layer, representing seconds since lastModified to expire
-        // the document. This value can not be greater than MAX_INT
-        //      Ref: https://docs.microsoft.com/en-us/azure/cosmos-db/time-to-live
-        record.set(TTL, new IntNode(86400));
         return record;
     }
 
