@@ -4,7 +4,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatchItemRequestOptions {
+public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatchItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -35,7 +35,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        super.setIfMatchETag(ifMatchETag);
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
@@ -47,7 +47,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        super.setIfNoneMatchETag(ifNoneMatchEtag);
+        this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
     }
 

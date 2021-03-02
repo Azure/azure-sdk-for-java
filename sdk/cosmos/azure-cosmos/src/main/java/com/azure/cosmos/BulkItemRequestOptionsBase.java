@@ -17,6 +17,9 @@ public abstract class BulkItemRequestOptionsBase {
     protected String ifNoneMatchETag;
     protected Boolean contentResponseOnWriteEnabled;
 
+    private void BulkItemRequestOptionsBase() {
+    }
+
     /**
      * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
      *
