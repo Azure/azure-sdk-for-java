@@ -238,7 +238,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (partitionKeyAndResourceTokenPairs == null) {
                     partitionKeyAndResourceTokenPairs = new ArrayList<>();
                     this.resourceTokensMap.put(pathInfo.resourceIdOrFullName, partitionKeyAndResourceTokenPairs);
-                    logger.info("The full resouce address: " + pathInfo.resourceIdOrFullName);
                 }
 
                 PartitionKey partitionKey = permission.getResourcePartitionKey();
@@ -1517,7 +1516,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return this.firstResourceTokenFromPermissionFeed;
             }
 
-            logger.info("The most confusing part: " + requestVerb + ";" + resourceName + ":" + resourceType);
             return ResourceTokenAuthorizationHelper.getAuthorizationTokenUsingResourceTokens(resourceTokensMap, requestVerb, resourceName, headers);
         }
     }
