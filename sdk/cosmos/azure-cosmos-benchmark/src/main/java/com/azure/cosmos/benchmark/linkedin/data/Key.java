@@ -9,23 +9,25 @@ import java.util.Objects;
 
 /**
  * Data struct to ensure the unique-ness constraint for id + partitioningKey for
- * any CosmosDBRecord is preserved when we generate the data
+ * any CosmosDBRecord is preserved when we generate the data.
+ *
+ * The keys are modeled as longs, though we map the id to
  */
 public class Key {
 
-    private final String _id;
-    private final String _partitioningKey;
+    private final long _id;
+    private final long _partitioningKey;
 
-    public Key(final String id, final String partitioningKey) {
+    public Key(final long id, final long partitioningKey) {
         _id = id;
         _partitioningKey = partitioningKey;
     }
 
-    public String getId() {
+    public long getId() {
         return _id;
     }
 
-    public String getPartitioningKey() {
+    public long getPartitioningKey() {
         return _partitioningKey;
     }
 

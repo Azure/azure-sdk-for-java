@@ -21,13 +21,13 @@ public class KeyExtractorImpl implements KeyExtractor<Key> {
     @Override
     public String getId(final Key key) {
         Preconditions.checkNotNull(key, "The key can't be null");
-        return key.getId();
+        return String.valueOf(key.getId());
     }
 
     @Override
     public String getPartitioningKey(final Key key) {
         Preconditions.checkNotNull(key, "The key can't be null");
-        return key.getPartitioningKey();
+        return String.valueOf(key.getPartitioningKey());
     }
 
     @Override
@@ -40,6 +40,6 @@ public class KeyExtractorImpl implements KeyExtractor<Key> {
     public Key getKey(String id, String partitioningKey) {
         Preconditions.checkNotNull(id, "The id from CosmosDB can't be null");
         Preconditions.checkNotNull(partitioningKey, "The partitioningKey from CosmosDB can't be null");
-        return new Key(id, partitioningKey);
+        return new Key(Long.parseLong(id), Long.parseLong(partitioningKey));
     }
 }
