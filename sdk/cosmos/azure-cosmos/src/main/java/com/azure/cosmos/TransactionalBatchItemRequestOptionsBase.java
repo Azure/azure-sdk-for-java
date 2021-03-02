@@ -14,9 +14,6 @@ public abstract class TransactionalBatchItemRequestOptionsBase<T> {
     protected String ifMatchETag;
     protected String ifNoneMatchETag;
 
-    private void TransactionalBatchItemRequestOptionsBase(){
-    }
-
     /**
      * Gets the If-Match (ETag) associated with the operation in TransactionalBatch.
      *
