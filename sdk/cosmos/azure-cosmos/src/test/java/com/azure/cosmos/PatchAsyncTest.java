@@ -153,6 +153,9 @@ public class PatchAsyncTest extends BatchTestBase {
         BulkPatchItemRequestOptions contentResponseDisableRequestOption = new BulkPatchItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
+        BulkItemRequestOptions contentItemResponseDisableRequestOption = new BulkItemRequestOptions()
+            .setContentResponseOnWriteEnabled(false);
+
         CosmosPatchOperations cosmosPatchOperationsContinue = CosmosPatchOperations.create();
         int costFinalValue = 200;
         cosmosPatchOperationsContinue.replace("/cost", costFinalValue);
@@ -172,7 +175,7 @@ public class PatchAsyncTest extends BatchTestBase {
                 testDocToReplace.getId(),
                 testDocToReplace,
                 new PartitionKey(this.partitionKey1),
-                contentResponseDisableRequestOption));
+                contentItemResponseDisableRequestOption));
 
         BulkPatchItemRequestOptions patchContentResponseDisableRequestOption = new BulkPatchItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
