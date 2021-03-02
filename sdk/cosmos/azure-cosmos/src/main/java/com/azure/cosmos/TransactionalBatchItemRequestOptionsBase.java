@@ -10,7 +10,7 @@ import com.azure.cosmos.util.Beta;
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
 @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public abstract class TransactionalBatchItemRequestOptionsBase {
+public abstract class TransactionalBatchItemRequestOptionsBase<T> {
     protected String ifMatchETag;
     protected String ifNoneMatchETag;
 
@@ -34,7 +34,7 @@ public abstract class TransactionalBatchItemRequestOptionsBase {
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract  <T> T setIfMatchETag(final String ifMatchETag);
+    public abstract  T setIfMatchETag(final String ifMatchETag);
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
@@ -53,7 +53,7 @@ public abstract class TransactionalBatchItemRequestOptionsBase {
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract  <T> T setIfNoneMatchETag(final String ifNoneMatchEtag);
+    public abstract T setIfNoneMatchETag(final String ifNoneMatchEtag);
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();

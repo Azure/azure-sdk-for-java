@@ -11,7 +11,7 @@ import com.azure.cosmos.util.Beta;
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public abstract class BulkItemRequestOptionsBase {
+public abstract class BulkItemRequestOptionsBase<T> {
 
     protected String ifMatchETag;
     protected String ifNoneMatchETag;
@@ -37,7 +37,7 @@ public abstract class BulkItemRequestOptionsBase {
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract <T> T setIfMatchETag(final String ifMatchETag);
+    public abstract T setIfMatchETag(final String ifMatchETag);
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
@@ -56,7 +56,7 @@ public abstract class BulkItemRequestOptionsBase {
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract <T> T setIfNoneMatchETag(final String ifNoneMatchEtag);
+    public abstract T setIfNoneMatchETag(final String ifNoneMatchEtag);
 
     /**
      * Gets the boolean to only return the headers and status code in Cosmos DB response
@@ -96,7 +96,7 @@ public abstract class BulkItemRequestOptionsBase {
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract <T> T setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled);
+    public abstract T setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled);
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();

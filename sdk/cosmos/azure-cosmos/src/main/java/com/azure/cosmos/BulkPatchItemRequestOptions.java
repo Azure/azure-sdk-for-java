@@ -11,7 +11,7 @@ import com.azure.cosmos.util.Beta;
  * creating bulk patch request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase {
+public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase<BulkPatchItemRequestOptions> {
     private String filterPredicate;
 
     /**
@@ -25,11 +25,10 @@ public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBas
     }
 
     /**
-     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service. for example: {@code setFilterPredicate("from c where c.taskNum = 3")}.
      *
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
-     * @sample "from c where c.taskNum = 3"
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
