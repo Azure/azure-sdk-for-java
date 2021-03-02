@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.implementation.ChatThreadImpl;
+import com.azure.communication.chat.implementation.ChatThreadsImpl;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -56,13 +56,13 @@ public final class ChatThreadAsyncClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadAsyncClient.class);
 
     private final AzureCommunicationChatServiceImpl chatServiceClient;
-    private final ChatThreadImpl chatThreadClient;
+    private final ChatThreadsImpl chatThreadClient;
 
     private final String chatThreadId;
 
     ChatThreadAsyncClient(AzureCommunicationChatServiceImpl chatServiceClient, String chatThreadId) {
         this.chatServiceClient = chatServiceClient;
-        this.chatThreadClient = chatServiceClient.getChatThreadClient();
+        this.chatThreadClient = chatServiceClient.getChatThreads();
         this.chatThreadId = chatThreadId;
     }
 

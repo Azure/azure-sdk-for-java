@@ -5,7 +5,6 @@ package com.azure.communication.chat;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -113,7 +112,7 @@ public class ChatClientTestBase extends TestBase {
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, ErrorException.class, expectedStatusCode);
+        assertRestException(exception, CommunicationErrorResponseException.class, expectedStatusCode);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {

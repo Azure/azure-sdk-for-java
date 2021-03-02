@@ -385,10 +385,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                     .concatWith(client.createChatThread(threadRequest)))
             .assertNext(chatThreadClient -> {
                 // Act & Assert
-                PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads());
+                PagedIterable<ChatThreadItem> threadsResponse = new PagedIterable<>(client.listChatThreads());
 
                 // process the iterableByPage
-                List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+                List<ChatThreadItem> returnedThreads = new ArrayList<ChatThreadItem>();
                 threadsResponse.iterableByPage().forEach(resp -> {
                     assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedThreads.add(item));
@@ -414,10 +414,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 .concatWith(client.createChatThread(threadRequest)))
             .assertNext(chatThreadClient -> {
                 // Act & Assert
-                PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads(options));
+                PagedIterable<ChatThreadItem> threadsResponse = new PagedIterable<>(client.listChatThreads(options));
 
                 // process the iterableByPage
-                List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+                List<ChatThreadItem> returnedThreads = new ArrayList<ChatThreadItem>();
                 threadsResponse.iterableByPage().forEach(resp -> {
                     assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedThreads.add(item));

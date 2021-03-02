@@ -4,9 +4,10 @@
 
 package com.azure.communication.chat.implementation.models;
 
-import com.azure.communication.chat.models.CreateChatThreadErrors;
+import com.azure.communication.chat.models.CommunicationError;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Result of the create chat thread operation. */
 @Fluent
@@ -18,10 +19,10 @@ public final class CreateChatThreadResult {
     private ChatThread chatThread;
 
     /*
-     * Errors encountered during the creation of the chat thread.
+     * The participants that failed to be added to the chat thread.
      */
-    @JsonProperty(value = "errors")
-    private CreateChatThreadErrors errors;
+    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CommunicationError> invalidParticipants;
 
     /**
      * Get the chatThread property: Chat thread.
@@ -44,22 +45,11 @@ public final class CreateChatThreadResult {
     }
 
     /**
-     * Get the errors property: Errors encountered during the creation of the chat thread.
+     * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
      *
-     * @return the errors value.
+     * @return the invalidParticipants value.
      */
-    public CreateChatThreadErrors getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors encountered during the creation of the chat thread.
-     *
-     * @param errors the errors value to set.
-     * @return the CreateChatThreadResult object itself.
-     */
-    public CreateChatThreadResult setErrors(CreateChatThreadErrors errors) {
-        this.errors = errors;
-        return this;
+    public List<CommunicationError> getInvalidParticipants() {
+        return this.invalidParticipants;
     }
 }

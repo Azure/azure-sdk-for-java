@@ -12,11 +12,11 @@ import com.azure.communication.chat.implementation.models.ChatMessagesCollection
 import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.core.annotation.BodyParam;
@@ -46,7 +46,7 @@ import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ChatThreads. */
-public final class ChatThreadImpl {
+public final class ChatThreadsImpl {
     /** The proxy service used to perform REST calls. */
     private final ChatThreadsService service;
 
@@ -58,9 +58,9 @@ public final class ChatThreadImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ChatThreadImpl(AzureCommunicationChatServiceImpl client) {
+    ChatThreadsImpl(AzureCommunicationChatServiceImpl client) {
         this.service =
-            RestProxy.create(ChatThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                RestProxy.create(ChatThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -75,163 +75,163 @@ public final class ChatThreadImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceipts(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("maxPageSize") Integer maxPageSize,
-            @QueryParam("skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/chat/threads/{chatThreadId}/readReceipts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> sendChatReadReceipt(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SendReadReceiptRequest sendReadReceiptRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") SendReadReceiptRequest sendReadReceiptRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/chat/threads/{chatThreadId}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<SendChatMessageResult>> sendChatMessage(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SendChatMessageOptions sendChatMessageRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") SendChatMessageOptions sendChatMessageRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/chat/threads/{chatThreadId}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessagesCollection>> listChatMessages(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("maxPageSize") Integer maxPageSize,
-            @QueryParam("startTime") OffsetDateTime startTime,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("startTime") OffsetDateTime startTime,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessage>> getChatMessage(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @PathParam("chatMessageId") String chatMessageId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @PathParam("chatMessageId") String chatMessageId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Patch("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> updateChatMessage(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @PathParam("chatMessageId") String chatMessageId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/merge-patch+json") UpdateChatMessageOptions updateChatMessageRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @PathParam("chatMessageId") String chatMessageId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") UpdateChatMessageOptions updateChatMessageRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> deleteChatMessage(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @PathParam("chatMessageId") String chatMessageId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @PathParam("chatMessageId") String chatMessageId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/chat/threads/{chatThreadId}/typing")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> sendTypingNotification(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/chat/threads/{chatThreadId}/participants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatParticipantsCollection>> listChatParticipants(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("maxPageSize") Integer maxPageSize,
-            @QueryParam("skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/chat/threads/{chatThreadId}/participants/:remove")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> removeChatParticipant(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CommunicationIdentifierModel participantCommunicationIdentifier,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CommunicationIdentifierModel participantCommunicationIdentifier,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/chat/threads/{chatThreadId}/participants/:add")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<AddChatParticipantsResult>> addChatParticipants(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Patch("/chat/threads/{chatThreadId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> updateChatThread(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/merge-patch+json") UpdateChatThreadOptions updateChatThreadRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") UpdateChatThreadOptions updateChatThreadRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceiptsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessagesCollection>> listChatMessagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatParticipantsCollection>> listChatParticipantsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -247,27 +247,27 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip) {
+            String chatThreadId, Integer maxPageSize, Integer skip) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.listChatReadReceipts(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    maxPageSize,
-                    skip,
-                    this.client.getApiVersion(),
-                    accept,
-                    context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context ->
+                                service.listChatReadReceipts(
+                                        this.client.getEndpoint(),
+                                        chatThreadId,
+                                        maxPageSize,
+                                        skip,
+                                        this.client.getApiVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -284,25 +284,25 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         final String accept = "application/json";
         return service.listChatReadReceipts(
-            this.client.getEndpoint(),
-            chatThreadId,
-            maxPageSize,
-            skip,
-            this.client.getApiVersion(),
-            accept,
-            context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        this.client.getEndpoint(),
+                        chatThreadId,
+                        maxPageSize,
+                        skip,
+                        this.client.getApiVersion(),
+                        accept,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -318,10 +318,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip) {
+            String chatThreadId, Integer maxPageSize, Integer skip) {
         return new PagedFlux<>(
-            () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
-            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
+                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
+                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -338,8 +338,8 @@ public final class ChatThreadImpl {
         final Integer maxPageSize = null;
         final Integer skip = null;
         return new PagedFlux<>(
-            () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
-            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
+                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
+                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -356,10 +356,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         return new PagedFlux<>(
-            () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
-            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink, context));
+                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
+                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -375,7 +375,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(
-        String chatThreadId, Integer maxPageSize, Integer skip) {
+            String chatThreadId, Integer maxPageSize, Integer skip) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId, maxPageSize, skip));
     }
 
@@ -409,7 +409,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId, maxPageSize, skip, context));
     }
 
@@ -425,17 +425,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
-        String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.sendChatReadReceipt(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    sendReadReceiptRequest,
-                    accept,
-                    context));
+                context ->
+                        service.sendChatReadReceipt(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                sendReadReceiptRequest,
+                                accept,
+                                context));
     }
 
     /**
@@ -451,15 +451,15 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
-        String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
         final String accept = "application/json";
         return service.sendChatReadReceipt(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            sendReadReceiptRequest,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                sendReadReceiptRequest,
+                accept,
+                context);
     }
 
     /**
@@ -475,7 +475,7 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -491,9 +491,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendChatReadReceiptAsync(
-        String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -523,7 +523,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendChatReadReceiptWithResponse(
-        String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context).block();
     }
 
@@ -539,17 +539,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-        String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.sendChatMessage(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    sendChatMessageRequest,
-                    accept,
-                    context));
+                context ->
+                        service.sendChatMessage(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                sendChatMessageRequest,
+                                accept,
+                                context));
     }
 
     /**
@@ -565,15 +565,15 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-        String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
         final String accept = "application/json";
         return service.sendChatMessage(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            sendChatMessageRequest,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                sendChatMessageRequest,
+                accept,
+                context);
     }
 
     /**
@@ -588,16 +588,16 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendChatMessageResult> sendChatMessageAsync(
-        String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
         return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest)
-            .flatMap(
-                (Response<SendChatMessageResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<SendChatMessageResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -613,16 +613,16 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendChatMessageResult> sendChatMessageAsync(
-        String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
         return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context)
-            .flatMap(
-                (Response<SendChatMessageResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<SendChatMessageResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -653,7 +653,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendChatMessageResult> sendChatMessageWithResponse(
-        String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
         return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context).block();
     }
 
@@ -671,27 +671,27 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.listChatMessages(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    maxPageSize,
-                    startTime,
-                    this.client.getApiVersion(),
-                    accept,
-                    context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context ->
+                                service.listChatMessages(
+                                        this.client.getEndpoint(),
+                                        chatThreadId,
+                                        maxPageSize,
+                                        startTime,
+                                        this.client.getApiVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -709,25 +709,25 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
         final String accept = "application/json";
         return service.listChatMessages(
-            this.client.getEndpoint(),
-            chatThreadId,
-            maxPageSize,
-            startTime,
-            this.client.getApiVersion(),
-            accept,
-            context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        this.client.getEndpoint(),
+                        chatThreadId,
+                        maxPageSize,
+                        startTime,
+                        this.client.getApiVersion(),
+                        accept,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -744,10 +744,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessage> listChatMessagesAsync(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
         return new PagedFlux<>(
-            () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
-            nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
+                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
+                nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -764,8 +764,8 @@ public final class ChatThreadImpl {
         final Integer maxPageSize = null;
         final OffsetDateTime startTime = null;
         return new PagedFlux<>(
-            () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
-            nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
+                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
+                nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -783,10 +783,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessage> listChatMessagesAsync(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
         return new PagedFlux<>(
-            () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime, context),
-            nextLink -> listChatMessagesNextSinglePageAsync(nextLink, context));
+                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime, context),
+                nextLink -> listChatMessagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -803,7 +803,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessage> listChatMessages(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
         return new PagedIterable<>(listChatMessagesAsync(chatThreadId, maxPageSize, startTime));
     }
 
@@ -838,7 +838,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessage> listChatMessages(
-        String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
+            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
         return new PagedIterable<>(listChatMessagesAsync(chatThreadId, maxPageSize, startTime, context));
     }
 
@@ -856,14 +856,14 @@ public final class ChatThreadImpl {
     public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.getChatMessage(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    chatMessageId,
-                    this.client.getApiVersion(),
-                    accept,
-                    context));
+                context ->
+                        service.getChatMessage(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                chatMessageId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -879,10 +879,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(
-        String chatThreadId, String chatMessageId, Context context) {
+            String chatThreadId, String chatMessageId, Context context) {
         final String accept = "application/json";
         return service.getChatMessage(
-            this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -898,14 +898,14 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatMessage> getChatMessageAsync(String chatThreadId, String chatMessageId) {
         return getChatMessageWithResponseAsync(chatThreadId, chatMessageId)
-            .flatMap(
-                (Response<ChatMessage> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<ChatMessage> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -922,14 +922,14 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatMessage> getChatMessageAsync(String chatThreadId, String chatMessageId, Context context) {
         return getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context)
-            .flatMap(
-                (Response<ChatMessage> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<ChatMessage> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -960,7 +960,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChatMessage> getChatMessageWithResponse(
-        String chatThreadId, String chatMessageId, Context context) {
+            String chatThreadId, String chatMessageId, Context context) {
         return getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context).block();
     }
 
@@ -977,18 +977,18 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-        String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.updateChatMessage(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    chatMessageId,
-                    this.client.getApiVersion(),
-                    updateChatMessageRequest,
-                    accept,
-                    context));
+                context ->
+                        service.updateChatMessage(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                chatMessageId,
+                                this.client.getApiVersion(),
+                                updateChatMessageRequest,
+                                accept,
+                                context));
     }
 
     /**
@@ -1005,19 +1005,19 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-        String chatThreadId,
-        String chatMessageId,
-        UpdateChatMessageOptions updateChatMessageRequest,
-        Context context) {
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
         final String accept = "application/json";
         return service.updateChatMessage(
-            this.client.getEndpoint(),
-            chatThreadId,
-            chatMessageId,
-            this.client.getApiVersion(),
-            updateChatMessageRequest,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                chatMessageId,
+                this.client.getApiVersion(),
+                updateChatMessageRequest,
+                accept,
+                context);
     }
 
     /**
@@ -1033,9 +1033,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateChatMessageAsync(
-        String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1052,12 +1052,12 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateChatMessageAsync(
-        String chatThreadId,
-        String chatMessageId,
-        UpdateChatMessageOptions updateChatMessageRequest,
-        Context context) {
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1072,7 +1072,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateChatMessage(
-        String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
         updateChatMessageAsync(chatThreadId, chatMessageId, updateChatMessageRequest).block();
     }
 
@@ -1090,12 +1090,12 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateChatMessageWithResponse(
-        String chatThreadId,
-        String chatMessageId,
-        UpdateChatMessageOptions updateChatMessageRequest,
-        Context context) {
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context)
-            .block();
+                .block();
     }
 
     /**
@@ -1112,14 +1112,14 @@ public final class ChatThreadImpl {
     public Mono<Response<Void>> deleteChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.deleteChatMessage(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    chatMessageId,
-                    this.client.getApiVersion(),
-                    accept,
-                    context));
+                context ->
+                        service.deleteChatMessage(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                chatMessageId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -1135,10 +1135,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatMessageWithResponseAsync(
-        String chatThreadId, String chatMessageId, Context context) {
+            String chatThreadId, String chatMessageId, Context context) {
         final String accept = "application/json";
         return service.deleteChatMessage(
-            this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1154,7 +1154,7 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatMessageAsync(String chatThreadId, String chatMessageId) {
         return deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1171,7 +1171,7 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatMessageAsync(String chatThreadId, String chatMessageId, Context context) {
         return deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1217,9 +1217,9 @@ public final class ChatThreadImpl {
     public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.sendTypingNotification(
-                    this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
+                context ->
+                        service.sendTypingNotification(
+                                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -1236,7 +1236,7 @@ public final class ChatThreadImpl {
     public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId, Context context) {
         final String accept = "application/json";
         return service.sendTypingNotification(
-            this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1266,7 +1266,7 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotificationAsync(String chatThreadId, Context context) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1310,27 +1310,27 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip) {
+            String chatThreadId, Integer maxPageSize, Integer skip) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.listChatParticipants(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    maxPageSize,
-                    skip,
-                    this.client.getApiVersion(),
-                    accept,
-                    context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context ->
+                                service.listChatParticipants(
+                                        this.client.getEndpoint(),
+                                        chatThreadId,
+                                        maxPageSize,
+                                        skip,
+                                        this.client.getApiVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1347,25 +1347,25 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         final String accept = "application/json";
         return service.listChatParticipants(
-            this.client.getEndpoint(),
-            chatThreadId,
-            maxPageSize,
-            skip,
-            this.client.getApiVersion(),
-            accept,
-            context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        this.client.getEndpoint(),
+                        chatThreadId,
+                        maxPageSize,
+                        skip,
+                        this.client.getApiVersion(),
+                        accept,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1381,10 +1381,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatParticipant> listChatParticipantsAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip) {
+            String chatThreadId, Integer maxPageSize, Integer skip) {
         return new PagedFlux<>(
-            () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
-            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
+                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
+                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1401,8 +1401,8 @@ public final class ChatThreadImpl {
         final Integer maxPageSize = null;
         final Integer skip = null;
         return new PagedFlux<>(
-            () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
-            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
+                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
+                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1419,10 +1419,10 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatParticipant> listChatParticipantsAsync(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         return new PagedFlux<>(
-            () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
-            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink, context));
+                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
+                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1471,7 +1471,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatParticipant> listChatParticipants(
-        String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
         return new PagedIterable<>(listChatParticipantsAsync(chatThreadId, maxPageSize, skip, context));
     }
 
@@ -1487,17 +1487,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.removeChatParticipant(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    participantCommunicationIdentifier,
-                    accept,
-                    context));
+                context ->
+                        service.removeChatParticipant(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                participantCommunicationIdentifier,
+                                accept,
+                                context));
     }
 
     /**
@@ -1513,15 +1513,15 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         final String accept = "application/json";
         return service.removeChatParticipant(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            participantCommunicationIdentifier,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                participantCommunicationIdentifier,
+                accept,
+                context);
     }
 
     /**
@@ -1536,9 +1536,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeChatParticipantAsync(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1554,9 +1554,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeChatParticipantAsync(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1570,7 +1570,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeChatParticipant(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
         removeChatParticipantAsync(chatThreadId, participantCommunicationIdentifier).block();
     }
 
@@ -1587,9 +1587,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeChatParticipantWithResponse(
-        String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
-            .block();
+                .block();
     }
 
     /**
@@ -1604,17 +1604,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.addChatParticipants(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    addChatParticipantsRequest,
-                    accept,
-                    context));
+                context ->
+                        service.addChatParticipants(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                addChatParticipantsRequest,
+                                accept,
+                                context));
     }
 
     /**
@@ -1630,15 +1630,15 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         final String accept = "application/json";
         return service.addChatParticipants(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            addChatParticipantsRequest,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                addChatParticipantsRequest,
+                accept,
+                context);
     }
 
     /**
@@ -1653,16 +1653,16 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest)
-            .flatMap(
-                (Response<AddChatParticipantsResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<AddChatParticipantsResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1678,16 +1678,16 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context)
-            .flatMap(
-                (Response<AddChatParticipantsResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<AddChatParticipantsResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1702,7 +1702,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddChatParticipantsResult addChatParticipants(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
         return addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest).block();
     }
 
@@ -1719,7 +1719,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddChatParticipantsResult> addChatParticipantsWithResponse(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context).block();
     }
 
@@ -1735,17 +1735,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatThreadWithResponseAsync(
-        String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.updateChatThread(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    updateChatThreadRequest,
-                    accept,
-                    context));
+                context ->
+                        service.updateChatThread(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                updateChatThreadRequest,
+                                accept,
+                                context));
     }
 
     /**
@@ -1761,15 +1761,15 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatThreadWithResponseAsync(
-        String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         final String accept = "application/json";
         return service.updateChatThread(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            updateChatThreadRequest,
-            accept,
-            context);
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                updateChatThreadRequest,
+                accept,
+                context);
     }
 
     /**
@@ -1785,7 +1785,7 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateChatThreadAsync(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
         return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1801,9 +1801,9 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateChatThreadAsync(
-        String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1833,7 +1833,7 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateChatThreadWithResponse(
-        String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest, context).block();
     }
 
@@ -1850,17 +1850,17 @@ public final class ChatThreadImpl {
     public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context ->
+                                service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1875,18 +1875,18 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(
-        String nextLink, Context context) {
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1902,16 +1902,16 @@ public final class ChatThreadImpl {
     public Mono<PagedResponse<ChatMessage>> listChatMessagesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context -> service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1928,15 +1928,15 @@ public final class ChatThreadImpl {
     public Mono<PagedResponse<ChatMessage>> listChatMessagesNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1952,17 +1952,17 @@ public final class ChatThreadImpl {
     public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                        context ->
+                                service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -1977,17 +1977,17 @@ public final class ChatThreadImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(
-        String nextLink, Context context) {
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
-                        null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

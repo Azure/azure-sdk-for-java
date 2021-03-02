@@ -199,10 +199,10 @@ public class ChatClientTest extends ChatClientTestBase {
         Thread.sleep(500);
 
         // Action & Assert
-        PagedIterable<ChatThreadInfo> threadsResponse = client.listChatThreads();
+        PagedIterable<ChatThreadItem> threadsResponse = client.listChatThreads();
 
         // process the iterableByPage
-        List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+        List<ChatThreadItem> returnedThreads = new ArrayList<ChatThreadItem>();
         threadsResponse.iterableByPage().forEach(resp -> {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> returnedThreads.add(item));
@@ -229,10 +229,10 @@ public class ChatClientTest extends ChatClientTestBase {
         options.setMaxPageSize(10);
 
         // Action & Assert
-        PagedIterable<ChatThreadInfo> threadsResponse = client.listChatThreads(options, Context.NONE);
+        PagedIterable<ChatThreadItem> threadsResponse = client.listChatThreads(options, Context.NONE);
 
         // process the iterableByPage
-        List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+        List<ChatThreadItem> returnedThreads = new ArrayList<ChatThreadItem>();
         threadsResponse.iterableByPage().forEach(resp -> {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> returnedThreads.add(item));

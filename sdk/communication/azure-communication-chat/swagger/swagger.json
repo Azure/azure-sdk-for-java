@@ -3,7 +3,7 @@
   "info": {
     "title": "Azure Communication Chat Service",
     "description": "Azure Communication Chat Service",
-    "version": "2021-01-27-preview4"
+    "version": "2021-03-01-preview5"
   },
   "paths": {
     "/chat/threads/{chatThreadId}/readReceipts": {
@@ -944,7 +944,7 @@
           "200": {
             "description": "Request successful. The action returns a `GetThreadsResponse` resource.",
             "schema": {
-              "$ref": "#/definitions/ChatThreadsInfoCollection"
+              "$ref": "#/definitions/ChatThreadsItemCollection"
             }
           },
           "401": {
@@ -1491,11 +1491,8 @@
         }
       }
     },
-    "AddChatParticipantsErrors": {
-      "description": "Errors encountered during the addition of the chat participant to the chat thread.",
-      "required": [
-        "invalidParticipants"
-      ],
+    "AddChatParticipantsResult": {
+      "description": "Result of the add chat participants operation.",
       "type": "object",
       "properties": {
         "invalidParticipants": {
@@ -1503,16 +1500,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/Error"
-          }
-        }
-      }
-    },
-    "AddChatParticipantsResult": {
-      "description": "Result of the add chat participants operation.",
-      "type": "object",
-      "properties": {
-        "errors": {
-          "$ref": "#/definitions/AddChatParticipantsErrors"
+          },
+          "readOnly": true
         }
       }
     },
@@ -1575,10 +1564,13 @@
         }
       }
     },
-    "CreateChatThreadErrors": {
-      "description": "Errors encountered during the creation of the chat thread.",
+    "CreateChatThreadResult": {
+      "description": "Result of the create chat thread operation.",
       "type": "object",
       "properties": {
+        "chatThread": {
+          "$ref": "#/definitions/ChatThread"
+        },
         "invalidParticipants": {
           "description": "The participants that failed to be added to the chat thread.",
           "type": "array",
@@ -1589,19 +1581,7 @@
         }
       }
     },
-    "CreateChatThreadResult": {
-      "description": "Result of the create chat thread operation.",
-      "type": "object",
-      "properties": {
-        "chatThread": {
-          "$ref": "#/definitions/ChatThread"
-        },
-        "errors": {
-          "$ref": "#/definitions/CreateChatThreadErrors"
-        }
-      }
-    },
-    "ChatThreadInfo": {
+    "ChatThreadItem": {
       "description": "Summary information of a chat thread.",
       "required": [
         "id",
@@ -1634,7 +1614,7 @@
         }
       }
     },
-    "ChatThreadsInfoCollection": {
+    "ChatThreadsItemCollection": {
       "description": "Collection of chat threads.",
       "required": [
         "value"
@@ -1645,7 +1625,7 @@
           "description": "Collection of chat threads.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ChatThreadInfo"
+            "$ref": "#/definitions/ChatThreadItem"
           }
         },
         "nextLink": {
