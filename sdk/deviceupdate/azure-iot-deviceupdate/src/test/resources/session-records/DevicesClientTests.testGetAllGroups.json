@@ -4,13 +4,12 @@
     "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/groups",
     "Headers" : { },
     "Response" : {
-      "traceparent" : "00-8318653b0dbeb647bf8d321533a0a808-f75bb0e8bc2a3a4f-00",
+      "traceparent" : "00-39ea46665829d545a6b5c7b70b146b8b-dc8aa5c0ae81014c-00",
       "retry-after" : "0",
-      "Content-Length" : "873",
+      "Content-Length" : "627",
       "StatusCode" : "200",
-      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"groupId\": \"Uncategorized\",\r\n      \"tags\": [],\r\n      \"createdDateTime\": \"2020-10-03T02:41:21.9903359+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 6\r\n    },\r\n    {\r\n      \"groupId\": \"aysancag-test\",\r\n      \"tags\": [\r\n        \"aysancag-test\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-15T16:29:56.5770502+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    },\r\n    {\r\n      \"groupId\": \"dpokluda-test\",\r\n      \"tags\": [\r\n        \"dpokluda-test\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-16T21:34:43+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    },\r\n    {\r\n      \"groupId\": \"chejiang-test-group\",\r\n      \"tags\": [\r\n        \"chejiang-test-group\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-22T00:41:00+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    }\r\n  ]\r\n}",
-      "Date" : "Thu, 05 Nov 2020 03:20:00 GMT",
-      "Request-Context" : "appId=",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"groupId\": \"Uncategorized\",\r\n      \"tags\": [],\r\n      \"createdDateTime\": \"2021-02-04T21:55:58.7115058+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 3\r\n    },\r\n    {\r\n      \"groupId\": \"dpokluda-test\",\r\n      \"tags\": [\r\n        \"dpokluda-test\"\r\n      ],\r\n      \"createdDateTime\": \"2021-02-09T23:28:03+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    },\r\n    {\r\n      \"groupId\": \"my-test\",\r\n      \"tags\": [\r\n        \"my-test\"\r\n      ],\r\n      \"createdDateTime\": \"2021-02-15T01:11:54+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 0\r\n    }\r\n  ]\r\n}",
+      "Date" : "Tue, 02 Mar 2021 21:29:01 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

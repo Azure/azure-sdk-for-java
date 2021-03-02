@@ -1,17 +1,17 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/Contoso/names/Virtual-Machine/versions/2020.1104.1616.17/files/00000",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/Contoso/names/Virtual-Machine/versions/2021.302.1202.48/files/00000",
     "Headers" : { },
     "Response" : {
       "Cache-Control" : "max-age=60, private",
-      "ETag" : "\"01d6a457-f498-4415-b560-5b7d60037548\"",
-      "traceparent" : "00-879036a8d5c63344839b090604d67098-62422d2f818eda46-00",
+      "ETag" : "\"490fe67f-4cc1-4b69-8c7e-80e9665060f7\"",
+      "traceparent" : "00-31b9bf8ec1d6d0489a7d47d46ec6f567-e0cb14278b45e54c-00",
       "retry-after" : "0",
-      "Content-Length" : "213",
+      "Content-Length" : "175",
       "StatusCode" : "200",
-      "Body" : "{\"fileId\":\"00000\",\"fileName\":\"setup.exe\",\"sizeInBytes\":94,\"hashes\":{\"Sha256\":\"GWUcdv8QwiQ++q89RCnkVNRzXf1zsw+o5B60XB/mS3Q=\"},\"mimeType\":\"application/octet-stream\",\"etag\":\"\\\"01d6a457-f498-4415-b560-5b7d60037548\\\"\"}",
-      "Date" : "Thu, 05 Nov 2020 03:19:43 GMT",
+      "Body" : "{\"fileId\":\"00000\",\"fileName\":\"setup.exe\",\"sizeInBytes\":94,\"hashes\":{\"Sha256\":\"nTsYZEDeW9554a4YGmawsypogbG8zhc1IgvOE2PbSsA=\"},\"etag\":\"\\\"490fe67f-4cc1-4b69-8c7e-80e9665060f7\\\"\"}",
+      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

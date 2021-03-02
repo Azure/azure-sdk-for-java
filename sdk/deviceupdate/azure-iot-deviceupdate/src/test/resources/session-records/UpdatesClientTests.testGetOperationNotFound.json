@@ -4,12 +4,12 @@
     "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/operations/fake",
     "Headers" : { },
     "Response" : {
-      "traceparent" : "00-30a002b9d599374ca9678674583dad89-c15019727477d340-00",
+      "traceparent" : "00-dbb03ca033783746996f67d37cd580bb-1e0cd63304deaf4b-00",
       "retry-after" : "0",
       "Content-Length" : "161",
       "StatusCode" : "404",
-      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-30a002b9d599374ca9678674583dad89-57295781c06d3c46-00\"}",
-      "Date" : "Thu, 05 Nov 2020 03:19:41 GMT",
+      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-dbb03ca033783746996f67d37cd580bb-325479a4f572b749-00\"}",
+      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
       "Content-Type" : "application/problem+json; charset=utf-8"
     },
     "Exception" : null

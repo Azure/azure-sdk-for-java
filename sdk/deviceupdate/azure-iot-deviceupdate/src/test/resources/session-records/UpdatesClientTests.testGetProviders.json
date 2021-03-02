@@ -4,12 +4,12 @@
     "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers",
     "Headers" : { },
     "Response" : {
-      "traceparent" : "00-b4a26d5a3140f745807f4b2fcf89f9ca-aefcfe014f5d0b49-00",
+      "traceparent" : "00-a045e3d48e1318438bc649f64208c08e-50d0b2daf90a564a-00",
       "retry-after" : "0",
-      "Content-Length" : "212",
+      "Content-Length" : "60",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Contoso\",\"McsViaApiGateway-OK-epx5y254.2eg\",\"McsViaApiGateway-OK-gcrgk0v4.nvs\",\"McsViaApiGateway-OK-uombuvjc.j1f\",\"McsViaApiGateway-OK-xhpurxdx.kns\",\"Microsoft\",\"Microsoft-Corporation\",\"Test-Content\"]}",
-      "Date" : "Thu, 05 Nov 2020 03:19:44 GMT",
+      "Body" : "{\"value\":[\"Contoso\",\"Microsoft-Corporation\",\"Test-Content\"]}",
+      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
