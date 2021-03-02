@@ -101,7 +101,7 @@ public class PageableAddressRepositoryIT {
         assertThat(page.getContent().size()).isLessThanOrEqualTo(PAGE_SIZE_3);
         validateNonLastPage(page, PAGE_SIZE_3);
 
-        final Page<Address> nextPage = repository.findAll(page.getPageable());
+        final Page<Address> nextPage = repository.findAll(page.nextPageable());
         assertThat(nextPage.getContent().size()).isLessThanOrEqualTo(PAGE_SIZE_3);
         validateLastPage(nextPage, nextPage.getContent().size());
     }
@@ -125,7 +125,7 @@ public class PageableAddressRepositoryIT {
         validateResultCityMatch(page, TestConstants.CITY);
         validateNonLastPage(page, PAGE_SIZE_1);
 
-        final Page<Address> nextPage = repository.findByCity(TestConstants.CITY, page.getPageable());
+        final Page<Address> nextPage = repository.findByCity(TestConstants.CITY, page.nextPageable());
 
         assertThat(nextPage.getContent().size()).isEqualTo(PAGE_SIZE_1);
         validateResultCityMatch(page, TestConstants.CITY);
@@ -151,7 +151,7 @@ public class PageableAddressRepositoryIT {
         validateResultStreetMatch(page, TestConstants.STREET);
         validateNonLastPage(page, PAGE_SIZE_1);
 
-        final Page<Address> nextPage = repository.findByStreet(TestConstants.STREET, page.getPageable());
+        final Page<Address> nextPage = repository.findByStreet(TestConstants.STREET, page.nextPageable());
 
         assertThat(nextPage.getContent().size()).isEqualTo(PAGE_SIZE_1);
         validateResultStreetMatch(page, TestConstants.STREET);
