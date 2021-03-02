@@ -52,11 +52,20 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  */
 public final class AzureMonitorTraceExporter implements SpanExporter {
     private static final Pattern COMPONENT_PATTERN = Pattern
-        .compile("io\\.opentelemetry\\.auto\\.([^0-9]*)(-[0-9.]*)?");
+        .compile("io\\.opentelemetry\\.javaagent\\.([^0-9]*)(-[0-9.]*)?");
 
     private static final Set<String> SQL_DB_SYSTEMS;
 
     private static final Set<String> STANDARD_ATTRIBUTE_PREFIXES;
+
+    // this is only used for distributed trace correlation across different ikeys
+    // and will be obsolete soon (as this will be handled by backend indexing going forward)
+    private static final AttributeKey<String> AI_SPAN_SOURCE_APP_ID_KEY = AttributeKey.stringKey("applicationinsights.internal.source_app_id");
+    private static final AttributeKey<String> AI_SPAN_TARGET_APP_ID_KEY = AttributeKey.stringKey("applicationinsights.internal.target_app_id");
+
+    // this is only used by the 2.x web interop bridge
+    // for ThreadContext.getRequestTelemetryContext().getRequestTelemetry().setSource()
+    private static final AttributeKey<String> AI_SPAN_SOURCE_KEY = AttributeKey.stringKey("applicationinsights.internal.source");
 
     static {
         Set<String> dbSystems = new HashSet<>();
@@ -161,18 +170,18 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             if ("spring-scheduling".equals(stdComponent) && !span.getParentSpanContext().isValid()) {
                 // TODO need semantic convention for determining whether to map INTERNAL to request or dependency
                 //  (or need clarification to use SERVER for this)
-                exportRequest(stdComponent, span, telemetryItems);
+                exportRequest(span, telemetryItems);
             } else {
-                exportRemoteDependency(stdComponent, span, true, telemetryItems);
+                exportRemoteDependency(span, true, telemetryItems);
             }
         } else if (kind == SpanKind.CLIENT || kind == SpanKind.PRODUCER) {
-            exportRemoteDependency(stdComponent, span, false, telemetryItems);
+            exportRemoteDependency(span, false, telemetryItems);
         } else if (kind == SpanKind.CONSUMER && !span.getParentSpanContext().isRemote()) {
             // TODO need spec clarification, but it seems polling for messages can be CONSUMER also
             //  in which case the span will not have a remote parent and should be treated as a dependency instead of a request
-            exportRemoteDependency(stdComponent, span, false, telemetryItems);
+            exportRemoteDependency(span, false, telemetryItems);
         } else if (kind == SpanKind.SERVER || kind == SpanKind.CONSUMER) {
-            exportRequest(stdComponent, span, telemetryItems);
+            exportRequest(span, telemetryItems);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(kind.name()));
         }
@@ -194,7 +203,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         return Collections.singletonList(details);
     }
 
-    private void exportRemoteDependency(String stdComponent, SpanData span, boolean inProc,
+    private void exportRemoteDependency(SpanData span, boolean inProc,
                                         List<TelemetryItem> telemetryItems) {
         TelemetryItem telemetryItem = new TelemetryItem();
         RemoteDependencyData remoteDependencyData = new RemoteDependencyData();
@@ -306,10 +315,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             target = "Http";
         }
 
-        // String targetAppId = attributes.get(AI_SPAN_TARGET_APP_ID_KEY); @trask
-        String targetAppId = attributes.get(AttributeKey.stringKey("ai.span.target.app.id"));
+        String targetAppId = attributes.get(AI_SPAN_TARGET_APP_ID_KEY);
 
-        // if (targetAppId == null || AiAppId.getAppId().equals(targetAppId)) { @trask
         if (targetAppId == null) {
             telemetry.setType("Http");
             telemetry.setTarget(target);
@@ -420,7 +427,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         }
     }
 
-    private void exportRequest(String stdComponent, SpanData span, List<TelemetryItem> telemetryItems) {
+    private void exportRequest(SpanData span, List<TelemetryItem> telemetryItems) {
         TelemetryItem telemetryItem = new TelemetryItem();
         RequestData requestData = new RequestData();
         MonitorBase monitorBase = new MonitorBase();
@@ -439,10 +446,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         String source = null;
         Attributes attributes = span.getAttributes();
 
-        // String sourceAppId = attributes.get(AI_SPAN_SOURCE_APP_ID_KEY); @trask
-        String sourceAppId = attributes.get(AttributeKey.stringKey("ai.span.source.app.id"));
+        String sourceAppId = attributes.get(AI_SPAN_SOURCE_APP_ID_KEY);
 
-        // if (sourceAppId != null && !AiAppId.getAppId().equals(sourceAppId)) { @trask
         if (sourceAppId != null) {
             source = sourceAppId;
         }
@@ -461,8 +466,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             // this is only used by the 2.x web interop bridge
             // for ThreadContext.getRequestTelemetryContext().getRequestTelemetry().setSource()
 
-            // source = attributes.get(AI_SPAN_SOURCE_KEY); @trask
-            source = attributes.get(AttributeKey.stringKey("ai.span.source.app.id"));
+            source = attributes.get(AI_SPAN_SOURCE_KEY);
         }
         requestData.setSource(source);
 
@@ -479,7 +483,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             requestData.setUrl(httpUrl);
         }
 
-        // String httpMethod = removeAttributeString(attributes, SemanticAttributes.HTTP_METHOD.getKey());
         String name = span.getName();
         requestData.setName(name);
         telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_NAME.toString(), name);
@@ -516,10 +519,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         Double samplingPercentage = 100.0;
 
-        // for now, only add extra attributes for custom telemetry
-        if (stdComponent == null) {
-            setExtraAttributes(telemetryItem, requestData.getProperties(), attributes);
-        }
+        setExtraAttributes(telemetryItem, requestData.getProperties(), attributes);
 
         telemetryItem.setSampleRate(samplingPercentage.floatValue());
         telemetryItems.add(telemetryItem);
@@ -559,7 +559,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             String operationId = span.getTraceId();
             telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), operationId);
             telemetryItem.getTags()
-                .put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), span.getParentSpanId());
+                .put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), span.getSpanId());
             telemetryItem.setTime(getFormattedTime(event.getEpochNanos()));
             setExtraAttributes(telemetryItem, eventData.getProperties(), event.getAttributes());
 
@@ -686,8 +686,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 return;
             }
             if (key.equals(SemanticAttributes.HTTP_USER_AGENT) && value instanceof String) {
-                // telemetry.getContext().getUser().setUserAgent((String) value); @trask
-                telemetry.getTags().put("ai.user.agent", (String) value);
+                telemetry.getTags().put("ai.user.userAgent", (String) value);
                 return;
             }
             int index = stringKey.indexOf(".");
