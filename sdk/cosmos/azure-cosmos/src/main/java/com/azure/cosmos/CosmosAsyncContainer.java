@@ -272,7 +272,8 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {
         Mono<CosmosItemResponse<T>> responseMono = createItemInternal(item, options);
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.createItemSpanName,
             getId(),
@@ -1190,7 +1191,8 @@ public class CosmosAsyncContainer {
             .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.deleteItemSpanName,
             this.getId(),
@@ -1212,7 +1214,8 @@ public class CosmosAsyncContainer {
             .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.replaceItemSpanName,
             this.getId(),
@@ -1235,7 +1238,8 @@ public class CosmosAsyncContainer {
             .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(
+        return database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(
             responseMono,
             context,
             this.patchItemSpanName,
@@ -1256,9 +1260,9 @@ public class CosmosAsyncContainer {
                 true)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient()
-            .getTracerProvider()
-            .traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient().
+            getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.upsertItemSpanName,
             this.getId(),
@@ -1277,7 +1281,8 @@ public class CosmosAsyncContainer {
             .readDocument(getItemLink(itemId), requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.readItemSpanName,
             this.getId(),
