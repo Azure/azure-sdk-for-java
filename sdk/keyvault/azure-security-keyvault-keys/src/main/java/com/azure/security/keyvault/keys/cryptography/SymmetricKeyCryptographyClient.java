@@ -97,18 +97,16 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         byte[] cipherText;
-        byte[] authenticationTag;
 
         if (isAes(algorithm)) {
             cipherText = encrypted;
-            authenticationTag = null;
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
-            authenticationTag));
+            null));
     }
 
     @Override
