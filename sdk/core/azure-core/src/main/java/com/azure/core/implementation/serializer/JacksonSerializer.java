@@ -35,7 +35,7 @@ public class JacksonSerializer implements JsonSerializer {
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.just(deserialize(stream, typeReference)));
+        return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
     }
 
     @Override

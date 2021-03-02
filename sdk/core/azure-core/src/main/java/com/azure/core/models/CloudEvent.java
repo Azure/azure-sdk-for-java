@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,8 +41,10 @@ import java.util.UUID;
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
     private static final JsonSerializer SERIALIZER;
-    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
     // May get SERIALIZER's object mapper in the future.
+    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
+    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(
+        new HashMap<String, Object>());
 
     static {
         JsonSerializer tmp;
@@ -147,7 +150,9 @@ public final class CloudEvent {
     /**
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
-     *               for each distinct event.
+     *               for each distinct event. It should be in format URI-reference according to <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#source-1">
+     *                   CNCF CloudEvent spec source</a>
+     *               even though this class accepts any String for compatibility with legacy systems.
      * @param type Type of event related to the originating occurrence.
      * @param data A {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
      * @param format Set to {@link CloudEventDataFormat#BYTES} to serialize the data to base64 format, or
@@ -155,7 +160,9 @@ public final class CloudEvent {
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
      *                        "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
-     * @throws NullPointerException if source, type, data, or format is null.
+     * @throws NullPointerException if source, type is null, or format is null while data isn't null.
+     * @throws IllegalArgumentException if format is {@link CloudEventDataFormat#JSON} but the data isn't in a correct
+     * JSON format.
      */
     public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
         Objects.requireNonNull(source, "'source' cannot be null.");
@@ -171,7 +178,7 @@ public final class CloudEvent {
                     this.data = BINARY_DATA_OBJECT_MAPPER.readTree(data.toBytes());
                 } catch (IOException e) {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
-                        e.getCause()));
+                        e));
                 }
             }
         }
@@ -259,7 +266,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the URI source of the event.
+     * Get the source of the event.
      * @return the source.
      */
     public String getSource() {
@@ -328,7 +335,9 @@ public final class CloudEvent {
 
     /**
      * Set the schema that the data adheres to.
-     * @param dataSchema a URI identifying the schema of the data.
+     * @param dataSchema a String identifying the schema of the data. The <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#dataschema">
+     *                   CNCF CloudEvent spec dataschema</a> is defined as a URI. For compatibility with legacy system, this class
+     *                   accepts any String. But for interoperability, you should use a URI string.
      *
      * @return the cloud event itself.
      */
@@ -358,11 +367,12 @@ public final class CloudEvent {
 
     /**
      * Get a map of the additional user-defined attributes associated with this event.
-     * @return the extension attributes as an unmodifiable map.
+     * @return an unmodifiable map of the extension attributes.
      */
     @JsonAnyGetter
     public Map<String, Object> getExtensionAttributes() {
-        return this.extensionAttributes;
+        return this.extensionAttributes == null
+            ? EMPTY_ATTRIBUTES_MAP : Collections.unmodifiableMap(this.extensionAttributes);
     }
 
     /**
