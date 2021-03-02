@@ -40,7 +40,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
         this.keyStore = keyStore;
         if (this.keyStore == null) {
             try {
-                this.keyStore = KeyStore.getInstance("AzureKeyVault");
+                this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.ALGORITHM_NAME);
                 this.keyStore.load(null, null);
             } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
                 ex.printStackTrace();

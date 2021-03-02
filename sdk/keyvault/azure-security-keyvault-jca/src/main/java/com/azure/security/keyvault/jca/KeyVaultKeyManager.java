@@ -71,7 +71,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
@@ -95,7 +95,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
