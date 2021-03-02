@@ -10,7 +10,6 @@ import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;

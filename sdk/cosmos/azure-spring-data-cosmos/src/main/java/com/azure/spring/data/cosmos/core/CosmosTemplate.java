@@ -786,7 +786,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private Long getCountValue(SqlQuerySpec querySpec, String containerName) {
-         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         return executeQuery(querySpec, containerName, options)

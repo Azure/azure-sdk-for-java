@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 
+/**
+ * Augment custom queries sourced from @Query annotations
+ */
 public class NativeQueryGenerator {
 
     private static final NativeQueryGenerator INSTANCE = new NativeQueryGenerator();
