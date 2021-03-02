@@ -14,7 +14,7 @@ class KeyOperationParameters {
     private static final byte[] EMPTY_ARRAY = new byte[0];
 
     /**
-     * algorithm identifier. Possible values include: 'RSA-OAEP',
+     * Algorithm identifier. Possible values include: 'RSA-OAEP',
      * 'RSA-OAEP-256', 'RSA1_5'.
      */
     @JsonProperty(value = "alg", required = true)
@@ -85,11 +85,7 @@ class KeyOperationParameters {
      * @return the KeyOperationsParameters object itself.
      */
     public KeyOperationParameters setValue(byte[] value) {
-        if (value == null) {
-            this.value = null;
-        } else {
-            this.value = Base64Url.encode(value);
-        }
+        this.value = value != null ? Base64Url.encode(value) : null;
 
         return this;
     }
@@ -114,11 +110,7 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setIv(byte[] iv) {
-        if (iv == null) {
-            this.iv = null;
-        } else {
-            this.iv = Base64Url.encode(iv);
-        }
+        this.iv = iv != null ? Base64Url.encode(iv) : null;
 
         return this;
     }
@@ -143,11 +135,8 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
-        if (additionalAuthenticatedData == null) {
-            this.additionalAuthenticatedData = null;
-        } else {
-            this.additionalAuthenticatedData = Base64Url.encode(additionalAuthenticatedData);
-        }
+        this.additionalAuthenticatedData =
+            additionalAuthenticatedData != null ? Base64Url.encode(additionalAuthenticatedData) : null;
 
         return this;
     }
@@ -172,11 +161,7 @@ class KeyOperationParameters {
      * @return The updated {@link KeyOperationParameters} object.
      */
     public KeyOperationParameters setAuthenticationTag(byte[] authenticationTag) {
-        if (authenticationTag == null) {
-            this.authenticationTag = null;
-        } else {
-            this.authenticationTag = Base64Url.encode(authenticationTag);
-        }
+        this.authenticationTag = authenticationTag != null ? Base64Url.encode(authenticationTag) : null;
 
         return this;
     }
