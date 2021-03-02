@@ -38,7 +38,7 @@ public class PerfStressHttpClient {
 
         return httpClient;
     }
-     
+
     private static void makeInsecure(HttpClient httpClient) {
         Field nettyClientField;
         try {
@@ -69,29 +69,29 @@ public class PerfStressHttpClient {
         private final HttpClient httpClient;
         private final String host;
         private final int port;
-    
+
         ChangeUriHttpClient(HttpClient httpClient, String host, int port) {
             this.httpClient = httpClient;
             this.host = host;
             this.port = port;
         }
-    
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            request.getHeaders().put("Host", request.getUrl().getHost());
-    
+            request.getHeaders().set("Host", request.getUrl().getHost());
+
             String protocol = request.getUrl().getProtocol();
             String host = this.host;
             int port = this.port;
             String file = request.getUrl().getFile();
-    
+
             try {
                 request.setUrl(new URL(protocol, host, port, file));
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
-    
+
             return httpClient.send(request);
         }
-    }    
+    }
 }

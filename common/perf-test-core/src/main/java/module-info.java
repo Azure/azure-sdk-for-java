@@ -5,6 +5,8 @@ module com.azure.core.test.perf {
     requires reactor.core;
     requires jcommander;
     requires reactor.netty;
+    requires reactor.netty.core;
+    requires reactor.netty.http;
     requires io.netty.handler;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
