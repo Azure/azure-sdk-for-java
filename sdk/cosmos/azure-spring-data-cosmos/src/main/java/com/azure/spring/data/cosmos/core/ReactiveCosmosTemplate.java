@@ -21,6 +21,7 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
+import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -31,6 +32,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -602,7 +604,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        return runQuery(querySpec, domainType)
+        return runQuery(querySpec, Sort.unsorted(), domainType, returnType);
+    }
+
+    @Override
+    public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
+        SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
+        return runQuery(sortedQuerySpec, domainType)
             .map(cosmosItemProperties -> toDomainObject(returnType, cosmosItemProperties));
     }
 
