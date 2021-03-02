@@ -301,19 +301,32 @@ class ServiceBusSessionManager implements AutoCloseable {
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration);
+                    maxSessionLockRenewDuration, this::cleanupSessionReceiver);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
-                sessionReceivers.remove(sessionReceiver.getSessionId());
-                sessionReceiver.close();
 
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
             }))
             .publishOn(scheduler, 1);
+    }
+
+    /**
+     * Clean up session receiver from current cache of receivers.
+     *
+     * @param sessionReceiver to close.
+     */
+    private void cleanupSessionReceiver(ServiceBusSessionReceiver sessionReceiver ) {
+        if (sessionReceiver != null) {
+            if (sessionReceiver.getSessionId() != null) {
+                logger.verbose("Cleanup session receiver for session id [{}]. ", sessionReceiver.getSessionId());
+                sessionReceivers.remove(sessionReceiver.getSessionId());
+            }
+            sessionReceiver.close();
+        }
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {

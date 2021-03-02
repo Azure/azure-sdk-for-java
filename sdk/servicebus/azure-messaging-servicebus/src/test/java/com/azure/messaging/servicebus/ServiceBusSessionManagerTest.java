@@ -453,7 +453,7 @@ class ServiceBusSessionManagerTest {
             })
             .then(() -> {
                 try {
-                    TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds());
+                    TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds() + 1);
                     assertNull(sessionManager.getLinkName(sessionId));
                 } catch (InterruptedException e) { }
 
