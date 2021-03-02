@@ -6,6 +6,8 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 
+import java.util.Locale;
+
 /**
  * Augment custom queries sourced from @Query annotations
  */
@@ -36,7 +38,7 @@ public class NativeQueryGenerator {
 
     public SqlQuerySpec generateCountQuery(SqlQuerySpec querySpec) {
         String queryText = querySpec.getQueryText();
-        int fromIndex = queryText.toLowerCase().indexOf(" from ");
+        int fromIndex = queryText.toLowerCase(Locale.US).indexOf(" from ");
         Assert.isTrue(fromIndex >= 0, "query missing from keyword, query=" + queryText);
 
         String countQueryText = "select value count(1) " + queryText.substring(fromIndex);
