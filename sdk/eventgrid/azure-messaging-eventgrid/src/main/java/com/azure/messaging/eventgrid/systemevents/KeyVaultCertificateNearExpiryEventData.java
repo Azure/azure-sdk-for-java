@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultCertificateNearExpiryEventData model. */
+/** Schema of the Data property of an EventGridEvent for an CertificateNearExpiry event. */
 @Fluent
 public final class KeyVaultCertificateNearExpiryEventData {
     /*
