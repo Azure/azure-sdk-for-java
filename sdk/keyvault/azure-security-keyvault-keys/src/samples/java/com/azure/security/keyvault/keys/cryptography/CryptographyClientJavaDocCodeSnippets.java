@@ -274,7 +274,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte
         byte[] wrappedKey = new byte[100];
 
-        new Random(0x1234567L).nextBytes(wrappedKey);
+        wrappedKey = wrapResult.getEncryptedKey();
 
         UnwrapResult unwrapResult = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrappedKey);
 
@@ -284,7 +284,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
         byte[] wrappedKeyContent = new byte[100];
 
-        new Random(0x1234567L).nextBytes(wrappedKeyContent);
+        wrappedKeyContent = wrapResult.getEncryptedKey();
 
         UnwrapResult keyUnwrapResponse = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrappedKeyContent,
             new Context(key2, value2));
