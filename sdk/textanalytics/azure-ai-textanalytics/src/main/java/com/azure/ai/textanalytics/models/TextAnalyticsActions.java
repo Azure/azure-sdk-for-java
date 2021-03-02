@@ -52,7 +52,7 @@ public final class TextAnalyticsActions {
      *
      * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeEntitiesOptions(RecognizeEntitiesOptions... recognizeEntitiesOptions) {
         this.recognizeEntitiesOptions = Arrays.asList(recognizeEntitiesOptions);
@@ -73,7 +73,7 @@ public final class TextAnalyticsActions {
      *
      * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesOptions(RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
         this.recognizePiiEntitiesOptions = Arrays.asList(recognizePiiEntitiesOptions);
@@ -94,7 +94,7 @@ public final class TextAnalyticsActions {
      *
      * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractKeyPhrasesOptions(ExtractKeyPhrasesOptions... extractKeyPhrasesOptions) {
         this.extractKeyPhrasesOptions = Arrays.asList(extractKeyPhrasesOptions);

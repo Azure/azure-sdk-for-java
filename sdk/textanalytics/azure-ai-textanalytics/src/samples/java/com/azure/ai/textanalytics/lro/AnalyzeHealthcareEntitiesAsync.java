@@ -5,20 +5,17 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -85,15 +82,15 @@ public class AnalyzeHealthcareEntitiesAsync {
                                     "\t\tEntity ID in data source: %s, data source: %s.%n",
                                     dataSource.getEntityId(), dataSource.getName()));
                             }
-                            // Entities relationship
-                            Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                                healthcareEntity.getRelatedEntities();
-                            if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                                relatedHealthcareEntities.forEach(
-                                    (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                                        "\t\tRelated entity: %s, relation type: %s.%n",
-                                        relatedHealthcareEntity.getText(), entityRelationType));
-                            }
+                        });
+                        // Healthcare entity relation groups
+                        healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                            System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                            entityRelation.getRoles().forEach(role -> {
+                                final HealthcareEntity entity = role.getEntity();
+                                System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                                    entity.getText(), entity.getCategory(), role.getName());
+                            });
                         });
                     });
                 }

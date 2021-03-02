@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
@@ -24,6 +25,8 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
         void setEntities(AnalyzeHealthcareEntitiesResult entitiesResult, IterableStream<HealthcareEntity> entities);
         void setWarnings(AnalyzeHealthcareEntitiesResult entitiesResult,
             IterableStream<TextAnalyticsWarning> warnings);
+        void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
+            IterableStream<HealthcareEntityRelation> entityRelations);
     }
 
     /**
@@ -44,5 +47,10 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
     public static void setWarnings(AnalyzeHealthcareEntitiesResult entitiesResult,
         IterableStream<TextAnalyticsWarning> warnings) {
         accessor.setWarnings(entitiesResult, warnings);
+    }
+
+    public static void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
+        IterableStream<HealthcareEntityRelation> entityRelations) {
+        accessor.setEntityRelations(entitiesResult, entityRelations);
     }
 }

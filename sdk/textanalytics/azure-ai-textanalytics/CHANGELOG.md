@@ -1,7 +1,10 @@
 # Release History
 ## 5.1.0-beta.5 (Unreleased)
+
 ### Breaking changes
-- Renamed `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`.
+- Changed 
+- Renamed class name 
+  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
 - Renamed
   `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
   `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`,
