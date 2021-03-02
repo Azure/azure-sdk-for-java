@@ -17,7 +17,6 @@ import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
-import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -153,20 +152,6 @@ public final class DatabasesImpl implements Databases {
         ExportClusterParameters parameters,
         Context context) {
         this.serviceClient().export(resourceGroupName, clusterName, databaseName, parameters, context);
-    }
-
-    public void forceUnlink(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
-        this.serviceClient().forceUnlink(resourceGroupName, clusterName, databaseName, parameters);
-    }
-
-    public void forceUnlink(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
-        this.serviceClient().forceUnlink(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
     public Database getById(String id) {
