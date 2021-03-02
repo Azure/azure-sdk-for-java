@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * The cloud that the identifier belongs to.
  */
-public class CommunicationCloudEnvironment extends ExpandableStringEnum<CommunicationCloudEnvironment> {
+public final class CommunicationCloudEnvironment extends ExpandableStringEnum<CommunicationCloudEnvironment> {
     private static final String PUBLIC_VALUE = "public";
     private static final String DOD_VALUE = "dod";
     private static final String GCCH_VALUE = "gcch";
