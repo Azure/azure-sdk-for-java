@@ -8,7 +8,7 @@ import com.azure.cosmos.util.Beta;
  * creating bulk patch request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
+public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -52,7 +52,7 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        super.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
     }
 
@@ -64,7 +64,7 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        super.setIfNoneMatchETag(ifNoneMatchEtag);
+        this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
     }
 
@@ -76,7 +76,7 @@ public class BulkPatchItemRequestOptions extends BulkItemRequestOptions{
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        super.setIfMatchETag(ifMatchETag);
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
