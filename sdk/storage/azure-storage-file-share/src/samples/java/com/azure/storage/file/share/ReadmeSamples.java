@@ -228,7 +228,7 @@ public class ReadmeSamples {
         }
     }
 
-    private void uploadDataToStorageBiggerThan4MB() {
+    public void uploadDataToStorageBiggerThan4MB() {
         byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
 
         long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
