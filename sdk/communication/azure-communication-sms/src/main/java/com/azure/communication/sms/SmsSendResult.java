@@ -17,9 +17,10 @@ public final class SmsSendResult {
      * Constructor to wrap the smsSendResponseItem
      * @param item the to value to set.
      */
-    public SmsSendResult(SmsSendResponseItem item) {
+    SmsSendResult(SmsSendResponseItem item) {
         this.result = item;
     }
+
 
 
     /**
@@ -31,16 +32,7 @@ public final class SmsSendResult {
         return result.getTo();
     }
 
-    /**
-     * Set the to property: The recipient's phone number in E.164 format.
-     *
-     * @param to the to value to set.
-     * @return the SmsSendResult object itself.
-     */
-    public SmsSendResult setTo(String to) {
-        result.setTo(to);
-        return this;
-    }
+
 
     /**
      * Get the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
@@ -51,16 +43,7 @@ public final class SmsSendResult {
         return result.getMessageId();
     }
 
-    /**
-     * Set the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SmsSendResult object itself.
-     */
-    public SmsSendResult setMessageId(String messageId) {
-        result.setMessageId(messageId);
-        return this;
-    }
+
 
     /**
      * Get the httpStatusCode property: HTTP Status code.
@@ -71,16 +54,7 @@ public final class SmsSendResult {
         return result.getHttpStatusCode();
     }
 
-    /**
-     * Set the httpStatusCode property: HTTP Status code.
-     *
-     * @param httpStatusCode the httpStatusCode value to set.
-     * @return the SmsSendResult object itself.
-     */
-    public SmsSendResult setHttpStatusCode(int httpStatusCode) {
-        result.setHttpStatusCode(httpStatusCode);
-        return this;
-    }
+
 
     /**
      * Get the successful property: Indicates if the message is processed successfully or not.
@@ -91,16 +65,7 @@ public final class SmsSendResult {
         return result.isSuccessful();
     }
 
-    /**
-     * Set the successful property: Indicates if the message is processed successfully or not.
-     *
-     * @param successful the successful value to set.
-     * @return the SmsSendResult object itself.
-     */
-    public SmsSendResult setSuccessful(boolean successful) {
-        result.setSuccessful(successful);
-        return this;
-    }
+
 
     /**
      * Get the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
@@ -111,14 +76,5 @@ public final class SmsSendResult {
         return result.getErrorMessage();
     }
 
-    /**
-     * Set the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
-     *
-     * @param errorMessage the errorMessage value to set.
-     * @return the SmsSendResult object itself.
-     */
-    public SmsSendResult setErrorMessage(String errorMessage) {
-        result.setErrorMessage(errorMessage);
-        return this;
-    }
+
 }

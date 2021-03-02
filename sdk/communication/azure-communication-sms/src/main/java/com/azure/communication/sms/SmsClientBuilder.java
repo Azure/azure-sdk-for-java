@@ -43,12 +43,13 @@ public final class SmsClientBuilder {
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    private Configuration configuration;
     private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
-    private ClientOptions clientOptions = new ClientOptions();
+    private ClientOptions clientOptions;
+    private RetryPolicy retryPolicy;
 
     /**
      * Set endpoint of the service

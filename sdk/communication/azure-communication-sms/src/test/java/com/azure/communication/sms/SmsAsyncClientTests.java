@@ -5,6 +5,8 @@ package com.azure.communication.sms;
 
 
 import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
@@ -43,6 +45,24 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        to = new ArrayList<>();
+        to.add(TO_PHONE_NUMBER);
+        SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
+        asyncClient = setupAsyncClient(builder, "createAsyncSmsClientUsingConnectionString");
+        assertNotNull(asyncClient);
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE, null);
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
+
+
+    }
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendToMultipleUsers(HttpClient httpClient) {

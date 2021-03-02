@@ -37,7 +37,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL	
 namespace: com.azure.communication.sms	
 generate-client-as-impl: true	
-custom-types: SendMessageRequest,SmsSendOptions
+custom-types: SmsSendOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 sync-methods: all

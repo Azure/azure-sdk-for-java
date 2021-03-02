@@ -31,6 +31,9 @@ public class SmsTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
+    protected static final String ENDPOINT_TOKEN = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_TOKEN_ENDPOINT", "https://REDACTED.communication.azure.com");
+
     protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
     protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
@@ -65,6 +68,24 @@ public class SmsTestBase extends TestBase {
         SmsClientBuilder builder = new SmsClientBuilder();
         builder.endpoint(ENDPOINT)
             .credential(azureKeyCredential)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }
+
+    protected SmsClientBuilder getSmsClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            tokenCredential = new FakeCredentials();
+        }
+        SmsClientBuilder builder = new SmsClientBuilder();
+        builder.endpoint(ENDPOINT_TOKEN)
+            .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
