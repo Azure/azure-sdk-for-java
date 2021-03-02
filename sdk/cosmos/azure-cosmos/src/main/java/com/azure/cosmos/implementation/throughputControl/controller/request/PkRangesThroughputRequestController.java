@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.request;
 
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,26 +27,22 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
         PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey, true, false);
 
-    private final GlobalEndpointManager globalEndpointManager;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private final ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> requestThrottlerMapByRegion;
+    private final ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerMap;
     private final String targetContainerRid;
     private double scheduledThroughput;
     private List<PartitionKeyRange> pkRanges;
 
     public PkRangesThroughputRequestController(
-        GlobalEndpointManager globalEndpointManager,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
         double initialScheduledThroughput) {
 
-        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(partitionKeyRangeCache, "RxPartitionKeyRangeCache can not be null");
         checkArgument(StringUtils.isNotEmpty(targetContainerRid), "Target container rid can not be null nor empty");
 
-        this.globalEndpointManager = globalEndpointManager;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
-        this.requestThrottlerMapByRegion = new ConcurrentHashMap<>();
+        this.requestThrottlerMap = new ConcurrentHashMap<>();
         this.targetContainerRid = targetContainerRid;
         this.scheduledThroughput = initialScheduledThroughput;
     }
@@ -57,16 +51,9 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     public double renewThroughputUsageCycle(double scheduledThroughput) {
         this.scheduledThroughput = scheduledThroughput;
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        return this.requestThrottlerMapByRegion.values()
+        return this.requestThrottlerMap.values()
             .stream()
-            .map(requestThrottlerMapByPkRangeId -> {
-                // return the max throughput usage among all pkRanges
-                return requestThrottlerMapByPkRangeId.values()
-                    .stream()
-                    .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
-                    .max(Comparator.naturalOrder())
-                    .get();
-            })
+            .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
             .max(Comparator.naturalOrder())// return the max throughput usage among all regions
             .get();
     }
@@ -95,24 +82,17 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     }
 
     private void createRequestThrottlers() {
-        // create request throttlers by region
-        for (URI endpoint : this.globalEndpointManager.getReadEndpoints()) {
-            this.getOrCreateRegionRequestThrottlers(endpoint);
-        }
-    }
-
-    private ConcurrentHashMap<String, ThroughputRequestThrottler> getOrCreateRegionRequestThrottlers(URI endpoint) {
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        return this.requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> {
-            ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerPerPkRange =
-                new ConcurrentHashMap<>();
 
-            for (PartitionKeyRange pkRange : pkRanges) {
-                requestThrottlerPerPkRange.put(pkRange.getId(), new ThroughputRequestThrottler(throughputPerPkRange));
-            }
+        for (PartitionKeyRange pkRange : pkRanges) {
+            requestThrottlerMap.compute(pkRange.getId(), (pkRangeId, requestThrottler) -> {
+                if (requestThrottler == null) {
+                    requestThrottler = new ThroughputRequestThrottler(throughputPerPkRange);
+                }
 
-            return requestThrottlerPerPkRange;
-        });
+                return requestThrottler;
+            });
+        }
     }
 
     @Override
@@ -120,9 +100,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
 
         // If we reach here, it means we should find the mapping pkRange
-        ThroughputRequestThrottler requestThrottler =
-            this.getOrCreateRegionRequestThrottlers(this.globalEndpointManager.resolveServiceEndpoint(request))
-                .get(resolvedPkRange.getId());
+        ThroughputRequestThrottler requestThrottler = this.requestThrottlerMap.get(resolvedPkRange.getId());
 
         if (requestThrottler != null) {
             return requestThrottler.processRequest(request, nextRequestMono);

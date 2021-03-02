@@ -35,13 +35,12 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
 
     public GlobalThroughputControlGroupController(
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         GlobalThroughputControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
         LinkedCancellationToken parentToken) {
-        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
+        super(connectionMode, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
 
         this.controlItemRenewInterval = group.getControlItemRenewInterval();
         this.containerManager = new ThroughputControlContainerManager(group);

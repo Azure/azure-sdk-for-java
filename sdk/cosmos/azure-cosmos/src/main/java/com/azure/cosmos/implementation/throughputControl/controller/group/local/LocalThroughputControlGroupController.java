@@ -16,14 +16,13 @@ public class LocalThroughputControlGroupController extends ThroughputGroupContro
 
     public LocalThroughputControlGroupController(
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         LocalThroughputControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
         LinkedCancellationToken parentToken) {
 
-        super(connectionMode, globalEndpointManager, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
+        super(connectionMode, group, maxContainerThroughput, partitionKeyRangeCache, targetContainerRid, parentToken);
     }
 
     @Override

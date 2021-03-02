@@ -58,7 +58,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private final AsyncDocumentClient client;
     private final RxCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
-    private final GlobalEndpointManager globalEndpointManager;
     private final AsyncCache<String, ThroughputGroupControllerBase> groupControllerCache;
     private final Set<ThroughputControlGroupInternal> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
@@ -76,19 +75,16 @@ public class ThroughputContainerController implements IThroughputContainerContro
     public ThroughputContainerController(
         RxCollectionCache collectionCache,
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         Set<ThroughputControlGroupInternal> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         LinkedCancellationToken parentToken) {
 
         checkNotNull(collectionCache, "Collection cache can not be null");
-        checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
         checkArgument(groups != null && groups.size() > 0, "Throughput budget groups can not be null or empty");
         checkNotNull(partitionKeyRangeCache, "RxPartitionKeyRangeCache can not be null");
 
         this.collectionCache = collectionCache;
         this.connectionMode = connectionMode;
-        this.globalEndpointManager = globalEndpointManager;
         this.groupControllerCache = new AsyncCache<>();
         this.groups = groups;
 
@@ -333,7 +329,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
         ThroughputGroupControllerBase groupController = ThroughputGroupControllerFactory.createController(
             this.connectionMode,
-            this.globalEndpointManager,
             group,
             this.maxContainerThroughput.get(),
             this.partitionKeyRangeCache,

@@ -81,7 +81,6 @@ public class ThroughputControlStore {
     private final RxClientCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
-    private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<String, Set<ThroughputControlGroupInternal>> groupMapByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
@@ -91,17 +90,14 @@ public class ThroughputControlStore {
     public ThroughputControlStore(
         RxClientCollectionCache collectionCache,
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
         checkNotNull(collectionCache,"RxClientCollectionCache can not be null");
-        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(partitionKeyRangeCache, "PartitionKeyRangeCache can not be null");
 
         this.collectionCache = collectionCache;
         this.connectionMode = connectionMode;
         this.containerControllerCache = new AsyncCache<>();
-        this.globalEndpointManager = globalEndpointManager;
         this.groupMapByContainer = new ConcurrentHashMap<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
@@ -229,7 +225,6 @@ public class ThroughputControlStore {
                         new ThroughputContainerController(
                             this.collectionCache,
                             this.connectionMode,
-                            this.globalEndpointManager,
                             groups,
                             this.partitionKeyRangeCache,
                             parentToken);

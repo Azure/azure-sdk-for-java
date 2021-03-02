@@ -17,7 +17,6 @@ public class ThroughputGroupControllerFactory {
 
     public static ThroughputGroupControllerBase createController(
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
@@ -27,7 +26,6 @@ public class ThroughputGroupControllerFactory {
         if (group instanceof LocalThroughputControlGroup) {
             return new LocalThroughputControlGroupController(
                 connectionMode,
-                globalEndpointManager,
                 (LocalThroughputControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
@@ -36,7 +34,6 @@ public class ThroughputGroupControllerFactory {
         } else if (group instanceof GlobalThroughputControlGroup) {
             return new GlobalThroughputControlGroupController(
                 connectionMode,
-                globalEndpointManager,
                 (GlobalThroughputControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,

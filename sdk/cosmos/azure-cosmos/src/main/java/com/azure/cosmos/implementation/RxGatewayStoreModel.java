@@ -443,7 +443,8 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
-        this.throughputControlStore = throughputControlStore;
+        // no-op
+        // Disable throughput control for gateway mode
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

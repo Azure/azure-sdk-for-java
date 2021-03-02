@@ -29,12 +29,12 @@ public class LinkedCancellationToken {
     }
 
     public void cancel() {
-        if (this.cancellationRequested.compareAndSet(false, true)) {
-            for (LinkedCancellationTokenSource childTokenSource : this.childTokenSourceList) {
-                childTokenSource.close();
-            }
+        synchronized (this) {
+            if (this.cancellationRequested.compareAndSet(false, true)) {
+                for (LinkedCancellationTokenSource childTokenSource : this.childTokenSourceList) {
+                    childTokenSource.close();
+                }
 
-            synchronized (this) {
                 childTokenSourceList.clear();
             }
         }

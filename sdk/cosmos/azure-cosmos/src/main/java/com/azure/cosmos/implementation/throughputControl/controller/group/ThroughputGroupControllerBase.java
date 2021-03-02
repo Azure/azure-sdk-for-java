@@ -43,7 +43,6 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private final Duration DEFAULT_THROUGHPUT_USAGE_RESET_DURATION = Duration.ofSeconds(1);
 
     private final ConnectionMode connectionMode;
-    private final GlobalEndpointManager globalEndpointManager;
     private final ThroughputControlGroupInternal group;
     private final AtomicInteger maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -55,20 +54,17 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     public ThroughputGroupControllerBase(
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
         ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
         LinkedCancellationToken parentToken) {
 
-        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(group, "Throughput control group can not be null");
         checkNotNull(partitionKeyRangeCache, "Partition key range cache can not be null or empty");
         checkArgument(StringUtils.isNotEmpty(targetContainerRid), "Target container rid cannot be null nor empty");
 
         this.connectionMode = connectionMode;
-        this.globalEndpointManager = globalEndpointManager;
         this.group = group;
 
         if (this.group.getTargetThroughputThreshold() != null) {
@@ -133,13 +129,12 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
         if (this.connectionMode == ConnectionMode.DIRECT) {
             requestController = new PkRangesThroughputRequestController(
-                this.globalEndpointManager,
                 this.partitionKeyRangeCache,
                 this.targetContainerRid,
                 this.getClientAllocatedThroughput());
 
         } else if (this.connectionMode == ConnectionMode.GATEWAY) {
-            requestController = new GlobalThroughputRequestController(this.globalEndpointManager, this.getClientAllocatedThroughput());
+            requestController = new GlobalThroughputRequestController(this.getClientAllocatedThroughput());
         } else {
             throw new IllegalArgumentException(String.format("Connection mode %s is not supported", this.connectionMode));
         }
