@@ -13,7 +13,7 @@ have to be online at the same time.
 - Implement workflows that require message ordering or message deferral.
 
 [Source code][source_code] | [API reference documentation][api_documentation]
-| [Product documentation][product_docs]| [Samples][sample_examples] | [Package (Maven)][maven_package]
+| [Product documentation][product_docs] | [Samples][sample_examples] | [Package (Maven)][maven_package]
 
 ## Getting started
 
