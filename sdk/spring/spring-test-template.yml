@@ -3,6 +3,7 @@ parameters:
   TestName: 'LiveTestInAzureGlobal'
   Clouds: 'Public'
   TestResourceDirectories:
+    - spring/azure-spring-boot-test-cosmos
     - spring/azure-spring-boot-test-keyvault
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
@@ -14,6 +15,9 @@ parameters:
     - name: azure-spring-boot-test-core
       groupId: com.azure.spring
       safeName: azurespringboottestcore
+    - name: azure-spring-boot-test-cosmos
+      groupId: com.azure.spring
+      safeName: azurespringboottestcosmos
     - name: azure-spring-boot-test-aad
       groupId: com.azure.spring
       safeName: azurespringboottestaad
@@ -61,18 +65,18 @@ parameters:
     AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
     AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
     AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+    AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com"
+    AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+    AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+    AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
     AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
-    AAD_B2C_TENANT: "B2CITTest1"
+    AAD_B2C_BASE_URI: "https://B2CITTest1.b2clogin.com/B2CITTest1.onmicrosoft.com"
     AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
     AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
     AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
     AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
     AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
     AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
-    AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com"
-    AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
-    AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
-    AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
     AZURE_CLOUD_TYPE: "Global"
 
 stages:
