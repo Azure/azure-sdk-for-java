@@ -39,12 +39,14 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         super();
     }
 
-    public void setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
+    public PersistentTokenCacheImpl setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
         this.allowUnencryptedStorage = allowUnencryptedStorage;
+        return this;
     }
 
-    public void setName(String name) {
+    public PersistentTokenCacheImpl setName(String name) {
         this.name = name;
+        return this;
     }
 
     Mono<Boolean> registerCache() {

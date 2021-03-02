@@ -37,14 +37,15 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
-     * Configures the persistent shared token cache which is disabled by default. If configured, the credential will
-     * store tokens in a cache persisted to the machine, protected to the current user, which can be shared by other
-     * credentials and processes.
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public DeviceCodeCredentialBuilder tokenCache(PersistentTokenCache persistentTokenCache) {
-        this.identityClientOptions.setTokenCache(persistentTokenCache.getTokenCacheImpl());
+    public DeviceCodeCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                        tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 

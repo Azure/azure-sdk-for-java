@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
@@ -223,9 +224,13 @@ public class IdentityClient {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
-        PersistentTokenCacheImpl tokenCache = options.getTokenCache();
-        if (tokenCache != null) {
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+        PersistentTokenCacheImpl tokenCache = null;
+        if (tokenCachePersistenceOptions != null) {
             try {
+                tokenCache = new PersistentTokenCacheImpl()
+                    .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
+                    .setName(tokenCachePersistenceOptions.getName());
                 tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.CONFIDENTIAL);
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
             } catch (Throwable t) {
@@ -234,8 +239,8 @@ public class IdentityClient {
             }
         }
         ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
-        return tokenCache.registerCache()
-            .map(ignored -> confidentialClientApplication);
+        return tokenCache != null ? tokenCache.registerCache()
+            .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -268,17 +273,23 @@ public class IdentityClient {
             publicClientApplicationBuilder.clientCapabilities(set);
             return Mono.just(publicClientApplicationBuilder);
         }).flatMap(builder -> {
-            PersistentTokenCacheImpl tokenCache = new PersistentTokenCacheImpl();
-            try {
-                tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.PUBLIC);
-                builder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t));
+            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+            PersistentTokenCacheImpl tokenCache = null;
+            if (tokenCachePersistenceOptions != null) {
+                try {
+                    tokenCache = new PersistentTokenCacheImpl()
+                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
+                        .setName(tokenCachePersistenceOptions.getName());
+                    tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.PUBLIC);
+                    builder.setTokenCacheAccessAspect(tokenCache);
+                } catch (Throwable t) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(
+                        "Shared token cache is unavailable in this environment.", null, t));
+                }
             }
             PublicClientApplication publicClientApplication = builder.build();
-            return tokenCache.registerCache()
-                .map(ignored -> publicClientApplication);
+            return tokenCache != null ? tokenCache.registerCache()
+                .map(ignored -> publicClientApplication) : Mono.just(publicClientApplication);
         });
     }
 
