@@ -8,7 +8,7 @@ Azure Key Vault Secrets Spring Boot Starter is Spring starter for [Azure Key Vau
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
-- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current})
@@ -212,5 +212,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
 

@@ -8,7 +8,7 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
-- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current})
@@ -67,5 +67,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
 
