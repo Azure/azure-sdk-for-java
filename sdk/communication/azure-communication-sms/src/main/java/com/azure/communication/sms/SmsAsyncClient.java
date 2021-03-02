@@ -89,44 +89,7 @@ public final class SmsAsyncClient {
 
     }
 
-    /**
-     * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param from Number that is sending the message.
-     * @param to The recipient's phone number.
-     * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     *                   for this message to the Azure Resource Event Grid.
-     * @return response for a successful send Sms request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message,
-                                                          SmsSendOptions smsOptions) {
-        List<String> recipients = new ArrayList<String>();
-        recipients.add(to);
 
-        SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
-
-        try {
-            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            Response<SmsSendResponse> response = responseMono.block();
-            SmsSendResponse smsSendResponse = response.getValue();
-
-            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
-            if (result.size() == 1) {
-
-                return Mono.just(new SmsResponseMapSingle(response, result.get(0)));
-            } else {
-                return monoError(logger, new NullPointerException("no response"));
-            }
-
-        } catch (NullPointerException ex) {
-            return monoError(logger, ex);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-
-    }
 
 
     /**
@@ -176,38 +139,6 @@ public final class SmsAsyncClient {
 
     }
 
-    /**
-     * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param from Number that is sending the message.
-     * @param to A list of the recipient's phone numbers.
-     * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     *                   for this message to the Azure Resource Event Grid
-     * @return response for a successful send Sms request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
-
-        SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
-
-        try {
-            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            Response<SmsSendResponse> response = responseMono.block();
-            SmsSendResponse smsSendResponse = response.getValue();
-
-            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
-            SmsResponseMapMultiple responseList = new SmsResponseMapMultiple(response, result);
-            return Mono.just(responseList);
-
-        } catch (NullPointerException ex) {
-            return monoError(logger, ex);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-
-
-    }
 
     private List<SmsSendResult>  convertSmsResults(Iterable<SmsSendResponseItem> resultsIterable) {
         List <SmsSendResult> iterableWrapper = new ArrayList<>();
