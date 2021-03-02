@@ -51,7 +51,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -774,7 +773,7 @@ public class CosmosAsyncContainer {
 
         final BulkProcessingOptions<TContext> bulkProcessingOptions = bulkOptions;
 
-        return Flux.deferWithContext(context -> {
+        return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, bulkProcessingOptions);
 
             return executor.execute();
