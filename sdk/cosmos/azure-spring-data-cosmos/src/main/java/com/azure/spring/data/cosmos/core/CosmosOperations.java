@@ -308,6 +308,7 @@ public interface CosmosOperations {
     /**
      * Run the query.
      *
+     * @param <T> the type parameter
      * @param querySpec the query spec
      * @param sort the sort order
      * @param domainType the domain type
@@ -319,6 +320,7 @@ public interface CosmosOperations {
     /**
      * Run the query.
      *
+     * @param <T> the type parameter
      * @param querySpec the query spec
      * @param pageable the pageable
      * @param domainType the domain type
