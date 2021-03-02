@@ -13,6 +13,10 @@
         "defaultValue": "communication",
         "type": "string"
       },
+      "communicationServicesEndpointSuffix": {
+        "defaultValue": ".communication.azure.com",
+        "type": "string"
+      },
       "testApplicationOid": {
         "type": "string",
         "metadata": {
