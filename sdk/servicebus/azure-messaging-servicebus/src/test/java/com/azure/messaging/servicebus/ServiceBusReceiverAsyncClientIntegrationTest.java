@@ -754,6 +754,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
+        isSessionEnabled = true;
+        isSessionEnabled = true;
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
 
@@ -766,11 +768,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
 
         // Act & Assert
+        boolean finalIsSessionEnabled = isSessionEnabled;
         StepVerifier.create(receiver.receiveMessages()
             .flatMap(receivedMessage -> receiver.defer(receivedMessage).thenReturn(receivedMessage)).take(1))
             .assertNext(m -> {
                 received.set(m);
-                assertMessageEquals(m, messageId, isSessionEnabled);
+                assertMessageEquals(m, messageId, finalIsSessionEnabled);
                 messagesPending.decrementAndGet();
             }).verifyComplete();
 
@@ -779,6 +782,47 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .flatMap(m -> receiver.complete(m))
             .block(TIMEOUT);
         messagesPending.decrementAndGet();
+    }
+
+    @Test
+    void receiveAndDeferXXX() throws InterruptedException {
+        boolean isSessionEnabled = true;
+        MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        // Arrange
+        setSender(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message).block(TIMEOUT);
+
+        setReceiver(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
+        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
+
+        // Act & Assert
+        System.out.println("!!!!  calling receiver.receive()   ");
+        boolean finalIsSessionEnabled = isSessionEnabled;
+        StepVerifier.create(receiver.receiveMessages()
+            .flatMap(receivedMessage -> {
+                System.out.println("!!!!  calling receiver.defer  for " + receivedMessage.getSequenceNumber());
+                return receiver.defer(receivedMessage).thenReturn(receivedMessage);
+            }).take(1))
+            .assertNext(m -> {
+                received.set(m);
+                assertMessageEquals(m, messageId, finalIsSessionEnabled);
+                messagesPending.decrementAndGet();
+            }).verifyComplete();
+        TimeUnit.SECONDS.sleep(2);
+        System.out.println("!!!!  calling receiveDeferredMessage .. for  " + received.get().getSequenceNumber());
+        receiver.receiveDeferredMessage(received.get().getSequenceNumber())
+            .flatMap(m -> {
+                System.out.println("!!!!  calling receiver.complete  for " + m.getSequenceNumber());
+                return receiver.complete(m);
+            })
+            .block(TIMEOUT);
+        messagesPending.decrementAndGet();
+
+        System.out.println("!!!!  Exit  .. ");
     }
 
     /**

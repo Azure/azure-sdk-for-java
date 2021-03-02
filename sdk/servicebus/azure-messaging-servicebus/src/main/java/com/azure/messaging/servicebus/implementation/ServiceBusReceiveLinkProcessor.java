@@ -120,19 +120,21 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         return link.updateDisposition(lockToken, deliveryState)
-            /*.onErrorResume(err -> {
-                synchronized (queueLock) {
+            .onErrorResume(err -> {
+                logger.info("updateDisposition !!!! onErrorResume lockToken{} , deliveryState {}", lockToken, deliveryState);
+               /* synchronized (queueLock) {
                     pendingMessages.decrementAndGet();
                 }
-                checkAndAddCredits(link);
+                checkAndAddCredits(link);*/
                 return Mono.error(err);
-            })*/
+            })
+
             .then(Mono.fromRunnable(() -> {
                 // Check if we should add more credits.
-                synchronized (queueLock) {
+                /*synchronized (queueLock) {
                     pendingMessages.decrementAndGet();
                 }
-                checkAndAddCredits(link);
+                checkAndAddCredits(link);*/
             }));
     }
 
@@ -207,9 +209,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
             currentLink = next;
             next.setEmptyCreditListener(() -> 0);
-
+            AtomicInteger received = new AtomicInteger();
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
+                    received.incrementAndGet();
+                    System.out.println("!!!! Received from Link : " + received.get());
                     synchronized (queueLock) {
                         messageQueue.add(message);
                         pendingMessages.incrementAndGet();
@@ -497,10 +501,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     // These don't have to be settled because they're automatically settled by the link, so we
                     // decrement the count.
-                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK ||
-                        (receiveMode == ServiceBusReceiveMode.PEEK_LOCK  && prefetch == 0)) {
+                   // if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
+                    //    || (receiveMode == ServiceBusReceiveMode.PEEK_LOCK  && prefetch == 0)) {
                         pendingMessages.decrementAndGet();
-                    }
+                    //}
+
                     if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
                         checkAndAddCredits(currentLink);
                     }
