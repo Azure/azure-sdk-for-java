@@ -1,6 +1,14 @@
 # Release History
 ## 5.1.0-beta.5 (Unreleased)
-
+### Breaking changes
+- Renamed `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`.
+- Renamed
+  `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
+  `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`,
+- Removed constructors, 
+  `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
+  `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
+  `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
 
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features

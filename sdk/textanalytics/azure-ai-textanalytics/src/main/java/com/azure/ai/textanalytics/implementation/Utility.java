@@ -429,24 +429,26 @@ public final class Utility {
                     new HashMap<>();
                 if (!CoreUtils.isNullOrEmpty(documentEntities.getRelations())) {
                     documentEntities.getRelations().forEach(healthcareRelation -> {
-                        final HealthcareEntity targetEntity =
-                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getTarget()));
-                        final HealthcareEntity sourceEntity =
-                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getSource()));
-                        final HealthcareEntityRelationType relationType =
-                            HealthcareEntityRelationType.fromString(healthcareRelation.getRelationType());
+                        // TODO: bidirectional relation is gone, do it in another PR
+                        // issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
+//                        final HealthcareEntity targetEntity =
+//                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getTarget()));
+//                        final HealthcareEntity sourceEntity =
+//                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getSource()));
+//                        final HealthcareEntityRelationType relationType =
+//                            HealthcareEntityRelationType.fromString(healthcareRelation.getRelationType());
 
-                        final Map<HealthcareEntity, HealthcareEntityRelationType> targetRelatedEntity =
-                            entityRelationMap.getOrDefault(targetEntity, new HashMap<>());
-                        targetRelatedEntity.putIfAbsent(sourceEntity, relationType);
-                        entityRelationMap.putIfAbsent(targetEntity, targetRelatedEntity);
-
-                        if (healthcareRelation.isBidirectional()) {
-                            final Map<HealthcareEntity, HealthcareEntityRelationType> sourceRelatedEntity =
-                                entityRelationMap.getOrDefault(sourceEntity, new HashMap<>());
-                            sourceRelatedEntity.putIfAbsent(targetEntity, relationType);
-                            entityRelationMap.putIfAbsent(sourceEntity, sourceRelatedEntity);
-                        }
+//                        final Map<HealthcareEntity, HealthcareEntityRelationType> targetRelatedEntity =
+//                            entityRelationMap.getOrDefault(targetEntity, new HashMap<>());
+//                        targetRelatedEntity.putIfAbsent(sourceEntity, relationType);
+//                        entityRelationMap.putIfAbsent(targetEntity, targetRelatedEntity);
+//
+//                        if (healthcareRelation.isBidirectional()) {
+//                            final Map<HealthcareEntity, HealthcareEntityRelationType> sourceRelatedEntity =
+//                                entityRelationMap.getOrDefault(sourceEntity, new HashMap<>());
+//                            sourceRelatedEntity.putIfAbsent(targetEntity, relationType);
+//                            entityRelationMap.putIfAbsent(sourceEntity, sourceRelatedEntity);
+//                        }
                     });
                 }
                 healthcareEntities.forEach(healthcareEntity -> {
@@ -478,24 +480,24 @@ public final class Utility {
         return IterableStream.of(analyzeHealthcareEntitiesResults);
     }
 
-    /**
-     * Helper function that parse healthcare entity index from the given entity reference string.
-     * The entity reference format is "#/results/documents/0/entities/3".
-     *
-     * @param entityReference the given healthcare entity reference string.
-     *
-     * @return the healthcare entity index.
-     */
-    private static Integer getHealthcareEntityIndex(String entityReference) {
-        if (!CoreUtils.isNullOrEmpty(entityReference)) {
-            int lastIndex = entityReference.lastIndexOf('/');
-            if (lastIndex != -1) {
-                return Integer.parseInt(entityReference.substring(lastIndex + 1));
-            }
-        }
-        throw LOGGER.logExceptionAsError(
-            new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
-    }
+//    /**
+//     * Helper function that parse healthcare entity index from the given entity reference string.
+//     * The entity reference format is "#/results/documents/0/entities/3".
+//     *
+//     * @param entityReference the given healthcare entity reference string.
+//     *
+//     * @return the healthcare entity index.
+//     */
+//    private static Integer getHealthcareEntityIndex(String entityReference) {
+//        if (!CoreUtils.isNullOrEmpty(entityReference)) {
+//            int lastIndex = entityReference.lastIndexOf('/');
+//            if (lastIndex != -1) {
+//                return Integer.parseInt(entityReference.substring(lastIndex + 1));
+//            }
+//        }
+//        throw LOGGER.logExceptionAsError(
+//            new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
+//    }
 
     /**
      * Transfer {@link com.azure.ai.textanalytics.models.StringIndexType} into auto-generated {@link StringIndexType}.
