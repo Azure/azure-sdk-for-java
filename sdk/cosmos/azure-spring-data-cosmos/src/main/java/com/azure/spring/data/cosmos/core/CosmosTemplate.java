@@ -13,6 +13,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.spring.data.cosmos.Constants;
@@ -263,14 +264,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
 
-        final String query = String.format("select * from root where root.id = '%s'",
-            CosmosUtils.getStringIDValue(id));
+        final String query = "select * from root where root.id = @ROOT_ID";
+        final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
+        final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
             .getContainer(containerName)
-            .queryItems(query, options, JsonNode.class)
+            .queryItems(sqlQuerySpec, options, JsonNode.class)
             .byPage()
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
