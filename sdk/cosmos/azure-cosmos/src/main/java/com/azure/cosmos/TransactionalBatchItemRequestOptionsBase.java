@@ -34,7 +34,7 @@ public abstract class TransactionalBatchItemRequestOptionsBase<T> {
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public abstract  T setIfMatchETag(final String ifMatchETag);
+    public abstract T setIfMatchETag(final String ifMatchETag);
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
