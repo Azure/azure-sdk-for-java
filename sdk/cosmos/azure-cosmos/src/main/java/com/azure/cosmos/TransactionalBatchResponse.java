@@ -184,7 +184,7 @@ public class TransactionalBatchResponse {
      *
      * @return length of the response.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getResponseLength() {
         return BatchExecUtils.getResponseLength(this.responseHeaders);
     }

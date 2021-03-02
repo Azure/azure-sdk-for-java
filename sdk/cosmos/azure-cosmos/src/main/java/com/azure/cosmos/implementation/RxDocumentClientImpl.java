@@ -14,7 +14,7 @@ import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.TransactionalBatchResponse;
-import com.azure.cosmos.PatchSpec;
+import com.azure.cosmos.implementation.PatchSpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;

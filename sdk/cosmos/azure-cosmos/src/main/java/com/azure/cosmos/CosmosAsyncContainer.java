@@ -1256,7 +1256,9 @@ public class CosmosAsyncContainer {
                 true)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+        return database.getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.upsertItemSpanName,
             this.getId(),

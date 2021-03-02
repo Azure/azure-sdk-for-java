@@ -1,10 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
-@Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatchItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class TransactionalBatchPatchItemRequestOptions extends TransactionalBatchItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -12,6 +15,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      *
      * @return the FilterPredicate associated with the request.
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -21,7 +25,9 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      *
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
+     * @sample "from c where c.taskNum = 3"
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -33,7 +39,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
@@ -45,7 +51,7 @@ public class TransactionalBatchPatchItemRequestOptions extends TransactionalBatc
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;

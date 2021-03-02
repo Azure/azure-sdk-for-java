@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.CosmosPatchOperations;
-import com.azure.cosmos.PatchSpec;
+import com.azure.cosmos.implementation.PatchSpec;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;

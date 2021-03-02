@@ -800,7 +800,8 @@ public final class BridgeInternal {
     public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
         return transactionalBatchResponse.getResponseLength();
     }
-  
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ThroughputControlMode getThroughputControlMode(ThroughputControlGroup throughputControlGroup) {
         return throughputControlGroup.getControlMode();
     }

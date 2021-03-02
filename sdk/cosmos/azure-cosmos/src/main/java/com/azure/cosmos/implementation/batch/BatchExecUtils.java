@@ -55,11 +55,7 @@ public final class BatchExecUtils {
     public static int getResponseLength(Map<String, String> responseHeaders) {
         int responseLength = 0;
         if (responseHeaders != null) {
-            try {
-                responseLength = Integer.parseInt(responseHeaders.get(HttpConstants.HttpHeaders.CONTENT_LENGTH));
-            } catch (NumberFormatException e) {
-                // If value cannot be parsed as Integer, return 0
-            }
+            responseLength = Integer.parseInt(responseHeaders.get(HttpConstants.HttpHeaders.CONTENT_LENGTH));
         }
 
         return responseLength;
