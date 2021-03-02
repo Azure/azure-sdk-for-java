@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deployments/dpokluda-test-2020-1104-1616-17/status",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-94643fd398b9644f8de892cc6c54cacb-15b3d38576135742-00",
+      "retry-after" : "0",
+      "Content-Length" : "271",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"deploymentState\": \"Active\",\r\n  \"totalDevices\": 1,\r\n  \"devicesIncompatibleCount\": 0,\r\n  \"devicesAlreadyInDeploymentCount\": 0,\r\n  \"devicesInProgressCount\": 0,\r\n  \"devicesCompletedFailedCount\": 0,\r\n  \"devicesCompletedSucceededCount\": 1,\r\n  \"devicesCanceledCount\": 0\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:38 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

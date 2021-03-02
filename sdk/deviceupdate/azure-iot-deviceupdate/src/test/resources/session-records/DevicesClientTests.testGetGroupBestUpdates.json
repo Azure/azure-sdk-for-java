@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/groups/dpokluda-test/bestUpdates",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-1156bb45df34d345bde2c8b171dedf15-74c3235019be8f41-00",
+      "retry-after" : "0",
+      "Content-Length" : "199",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"updateId\": {\r\n        \"provider\": \"Contoso\",\r\n        \"name\": \"Virtual-Machine\",\r\n        \"version\": \"2020.1104.1916.0\"\r\n      },\r\n      \"deviceCount\": 1\r\n    }\r\n  ]\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:01 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

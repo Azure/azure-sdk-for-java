@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/groups",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-8318653b0dbeb647bf8d321533a0a808-f75bb0e8bc2a3a4f-00",
+      "retry-after" : "0",
+      "Content-Length" : "873",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"groupId\": \"Uncategorized\",\r\n      \"tags\": [],\r\n      \"createdDateTime\": \"2020-10-03T02:41:21.9903359+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 6\r\n    },\r\n    {\r\n      \"groupId\": \"aysancag-test\",\r\n      \"tags\": [\r\n        \"aysancag-test\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-15T16:29:56.5770502+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    },\r\n    {\r\n      \"groupId\": \"dpokluda-test\",\r\n      \"tags\": [\r\n        \"dpokluda-test\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-16T21:34:43+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    },\r\n    {\r\n      \"groupId\": \"chejiang-test-group\",\r\n      \"tags\": [\r\n        \"chejiang-test-group\"\r\n      ],\r\n      \"createdDateTime\": \"2020-10-22T00:41:00+00:00\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"deviceCount\": 1\r\n    }\r\n  ]\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:00 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

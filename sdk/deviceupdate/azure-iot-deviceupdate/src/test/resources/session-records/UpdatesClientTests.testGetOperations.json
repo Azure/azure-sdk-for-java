@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/operations?$top=1",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-66f9abcb887e134387adbe34f21a10a2-5f6f0bff47a1c94a-00",
+      "retry-after" : "0",
+      "Content-Length" : "710",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"operationId\":\"d85fc628-2ea5-4c5e-95f7-7e70efb8a88e\",\"status\":\"Failed\",\"error\":{\"occurredDateTime\":\"2020-11-05T03:19:44.3213046Z\",\"code\":\"CannotProcessImportManifest\",\"message\":\"Error processing import manifest.\",\"innerError\":{\"code\":\"CannotDownload\",\"message\":\"Cannot download import manifest.\",\"errorDetail\":\"Response status code does not indicate success: 403 (Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.).\"}},\"traceId\":\"fb7492ad917ab24ea07d41d56e5ec875\",\"lastActionDateTime\":\"2020-11-05T03:19:44.3442264Z\",\"createdDateTime\":\"2020-11-05T03:19:43.2889695Z\",\"etag\":\"\\\"64c66b7b-9c8c-43cb-89af-9deae027687a\\\"\"}]}",
+      "Date" : "Thu, 05 Nov 2020 03:19:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

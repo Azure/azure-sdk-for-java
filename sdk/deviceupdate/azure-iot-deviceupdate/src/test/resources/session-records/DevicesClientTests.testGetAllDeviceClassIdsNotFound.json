@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deviceclasses/foo/deviceids",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-87e132ef48d8594ba57dfeed166d0a60-4dd8be02a9359e46-00",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "404",
+      "Body" : "{\r\n  \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\r\n  \"title\": \"Not Found\",\r\n  \"status\": 404,\r\n  \"traceId\": \"00-87e132ef48d8594ba57dfeed166d0a60-330e62bc9cebdd40-00\"\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:00 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/devicetags/functionaltests-groupname1",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-66db98fb6f4b0a418f59eb18db9d67c1-1b4e083b6c6bc94b-00",
+      "retry-after" : "0",
+      "Content-Length" : "56",
+      "StatusCode" : "200",
+      "Body" : "{\"tagName\":\"functionaltests-groupname1\",\"deviceCount\":1}",
+      "Date" : "Thu, 05 Nov 2020 03:20:01 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,20 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/Contoso/names/Virtual-Machine/versions/2020.1104.1616.17/files/00000",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "max-age=60, private",
+      "ETag" : "\"01d6a457-f498-4415-b560-5b7d60037548\"",
+      "traceparent" : "00-879036a8d5c63344839b090604d67098-62422d2f818eda46-00",
+      "retry-after" : "0",
+      "Content-Length" : "213",
+      "StatusCode" : "200",
+      "Body" : "{\"fileId\":\"00000\",\"fileName\":\"setup.exe\",\"sizeInBytes\":94,\"hashes\":{\"Sha256\":\"GWUcdv8QwiQ++q89RCnkVNRzXf1zsw+o5B60XB/mS3Q=\"},\"mimeType\":\"application/octet-stream\",\"etag\":\"\\\"01d6a457-f498-4415-b560-5b7d60037548\\\"\"}",
+      "Date" : "Thu, 05 Nov 2020 03:19:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

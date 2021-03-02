@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deviceclasses/b83e3c87fbf98063c20c3269f1c9e58d255906dd/deviceids",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-49334874c1e0c0409298a8da91589f3c-249e0348995bfc40-00",
+      "retry-after" : "0",
+      "Content-Length" : "199",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    \"dpokluda-test\",\r\n    \"chejiang-test-1007\",\r\n    \"chejiang-test-1008\",\r\n    \"chejiang-test-1008-2\",\r\n    \"chejiang-test-1008-3\",\r\n    \"aysancagtest\",\r\n    \"chejiang-1021\"\r\n  ]\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:02 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

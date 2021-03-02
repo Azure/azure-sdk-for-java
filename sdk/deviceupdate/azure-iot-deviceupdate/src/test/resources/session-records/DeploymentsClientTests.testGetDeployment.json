@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deployments/dpokluda-test-2020-1104-1616-17",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-ed7310afe77ec1409eaf18ea87f7fa0e-f88cd2ae5cc08340-00",
+      "retry-after" : "0",
+      "Content-Length" : "441",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"deploymentId\": \"dpokluda-test-2020-1104-1616-17\",\r\n  \"deploymentType\": \"Complete\",\r\n  \"startDateTime\": \"2020-11-05T00:20:25.4909903+00:00\",\r\n  \"deviceGroupType\": \"DeviceGroupDefinitions\",\r\n  \"deviceGroupDefinition\": [\r\n    \"dpokluda-test\"\r\n  ],\r\n  \"updateId\": {\r\n    \"provider\": \"Contoso\",\r\n    \"name\": \"Virtual-Machine\",\r\n    \"version\": \"2020.1104.1616.17\"\r\n  },\r\n  \"isCanceled\": false,\r\n  \"isCompleted\": false,\r\n  \"isRetry\": false\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:20:40 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

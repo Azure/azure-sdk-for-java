@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/updatecompliance",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-f081e38981860e45973a5f7e3bddf717-326dca93ad99814e-00",
+      "retry-after" : "0",
+      "Content-Length" : "142",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"totalDeviceCount\": 9,\r\n  \"onLatestUpdateDeviceCount\": 1,\r\n  \"newUpdatesAvailableDeviceCount\": 2,\r\n  \"updatesInProgressDeviceCount\": 0\r\n}",
+      "Date" : "Thu, 05 Nov 2020 03:19:59 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

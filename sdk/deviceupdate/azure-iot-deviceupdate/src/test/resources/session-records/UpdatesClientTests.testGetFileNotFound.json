@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/Contoso/names/Virtual-Machine/versions/2020.1104.1616.17/files/foo",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "max-age=60, private",
+      "traceparent" : "00-c9e991b57d4e7449895f47b4aecb3c58-d17b183465e4c24f-00",
+      "retry-after" : "0",
+      "Content-Length" : "161",
+      "StatusCode" : "404",
+      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-c9e991b57d4e7449895f47b4aecb3c58-4f3e1635dcb7c34a-00\"}",
+      "Date" : "Thu, 05 Nov 2020 03:19:45 GMT",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

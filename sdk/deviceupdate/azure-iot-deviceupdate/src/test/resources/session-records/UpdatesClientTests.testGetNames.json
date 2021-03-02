@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/Contoso/names",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-821274cff1a26c48b3b70c82c4992ddd-501b03c6995dd648-00",
+      "retry-after" : "0",
+      "Content-Length" : "56",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"ADU-Raspberry-Pi-Example\",\"Virtual-Machine\"]}",
+      "Date" : "Thu, 05 Nov 2020 03:19:42 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
