@@ -10,7 +10,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
-- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-servicebus;current})
@@ -70,5 +70,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
 

@@ -17,7 +17,7 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
 - [Register an application in Azure Portal][register_an_application_in_portal]
-- [Build beta version dependencies if needed][build-beta-version-dependencies-if-needed]
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ## Key concepts
 
@@ -431,5 +431,5 @@ Please follow [instructions here] to build from source or contribute.
 [register_an_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
 [Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
-[build-beta-version-dependencies-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-beta-version-dependencies-if-needed.md
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
 
