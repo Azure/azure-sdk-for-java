@@ -6,19 +6,9 @@ package com.azure.messaging.eventgrid;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedInThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
@@ -86,9 +76,7 @@ import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
@@ -408,7 +396,6 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser";
     public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
         "Microsoft.Communication.ChatThreadWithUserDeleted";
-
     public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED =
         "Microsoft.Communication.SMSDeliveryReportReceived";
     public static final String COMMUNICATION_SMS_RECEIVED =
