@@ -11,7 +11,8 @@ import com.azure.cosmos.util.Beta;
  * creating bulk patch request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase {
+public final class BulkPatchItemRequestOptions
+        extends BulkItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
