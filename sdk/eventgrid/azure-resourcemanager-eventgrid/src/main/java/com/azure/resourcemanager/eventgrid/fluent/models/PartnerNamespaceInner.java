@@ -21,7 +21,7 @@ public class PartnerNamespaceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceInner.class);
 
     /*
-     * The system metadata relating to this resource.
+     * The system metadata relating to Partner Namespace resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -47,7 +47,7 @@ public class PartnerNamespaceInner extends Resource {
     private String endpoint;
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: The system metadata relating to Partner Namespace resource.
      *
      * @return the systemData value.
      */

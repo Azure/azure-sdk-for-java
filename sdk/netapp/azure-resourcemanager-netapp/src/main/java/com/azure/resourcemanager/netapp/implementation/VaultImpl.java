@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.VaultInner;
 import com.azure.resourcemanager.netapp.models.Vault;
 
 public final class VaultImpl implements Vault {
     private VaultInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
-    VaultImpl(VaultInner innerObject, NetAppManager serviceManager) {
+    VaultImpl(VaultInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class VaultImpl implements Vault {
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

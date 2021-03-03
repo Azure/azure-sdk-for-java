@@ -48,7 +48,7 @@ public interface PartnerNamespace {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: The system metadata relating to Partner Namespace resource.
      *
      * @return the systemData value.
      */

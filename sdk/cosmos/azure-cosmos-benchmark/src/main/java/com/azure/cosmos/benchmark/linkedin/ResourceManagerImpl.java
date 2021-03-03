@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributes;
+import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
@@ -26,21 +28,27 @@ public class ResourceManagerImpl implements ResourceManager {
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
     private final Configuration _configuration;
+    private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
 
-    public ResourceManagerImpl(final Configuration configuration, final CosmosAsyncClient client) {
+    public ResourceManagerImpl(final Configuration configuration,
+        final EntityConfiguration entityConfiguration,
+        final CosmosAsyncClient client) {
         Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
+        Preconditions.checkNotNull(entityConfiguration,
+            "The Test Entity specific configuration can not be null");
         Preconditions.checkNotNull(client, "Need a non-null client for "
             + "setting up the Database and containers for the test");
         _configuration = configuration;
+        _entityConfiguration = entityConfiguration;
         _client = client;
     }
 
     @Override
     public void createDatabase() throws CosmosException {
         try {
-            LOGGER.info("Creating database {} for the ctl workload", _configuration.getDatabaseId());
+            LOGGER.info("Creating database {} for the ctl workload if one doesn't exist", _configuration.getDatabaseId());
             final ThroughputProperties throughputProperties = createManualThroughput(_configuration.getThroughput());
             _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
@@ -56,10 +64,12 @@ public class ResourceManagerImpl implements ResourceManager {
     public void createContainer() throws CosmosException {
         final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
+        final CollectionAttributes collectionAttributes = _entityConfiguration.collectionAttributes();
         try {
             LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
             final CosmosContainerProperties containerProperties =
-                new CosmosContainerProperties(containerName, PARTITION_KEY_PATH);
+                new CosmosContainerProperties(containerName, PARTITION_KEY_PATH)
+                    .setIndexingPolicy(collectionAttributes.indexingPolicy());
             database.createContainerIfNotExists(containerProperties)
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
@@ -73,16 +83,6 @@ public class ResourceManagerImpl implements ResourceManager {
         // Delete all the containers in the database
         deleteExistingContainers();
 
-        // Followed by the main database used for testing
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        try {
-            LOGGER.info("Deleting the main database {} used in this test", _configuration.getDatabaseId());
-            database.delete()
-                .block(RESOURCE_CRUD_WAIT_TIME);
-        } catch (CosmosException e) {
-            LOGGER.error("Exception while deleting the database {}", _configuration.getDatabaseId(), e);
-            throw e;
-        }
         LOGGER.info("Resource cleanup completed");
     }
 

@@ -16,7 +16,7 @@ MAVEN_URL = 'https://repo1.maven.org/maven2/{group_id}/{artifact_id}/{version}/{
 
 SDK_ROOT = '../../../'  # related to file dir
 AUTOREST_CORE_VERSION = '3.0.6369'
-AUTOREST_JAVA = '@autorest/java@4.0.16'
+AUTOREST_JAVA = '@autorest/java@4.0.17'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
@@ -41,6 +41,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -51,6 +52,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*

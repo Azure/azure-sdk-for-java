@@ -64,6 +64,13 @@ public interface Domain {
     IdentityInfo identity();
 
     /**
+     * Gets the systemData property: The system metadata relating to Domain resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the privateEndpointConnections property: List of private endpoint connections.
      *
      * @return the privateEndpointConnections value.

@@ -38,8 +38,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.69</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.52</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>

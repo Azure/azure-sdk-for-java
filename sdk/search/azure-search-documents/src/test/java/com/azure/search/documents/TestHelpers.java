@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
 
-    public static final ObjectMapper MAPPER = new ObjectMapper();
+    public static final ObjectMapper MAPPER = getDefaultSerializerAdapter().serializer();
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
@@ -68,15 +68,6 @@ public final class TestHelpers {
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() { };
-//    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
-//            Collections.singletonMap("crs", new HashMap<String, Object>() {
-//            {
-//                put("type", "name");
-//                put("properties", Collections.singletonMap("name", "EPSG:4326"));
-//            }
-//        }));
-//    }
 
     /**
      * Assert whether two objects are equal.

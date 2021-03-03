@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityResponseMocker;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -38,7 +39,7 @@ public class CommunicationIdentityBuilderTests {
     public void buildAsyncClientTest() {
         builder
             .endpoint(MOCK_URL)
-            .accessKey(MOCK_ACCESS_KEY)
+            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -62,7 +63,7 @@ public class CommunicationIdentityBuilderTests {
     public void buildSyncClientTest() {
         builder
             .endpoint(MOCK_URL)
-            .accessKey(MOCK_ACCESS_KEY)
+            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -120,7 +121,7 @@ public class CommunicationIdentityBuilderTests {
     public void missingUrlTest()
         throws NullPointerException, MalformedURLException {
         builder
-            .accessKey(MOCK_ACCESS_KEY)
+            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
             .httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();

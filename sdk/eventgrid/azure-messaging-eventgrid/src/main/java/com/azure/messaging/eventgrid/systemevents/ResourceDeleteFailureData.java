@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceDeleteFailureData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteFailure event. This is
+ * raised when a resource delete operation fails.
+ */
 @Fluent
 public final class ResourceDeleteFailureData {
     /*

@@ -30,7 +30,7 @@ public class PartnerTopicInner extends Resource {
     private IdentityInfo identity;
 
     /*
-     * The system metadata relating to this resource.
+     * The system metadata relating to Partner Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -93,7 +93,7 @@ public class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: The system metadata relating to Partner Topic resource.
      *
      * @return the systemData value.
      */

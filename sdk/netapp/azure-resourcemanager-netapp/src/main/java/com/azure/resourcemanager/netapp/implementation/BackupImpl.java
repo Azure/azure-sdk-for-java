@@ -6,7 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppManager;
+import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
@@ -16,7 +16,7 @@ import java.util.Map;
 public final class BackupImpl implements Backup, Backup.Definition, Backup.Update {
     private BackupInner innerObject;
 
-    private final NetAppManager serviceManager;
+    private final NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -74,7 +74,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.innerObject;
     }
 
-    private NetAppManager manager() {
+    private NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -118,7 +118,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this;
     }
 
-    BackupImpl(String name, NetAppManager serviceManager) {
+    BackupImpl(String name, NetAppFilesManager serviceManager) {
         this.innerObject = new BackupInner();
         this.serviceManager = serviceManager;
         this.backupName = name;
@@ -147,7 +147,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this;
     }
 
-    BackupImpl(BackupInner innerObject, NetAppManager serviceManager) {
+    BackupImpl(BackupInner innerObject, NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

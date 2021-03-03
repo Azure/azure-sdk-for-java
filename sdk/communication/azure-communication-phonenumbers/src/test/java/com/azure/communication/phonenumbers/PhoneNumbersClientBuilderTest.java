@@ -4,6 +4,7 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.*;
@@ -151,7 +152,7 @@ public class PhoneNumbersClientBuilderTest {
     @Test()
     public void buildClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
@@ -265,7 +266,7 @@ public class PhoneNumbersClientBuilderTest {
     @Test()
     public void buildAsyncClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
@@ -283,14 +284,6 @@ public class PhoneNumbersClientBuilderTest {
         });
     }
 
-
-    @Test()
-    public void setAccessKeyNull() {
-        assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.accessKey(null);
-        });
-    }
-
     @Test()
     public void addPolicyNull() {
         assertThrows(NullPointerException.class, () -> {
@@ -302,7 +295,7 @@ public class PhoneNumbersClientBuilderTest {
         return clientBuilder
             .endpoint(ENDPOINT)
             .httpClient(this.httpClient)
-            .accessKey(ACCESSKEY);
+            .credential(new AzureKeyCredential(ACCESSKEY));
     }
 
     private PhoneNumbersClientBuilder setupBuilderWithPolicies(

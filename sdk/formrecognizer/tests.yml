@@ -16,6 +16,6 @@ stages:
         UsGov:
           SubscriptionConfiguration: $(sub-config-gov-test-resources-test)
           Location: 'usgovvirginia'
-      SupportedClouds: 'UsGov'
+      SupportedClouds: 'UsGov,Public'
       EnvVars:
         AZURE_TEST_MODE: RECORD

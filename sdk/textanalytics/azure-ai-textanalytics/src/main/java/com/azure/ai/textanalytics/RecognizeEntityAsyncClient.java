@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
@@ -33,10 +34,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -196,11 +197,12 @@ class RecognizeEntityAsyncClient {
             options.getModelVersion(), options.isIncludeStatistics(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
             .map(this::toRecognizeEntitiesResultCollectionResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }
