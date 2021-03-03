@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +27,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -641,5 +643,30 @@ class ServiceBusReceiveLinkProcessorTest {
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
+    }
+
+    @Test
+    void updateDispositionDoesNotAddCredit() {
+        // Arrange
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
+            .subscribeWith(linkProcessor);
+        final String lockToken = "lockToken";
+        final DeliveryState deliveryState =  mock(DeliveryState.class);
+
+        when(link1.getCredits()).thenReturn(0);
+        when(link1.updateDisposition(eq(lockToken), eq(deliveryState))).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> processor.updateDisposition(lockToken, deliveryState))
+            .thenCancel()
+            .verify();
+
+        assertTrue(processor.isTerminated());
+        assertFalse(processor.hasError());
+        assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).updateDisposition(eq(lockToken), eq(deliveryState));
     }
 }
