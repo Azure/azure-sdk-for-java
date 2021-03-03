@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.Locale;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Represents a per-User Permission to access a specific resource e.g. item or container in the Azure Cosmos DB
  * database service.
@@ -113,10 +115,10 @@ public final class Permission extends Resource {
      * @param partitionkey the partition key.
      */
     public void setResourcePartitionKey(PartitionKey partitionkey) {
-        if(ModelBridgeInternal.getPartitionKeyObject(partitionkey) != null) {
-            BridgeInternal.setProperty(this,
-                Constants.Properties.RESOURCE_PARTITION_KEY,
-                new Object[]{ModelBridgeInternal.getPartitionKeyObject(partitionkey)});
-        }
+        checkNotNull(partitionkey, "Partition key can not be null");
+
+        BridgeInternal.setProperty(this,
+            Constants.Properties.RESOURCE_PARTITION_KEY,
+            new Object[]{ModelBridgeInternal.getPartitionKeyObject(partitionkey)});
     }
 }

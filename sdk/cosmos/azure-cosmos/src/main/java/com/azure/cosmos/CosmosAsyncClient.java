@@ -33,6 +33,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -95,7 +96,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
 
-        List<Permission> permissionList = null;
+        List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
             permissionList =
                 this.permissions
