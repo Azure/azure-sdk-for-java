@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Map;
 
 
-public interface Generator {
+public interface DataGenerator {
     /**
      * Generates the desired batch of records for a specific entity
      *

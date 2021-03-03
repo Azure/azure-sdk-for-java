@@ -10,8 +10,6 @@ public class Constants {
 
     public final static String METHOD_GET = "GET";
     public final static String ERROR_COUNT = "ErrorCount";
-    public final static String CALL_COUNT_TOTAL = "CallCountTotal";
-    public final static String NOT_FOUND = "NotFound";
     public final static String TOO_MANY_REQUESTS = "TooManyRequests";
     public final static String DELETED_INDICATOR = "__deletedTs__";
 

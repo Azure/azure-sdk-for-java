@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributes;
-import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributesFactory;
+import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
@@ -28,14 +28,20 @@ public class ResourceManagerImpl implements ResourceManager {
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
     private final Configuration _configuration;
+    private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
 
-    public ResourceManagerImpl(final Configuration configuration, final CosmosAsyncClient client) {
+    public ResourceManagerImpl(final Configuration configuration,
+        final EntityConfiguration entityConfiguration,
+        final CosmosAsyncClient client) {
         Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
+        Preconditions.checkNotNull(entityConfiguration,
+            "The Test Entity specific configuration can not be null");
         Preconditions.checkNotNull(client, "Need a non-null client for "
             + "setting up the Database and containers for the test");
         _configuration = configuration;
+        _entityConfiguration = entityConfiguration;
         _client = client;
     }
 
@@ -58,9 +64,7 @@ public class ResourceManagerImpl implements ResourceManager {
     public void createContainer() throws CosmosException {
         final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        final CollectionAttributes collectionAttributes =
-            CollectionAttributesFactory.getCollectionAttributes(containerName);
-
+        final CollectionAttributes collectionAttributes = _entityConfiguration.collectionAttributes();
         try {
             LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
             final CosmosContainerProperties containerProperties =
