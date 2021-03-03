@@ -8,7 +8,7 @@ parameters:
   PreSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
-  TestMode: ''
+  TestMode: 'LIVE'
   TestStepMavenInputs: {}
   TestResultsFiles: ''
   CloudConfig: {}
