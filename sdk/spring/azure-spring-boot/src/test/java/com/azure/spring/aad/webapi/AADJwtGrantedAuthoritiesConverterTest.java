@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AADJwtBearerTokenAuthenticationConverterTest {
+public class AADJwtGrantedAuthoritiesConverterTest {
 
     private Jwt jwt = mock(Jwt.class);
     private Map<String, Object> claims = new HashMap<>();
@@ -36,45 +36,24 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
         when(jwt.getExpiresAt()).thenReturn(Instant.MAX);
         when(jwt.getClaims()).thenReturn(claims);
         when(jwt.containsClaim("scp")).thenReturn(true);
-    }
-
-    @Test
-    public void testCreateUserPrincipal() {
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
-            .getPrincipal();
-        assertThat(principal.getClaims()).isNotEmpty();
-        assertThat(principal.getIssuer()).isEqualTo(claims.get("iss"));
-        assertThat(principal.getTenantId()).isEqualTo(claims.get("tid"));
-    }
-
-    @Test
-    public void testExtractDefaultScopeAuthorities() {
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
-            .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
+        when(jwt.containsClaim("roles")).thenReturn(true);
     }
 
     @Test
     public void testExtractRoleScopeAuthorities() {
-        when(jwt.containsClaim("roles")).thenReturn(true);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("roles",
-            "APPROLE_");
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
+        AADJwtGrantedAuthoritiesConverter aadJwtGrantedAuthoritiesConverter = new AADJwtGrantedAuthoritiesConverter();
+        converter.setJwtGrantedAuthoritiesConverter(aadJwtGrantedAuthoritiesConverter);
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
+        assertThat(principal.getAuthorities()).hasSize(4);
     }
 
 
 }
+
+
