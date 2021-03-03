@@ -74,7 +74,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new DefaultAzureCredentialBuilder().authorityHost("https://login.windows-ppe.net").build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
