@@ -103,6 +103,13 @@ jobs:
       # Only run if building all libraries succeeded.
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
+    # Run link verification at the end as it will run no matter the pipeline passing or failing.
+    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
+        Condition: succeededOrFailed()
 
     # Put cred scan step before install and build packages to avoid the tool scans generated folder like /target.
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
@@ -126,10 +133,3 @@ jobs:
         # GdnBreakOutputBaseline: baseline
       condition: succeededOrFailed()
       continueOnError: true
-    # Run link verification at the end as it will run no matter the pipeline passing or failing.
-    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-    - template: ../common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        Directory: ""
-        CheckLinkGuidance: $true
-        Condition: succeededOrFailed()
