@@ -1,5 +1,4 @@
 trigger: none
-
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
@@ -16,6 +15,6 @@ stages:
         UsGov:
           SubscriptionConfiguration: $(sub-config-gov-test-resources-test)
           Location: 'usgovvirginia'
-      SupportedClouds: 'UsGov,Public'
+      SupportedClouds: 'Public,UsGov'
       EnvVars:
         AZURE_TEST_MODE: RECORD
