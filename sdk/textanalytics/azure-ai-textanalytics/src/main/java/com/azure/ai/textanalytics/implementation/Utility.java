@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
@@ -16,6 +17,7 @@ import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
+import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
@@ -31,9 +33,14 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -44,6 +51,7 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
@@ -314,10 +322,15 @@ public final class Utility {
         final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         piiEntitiesResult.getDocuments().forEach(documentEntities -> {
             // Pii entities list
-            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
-                new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
-                .collect(Collectors.toList());
+            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity -> {
+                final PiiEntity piiEntity = new PiiEntity();
+                PiiEntityPropertiesHelper.setText(piiEntity, entity.getText());
+                PiiEntityPropertiesHelper.setCategory(piiEntity, PiiEntityCategory.fromString(entity.getCategory()));
+                PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
+                PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
+                PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
+                return piiEntity;
+            }).collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
                 .map(warning -> {
@@ -373,6 +386,54 @@ public final class Utility {
 
         return new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
             keyPhraseResult.getStatistics() == null ? null : toBatchStatistics(keyPhraseResult.getStatistics()));
+    }
+
+    public static RecognizeLinkedEntitiesResultCollection toRecognizeLinkedEntitiesResultCollectionResponse(
+        final EntityLinkingResult entityLinkingResult) {
+        // List of documents results
+        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = new ArrayList<>();
+        entityLinkingResult.getDocuments().forEach(
+            documentEntities ->
+                recognizeLinkedEntitiesResults.add(
+                    new RecognizeLinkedEntitiesResult(
+                        documentEntities.getId(),
+                        documentEntities.getStatistics() == null ? null
+                            : toTextDocumentStatistics(documentEntities.getStatistics()),
+                        null,
+                        new LinkedEntityCollection(
+                            new IterableStream<>(documentEntities.getEntities().stream().map(
+                                linkedEntity -> new LinkedEntity(
+                                    linkedEntity.getName(),
+                                    new IterableStream<>(linkedEntity.getMatches().stream().map(match -> {
+                                        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                                            match.getText(), match.getConfidenceScore(), match.getOffset());
+                                        LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch, match.getLength());
+                                        return linkedEntityMatch;
+                                    }).collect(Collectors.toList())),
+                                    linkedEntity.getLanguage(),
+                                    linkedEntity.getId(),
+                                    linkedEntity.getUrl(),
+                                    linkedEntity.getDataSource(),
+                                    linkedEntity.getBingId())).collect(Collectors.toList())),
+                            new IterableStream<>(documentEntities.getWarnings().stream().map(
+                                warning -> {
+                                    final WarningCodeValue warningCodeValue = warning.getCode();
+                                    return new TextAnalyticsWarning(
+                                        WarningCode.fromString(warningCodeValue == null ? null
+                                                                   : warningCodeValue.toString()),
+                                        warning.getMessage());
+                                }).collect(Collectors.toList()))
+                        ))));
+        // Document errors
+        for (DocumentError documentError : entityLinkingResult.getErrors()) {
+            recognizeLinkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResults,
+            entityLinkingResult.getModelVersion(),
+            entityLinkingResult.getStatistics() == null ? null
+                : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
 
     /**
@@ -539,5 +600,21 @@ public final class Utility {
             documents.forEach(ignored -> count[0] += 1);
             return count[0];
         }
+    }
+
+    /**
+     * Helper function which convert the {@link Iterable<PiiEntityCategory>} to {@link List<PiiCategory>}.
+     *
+     * @param categoriesFilter the iterable of {@link PiiEntityCategory}.
+     * @return the list of {@link PiiCategory}.
+     */
+    public static List<PiiCategory> toCategoriesFilter(Iterable<PiiEntityCategory> categoriesFilter) {
+        // Corner case. Whenever the passing value is null, we use `null` as the default value pass to service.
+        if (categoriesFilter == null) {
+            return null;
+        }
+        final List<PiiCategory> piiCategories = new ArrayList<>();
+        categoriesFilter.forEach(category -> piiCategories.add(PiiCategory.fromString(category.toString())));
+        return piiCategories;
     }
 }

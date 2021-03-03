@@ -1,5 +1,12 @@
 # Release History
 ## 5.1.0-beta.5 (Unreleased)
+- We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
+
+### New features
+- `beginAnalyzeBatchActions` can now process recognize linked entities actions.
+- `recognizePiiEntities` takes a new option, `categoriesFilter`, that specifies a list of PII categories to return.
+- Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
+
 ### Breaking changes
 - Renamed `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`.
 - Renamed
@@ -9,7 +16,7 @@
   `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
   `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
   `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
-
+- Removed `PiiEntity` constructor
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features
 - Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.

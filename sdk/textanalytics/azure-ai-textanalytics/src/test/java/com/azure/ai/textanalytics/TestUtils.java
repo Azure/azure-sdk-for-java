@@ -9,17 +9,18 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.SentenceOpinion;
-import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -35,16 +36,19 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -324,8 +328,19 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<PiiEntity> getPiiEntitiesList1() {
-        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0);
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("USSocialSecurityNumber"), null, 0.65, 28);
+        final PiiEntity piiEntity0 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity0, "Microsoft");
+        PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.ORGANIZATION);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity0, null);
+        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity0, 1.0);
+        PiiEntityPropertiesHelper.setOffset(piiEntity0, 0);
+
+        final PiiEntity piiEntity1 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity1, "859-98-0987");
+        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.USSOCIAL_SECURITY_NUMBER);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity1, null);
+        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity1, 0.65);
+        PiiEntityPropertiesHelper.setOffset(piiEntity1, 28);
         return asList(piiEntity0, piiEntity1);
     }
 
@@ -333,12 +348,48 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<PiiEntity> getPiiEntitiesList2() {
-        // TODO: Use PiiEntityCategory after the class is introduced,
-        // issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
-        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.PHONE_NUMBER, null, 0.8, 18);
-        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABARoutingNumber"), null, 0.75, 18);
-        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("NZSocialWelfareNumber"), null, 0.65, 18);
-        return asList(piiEntity2, piiEntity3, piiEntity4);
+        String expectedText = "111000025";
+        final PiiEntity piiEntity0 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity0, expectedText);
+        PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.PHONE_NUMBER);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity0, null);
+        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity0, 0.8);
+        PiiEntityPropertiesHelper.setOffset(piiEntity0, 18);
+
+        final PiiEntity piiEntity1 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity1, expectedText);
+        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.ABAROUTING_NUMBER);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity1, null);
+        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity1, 0.75);
+        PiiEntityPropertiesHelper.setOffset(piiEntity1, 18);
+
+        final PiiEntity piiEntity2 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity2, expectedText);
+        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.NZSOCIAL_WELFARE_NUMBER);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity2, null);
+        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity2, 0.65);
+        PiiEntityPropertiesHelper.setOffset(piiEntity2, 18);
+
+        return asList(piiEntity0, piiEntity1, piiEntity2);
+    }
+
+    /**
+     * Helper method to get the expected batch of Personally Identifiable Information entities for categories filter
+     */
+    static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesForCategoriesFilter() {
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(
+            new IterableStream<>(asList(getPiiEntitiesList1().get(1))),
+            "Microsoft employee with ssn *********** is using our awesome API's.", null);
+        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(
+            new IterableStream<>(asList(getPiiEntitiesList2().get(1))),
+            "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.", null);
+        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", null, null, piiEntityCollection);
+        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", null, null, piiEntityCollection2);
+
+        return new RecognizePiiEntitiesResultCollection(
+            asList(recognizeEntitiesResult1, recognizeEntitiesResult2),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
     /**
@@ -804,6 +855,20 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
+    static RecognizeLinkedEntitiesResultCollection getRecognizeLinkedEntitiesResultCollection() {
+        // Categorized Entities
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
+        return new RecognizeLinkedEntitiesResultCollection(
+            asList(new RecognizeLinkedEntitiesResult("0", null, null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList1()), null)),
+                new RecognizeLinkedEntitiesResult("1", null, null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList2()), null))
+            ), DEFAULT_MODEL_VERSION, null);
+    }
+
     static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,
         OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
         RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
@@ -836,13 +901,25 @@ final class TestUtils {
         return extractKeyPhrasesActionResult;
     }
 
+    static RecognizeLinkedEntitiesActionResult getExpectedRecognizeLinkedEntitiesActionResult(boolean isError,
+        OffsetDateTime completeAt, RecognizeLinkedEntitiesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
     static AnalyzeBatchActionsResult getExpectedAnalyzeBatchActionsResult(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
-        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
+        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
 
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
         AnalyzeBatchActionsResultPropertiesHelper.setStatistics(analyzeBatchActionsResult,
@@ -853,6 +930,8 @@ final class TestUtils {
             recognizePiiEntitiesActionResults);
         AnalyzeBatchActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeBatchActionsResult,
             extractKeyPhrasesActionResults);
+        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeBatchActionsResult,
+            recognizeLinkedEntitiesActionResults);
         return analyzeBatchActionsResult;
     }
 
@@ -923,7 +1002,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null)))
+                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(Collections.emptyList())
         ));
         // Second Page
         startIndex += firstPage;
@@ -933,7 +1013,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null)))
+                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(Collections.emptyList())
         ));
         return analyzeBatchActionsResults;
     }

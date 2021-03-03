@@ -10,7 +10,6 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
@@ -19,6 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.StringIndexType;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -65,6 +65,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForCategoriesFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
@@ -72,11 +73,13 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesA
 import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCollection;
+import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
@@ -862,6 +865,20 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)))
                 .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, getExpectedBatchPiiEntitiesForDomainFilter(), 200, response))
                 .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForBatchInputForCategoriesFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
+            (inputs, options) ->
+                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
+                    .assertNext(
+                        resultCollection -> validatePiiEntitiesResultCollection(false,
+                            getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection))
+                    .verifyComplete());
     }
 
     // Linked Entities
@@ -2249,7 +2266,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                         false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                        false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
+                        false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
+                    IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
@@ -2306,7 +2324,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                                 false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                         IterableStream.of(asList(
                             getExpectedExtractKeyPhrasesActionResult(
-                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))))),
+                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
+                        IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
             }
         );
@@ -2337,9 +2356,67 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                                 getActionError(INVALID_REQUEST, PII_TASK, "1")))),
                         IterableStream.of(asList(
                             getExpectedExtractKeyPhrasesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))))),
+                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))),
+                        IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
             }
         );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                    client.beginAnalyzeBatchActions(documents, tasks,
+                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        // TODO: Organization "Microsoft" should be displayed since it is not a SSN.
+                        // Replace getExpectedBatchPiiEntitiesForCategoriesFilter() to getExpectedBatchPiiEntities()
+                        // instead when the issue resolved.
+                        // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19568
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                            false, TIME_NOW, getExpectedBatchPiiEntities(), null))),
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeLinkedEntityTasks(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
+                client.beginAnalyzeBatchActions(documents, tasks, "en",
+                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();;
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+
+            validateAnalyzeBatchActionsResultList(
+                false,
+                asList(getExpectedAnalyzeBatchActionsResult(
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(asList(
+                        getExpectedRecognizeLinkedEntitiesActionResult(false, TIME_NOW,
+                            getRecognizeLinkedEntitiesResultCollection(), null)
+                    ))
+                )),
+                result.toStream().collect(Collectors.toList()));
+        });
     }
 }
