@@ -9,17 +9,20 @@ import com.azure.cosmos.util.Beta;
 /**
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class TransactionalBatchItemRequestOptionsBase<T> {
-    protected String ifMatchETag;
-    protected String ifNoneMatchETag;
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public class TransactionalBatchItemRequestOptionsBase {
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+
+    protected TransactionalBatchItemRequestOptionsBase(){
+    }
 
     /**
      * Gets the If-Match (ETag) associated with the operation in TransactionalBatch.
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -30,7 +33,7 @@ public class TransactionalBatchItemRequestOptionsBase<T> {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -41,7 +44,7 @@ public class TransactionalBatchItemRequestOptionsBase<T> {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -52,7 +55,7 @@ public class TransactionalBatchItemRequestOptionsBase<T> {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;

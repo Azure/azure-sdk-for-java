@@ -32,7 +32,7 @@ public final class BulkItemRequestOptions extends BulkItemRequestOptionsBase {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        setIfNoneMatchETagCore(ifNoneMatchETag);
+        setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 

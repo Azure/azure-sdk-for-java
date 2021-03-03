@@ -10,19 +10,22 @@ import com.azure.cosmos.util.Beta;
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link BulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class BulkItemRequestOptionsBase {
 
-    protected String ifMatchETag;
-    protected String ifNoneMatchETag;
-    protected Boolean contentResponseOnWriteEnabled;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
+
+    protected BulkItemRequestOptionsBase(){
+    }
 
     /**
      * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -33,7 +36,7 @@ public class BulkItemRequestOptionsBase {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -44,7 +47,7 @@ public class BulkItemRequestOptionsBase {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -55,7 +58,7 @@ public class BulkItemRequestOptionsBase {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;
@@ -74,7 +77,7 @@ public class BulkItemRequestOptionsBase {
      *
      * @return a boolean indicating whether payload will be included in the response or not for this operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -98,7 +101,7 @@ public class BulkItemRequestOptionsBase {
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setContentResponseOnWriteEnabledCore(Boolean contentResponseOnWriteEnabled){
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return;

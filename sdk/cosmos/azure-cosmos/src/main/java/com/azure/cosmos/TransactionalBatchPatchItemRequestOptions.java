@@ -7,7 +7,8 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class TransactionalBatchPatchItemRequestOptions extends TransactionalBatchItemRequestOptionsBase<TransactionalBatchPatchItemRequestOptions> {
+public final class TransactionalBatchPatchItemRequestOptions
+        extends TransactionalBatchItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
