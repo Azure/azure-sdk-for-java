@@ -7,7 +7,9 @@ package com.azure.spring.integration.core;
  * Azure internal headers for Spring Messaging messages.
  *
  * @author Warren Zhu
+ * @deprecated Please use ServiceBusMessageHeaders or EventHubHeaders.
  */
+@Deprecated
 public class AzureHeaders {
 
     protected static final String PREFIX = "azure_";
