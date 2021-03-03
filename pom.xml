@@ -604,6 +604,7 @@
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
+        <module>sdk/peering</module>
         <module>sdk/postgresql</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
