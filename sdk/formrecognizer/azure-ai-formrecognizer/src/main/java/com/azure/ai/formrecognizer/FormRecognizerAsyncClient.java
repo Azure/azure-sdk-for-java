@@ -853,12 +853,17 @@ public final class FormRecognizerAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors().stream()
-                        .map(errorInformation ->
-                            new FormRecognizerErrorInformation(errorInformation.getCode(),
-                                errorInformation.getMessage()))
-                        .collect(Collectors.toList())));
+                if (analyzeOperationResultResponse.getValue().getAnalyzeResult() != null
+                    && analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors() != null) {
+                    throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                        analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors().stream()
+                            .map(errorInformation ->
+                                new FormRecognizerErrorInformation(errorInformation.getCode(),
+                                    errorInformation.getMessage()))
+                            .collect(Collectors.toList())));
+                } else {
+                    throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed", null));
+                }
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeOperationResultResponse.getValue().getStatus().toString(), true);
