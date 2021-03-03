@@ -8,7 +8,7 @@
 test1
 
 | Config Property Name      | Default | Description |
-| :---        |    :----   |         : --- | 
+| :---        |    :----   |         :--- | 
 | `spark.cosmos.accountEndpoint`      | None   | Cosmos DB Account Endpoint Uri |
 | `spark.cosmos.accountKey`      | None    | Cosmos DB Account Key  |
 | `spark.cosmos.database`      | None    | Cosmos DB database name  |

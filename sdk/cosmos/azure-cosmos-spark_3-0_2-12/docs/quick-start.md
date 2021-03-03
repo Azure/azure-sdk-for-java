@@ -7,13 +7,13 @@ You can use any other Spark 3.0.x spark offering as well, also you should be abl
 
 ### Prerequisites
 
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription].
+- An active Azure account. If you don't have one, you can sign up for a 
+  [free account](https://azure.microsoft.com/en-us/try/cosmosdb/).
   Alternatively, you can use the
-  [use Azure Cosmos DB Emulator](local-emulator.md)] for development and testing.
-- (Optional) SLF4J is a logging facade.
+  [use Azure Cosmos DB Emulator](local-emulator.md) for development and testing.
+- [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/) or any other Spark 3.0.x spark offering
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
-- (Optional) Maven
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will
 link the SLF4J API with the logging implementation of your choice. See

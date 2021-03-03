@@ -24,7 +24,7 @@ Supported Configuration in `TBLPROPERTIES`
 
 
 | Config Property Name      | Default | Description |
-| :---        |    :----   |         : --- | 
+| :---        |    :----   |         :--- | 
 | `partitionKeyPath`     | None    | Specifies the Partition Key Path for the new Cosmos DB Container. This is a mandatory option|
 | `manualThroughput`      | None    | Specifies the manual throughput for the new Cosmos DB Container |  |
 
