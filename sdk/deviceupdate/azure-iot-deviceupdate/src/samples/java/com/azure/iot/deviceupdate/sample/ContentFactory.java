@@ -86,7 +86,7 @@ public class ContentFactory {
             "\"CreatedDateTime\": \"%s\", " +
             "\"Files\": [{\"FileName\": \"%s\", \"SizeInBytes\": %s, \"Hashes\": {\"SHA256\": \"%s\"}}]," +
             "\"Compatibility\": %s, \"ManifestVersion\": \"2.0\", \"InstalledCriteria\": \"1.2.3.4\","+
-            "\"UpdateType\": \"SWUpdate\"}",
+            "\"UpdateType\": \"microsoft/swupdate:1\"}",
             provider, name, version,
             DateTimeFormatter.ISO_INSTANT.format(OffsetDateTime.now()),
             fileName, fileSize, fileHash,

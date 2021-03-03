@@ -28,7 +28,7 @@ public class UpdatesClientTests extends TestBase {
     private static final String FILE_NAME = "setup.exe";
     private static final String DEFAULT_SCOPE = "6ee392c4-d339-4083-b04d-6b7947c6cf78/.default";
 
-    private Updates createClient() {
+    private UpdatesAsyncClient createClient() {
         TokenCredential credentials;
         HttpClient httpClient;
         HttpPipelinePolicy recordingPolicy = null;
@@ -72,18 +72,16 @@ public class UpdatesClientTests extends TestBase {
                 .build();
         }
 
-        DeviceUpdateClient client = new DeviceUpdateClientBuilder()
+        return new DeviceUpdateClientBuilder()
             .accountEndpoint(TestData.ACCOUNT_ENDPOINT)
             .instanceId(TestData.INSTANCE_ID)
             .pipeline(httpPipeline)
-            .buildClient();
-
-        return client.getUpdates();
+            .buildUpdatesAsyncClient();
     }
 
     @Test
     public void testImportUpdate() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
 
         Map<String, String> hashes = new HashMap<String, String>();
         hashes.put("SHA256", "Ak1xigPLmur511bYfCvzeCwF6r/QxiBKeEDHOvHPzr4=");
@@ -103,7 +101,7 @@ public class UpdatesClientTests extends TestBase {
             )
             .setFiles(files);
 
-        UpdatesImportUpdateResponse response = client.importUpdateWithResponseAsync(update).block();
+        UpdatesImportUpdateResponse response = client.importUpdateWithResponse(update).block();
         assertNotNull(response);
         assertEquals(202, response.getStatusCode());
         assertNotNull(response.getHeaders());
@@ -114,8 +112,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetUpdate() {
-        Updates client = createClient();
-        Update update = client.getUpdateAsync(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null)
+        UpdatesAsyncClient client = createClient();
+        Update update = client.getUpdate(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null)
             .block();
 
         assertNotNull(update);
@@ -126,9 +124,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetUpdateNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            client.getUpdateAsync("foo", "bar", "0.0.0.1", null).block();
+            client.getUpdate("foo", "bar", "0.0.0.1", null).block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
             assertEquals(404, e.getResponse().getStatusCode());
@@ -137,8 +135,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetProviders() {
-        Updates client = createClient();
-        PagedFlux<String> response = client.getProvidersAsync();
+        UpdatesAsyncClient client = createClient();
+        PagedFlux<String> response = client.getProviders();
 
         assertNotNull(response);
         List<String> providers = new ArrayList<>();
@@ -148,8 +146,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetNames() {
-        Updates client = createClient();
-        PagedFlux<String> response = client.getNamesAsync(TestData.PROVIDER);
+        UpdatesAsyncClient client = createClient();
+        PagedFlux<String> response = client.getNames(TestData.PROVIDER);
         assertNotNull(response);
 
         List<String> names = new ArrayList<>();
@@ -159,9 +157,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetNamesNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            PagedFlux<String> response = client.getNamesAsync("foo");
+            PagedFlux<String> response = client.getNames("foo");
             List<String> names = new ArrayList<>();
             response.byPage().map(page -> names.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
@@ -172,8 +170,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetVersions() {
-        Updates client = createClient();
-        PagedFlux<String> response = client.getVersionsAsync(TestData.PROVIDER, TestData.NAME);
+        UpdatesAsyncClient client = createClient();
+        PagedFlux<String> response = client.getVersions(TestData.PROVIDER, TestData.NAME);
 
         assertNotNull(response);
         List<String> versions = new ArrayList<>();
@@ -183,9 +181,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetVersionsNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            PagedFlux<String> response = client.getVersionsAsync("foo", "bar");
+            PagedFlux<String> response = client.getVersions("foo", "bar");
             List<String> versions = new ArrayList<>();
             response.byPage().map(page -> versions.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
@@ -196,8 +194,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetFiles() {
-        Updates client = createClient();
-        PagedFlux<String> response = client.getFilesAsync(TestData.PROVIDER, TestData.NAME, TestData.VERSION);
+        UpdatesAsyncClient client = createClient();
+        PagedFlux<String> response = client.getFiles(TestData.PROVIDER, TestData.NAME, TestData.VERSION);
 
         assertNotNull(response);
         List<String> files = new ArrayList<>();
@@ -207,9 +205,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetFilesNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            PagedFlux<String> response = client.getFilesAsync("foo", "bar", "0.0.0.1");
+            PagedFlux<String> response = client.getFiles("foo", "bar", "0.0.0.1");
             List<String> files = new ArrayList<>();
             response.byPage().map(page -> files.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
@@ -220,8 +218,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetFile() {
-        Updates client = createClient();
-        File file = client.getFileAsync(TestData.PROVIDER, TestData.NAME, TestData.VERSION, "00000", null)
+        UpdatesAsyncClient client = createClient();
+        File file = client.getFile(TestData.PROVIDER, TestData.NAME, TestData.VERSION, "00000", null)
             .block();
         assertNotNull(file);
         assertEquals("00000", file.getFileId());
@@ -229,9 +227,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetFileNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            client.getFileAsync(TestData.PROVIDER, TestData.NAME, TestData.VERSION, "foo", null)
+            client.getFile(TestData.PROVIDER, TestData.NAME, TestData.VERSION, "foo", null)
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -241,8 +239,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetOperation() {
-        Updates client = createClient();
-        Operation operation = client.getOperationAsync(TestData.OPERATION_ID, null)
+        UpdatesAsyncClient client = createClient();
+        Operation operation = client.getOperation(TestData.OPERATION_ID, null)
             .block();
         assertNotNull(operation);
         assertEquals(OperationStatus.SUCCEEDED, operation.getStatus());
@@ -250,9 +248,9 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetOperationNotFound() {
-        Updates client = createClient();
+        UpdatesAsyncClient client = createClient();
         try {
-            client.getOperationAsync("fake", null)
+            client.getOperation("fake", null)
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -262,8 +260,8 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetOperations() {
-        Updates client = createClient();
-        PagedFlux<Operation> response = client.getOperationsAsync(null, 1);
+        UpdatesAsyncClient client = createClient();
+        PagedFlux<Operation> response = client.getOperations(null, 1);
         assertNotNull(response);
         List<Operation> operations = new ArrayList<>();
         response.byPage().map(page -> operations.addAll(page.getValue())).blockLast();

@@ -12,9 +12,22 @@ For the best development experience, developers should use the official Microsof
 
 ### Prerequisites
 
-- Microsoft Azure Subscription: To call Microsoft Azure services, you need to create an [Azure subscription](https://azure.microsoft.com/free/)
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- [Azure Subscription][azure_subscription]
 - Device Update for IoT Hub instance
 - Azure IoT Hub instance
+
+### Include the Package
+
+[//]: # ({x-version-update-start;com.azure:azure-iot-deviceupdate;current})
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-iot-deviceupdate</artifactId>
+  <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 ### Authenticate the client
 
@@ -38,7 +51,7 @@ You can familiarize yourself with different APIs using [Samples](./src/samples).
 
 All Device Update for IoT Hub service operations will throw a ErrorResponseException on failure with helpful ErrorCodes.
 
-For example, if you use the `getUpdateAsync` operation and the model you are looking for doesn't exist, you can catch that specific [HttpStatusCode](https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode?view=netcore-3.1) to decide the operation that follows in that case.
+For example, if you use the `getUpdateAsync` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
 
 ``` java
 try {
@@ -67,4 +80,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
+[azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdeviceupdate%2Fazure-iot-deviceupdate%2FREADME.png)

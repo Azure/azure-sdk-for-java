@@ -7,8 +7,10 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.iot.deviceupdate.DeviceUpdateClient;
+import com.azure.iot.deviceupdate.DeploymentsAsyncClient;
 import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
+import com.azure.iot.deviceupdate.DevicesAsyncClient;
+import com.azure.iot.deviceupdate.UpdatesAsyncClient;
 import com.azure.iot.deviceupdate.models.*;
 import com.azure.iot.deviceupdate.models.Error;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +37,9 @@ public class Runner {
     private final String deviceTag;
     private final boolean delete;
 
-    private DeviceUpdateClient client;
+    private UpdatesAsyncClient updatesClient;
+    private DevicesAsyncClient devicesClient;
+    private DeploymentsAsyncClient deploymentsClient;
 
     public Runner(String tenantId, String clientId, String clientSecret, String accountEndpoint, String instanceId,
                   String storageName, String storageKey, String deviceId, String deviceTag, boolean delete) {
@@ -53,11 +57,13 @@ public class Runner {
             .policies(bearerTokenAuthenticationPolicy, addHeadersPolicy)
             .build();
 
-        this.client = new DeviceUpdateClientBuilder()
+        DeviceUpdateClientBuilder builder = new DeviceUpdateClientBuilder()
             .accountEndpoint(accountEndpoint)
             .instanceId(instanceId)
-            .pipeline(httpPipeline)
-            .buildClient();
+            .pipeline(httpPipeline);
+        this.updatesClient = builder.buildUpdatesAsyncClient();
+        this.devicesClient = builder.buildDevicesAsyncClient();
+        this.deploymentsClient = builder.buildDeploymentsAsyncClient();
 
         this.storageName = storageName;
         this.storageKey = storageKey;
@@ -109,14 +115,14 @@ public class Runner {
         ImportUpdateInput update = contentFactory.CreateImportUpdate(MANUFACTURER, MODEL, version);
 
         System.out.println("Importing updates...");
-        UpdatesImportUpdateResponse response = client.getUpdates().importUpdateWithResponseAsync(update).block();
+        UpdatesImportUpdateResponse response = updatesClient.importUpdateWithResponse(update).block();
         String operationId = getOperationId(response.getHeaders().get("Location").getValue());
         System.out.println("Import operation id: " + operationId);
 
         System.out.println("(this may take a minute or two)");
         boolean repeat = true;
         while (repeat) {
-            UpdatesGetOperationResponse operation = client.getUpdates().getOperationWithResponseAsync(operationId, null).block();
+            UpdatesGetOperationResponse operation = updatesClient.getOperationWithResponse(operationId, null).block();
             if (operation.getValue().getStatus() == OperationStatus.SUCCEEDED)
             {
                 System.out.println(operation.getValue().getStatus());
@@ -140,7 +146,7 @@ public class Runner {
     private void RetrieveUpdateStep(String provider, String name, String version, boolean notFoundExpected) throws Exception {
         System.out.println("Retrieving update...");
         try {
-            Update update = client.getUpdates().getUpdateAsync(provider, name, version, null)
+            Update update = updatesClient.getUpdate(provider, name, version, null)
                 .block();
             if (notFoundExpected) {
                 throw new Exception("Service returned valid update even though NotFound response was expected");
@@ -167,7 +173,7 @@ public class Runner {
 
         System.out.println("Querying deployment group...");
         try {
-            Group group = client.getDevices().getGroupAsync(groupId)
+            Group group = devicesClient.getGroup(groupId)
                 .block();
             System.out.println(String.format("Deployment group %s already exists.", groupId));
         } catch (HttpResponseException e) {
@@ -180,7 +186,7 @@ public class Runner {
             System.out.println("Creating deployment group...");
             List<String> devices = new ArrayList<String>();
             devices.add(deviceId);
-            Group group = client.getDevices().createOrUpdateGroupAsync(
+            Group group = devicesClient.createOrUpdateGroup(
                 groupId,
                 new Group()
                     .setGroupId(groupId)
@@ -196,7 +202,7 @@ public class Runner {
             System.out.println("(this may take about five minutes to complete)");
             boolean repeat = true;
             while (repeat) {
-                group = client.getDevices().getGroupAsync(groupId).block();
+                group = devicesClient.getGroup(groupId).block();
                 if (group.getDeviceCount() > 0) {
                     System.out.println(String.format("Deployment group %s now has %s devices.", groupId, group.getDeviceCount()));
                     repeat = false;
@@ -216,7 +222,7 @@ public class Runner {
         boolean updateFound = false;
         int counter = 0;
         do {
-            PagedFlux<UpdatableDevices> response = client.getDevices().getGroupBestUpdatesAsync(groupId, null);
+            PagedFlux<UpdatableDevices> response = devicesClient.getGroupBestUpdates(groupId, null);
             List<UpdatableDevices> groupUpdatableDevices = new ArrayList<>();
             response.byPage().map(page -> groupUpdatableDevices.addAll(page.getValue())).blockLast();
             for (UpdatableDevices updatableDevices : groupUpdatableDevices) {
@@ -259,7 +265,7 @@ public class Runner {
         String deploymentId = String.format("%s-%s", deviceId, version.replace(".", "-"));
         List<String> groups = new ArrayList<String>();
         groups.add(groupId);
-        Deployment deployment = client.getDeployments().createOrUpdateDeploymentAsync(
+        Deployment deployment = deploymentsClient.createOrUpdateDeployment(
             deploymentId,
             new Deployment()
                 .setDeploymentId(deploymentId)
@@ -276,7 +282,7 @@ public class Runner {
         waitSeconds(DEFAULT_RETRY_AFTER);
 
         System.out.println("Checking the deployment status...");
-        DeploymentStatus deploymentStatus = client.getDeployments().getDeploymentStatusAsync(deploymentId).block();
+        DeploymentStatus deploymentStatus = deploymentsClient.getDeploymentStatus(deploymentId).block();
         System.out.println("  " + deploymentStatus.getDeploymentState());
 
         System.out.println();
@@ -287,7 +293,7 @@ public class Runner {
         System.out.println("Waiting for the update to be installed...");
         boolean repeat = true;
         while (repeat) {
-            Device device = client.getDevices().getDeviceAsync(deviceId).block();
+            Device device = devicesClient.getDevice(deviceId).block();
             UpdateId installedUpdateId = device.getInstalledUpdateId();
             if (installedUpdateId != null &&
                 provider.equals(installedUpdateId.getProvider())  &&
@@ -308,14 +314,14 @@ public class Runner {
 
     private void DeleteUpdateStep(String provider, String name, String version) throws Exception {
         System.out.println("Deleting the update...");
-        UpdatesDeleteUpdateResponse response = client.getUpdates().deleteUpdateWithResponseAsync(provider, name, version).block();
+        UpdatesDeleteUpdateResponse response = updatesClient.deleteUpdateWithResponse(provider, name, version).block();
         String operationId = getOperationId(response.getHeaders().get("Location").getValue());
         System.out.println("Delete operation id: " + operationId);
 
         System.out.println("Waiting for delete to finish...");
         boolean repeat = true;
         while (repeat) {
-            UpdatesGetOperationResponse operation = client.getUpdates().getOperationWithResponseAsync(operationId, null).block();
+            UpdatesGetOperationResponse operation = updatesClient.getOperationWithResponse(operationId, null).block();
             if (operation.getValue().getStatus() == OperationStatus.SUCCEEDED) {
                 System.out.println(operation.getValue().getStatus());
                 repeat = false;

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DevicesClientTests extends TestBase {
     private static final String DEFAULT_SCOPE = "6ee392c4-d339-4083-b04d-6b7947c6cf78/.default";
 
-    private Devices createClient() {
+    private DevicesAsyncClient createClient() {
         TokenCredential credentials;
         HttpClient httpClient;
         HttpPipelinePolicy recordingPolicy = null;
@@ -67,19 +67,17 @@ public class DevicesClientTests extends TestBase {
                 .build();
         }
 
-        DeviceUpdateClient client = new DeviceUpdateClientBuilder()
+        return new DeviceUpdateClientBuilder()
             .accountEndpoint(TestData.ACCOUNT_ENDPOINT)
             .instanceId(TestData.INSTANCE_ID)
             .pipeline(httpPipeline)
-            .buildClient();
-
-        return client.getDevices();
+            .buildDevicesAsyncClient();
     }
 
     @Test
     public void testGetAllDeviceClasses() {
-        Devices client = createClient();
-        PagedFlux<DeviceClass> response = client.getAllDeviceClassesAsync();
+        DevicesAsyncClient client = createClient();
+        PagedFlux<DeviceClass> response = client.getAllDeviceClasses();
 
         assertNotNull(response);
         List<DeviceClass> deviceClasses = new ArrayList<>();
@@ -89,8 +87,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetDeviceClass() {
-        Devices client = createClient();
-        DeviceClass deviceClass = client.getDeviceClassAsync(TestData.DEVICE_CLASS_ID)
+        DevicesAsyncClient client = createClient();
+        DeviceClass deviceClass = client.getDeviceClass(TestData.DEVICE_CLASS_ID)
             .block();
         assertNotNull(deviceClass);
         assertEquals(TestData.PROVIDER, deviceClass.getManufacturer());
@@ -99,9 +97,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testDeviceClassNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            client.getDeviceClassWithResponseAsync("foo")
+            client.getDeviceClassWithResponse("foo")
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -111,8 +109,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceClassIds() {
-        Devices client = createClient();
-        PagedFlux<String> response = client.getDeviceClassDeviceIdsAsync(TestData.DEVICE_CLASS_ID);
+        DevicesAsyncClient client = createClient();
+        PagedFlux<String> response = client.getDeviceClassDeviceIds(TestData.DEVICE_CLASS_ID);
 
         assertNotNull(response);
         List<String> deviceIds = new ArrayList<>();
@@ -122,9 +120,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceClassIdsNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            PagedFlux<String> response = client.getDeviceClassDeviceIdsAsync("foo");
+            PagedFlux<String> response = client.getDeviceClassDeviceIds("foo");
             List<String> deviceIds = new ArrayList<>();
             response.byPage().map(page -> deviceIds.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
@@ -135,8 +133,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceClassInstallableUpdates() {
-        Devices client = createClient();
-        PagedFlux<UpdateId> response = client.getDeviceClassInstallableUpdatesAsync(TestData.DEVICE_CLASS_ID);
+        DevicesAsyncClient client = createClient();
+        PagedFlux<UpdateId> response = client.getDeviceClassInstallableUpdates(TestData.DEVICE_CLASS_ID);
 
         assertNotNull(response);
         List<UpdateId> updateIds = new ArrayList<>();
@@ -155,9 +153,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceClassInstallableUpdatesNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            PagedFlux<UpdateId> response = client.getDeviceClassInstallableUpdatesAsync("foo");
+            PagedFlux<UpdateId> response = client.getDeviceClassInstallableUpdates("foo");
             List<UpdateId> updateIds = new ArrayList<>();
             response.byPage().map(page -> updateIds.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
@@ -168,8 +166,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDevices() {
-        Devices client = createClient();
-        PagedFlux<Device> response = client.getAllDevicesAsync(null);
+        DevicesAsyncClient client = createClient();
+        PagedFlux<Device> response = client.getAllDevices(null);
 
         assertNotNull(response);
         List<Device> devices = new ArrayList<>();
@@ -179,8 +177,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetDevice() {
-        Devices client = createClient();
-        Device device = client.getDeviceAsync(TestData.DEVICE_ID)
+        DevicesAsyncClient client = createClient();
+        Device device = client.getDevice(TestData.DEVICE_ID)
             .block();
 
         assertNotNull(device);
@@ -190,9 +188,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetDeviceNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            client.getDeviceAsync("foo")
+            client.getDevice("foo")
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -202,8 +200,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetUpdateCompliance() {
-        Devices client = createClient();
-        UpdateCompliance updateCompliance = client.getUpdateComplianceAsync()
+        DevicesAsyncClient client = createClient();
+        UpdateCompliance updateCompliance = client.getUpdateCompliance()
             .block();
         assertNotNull(updateCompliance);
         assertTrue(updateCompliance.getTotalDeviceCount() > 0);
@@ -211,8 +209,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceTags() {
-        Devices client = createClient();
-        PagedFlux<DeviceTag> response = client.getAllDeviceTagsAsync();
+        DevicesAsyncClient client = createClient();
+        PagedFlux<DeviceTag> response = client.getAllDeviceTags();
 
         assertNotNull(response);
         List<DeviceTag> deviceTags = new ArrayList<>();
@@ -222,9 +220,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetDeviceTag() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         String tag_name = "functionaltests-groupname1";
-        DeviceTag deviceTag = client.getDeviceTagAsync(tag_name)
+        DeviceTag deviceTag = client.getDeviceTag(tag_name)
             .block();
         assertNotNull(deviceTag);
         assertEquals(tag_name, deviceTag.getTagName());
@@ -232,9 +230,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetDeviceTagNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            client.getDeviceAsync("foo")
+            client.getDevice("foo")
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -244,8 +242,8 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetAllGroups() {
-        Devices client = createClient();
-        PagedFlux<Group> response = client.getAllGroupsAsync();
+        DevicesAsyncClient client = createClient();
+        PagedFlux<Group> response = client.getAllGroups();
 
         assertNotNull(response);
         List<Group> groups = new ArrayList<>();
@@ -255,9 +253,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroup() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         String group_id = "Uncategorized";
-        Group group = client.getGroupAsync(group_id)
+        Group group = client.getGroup(group_id)
             .block();
         assertNotNull(group);
         assertEquals(group_id, group.getGroupId());
@@ -265,9 +263,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroupNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            client.getGroupAsync("foo")
+            client.getGroup("foo")
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -277,9 +275,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroupUpdateCompliance() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         String group_id = "Uncategorized";
-        UpdateCompliance compliance = client.getGroupUpdateComplianceAsync(group_id)
+        UpdateCompliance compliance = client.getGroupUpdateCompliance(group_id)
             .block();
         assertNotNull(compliance);
         assertTrue(compliance.getTotalDeviceCount() > 0);
@@ -287,9 +285,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroupUpdateComplianceNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            client.getGroupUpdateComplianceAsync("foo")
+            client.getGroupUpdateCompliance("foo")
                 .block();
             fail("Expected NotFound response");
         } catch (HttpResponseException e) {
@@ -299,9 +297,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroupBestUpdates() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         String group_id = TestData.DEVICE_ID;
-        PagedFlux<UpdatableDevices> response = client.getGroupBestUpdatesAsync(group_id, null);
+        PagedFlux<UpdatableDevices> response = client.getGroupBestUpdates(group_id, null);
 
         assertNotNull(response);
         List<UpdatableDevices> updates = new ArrayList<>();
@@ -311,9 +309,9 @@ public class DevicesClientTests extends TestBase {
 
     @Test
     public void testGetGroupBestUpdatesNotFound() {
-        Devices client = createClient();
+        DevicesAsyncClient client = createClient();
         try {
-            PagedFlux<UpdatableDevices> response = client.getGroupBestUpdatesAsync("foo", null);
+            PagedFlux<UpdatableDevices> response = client.getGroupBestUpdates("foo", null);
             List<UpdatableDevices> updates = new ArrayList<>();
             response.byPage().map(page -> updates.addAll(page.getValue())).blockLast();
             fail("Expected NotFound response");
