@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.servicebus.perf.core;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.servicebus.ClientFactory;
@@ -39,18 +37,16 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     public ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
+        if (connectionString == null || connectionString.length() == 0) {
             throw new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set.");
         }
-        logger.verbose("connectionString : {}", connectionString);
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
-        if (CoreUtils.isNullOrEmpty(queueName)) {
+        if (queueName == null || queueName.length() == 0) {
             throw new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set.");
         }
-        logger.verbose("queueName : {}", queueName);
 
         // Setup the service client
         try {

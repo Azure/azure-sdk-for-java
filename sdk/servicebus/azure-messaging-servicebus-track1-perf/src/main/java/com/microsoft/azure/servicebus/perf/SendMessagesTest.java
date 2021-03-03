@@ -20,8 +20,6 @@ import java.util.UUID;
  * Performance test.
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(SendMessagesTest.class);
-
     private final List<IMessage> messages;
 
     /**
