@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.servicebus.queue;
 
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.QueueClient;
@@ -30,7 +31,7 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     @Before
     public void setUp() {
-        this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory);
+        this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateClient(anyString())).thenReturn(queueClient);
         whenRegisterMessageHandler(this.queueClient);
     }

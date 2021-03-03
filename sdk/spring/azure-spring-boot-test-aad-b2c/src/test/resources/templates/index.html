@@ -11,7 +11,8 @@
 
 <h1>Home page</h1>
 <div>
-    <form style="display:inline" method="get" action="/oauth2/authorization/B2C_1_profileediting1">
+    <form th:if="${aadb2c_profileedit != null}" style="display:inline" method="get"
+          th:action="${'/oauth2/authorization/' + aadb2c_profileedit}">
         <button id="profileEdit" class="btn btn-md btn-primary btn-block" type="submit">Profile edit</button>
     </form>
     <form style="display:inline" method="get" action="/logout">

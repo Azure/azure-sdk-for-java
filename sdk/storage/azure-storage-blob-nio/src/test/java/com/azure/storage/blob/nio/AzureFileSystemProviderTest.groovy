@@ -16,6 +16,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.common.StorageSharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -31,11 +32,8 @@ import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystem
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
-import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
-import java.nio.file.Path
-import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 import java.nio.file.attribute.BasicFileAttributeView
@@ -62,16 +60,16 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def uri = getAccountUri()
+        def uri = getFileSystemUri()
 
         when:
         provider.newFileSystem(uri, config)
 
         then:
         provider.getFileSystem(uri).isOpen()
-        ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemName() == getAccountName(PRIMARY_STORAGE)
+        ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemUrl() == primaryBlobServiceClient.getAccountUrl()
     }
 
     @Unroll
@@ -93,11 +91,11 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
-        provider.newFileSystem(getAccountUri(), config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        provider.newFileSystem(getFileSystemUri(), config)
 
         when:
-        provider.newFileSystem(getAccountUri(), config)
+        provider.newFileSystem(getFileSystemUri(), config)
 
         then:
         thrown(FileSystemAlreadyExistsException)
@@ -108,14 +106,15 @@ class AzureFileSystemProviderTest extends APISpec {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
         badKey[0]++
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = new String(badKey)
-        provider.newFileSystem(getAccountUri(), config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
+            new StorageSharedKeyCredential(primaryCredential.getAccountName(), new String(badKey))
+        provider.newFileSystem(getFileSystemUri(), config)
 
         then:
         thrown(IOException)
 
         when:
-        provider.getFileSystem(getAccountUri())
+        provider.getFileSystem(getFileSystemUri())
 
         then:
         thrown(FileSystemNotFoundException)
@@ -123,7 +122,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "GetFileSystem not found"() {
         when:
-        provider.getFileSystem(getAccountUri())
+        provider.getFileSystem(getFileSystemUri())
 
         then:
         thrown(FileSystemNotFoundException)

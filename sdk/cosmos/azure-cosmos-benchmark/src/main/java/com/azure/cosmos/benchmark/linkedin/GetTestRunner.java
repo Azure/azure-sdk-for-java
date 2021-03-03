@@ -8,7 +8,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
+import com.azure.cosmos.benchmark.linkedin.data.KeyGenerator;
 import com.azure.cosmos.benchmark.linkedin.impl.Accessor;
 import com.azure.cosmos.benchmark.linkedin.impl.CosmosDBDataAccessor;
 import com.azure.cosmos.benchmark.linkedin.impl.DocumentTransformer;
@@ -28,9 +30,6 @@ import com.google.common.base.Preconditions;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -53,6 +52,7 @@ public class GetTestRunner {
     private static final Duration TERMINATION_WAIT_DURATION = Duration.ofSeconds(60);
 
     private final Configuration _configuration;
+    private final EntityConfiguration _entityConfiguration;
     private final Accessor<Key, JsonNode> _accessor;
     private final ExecutorService _executorService;
     private final AtomicLong _successCount;
@@ -61,15 +61,19 @@ public class GetTestRunner {
 
     GetTestRunner(final Configuration configuration,
         final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry) {
+        final MetricRegistry metricsRegistry,
+        final EntityConfiguration entityConfiguration) {
         Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
         Preconditions.checkNotNull(client,
             "Need a non-null client for setting up the Database and containers for the test");
         Preconditions.checkNotNull(metricsRegistry,
             "The MetricsRegistry can not be null");
+        Preconditions.checkNotNull(entityConfiguration,
+            "The Test entity configuration can not be null");
 
         _configuration = configuration;
+        _entityConfiguration = entityConfiguration;
         _accessor = createAccessor(configuration, client, metricsRegistry);
         _executorService = Executors.newFixedThreadPool(configuration.getConcurrency());
         _successCount = new AtomicLong(0);
@@ -77,14 +81,15 @@ public class GetTestRunner {
         _semaphore = new Semaphore(configuration.getConcurrency());
     }
 
-    public void run(final Set<Key> testKeys) {
-        final ArrayList<Key> keys = new ArrayList<>(testKeys);
-        Collections.shuffle(keys);
+    public void run() {
+        KeyGenerator keyGenerator = getNewKeyGenerator();
         final long runStartTime = System.currentTimeMillis();
         long i = 0;
         for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
-            int index = (int) ((i % keys.size()) % Integer.MAX_VALUE);
-            final Key key = keys.get(index);
+            if (i > _configuration.getNumberOfPreCreatedDocuments()) {
+                keyGenerator = getNewKeyGenerator();
+            }
+            final Key key = keyGenerator.key();
             try {
                 _semaphore.acquire();
             } catch (InterruptedException e) {
@@ -148,5 +153,9 @@ public class GetTestRunner {
         final CosmosAsyncDatabase database = client.getDatabase(configuration.getDatabaseId());
         final CosmosAsyncContainer container = database.getContainer(configuration.getCollectionId());
         return new StaticDataLocator(collectionKey, container);
+    }
+
+    private KeyGenerator getNewKeyGenerator() {
+        return _entityConfiguration.keyGenerator();
     }
 }

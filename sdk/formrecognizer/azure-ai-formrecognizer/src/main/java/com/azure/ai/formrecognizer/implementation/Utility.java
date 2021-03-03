@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType1;
+import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
@@ -213,12 +214,20 @@ public final class Utility {
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
-    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+    public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
-                new FormRecognizerErrorInformation(errorResponseException.getValue().getError().getCode(),
-                    errorResponseException.getValue().getError().getMessage()));
+            FormRecognizerErrorInformation formRecognizerErrorInformation = null;
+            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+                ErrorInformation errorInformation = errorResponseException.getValue().getError();
+                formRecognizerErrorInformation =
+                    new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
+            }
+            return new HttpResponseException(
+                errorResponseException.getMessage(),
+                errorResponseException.getResponse(),
+                formRecognizerErrorInformation
+            );
         }
         return throwable;
     }
@@ -231,7 +240,7 @@ public final class Utility {
         Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
         return pollingContext -> {
             try {
-                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
