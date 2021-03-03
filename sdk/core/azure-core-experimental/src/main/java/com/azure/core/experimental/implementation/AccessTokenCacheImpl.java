@@ -41,11 +41,10 @@ public class AccessTokenCacheImpl {
      *
      * @param tokenCredential the credential to be used to acquire token from.
      */
-    public AccessTokenCacheImpl(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
+    public AccessTokenCacheImpl(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
-        this.tokenRequestContext = tokenRequestContext;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
@@ -74,8 +73,8 @@ public class AccessTokenCacheImpl {
                     Supplier<Mono<AccessToken>> tokenSupplier = () ->
                         tokenCredential.getToken(this.tokenRequestContext);
 
-                    boolean forceRefresh = !(this.tokenRequestContext.getClaims()
-                        .equals(tokenRequestContext.getClaims())
+                    boolean forceRefresh = !(this.tokenRequestContext != null
+                        && this.tokenRequestContext.getClaims().equals(tokenRequestContext.getClaims())
                         && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
 
                     if (forceRefresh) {

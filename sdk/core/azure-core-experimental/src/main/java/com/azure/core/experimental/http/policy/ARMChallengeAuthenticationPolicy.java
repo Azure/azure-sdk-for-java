@@ -14,12 +14,7 @@ import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Locale;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +33,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     private static final String CLAIMS_PARAMETER = "claims";
     private final String[] scopes;
     private final AzureEnvironment environment;
+    private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     /**
      * Creates ARMChallengeAuthenticationPolicy.
@@ -48,47 +44,63 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
      */
     public ARMChallengeAuthenticationPolicy(TokenCredential credential,
                                             AzureEnvironment environment, String... scopes) {
-        super(credential, scopes);
+        super(credential);
         this.scopes = scopes;
         this.environment = environment;
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase(Locale.ROOT))) {
-            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-        }
 
-        TokenRequestContext trc;
-        if (scopes == null || scopes.length == 0) {
-            String defaultScope = ARMScopeHelper.getDefaultScopeFromRequest(
-                context.getHttpRequest(), environment);
-            trc = new TokenRequestContext().addScopes(defaultScope);
-        } else {
+    @Override
+    public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
+        return Mono.defer(() -> {
+            TokenRequestContext trc;
+            String[] scopes = this.scopes;
+            if (scopes == null || scopes.length == 0) {
+                scopes = new String[1];
+                scopes[0] = ARMScopeHelper.getDefaultScopeFromRequest(
+                    context.getHttpRequest(), environment);
+            }
             trc = new TokenRequestContext().addScopes(scopes);
-        }
-        return authorizeRequest(context, trc)
-            .then(Mono.defer(() -> super.process(context, next)));
+            context.setData(ARM_SCOPES_KEY, scopes);
+            return authorizeRequest(context, trc);
+        });
     }
 
-
     @Override
-    public Mono<TokenRequestContext> tryGetTokenRequestContext(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
-        if (response.getStatusCode() == 401 && authHeader != null) {
-            List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
-            for (AuthenticationChallenge authenticationChallenge : challenges) {
-                Map<String, String> extractedChallengeParams =
-                    parseChallengeParams(authenticationChallenge.getChallengeParameters());
-                if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
-                    String claims = new String(Base64.getUrlDecoder()
-                        .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
-                    return Mono.just(new TokenRequestContext()
-                        .addScopes(scopes).setClaims(claims));
+    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
+        return Mono.defer(() -> {
+            String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+            if (response.getStatusCode() == 401 && authHeader != null) {
+                List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
+                for (AuthenticationChallenge authenticationChallenge : challenges) {
+                    Map<String, String> extractedChallengeParams =
+                        parseChallengeParams(authenticationChallenge.getChallengeParameters());
+                    if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
+                        String claims = new String(Base64.getUrlDecoder()
+                            .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
+                        String[] scopes;
+                        try {
+                            scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
+                        } catch (NoSuchElementException e) {
+                            scopes = this.scopes;
+                        }
+                        // We should've retrieved and configured the scopes in on Before logic,
+                        // re-use it here as an optimization.
+                        if (scopes == null || scopes.length == 0) {
+                            // If scopes wasn't configured in On Before logic or at constructor level,
+                            // then retrieve it again.
+                            scopes = new String[1];
+                            scopes[0] = ARMScopeHelper.getDefaultScopeFromRequest(
+                                context.getHttpRequest(), environment);
+                        }
+                        return authorizeRequest(context, new TokenRequestContext()
+                            .addScopes().setClaims(claims))
+                            .flatMap(b -> Mono.just(true));
+                    }
                 }
             }
-        }
-        return Mono.empty();
+            return Mono.just(false);
+        });
     }
 
     private List<AuthenticationChallenge> parseChallenges(String header) {
