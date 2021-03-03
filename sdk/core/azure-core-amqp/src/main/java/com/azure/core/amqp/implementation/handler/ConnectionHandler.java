@@ -179,10 +179,9 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
-        final SslPeerDetails peerDetails = Proton.sslPeerDetails(getHostname(), getProtocolPort());
 
-        logger.info("onConnectionBound connectionId[{}] hostname[{}] peerDetails[{}:{}]", getHostname(),
-            getConnectionId(), peerDetails.getHostname(), peerDetails.getPort());
+        logger.info("onConnectionBound connectionId[{}] hostname[{}] peerDetails[{}:{}]", getConnectionId(),
+            getHostname(), peerDetails.getHostname(), peerDetails.getPort());
 
         this.addTransportLayers(event, (TransportInternal) transport);
 
