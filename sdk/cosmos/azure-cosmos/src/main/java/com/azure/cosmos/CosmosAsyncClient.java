@@ -97,7 +97,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tracerProvider = new TracerProvider(TRACER);
 
         List<Permission> permissionList = new ArrayList<>();
-        if (this.permissions != null) {
+        if (this.permissions != null && !this.permissions.isEmpty()) {
             permissionList =
                 this.permissions
                     .stream()

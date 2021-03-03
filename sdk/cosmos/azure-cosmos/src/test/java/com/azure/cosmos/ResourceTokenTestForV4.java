@@ -34,7 +34,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ResourceTokenTests extends TestSuiteBase {
+public class ResourceTokenTestForV4 extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
 
     private CosmosAsyncDatabase createdDatabase;
@@ -61,7 +61,7 @@ public class ResourceTokenTests extends TestSuiteBase {
     private static final String USER_NAME = "TestUser";
 
     @Factory(dataProvider = "clientBuilders")
-    public ResourceTokenTests(CosmosClientBuilder clientBuilder) {
+    public ResourceTokenTestForV4(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
