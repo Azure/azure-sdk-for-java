@@ -1294,7 +1294,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setReceiver(entityType, entityIndex,isSessionEnabled, Duration.ZERO);
+        setReceiver(entityType, entityIndex, isSessionEnabled, Duration.ZERO);
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
