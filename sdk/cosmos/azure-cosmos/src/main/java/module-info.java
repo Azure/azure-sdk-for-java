@@ -53,6 +53,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.throughputControl.controller.group.global to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl;
     opens com.azure.cosmos.implementation.throughputControl.controller.request;
 

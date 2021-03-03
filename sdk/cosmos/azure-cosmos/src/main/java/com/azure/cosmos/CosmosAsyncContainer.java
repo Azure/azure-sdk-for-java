@@ -21,7 +21,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -1435,65 +1437,35 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Enable the throughput control group with local control mode.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
-        return this.enableThroughputLocalControlGroup(groupName, targetThroughput, false);
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup);
     }
 
     /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
-        return this.enableThroughputControlGroup(groupName, targetThroughput, null, ThroughputControlMode.LOCAL, isDefault);
-    }
+    public void enableGlobalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        GlobalThroughputControlConfig globalControlConfig) {
 
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
-        return this.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, false);
-    }
+        GlobalThroughputControlGroup globalControlGroup =
+            ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
-        return this.enableThroughputControlGroup(groupName, null, targetThroughputThreshold, ThroughputControlMode.LOCAL, isDefault);
-    }
-
-    private ThroughputControlGroup enableThroughputControlGroup(
-        String groupName,
-        Integer targetThroughput,
-        Double targetThroughputThreshold,
-        ThroughputControlMode controlMode,
-        boolean isDefault) {
-
-        ThroughputControlGroup throughputControlGroup = new ThroughputControlGroup(
-            groupName, this, targetThroughput, targetThroughputThreshold, controlMode, isDefault);
-        this.database.getClient().enableThroughputControlGroup(throughputControlGroup);
-
-        return throughputControlGroup;
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup);
     }
 }
