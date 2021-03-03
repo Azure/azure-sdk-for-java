@@ -5,6 +5,8 @@ stages:
     parameters:
       ServiceDirectory: remoterendering
       Location: eastus2
+      EnvVars:
+        AZURE_TEST_MODE: LIVE
       Artifacts:
         - name: azure-mixedreality-remoterendering
           groupId: com.azure
