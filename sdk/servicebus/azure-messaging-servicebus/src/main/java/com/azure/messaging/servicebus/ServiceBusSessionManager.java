@@ -203,13 +203,14 @@ class ServiceBusSessionManager implements AutoCloseable {
             validateParameter(sessionId, "'sessionId'", operation)).then(
             Mono.defer(() -> {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
+                System.out.println("!!!! ServiceBusSessionManager updateDisposition receiver : " + receiver + ", receiver.containsLockToken(lockToken) ? " + receiver.containsLockToken(lockToken) );
                 if (receiver == null || !receiver.containsLockToken(lockToken)) {
                     return Mono.just(false);
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
-
+                System.out.println("!!!! ServiceBusSessionManager calling ServiceBusSessionReceiver receiver.updateDisposition ");
                 return receiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             }));
     }
@@ -306,8 +307,8 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
-                sessionReceivers.remove(sessionReceiver.getSessionId());
-                sessionReceiver.close();
+                //sessionReceivers.remove(sessionReceiver.getSessionId());
+                //sessionReceiver.close();
 
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
