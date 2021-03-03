@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AcsSmsDeliveryReportReceivedEventData model. */
+/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.SMSDeliveryReportReceived event. */
 @Fluent
 public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*
@@ -114,6 +114,27 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
      */
     public AcsSmsDeliveryReportReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setFrom(String from) {
+        super.setFrom(from);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setTo(String to) {
+        super.setTo(to);
         return this;
     }
 }

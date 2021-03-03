@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -291,14 +290,16 @@ public class ServiceBusProcessorTest {
 
         Flux<ServiceBusMessageContext> messageFlux =
             Flux.create(emitter -> {
-                for (int i = 0; i < 5; i++) {
-                    ServiceBusReceivedMessage serviceBusReceivedMessage =
-                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
-                }
+                emitter.onRequest(request -> {
+                    for (int i = 0; i < 5; i++) {
+                        ServiceBusReceivedMessage serviceBusReceivedMessage =
+                            new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                        serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                        ServiceBusMessageContext serviceBusMessageContext =
+                            new ServiceBusMessageContext(serviceBusReceivedMessage);
+                        emitter.next(serviceBusMessageContext);
+                    }
+                });
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
@@ -318,15 +319,14 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             serviceBusProcessErrorContext -> {
-                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusErrorContext);
                 ServiceBusException exception = (ServiceBusException) serviceBusProcessErrorContext.getException();
-                assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
+                assertEquals(ServiceBusErrorSource.USER_CALLBACK, exception.getErrorSource());
                 countDownLatch.countDown();
             },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setDisableAutoComplete(true));
 
         serviceBusProcessorClient.start();
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean success = countDownLatch.await(30, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
         assertTrue(success, "Failed to receive all expected messages");
 
@@ -352,7 +352,7 @@ public class ServiceBusProcessorTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
-                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
                 }).addData(PARENT_SPAN_KEY, "value2");
             }

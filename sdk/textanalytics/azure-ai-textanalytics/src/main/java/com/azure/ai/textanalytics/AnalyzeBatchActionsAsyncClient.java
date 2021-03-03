@@ -13,17 +13,19 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.StringIndexTypeResponse;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
@@ -36,7 +38,6 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
-import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -68,6 +69,7 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -183,7 +185,7 @@ class AnalyzeBatchActionsAsyncClient {
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
                                 .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
-                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType())));
+                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -202,7 +204,7 @@ class AnalyzeBatchActionsAsyncClient {
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType()))
+                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
@@ -228,7 +230,7 @@ class AnalyzeBatchActionsAsyncClient {
         activationOperation(Mono<AnalyzeBatchActionsOperationDetail> operationResult) {
         return pollingContext -> {
             try {
-                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -247,7 +249,7 @@ class AnalyzeBatchActionsAsyncClient {
                 final String operationId = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(operationId)
                     .flatMap(modelResponse -> processAnalyzedModelResponse(modelResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -299,11 +301,11 @@ class AnalyzeBatchActionsAsyncClient {
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
             return service.analyzeStatusWithResponseAsync(operationId, showStats, topValue, skipValue, context)
                 .map(this::toAnalyzeTasksPagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } else {
             return service.analyzeStatusWithResponseAsync(operationId, showStats, top, skip, context)
                 .map(this::toAnalyzeTasksPagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
     }
 
@@ -334,8 +336,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < entityRecognitionTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionTasksItem taskItem = entityRecognitionTasksItems.get(i);
                 final RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
-                RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
-                    toRecognizeEntitiesResultCollectionResponse(taskItem.getResults()));
+                final EntitiesResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                        toRecognizeEntitiesResultCollectionResponse(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeEntitiesActionResults.add(actionResult);
@@ -345,8 +350,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < piiTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionPiiTasksItem taskItem = piiTasksItems.get(i);
                 final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
-                RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
-                    toRecognizePiiEntitiesResultCollection(taskItem.getResults()));
+                final PiiResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                        toRecognizePiiEntitiesResultCollection(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizePiiEntitiesActionResults.add(actionResult);
@@ -356,8 +364,11 @@ class AnalyzeBatchActionsAsyncClient {
             for (int i = 0; i < keyPhraseExtractionTasks.size(); i++) {
                 final TasksStateTasksKeyPhraseExtractionTasksItem taskItem = keyPhraseExtractionTasks.get(i);
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
-                ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
-                    toExtractKeyPhrasesResultCollection(taskItem.getResults()));
+                final KeyPhraseResult results = taskItem.getResults();
+                if (results != null) {
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
+                        toExtractKeyPhrasesResultCollection(results));
+                }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractKeyPhrasesActionResults.add(actionResult);
@@ -481,11 +492,5 @@ class AnalyzeBatchActionsAsyncClient {
             taskNameIdPair[1] = matcher.group(2);
         }
         return taskNameIdPair;
-    }
-
-    private StringIndexTypeResponse getNonNullStringIndexTypeResponse(StringIndexType stringIndexType) {
-        return StringIndexTypeResponse.fromString(
-            stringIndexType == null ? StringIndexType.UTF16CODE_UNIT.toString()
-                                                      : stringIndexType.toString());
     }
 }

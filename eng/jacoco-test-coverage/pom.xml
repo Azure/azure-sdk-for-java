@@ -551,12 +551,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-remoterendering</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
     </dependency>
   </dependencies>
   <build>
@@ -571,6 +571,7 @@
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
                 <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.4]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
               </includes>
             </bannedDependencies>
           </rules>

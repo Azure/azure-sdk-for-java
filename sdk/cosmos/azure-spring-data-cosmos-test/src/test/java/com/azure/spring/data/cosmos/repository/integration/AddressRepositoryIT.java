@@ -28,21 +28,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
+import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION2;
+import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITION1;
+import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AddressRepositoryIT {
-
-    private static final Address TEST_ADDRESS1_PARTITION1 = new Address(
-        TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
-    private static final Address TEST_ADDRESS2_PARTITION1 = new Address(
-        TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
-    private static final Address TEST_ADDRESS1_PARTITION2 = new Address(
-        TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
-    private static final Address TEST_ADDRESS4_PARTITION3 = new Address(
-        TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
 
     private static final CosmosEntityInformation<Address, String> entityInformation
         = new CosmosEntityInformation<>(Address.class);

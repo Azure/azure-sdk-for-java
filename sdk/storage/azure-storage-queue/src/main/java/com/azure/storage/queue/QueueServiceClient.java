@@ -69,6 +69,15 @@ public final class QueueServiceClient {
     }
 
     /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return client.getMessageEncoding();
+    }
+
+    /**
      * Constructs a QueueClient that interacts with the specified queue.
      *
      * This will not create the queue in the storage account if it doesn't exist.

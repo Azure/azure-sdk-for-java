@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
@@ -141,6 +142,10 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<ContainerGroup> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 

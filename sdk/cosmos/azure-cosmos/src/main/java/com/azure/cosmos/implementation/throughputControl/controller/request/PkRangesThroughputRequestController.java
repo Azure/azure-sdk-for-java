@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.request;
 
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -13,13 +12,11 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -30,40 +27,35 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
         PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey, true, false);
 
-    private final GlobalEndpointManager globalEndpointManager;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private final ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> requestThrottlerMapByRegion;
+    private final ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerMap;
     private final String targetContainerRid;
     private double scheduledThroughput;
     private List<PartitionKeyRange> pkRanges;
 
     public PkRangesThroughputRequestController(
-        GlobalEndpointManager globalEndpointManager,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetContainerRid,
         double initialScheduledThroughput) {
 
-        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(partitionKeyRangeCache, "RxPartitionKeyRangeCache can not be null");
         checkArgument(StringUtils.isNotEmpty(targetContainerRid), "Target container rid can not be null nor empty");
 
-        this.globalEndpointManager = globalEndpointManager;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
-        this.requestThrottlerMapByRegion = new ConcurrentHashMap<>();
+        this.requestThrottlerMap = new ConcurrentHashMap<>();
         this.targetContainerRid = targetContainerRid;
         this.scheduledThroughput = initialScheduledThroughput;
     }
 
     @Override
-    public void renewThroughputUsageCycle(double scheduledThroughput) {
+    public double renewThroughputUsageCycle(double scheduledThroughput) {
         this.scheduledThroughput = scheduledThroughput;
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        this.requestThrottlerMapByRegion.values()
-            .forEach(requestThrottlerMapByRegion -> {
-                requestThrottlerMapByRegion
-                    .values()
-                    .forEach(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange));
-            });
+        return this.requestThrottlerMap.values()
+            .stream()
+            .map(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
+            .max(Comparator.naturalOrder())// return the max throughput usage among all regions
+            .get();
     }
 
     @Override
@@ -79,40 +71,28 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     }
 
     @Override
-    public Mono<Void> close() {
-        return Mono.empty();
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
         return this.getPartitionKeyRanges(RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES)
-            .flatMap(pkRanges -> {
+            .doOnSuccess(pkRanges -> {
                 this.pkRanges = pkRanges;
-                return this.createRequestThrottlers();
+                this.createRequestThrottlers();
             })
             .then(Mono.just((T)this));
     }
 
-    private Mono<Void> createRequestThrottlers() {
-        // create request throttlers by region
-        return Flux.fromIterable(this.globalEndpointManager.getReadEndpoints())
-            .flatMap(endpoint -> this.getOrCreateRegionRequestThrottlers(endpoint))
-            .then();
-    }
-
-    private Mono<ConcurrentHashMap<String, ThroughputRequestThrottler>> getOrCreateRegionRequestThrottlers(URI endpoint) {
+    private void createRequestThrottlers() {
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        return Mono.just(this.requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> {
-            ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerPerPkRange =
-                new ConcurrentHashMap<>();
 
-            for (PartitionKeyRange pkRange : pkRanges) {
-                requestThrottlerPerPkRange.put(pkRange.getId(), new ThroughputRequestThrottler(throughputPerPkRange));
-            }
+        for (PartitionKeyRange pkRange : pkRanges) {
+            requestThrottlerMap.compute(pkRange.getId(), (pkRangeId, requestThrottler) -> {
+                if (requestThrottler == null) {
+                    requestThrottler = new ThroughputRequestThrottler(throughputPerPkRange);
+                }
 
-            return requestThrottlerPerPkRange;
-        }));
+                return requestThrottler;
+            });
+        }
     }
 
     @Override
@@ -120,19 +100,17 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
 
         // If we reach here, it means we should find the mapping pkRange
-        return this.getOrCreateRegionRequestThrottlers(this.globalEndpointManager.resolveServiceEndpoint(request))
-            .flatMap(regionRequestThrottlers -> Mono.just(regionRequestThrottlers.get(resolvedPkRange.getId())))
-            .flatMap(requestThrottler -> {
-                if (requestThrottler != null) {
-                    return requestThrottler.processRequest(request, nextRequestMono);
-                } else {
-                    logger.warn(
-                        "Can not find matching request throttler to process request {} with pkRangeId {}",
-                        request.getActivityId(),
-                        resolvedPkRange.getId());
-                    return nextRequestMono;
-                }
-            });
+        ThroughputRequestThrottler requestThrottler = this.requestThrottlerMap.get(resolvedPkRange.getId());
+
+        if (requestThrottler != null) {
+            return requestThrottler.processRequest(request, nextRequestMono);
+        } else {
+            logger.warn(
+                "Can not find matching request throttler to process request {} with pkRangeId {}",
+                request.getActivityId(),
+                resolvedPkRange.getId());
+            return nextRequestMono;
+        }
     }
 
     private double calculateThroughputPerPkRange() {
