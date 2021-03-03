@@ -29,6 +29,6 @@ steps:
       Write-Host $setDefaultBranch
     }
     echo "##vso[task.setvariable variable=DefaultBranch]$setDefaultBranch"
-    Write-Host $(DefaultBranch)
+    Write-Host "$(DefaultBranch)"
   displayName: "Setup Default Branch"
   condition: eq(variables['DefaultBranch'], '')
