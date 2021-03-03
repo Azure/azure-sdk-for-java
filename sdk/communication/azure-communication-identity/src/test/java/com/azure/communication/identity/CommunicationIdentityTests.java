@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -93,7 +93,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        CommunicationUserIdentifierAndTokenResult result = client.createUserAndToken(scopes);
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
@@ -107,9 +107,9 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         // Action & Assert
-        Response<CommunicationUserIdentifierAndTokenResult> response = 
+        Response<CommunicationUserIdentifierAndToken> response = 
             client.createUserAndTokenWithResponse(scopes, Context.NONE);
-        CommunicationUserIdentifierAndTokenResult result = response.getValue();
+        CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
