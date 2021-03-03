@@ -32,7 +32,6 @@ public final class ModelsRepositoryAsyncClient {
     private final ObjectMapper mapper;
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final ModelsRepositoryAPIImpl protocolLayer;
-    private static final Boolean includeModelDefinitionOnGet = true;
     private final JsonSerializer serializer;
     private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.Iot.ModelsRepository";
 
