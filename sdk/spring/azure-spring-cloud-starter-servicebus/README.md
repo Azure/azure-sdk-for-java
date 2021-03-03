@@ -29,6 +29,9 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 
 This project provides Spring Integration adaption with Azure Service Bus and the ability to auto-configure connection to Azure Service Bus.
 
+### Configure ServiceBusMessageConverter to customize ObjectMapper
+`ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
+
 ## Examples
 
 

@@ -215,7 +215,7 @@ public abstract class AbstractQueryGenerator {
         return Pair.of(queryString, parameters);
     }
 
-    private String getParameter(@NonNull Sort.Order order) {
+    private static String getParameter(@NonNull Sort.Order order) {
         Assert.isTrue(!order.isIgnoreCase(), "Ignore case is not supported");
 
         final String direction = order.isDescending() ? "DESC" : "ASC";
@@ -223,13 +223,13 @@ public abstract class AbstractQueryGenerator {
         return String.format("r.%s %s", order.getProperty(), direction);
     }
 
-    private String generateQuerySort(@NonNull Sort sort) {
+    static String generateQuerySort(@NonNull Sort sort) {
         if (sort.isUnsorted()) {
             return "";
         }
 
         final String queryTail = "ORDER BY";
-        final List<String> subjects = sort.stream().map(this::getParameter).collect(Collectors.toList());
+        final List<String> subjects = sort.stream().map(AbstractQueryGenerator::getParameter).collect(Collectors.toList());
 
         return queryTail
             + " "

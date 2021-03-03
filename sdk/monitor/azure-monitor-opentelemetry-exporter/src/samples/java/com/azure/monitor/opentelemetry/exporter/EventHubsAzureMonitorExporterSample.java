@@ -67,7 +67,7 @@ public class EventHubsAzureMonitorExporterSample {
      */
     private static void doClientWork() {
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .connectionString(CONNECTION_STRING, "<eventHub Name>")
             .buildAsyncProducerClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();

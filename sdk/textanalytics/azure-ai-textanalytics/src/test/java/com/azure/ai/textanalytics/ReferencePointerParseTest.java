@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
+import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Unit tests for Aspect relation's reference parse
+ * Unit tests for Target relation's reference parse
  */
 public class ReferencePointerParseTest {
 
@@ -40,11 +40,11 @@ public class ReferencePointerParseTest {
 
     private AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(textAnalyticsClientImpl);
 
-    private static final String INVALID_POINTER_EXCEPTION = "'%s' is not a valid opinion pointer.";
+    private static final String INVALID_POINTER_EXCEPTION = "'%s' is not a valid assessment pointer.";
     private static final String INVALID_DOCUMENT_INDEX_EXCEPTION = "Invalid document index '%s' in '%s'.";
     private static final String INVALID_SENTENCE_INDEX_EXCEPTION = "Invalid sentence index '%s' in '%s'.";
-    private static final String INVALID_OPINION_INDEX_EXCEPTION = "Invalid opinion index '%s' in '%s'.";
-    private static final String VALID_OPINION_POINTER = "#/documents/1/sentences/3/opinions/5";
+    private static final String INVALID_OPINION_INDEX_EXCEPTION = "Invalid assessment index '%s' in '%s'.";
+    private static final String VALID_OPINION_POINTER = "#/documents/1/sentences/3/assessments/5";
 
     @Test
     public void parseRefPointerToIndexArrayTest() {
@@ -64,7 +64,7 @@ public class ReferencePointerParseTest {
 
     @Test
     public void parseInvalidNumberFormatStringTest() {
-        final String referencePointer = "#/documents/a/sentences/b/opinions/c";
+        final String referencePointer = "#/documents/a/sentences/b/assessments/c";
         final IllegalStateException illegalStateException = assertThrows(IllegalStateException.class, () ->
             analyzeSentimentAsyncClient.parseRefPointerToIndexArray(referencePointer));
         assertEquals(String.format(INVALID_POINTER_EXCEPTION, referencePointer), illegalStateException.getMessage());
@@ -79,32 +79,33 @@ public class ReferencePointerParseTest {
     }
 
     @Test
-    public void findSentimentOpinion() {
-        final SentenceOpinion sentenceOpinion = analyzeSentimentAsyncClient.findSentimentOpinion(VALID_OPINION_POINTER, getDocumentSentiments());
-        assertEquals(SentenceOpinion.class, sentenceOpinion.getClass());
+    public void findSentimentAssessment() {
+        final SentenceAssessment sentimentAssessment = analyzeSentimentAsyncClient.findSentimentAssessment(
+            VALID_OPINION_POINTER, getDocumentSentiments());
+        assertEquals(SentenceAssessment.class, sentimentAssessment.getClass());
     }
 
     @Test
     public void findSentimentOpinionWithInvalidDocumentIndex() {
-        final String referencePointer = "#/documents/2/sentences/1/opinions/1";
+        final String referencePointer = "#/documents/2/sentences/1/assessments/1";
         final IllegalStateException illegalStateException = assertThrows(IllegalStateException.class, () ->
-            analyzeSentimentAsyncClient.findSentimentOpinion(referencePointer, getDocumentSentiments()));
+            analyzeSentimentAsyncClient.findSentimentAssessment(referencePointer, getDocumentSentiments()));
         assertEquals(String.format(INVALID_DOCUMENT_INDEX_EXCEPTION, 2, referencePointer), illegalStateException.getMessage());
     }
 
     @Test
     public void findSentimentOpinionWithInvalidSentenceIndex() {
-        final String referencePointer = "#/documents/1/sentences/4/opinions/1";
+        final String referencePointer = "#/documents/1/sentences/4/assessments/1";
         final IllegalStateException illegalStateException = assertThrows(IllegalStateException.class, () ->
-            analyzeSentimentAsyncClient.findSentimentOpinion(referencePointer, getDocumentSentiments()));
+            analyzeSentimentAsyncClient.findSentimentAssessment(referencePointer, getDocumentSentiments()));
         assertEquals(String.format(INVALID_SENTENCE_INDEX_EXCEPTION, 4, referencePointer), illegalStateException.getMessage());
     }
 
     @Test
     public void findSentimentOpinionWithInvalidOpinionIndex() {
-        final String referencePointer = "#/documents/1/sentences/3/opinions/6";
+        final String referencePointer = "#/documents/1/sentences/3/assessments/6";
         final IllegalStateException illegalStateException = assertThrows(IllegalStateException.class, () ->
-            analyzeSentimentAsyncClient.findSentimentOpinion(referencePointer, getDocumentSentiments()));
+            analyzeSentimentAsyncClient.findSentimentAssessment(referencePointer, getDocumentSentiments()));
         assertEquals(String.format(INVALID_OPINION_INDEX_EXCEPTION, 6, referencePointer), illegalStateException.getMessage());
     }
 
@@ -121,15 +122,15 @@ public class ReferencePointerParseTest {
     private List<SentenceSentiment> getSentenceSentiments() {
         List<SentenceSentiment> sentenceSentiments = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sentenceSentiments.add(new SentenceSentiment().setOpinions(getSentenceOpinions()));
+            sentenceSentiments.add(new SentenceSentiment().setAssessments(getSentenceAssessments()));
         }
         return sentenceSentiments;
     }
 
-    private List<SentenceOpinion> getSentenceOpinions() {
-        final List<SentenceOpinion> sentenceOpinions = new ArrayList<>();
+    private List<SentenceAssessment> getSentenceAssessments() {
+        final List<SentenceAssessment> sentenceOpinions = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            sentenceOpinions.add(new SentenceOpinion());
+            sentenceOpinions.add(new SentenceAssessment());
         }
         return sentenceOpinions;
     }

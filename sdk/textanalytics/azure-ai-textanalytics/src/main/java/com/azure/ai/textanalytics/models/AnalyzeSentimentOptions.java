@@ -13,7 +13,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
 
     /*
      * The boolean indicator to include opinion mining data in the returned result. If this
-     * flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment. It is provided by service
+     * flag is specified, you'll get a {@code opinions} property on SentenceSentiment. It is provided by service
      * v3.1-preview.1 and later.
      */
     private boolean includeOpinionMining;
@@ -51,7 +51,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
 
     /**
      * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
-     * returned result. If this flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment.
+     * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.
      *
      * @return the value of {@code includeOpinionMining}.
@@ -62,7 +62,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
 
     /**
      * Set the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
-     * returned result. If this flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment.
+     * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.

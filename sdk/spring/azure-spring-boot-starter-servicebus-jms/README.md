@@ -40,6 +40,8 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium, standard and basic.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 #### Use Service Bus topic
@@ -50,6 +52,8 @@ Append the following code to the end of the *application.properties* file. Repla
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium and standard.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 ### Implement basic Service Bus functionality
@@ -83,8 +87,6 @@ public class User implements Serializable {
 
 }
 ```
-
-`Serializable` is implemented to use the `send` method in `JmsTemplate` in the Spring framework. Otherwise, a customized `MessageConverter` bean should be defined to serialize the content to json in text format. For more information about `MessageConverter`, see the official [Spring JMS starter project](https://spring.io/guides/gs/messaging-jms/).
 
 #### Create a new class for the message send controller
 
@@ -179,7 +181,39 @@ public class User implements Serializable {
         }
     }
     ```
+### Optional Service Bus functionality
+A customized `MessageConverter` bean can be used to convert between Java objects and JMS messages.
 
+#### Set [content-type][servicebus-message-payloads] of messages 
+
+Below code snippet sets content-type of `BytesMessage` as `application/json`.
+
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L25-L45 -->
+```java
+@Component
+public class CustomMessageConverter extends MappingJackson2MessageConverter {
+
+    private static final String TYPE_ID_PROPERTY = "_type";
+    private static final Symbol CONTENT_TYPE = Symbol.valueOf("application/json");
+
+    public CustomMessageConverter() {
+        this.setTargetType(MessageType.BYTES);
+        this.setTypeIdPropertyName(TYPE_ID_PROPERTY);
+    }
+
+    @Override
+    protected BytesMessage mapToBytesMessage(Object object, Session session, ObjectWriter objectWriter)
+        throws JMSException, IOException {
+        final BytesMessage bytesMessage = super.mapToBytesMessage(object, session, objectWriter);
+        JmsBytesMessage jmsBytesMessage = (JmsBytesMessage) bytesMessage;
+        AmqpJmsMessageFacade facade = (AmqpJmsMessageFacade) jmsBytesMessage.getFacade();
+        facade.setContentType(CONTENT_TYPE);
+        return jmsBytesMessage;
+    }
+}
+```
+
+For more information about `MessageConverter`, see the official [Spring JMS guide][spring_jms_guide].
 ## Troubleshooting
 If the JDK version you use is greater than 1.8, You may meet this problem: 
 ```
@@ -232,4 +266,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
-
+[servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
+[spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/

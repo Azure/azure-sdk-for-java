@@ -10,7 +10,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -295422703255886286L;
     private String name;
 
-    User(String name) {
+    public User(String name) {
         setName(name);
     }
 
