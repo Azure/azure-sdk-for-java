@@ -31,7 +31,6 @@ class TransactionalBatchItemRequestOptionsBase {
      * Sets the If-Match (ETag) associated with the operation in TransactionalBatch.
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
-     * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
@@ -53,7 +52,6 @@ class TransactionalBatchItemRequestOptionsBase {
      * Sets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
-     * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){

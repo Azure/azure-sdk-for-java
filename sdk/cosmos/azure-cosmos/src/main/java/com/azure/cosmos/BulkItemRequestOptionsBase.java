@@ -34,7 +34,6 @@ class BulkItemRequestOptionsBase {
      * Sets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
-     * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
@@ -56,7 +55,6 @@ class BulkItemRequestOptionsBase {
      * Sets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
-     * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
@@ -98,8 +96,6 @@ class BulkItemRequestOptionsBase {
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this operation.
-     *
-     * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setContentResponseOnWriteEnabledCore(Boolean contentResponseOnWriteEnabled){
