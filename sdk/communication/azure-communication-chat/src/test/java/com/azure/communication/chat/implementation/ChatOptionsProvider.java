@@ -10,17 +10,15 @@ import java.util.*;
 public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
-        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
-        participants.add(generateParticipant(
+        CreateChatThreadOptions options = new CreateChatThreadOptions()
+            .setTopic("Test");
+
+        options.addParticipant(generateParticipant(
             userId1,
             "Tester 1"));
-        participants.add(generateParticipant(
+        options.addParticipant(generateParticipant(
             userId2,
             "Tester 2"));
-
-        CreateChatThreadOptions options = new CreateChatThreadOptions()
-            .setTopic("Test")
-            .setParticipants(participants);
 
         return options;
     }

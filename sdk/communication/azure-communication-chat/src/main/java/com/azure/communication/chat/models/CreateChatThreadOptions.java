@@ -5,6 +5,8 @@ package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,6 +64,15 @@ public final class CreateChatThreadOptions {
      */
     public CreateChatThreadOptions setParticipants(List<ChatParticipant> participants) {
         this.participants = participants;
+        return this;
+    }
+
+    public CreateChatThreadOptions addParticipant(ChatParticipant participant) {
+        if (this.participants == null)
+            this.participants = new ArrayList<ChatParticipant>();
+
+        this.participants.add(participant);
+
         return this;
     }
 
