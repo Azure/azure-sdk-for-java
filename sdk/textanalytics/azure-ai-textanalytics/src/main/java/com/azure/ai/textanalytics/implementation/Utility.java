@@ -603,7 +603,7 @@ public final class Utility {
     }
 
     /**
-     * Helper function which convert the {@link Iterable<PiiEntityCategory>} to {@link List<PiiCategory>}.
+     * Helper function which convert the {@code Iterable<PiiEntityCategory>} to {@code List<PiiCategory>}.
      *
      * @param categoriesFilter the iterable of {@link PiiEntityCategory}.
      * @return the list of {@link PiiCategory}.

@@ -2400,7 +2400,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
                 client.beginAnalyzeBatchActions(documents, tasks, "en",
-                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();;
+                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
