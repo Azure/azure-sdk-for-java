@@ -118,32 +118,6 @@ public class ReadmeSamples {
         }
     }
 
-    public void sandBoxConnection() {
-        // We'll connect to the Azure Cognitive Search public sandbox and send a
-        // query to its "nycjobs" index built from a public dataset of available jobs
-        // in New York.
-        String serviceName = "azs-playground";
-        String indexName = "nycjobs";
-        String apiKey = "252044BE3886FE4A8E3BAA4F595114BB";
-
-        // Create a SearchClient to send queries
-        String serviceEndpoint = String.format("https://%s.search.windows.net/", serviceName);
-        AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-        SearchClient client = new SearchClientBuilder()
-            .endpoint(serviceEndpoint)
-            .credential(credential)
-            .indexName(indexName)
-            .buildClient();
-
-        // Let's get the top 5 jobs related to Microsoft
-        client.search("Microsoft", new SearchOptions().setTop(5), Context.NONE).forEach(searchResult -> {
-            SearchDocument document = searchResult.getDocument(SearchDocument.class);
-            String title = (String) document.get("business_title");
-            String description = (String) document.get("job_description");
-            System.out.printf("The business title is %s, and here is the description: %s.%n", title, description);
-        });
-    }
-
     public void searchWithDynamicType() {
         for (SearchResult searchResult : searchClient.search("luxury")) {
             SearchDocument doc = searchResult.getDocument(SearchDocument.class);

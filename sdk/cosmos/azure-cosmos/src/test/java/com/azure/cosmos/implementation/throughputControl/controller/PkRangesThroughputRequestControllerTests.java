@@ -4,12 +4,10 @@
 package com.azure.cosmos.implementation.throughputControl.controller;
 
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -25,16 +23,12 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -49,10 +43,8 @@ public class PkRangesThroughputRequestControllerTests {
     private static String targetCollectionRid;
     private static double scheduledThroughput;
     private static PartitionKeyRange randomPkRange;
-    private static GlobalEndpointManager globalEndpointManager;
     private static RxPartitionKeyRangeCache pkRangeCache;
     private static List<PartitionKeyRange> pkRanges;
-    private static URI readLocation;
 
     private PkRangesThroughputRequestController requestController;
 
@@ -61,10 +53,6 @@ public class PkRangesThroughputRequestControllerTests {
         targetCollectionRid = "FakeCollection==";
         scheduledThroughput = 2.0;
         randomPkRange = new PartitionKeyRange(UUID.randomUUID().toString(), "randomMin", "randomMax");
-
-        readLocation = new URI("https://read-localtion1.documents.azure.com");
-        globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new UnmodifiableList<>(Collections.singletonList(readLocation))).when(globalEndpointManager).getReadEndpoints();
 
         PartitionKeyRange pkRange1 = new PartitionKeyRange(UUID.randomUUID().toString(), "AA", "BB");
         PartitionKeyRange pkRange2 = new PartitionKeyRange(UUID.randomUUID().toString(), "BB", "CC");
@@ -84,26 +72,13 @@ public class PkRangesThroughputRequestControllerTests {
 
     @BeforeMethod(groups = "unit")
     public void before_PkRangesThroughputRequestControllerTests() {
-        requestController = new PkRangesThroughputRequestController(globalEndpointManager, pkRangeCache, targetCollectionRid, scheduledThroughput);
+        requestController = new PkRangesThroughputRequestController(pkRangeCache, targetCollectionRid, scheduledThroughput);
     }
 
     @Test(groups = "unit")
     public void init() {
+        // Test init can complete without error
         requestController.init().subscribe();
-
-        ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> requestThrottlerMap =
-            ReflectionUtils.getRequestThrottlerMap(requestController);
-
-        Set<URI> locations = new HashSet<>();
-        locations.add(readLocation);
-
-        assertThat(requestThrottlerMap).size().isEqualTo(locations.size());
-        assertThat(Collections.list(requestThrottlerMap.keys())).containsAll(locations);
-
-        for (URI location : locations) {
-            assertThat(Collections.list(requestThrottlerMap.get(location).keys()))
-                .containsAll(pkRanges.stream().map(PartitionKeyRange::getId).collect(Collectors.toList()));
-        }
     }
 
     @Test(groups = "unit")
@@ -124,19 +99,17 @@ public class PkRangesThroughputRequestControllerTests {
     }
 
     @Test(groups = "unit")
-    public void processRequest() throws URISyntaxException {
+    public void processRequest() {
         requestController.init().subscribe();
 
-        ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> requestThrottlerByRegion =
-            ReflectionUtils.getRequestThrottlerMap(requestController);
+        ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerMap =
+            ReflectionUtils.getRequestThrottler(requestController);
 
         PartitionKeyRange pkRange = pkRanges.get(0);
-        ConcurrentHashMap<String,ThroughputRequestThrottler> requestThrottlerByPkRangeId = requestThrottlerByRegion.get(readLocation);
-        ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerByPkRangeId.get(pkRange.getId()));
-        requestThrottlerByPkRangeId.put(pkRange.getId(), writeLocationThrottlerSpy);
+        ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerMap.get(pkRange.getId()));
+        requestThrottlerMap.put(pkRange.getId(), writeLocationThrottlerSpy);
 
-        // First request: Can find the matching region request throttler in request controller
-        RxDocumentServiceRequest request1Mock = this.createMockRequest(pkRange, readLocation);
+        RxDocumentServiceRequest request1Mock = this.createMockRequest(pkRange);
 
         TestPublisher<StoreResponse> request1MonoPublisher = TestPublisher.create();
         Mono<StoreResponse> request1Mono = request1MonoPublisher.mono();
@@ -147,36 +120,20 @@ public class PkRangesThroughputRequestControllerTests {
             .expectNext(storeResponse1Mock)
             .verifyComplete();
         Mockito.verify(writeLocationThrottlerSpy, Mockito.times(1)).processRequest(request1Mock, request1Mono);
-
-        // Second request: Cannot find the matching region request throttler in request controller, will create a new one
-        RxDocumentServiceRequest request2Mock = this.createMockRequest(pkRange, new URI("https://write-localtion2.documents.azure.com"));
-
-        TestPublisher<StoreResponse> request2MonoPublisher = TestPublisher.create();
-        Mono<StoreResponse> request2Mono = request2MonoPublisher.mono();
-        StoreResponse storeResponse2Mock = Mockito.mock(StoreResponse.class);
-
-        StepVerifier.create(requestController.processRequest(request2Mock, request2Mono))
-            .then(() -> request2MonoPublisher.emit(storeResponse2Mock))
-            .expectNext(storeResponse2Mock)
-            .verifyComplete();
-
-        assertThat(requestThrottlerByRegion).size().isEqualTo(2);
     }
 
     @Test(groups = "unit")
     public void renewThroughputUsageCycle() {
         requestController.init().subscribe();
 
-        ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> requestThrottlerByRegion =
-            ReflectionUtils.getRequestThrottlerMap(requestController);
+        ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerMap =
+            ReflectionUtils.getRequestThrottler(requestController);
 
         List<ThroughputRequestThrottler> requestThrottlerSpies = new ArrayList<>();
-        for (ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerByPkRangeId : requestThrottlerByRegion.values()) {
-            for (String pkRangeId: Collections.list(requestThrottlerByPkRangeId.keys())) {
-                ThroughputRequestThrottler requestThrottlerSpy = Mockito.spy(requestThrottlerByPkRangeId.get(pkRangeId));
-                requestThrottlerSpies.add(requestThrottlerSpy);
-                requestThrottlerByPkRangeId.put(pkRangeId, requestThrottlerSpy);
-            }
+        for (String pkRangeId : Collections.list(requestThrottlerMap.keys())) {
+            ThroughputRequestThrottler requestThrottlerSpy = Mockito.spy(requestThrottlerMap.get(pkRangeId));
+            requestThrottlerSpies.add(requestThrottlerSpy);
+            requestThrottlerMap.put(pkRangeId, requestThrottlerSpy);
         }
 
         double newScheduledThroughput = 3.0;
@@ -187,12 +144,11 @@ public class PkRangesThroughputRequestControllerTests {
         }
     }
 
-    private RxDocumentServiceRequest createMockRequest(PartitionKeyRange resolvedPkRange, URI serviceEndpoint) {
+    private RxDocumentServiceRequest createMockRequest(PartitionKeyRange resolvedPkRange) {
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
         DocumentServiceRequestContext requestContextMock = Mockito.mock(DocumentServiceRequestContext.class);
         requestContextMock.resolvedPartitionKeyRange = resolvedPkRange;
         requestMock.requestContext = requestContextMock;
-        Mockito.doReturn(serviceEndpoint).when(globalEndpointManager).resolveServiceEndpoint(requestMock);
 
         return requestMock;
     }

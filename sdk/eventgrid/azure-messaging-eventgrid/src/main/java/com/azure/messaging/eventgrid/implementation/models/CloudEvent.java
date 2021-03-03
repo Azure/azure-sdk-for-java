@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The CloudEvent model. */
+/** Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema. */
 @Fluent
 public final class CloudEvent {
     /*

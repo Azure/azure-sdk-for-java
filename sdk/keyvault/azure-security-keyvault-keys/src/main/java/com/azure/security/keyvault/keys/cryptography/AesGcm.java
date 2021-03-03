@@ -16,6 +16,8 @@ import java.security.Provider;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static com.azure.security.keyvault.keys.cryptography.SymmetricKeyCryptographyClient.AES_BLOCK_SIZE;
+
 abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     final int keySizeInBytes;
     final int keySize;
@@ -42,8 +44,14 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
                 cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
+            int tagLength = (authenticationTag == null) ? AES_BLOCK_SIZE : authenticationTag.length;
+
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"),
-                new GCMParameterSpec(authenticationTag.length << 3, iv));
+                new GCMParameterSpec(tagLength << 3, iv));
+
+            if (additionalAuthenticatedData != null) {
+                cipher.updateAAD(additionalAuthenticatedData);
+            }
         }
 
         @Override
@@ -67,11 +75,14 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
                 cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
-
             Objects.requireNonNull(authenticationTag, "'authenticationTag' cannot be null");
 
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"),
                 new GCMParameterSpec(authenticationTag.length << 3, iv));
+
+            if (additionalAuthenticatedData != null) {
+                cipher.updateAAD(additionalAuthenticatedData);
+            }
         }
 
         @Override
