@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
@@ -23,7 +22,6 @@ import java.util.concurrent.CompletableFuture;
  * Performance test.
  */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
 
@@ -62,14 +60,14 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
         } catch (Exception e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
 
         for (IMessage message : messages) {
             try {
                 receiver.complete(message.getLockToken());
             } catch (InterruptedException | ServiceBusException e) {
-                throw logger.logExceptionAsWarning(new RuntimeException(e));
+                throw new RuntimeException(e);
             }
         }
     }

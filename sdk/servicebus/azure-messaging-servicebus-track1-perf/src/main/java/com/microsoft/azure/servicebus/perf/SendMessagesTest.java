@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
@@ -46,7 +45,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         try {
             sender.sendBatch(messages);
         } catch (InterruptedException | ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
