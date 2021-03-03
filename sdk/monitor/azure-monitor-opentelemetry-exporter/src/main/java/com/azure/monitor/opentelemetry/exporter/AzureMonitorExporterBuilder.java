@@ -3,32 +3,25 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.CoreUtils;
-import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
-import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
+import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -38,15 +31,11 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
-    private String endpoint;
     private String connectionString;
     private AzureMonitorExporterServiceVersion serviceVersion;
-    private ClientOptions clientOptions;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -64,10 +53,8 @@ public final class AzureMonitorExporterBuilder {
      */
     AzureMonitorExporterBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
         try {
             URL url = new URL(endpoint);
-            this.endpoint = endpoint;
             restServiceClientBuilder.host(url.getProtocol() + "://" + url.getHost());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
