@@ -47,6 +47,11 @@ public class RemoteRenderingTestBase extends TestBase {
 
         String scope = getServiceEndpoint().replaceFirst("/$", "") + "/.default";
 
+        if (interceptorManager.isPlaybackMode())
+        {
+            assert(false);
+        }
+
         if (!interceptorManager.isPlaybackMode()) {
             MixedRealityStsAsyncClient stsClient = new MixedRealityStsClientBuilder()
                 .accountId(getAccountId())
