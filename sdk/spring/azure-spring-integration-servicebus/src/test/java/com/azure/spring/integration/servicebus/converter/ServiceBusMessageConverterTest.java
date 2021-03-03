@@ -6,7 +6,6 @@ package com.azure.spring.integration.servicebus.converter;
 import com.azure.core.http.ContentType;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.test.support.AzureMessageConverterTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
