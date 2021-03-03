@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.throughputControl.controller.request;
 
 import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
-import reactor.core.publisher.Mono;
 
 /**
  * Represents a throughput request controller.
@@ -15,9 +14,10 @@ public interface IThroughputRequestController extends IThroughputController {
      *
      * Each request controller will maintain one to many request throttlers.
      * By calling this method, it will also renew the throughput usage cycles for the request throttlers.
+     * And it will return the throughput usage for the current cycle.
      *
-     * @param throughput
-     * @return
+     * @param throughput The scheduled throughput for the new cycle.
+     * @return The throughput usage for previous cycle.
      */
-    void renewThroughputUsageCycle(double throughput);
+    double renewThroughputUsageCycle(double throughput);
 }

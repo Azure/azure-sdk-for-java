@@ -8,7 +8,8 @@
 - Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
 
 ### Breaking changes
-- Renamed `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`.
+- Renamed classes,
+  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
 - Renamed
   `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
   `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`,
