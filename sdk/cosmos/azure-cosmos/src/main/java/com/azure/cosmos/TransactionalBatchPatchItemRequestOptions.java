@@ -40,7 +40,7 @@ public final class TransactionalBatchPatchItemRequestOptions extends Transaction
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
+        setIfMatchETagCore(ifMatchETag);
         return this;
     }
 
@@ -52,7 +52,7 @@ public final class TransactionalBatchPatchItemRequestOptions extends Transaction
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        this.ifNoneMatchETag = ifNoneMatchEtag;
+        setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 

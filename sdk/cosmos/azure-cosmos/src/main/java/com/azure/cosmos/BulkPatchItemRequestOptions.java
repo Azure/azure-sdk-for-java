@@ -11,7 +11,7 @@ import com.azure.cosmos.util.Beta;
  * creating bulk patch request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase<BulkPatchItemRequestOptions> {
+public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -57,7 +57,7 @@ public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBas
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
     }
 
@@ -69,7 +69,7 @@ public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBas
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        this.ifNoneMatchETag = ifNoneMatchEtag;
+        setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 
@@ -81,7 +81,7 @@ public final class BulkPatchItemRequestOptions extends BulkItemRequestOptionsBas
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
+        setIfMatchETagCore(ifMatchETag);
         return this;
     }
 
