@@ -111,7 +111,7 @@ jobs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env:
-          AZURE_TEST_MODE: ${{ parameters.EnvVars }}
+          AZURE_TEST_MODE: ${{ parameters.TestMode }}
           ${{ each var in parameters.EnvVars }}:
             ${{ var.key }}: ${{ var.value }}
 
