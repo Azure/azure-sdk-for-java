@@ -8,6 +8,7 @@ import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
@@ -96,9 +97,16 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public ServiceBusMessageConverter messageConverter() {
+        return new ServiceBusMessageConverter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicClientFactory.class)
-    public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory) {
-        return new ServiceBusTopicTemplate(factory);
+    public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory,
+                                                   ServiceBusMessageConverter messageConverter) {
+        return new ServiceBusTopicTemplate(factory, messageConverter);
     }
 
 }

@@ -100,6 +100,7 @@ import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewStartedE
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import com.azure.core.models.CloudEvent;
 
 /**
  * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s

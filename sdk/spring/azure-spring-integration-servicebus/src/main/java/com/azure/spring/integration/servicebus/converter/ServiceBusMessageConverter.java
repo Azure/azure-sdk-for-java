@@ -5,6 +5,7 @@ package com.azure.spring.integration.servicebus.converter;
 
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.MessageBody;
@@ -31,12 +32,26 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.VIA_PARTITION_KEY;
 
 /**
- * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage}
- * and vice versa.
+ * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage} and vice versa.
  *
  * @author Warren Zhu
  */
 public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IMessage> {
+
+    private final ObjectMapper objectMapper;
+
+    public ServiceBusMessageConverter() {
+        objectMapper = OBJECT_MAPPER;
+    }
+
+    public ServiceBusMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
 
     @Override
     protected byte[] getPayload(IMessage azureMessage) {

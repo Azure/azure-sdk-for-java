@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -744,52 +745,28 @@ public class CosmosContainer {
     }
 
     /**
+     * Enable the throughput control group with local control mode.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput);
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableLocalThroughputControlGroup(groupConfig);
     }
 
     /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput, isDefault);
-    }
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold);
-    }
-
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, isDefault);
+    public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
+        this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 }

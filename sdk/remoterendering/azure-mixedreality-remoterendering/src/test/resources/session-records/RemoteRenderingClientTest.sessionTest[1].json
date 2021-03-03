@@ -1,12 +1,12 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : {
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "D9qIQZsI60uAtbrWa9nODw.0",
       "retry-after" : "0",
@@ -19,10 +19,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "0qZayYjFB0Wy6cOK7ZA7xw.0",
       "retry-after" : "0",
@@ -35,10 +35,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "mFwh78NVtUemYtBDgw13WQ.0",
       "retry-after" : "0",
@@ -51,12 +51,12 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : {
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "dms8nSIqxkuAGMCSCDNSZw.0",
       "retry-after" : "0",
@@ -69,10 +69,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "Z/DoYWbbzUyFwRVdJfvVmQ.0",
       "retry-after" : "0",
@@ -85,10 +85,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "z3epNzoKy0q75ozEOjpICA.0",
       "retry-after" : "0",
@@ -101,10 +101,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "z9ae5xb5RUuI9ypn7eEILQ.0",
       "retry-after" : "0",
@@ -117,10 +117,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "rsu/A/s+/EiJE+EJzfa6BQ.0",
       "retry-after" : "0",
@@ -133,10 +133,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "2KtnBFISgEy0EWExp3yQlw.0",
       "retry-after" : "0",
@@ -149,10 +149,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "XSpgy9sEDUeEPUzkf++S7Q.0",
       "retry-after" : "0",
@@ -165,10 +165,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "iq8BSW/CQECAdC0EnaeUfw.0",
       "retry-after" : "0",
@@ -181,10 +181,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "jfPWU4e/Z0WJyJ027JKk/w.0",
       "retry-after" : "0",
@@ -197,10 +197,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "E160PGBEwUe0cyN+NjJLGA.0",
       "retry-after" : "0",
@@ -213,10 +213,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "izPvk3cRRkSOdG4H/9OdXQ.0",
       "retry-after" : "0",
@@ -229,10 +229,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "gbtkebNBFEeEx/YtON0GFA.0",
       "retry-after" : "0",
@@ -245,10 +245,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "0lNzEIHoXkmm3M9KjmOpSg.0",
       "retry-after" : "0",
@@ -261,10 +261,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "Af3anOUhlkmsfhSFKguGsw.0",
       "retry-after" : "0",
@@ -277,10 +277,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "5Nk91Ixuck6o2Ucy417IRA.0",
       "retry-after" : "0",
@@ -293,10 +293,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "cUCQVlfS/kiSViBvI/Ex6Q.0",
       "retry-after" : "0",
@@ -309,10 +309,10 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "1A1exgg1gE2THd56oFsgNw.0",
       "retry-after" : "0",
@@ -325,11 +325,11 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
       "Cache-Control" : "no-store,no-cache",
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "V5YQ/u74+UGA3BmDLkepfw.0",
       "Pragma" : "no-cache",
@@ -343,10 +343,10 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest/:stop?api-version=2021-01-01-preview",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest/:stop?api-version=2021-01-01",
     "Headers" : { },
     "Response" : {
-      "api-supported-versions" : "2021-01-01-preview",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
       "X-Content-Type-Options" : "nosniff",
       "MS-CV" : "H0dbArPYmkitWDVlyjSTOg.0",
       "retry-after" : "0",
