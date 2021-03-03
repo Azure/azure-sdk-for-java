@@ -33,7 +33,7 @@ There are two forms of authentication to use the Identity SDK:
 ### Azure Active Directory Token Authentication
 A `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
-`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
+`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L67-L77 -->
@@ -51,15 +51,15 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
-### Access Key Authentication
+### AzureKeyCredential Authentication
 Identity uses HMAC authentication with the resource access key.
-The access key must be provided to the `CommunicationIdentityClientBuilder` via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
+The access key can be used to create an AzureKeyCredential and provided to the `CommunicationIdentityClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L25-L36 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
+AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
 
 // Create an HttpClient builder of your choice and customize it
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -71,7 +71,8 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
-Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
+### Connection String Authentication
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L50-L56 -->
 ```java
 // Your can find your connection string from your resource in the Azure Portal
@@ -84,6 +85,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
 ```
 
 ## Key concepts
+
 `CommunicationIdentityClient` and `CommunicationIdentityAsyncClient` provide the functionalities to manage users and user tokens.
 
 ## Examples
@@ -98,8 +100,9 @@ CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
-Alternatively, use the `createUserAndToken` function to create a new user and issue a token for it. 
-For this option, a list of communication tokens scopes must be defined. 
+### Create a new user and token
+Use the `createUserAndToken` function to create a new user and issue a token for it.
+For this option, a list of communication tokens scopes must be defined.
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
 ```java
 // Define a list of communication token scopes
@@ -159,7 +162,7 @@ try {
 
 ## Next steps
 
-Check out other client libraries for Azure communication service
+Please take a look at the [samples][samples] directory for detailed examples of how to use this library to manage identities and tokens.
 
 ## Contributing
 
@@ -177,6 +180,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-identity
 [api_documentation]: https://aka.ms/java-docs
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-identity/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-identity%2FREADME.png)
