@@ -137,37 +137,33 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         int value,
         PartitionKeyDefinitionVersion version) {
 
-        switch (version) {
-            case V1:
-                return addToEffectivePartitionKeyV1(effectivePartitionKey, value);
+        checkArgument(
+            value == 1 || value == -1,
+            "Argument 'value' has invalid value - only 1 and -1 are allowed");
 
-            case V2:
-                return addToEffectivePartitionKeyV2(effectivePartitionKey, value);
+        byte[] blob = hexBinaryToByteArray(effectivePartitionKey);
 
-            default:
-                throw new IllegalStateException(
-                    String.format(
-                        "Unsupported hash version %s.",
-                        version));
+        if (value == 1) {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if (blob[i] < 255) {
+                    blob[i] = (byte)(blob[i] + 1);
+                    break;
+                } else {
+                    blob[i] = 0;
+                }
+            }
+        } else {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if (blob[i] > 0) {
+                    blob[i] = (byte)(blob[i] - 1);
+                    break;
+                } else {
+                    blob[i] = (byte)255;
+                }
+            }
         }
-    }
 
-    private String addToEffectivePartitionKeyV1(String effectivePartitionKey, int value) {
-        long binaryEffectivePartitionKey = fromHexEncodedBinaryString(effectivePartitionKey);
-        binaryEffectivePartitionKey += value;
-
-        return PartitionKeyInternalHelper.toHexEncodedBinaryString(
-            new NumberPartitionKeyComponent[] {
-                new NumberPartitionKeyComponent(binaryEffectivePartitionKey)
-            });
-    }
-
-    private String addToEffectivePartitionKeyV2(String effectivePartitionKey, int value) {
-        Int128 binaryEffectivePartitionKey = Int128.add(
-            new Int128(hexBinaryToByteArray(effectivePartitionKey)),
-            new Int128(value));
-
-        return HexConvert.bytesToHex(binaryEffectivePartitionKey.bytes());
+        return HexConvert.bytesToHex(blob);
     }
 
     public abstract Mono<List<String>> getPartitionKeyRanges(
