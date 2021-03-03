@@ -23,38 +23,39 @@ import java.security.Security;
  * The ClientSSL sample.
  */
 public class ClientSSLSample {
-    public void clientSSLSample() throws Exception {
+
+    public static void main(String[] args) throws Exception {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.aad-authentication-url"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
-        ks.load(parameter);
+        keyStore.load(parameter);
 
         SSLContext sslContext = SSLContexts
             .custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
             .build();
 
-        SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
+        SSLConnectionSocketFactory factory = SSLConnectionSocketFactoryBuilder
             .create()
             .setSslContext(sslContext)
             .setHostnameVerifier((hostname, session) -> true)
             .build();
 
-        PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
+        PoolingHttpClientConnectionManager manager = PoolingHttpClientConnectionManagerBuilder
             .create()
-            .setSSLSocketFactory(sslSocketFactory)
+            .setSSLSocketFactory(factory)
             .build();
 
         String result = null;
 
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8766");
             HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
                 int status = response.getCode();
@@ -69,4 +70,5 @@ public class ClientSSLSample {
             ioe.printStackTrace();
         }
     }
+
 }

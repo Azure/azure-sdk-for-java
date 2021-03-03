@@ -11,6 +11,7 @@ import com.azure.communication.chat.implementation.converters.AddChatParticipant
 import com.azure.communication.chat.implementation.converters.ChatMessageConverter;
 import com.azure.communication.chat.implementation.converters.ChatParticipantConverter;
 import com.azure.communication.chat.implementation.converters.ChatMessageReadReceiptConverter;
+import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.chat.implementation.converters.SendChatMessageResultConverter;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
@@ -24,7 +25,7 @@ import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -219,15 +220,15 @@ public final class ChatThreadAsyncClient {
     /**
      * Remove a participant from a thread.
      *
-     * @param user User identity of the participant to remove from the thread.
+     * @param identifier Identity of the participant to remove from the thread.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeParticipant(CommunicationUserIdentifier user) {
+    public Mono<Void> removeParticipant(CommunicationIdentifier identifier) {
         try {
-            Objects.requireNonNull(user, "'user' cannot be null.");
-            Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
-            return withContext(context -> removeParticipant(user, context)
+            Objects.requireNonNull(identifier, "'identifier' cannot be null.");
+
+            return withContext(context -> removeParticipant(identifier, context)
                 .flatMap((Response<Void> res) -> {
                     return Mono.empty();
                 }));
@@ -240,15 +241,15 @@ public final class ChatThreadAsyncClient {
     /**
      * Remove a participant from a thread.
      *
-     * @param user User identity of the participant to remove from the thread.
+     * @param identifier Identity of the participant to remove from the thread.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeParticipantWithResponse(CommunicationUserIdentifier user) {
+    public Mono<Response<Void>> removeParticipantWithResponse(CommunicationIdentifier identifier) {
         try {
-            Objects.requireNonNull(user, "'user' cannot be null.");
-            Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
-            return withContext(context -> removeParticipant(user, context));
+            Objects.requireNonNull(identifier, "'identifier' cannot be null.");
+
+            return withContext(context -> removeParticipant(identifier, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -257,14 +258,15 @@ public final class ChatThreadAsyncClient {
     /**
      * Remove a participant from a thread.
      *
-     * @param user User identity of the participant to remove from the thread.
+     * @param identifier Identity of the participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
-    Mono<Response<Void>> removeParticipant(CommunicationUserIdentifier user, Context context) {
+    Mono<Response<Void>> removeParticipant(CommunicationIdentifier identifier, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return this.chatThreadClient.removeChatParticipantWithResponseAsync(chatThreadId, user.getId(), context);
+        return this.chatThreadClient.removeChatParticipantWithResponseAsync(
+            chatThreadId, CommunicationIdentifierConverter.convert(identifier), context);
     }
 
     /**

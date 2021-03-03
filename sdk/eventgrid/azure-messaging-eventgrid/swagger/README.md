@@ -40,58 +40,10 @@ license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 context-client-method-parameter: true
 models-subpackage: systemevents
-directive:
-    - rename-model:
-        from: ACSChatEventBaseProperties
-        to: AcsChatEventBaseProperties
-    - rename-model:
-        from: ACSChatMemberAddedToThreadWithUserEventData
-        to: AcsChatMemberAddedToThreadWithUserEventData
-    - rename-model:
-        from: ACSChatMemberRemovedFromThreadWithUserEventData
-        to: AcsChatMemberRemovedFromThreadWithUserEventData
-    - rename-model:
-        from: ACSChatMessageDeletedEventData
-        to: AcsChatMessageDeletedEventData
-    - rename-model:
-        from: ACSChatMessageEditedEventData
-        to: AcsChatMessageEditedEventData
-    - rename-model:
-        from: ACSChatMessageEventBaseProperties
-        to: AcsChatMessageEventBaseProperties
-    - rename-model:
-        from: ACSChatMessageReceivedEventData
-        to: AcsChatMessageReceivedEventData
-    - rename-model:
-        from: ACSChatThreadCreatedWithUserEventData
-        to: AcsChatThreadCreatedWithUserEventData
-    - rename-model:
-        from: ACSChatThreadEventBaseProperties
-        to: AcsChatThreadEventBaseProperties
-    - rename-model:
-        from: ACSChatThreadMemberProperties
-        to: AcsChatThreadMemberProperties
-    - rename-model:
-        from: ACSChatThreadPropertiesUpdatedPerUserEventData
-        to: AcsChatThreadPropertiesUpdatedPerUserEventData
-    - rename-model:
-        from: ACSChatThreadWithUserDeletedEventData
-        to: AcsChatThreadWithUserDeletedEventData
 
-    - rename-model:
-        from: ACSSMSDeliveryAttemptProperties
-        to: AcsSmsDeliveryAttemptProperties
-    - rename-model:
-        from: ACSSMSDeliveryReportReceivedEventData
-        to: AcsSmsDeliveryReportReceivedEventData
-    - rename-model:
-        from: ACSSMSEventBaseProperties
-        to: AcsSmsEventBaseProperties
-    - rename-model:
-        from: ACSSMSReceivedEventData
-        to: AcsSmsReceivedEventData
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
+model-override-setter-from-superclass: true
 
 input-file:
 - $(api-spec-location)/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json

@@ -395,7 +395,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
@@ -414,7 +414,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
@@ -429,19 +429,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body) {
+    public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body) {
         return purchasePhoneNumbersWithResponseAsync(body)
-                .flatMap(
-                        (PhoneNumbersPurchasePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -452,19 +445,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body, Context context) {
+    public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body, Context context) {
         return purchasePhoneNumbersWithResponseAsync(body, context)
-                .flatMap(
-                        (PhoneNumbersPurchasePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -474,11 +460,10 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearchResult purchasePhoneNumbers(PhoneNumberPurchaseRequest body) {
-        return purchasePhoneNumbersAsync(body).block();
+    public void purchasePhoneNumbers(PhoneNumberPurchaseRequest body) {
+        purchasePhoneNumbersAsync(body).block();
     }
 
     /**
@@ -489,11 +474,10 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearchResult purchasePhoneNumbers(PhoneNumberPurchaseRequest body, Context context) {
-        return purchasePhoneNumbersAsync(body, context).block();
+    public void purchasePhoneNumbers(PhoneNumberPurchaseRequest body, Context context) {
+        purchasePhoneNumbersAsync(body, context).block();
     }
 
     /**

@@ -156,7 +156,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -168,7 +167,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             accountName,
                             databaseRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -222,7 +221,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -232,7 +230,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 accountName,
                 databaseRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)
@@ -363,7 +361,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (databaseRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -375,7 +372,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             accountName,
                             databaseRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -425,7 +422,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (databaseRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -435,7 +431,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 accountName,
                 databaseRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)
@@ -575,7 +571,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (databaseRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +582,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             accountName,
                             databaseRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<MetricDefinitionInner>>map(
@@ -634,7 +629,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (databaseRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -644,7 +638,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 accountName,
                 databaseRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(

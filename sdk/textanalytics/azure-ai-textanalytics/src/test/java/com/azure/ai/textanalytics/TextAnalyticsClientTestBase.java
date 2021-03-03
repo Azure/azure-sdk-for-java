@@ -6,19 +6,18 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
-import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -28,6 +27,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -52,6 +52,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -98,11 +99,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         if (interceptorManager.isPlaybackMode()) {
-            durationTestMode = Duration.ofNanos(1);
+            durationTestMode = Duration.ofMillis(1);
         } else {
             durationTestMode = DEFAULT_POLL_INTERVAL;
         }
         interceptorManagerTestBase = interceptorManager;
+    }
+
+    protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
+        return syncPoller.setPollInterval(durationTestMode);
     }
 
     // Detect Language
@@ -1321,69 +1326,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
-            validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
-                actualSentiment.getMinedOpinions().stream().collect(Collectors.toList()));
+            validateSentenceOpinions(expectedSentiment.getOpinions().stream().collect(Collectors.toList()),
+                actualSentiment.getOpinions().stream().collect(Collectors.toList()));
         } else {
-            assertNull(actualSentiment.getMinedOpinions());
+            assertNull(actualSentiment.getOpinions());
         }
     }
 
     /**
-     * Helper method to validate sentence's mined opinions.
+     * Helper method to validate sentence's opinions.
      *
-     * @param expectedMinedOpinions a list of mined opinions returned by the service.
-     * @param actualMinedOpinions a list of mined opinions returned by the API.
+     * @param expectedSentenceOpinions a list of sentence opinions returned by the service.
+     * @param actualSentenceOpinions a list of sentence opinions returned by the API.
      */
-    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
-        List<MinedOpinion> actualMinedOpinions) {
-        assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
-        for (int i = 0; i < actualMinedOpinions.size(); i++) {
-            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
-            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
-            validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
-            validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
-                actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));
+    static void validateSentenceOpinions(List<SentenceOpinion> expectedSentenceOpinions,
+        List<SentenceOpinion> actualSentenceOpinions) {
+        assertEquals(expectedSentenceOpinions.size(), actualSentenceOpinions.size());
+        for (int i = 0; i < actualSentenceOpinions.size(); i++) {
+            final SentenceOpinion expectedSentenceOpinion = expectedSentenceOpinions.get(i);
+            final SentenceOpinion actualSentenceOpinion = actualSentenceOpinions.get(i);
+            validateTargetSentiment(expectedSentenceOpinion.getTarget(), actualSentenceOpinion.getTarget());
+            validateAssessmentList(expectedSentenceOpinion.getAssessments().stream().collect(Collectors.toList()),
+                actualSentenceOpinion.getAssessments().stream().collect(Collectors.toList()));
         }
     }
 
     /**
-     * Helper method to validate aspect sentiment.
+     * Helper method to validate target sentiment.
      *
-     * @param expectedAspectSentiment An expected aspect sentiment.
-     * @param actualAspectSentiment An actual aspect sentiment.
+     * @param expected An expected target sentiment.
+     * @param actual An actual target sentiment.
      */
-    static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
-        assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
-        assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
-        assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
+    static void validateTargetSentiment(TargetSentiment expected, TargetSentiment actual) {
+        assertEquals(expected.getSentiment(), actual.getSentiment());
+        assertEquals(expected.getText(), actual.getText());
+        assertEquals(expected.getOffset(), actual.getOffset());
     }
 
     /**
-     * Helper method to validate a list of {@link OpinionSentiment}.
+     * Helper method to validate a list of {@link AssessmentSentiment}.
      *
-     * @param expectedOpinionSentiments A list of expected opinion sentiments.
-     * @param actualOpinionSentiments A list of actual opinion sentiments.
+     * @param expected A list of expected assessment sentiments.
+     * @param actual A list of actual assessment sentiments.
      */
-    static void validateAspectOpinionList(List<OpinionSentiment> expectedOpinionSentiments, List<OpinionSentiment> actualOpinionSentiments) {
-        assertEquals(expectedOpinionSentiments.size(), actualOpinionSentiments.size());
-        for (int i = 0; i < expectedOpinionSentiments.size(); i++) {
-            validateAspectOpinion(expectedOpinionSentiments.get(i), actualOpinionSentiments.get(i));
+    static void validateAssessmentList(List<AssessmentSentiment> expected, List<AssessmentSentiment> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateAssessmentSentiment(expected.get(i), actual.get(i));
         }
     }
 
     /**
-     * Helper method to validate opinion sentiment.
+     * Helper method to validate assessment sentiment.
      *
-     * @param expectedAspectOpinion An expected opinion sentiment.
-     * @param actualAspectOpinion An actual opinion sentiment.
+     * @param expect An expected assessment sentiment.
+     * @param actual An actual assessment sentiment.
      */
-    static void validateAspectOpinion(OpinionSentiment expectedAspectOpinion, OpinionSentiment actualAspectOpinion) {
-        assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
-        assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
-        assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
-        assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
+    static void validateAssessmentSentiment(AssessmentSentiment expect, AssessmentSentiment actual) {
+        assertEquals(expect.getSentiment(), actual.getSentiment());
+        assertEquals(expect.getText(), actual.getText());
+        assertEquals(expect.isNegated(), actual.isNegated());
+        assertEquals(expect.getOffset(), actual.getOffset());
     }
 
     /**
@@ -1406,10 +1412,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getOffset(), actual.getOffset());
-        validateEntitiyDataSourceList(expected.getDataSources(), actual.getDataSources());
+        validateEntityDataSourceList(expected.getDataSources(), actual.getDataSources());
     }
 
-    static void validateEntitiyDataSourceList(IterableStream<EntityDataSource> expected,
+    static void validateEntityDataSourceList(IterableStream<EntityDataSource> expected,
         IterableStream<EntityDataSource> actual) {
         if (expected == actual) {
             return;

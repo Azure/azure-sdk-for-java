@@ -3,28 +3,29 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AspectSentimentPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.OpinionSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
-import com.azure.ai.textanalytics.implementation.models.AspectConfidenceScoreLabel;
-import com.azure.ai.textanalytics.implementation.models.AspectRelationType;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.SentenceAspect;
-import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
+import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
+import com.azure.ai.textanalytics.implementation.models.SentenceTarget;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
+import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.MinedOpinion;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -46,6 +47,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
@@ -165,10 +167,10 @@ class AnalyzeSentimentAsyncClient {
                 final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
-                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
-                    toMinedOpinionList(sentenceSentiment, documentSentimentList),
-                    sentenceSentiment.getOffset()
-                );
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
+                SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1,
+                    toSentenceOpinionList(sentenceSentiment, documentSentimentList));
+                SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, sentenceSentiment.getOffset());
                 SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, sentenceSentiment.getLength());
                 return sentenceSentiment1;
             }).collect(Collectors.toList());
@@ -217,107 +219,119 @@ class AnalyzeSentimentAsyncClient {
             options.getModelVersion(), options.isIncludeStatistics(), options.isIncludeOpinionMining(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                   .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                       getDocumentCount(documents)))
                    .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
                    .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                    .map(this::toAnalyzeSentimentResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
     /*
      * Transform SentenceSentiment's opinion mining to output that user can use.
      */
-    private IterableStream<MinedOpinion> toMinedOpinionList(
+    private IterableStream<SentenceOpinion> toSentenceOpinionList(
         com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
         List<DocumentSentiment> documentSentimentList) {
-        // If include opinion mining indicator is false, the service return null for the aspect list.
-        final List<SentenceAspect> sentenceAspects = sentenceSentiment.getAspects();
-        if (sentenceAspects == null) {
+        // If include opinion mining indicator is false, the service return null for the target list.
+        final List<SentenceTarget> sentenceTargets = sentenceSentiment.getTargets();
+        if (sentenceTargets == null) {
             return null;
         }
-        final List<MinedOpinion> minedOpinions = new ArrayList<>();
-        sentenceAspects.forEach(sentenceAspect -> {
-            final List<OpinionSentiment> opinionSentiments = new ArrayList<>();
-            sentenceAspect.getRelations().forEach(aspectRelation -> {
-                final AspectRelationType aspectRelationType = aspectRelation.getRelationType();
-                final String opinionPointer = aspectRelation.getRef();
-                if (AspectRelationType.OPINION == aspectRelationType) {
-                    opinionSentiments.add(toOpinionSentiment(
-                        findSentimentOpinion(opinionPointer, documentSentimentList)));
+        final List<SentenceOpinion> sentenceOpinions = new ArrayList<>();
+        sentenceTargets.forEach(sentenceTarget -> {
+            final List<AssessmentSentiment> assessmentSentiments = new ArrayList<>();
+            sentenceTarget.getRelations().forEach(targetRelation -> {
+                final TargetRelationType targetRelationType = targetRelation.getRelationType();
+                final String opinionPointer = targetRelation.getRef();
+                if (TargetRelationType.ASSESSMENT == targetRelationType) {
+                    assessmentSentiments.add(toAssessmentSentiment(
+                        findSentimentAssessment(opinionPointer, documentSentimentList)));
                 }
             });
-            final AspectSentiment aspectSentiment = new AspectSentiment(sentenceAspect.getText(),
-                TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                sentenceAspect.getOffset(),
-                toSentimentConfidenceScores(sentenceAspect.getConfidenceScores()));
-            AspectSentimentPropertiesHelper.setLength(aspectSentiment, sentenceAspect.getLength());
-            minedOpinions.add(new MinedOpinion(aspectSentiment, new IterableStream<>(opinionSentiments)));
+            final TargetSentiment targetSentiment = new TargetSentiment();
+            TargetSentimentPropertiesHelper.setText(targetSentiment, sentenceTarget.getText());
+            TargetSentimentPropertiesHelper.setSentiment(targetSentiment,
+                TextSentiment.fromString(sentenceTarget.getSentiment().toString()));
+            TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment,
+                toSentimentConfidenceScores(sentenceTarget.getConfidenceScores()));
+            TargetSentimentPropertiesHelper.setOffset(targetSentiment, sentenceTarget.getOffset());
+            TargetSentimentPropertiesHelper.setLength(targetSentiment, sentenceTarget.getLength());
+
+            final SentenceOpinion sentenceOpinion = new SentenceOpinion();
+            SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion, targetSentiment);
+            SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion, new IterableStream<>(assessmentSentiments));
+            sentenceOpinions.add(sentenceOpinion);
         });
 
-        return new IterableStream<>(minedOpinions);
+        return new IterableStream<>(sentenceOpinions);
     }
 
     /*
-     * Transform type AspectConfidenceScoreLabel to SentimentConfidenceScores.
+     * Transform type TargetConfidenceScoreLabel to SentimentConfidenceScores.
      */
     private SentimentConfidenceScores toSentimentConfidenceScores(
-        AspectConfidenceScoreLabel aspectConfidenceScoreLabel) {
-        return new SentimentConfidenceScores(aspectConfidenceScoreLabel.getNegative(), NEUTRAL_SCORE_ZERO,
-            aspectConfidenceScoreLabel.getPositive());
+        TargetConfidenceScoreLabel targetConfidenceScoreLabel) {
+        return new SentimentConfidenceScores(targetConfidenceScoreLabel.getNegative(), NEUTRAL_SCORE_ZERO,
+            targetConfidenceScoreLabel.getPositive());
     }
 
     /*
      * Transform type SentenceOpinion to OpinionSentiment.
      */
-    private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
-        final OpinionSentiment opinionSentiment = new OpinionSentiment(sentenceOpinion.getText(),
-            TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
-            sentenceOpinion.getOffset(), sentenceOpinion.isNegated(),
-            toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
-        OpinionSentimentPropertiesHelper.setLength(opinionSentiment, sentenceOpinion.getLength());
-        return opinionSentiment;
+    private AssessmentSentiment toAssessmentSentiment(SentenceAssessment sentenceAssessment) {
+        final AssessmentSentiment assessmentSentiment = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment, sentenceAssessment.getText());
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment,
+            TextSentiment.fromString(sentenceAssessment.getSentiment().toString()));
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment,
+            toSentimentConfidenceScores(sentenceAssessment.getConfidenceScores()));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment, sentenceAssessment.isNegated());
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment, sentenceAssessment.getOffset());
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment, sentenceAssessment.getLength());
+        return assessmentSentiment;
     }
 
     /*
      * Parses the reference pointer to an index array that contains document, sentence, and opinion indexes.
      */
-    int[] parseRefPointerToIndexArray(String opinionPointer) {
-        // The pattern always start with character '#', the opinion index will existing in specified sentence, which
+    int[] parseRefPointerToIndexArray(String assessmentPointer) {
+        // The pattern always start with character '#', the assessment index will existing in specified sentence, which
         // is under specified document.
-        // example: #/documents/0/sentences/0/opinions/0
-        final String patternRegex = "#/documents/(\\d+)/sentences/(\\d+)/opinions/(\\d+)";
+        // example: #/documents/0/sentences/0/assessments/0
+        final String patternRegex = "#/documents/(\\d+)/sentences/(\\d+)/assessments/(\\d+)";
         final Pattern pattern = Pattern.compile(patternRegex);
-        final Matcher matcher = pattern.matcher(opinionPointer);
+        final Matcher matcher = pattern.matcher(assessmentPointer);
         final boolean isMatched = matcher.find();
 
         // The first index represents the document index, second one represents the sentence index,
-        // third ond represents the opinion index.
+        // third ond represents the assessment index.
         final int[] result = new int[3];
 
         if (isMatched) {
-            String[] segments = opinionPointer.split("/");
+            String[] segments = assessmentPointer.split("/");
             result[0] = Integer.parseInt(segments[2]);
             result[1] = Integer.parseInt(segments[4]);
             result[2] = Integer.parseInt(segments[6]);
         } else {
             throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("'%s' is not a valid opinion pointer.", opinionPointer)));
+                String.format("'%s' is not a valid assessment pointer.", assessmentPointer)));
         }
 
         return result;
     }
 
     /*
-     * Find the specific sentence opinion in the document sentiment list by given the opinion reference pointer.
+     * Find the specific sentence assessment in the document sentiment list by given the assessment reference pointer.
      */
-    SentenceOpinion findSentimentOpinion(String opinionPointer, List<DocumentSentiment> documentSentiments) {
-        final int[] opinionIndexes = parseRefPointerToIndexArray(opinionPointer);
-        final int documentIndex = opinionIndexes[0];
-        final int sentenceIndex = opinionIndexes[1];
-        final int opinionIndex = opinionIndexes[2];
+    SentenceAssessment findSentimentAssessment(String assessmentPointer, List<DocumentSentiment> documentSentiments) {
+        final int[] assessmentIndexes = parseRefPointerToIndexArray(assessmentPointer);
+        final int documentIndex = assessmentIndexes[0];
+        final int sentenceIndex = assessmentIndexes[1];
+        final int assessmentIndex = assessmentIndexes[2];
         if (documentIndex >= documentSentiments.size()) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("Invalid document index '%s' in '%s'.", documentIndex, opinionPointer)));
+                String.format("Invalid document index '%s' in '%s'.", documentIndex, assessmentPointer)));
         }
         final DocumentSentiment documentsentiment = documentSentiments.get(documentIndex);
 
@@ -325,14 +339,14 @@ class AnalyzeSentimentAsyncClient {
             documentsentiment.getSentences();
         if (sentenceIndex >= sentenceSentiments.size()) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("Invalid sentence index '%s' in '%s'.", sentenceIndex, opinionPointer)));
+                String.format("Invalid sentence index '%s' in '%s'.", sentenceIndex, assessmentPointer)));
         }
 
-        final List<SentenceOpinion> opinions = sentenceSentiments.get(sentenceIndex).getOpinions();
-        if (opinionIndex >= opinions.size()) {
+        final List<SentenceAssessment> assessments = sentenceSentiments.get(sentenceIndex).getAssessments();
+        if (assessmentIndex >= assessments.size()) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("Invalid opinion index '%s' in '%s'.", opinionIndex, opinionPointer)));
+                String.format("Invalid assessment index '%s' in '%s'.", assessmentIndex, assessmentPointer)));
         }
-        return opinions.get(opinionIndex);
+        return assessments.get(assessmentIndex);
     }
 }

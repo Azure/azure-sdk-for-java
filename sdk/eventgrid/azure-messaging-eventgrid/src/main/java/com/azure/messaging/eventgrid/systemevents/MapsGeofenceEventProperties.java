@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MapsGeofenceEventProperties model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Geofence event (GeofenceEntered, GeofenceExited,
+ * GeofenceResult).
+ */
 @Fluent
 public class MapsGeofenceEventProperties {
     /*
