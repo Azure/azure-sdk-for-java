@@ -323,6 +323,10 @@ public class GatewayAddressCache implements IAddressCache {
                     request.properties);
             } catch (UnauthorizedException e) {
                 // User doesn't have rid based resource token. Maybe user has name based.
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("User doesn't have resource token for collection rid {}", collectionRid);
+                }
             }
 
             if (token == null && request.getIsNameBased()) {
