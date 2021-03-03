@@ -172,7 +172,6 @@ io.opentelemetry:opentelemetry-api;1.0.0
 io.opentelemetry:opentelemetry-sdk;1.0.0
 io.opentelemetry:opentelemetry-exporter-logging;1.0.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.0.0
-com.google.errorprone:error_prone_annotations;2.5.1
 io.projectreactor:reactor-test;3.3.12.RELEASE
 junit:junit;4.13.1
 commons-cli:commons-cli;1.3
