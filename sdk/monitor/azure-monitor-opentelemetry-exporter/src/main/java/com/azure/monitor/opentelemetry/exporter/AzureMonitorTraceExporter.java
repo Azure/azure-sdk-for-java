@@ -667,11 +667,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 return;
             }
             // special case mappings
-            if (key.equals("enduser.id")) {
+            if (key.getKey().equals("enduser.id") && value instanceof String) {
                 telemetry.getTags().put(ContextTagKeys.AI_USER_ID.toString(), (String) value);
                 return;
             }
-            if (key.equals("http.user_agent")) {
+            if (key.getKey().equals("http.user_agent") && value instanceof String) {
                 telemetry.getTags().put("ai.user.userAgent", (String) value);
                 return;
             }
