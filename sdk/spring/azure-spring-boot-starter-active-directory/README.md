@@ -49,7 +49,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -106,7 +106,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -157,7 +157,7 @@ To use **aad-starter** in this scenario, we need these steps:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -214,7 +214,7 @@ To use **aad-starter** in this scenario, we need these steps:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
