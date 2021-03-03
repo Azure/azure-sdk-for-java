@@ -110,7 +110,6 @@ public class PatchAsyncTest extends BatchTestBase {
             return throwable;
         }).block();
 
-
         this.verifyBatchProcessed(batchResponsePass, 3);
 
         assertThat(batchResponsePass.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
