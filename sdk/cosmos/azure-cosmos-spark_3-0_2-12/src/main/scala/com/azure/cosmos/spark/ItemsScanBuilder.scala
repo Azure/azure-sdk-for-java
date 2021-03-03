@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
 import org.apache.spark.sql.sources.Filter
 import org.apache.spark.sql.types.StructType
@@ -14,7 +15,8 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private case class ItemsScanBuilder(config: CaseInsensitiveStringMap,
+private case class ItemsScanBuilder(session: SparkSession,
+                                    config: CaseInsensitiveStringMap,
                                     inputSchema: StructType,
                                     cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends ScanBuilder
@@ -54,6 +56,7 @@ private case class ItemsScanBuilder(config: CaseInsensitiveStringMap,
 
     // TODO moderakh when inferring schema we should consolidate the schema from pruneColumns
     ItemsScan(
+      session,
       inputSchema,
       config.asScala.toMap,
       this.processedPredicates.get.cosmosParametrizedQuery,

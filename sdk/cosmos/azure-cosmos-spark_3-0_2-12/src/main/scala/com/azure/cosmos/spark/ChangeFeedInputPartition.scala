@@ -6,5 +6,5 @@ import com.azure.cosmos.models.FeedRange
 import org.apache.spark.sql.connector.read.InputPartition
 
 private[spark] case class ChangeFeedInputPartition(feedRangeJson: String) extends InputPartition {
-  @transient private[spark] val feedRange = FeedRange.fromString(feedRangeJson)
+  @transient private[spark] lazy val feedRange = FeedRange.fromString(feedRangeJson)
 }

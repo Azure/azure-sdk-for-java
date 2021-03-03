@@ -28,115 +28,118 @@ class CosmosPartitionPlannerSpec
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfigTemplate)
-  private[this] var feedRange = ""
+  private[this] var feedRanges = List("")
+
+  lazy val cosmosBEPartitionCount = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).getFeedRanges.block().size()
+
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
-  it should "provide 1 partition as long as storage size is <= 128 MB" in {
-    evaluateStorageBasedStrategy(0, 1)
-    evaluateStorageBasedStrategy(1, 1)
-    evaluateStorageBasedStrategy(100 * 1024, 1)
-    evaluateStorageBasedStrategy(128 * 1000 + 1, 1)
-    evaluateStorageBasedStrategy(128 * 1024, 1)
+  it should "provide 1 partition as long as storage size is <= 128 MB" taggedAs RequiresCosmosEndpoint in {
+    evaluateStorageBasedStrategy(0, 1 * cosmosBEPartitionCount)
+    evaluateStorageBasedStrategy(1, 1 * cosmosBEPartitionCount)
+    evaluateStorageBasedStrategy(100 * 1024, 1 * cosmosBEPartitionCount)
+    evaluateStorageBasedStrategy(128 * 1000 + 1, 1 * cosmosBEPartitionCount)
+    evaluateStorageBasedStrategy(128 * 1024, 1 * cosmosBEPartitionCount)
   }
 
-  it should "provide multiple partitions as soon as storage size is > 128 MB" in {
-    evaluateStorageBasedStrategy(128 * 1024 + 1, 2)
-    evaluateStorageBasedStrategy(256 * 1024, 2)
+  it should "provide multiple partitions as soon as storage size is > 128 MB" taggedAs RequiresCosmosEndpoint in {
+    evaluateStorageBasedStrategy(128 * 1024 + 1, 2 * cosmosBEPartitionCount)
+    evaluateStorageBasedStrategy(256 * 1024, 2 * cosmosBEPartitionCount)
   }
 
-  it should "provide honor custom defaultMaxPartitionSize values" in {
-    evaluateStorageBasedStrategy(128 * 1024, 1, defaultMaxPartitionSizeInMB = 1024)
-    evaluateStorageBasedStrategy(256 * 1024, 1, defaultMaxPartitionSizeInMB = 1024)
-    evaluateStorageBasedStrategy(2048 * 1024, 2, defaultMaxPartitionSizeInMB = 1024)
-    evaluateStorageBasedStrategy(50 * 1024 * 1024, 50, defaultMaxPartitionSizeInMB = 1024)
+  it should "provide honor custom defaultMaxPartitionSize values" taggedAs RequiresCosmosEndpoint in {
+    evaluateStorageBasedStrategy(128 * 1024, 1 * cosmosBEPartitionCount, defaultMaxPartitionSizeInMB = 1024)
+    evaluateStorageBasedStrategy(256 * 1024, 1 * cosmosBEPartitionCount, defaultMaxPartitionSizeInMB = 1024)
+    evaluateStorageBasedStrategy(2048 * 1024, 2 * cosmosBEPartitionCount, defaultMaxPartitionSizeInMB = 1024)
+    evaluateStorageBasedStrategy(50 * 1024 * 1024, 50 * cosmosBEPartitionCount, defaultMaxPartitionSizeInMB = 1024)
   }
 
-  it should "create one partition for every 128 MB (rounded up)" in {
+  it should "create one partition for every 128 MB (rounded up)" taggedAs RequiresCosmosEndpoint in {
 
     // testing the upper bound for 50 GB partition
-    evaluateStorageBasedStrategy(50 * 1024 * 1024, 400)
+    evaluateStorageBasedStrategy(50 * 1024 * 1024, 400 * cosmosBEPartitionCount)
 
     for (_ <- 1 to 100) {
       val docSizeInKB = rnd.nextInt(50 * 1024 * 1024)
       val expectedPartitionCount = (docSizeInKB + (128 * 1024) - 1)/(128 * 1024)
-      evaluateStorageBasedStrategy(docSizeInKB, expectedPartitionCount)
+      evaluateStorageBasedStrategy(docSizeInKB, expectedPartitionCount * cosmosBEPartitionCount)
     }
   }
 
   it should "create exactly 3 times more partitions than with Default for Aggressive" in {
 
     // Min is still 1 (not 3) to avoid wasting compute resources where not necessary
-    evaluateStrategy("Aggressive", 0, 1)
+    evaluateStrategy("Aggressive", 0, 1 * cosmosBEPartitionCount)
 
     // 3 Spark partitions for every 128 MB
-    evaluateStrategy("Aggressive", 10 * 128 * 1024, 3 * 10)
+    evaluateStrategy("Aggressive", 10 * 128 * 1024, 3 * 10 * cosmosBEPartitionCount)
 
     // change feed progress is honored
     evaluateStrategy(
       "Aggressive",
       10 * 128 * 1024,
-      3 * 3,
+      3 * 3 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.7)))
 
     for (_ <- 1 to 100) {
       val docSizeInKB = rnd.nextInt(50 * 1024 * 1024)
       val expectedPartitionCount = ((3 * docSizeInKB) + (128 * 1024) - 1)/(128 * 1024)
-      evaluateStrategy("Aggressive", docSizeInKB, expectedPartitionCount)
+      evaluateStrategy("Aggressive", docSizeInKB, expectedPartitionCount * cosmosBEPartitionCount)
     }
   }
 
-  it should "honor the relative progress of currentLsn/lastLsn" in {
+  it should "honor the relative progress of currentLsn/lastLsn" taggedAs RequiresCosmosEndpoint in {
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      10,
+      10 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.0)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      1,
+      1 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(1.0)))
 
     // always return at least 1 partition even when metadata is stale
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      1,
+      1 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(2.0)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      1,
+      1 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.9)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      8,
+      8 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.25)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      6,
+      6 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.499999)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      5,
+      5 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.5)))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      5,
+      5 * cosmosBEPartitionCount,
       currentOffset = Some(createChangeFeedOffset(0.5000000001)))
   }
 
-  it should "honor the min partition count to allow saturating all spark executors" in {
+  it should "honor the min partition count to allow saturating all spark executors" taggedAs RequiresCosmosEndpoint in {
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
-      4, // would usually be just 1 because progress > 100%
+      4 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
       currentOffset = Some(createChangeFeedOffset(2.0)),
-      defaultMinimalPartitionCount = 4)
+      defaultMinimalPartitionCount = 4 * cosmosBEPartitionCount)
   }
 
-  it should "honor the custom targeted partition count" in {
+  it should "honor the custom targeted partition count" taggedAs RequiresCosmosEndpoint in {
 
     // NOTE
     // targetPartitionCount is a best-effort while still maintaining
@@ -150,35 +153,35 @@ class CosmosPartitionPlannerSpec
     evaluateStrategy(
       "Custom",
       128 * 10 * 1024,
-      23, // would usually be just 1 because progress > 100%
+      23 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
       currentOffset = Some(createChangeFeedOffset(2.0)),
-      customPartitionCount = Some(23))
+      customPartitionCount = Some(23 * cosmosBEPartitionCount))
 
     // targetPartitionCount is ignore when Strategy is != Custom
     evaluateStrategy(
       "Default",
       128 * 10 * 1024,
-      1, // would usually be just 1 because progress > 100%
+      1 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
       currentOffset = Some(createChangeFeedOffset(2.0)),
-      customPartitionCount = Some(23))
+      customPartitionCount = Some(23 * cosmosBEPartitionCount))
   }
 
   it should "provide 1 Spark partition per physical Partition only " +
-    "independent of storage size or change feed progress" in {
+    "independent of storage size or change feed progress" taggedAs RequiresCosmosEndpoint in {
 
-    evaluateRestrictiveStrategy(0, 1)
-    evaluateRestrictiveStrategy(1, 1)
-    evaluateRestrictiveStrategy(100 * 1024, 1)
-    evaluateRestrictiveStrategy(128 * 1000 + 1, 1)
-    evaluateRestrictiveStrategy(128 * 1024, 1)
-    evaluateRestrictiveStrategy(50 * 1024 * 1024, 1)
+    evaluateRestrictiveStrategy(0, 1 * cosmosBEPartitionCount)
+    evaluateRestrictiveStrategy(1, 1 * cosmosBEPartitionCount)
+    evaluateRestrictiveStrategy(100 * 1024, 1 * cosmosBEPartitionCount)
+    evaluateRestrictiveStrategy(128 * 1000 + 1, 1 * cosmosBEPartitionCount)
+    evaluateRestrictiveStrategy(128 * 1024, 1 * cosmosBEPartitionCount)
+    evaluateRestrictiveStrategy(50 * 1024 * 1024, 1 * cosmosBEPartitionCount)
     evaluateRestrictiveStrategy(
       50 * 1024 * 1024,
-      1,
+      1 * cosmosBEPartitionCount,
       Some(createChangeFeedOffset(2.0)))
     evaluateRestrictiveStrategy(
       50 * 1024 * 1024,
-      1,
+      1 * cosmosBEPartitionCount,
       Some(createChangeFeedOffset(0.9)))
   }
 
@@ -198,7 +201,7 @@ class CosmosPartitionPlannerSpec
     //scalastyle:off magic.number
     // maps to 1 + (2 * session.sparkContext.defaultParallelism)
     // should help saturating all executor nodes
-    defaultMinimalPartitionCount: Int = 1
+    defaultMinimalPartitionCount: Int = cosmosBEPartitionCount
   ): Assertion = {
     this.evaluateStrategy(
       "Default",
@@ -222,7 +225,7 @@ class CosmosPartitionPlannerSpec
     defaultMaxPartitionSizeInMB: Int = 128,
 
     // maps to 1 + (2 * session.sparkContext.defaultParallelism) - should help saturating all executor nodes
-    defaultMinimalPartitionCount: Int = 1,
+    defaultMinimalPartitionCount: Int = cosmosBEPartitionCount,
 
     // NOTE targetPartitionCount is a best-effort while still maintaining relative storage and change feed
     // progress weight. So if you use TargetPartitionCount of 10 and you have two partitions one with 9 GB of data
@@ -287,19 +290,21 @@ class CosmosPartitionPlannerSpec
 
     val nowEpochMs = Instant.now.toEpochMilli
 
-    PartitionMetadataCache.injectTestData(
-      this.containerConfig,
-      this.feedRange,
-      PartitionMetadata(
-        this.clientConfig,
-        None,
+    for (feedRange <- feedRanges) {
+      PartitionMetadataCache.injectTestData(
         this.containerConfig,
-        this.feedRange,
-        documentCount,
-        documentSizeInKB,
-        latestLsn,
-        new AtomicLong(nowEpochMs),
-        new AtomicLong(nowEpochMs)))
+        feedRange,
+        PartitionMetadata(
+          this.clientConfig,
+          None,
+          this.containerConfig,
+          feedRange,
+          documentCount,
+          documentSizeInKB,
+          latestLsn,
+          new AtomicLong(nowEpochMs),
+          new AtomicLong(nowEpochMs)))
+    }
   }
 
   private[this] def reinitialize(): Unit = {
@@ -310,8 +315,8 @@ class CosmosPartitionPlannerSpec
       ranges += fr.toString
     })
 
-    ranges should have size 1
-    this.feedRange = ranges(0)
+    ranges should have size cosmosBEPartitionCount
+    this.feedRanges = ranges.toList
 
     PartitionMetadataCache.resetTestOverrides()
   }
