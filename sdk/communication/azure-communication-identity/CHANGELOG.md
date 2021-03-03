@@ -4,6 +4,13 @@
 ### Added
 - Added a retryPolicy() chain method to the `CommunicationIdentityClientBuilder`
 
+### Breaking
+- `CommunicationIdentityClient.createUserWithToken` and `CommunicationIdentityAsyncClient.createUserWithToken` functions have been renamed to
+`CommunicationIdentityClient.createUserAndToken` and `CommunicationIdentityAsyncClient.createUserAndToken`
+- `CommunicationIdentityClient.createUserWithTokenWithResponse` and `CommunicationIdentityAsyncClient.createUserWithTokenWithResponse` functions have been renamed to
+`CommunicationIdentityClient.createUserAndTokenWithResponse` and `CommunicationIdentityAsyncClient.createUserAndTokenWithResponse`
+- `CommunicationUserIdentifierWithTokenResult` object has been renamed to `CommunicationUserIdentifierAndTokenResult`
+
 ## 1.0.0-beta.5 (2021-03-02)
 ### Breaking
 - `CommunicationIdentityAsyncClient.issueToken` and `CommunicationIdentityClient.issueToken` is renamed to `CommunicationIdentityAsyncClient.getToken` and `CommunicationIdentityClient.getToken`.
