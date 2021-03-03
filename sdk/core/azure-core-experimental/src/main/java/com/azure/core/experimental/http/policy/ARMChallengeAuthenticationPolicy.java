@@ -9,12 +9,16 @@ import com.azure.core.experimental.implementation.AuthenticationChallenge;
 import com.azure.core.experimental.implementation.AzureEnvironment;
 import com.azure.core.experimental.implementation.ARMScopeHelper;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
