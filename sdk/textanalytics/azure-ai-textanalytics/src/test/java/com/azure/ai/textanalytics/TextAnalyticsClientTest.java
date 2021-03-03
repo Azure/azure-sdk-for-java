@@ -10,6 +10,8 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.EntityCertainty;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -92,6 +94,7 @@ import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUME
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -2103,6 +2106,30 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options, Context.NONE);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareTaskResults = syncPoller.getFinalResult();
+            // "Baby not likely to have Meningitis."
+            final HealthcareEntityAssertion assertion =
+                healthcareTaskResults.stream().collect(Collectors.toList())
+                    .get(0).stream().collect(Collectors.toList()) // List of document result
+                    .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
+                    .get(1) // "Meningitis" is the second entity recognized.
+                    .getAssertion();
+            assertNull(assertion.getConditionality());
+            assertNull(assertion.getAssociation());
+            assertEquals(EntityCertainty.NEGATIVE, assertion.getCertainty());
+        });
     }
 
     // Healthcare LRO - Cancellation
