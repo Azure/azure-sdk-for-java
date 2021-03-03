@@ -107,7 +107,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
         });
     }
 
-    private List<AuthenticationChallenge> parseChallenges(String header) {
+    List<AuthenticationChallenge> parseChallenges(String header) {
         Matcher matcher = AUTHENTICATION_CHALLENGE_PATTERN.matcher(header);
 
         List<AuthenticationChallenge> challenges = new ArrayList<>();
@@ -117,7 +117,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
         return challenges;
     }
 
-    private Map<String, String> parseChallengeParams(String challengeParams) {
+    Map<String, String> parseChallengeParams(String challengeParams) {
         Matcher matcher = AUTHENTICATION_CHALLENGE_PARAMS_PATTERN.matcher(challengeParams);
 
         Map<String, String> challengeParameters = new HashMap<>();
