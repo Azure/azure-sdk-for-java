@@ -558,7 +558,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
             if (event.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE) != null
                 || event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE) != null) {
-                // TODO map OpenTelemetry exception to Application Insights exception better
                 String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                 if (stacktrace != null) {
                     trackException(stacktrace, span, operationId, span.getSpanId(), samplingPercentage, telemetryItems);
