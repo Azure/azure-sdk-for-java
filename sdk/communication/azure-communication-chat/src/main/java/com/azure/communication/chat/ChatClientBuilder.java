@@ -86,7 +86,7 @@ public final class ChatClientBuilder {
      * Sets the client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions The client options.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated ChatClientBuilder object.
      */
     public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -111,7 +111,7 @@ public final class ChatClientBuilder {
      * A default retry policy will be supplied if one isn't provided.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated ChatClientBuilder object.
      */
     public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
