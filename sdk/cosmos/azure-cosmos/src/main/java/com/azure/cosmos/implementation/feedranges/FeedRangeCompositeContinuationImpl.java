@@ -48,14 +48,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
         FeedRangeInternal feedRange,
-        List<Range<String>> ranges) {
-
-        this(containerRid, feedRange, ranges, null);
-    }
-
-    public FeedRangeCompositeContinuationImpl(
-        String containerRid,
-        FeedRangeInternal feedRange,
         List<Range<String>> ranges,
         String continuation) {
 
@@ -73,6 +65,32 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                     range.getMin(),
                     range.getMax(),
                     continuation)
+            );
+        }
+
+        this.currentToken = this.getCompositeContinuationTokens().peek();
+    }
+
+    public FeedRangeCompositeContinuationImpl(
+        String containerRid,
+        FeedRangeInternal feedRange,
+        List<CompositeContinuationToken> continuationTokens) {
+
+        this(containerRid, feedRange);
+
+        checkNotNull(continuationTokens, "'continuationTokens' must not be null");
+
+        if (continuationTokens.size() == 0) {
+            throw new IllegalArgumentException("'continuationTokens' must not be empty");
+        }
+
+        for (CompositeContinuationToken continuationToken : continuationTokens) {
+            this.compositeContinuationTokens.add(
+                // add a copy
+                FeedRangeCompositeContinuationImpl.createCompositeContinuationTokenForRange(
+                    continuationToken.getRange().getMin(),
+                    continuationToken.getRange().getMax(),
+                    continuationToken.getToken())
             );
         }
 
@@ -143,6 +161,14 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         return tokenSnapshot;
+    }
+
+    @Override
+    public CompositeContinuationToken[] getCurrentContinuationTokens() {
+        CompositeContinuationToken[] snapshot = new CompositeContinuationToken[this.compositeContinuationTokens.size()];
+        this.compositeContinuationTokens.toArray(snapshot);
+
+        return snapshot;
     }
 
     @Override

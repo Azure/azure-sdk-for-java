@@ -377,7 +377,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         AsyncDocumentClient clientWrapper = container.asyncContainer.getDatabase().getDocClientWrapper();
         return FeedRangeInternal
             .convert(feedRange)
-            .getEffectiveRange(
+            .getNormalizedEffectiveRange(
                 clientWrapper.getPartitionKeyRangeCache(),
                 null,
                 Mono.just(Utils.ValueHolder.initialize(

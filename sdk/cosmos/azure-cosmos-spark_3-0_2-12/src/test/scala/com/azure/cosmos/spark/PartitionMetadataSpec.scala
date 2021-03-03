@@ -16,7 +16,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val collectionName = UUID.randomUUID().toString
     val feedRange = UUID.randomUUID().toString
     val key = PartitionMetadata.createKey(databaseName, collectionName, feedRange)
-    key shouldEqual s"$databaseName|$collectionName|$feedRange"
+    key shouldEqual s"$databaseName/$collectionName/$feedRange"
   }
 
   it should "create instance with valid parameters via apply" in {

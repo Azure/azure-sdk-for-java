@@ -273,7 +273,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .block();
 
             Range<String> effectiveRange = feedRangeForLogicalPartition
-                .getEffectiveRange(
+                .getNormalizedEffectiveRange(
                     client.asyncClient().getContextClient().getPartitionKeyRangeCache(),
                     null,
                     Mono.just(documentCollection))

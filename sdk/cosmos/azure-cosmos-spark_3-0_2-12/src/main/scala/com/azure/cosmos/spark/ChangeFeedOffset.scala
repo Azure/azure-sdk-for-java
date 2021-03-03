@@ -29,7 +29,7 @@ private object ChangeFeedOffset {
   private val V1Identifier: String = "com.azure.cosmos.spark.changeFeed.offset.v1"
   private val objectMapper = new ObjectMapper()
 
-  def fromJson(json: String): Option[ChangeFeedOffset] = {
+  def fromJson(json: String): ChangeFeedOffset = {
     val parsedNode = objectMapper.readTree(json)
     if (parsedNode != null &&
       parsedNode.isObject &&
@@ -39,11 +39,10 @@ private object ChangeFeedOffset {
       parsedNode.get(StatePropertyName).isTextual &&
       parsedNode.get(StatePropertyName).asText("") != "") {
 
-      Some(ChangeFeedOffset(parsedNode.get(StatePropertyName).asText))
+      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText)
     } else {
-      // TODO @fabianm check whether other Spark connectors would ignore offsets
-      // they can not parse or throw an error and keep behavior consistent
-      None
+        val message = s"Unable to deserialize offset '$json'."
+        throw new IllegalStateException(message)
     }
   }
 }

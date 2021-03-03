@@ -11,7 +11,7 @@ import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scheduler.Schedulers
 
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.{Timer, TimerTask}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.collection.concurrent.TrieMap
@@ -56,6 +56,20 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   this.startRefreshTimer()
 
+  private def getFromCacheIfNotStale(key: String, maxStaleness: Option[Duration]): Option[PartitionMetadata] = {
+    val nowEpochMs = Instant.now.toEpochMilli
+    cache.get(key) match {
+      case Some(metadata) => if (maxStaleness.isEmpty ||
+        nowEpochMs - metadata.lastUpdated.get() <= maxStaleness.get.toMillis) {
+
+        Some(metadata)
+      } else {
+        None
+      }
+      case None => None
+    }
+  }
+
   // NOTE
   // This method can only be used from the Spark driver
   // The reason for this restriction is that the IO operations necessary
@@ -65,7 +79,8 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   def apply(cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
-            feedRange: String): SMono[PartitionMetadata] = {
+            feedRange: String,
+            maxStaleness: Option[Duration] = None): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
     requireNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -75,7 +90,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       cosmosContainerConfig.container,
       feedRange)
 
-    val getKey = (key: String) =>  cache.get(key) match {
+    val getOrCreate = (key: String) => this.getFromCacheIfNotStale(key, maxStaleness) match {
       case Some(metadata) =>
         metadata.lastRetrieved.set(Instant.now.toEpochMilli)
         SMono.just(metadata)
@@ -88,16 +103,14 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
 
     cacheTestOverride match {
-      case Some(testCache) => {
+      case Some(testCache) =>
         testCache.get(key) match {
-          case Some(testMetadata) => {
+          case Some(testMetadata) =>
             testMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
             SMono.just(testMetadata)
-          }
-          case None  => getKey(key)
+          case None  => getOrCreate(key)
         }
-      }
-      case None => getKey(key)
+      case None => getOrCreate(key)
     }
   }
 
@@ -121,11 +134,10 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
     val key = PartitionMetadata.createKey(cosmosContainerConfig.database, cosmosContainerConfig.container, feedRange)
     val effectiveTestCache = this.cacheTestOverride match {
-      case None => {
+      case None =>
         val newCache = new TrieMap[String, PartitionMetadata]()
         this.cacheTestOverride = Some(newCache)
         newCache
-      }
       case Some(existingCache) => existingCache
     }
 
@@ -142,10 +154,9 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
 
     this.cacheTestOverride match {
-      case Some(cacheOverrideSnapshot) => {
+      case Some(cacheOverrideSnapshot) =>
         this.cacheTestOverride = None
         cacheOverrideSnapshot.clear()
-      }
       case None => Unit
     }
     this.refreshIntervalInMsOverride = None
@@ -176,31 +187,19 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   ): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
-    cache.get(key) match {
-      case Some(metadata) =>
-        metadata.lastRetrieved.set(Instant.now.toEpochMilli)
-        SMono.just(metadata)
-      case None =>
-        val metadataObservable = readPartitionMetadata(
-          cosmosClientConfiguration: CosmosClientConfiguration,
-          cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-          cosmosContainerConfig: CosmosContainerConfig,
-          feedRange: String
-        )
+    val metadataObservable = readPartitionMetadata(
+      cosmosClientConfiguration: CosmosClientConfiguration,
+      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosContainerConfig: CosmosContainerConfig,
+      feedRange: String
+    )
 
-        metadataObservable
-          .map(metadata => {
-            cache.putIfAbsent(key, metadata) match {
-              case None =>
-                metadata
-              case Some(metadataAddedConcurrently) =>
-                metadataAddedConcurrently.lastRetrieved.set(Instant.now.toEpochMilli)
-
-                metadataAddedConcurrently
-            }
-          })
-          .subscribeOn(Schedulers.boundedElastic())
-    }
+    metadataObservable
+      .map(metadata => {
+        cache.put(key, metadata)
+        metadata
+      })
+      .subscribeOn(Schedulers.boundedElastic())
   }
 
   private def readPartitionMetadata

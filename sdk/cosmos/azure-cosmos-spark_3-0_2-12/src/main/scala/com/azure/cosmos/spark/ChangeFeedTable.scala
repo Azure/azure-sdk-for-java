@@ -77,7 +77,9 @@ private class ChangeFeedTable(val session: SparkSession,
   override def name(): String = tableName
 
   override def capabilities(): util.Set[TableCapability] = Set(
-    TableCapability.BATCH_READ).asJava
+    TableCapability.BATCH_READ,
+    TableCapability.MICRO_BATCH_READ
+  ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     ChangeFeedScanBuilder(

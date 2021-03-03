@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong
 
 class PartitionMetadataCacheSpec
@@ -113,6 +113,30 @@ class PartitionMetadataCacheSpec
     //scalastyle:on magic.number
 
     val candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    candidate.lastUpdated.get should be > initialLastUpdated
+
+    PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
+    this.reinitialize()
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "honor maxStaleness" taggedAs RequiresCosmosEndpoint in {
+    this.reinitialize()
+
+    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    var initialLastUpdated = newItem.lastUpdated.get
+
+    //scalastyle:off magic.number
+    Thread.sleep(500)
+
+    var candidate: PartitionMetadata = PartitionMetadataCache(
+      clientConfig, None, containerConfig, feedRange, Some(Duration.ofMillis(400))).block()
+
+    candidate.lastUpdated.get should be > initialLastUpdated
+    initialLastUpdated = candidate.lastUpdated.get
+    Thread.sleep(1)
+    //scalastyle:on magic.number
+    candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange, Some(Duration.ZERO)).block()
     candidate.lastUpdated.get should be > initialLastUpdated
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
