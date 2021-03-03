@@ -20,7 +20,7 @@ public class SqlQuerySpecLoggerTest {
     private Logger logger;
     private boolean isDebugEnabledInvoked = false;
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"unit"})
     private void setup() {
         logger = Mockito.mock(Logger.class);
         sqlQuerySpecLogger = new SqlQuerySpecLogger(logger);
