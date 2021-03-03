@@ -1,4 +1,7 @@
-package com.azure.messaging.eventgrid.implementation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.messaging.eventgrid;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -7,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.tracing.TracerProxy;
+import com.azure.messaging.eventgrid.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -29,14 +33,13 @@ public class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
         final HttpRequest request = context.getHttpRequest();
         final HttpHeader contentType = request.getHeaders().get(Constants.CONTENT_TYPE);
         StringBuilder bodyStringBuilder = new StringBuilder();
-        if (TracerProxy.isTracingEnabled() && contentType != null &&
-            Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
+        if (TracerProxy.isTracingEnabled() && contentType != null
+            && Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
             return request.getBody().map(byteBuffer -> bodyStringBuilder.append(new String(byteBuffer.array(),
                 StandardCharsets.UTF_8)))
                 .then(Mono.fromCallable(() -> replaceTracingPlaceHolder(request, bodyStringBuilder)))
                 .then(next.process());
-        }
-        else {
+        } else {
             return next.process();
         }
     }

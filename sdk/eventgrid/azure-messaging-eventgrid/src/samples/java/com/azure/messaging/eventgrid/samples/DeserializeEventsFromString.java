@@ -18,14 +18,14 @@ public class DeserializeEventsFromString {
     private static void deserializeCloudEventsFromJsonString() {
         System.out.println("Parsing a Cloud Event string");
 
-        String cloudEventStringJsonData = "{" +
-            "\"id\":\"f47d7b0a-4cc7-4108-aaff-f1122d87807c\"," +
-            "\"source\":\"https://com.example.myapp\"," +
-            "\"data\":{\"firstName\":\"John1\",\"lastName\":\"James\"}," +
-            "\"type\":\"User.Created.Object\"," +
-            "\"specversion\":\"1.0\"," +
-            "\"datacontenttype\":\"application/json\"" +
-            "}";
+        String cloudEventStringJsonData = "{"
+            + "\"id\":\"f47d7b0a-4cc7-4108-aaff-f1122d87807c\","
+            + "\"source\":\"https://com.example.myapp\","
+            + "\"data\":{\"firstName\":\"John1\",\"lastName\":\"James\"},"
+            + "\"type\":\"User.Created.Object\","
+            + "\"specversion\":\"1.0\","
+            + "\"datacontenttype\":\"application/json\""
+            + "}";
         List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventStringJsonData);
 
         CloudEvent cloudEvent = cloudEvents.get(0);
@@ -39,14 +39,14 @@ public class DeserializeEventsFromString {
     private static void deserializeEventGridEventsFromJsonString() {
         System.out.println("Parsing an Event Grid Event string");
 
-        String eventGridEventStringJsonData = "{\"id\":\"3b07dc21-08af-4558-9e94-822a20c48a0b\"," +
-            "\"subject\":\"example user\"," +
-            "\"data\":{\"firstName\":\"John2\",\"lastName\":\"James\"}," +
-            "\"eventType\":\"User.Created.Object\"," +
-            "\"dataVersion\":\"0.1\"," +
-            "\"metadataVersion\":\"1\"," +
-            "\"eventTime\":\"2021-01-12T22:23:38.756238Z\"," +
-            "\"topic\":\"/exampleTopic\"}\n";
+        String eventGridEventStringJsonData = "{\"id\":\"3b07dc21-08af-4558-9e94-822a20c48a0b\","
+            + "\"subject\":\"example user\","
+            + "\"data\":{\"firstName\":\"John2\",\"lastName\":\"James\"},"
+            + "\"eventType\":\"User.Created.Object\","
+            + "\"dataVersion\":\"0.1\","
+            + "\"metadataVersion\":\"1\","
+            + "\"eventTime\":\"2021-01-12T22:23:38.756238Z\","
+            + "\"topic\":\"/exampleTopic\"}\n";
         List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventStringJsonData);
         EventGridEvent eventGridEvent = eventGridEvents.get(0);
         BinaryData data = eventGridEvent.getData();

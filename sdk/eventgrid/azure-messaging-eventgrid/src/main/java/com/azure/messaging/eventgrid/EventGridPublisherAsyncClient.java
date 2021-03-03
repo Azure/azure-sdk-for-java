@@ -68,7 +68,7 @@ public final class EventGridPublisherAsyncClient<T> {
     private static final String HMAC_SHA256 = "hmacSHA256";
     private static final String API_VERSION = "api-version";
 
-    private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
         ObjectSerializer eventDataSerializer, Class<T> eventClass) {
@@ -91,7 +91,7 @@ public final class EventGridPublisherAsyncClient<T> {
      * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
@@ -108,7 +108,7 @@ public final class EventGridPublisherAsyncClient<T> {
      * service.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      *
      * @return the shared access signature string which can be used to construct an instance of
@@ -171,7 +171,7 @@ public final class EventGridPublisherAsyncClient<T> {
 
     @SuppressWarnings("unchecked")
     Mono<Void> sendEvents(Iterable<T> events, Context context) {
-        if(this.eventClass == CloudEvent.class) {
+        if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEvents((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
             return this.sendEventGridEvents((Iterable<EventGridEvent>) events, context);
@@ -191,10 +191,10 @@ public final class EventGridPublisherAsyncClient<T> {
     @SuppressWarnings("unchecked")
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
-        if(this.eventClass == CloudEvent.class) {
+        if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
-            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>)events, context);
+            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events, context);
         } else {
             return this.sendCustomEventsWithResponse((Iterable<Object>) events, context);
         }
@@ -294,9 +294,9 @@ public final class EventGridPublisherAsyncClient<T> {
     private void addCloudEventTracePlaceHolder(Iterable<CloudEvent> events) {
         if (TracerProxy.isTracingEnabled()) {
             for (CloudEvent event : events) {
-                if (event.getExtensionAttributes() == null ||
-                    (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null &&
-                    event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
+                if (event.getExtensionAttributes() == null
+                    || (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null
+                    && event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
 
                     event.addExtensionAttribute(Constants.TRACE_PARENT, Constants.TRACE_PARENT_PLACEHOLDER_UUID);
                     event.addExtensionAttribute(Constants.TRACE_STATE, Constants.TRACE_STATE_PLACEHOLDER_UUID);

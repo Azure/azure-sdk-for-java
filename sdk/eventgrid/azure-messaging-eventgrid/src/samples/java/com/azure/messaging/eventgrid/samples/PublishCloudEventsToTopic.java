@@ -4,8 +4,6 @@
 package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
@@ -16,7 +14,6 @@ import com.azure.messaging.eventgrid.samples.models.User;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This sample code shows how to send {@link CloudEvent CloudEvents} to an Event Grid Topic that accepts cloud event schema.

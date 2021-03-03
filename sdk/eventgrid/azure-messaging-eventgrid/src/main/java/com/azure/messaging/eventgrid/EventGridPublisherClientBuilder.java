@@ -28,7 +28,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
-import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -111,9 +110,9 @@ public final class EventGridPublisherClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
         }
 
-        EventGridServiceVersion buildServiceVersion = serviceVersion == null ?
-            EventGridServiceVersion.getLatest() :
-            serviceVersion;
+        EventGridServiceVersion buildServiceVersion = serviceVersion == null
+            ? EventGridServiceVersion.getLatest()
+            : serviceVersion;
 
         if (httpPipeline != null) {
             return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);

@@ -158,7 +158,7 @@ public class DeserializationTests {
         assertNotNull(events);
         assertEquals(1, events.length);
 
-        String eventData = events[0].getData().toString();
+        String eventData = events[0].getData().toObject(String.class);
         assertNotNull(eventData);
 
         assertEquals("stringdata", eventData);
