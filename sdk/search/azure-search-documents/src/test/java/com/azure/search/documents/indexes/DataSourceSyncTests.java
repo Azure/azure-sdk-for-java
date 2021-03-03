@@ -270,7 +270,8 @@ public class DataSourceSyncTests extends SearchTestBase {
         assertNotEquals(originalETag, updatedETag);
     }
 
-    @Test
+    // TODO (alzimmer): Re-enable this test once live resource deployment is configured.
+    //@Test
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
