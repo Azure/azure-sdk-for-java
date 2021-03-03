@@ -15,7 +15,6 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
-import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
 
@@ -510,77 +509,5 @@ public interface DatabasesClient {
         String clusterName,
         String databaseName,
         ExportClusterParameters parameters,
-        Context context);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginForceUnlink(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginForceUnlink(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void forceUnlink(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void forceUnlink(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
         Context context);
 }

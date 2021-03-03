@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -24,6 +25,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -484,9 +486,21 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param group Throughput control group going to be enabled.
      */
-    void enableThroughputControlGroup(ThroughputControlGroup group) {
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group cannot be null");
         this.asyncDocumentClient.enableThroughputControlGroup(group);
+    }
+
+    /**
+     * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
+     *
+     * @param databaseId The database id of the control container.
+     * @param containerId The container id of the control container.
+     * @return A {@link GlobalThroughputControlConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
+        return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

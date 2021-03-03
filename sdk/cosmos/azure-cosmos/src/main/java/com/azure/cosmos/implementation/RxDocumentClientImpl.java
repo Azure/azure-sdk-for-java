@@ -12,7 +12,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -50,6 +49,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -279,6 +279,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
+        this.throughputControlEnabled = new AtomicBoolean(false);
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -349,7 +350,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
-            this.throughputControlEnabled = new AtomicBoolean(false);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -948,7 +948,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
         return populateHeaders(request, RequestVerb.GET)
-            .flatMap(gatewayProxy::processMessage);
+            .flatMap(requestPopulated -> getStoreProxy(requestPopulated).processMessage(requestPopulated));
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
@@ -2218,7 +2218,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this,
             ResourceType.Document,
             Document.class,
-            collection.getSelfLink(),
+            collection.getAltLink(),
             collection.getResourceId(),
             changeFeedOptions);
 
@@ -3731,7 +3731,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return this.storeModel;
             }
         } else {
-            if ((request.getOperationType() == OperationType.Query || request.getOperationType() == OperationType.SqlQuery) &&
+            if ((operationType == OperationType.Query ||
+                operationType == OperationType.SqlQuery ||
+                operationType == OperationType.ReadFeed) &&
                     Utils.isCollectionChild(request.getResourceType())) {
                 // Go to gateway only when partition key range and partition key are not set. This should be very rare
                 if (request.getPartitionKeyRangeIdentity() == null &&
@@ -3757,6 +3759,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
+
+            if (this.throughputControlEnabled.get()) {
+                logger.info("Closing ThroughputControlStore ...");
+                this.throughputControlStore.close();
+            }
+
             logger.info("Shutting down completed.");
         } else {
             logger.warn("Already shutdown!");
@@ -3769,7 +3777,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public void enableThroughputControlGroup(ThroughputControlGroup group) {
+    public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group can not be null");
 
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
@@ -3777,7 +3785,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 new ThroughputControlStore(
                     this.collectionCache,
                     this.connectionPolicy.getConnectionMode(),
-                    this.globalEndpointManager,
                     this.partitionKeyRangeCache);
 
             this.storeModel.enableThroughputControl(throughputControlStore);

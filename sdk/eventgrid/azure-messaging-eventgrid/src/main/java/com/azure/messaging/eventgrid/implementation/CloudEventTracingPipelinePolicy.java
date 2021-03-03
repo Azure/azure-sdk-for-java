@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.models.CloudEvent;
 /**
  * This pipeline policy should be added after OpenTelemetryPolicy in the http pipeline.
  *

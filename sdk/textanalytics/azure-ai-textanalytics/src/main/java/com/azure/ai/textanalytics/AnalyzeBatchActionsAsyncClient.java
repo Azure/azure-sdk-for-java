@@ -26,7 +26,6 @@ import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.StringIndexTypeResponse;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
@@ -39,7 +38,6 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
-import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -71,6 +69,7 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -186,7 +185,7 @@ class AnalyzeBatchActionsAsyncClient {
                             // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
                                 .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
-                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType())));
+                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -205,7 +204,7 @@ class AnalyzeBatchActionsAsyncClient {
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(getNonNullStringIndexTypeResponse(action.getStringIndexType()))
+                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
@@ -493,11 +492,5 @@ class AnalyzeBatchActionsAsyncClient {
             taskNameIdPair[1] = matcher.group(2);
         }
         return taskNameIdPair;
-    }
-
-    private StringIndexTypeResponse getNonNullStringIndexTypeResponse(StringIndexType stringIndexType) {
-        return StringIndexTypeResponse.fromString(
-            stringIndexType == null ? StringIndexType.UTF16CODE_UNIT.toString()
-                                                      : stringIndexType.toString());
     }
 }
