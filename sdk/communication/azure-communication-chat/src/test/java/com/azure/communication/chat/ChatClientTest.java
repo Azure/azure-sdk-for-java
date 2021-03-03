@@ -57,7 +57,7 @@ public class ChatClientTest extends ChatClientTestBase {
         AccessToken response = communicationClient.getToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
-        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
+        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildChatClient();
     }
 
     @ParameterizedTest

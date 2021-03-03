@@ -3,6 +3,7 @@
 
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
 
@@ -169,25 +170,58 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create synchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
      * @return ChatClient instance
      */
-    public ChatClient buildClient() {
-        ChatAsyncClient asyncClient = buildAsyncClient();
+    public ChatClient buildChatClient() {
+        ChatAsyncClient asyncClient = buildAsyncChatClient();
         return new ChatClient(asyncClient);
     }
 
     /**
-     * Create asynchronous client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create asynchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
      * @return ChatAsyncClient instance
      */
-    public ChatAsyncClient buildAsyncClient() {
+    public ChatAsyncClient buildAsyncChatClient() {
+        AzureCommunicationChatServiceImpl internalClient = createInternalClient();
+        return new ChatAsyncClient(internalClient);
+    }
+
+    /**
+     * Create synchronous chat thread client applying CommunicationTokenCredential, UserAgentPolicy,
+     * RetryPolicy, and CookiePolicy.
+     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     *
+     * @param chatThreadId The id of the thread.
+     *
+     * @return ChatClient instance
+     */
+    public ChatThreadClient buildChatThreadClient(String chatThreadId) {
+        ChatThreadAsyncClient asyncClient = buildAsyncChatThreadClient(chatThreadId);
+        return new ChatThreadClient(asyncClient);
+    }
+
+    /**
+     * Create asynchronous chat thread client applying CommunicationTokenCredential, UserAgentPolicy,
+     * RetryPolicy, and CookiePolicy.
+     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     *
+     * @param chatThreadId The id of the thread.
+     *
+     * @return ChatThreadAsyncClient instance
+     */
+    public ChatThreadAsyncClient buildAsyncChatThreadClient(String chatThreadId) {
+        AzureCommunicationChatServiceImpl internalClient = createInternalClient();
+        return new ChatThreadAsyncClient(internalClient, chatThreadId);
+    }
+
+    private AzureCommunicationChatServiceImpl createInternalClient() {
         Objects.requireNonNull(endpoint);
 
         HttpPipeline pipeline;
@@ -208,7 +242,7 @@ public final class ChatClientBuilder {
             .endpoint(endpoint)
             .pipeline(pipeline);
 
-        return new ChatAsyncClient(clientBuilder.buildClient());
+        return clientBuilder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,

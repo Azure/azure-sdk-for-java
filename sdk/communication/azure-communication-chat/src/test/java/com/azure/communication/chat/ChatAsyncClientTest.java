@@ -63,7 +63,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AccessToken response = communicationClient.getToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
-        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();
+        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncChatClient();
     }
 
     @ParameterizedTest
