@@ -4,8 +4,6 @@
 package com.azure.identity;
 
 
-import com.azure.identity.implementation.AuthenticationRecord;
-
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
@@ -13,6 +11,8 @@ import com.azure.identity.implementation.AuthenticationRecord;
  */
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private String username;
+    private TokenCachePersistenceOptions tokenCachePersistenceOptions = new TokenCachePersistenceOptions()
+        .setAllowUnencryptedStorage(true);
 
     /**
      * Sets the username for the account.
@@ -33,7 +33,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     SharedTokenCacheCredentialBuilder disallowUnencryptedCache() {
-        this.identityClientOptions.setAllowUnencryptedCache(false);
+        this.tokenCachePersistenceOptions.setAllowUnencryptedStorage(false);
         return this;
     }
 
@@ -44,7 +44,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    public SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }

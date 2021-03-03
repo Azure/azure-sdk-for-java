@@ -1,6 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.identity;
-
-import com.azure.identity.implementation.PersistentTokenCacheImpl;
 
 /**
  * Represents the Persistence Token Cache options used to setup the persistent access token cache.
@@ -15,6 +15,7 @@ public final class TokenCachePersistenceOptions {
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
      *
+     * @param allowUnencryptedStorage The flag indicating if unencrypted storage is allowed for the cache or not.
      * @return An updated instance of the options bag.
      */
     public TokenCachePersistenceOptions setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
