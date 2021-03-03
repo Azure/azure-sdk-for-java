@@ -14,7 +14,6 @@ import com.azure.communication.chat.implementation.converters.ChatParticipantCon
 import com.azure.communication.chat.implementation.converters.ChatMessageReadReceiptConverter;
 import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
@@ -40,6 +39,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.Objects;
@@ -131,14 +131,14 @@ public final class ChatThreadAsyncClient {
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addParticipants(AddChatParticipantsOptions options) {
+    public Mono<Void> addParticipants(Iterable<ChatParticipant> participants) {
         try {
-            Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> addParticipants(options, context)
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            return withContext(context -> addParticipants(participants, context)
                 .flatMap((Response<AddChatParticipantsResult> res) -> {
                     return Mono.empty();
                 }));
@@ -151,14 +151,14 @@ public final class ChatThreadAsyncClient {
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddChatParticipantsResult>> addParticipantsWithResponse(AddChatParticipantsOptions options) {
+    public Mono<Response<AddChatParticipantsResult>> addParticipantsWithResponse(Iterable<ChatParticipant> participants) {
         try {
-            Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> addParticipants(options, context));
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            return withContext(context -> addParticipants(participants, context));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
@@ -174,10 +174,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(ChatParticipant participant) {
         try {
-            return withContext(context -> addParticipants(
-                new AddChatParticipantsOptions()
-                    .setParticipants(Collections.singletonList(participant)),
-                context)
+            return withContext(context -> addParticipants(Collections.singletonList(participant), context)
                 .flatMap((Response<AddChatParticipantsResult> res) -> {
                     return Mono.empty();
                 }));
@@ -195,10 +192,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddChatParticipantsResult>> addParticipantWithResponse(ChatParticipant participant) {
         try {
-            return withContext(context -> addParticipants(
-                new AddChatParticipantsOptions()
-                    .setParticipants(Collections.singletonList(participant)),
-                context));
+            return withContext(context -> addParticipants(Collections.singletonList(participant), context));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
@@ -208,14 +202,14 @@ public final class ChatThreadAsyncClient {
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      * @param context The context to associate with this operation.
      * @return the result.
      */
-    Mono<Response<AddChatParticipantsResult>> addParticipants(AddChatParticipantsOptions options, Context context) {
+    Mono<Response<AddChatParticipantsResult>> addParticipants(Iterable<ChatParticipant> participants, Context context) {
         context = context == null ? Context.NONE : context;
         return this.chatThreadClient.addChatParticipantsWithResponseAsync(
-            chatThreadId, AddChatParticipantsOptionsConverter.convert(options), context);
+            chatThreadId, AddChatParticipantsOptionsConverter.convert(participants), context);
     }
 
     /**

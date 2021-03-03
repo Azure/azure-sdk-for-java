@@ -163,11 +163,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Act & Assert
-        StepVerifier.create(chatThreadClient.addParticipants(options))
+        StepVerifier.create(chatThreadClient.addParticipants(participants))
             .assertNext(noResp -> {
                 PagedIterable<ChatParticipant> participantsResponse =
                     new PagedIterable<>(chatThreadClient.listParticipants());
@@ -179,14 +179,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
-                for (ChatParticipant participant : options.getParticipants()) {
+                for (ChatParticipant participant : participants) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
                         ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
                 }
                 assertTrue(returnedParticipants.size() == 4);
             });
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             StepVerifier.create(chatThreadClient.removeParticipant(participant.getCommunicationIdentifier()))
                 .verifyComplete();
         }
@@ -216,11 +216,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Act & Assert
-        StepVerifier.create(chatThreadClient.addParticipants(options))
+        StepVerifier.create(chatThreadClient.addParticipants(participants))
             .assertNext(noResp -> {
                 PagedIterable<ChatParticipant> membersResponse = new PagedIterable<>(chatThreadClient.listParticipants(Context.NONE));
 
@@ -231,7 +231,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedMembers.add(item));
                 });
 
-                for (ChatParticipant member : options.getParticipants()) {
+                for (ChatParticipant member : participants) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedMembers,
                         ((CommunicationUserIdentifier) member.getCommunicationIdentifier()).getId()));
                 }
@@ -247,11 +247,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        StepVerifier.create(chatThreadClient.addParticipantsWithResponse(options))
+        StepVerifier.create(chatThreadClient.addParticipantsWithResponse(participants))
             .assertNext(addParticipantsResponse -> {
                 assertEquals(207, addParticipantsResponse.getStatusCode());
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
@@ -263,7 +263,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
-                for (ChatParticipant participant : options.getParticipants()) {
+                for (ChatParticipant participant : participants) {
                     assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
                         ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
                 }
@@ -271,7 +271,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 assertTrue(returnedParticipants.size() == 4);
             });
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             StepVerifier.create(chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier()))
                 .assertNext(resp -> {
                     assertEquals(204, resp.getStatusCode());

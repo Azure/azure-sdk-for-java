@@ -127,11 +127,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipants(options);
+        chatThreadClient.addParticipants(participants);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
 
@@ -142,14 +142,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedparticipants.add(item));
         });
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             assertTrue(checkParticipantsListContainsParticipantId(returnedparticipants,
                 ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedparticipants.size() == 4);
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
@@ -162,11 +162,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipants(options);
+        chatThreadClient.addParticipants(participants);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants(
             new ListParticipantsOptions().setMaxPageSize(2));
@@ -178,14 +178,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
                 ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
@@ -217,11 +217,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipantsWithResponse(options, Context.NONE);
+        chatThreadClient.addParticipantsWithResponse(participants, Context.NONE);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
 
@@ -232,14 +232,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
                 ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant : options.getParticipants()) {
+        for (ChatParticipant participant : participants) {
             chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier(), Context.NONE);
         }
     }

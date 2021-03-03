@@ -87,7 +87,7 @@ final ChatClientBuilder builder = new ChatClientBuilder();
 builder.endpoint(endpoint)
     .credential(credential)
     .httpClient(httpClient);
-ChatClient chatClient = builder.buildClient();
+ChatClient chatClient = builder.buildChatClient();
 ```
 
 ### Chat Thread Operations
@@ -293,7 +293,7 @@ chatParticipantsResponse.iterableByPage().forEach(resp -> {
 #### Add participants
 
 Use `addParticipants` method to add participants to the thread identified by threadId.
-`addChatParticipantsOptions` describes the request object containing the members to be added; Use `.setParticipants()` to set the participants to be added to the thread;
+`participants` list of participants to be added to the thread;
 
 - `communicationIdentifier`, required, is the CommunicationIdentifier you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
 - `display_name`, optional, is the display name for the thread member.
@@ -301,6 +301,7 @@ Use `addParticipants` method to add participants to the thread identified by thr
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L225-L240 -->
 ```Java
+
 List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
 ChatParticipant firstParticipant = new ChatParticipant()
@@ -311,12 +312,11 @@ ChatParticipant secondParticipant = new ChatParticipant()
     .setCommunicationIdentifier(user2)
     .setDisplayName("Display Name 2");
 
+
 participants.add(firstParticipant);
 participants.add(secondParticipant);
 
-AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
-    .setParticipants(participants);
-chatThreadClient.addParticipants(addChatParticipantsOptions);
+chatThreadClient.addParticipants(participants);
 ```
 
 #### Remove participant

@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
+
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.ChatThread;
@@ -217,6 +217,7 @@ public class ReadmeSamples {
      * Sample code adding chat participants using the sync chat thread client.
      */
     public void addChatParticipants() {
+
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
@@ -232,12 +233,11 @@ public class ReadmeSamples {
             .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
 
+
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
-            .setParticipants(participants);
-        chatThreadClient.addParticipants(addChatParticipantsOptions);
+        chatThreadClient.addParticipants(participants);
     }
 
     /**

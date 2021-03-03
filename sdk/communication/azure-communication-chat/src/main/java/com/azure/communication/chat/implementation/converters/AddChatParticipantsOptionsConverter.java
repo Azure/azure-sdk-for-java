@@ -3,13 +3,14 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
+import com.azure.communication.chat.models.ChatParticipant;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A converter between {@link com.azure.communication.chat.implementation.models.AddChatParticipantsOptions} and
- * {@link AddChatParticipantsOptions}.
+ * {@link Iterable<ChatParticipant>}.
  */
 public final class AddChatParticipantsOptionsConverter {
     /**
@@ -17,18 +18,20 @@ public final class AddChatParticipantsOptionsConverter {
      * {@link com.azure.communication.chat.implementation.models.AddChatParticipantsOptions}.
      */
     public static com.azure.communication.chat.implementation.models.AddChatParticipantsOptions convert(
-        AddChatParticipantsOptions obj) {
+        Iterable<ChatParticipant> participants) {
 
-        if (obj == null) {
+        if (participants == null) {
             return null;
         }
+        List<com.azure.communication.chat.implementation.models.ChatParticipant> targetParticipants = new ArrayList<>();
+
+        participants.forEach(participant -> {
+            targetParticipants.add(ChatParticipantConverter.convert(participant));
+        });
 
         com.azure.communication.chat.implementation.models.AddChatParticipantsOptions addChatThreadMembersOptions
             = new com.azure.communication.chat.implementation.models.AddChatParticipantsOptions()
-                .setParticipants(obj.getParticipants()
-                    .stream()
-                    .map(participant -> ChatParticipantConverter.convert(participant))
-                    .collect(Collectors.toList()));
+            .setParticipants(targetParticipants);
 
         return addChatThreadMembersOptions;
     }

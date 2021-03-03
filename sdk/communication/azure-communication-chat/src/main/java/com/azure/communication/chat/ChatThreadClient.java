@@ -3,7 +3,6 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.models.AddChatParticipantsResult;
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
@@ -82,25 +81,25 @@ public final class ChatThreadClient {
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addParticipants(AddChatParticipantsOptions options) {
+    public void addParticipants(Iterable<ChatParticipant> participants) {
 
-        this.client.addParticipants(options).block();
+        this.client.addParticipants(participants).block();
     }
 
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddChatParticipantsResult> addParticipantsWithResponse(
-        AddChatParticipantsOptions options, Context context) {
-        return this.client.addParticipants(options, context).block();
+        Iterable<ChatParticipant> participants, Context context) {
+        return this.client.addParticipants(participants, context).block();
     }
 
     /**
@@ -110,9 +109,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addParticipant(ChatParticipant participant) {
-
-        this.client.addParticipants(new AddChatParticipantsOptions()
-            .setParticipants(Collections.singletonList(participant))).block();
+        this.client.addParticipants(Collections.singletonList(participant)).block();
     }
 
     /**
@@ -126,8 +123,7 @@ public final class ChatThreadClient {
     public Response<AddChatParticipantsResult> addParticipantWithResponse(ChatParticipant participant,
                                                                           Context context) {
 
-        return this.client.addParticipants(new AddChatParticipantsOptions()
-            .setParticipants(Collections.singletonList(participant)), context).block();
+        return this.client.addParticipants(Collections.singletonList(participant), context).block();
     }
 
     /**

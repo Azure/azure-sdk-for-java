@@ -32,7 +32,7 @@ public class ChatOptionsProvider {
         return options;
     }
 
-    public static AddChatParticipantsOptions addParticipantsOptions(String userId1, String userId2) {
+    public static Iterable<ChatParticipant> addParticipantsOptions(String userId1, String userId2) {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
         participants.add(generateParticipant(
             userId1,
@@ -41,9 +41,7 @@ public class ChatOptionsProvider {
             userId2,
             "Added Tester 2"));
 
-        AddChatParticipantsOptions options = new AddChatParticipantsOptions();
-        options.setParticipants(participants);
-        return options;
+        return participants;
     }
 
     public static SendChatMessageOptions sendMessageOptions() {
