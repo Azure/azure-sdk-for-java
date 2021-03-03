@@ -1,7 +1,14 @@
 # Release History
 
+## 1.0.0-beta.6 (2021-03-09)
+### Breaking Changes
+- Renamed `CommunicationTokenRefreshOptions.getRefreshProactively()` to `CommunicationTokenRefreshOptions.isRefreshProactively()`
+- Constructor for `CommunicationCloudEnvironment` has been removed and now to set an environment value, the `fromString()` method must be called
+- `CommunicationCloudEnvironment`, `CommunicationTokenRefreshOptions `, `CommunicationUserIdentifier`, `MicrosoftTeamsUserIdentifier`,
+`PhoneNumberIdentifier`, `UnknownIdentifier`, are all final classes now.
 ## 1.0.0-beta.5 (2021-03-02)
-Updated `azure-communication-common` version
+- Updated `azure-communication-common` version
+
 
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes

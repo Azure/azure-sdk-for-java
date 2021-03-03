@@ -117,12 +117,11 @@ public final class CommunicationIdentityClient {
      * data.
      *
      * @param communicationUser The user to be deleted.
-     * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteUser(CommunicationUserIdentifier communicationUser) {
+    public void deleteUser(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        return client.deleteAsync(communicationUser.getId()).block();
+        client.deleteAsync(communicationUser.getId()).block();
     }
 
     /**
@@ -144,12 +143,11 @@ public final class CommunicationIdentityClient {
      * Revokes all the tokens created for an identifier.
      * 
      * @param communicationUser The user to be revoked token.
-     * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void revokeTokens(CommunicationUserIdentifier communicationUser) {
+    public void revokeTokens(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        return client.revokeAccessTokensAsync(communicationUser.getId()).block();
+        client.revokeAccessTokensAsync(communicationUser.getId()).block();
     }
 
     /**
