@@ -38,6 +38,20 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
+     *
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
+     */
+    public SharedTokenCacheCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                              tokenCachePersistenceOptions) {
+        this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
+        return this;
+    }
+
+    /**
      * Sets the {@link AuthenticationRecord} captured from a previous authentication.
      *
      * @param authenticationRecord the authentication record to be configured.
@@ -55,6 +69,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
+        identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return new SharedTokenCacheCredential(username, clientId, tenantId,
                 identityClientOptions.enablePersistentCache().setAllowUnencryptedCache(true));
     }

@@ -49,6 +49,7 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
+
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
