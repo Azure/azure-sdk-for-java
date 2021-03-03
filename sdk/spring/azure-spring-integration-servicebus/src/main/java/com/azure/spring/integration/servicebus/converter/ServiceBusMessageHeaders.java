@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.integration.servicebus.converter;
 
 import com.azure.spring.integration.core.AzureHeaders;
 
+/**
+ * Azure service bus internal headers for Spring Messaging messages.
+ */
 public class ServiceBusMessageHeaders extends AzureHeaders {
 
     private static final String PREFIX = AzureHeaders.PREFIX + "service_bus_";
