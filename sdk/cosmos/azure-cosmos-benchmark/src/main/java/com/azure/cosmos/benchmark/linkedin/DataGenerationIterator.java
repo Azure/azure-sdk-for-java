@@ -45,11 +45,7 @@ public class DataGenerationIterator implements Iterator<Map<Key, ObjectNode>> {
         final int recordsToGenerate = Math.min(BATCH_SIZE, _totalRecordCount - _totalDataGenerated);
 
         // Filter Keys in case there are duplicates
-        final Map<Key, ObjectNode> newDocuments = _dataGenerator.generate(recordsToGenerate)
-            .entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
+        final Map<Key, ObjectNode> newDocuments = _dataGenerator.generate(recordsToGenerate);
         _totalDataGenerated += newDocuments.size();
         return newDocuments;
     }
