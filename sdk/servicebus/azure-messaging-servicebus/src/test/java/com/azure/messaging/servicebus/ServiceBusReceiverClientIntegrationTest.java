@@ -343,7 +343,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final AtomicInteger receivedMessageCount = new AtomicInteger();
         messages.forEach(receivedMessage -> {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            System.out.println(" !!!! Completing SequenceNumber(): " + receivedMessage.getSequenceNumber());
             receiver.complete(receivedMessage);
             messagesPending.decrementAndGet();
             receivedMessageCount.incrementAndGet();
