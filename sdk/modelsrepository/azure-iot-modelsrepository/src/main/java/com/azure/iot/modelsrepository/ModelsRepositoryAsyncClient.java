@@ -34,7 +34,7 @@ public final class ModelsRepositoryAsyncClient {
     private final ModelsRepositoryAPIImpl protocolLayer;
     private static final Boolean includeModelDefinitionOnGet = true;
     private final JsonSerializer serializer;
-    private static final String Models_Repository_TRACING_NAMESPACE_VALUE = "Azure.Iot.ModelsRepository";
+    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.Iot.ModelsRepository";
 
     ModelsRepositoryAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ModelsRepositoryServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
 
@@ -54,7 +54,7 @@ public final class ModelsRepositoryAsyncClient {
     }
 
     /**
-     * Gets the ModelsRepository service API version that this client is configured to use for all service requests.
+     * Gets the Models Repository service API version that this client is configured to use for all service requests.
      * Unless configured while building this client through {@link ModelsRepositoryClientBuilder#serviceVersion(ModelsRepositoryServiceVersion)},
      * this value will be equal to the latest service API version supported by this client.
      *
