@@ -10,6 +10,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -273,4 +274,17 @@ public interface ReactiveCosmosOperations {
      * @return the flux
      */
     <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType);
+
+    /**
+     * Run the query.
+     *
+     * @param <T> the type parameter
+     * @param querySpec the query spec
+     * @param sort the sort order
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the flux
+     */
+    <T> Flux<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType);
+
 }

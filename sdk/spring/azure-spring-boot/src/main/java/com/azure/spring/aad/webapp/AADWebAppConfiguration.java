@@ -121,6 +121,7 @@ public class AADWebAppConfiguration {
         return result;
     }
 
+
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
         result.add("openid");
@@ -198,5 +199,4 @@ public class AADWebAppConfiguration {
                 .anyRequest().authenticated();
         }
     }
-
 }

@@ -12,7 +12,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -132,25 +132,25 @@ public final class ChatThreadClient {
     /**
      * Remove a participant from a thread.
      *
-     * @param user User identity of the participant to remove from the thread.
+     * @param identifier Identity of the participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(CommunicationUserIdentifier user, Context context) {
+    public Response<Void> removeParticipantWithResponse(CommunicationIdentifier identifier, Context context) {
 
-        return this.client.removeParticipant(user, context).block();
+        return this.client.removeParticipant(identifier, context).block();
     }
 
     /**
      * Remove a participant from a thread.
      *
-     * @param user User identity of the thread participant to remove from the thread.
+     * @param identifier Identity of the thread participant to remove from the thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipant(CommunicationUserIdentifier user) {
+    public void removeParticipant(CommunicationIdentifier identifier) {
 
-        this.client.removeParticipant(user).block();
+        this.client.removeParticipant(identifier).block();
     }
 
     /**

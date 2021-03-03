@@ -92,13 +92,6 @@ public interface Database {
     List<Module> modules();
 
     /**
-     * Gets the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
-     * @return the geoReplication value.
-     */
-    DatabasePropertiesGeoReplication geoReplication();
-
-    /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner object.
      *
      * @return the inner object.
@@ -135,8 +128,7 @@ public interface Database {
                 DefinitionStages.WithClusteringPolicy,
                 DefinitionStages.WithEvictionPolicy,
                 DefinitionStages.WithPersistence,
-                DefinitionStages.WithModules,
-                DefinitionStages.WithGeoReplication {
+                DefinitionStages.WithModules {
             /**
              * Executes the create request.
              *
@@ -218,17 +210,6 @@ public interface Database {
              */
             WithCreate withModules(List<Module> modules);
         }
-        /** The stage of the Database definition allowing to specify geoReplication. */
-        interface WithGeoReplication {
-            /**
-             * Specifies the geoReplication property: Optional set of properties to configure geo replication for this
-             * database..
-             *
-             * @param geoReplication Optional set of properties to configure geo replication for this database.
-             * @return the next definition stage.
-             */
-            WithCreate withGeoReplication(DatabasePropertiesGeoReplication geoReplication);
-        }
     }
     /**
      * Begins update for the Database resource.
@@ -243,8 +224,7 @@ public interface Database {
             UpdateStages.WithClusteringPolicy,
             UpdateStages.WithEvictionPolicy,
             UpdateStages.WithPersistence,
-            UpdateStages.WithModules,
-            UpdateStages.WithGeoReplication {
+            UpdateStages.WithModules {
         /**
          * Executes the update request.
          *
@@ -316,17 +296,6 @@ public interface Database {
              * @return the next definition stage.
              */
             Update withModules(List<Module> modules);
-        }
-        /** The stage of the Database update allowing to specify geoReplication. */
-        interface WithGeoReplication {
-            /**
-             * Specifies the geoReplication property: Optional set of properties to configure geo replication for this
-             * database..
-             *
-             * @param geoReplication Optional set of properties to configure geo replication for this database.
-             * @return the next definition stage.
-             */
-            Update withGeoReplication(DatabasePropertiesGeoReplication geoReplication);
         }
     }
     /**
@@ -428,25 +397,4 @@ public interface Database {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void export(ExportClusterParameters parameters, Context context);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param parameters Information identifying the database to be unlinked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void forceUnlink(ForceUnlinkParameters parameters);
-
-    /**
-     * Forcibly removes the link to the specified database resource.
-     *
-     * @param parameters Information identifying the database to be unlinked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void forceUnlink(ForceUnlinkParameters parameters, Context context);
 }

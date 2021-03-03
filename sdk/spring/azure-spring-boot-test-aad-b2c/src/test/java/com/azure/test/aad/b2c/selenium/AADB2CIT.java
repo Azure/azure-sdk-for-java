@@ -79,7 +79,10 @@ public class AADB2CIT {
 
         private final AADB2COidcLoginConfigurer configurer;
 
+        private final String profileEdit;
+
         public DumbApp(AADB2COidcLoginConfigurer configurer) {
+            this.profileEdit = AAD_B2C_PROFILE_EDIT;
             this.configurer = configurer;
         }
 
@@ -105,6 +108,7 @@ public class AADB2CIT {
                 model.addAttribute("grant_type", user.getAuthorities());
                 model.addAllAttributes(user.getAttributes());
             }
+            model.addAttribute("aadb2c_profileedit", profileEdit);
         }
     }
 }

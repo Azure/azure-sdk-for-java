@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MediaJobOutputProgressEventData model. */
+/** Job Output Progress Event Data. */
 @Fluent
 public final class MediaJobOutputProgressEventData {
     /*

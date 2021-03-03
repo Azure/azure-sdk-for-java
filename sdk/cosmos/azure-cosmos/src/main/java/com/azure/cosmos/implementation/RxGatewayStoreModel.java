@@ -139,14 +139,18 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
         try {
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+            }
+
             URI uri = getUri(request);
             request.requestContext.resourcePhysicalAddress = uri.toString();
 
             if (this.throughputControlStore != null) {
-                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method));
+                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method, uri));
             }
 
-            return this.performRequestInternal(request, method);
+            return this.performRequestInternal(request, method, uri);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -157,24 +161,20 @@ class RxGatewayStoreModel implements RxStoreModel {
      *
      * @param request
      * @param method
+     * @param requestUri
      * @return Flux<RxDocumentServiceResponse>
      */
-    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method) {
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
 
         try {
-            if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
-            }
-
-            URI uri = getUri(request);
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
-                    uri,
-                    uri.getPort(),
+                    requestUri,
+                    requestUri.getPort(),
                     httpHeaders,
                     contentAsByteArray);
 
@@ -426,6 +426,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                         this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
+                    if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                        BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                    }
+
                     return Mono.error(dce);
                 }
         ).map(response ->
@@ -438,7 +443,8 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
-        this.throughputControlStore = throughputControlStore;
+        // no-op
+        // Disable throughput control for gateway mode
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

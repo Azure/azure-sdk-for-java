@@ -12,6 +12,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -29,14 +30,14 @@ public class ReadmeSamples {
     public PhoneNumbersClient createPhoneNumberClient() {
         // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
         PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
             .endpoint(endpoint)
-            .accessKey(accessKey)
+            .credential(keyCredential)
             .httpClient(httpClient)
             .buildClient();
 
