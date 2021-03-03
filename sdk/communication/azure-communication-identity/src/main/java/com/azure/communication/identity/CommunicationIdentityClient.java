@@ -15,7 +15,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndTokenResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -79,7 +79,7 @@ public final class CommunicationIdentityClient {
      * @return the result with created communication user and token
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserIdentifierWithTokenResult createUserWithToken(
+    public CommunicationUserIdentifierAndTokenResult createUserAndToken(
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(scopes);
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
@@ -96,7 +96,7 @@ public final class CommunicationIdentityClient {
      * @return the result with created communication user and token
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
+    public Response<CommunicationUserIdentifierAndTokenResult> createUserAndTokenWithResponse(
         Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
@@ -107,7 +107,7 @@ public final class CommunicationIdentityClient {
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
-        return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
+        return new SimpleResponse<CommunicationUserIdentifierAndTokenResult>(
             response,
             userWithAccessTokenResultConverter(response.getValue()));
     }
@@ -215,14 +215,14 @@ public final class CommunicationIdentityClient {
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 
-    private CommunicationUserIdentifierWithTokenResult userWithAccessTokenResultConverter(
+    private CommunicationUserIdentifierAndTokenResult userWithAccessTokenResultConverter(
         CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
         CommunicationUserIdentifier user = 
             new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
         AccessToken token = new AccessToken(
             identityAccessTokenResult.getAccessToken().getToken(),
             identityAccessTokenResult.getAccessToken().getExpiresOn());
-        return new CommunicationUserIdentifierWithTokenResult(user, token);
+        return new CommunicationUserIdentifierAndTokenResult(user, token);
 
     }
 }

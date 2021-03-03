@@ -98,7 +98,7 @@ CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
-Alternatively, use the `createUserWithToken` function to create a new user and issue a token for it. 
+Alternatively, use the `createUserAndToken` function to create a new user and issue a token for it. 
 For this option, a list of communication tokens scopes must be defined. 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
 ```java
@@ -106,7 +106,7 @@ For this option, a list of communication tokens scopes must be defined.
 List<CommunicationTokenScope> scopes =
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
+CommunicationUserIdentifierAndTokenResult result = communicationIdentityClient.createUserAndToken(scopes);
 System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
