@@ -169,7 +169,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.addParticipants(participants);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants(
-            new ListParticipantsOptions().setMaxPageSize(2));
+            new ListParticipantsOptions().setMaxPageSize(2), Context.NONE);
 
         // process the iterableByPage
         List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
@@ -197,7 +197,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithResponse");
 
         // Action & Assert
-        PagedIterable<ChatParticipant> membersResponse = chatThreadClient.listParticipants(Context.NONE);
+        PagedIterable<ChatParticipant> membersResponse = chatThreadClient.listParticipants();
 
         // process the iterableByPage
         List<ChatParticipant> returnedMembers = new ArrayList<ChatParticipant>();
@@ -486,7 +486,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.sendReadReceipt(response.getId());
 
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts(
-            new ListReadReceiptOptions().setMaxPageSize(1));
+            new ListReadReceiptOptions().setMaxPageSize(1), Context.NONE);
 
         // process the iterableByPage
         List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<ChatMessageReadReceipt>();
@@ -537,7 +537,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
-        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(Context.NONE);
+        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
 
         // // process the iterableByPage
         List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();

@@ -199,7 +199,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canAddListWithContextAndRemoveMembersAsync");
 
         // Act & Assert
-        PagedFlux<ChatParticipant> membersResponse = chatThreadClient.listParticipants(Context.NONE);
+        PagedFlux<ChatParticipant> membersResponse = chatThreadClient.listParticipants();
 
         List<ChatParticipant> returnedMembers = new ArrayList<ChatParticipant>();
         membersResponse.toIterable().forEach(item -> {
@@ -222,7 +222,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Act & Assert
         StepVerifier.create(chatThreadClient.addParticipants(participants))
             .assertNext(noResp -> {
-                PagedIterable<ChatParticipant> membersResponse = new PagedIterable<>(chatThreadClient.listParticipants(Context.NONE));
+                PagedIterable<ChatParticipant> membersResponse = new PagedIterable<>(chatThreadClient.listParticipants());
 
                 // process the iterableByPage
                 List<ChatParticipant> returnedMembers = new ArrayList<ChatParticipant>();
@@ -798,7 +798,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
-        PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(Context.NONE);
+        PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
 
         // // process the iterableByPage
         List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();

@@ -272,45 +272,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatParticipant> listParticipants() {
         ListParticipantsOptions listParticipantsOptions = new ListParticipantsOptions();
-        return listParticipants(listParticipantsOptions);
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param listParticipantsOptions The request options.
-     * @return the participants of a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
-        final ListParticipantsOptions serviceListParticipantsOptions =
-            listParticipantsOptions == null ? new ListParticipantsOptions() : listParticipantsOptions;
-        try {
-            return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->
-                    this.chatThreadClient.listChatParticipantsSinglePageAsync(
-                        chatThreadId,
-                        serviceListParticipantsOptions.getMaxPageSize(),
-                        serviceListParticipantsOptions.getSkip(),
-                        context)),
-                nextLink -> withContext(context ->
-                    this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, context))),
-                f -> ChatParticipantConverter.convert(f));
-        } catch (RuntimeException ex) {
-
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param context The context to associate with this operation.
-     * @return the participants of a thread.
-     */
-    PagedFlux<ChatParticipant> listParticipants(Context context) {
-        ListParticipantsOptions listParticipantsOptions = new ListParticipantsOptions();
-        return listParticipants(listParticipantsOptions, context);
+        return listParticipants(listParticipantsOptions, Context.NONE);
     }
 
     /**
@@ -736,45 +698,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessageReadReceipt> listReadReceipts() {
         ListReadReceiptOptions listReadReceiptOptions = new ListReadReceiptOptions();
-        return listReadReceipts(listReadReceiptOptions);
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param listReadReceiptOptions The additional options for this operation.
-     * @return read receipts for a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
-        final ListReadReceiptOptions serviceListReadReceiptOptions =
-            listReadReceiptOptions == null ? new ListReadReceiptOptions() : listReadReceiptOptions;
-        try {
-            return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
-                    chatThreadId,
-                    serviceListReadReceiptOptions.getMaxPageSize(),
-                    serviceListReadReceiptOptions.getSkip(),
-                    context)),
-                nextLink -> withContext(context -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
-                    nextLink, context))),
-                f -> ChatMessageReadReceiptConverter.convert(f));
-        } catch (RuntimeException ex) {
-
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param context The context to associate with this operation.
-     *
-     * @return read receipts for a thread.
-     */
-    PagedFlux<ChatMessageReadReceipt> listReadReceipts(Context context) {
-        ListReadReceiptOptions listReadReceiptOptions = new ListReadReceiptOptions();
-        return listReadReceipts(listReadReceiptOptions, context);
+        return listReadReceipts(listReadReceiptOptions, Context.NONE);
     }
 
     /**

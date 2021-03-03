@@ -165,29 +165,6 @@ public final class ChatThreadClient {
      * Gets the participants of a thread.
      *
      * @param listParticipantsOptions The request options.
-     * @return the participants of a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
-        return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions));
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param context The context to associate with this operation.
-     * @return the participants of a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatParticipant> listParticipants(Context context) {
-
-        return new PagedIterable<>(this.client.listParticipants(context));
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param listParticipantsOptions The request options.
      * @param context The context to associate with this operation.
      * @return the participants of a thread.
      */
@@ -376,29 +353,6 @@ public final class ChatThreadClient {
     public PagedIterable<ChatMessageReadReceipt> listReadReceipts() {
 
         return new PagedIterable<>(this.client.listReadReceipts());
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param listReadReceiptOptions The additional options for this operation.
-     * @return read receipts for a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
-        return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions));
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param context The context to associate with this operation.
-     * @return read receipts for a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(Context context) {
-
-        return new PagedIterable<>(this.client.listReadReceipts(context));
     }
 
     /**
