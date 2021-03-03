@@ -98,7 +98,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
                                 context.getHttpRequest(), environment);
                         }
                         return authorizeRequest(context, new TokenRequestContext()
-                            .addScopes().setClaims(claims))
+                            .addScopes(scopes).setClaims(claims))
                             .flatMap(b -> Mono.just(true));
                     }
                 }
