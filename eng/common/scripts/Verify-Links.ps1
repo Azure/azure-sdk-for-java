@@ -278,7 +278,8 @@ function GetLinks([System.Uri]$pageUri)
 
   return $links;
 }
-
+Write-Host "Here is the place to look into default branch."
+Write-Host $branchReplaceRegex
 if ($urls) {
   if ($urls.Count -eq 0) {
     Write-Host "Usage $($MyInvocation.MyCommand.Name) <urls>";
