@@ -159,38 +159,6 @@ SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .buildAsyncClient();
 ```
 
-### Send your first search query
-
-To get running immediately, we're going to connect to a well-known sandbox Search service provided by Microsoft. This
-means you do not need an Azure subscription or Azure Cognitive Search service to try out this query.
-
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L144 -->
-```java
-// We'll connect to the Azure Cognitive Search public sandbox and send a
-// query to its "nycjobs" index built from a public dataset of available jobs
-// in New York.
-String serviceName = "azs-playground";
-String indexName = "nycjobs";
-String apiKey = "252044BE3886FE4A8E3BAA4F595114BB";
-
-// Create a SearchClient to send queries
-String serviceEndpoint = String.format("https://%s.search.windows.net/", serviceName);
-AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-SearchClient client = new SearchClientBuilder()
-    .endpoint(serviceEndpoint)
-    .credential(credential)
-    .indexName(indexName)
-    .buildClient();
-
-// Let's get the top 5 jobs related to Microsoft
-client.search("Microsoft", new SearchOptions().setTop(5), Context.NONE).forEach(searchResult -> {
-    SearchDocument document = searchResult.getDocument(SearchDocument.class);
-    String title = (String) document.get("business_title");
-    String description = (String) document.get("job_description");
-    System.out.printf("The business title is %s, and here is the description: %s.%n", title, description);
-});
-```
-
 ## Key concepts
 
 An Azure Cognitive Search service contains one or more indexes that provide persistent storage of searchable data in
