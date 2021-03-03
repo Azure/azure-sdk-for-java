@@ -7,15 +7,17 @@ package com.azure.spring.integration.core;
  * Azure internal headers for Spring Messaging messages.
  *
  * @author Warren Zhu
- * @deprecated Please use ServiceBusMessageHeaders or EventHubHeaders.
  */
-@Deprecated
 public class AzureHeaders {
 
     protected static final String PREFIX = "azure_";
 
     public static final String PARTITION_ID = PREFIX + "partition_id";
     public static final String RAW_PARTITION_ID = PREFIX + "raw_partition_id";
+    /**
+     * @deprecated Please use ServiceBusMessageHeaders.MESSAGE_ID instead.
+     */
+    @Deprecated
     public static final String RAW_ID = "raw_id";
 
     public static final String PARTITION_KEY = PREFIX + "partition_key";
