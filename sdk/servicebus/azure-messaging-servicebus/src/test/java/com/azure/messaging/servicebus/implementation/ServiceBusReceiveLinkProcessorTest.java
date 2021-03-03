@@ -45,7 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -143,7 +142,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1, atLeast(2)).addCredits(eq(PREFETCH - 1));
+        verify(link1, times(2)).addCredits(eq(PREFETCH - 1));
     }
 
     /**
@@ -575,7 +574,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
+        verify(link1, times(2)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();

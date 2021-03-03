@@ -197,7 +197,6 @@ class ServiceBusSessionReceiver implements AutoCloseable {
 
     @Override
     public void close() {
-        System.out.println("!!!! ServiceBusSessionReceiver close() .... ");
         if (isDisposed.getAndSet(true)) {
             return;
         }
