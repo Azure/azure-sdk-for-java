@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemReceivedEventData;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemSentEventData;
@@ -21,9 +22,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,41 +62,6 @@ public class DeserializationTests {
         assertEquals("Microsoft.Storage.BlobCreated", eventGridEvent.getEventType(), "Event types do not match");
     }
 
-    // just test to see if these events can be deserialized
-    @Test
-    public void testDeserializeCloudEvents() throws JsonProcessingException {
-        String cloudEventJson = "{\n" +
-            "  \"id\": \"9ddf9b10-fe3d-4a16-94bc-c0298924ded1\",\n" +
-            "  \"data\": {\n" +
-            "    \"Field2\": \"Value2\",\n" +
-            "    \"Field3\": \"Value3\",\n" +
-            "    \"Field1\": \"Value1\"\n" +
-            "  },\n" +
-            "  \"type\": \"Microsoft.MockPublisher.TestEvent\",\n" +
-            "  \"time\": \"2020-07-21T18:41:31.166Z\",\n" +
-            "  \"specversion\": \"1.0\"\n" +
-            "}";
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new SimpleModule()
-            .addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
-                @Override
-                public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    return OffsetDateTime.parse(jsonParser.getValueAsString());
-                }
-            }));
-
-        com.azure.messaging.eventgrid.implementation.models.CloudEvent cloudEvent = mapper.readValue(cloudEventJson, com.azure.messaging.eventgrid.implementation.models.CloudEvent.class);
-
-        assertNotNull(cloudEvent);
-        assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent.getType(), "Event types do not match");
-
-        // actually deserialized as a LinkedHashMap instead of generic object.
-        Object data = cloudEvent.getData();
-
-        assertNotNull(data);
-    }
-
     @Test
     public void consumeStorageBlobDeletedEventWithExtraProperty() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEventWithExtraProperty.json");
@@ -129,28 +92,6 @@ public class DeserializationTests {
     }
 
     @Test
-    public void consumeCloudEventWithoutArrayBrackets() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventNoArray.json");
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        ContosoItemReceivedEventData data = events.get(0).getData().toObject(
-            TypeReference.createInstance(ContosoItemReceivedEventData.class));
-        assertNotNull(data);
-
-        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
-
-        Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
-
-        assertNotNull(additionalProperties);
-        assertTrue(additionalProperties.containsKey("foo"));
-        assertEquals("bar", additionalProperties.get("foo"));
-    }
-
-    @Test
     public void consumeEventGridEventWithNullData() throws IOException {
         // using a storageBlobDeletedEvent
         String jsonData = getTestPayloadFromFile("EventGridNullData.json");
@@ -158,76 +99,6 @@ public class DeserializationTests {
         assertThrows(IllegalArgumentException.class, () -> {
             EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
         });
-    }
-
-    @Test
-    public void consumeCloudEventWithNullData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventNullData.json");
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        assertNull(events.get(0).getData());
-    }
-
-    @Test
-    public void consumeCloudEventWithBinaryData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventBinaryData.json");
-
-        byte[] data = Base64.getDecoder().decode("samplebinarydata");
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        byte[] eventData = events.get(0).getData().toBytes();
-
-        assertNotNull(eventData);
-
-        assertArrayEquals(data, eventData);
-    }
-
-    @Test
-    public void consumeCloudEvent() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEvent.json");
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        ContosoItemReceivedEventData data = events.get(0).getData().toObject(
-            TypeReference.createInstance(ContosoItemReceivedEventData.class)
-        );
-        assertNotNull(data);
-
-        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
-
-        Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
-
-        assertNotNull(additionalProperties);
-        assertTrue(additionalProperties.containsKey("foo"));
-        assertEquals("bar", additionalProperties.get("foo"));
-
-    }
-
-    @Test
-    public void consumeCloudEventXmlData() throws IOException {
-        String jsonData = getTestPayloadFromFile("CloudEventXmlData.json");
-
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        assertEquals(events.get(0).getExtensionAttributes().get("comexampleothervalue"), 5);
-
-        String xmlData = events.get(0).getData().toString();
-
-        assertEquals("<much wow=\"xml\"/>", xmlData);
     }
 
     @Test
