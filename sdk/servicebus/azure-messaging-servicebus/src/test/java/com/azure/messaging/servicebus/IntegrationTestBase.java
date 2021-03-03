@@ -51,6 +51,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
+    protected static final Duration LOCK_RENEW_TIMEOUT = Duration.ofSeconds(15);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 

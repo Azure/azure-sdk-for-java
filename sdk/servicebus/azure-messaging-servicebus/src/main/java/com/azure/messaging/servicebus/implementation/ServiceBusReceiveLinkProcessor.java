@@ -107,7 +107,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     }
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-        logger.info("updateDisposition  !!!! lockToken{} , deliveryState {}", lockToken, deliveryState);
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
@@ -119,22 +118,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState)
-            .onErrorResume(err -> {
-                logger.info("updateDisposition !!!! onErrorResume lockToken{} , deliveryState {}", lockToken, deliveryState);
-               /* synchronized (queueLock) {
-                    pendingMessages.decrementAndGet();
-                }
-                checkAndAddCredits(link);*/
-                return Mono.error(err);
-            })/*.then(Mono.fromRunnable(() -> {
-                // Check if we should add more credits.
-                synchronized (queueLock) {
-                    pendingMessages.decrementAndGet();
-                }
-
-                checkAndAddCredits(link);
-            }))*/;
+        return link.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -208,11 +192,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
             currentLink = next;
             next.setEmptyCreditListener(() -> 0);
-            AtomicInteger received = new AtomicInteger();
+
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
-                    received.incrementAndGet();
-                    System.out.println("!!!! Received from Link : " + received.get());
                     synchronized (queueLock) {
                         messageQueue.add(message);
                         pendingMessages.incrementAndGet();
@@ -554,7 +536,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         synchronized (lock) {
             final int linkCredits = link.getCredits();
             final int credits = getCreditsToAdd(linkCredits);
-            logger.info("[!!!!checkAndAddCredits] Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
+            logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
                 link.addCredits(credits);
@@ -590,7 +572,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         } else {
             expectedTotalCredit = prefetch;
         }
-        logger.info(" [!!!!getCreditsToAdd] linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
+        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
@@ -604,7 +586,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     ? Math.max(expectedTotalCredit - pending, 0)
                     : 0;
             }
-            logger.info("[!!!!getCreditsToAdd] prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
+            logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
                     + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
                 expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }

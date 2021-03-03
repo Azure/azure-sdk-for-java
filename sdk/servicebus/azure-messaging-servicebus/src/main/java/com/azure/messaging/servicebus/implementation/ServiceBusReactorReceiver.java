@@ -256,7 +256,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private void updateOutcome(String lockToken, Delivery delivery) {
         final DeliveryState remoteState = delivery.getRemoteState();
 
-        logger.verbose(" [!!!!updateOutcome] entityPath[{}], linkName[{}], deliveryTag[{}], state[{}] Received update disposition delivery.",
+        logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}] Received update disposition delivery.",
             getEntityPath(), getLinkName(), lockToken, remoteState);
 
         final Outcome remoteOutcome;
@@ -364,12 +364,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             final Throwable loggedError = error instanceof RuntimeException
                 ? logger.logExceptionAsError((RuntimeException) error)
                 : error;
-            logger.verbose(" [!!!!completeWorkItem] Complete work item as error {[{}] isSettled [{}]."
-                , loggedError.getMessage(), isSettled);
             sink.error(loggedError);
         } else {
-            logger.verbose(" [!!!!completeWorkItem] Complete work item as success. isSettled [{}].",
-                 isSettled);
             sink.success();
         }
 
