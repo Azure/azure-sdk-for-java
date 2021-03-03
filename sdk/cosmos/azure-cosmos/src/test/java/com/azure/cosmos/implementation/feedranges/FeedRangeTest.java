@@ -145,7 +145,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                FeedRangeEpk.getEffectiveRange(
+                FeedRangeEpk.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
                     null))
@@ -305,7 +305,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -359,7 +359,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -400,7 +400,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -525,7 +525,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                feedRangePartitionKey.getEffectiveRange(
+                feedRangePartitionKey.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
                     Mono.just(new Utils.ValueHolder<>(collection))))
