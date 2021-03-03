@@ -30,7 +30,7 @@ Install Cosmos DB Spark Connector, in your spark Cluster `azure-cosmos-spark_3-0
 
 You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
 
-Set Cosmos DB account credentials and the Cosmos DB Database name and 
+Set Cosmos DB account credentials, and the Cosmos DB Database name and container name.
 ```python
 cosmosEndpoint = "https://REPLACEME.documents.azure.com:443/"
 cosmosMasterKey = "REPLACEME"
@@ -45,10 +45,7 @@ cfg = {
 }
 ```
 
-[//]: # (TODO: moderakh add link to configuration-reference.md)
-
-
-[//]: # (TODO: moderakh add schema inference enable option)
+see [General Configuration](./configuration-reference.md#Generic Configuration) for more detail.
 
 configure Catalog Api to be used
 ```python
@@ -72,8 +69,7 @@ spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBL
 ```
 Cosmos Catalog API for creating container supports setting throughput and partition-key-path for the container to be created.
 
-[//]: # (TODO: moderakh add link to configuration-reference.md)
-
+see [Catalog API](./catalog-api.md) for more detail.
 
 ### Ingest Data to Cosmos DB
 
@@ -89,11 +85,10 @@ spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "
 ```
 Note that `id` is a mandatory field for Cosmos DB.
 
-[//]: # (TODO: moderakh add link to configuration-reference.md)
+see [Write Configuration](./configuration-reference.md#write-config) for more detail.
 
 
 ### Query Cosmos DB
-
 
 ```python
 ## Query to find the live cat and increment age of the alive cat
@@ -104,10 +99,11 @@ df.filter(col("isAlive") == True)\
  .show()
 ```
 
+see [Query Configuration](./configuration-reference.md#query-config) for more detail.
+
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
-
-[//]: # (TODO: moderakh add link to configuration-reference.md)
+see [Schema Inference Configuration](./configuration-reference.md#schema-inference-config) for more detail.
 
 
 ### See the Schema of Data Ingested in Cosmos DB Container
@@ -120,5 +116,5 @@ df.printSchema()
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 
-[//]: # (TODO: moderakh add link to configuration-reference.md)
+see [General Configuration](./configuration-reference.md#schema-inference-config) for more detail.
 
