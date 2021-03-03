@@ -11,7 +11,7 @@ import com.azure.cosmos.util.Beta;
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class BulkItemRequestOptionsBase {
+class BulkItemRequestOptionsBase {
 
     private String ifMatchETag;
     private String ifNoneMatchETag;
