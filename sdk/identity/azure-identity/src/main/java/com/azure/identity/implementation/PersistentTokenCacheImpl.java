@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.exception.ClientAuthenticationException;
@@ -51,26 +54,26 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
 
     Mono<Boolean> registerCache() {
         return Mono.defer(() -> {
-                try {
-                    PersistenceSettings persistenceSettings;
-                    switch (msalClientType) {
-                        case CONFIDENTIAL:
-                            persistenceSettings = getConfidentialClientPersistenceSettings();
-                            break;
-                        case PUBLIC:
-                            persistenceSettings = getPublicClientPersistenceSettings();
-                            break;
-                        default:
-                            persistenceSettings = getPublicClientPersistenceSettings();
-                            break;
-                    }
-                    cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
-                    return Mono.just(true);
-                } catch (Throwable t) {
-                    return Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
-                        "Shared token cache is unavailable in this environment.", null, t)));
+            try {
+                PersistenceSettings persistenceSettings;
+                switch (msalClientType) {
+                    case CONFIDENTIAL:
+                        persistenceSettings = getConfidentialClientPersistenceSettings();
+                        break;
+                    case PUBLIC:
+                        persistenceSettings = getPublicClientPersistenceSettings();
+                        break;
+                    default:
+                        persistenceSettings = getPublicClientPersistenceSettings();
+                        break;
                 }
-            });
+                cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
+                return Mono.just(true);
+            } catch (Throwable t) {
+                return Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t)));
+            }
+        });
     }
 
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
@@ -139,6 +142,4 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         }
         return persistenceSettingsBuilder.build();
     }
-
-
 }

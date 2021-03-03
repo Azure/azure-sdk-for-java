@@ -42,10 +42,6 @@ import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4jextensions.PersistenceSettings;
-import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
-import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
-import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -66,7 +62,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;

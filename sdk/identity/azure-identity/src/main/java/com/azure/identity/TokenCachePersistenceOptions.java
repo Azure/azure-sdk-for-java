@@ -9,6 +9,9 @@ public final class TokenCachePersistenceOptions {
     private boolean allowUnencryptedStorage;
     private String name;
 
+    /**
+     * Constructs an instance of the {@link TokenCachePersistenceOptions}
+     */
     public TokenCachePersistenceOptions() { }
 
     /**
