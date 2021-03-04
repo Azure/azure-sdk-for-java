@@ -80,7 +80,8 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the normalized text property: Healthcare normalized entity text as appears in the request.
+     * Get the normalized text property: The normalized text is preferred name for the entity.
+     * Example: 'histologically' would have a 'name' of 'histologic'.
      *
      * @return The normalized text value.
      */
