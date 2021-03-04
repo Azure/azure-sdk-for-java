@@ -14,7 +14,7 @@
       "retry-after" : "0",
       "X-Azure-Ref" : "0VTc3YAAAAAAKfQllVmrETKJIPOuTBKUDREFMRURHRTEwMTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"+18336388593\",\"messageId\":\"Outgoing_20210225053621a9626003-88d0-43d1-b5ce-084cbb0cbd03_noam\",\"httpStatusCode\":202,\"errorMessage\":null,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210225053621a9626003-88d0-43d1-b5ce-084cbb0cbd03_noam\",\"httpStatusCode\":202,\"errorMessage\":null,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
       "Date" : "Thu, 25 Feb 2021 05:36:21 GMT",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"

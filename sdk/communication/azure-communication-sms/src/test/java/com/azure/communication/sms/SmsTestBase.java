@@ -24,6 +24,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import reactor.core.publisher.Mono;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 
 
 public class SmsTestBase extends TestBase {
@@ -42,14 +44,10 @@ public class SmsTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
-    protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("FROM_PHONE_NUMBER", "+18335260208");
+    protected static final String SMS_SERVICE_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("SMS_SERVICE_PHONE_NUMBER", "+18335102092");
 
-    protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("TO_PHONE_NUMBER", "+18335260208");
 
-    protected static final String FAIL_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("FAIL_PHONE_NUMBER", "+183352602038");
 
     protected static final String MESSAGE = Configuration.getGlobalConfiguration()
         .get("MESSAGE", "Hello");
@@ -131,7 +129,19 @@ public class SmsTestBase extends TestBase {
     }
 
     protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
+    }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
     }
 
     static class FakeCredentials implements TokenCredential {

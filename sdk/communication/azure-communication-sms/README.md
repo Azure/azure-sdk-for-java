@@ -12,7 +12,10 @@ Azure Communication SMS is used to send simple text messages.
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource.
+- A deployed Communication Services resource. You can use the [Azure Portal]
+(https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?
+tabs=windows&pivots=platform-azp) or the [Azure PowerShell]
+(https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -40,7 +43,7 @@ To create a SmsClient
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 //Enter your azureKeyCredential
-AzureKeyCredential azureKeyCredential = null;
+AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
 
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -104,7 +107,7 @@ Use the `send` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a PagedIterable response where you can access several
 properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L102 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L101 -->
 ```java
 //Send an sms to multiple phone numbers
 List<String> toMultiplePhones = new ArrayList<String>();
@@ -125,8 +128,7 @@ Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
     options /* Optional */,
     null);
 
-for (SmsSendResult messageResponseItem
-    : responseMultiplePhones) {
+for (SmsSendResult messageResponseItem : responseMultiplePhones) {
     System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
 }
 ```

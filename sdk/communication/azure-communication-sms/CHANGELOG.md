@@ -5,10 +5,11 @@
 - Added support for 1:N SMS messaging.
 - Added support for tagging SMS messages.
 - Send method series in SmsClient are idempotent under retry policy.
-### Breaking
-- Updated `Task<Response<SendSmsResponse>> SendAsync(PhoneNumberIdentifier from, PhoneNumberIdentifier to, string message, SendSmsOptions sendSmsOptions = null, CancellationToken cancellationToken = default)`
-to `Task<Response<SmsSendResult>> SendAsync(string from, string to, string message, Models.SmsSendOptions options = default)`
+
+### Breaking Change
+- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message)`
 - Replaced `SendSmsResponse` with `SmsSendResult`
+- Added `SmsOptions`
 
 ## 1.0.0-beta.4 (Skipped)
 ### Added

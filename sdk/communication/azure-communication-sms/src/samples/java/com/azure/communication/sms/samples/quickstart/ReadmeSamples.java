@@ -23,7 +23,7 @@ public class ReadmeSamples {
         // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         //Enter your azureKeyCredential
-        AzureKeyCredential azureKeyCredential = null;
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -96,8 +96,7 @@ public class ReadmeSamples {
             options /* Optional */,
             null);
 
-        for (SmsSendResult messageResponseItem
-            : responseMultiplePhones) {
+        for (SmsSendResult messageResponseItem : responseMultiplePhones) {
             System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
         }
     }

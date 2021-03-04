@@ -61,8 +61,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SmsSendResult> send(String from, String to, String message,
-                                    SmsSendOptions smsOptions) {
+    public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions smsOptions) {
         List<String> recipients = new ArrayList<String>();
         recipients.add(to);
 
