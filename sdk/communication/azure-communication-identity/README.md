@@ -106,7 +106,7 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 - `chat` (Chat)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L124 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L119-L123 -->
 ```java
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -117,11 +117,10 @@ System.out.println("Expires at: " + userToken.getExpiresAt());
 
 ### Create a new user and token in a single request
 For convenience, use `createUserAndToken` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L106 -->
 ```java
 // Define a list of communication token scopes
-List<CommunicationTokenScope> scopes =
-    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
 CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
 System.out.println("User id: " + result.getUser().getId());
@@ -131,30 +130,30 @@ System.out.println("User token value: " + result.getUserToken().getToken());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L138-L139 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L136-L137 -->
 ```java
-    communicationIdentityClient.revokeTokens(user);
-}
+// revoke tokens issued for the specified user
+communicationIdentityClient.revokeTokens(user);
 ```
 
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L148-L149 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L146-L147 -->
 ```java
-    communicationIdentityClient.deleteUser(user);
-}
+// delete a previously created user
+communicationIdentityClient.deleteUser(user);
 ```
 
 ## Troubleshooting
 
 All user token service operations will throw an exception on failure.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L157-L161 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L155-L159 -->
 ```java
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-    } catch (RuntimeException ex) {
-        System.out.println(ex.getMessage());
-    }
+try {
+    CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+} catch (RuntimeException ex) {
+    System.out.println(ex.getMessage());
 }
 ```
 

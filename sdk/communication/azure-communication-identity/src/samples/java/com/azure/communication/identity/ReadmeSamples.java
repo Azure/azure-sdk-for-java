@@ -99,8 +99,7 @@ public class ReadmeSamples {
     public CommunicationUserIdentifierAndToken createNewUserAndToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         // Define a list of communication token scopes
-        List<CommunicationTokenScope> scopes =
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
         System.out.println("User id: " + result.getUser().getId());
