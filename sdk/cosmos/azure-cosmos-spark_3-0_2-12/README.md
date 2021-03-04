@@ -15,9 +15,9 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ## Documentation
 
-- [Getting started](docs/quick-start.md)
-- [Catalog API](docs/catalog-api.md)
-- [Configuration Parameter Reference](docs/configuration-reference.md)
+- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/quick-start.md)
+- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/catalog-api.md)
+- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md)
 
 [//]: # (//TODO: moderakh add more sections)
 [//]: # (//TODO: moderakh Enable Client Logging)
