@@ -21,7 +21,11 @@ private case class ItemsScanPartitionReaderFactory
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
+    val feedRange = partition.asInstanceOf[ChangeFeedInputPartition].feedRange
+    logInfo(s"Creating an ItemsPartitionReader to read from feed-range [${feedRange}]")
+
     ItemsPartitionReader(config,
+      feedRange,
       readSchema,
       cosmosQuery,
       cosmosClientStateHandle)

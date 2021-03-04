@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util
+import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
+import org.apache.spark.sql.SparkSession
 
+import java.util
 import org.apache.spark.sql.connector.catalog.{Table, TableProvider}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.sources.DataSourceRegister
@@ -17,13 +19,16 @@ import scala.collection.JavaConverters._
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
+  assertOnSparkDriver()
+  private lazy val sparkSession = SparkSession.active
+
   /**
     * Infer the schema of the table identified by the given options.
     * @param options an immutable case-insensitive string-to-string
     * @return StructType inferred schema
     */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    new ItemsTable(Array.empty, None, None, options).schema()
+    new ItemsTable(sparkSession, Array.empty, None, None, options).schema()
   }
 
   /**
@@ -46,6 +51,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
     new ItemsTable(
+      sparkSession,
       partitioning,
       None,
       None,
