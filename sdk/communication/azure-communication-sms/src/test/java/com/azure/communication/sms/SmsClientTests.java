@@ -141,7 +141,7 @@ public class SmsClientTests extends SmsTestBase {
         options.setTag("New Tag");
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupSyncClient(builder, "sendToSingleUserWithOptions");
+        client = setupSyncClient(builder, "sendFromFakeNumber");
         // Action & Assert
         try {
             SmsSendResult response = client.send("+155512345678", SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
@@ -223,7 +223,7 @@ public class SmsClientTests extends SmsTestBase {
         options.setTag("New Tag");
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupSyncClient(builder, "sendToSingleUserWithOptions");
+        client = setupSyncClient(builder, "sendIdempotencyCheck");
         // Action & Assert
         SmsSendResult response1 = client.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         assertTrue(response1.isSuccessful());

@@ -137,7 +137,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "sendToSingleUserWithOptions");
+        asyncClient = setupAsyncClient(builder, "sendFromFakeNumber");
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+155512345678", SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response)
@@ -173,7 +173,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "sendToSingleUserWithOptions");
+        asyncClient = setupAsyncClient(builder, "sendIdempotencyCheck");
         // Action & Assert
         Mono<SmsSendResult> response1 = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response1)

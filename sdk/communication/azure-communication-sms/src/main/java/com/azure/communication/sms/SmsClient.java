@@ -94,8 +94,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions, Context context) {
-        return smsAsyncClient.send(from, to, message,
-            smsOptions).block();
+        return smsAsyncClient.send(from, to, message, smsOptions).block();
     }
 
 

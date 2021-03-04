@@ -55,7 +55,6 @@ public class ReadmeSamples {
 
     public void sendMessageToOneRecipient(SmsClient smsClient) {
         //Send an sms to only one phone number
-        String to = "<to-phone-number>";
 
         // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();
@@ -66,7 +65,7 @@ public class ReadmeSamples {
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         SmsSendResult response = smsClient.send(
             "<from-phone-number>",
-            to,
+            "<to-phone-number>",
             "your message",
             options /* Optional */);
 
@@ -76,7 +75,6 @@ public class ReadmeSamples {
 
     public void sendMessageToMultipleRecipients(SmsClient smsClient) {
         //Send an sms to multiple phone numbers
-        List<String> toMultiplePhones = new ArrayList<String>(Arrays.asList("<to-phone-number1>", "<to-phone-number2>"));
 
         // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();
@@ -86,8 +84,8 @@ public class ReadmeSamples {
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
-            "<leased-phone-number>",
-            toMultiplePhones,
+            "<from-phone-number>",
+            new ArrayList<String>(Arrays.asList("<to-phone-number1>", "<to-phone-number2>")),
             "your message",
             options /* Optional */,
             null);
