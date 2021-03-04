@@ -72,7 +72,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
             resultsFromFeedRanges.addAll(feedResults);
         }
         List<String> feedResultIds =
-            resultsFromFeedRanges.stream().map(r -> r.get("id").toString()).collect(Collectors.toList());
+            resultsFromFeedRanges.stream().map(r -> r.get("id").asText()).collect(Collectors.toList());
 
         assertThat(queryResults.size()).isEqualTo(resultsFromFeedRanges.size());
         assertThat(feedResultIds).containsExactlyElementsOf(actualIds);
