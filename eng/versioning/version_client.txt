@@ -215,11 +215,10 @@ com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.1;1.0.0-beta.
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-messaging-eventhubs;5.5.0
-unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.5.0
 unreleased_com.azure:azure-core-management;1.2.0-beta.1
 unreleased_com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.8
 unreleased_com.azure:azure-core;1.14.0-beta.1
+unreleased_com.azure:azure-core-amqp;2.1.0-beta.1
 unreleased_com.azure:azure-core-serializer-json-jackson;1.2.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
