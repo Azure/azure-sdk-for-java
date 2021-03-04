@@ -35,38 +35,33 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ *
  * Represents the CloudEvent conforming to the 1.0 schema defined by the
  * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>.
  * <q>
  * CloudEvents is a specification for describing event data in common formats to provide interoperability across
  * services, platforms and systems.
  * </q>
- * Some Azure services, for instance, EventGrid, are compatible with this specification. This class is used to carry the
- * event payload represented in the CloudEvent schema.
- * <p>
- * Depending on your scenario, you can either use the constructor
+ *
+ * <p>Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
+ * communicate with these Azure services.</p>
+ * <p>Depending on your scenario, you can either use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to
  * create a CloudEvent, or use the factory method {@link #fromString(String)} to deserialize CloudEvent instances
- * from a Json String representation of CloudEvents.
+ * from a Json String representation of CloudEvents.</p>
  *
- * <ul>
- *     <li>
- *          If you have the data payload of a CloudEvent and want to send it out, use the constructor
- *          {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create it. Then you can
- *          serialize the CloudEvent into its Json String representation and send it.
+ * <p>If you have the data payload of a CloudEvent and want to send it out, use the constructor
+ * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create it. Then you can
+ * serialize the CloudEvent into its Json String representation and send it.</p>
  *
- *          <p><strong>Create CloudEvent Samples</strong></p>
- *          {@codesnippet com.azure.core.model.CloudEvent#constructor}
- *     </li>
- *     <li>
- *         On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
- *         use {@link #fromString(String)} to deserialize them from the Json string.
+ * <p><strong>Create CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.core.model.CloudEvent#constructor}
  *
- *         <p><strong>Deserialize CloudEvent Samples</strong></p>
- *         {@codesnippet com.azure.core.model.CloudEvent.fromString}
- *     </li>
- * </ul>
+ * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
+ * use {@link #fromString(String)} to deserialize them from the Json string.</p>
  *
+ * <p><strong>Deserialize CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.core.model.CloudEvent.fromString}
  */
 @Fluent
 public final class CloudEvent {
@@ -182,22 +177,21 @@ public final class CloudEvent {
 
     /**
      * Create an instance of {@link CloudEvent}.
-     * <p>
-     * 'source', 'type', 'id', and 'specversion' are required attributes according to the
+     * <p>'source', 'type', 'id', and 'specversion' are required attributes according to the
      * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">CNCF CloudEvent spec</a>.
      * You must set the 'source' and 'type' when using this constructor.
      * For convenience, 'id' and 'specversion' are automatically assigned. You can change the 'id' by using
      * {@link #setId(String)} after you create a CloudEvent. But you can not change 'specversion' because this class is
-     * specifically for CloudEvent 1.0 schema.
-     * <p>
-     * For the CloudEvent data payload, this constructor accepts 'data' of {@link BinaryData} as the CloudEvent payload.
+     * specifically for CloudEvent 1.0 schema.</p>
+     *
+     * <p>For the CloudEvent data payload, this constructor accepts 'data' of {@link BinaryData} as the CloudEvent payload.
      * The 'data' can be created from objects of type String, bytes, boolean, null, array or other types.
      * A CloudEvent will be serialized to its Json String representation
      * to be sent out. Use param 'format' to indicate whether the 'data' will be serialized as
      * bytes, or Json. When {@link CloudEventDataFormat#BYTES} is used, the data payload will be serialized to base64
      * bytes and stored in attribute <em>data_base64</em> of the CloudEvent's Json representation. When
      * {@link CloudEventDataFormat#JSON} is used, the data payload will be serialized as Json data and stored in
-     * attribute <em>data</em> of the CloudEvent's Json representation.
+     * attribute <em>data</em> of the CloudEvent's Json representation.</p>
      *
      * <p><strong>Create CloudEvent Samples</strong></p>
      * {@codesnippet com.azure.core.model.CloudEvent#constructor}
@@ -207,7 +201,7 @@ public final class CloudEvent {
      * @param type Type of event related to the originating occurrence.
      * @param data A {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
      * @param format Set to {@link CloudEventDataFormat#BYTES} to serialize the data to base64 format, or
-     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON.
+     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON value.
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
      *                        "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
@@ -244,7 +238,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Deserialize {@link CloudEvent CloudEvents} JSON string representation that has one CloudEvent object or
+     * Deserialize {@link CloudEvent} JSON string representation that has one CloudEvent object or
      * an array of CloudEvent objects into a list of CloudEvents, and validate whether any CloudEvents have
      * null id', 'source', or 'type'. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
