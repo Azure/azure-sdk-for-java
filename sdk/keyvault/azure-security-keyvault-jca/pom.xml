@@ -47,7 +47,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createSourcesJar>false</createSourcesJar>
+                            <createSourcesJar>true</createSourcesJar>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
