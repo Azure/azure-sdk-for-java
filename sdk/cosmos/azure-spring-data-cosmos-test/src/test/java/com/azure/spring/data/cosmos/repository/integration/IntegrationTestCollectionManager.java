@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.spring.data.cosmos.ContainerLock;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.rules.TestRule;
@@ -11,36 +12,50 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class IntegrationTestCollectionManager implements TestRule {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(IntegrationTestCollectionManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntegrationTestCollectionManager.class);
+    private static final Duration LEASE_DURATION = Duration.ofMinutes(5);
 
     private CosmosTemplate template;
     private Map<Class, ContainerRefs> containerRefs = new HashMap<>();
     private boolean isSetupDone;
 
-    public void ensureContainersCreatedAndEmpty(CosmosTemplate template, Class... entityTypes) {
+    public void ensureContainersCreated(CosmosTemplate template, Class... entityTypes) {
         if (!isSetupDone) {
             this.template = template;
             for (Class entityType : entityTypes) {
-                final CosmosEntityInformation entityInfo = new CosmosEntityInformation(entityType);
-                final CosmosContainerProperties properties = template.createContainerIfNotExists(entityInfo);
-                containerRefs.put(entityType, new ContainerRefs(entityInfo, properties));
+                CosmosEntityInformation entityInfo = new CosmosEntityInformation(entityType);
+                CosmosContainerProperties properties = template.createContainerIfNotExists(entityInfo);
+                ContainerLock lock = new ContainerLock(template, entityInfo.getContainerName(), LEASE_DURATION);
+                containerRefs.put(entityType, new ContainerRefs(entityInfo, properties, lock));
             }
             isSetupDone = true;
+        } else {
+            refreshContainerLeases();
         }
+    }
+
+    public void ensureContainersCreatedAndEmpty(CosmosTemplate template, Class... entityTypes) {
+        ensureContainersCreated(template, entityTypes);
         deleteContainerData();
     }
 
     public <T> CosmosEntityInformation<T, ?> getEntityInformation(Class<T> entityType) {
-        return containerRefs.get(entityType).getCosmosEntityInformation();
+        return containerRefs.get(entityType).cosmosEntityInformation;
     }
 
     public CosmosContainerProperties getContainerProperties(Class entityType) {
-        return containerRefs.get(entityType).getCosmosContainerProperties();
+        return containerRefs.get(entityType).cosmosContainerProperties;
+    }
+
+    public String getContainerName(Class entityType) {
+        return containerRefs.get(entityType).getContainerName();
     }
 
     private void deleteContainerData() {
@@ -49,7 +64,14 @@ public class IntegrationTestCollectionManager implements TestRule {
         }
     }
 
+    private void refreshContainerLeases() {
+        for (ContainerRefs containerRef : containerRefs.values()) {
+            containerRef.lock.renew();
+        }
+    }
+
     private void deleteContainers() {
+        // since we're deleting the containers, there's no need to release the locks
         for (ContainerRefs entityInfo : containerRefs.values()) {
             try {
                 template.deleteContainer(entityInfo.getContainerName());
@@ -74,20 +96,14 @@ public class IntegrationTestCollectionManager implements TestRule {
 
     private static class ContainerRefs {
 
-        private CosmosEntityInformation cosmosEntityInformation;
-        private CosmosContainerProperties cosmosContainerProperties;
+        CosmosEntityInformation cosmosEntityInformation;
+        CosmosContainerProperties cosmosContainerProperties;
+        ContainerLock lock;
 
-        public ContainerRefs(CosmosEntityInformation cosmosEntityInformation, CosmosContainerProperties cosmosContainerProperties) {
+        public ContainerRefs(CosmosEntityInformation cosmosEntityInformation, CosmosContainerProperties cosmosContainerProperties, ContainerLock lock) {
             this.cosmosEntityInformation = cosmosEntityInformation;
             this.cosmosContainerProperties = cosmosContainerProperties;
-        }
-
-        public CosmosEntityInformation getCosmosEntityInformation() {
-            return cosmosEntityInformation;
-        }
-
-        public CosmosContainerProperties getCosmosContainerProperties() {
-            return cosmosContainerProperties;
+            this.lock = lock;
         }
 
         public String getContainerName() {
@@ -99,4 +115,5 @@ public class IntegrationTestCollectionManager implements TestRule {
         }
 
     }
+
 }
