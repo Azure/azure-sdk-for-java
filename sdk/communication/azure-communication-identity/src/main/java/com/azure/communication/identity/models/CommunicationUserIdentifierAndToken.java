@@ -6,19 +6,19 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.credential.AccessToken;
 
 /** The CommunicationUserIdentifierWithAccessTokenResult model. */
-public final class CommunicationUserIdentifierAndTokenResult {
+public final class CommunicationUserIdentifierAndToken {
 
     private final CommunicationUserIdentifier communicationUser;
     private final AccessToken userToken;
 
     /**
-     * Creates a CommunicationUserIdentifierAndTokenResult object
+     * Creates a CommunicationUserIdentifierAndToken object
      * 
      * @param communicationUser the communication user identifier
      * @param userToken the user token of the communication user
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
-    public CommunicationUserIdentifierAndTokenResult(CommunicationUserIdentifier communicationUser,
+    public CommunicationUserIdentifierAndToken(CommunicationUserIdentifier communicationUser,
         AccessToken userToken) {
         this.communicationUser = communicationUser;
         this.userToken = userToken;

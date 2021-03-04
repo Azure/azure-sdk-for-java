@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -109,7 +109,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndTokenResult> createUserAndToken = asyncClient.createUserAndToken(scopes);
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertNotNull(result.getUserToken());
@@ -127,7 +127,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndTokenResult>> createUserAndToken = 
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = 
             asyncClient.createUserAndTokenWithResponse(scopes);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {

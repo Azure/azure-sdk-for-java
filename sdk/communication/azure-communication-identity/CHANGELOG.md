@@ -9,7 +9,7 @@
 `CommunicationIdentityClient.createUserAndToken` and `CommunicationIdentityAsyncClient.createUserAndToken`.
 - `CommunicationIdentityClient.createUserWithTokenWithResponse` and `CommunicationIdentityAsyncClient.createUserWithTokenWithResponse` have been renamed to
 `CommunicationIdentityClient.createUserAndTokenWithResponse` and `CommunicationIdentityAsyncClient.createUserAndTokenWithResponse`.
-- `CommunicationUserIdentifierWithTokenResult` class has been renamed to `CommunicationUserIdentifierAndTokenResult`.
+- `CommunicationUserIdentifierWithTokenResult` class has been renamed to `CommunicationUserIdentifierAndToken`.
 
 ## 1.0.0-beta.5 (2021-03-02)
 ### Breaking

@@ -106,7 +106,7 @@ For this option, a list of communication tokens scopes must be defined.
 List<CommunicationTokenScope> scopes =
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-CommunicationUserIdentifierAndTokenResult result = communicationIdentityClient.createUserAndToken(scopes);
+CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
 System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
