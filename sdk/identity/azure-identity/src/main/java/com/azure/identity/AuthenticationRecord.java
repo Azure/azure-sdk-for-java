@@ -95,7 +95,7 @@ public final class AuthenticationRecord {
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
      * @return A {@link Mono} containing {@link Void}
      */
-    public Mono<OutputStream> serialize(OutputStream outputStream) {
+    public Mono<OutputStream> serializeAsync(OutputStream outputStream) {
         return Mono.defer(() -> {
             try {
                 OBJECT_MAPPER.writeValue(outputStream, this);
@@ -107,12 +107,22 @@ public final class AuthenticationRecord {
     }
 
     /**
+     * Serializes the {@link AuthenticationRecord} to the specified {@link OutputStream}
+     *
+     * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
+     * @return void
+     */
+    public void serialize(OutputStream outputStream) {
+        serializeAsync(outputStream).block();
+    }
+
+    /**
      * Deserializes the {@link AuthenticationRecord} from the specified {@link InputStream}
      *
      * @param inputStream The {@link InputStream} from which the serialized record will be read.
      * @return A {@link Mono} containing the {@link AuthenticationRecord} object.
      */
-    public static Mono<AuthenticationRecord> deserialize(InputStream inputStream) {
+    public static Mono<AuthenticationRecord> deserializeAsync(InputStream inputStream) {
         return Mono.defer(() -> {
             AuthenticationRecord authenticationRecord;
             try {
@@ -123,5 +133,15 @@ public final class AuthenticationRecord {
             }
             return Mono.just(authenticationRecord);
         });
+    }
+
+    /**
+     * Deserializes the {@link AuthenticationRecord} from the specified {@link InputStream}
+     *
+     * @param inputStream The {@link InputStream} from which the serialized record will be read.
+     * @return the {@link AuthenticationRecord} object.
+     */
+    public static AuthenticationRecord deserialize(InputStream inputStream) {
+        return deserializeAsync(inputStream).block();
     }
 }
