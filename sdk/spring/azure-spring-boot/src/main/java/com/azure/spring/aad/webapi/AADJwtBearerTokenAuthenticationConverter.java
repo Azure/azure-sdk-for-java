@@ -52,4 +52,9 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
         return new BearerTokenAuthentication(principal, accessToken, authorities);
     }
+
+    public void setJwtGrantedAuthoritiesConverter(
+        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        this.converter = jwtGrantedAuthoritiesConverter;
+    }
 }
