@@ -7,11 +7,15 @@ parameters:
   CheckLinkGuidance: $true
   Urls: '(Get-ChildItem -Path ./ -Recurse -Include *.md)'
   Condition: succeeded() # If you want to run on failure for the link checker, set it to `Condition: succeededOrFailed()`.
-
+  BranchReplaceRegex: ''
+  BranchReplacementName: ''
 steps:
-  - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
-    parameters:
-      ServiceDirectory: ${{parameters.Directory}}
+  - pwsh: |
+      $setDefaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
+      Write-Host $setDefaultBranch
+      echo "##vso[task.setvariable variable=DefaultBranch]$setDefaultBranch"
+    displayName: "Setup Default Branch"
+    condition: eq(variables['DefaultBranch'], '')
   - task: PowerShell@2
     displayName: Link verification check
     condition: ${{ parameters.Condition }}
@@ -24,7 +28,11 @@ steps:
         -rootUrl "file://${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}"
         -recursive: ${{ parameters.Recursive }} 
         -ignoreLinksFile ${{ parameters.IgnoreLinksFile }}
-        -branchReplaceRegex "(^${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}.*/(?:blob|tree)/)$(DefaultBranch)(/.*)$"
-        -branchReplacementName "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
+        - ${{ if eq(${{ parameters.BranchReplaceRegex }}, '') }}:
+          -branchReplaceRegex "(^${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}.*/(?:blob|tree)/)$(DefaultBranch)(/.*)$"
+          -branchReplacementName "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
+        - ${{ if ne(${{ parameters.BranchReplaceRegex }}, '') }}:
+          -branchReplaceRegex ${{ parameters.BranchReplaceRegex }}
+          -branchReplacementName ${{ parameters.BranchReplacementName }}
         -devOpsLogging: $true
         -checkLinkGuidance: ${{ parameters.CheckLinkGuidance }}
