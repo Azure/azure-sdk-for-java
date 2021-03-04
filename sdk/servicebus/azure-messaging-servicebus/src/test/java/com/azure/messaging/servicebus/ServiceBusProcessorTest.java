@@ -30,6 +30,7 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -239,40 +240,43 @@ public class ServiceBusProcessorTest {
      */
     @Test
     public void testUserMessageHandlerError() throws InterruptedException {
-
-        Flux<ServiceBusMessageContext> messageFlux =
+        final int numberOfEvents = 5;
+        final Flux<ServiceBusMessageContext> messageFlux =
             Flux.create(emitter -> {
-                for (int i = 0; i < 5; i++) {
-                    ServiceBusReceivedMessage serviceBusReceivedMessage =
-                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
-                }
+                emitter.onRequest(request -> {
+                    for (int i = 0; i < numberOfEvents; i++) {
+                        ServiceBusReceivedMessage serviceBusReceivedMessage =
+                            new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                        serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                        ServiceBusMessageContext serviceBusMessageContext =
+                            new ServiceBusMessageContext(serviceBusReceivedMessage);
+                        emitter.next(serviceBusMessageContext);
+                    }
+
+                    emitter.complete();
+                });
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
 
-        ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         doNothing().when(asyncClient).close();
 
-        AtomicInteger messageId = new AtomicInteger();
-        CountDownLatch countDownLatch = new CountDownLatch(5);
+        final AtomicInteger messageId = new AtomicInteger();
+        final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 throw new IllegalStateException(); // throw error from user handler
             },
             serviceBusProcessErrorContext -> {
-                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusErrorContext);
                 ServiceBusException exception = (ServiceBusException) serviceBusProcessErrorContext.getException();
-                assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
+                assertSame(exception.getErrorSource(), ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
             },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
@@ -282,7 +286,8 @@ public class ServiceBusProcessorTest {
         serviceBusProcessorClient.close();
         assertTrue(success, "Failed to receive all expected messages");
 
-        verify(asyncClient, times(5)).abandon(any(ServiceBusReceivedMessage.class));
+        verify(asyncClient, times(numberOfEvents))
+            .abandon(any(ServiceBusReceivedMessage.class));
     }
 
     @Test
