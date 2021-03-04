@@ -11,8 +11,7 @@ public enum DependencyResolutionOptions {
     DISABLED,
 
     /**
-        Enable model dependency resolution. The client will parse
-        models and calculate dependencies recursively.
+     * Enable model dependency resolution. The client will parse models and calculate dependencies recursively.
      */
     ENABLED,
 
