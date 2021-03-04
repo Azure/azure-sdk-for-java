@@ -31,6 +31,7 @@ public class IntegrationTestCollectionManager implements TestRule {
                 CosmosEntityInformation entityInfo = new CosmosEntityInformation(entityType);
                 CosmosContainerProperties properties = template.createContainerIfNotExists(entityInfo);
                 ContainerLock lock = new ContainerLock(template, entityInfo.getContainerName(), LEASE_DURATION);
+                lock.acquire(LEASE_DURATION.multipliedBy(2));
                 containerRefs.put(entityType, new ContainerRefs(entityInfo, properties, lock));
             }
             isSetupDone = true;
