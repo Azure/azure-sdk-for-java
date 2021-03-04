@@ -88,7 +88,6 @@ public class PatchAsyncTest extends BatchTestBase {
         batchFail.patchItemOperation(testDoc.getId(), cosmosPatchOperationsSecond, transactionalBatchPatchItemRequestOptionsFail);
 
         TransactionalBatchResponse batchResponseFail = container.executeTransactionalBatch(batchFail).onErrorMap(throwable -> {
-            System.out.println(throwable);
             return throwable;
         }).block();
 
@@ -106,7 +105,6 @@ public class PatchAsyncTest extends BatchTestBase {
         batchPass.patchItemOperation(testDoc.getId(), cosmosPatchOperationsSecond, transactionalBatchPatchItemRequestOptionsTrue);
 
         TransactionalBatchResponse batchResponsePass = container.executeTransactionalBatch(batchPass).onErrorMap(throwable -> {
-            System.out.println(throwable);
             return throwable;
         }).block();
 
