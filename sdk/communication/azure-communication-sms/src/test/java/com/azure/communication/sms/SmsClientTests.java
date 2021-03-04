@@ -210,6 +210,8 @@ public class SmsClientTests extends SmsTestBase {
         SmsSendResult response = client.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE);
         assertNotNull(response);
         assertTrue(response.isSuccessful());
+        assertNull(response.getErrorMessage());
+
 
     }
 

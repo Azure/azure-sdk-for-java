@@ -221,6 +221,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         Iterable<SmsSendResult> smsSendResults = response.block();
         for (SmsSendResult result : smsSendResults) {
             assertFalse(result.isSuccessful());
+            assertEquals(result.getHttpStatusCode(), 400);
         }
     }
 
