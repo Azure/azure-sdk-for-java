@@ -48,10 +48,9 @@ cfg = {
 see [General Configuration](./configuration-reference.md#Generic Configuration) for more detail.
 
 You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
-
 Configure Catalog Api to be used
 ```python
-# create Cosmos Database and Cosmos Container using Catalog APIs
+# Configure Catalog Api to be used
 spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
@@ -59,13 +58,13 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 
 Create a Cosmos DB database
 ```python
-# create a cosmos database
+# create a cosmos database using catalog api
 spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(cosmosDatabaseName))
 ```
 
 Create a Cosmos DB container:
 ```python
-# create a cosmos container
+# create a cosmos container using catalog api
 spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(cosmosDatabaseName, cosmosContainerName))
 ```
 Cosmos Catalog API for creating container supports setting throughput and partition-key-path for the container to be created.
@@ -76,6 +75,7 @@ see [Catalog API](./catalog-api.md) for more detail.
 
 The name of the Cosmos DB Data Source is "cosmos.items". following shows how you can write a memory dataframe consisting of two items to Cosmos DB.
 ```python
+# Ingest data to Cosmos DB
 spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "Schrodinger cat", 2, False)))\
   .toDF("id","name","age","isAlive") \
    .write\
@@ -92,10 +92,13 @@ see [Write Configuration](./configuration-reference.md#write-config) for more de
 ### Query Cosmos DB
 
 ```python
-## Query to find the live cat and increment age of the alive cat
+# Query data from Cosmos DB
 from pyspark.sql.functions import col
 
-df = spark.read.format("cosmos.items").options(**cfg).load()
+df = spark.read.format("cosmos.items").options(**cfg)\
+ .option("spark.cosmos.read.inferSchemaEnabled", "true")\
+ .load()
+
 df.filter(col("isAlive") == True)\
  .show()
 ```
@@ -104,13 +107,18 @@ see [Query Configuration](./configuration-reference.md#query-config) for more de
 
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
+
 see [Schema Inference Configuration](./configuration-reference.md#schema-inference-config) for more detail.
 
 
 ### See the Schema of Data Ingested in Cosmos DB Container
 
 ```python
-df = spark.read.format("cosmos.items").options(**cfg).load()
+# Show the inferred schema from Cosmos DB
+df = spark.read.format("cosmos.items").options(**cfg)\
+ .option("spark.cosmos.read.inferSchemaEnabled", "true")\
+ .load()
+ 
 df.printSchema()
 ```
 
