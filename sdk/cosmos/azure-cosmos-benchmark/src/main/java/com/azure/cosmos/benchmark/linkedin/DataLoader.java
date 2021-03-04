@@ -29,9 +29,9 @@ import reactor.core.publisher.Flux;
 public class DataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
 
-    private static final int MAX_BATCH_SIZE = 20000;
-    private static final int BULK_OPERATION_CONCURRENCY = 5;
-    private static final Duration BULK_LOAD_WAIT_DURATION = Duration.ofSeconds(120);
+    private static final int MAX_BATCH_SIZE = 10000;
+    private static final int BULK_OPERATION_CONCURRENCY = 10;
+    private static final Duration BULK_LOAD_WAIT_DURATION = Duration.ofSeconds(200);
     private static final String COUNT_ALL_QUERY = "SELECT COUNT(1) FROM c";
     private static final String COUNT_ALL_QUERY_RESULT_FIELD = "$1";
 

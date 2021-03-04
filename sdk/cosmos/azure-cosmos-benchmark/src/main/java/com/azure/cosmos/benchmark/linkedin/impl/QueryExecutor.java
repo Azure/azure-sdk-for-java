@@ -10,6 +10,7 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.QueryOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
@@ -73,15 +74,22 @@ class QueryExecutor<K, V> {
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions()
             .setMaxDegreeOfParallelism(-1)
             .setMaxBufferedItemCount(-1);
-        final CollectionKey activeCollection = _dataLocator.getCollection();
 
+        // Explicitly set the PartitioningKey in the CosmosQueryRequestOptions if we are querying by the partitioningKey
+        // This provides a hint to the SDK, and optimizes the query execution
+        if (queryOptions.getPartitioningKey().isPresent()) {
+            final PartitionKey partitioningKey = new PartitionKey(queryOptions.getPartitioningKey().get());
+            cosmosQueryRequestOptions.setPartitionKey(partitioningKey);
+        }
+
+        final CollectionKey activeCollection = _dataLocator.getCollection();
         _metrics.logCounterMetric(Metrics.MetricType.CALL_COUNT);
         final String query = queryOptions.getDocumentDBQuery();
         long startTime = _clock.millis();
 
         try {
-            final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, queryOptions.getSqlParameterList().orElse(
-                Collections.emptyList()));
+            final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query,
+                queryOptions.getSqlParameterList().orElse(Collections.emptyList()));
 
             final List<FeedResponse<ObjectNode>> responseList = _dataLocator.getAsyncContainer(activeCollection)
                 .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, ObjectNode.class)
