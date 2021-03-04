@@ -10,6 +10,11 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
+  // NOTE: due to some bug in the emulator, sub-range feed range doesn't work
+  // "spark.cosmos.partitioning.strategy" -> "Restrictive" is added to the query tests
+  // to ensure we don't do sub-range feed-range
+  // once emulator fixed switch back to default partitioning.
+
   "spark query" can "use user provided schema" taggedAs RequiresCosmosEndpoint in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -34,7 +39,8 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
     // scalastyle:off underscore.import
@@ -83,7 +89,8 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true"
+      "spark.cosmos.read.inferSchemaEnabled" -> "true",
+      "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -118,7 +125,8 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.isAlive, c.type, c.age from c"
+      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.isAlive, c.type, c.age from c",
+      "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
