@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad;
 
-import com.azure.spring.autoconfigure.b2c.AADB2CProperties.UserFlows;
 import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,21 +52,15 @@ public class AADTrustedIssuerRepository {
      * Only the V2 version of Access Token is supported when using Azure AD B2C user flows.
      *
      * @param baseUri The base uri is the domain part of the endpoint.
-     * @param userFlows The all user flows which is created under b2c tenant.
+     * @param userFlows The all user flows mapping which is created under b2c tenant.
      */
-    public void addB2CUserFlowIssuers(String baseUri, UserFlows userFlows) {
+    public void addB2CUserFlowIssuers(String baseUri, Map<String, String> userFlows) {
         Assert.notNull(userFlows, "userFlows cannot be null.");
         String resolvedBaseUri = resolveBaseUri(baseUri);
-        creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getSignUpOrSignIn());
-        if (!StringUtils.isEmpty(userFlows.getProfileEdit())) {
-            creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getProfileEdit());
-        }
-        if (!StringUtils.isEmpty(userFlows.getPasswordReset())) {
-            creatB2CUserFlowIssuer(resolvedBaseUri, userFlows.getPasswordReset());
-        }
+        userFlows.keySet().forEach(key -> createB2CUserFlowIssuer(resolvedBaseUri, userFlows.get(key)));
     }
 
-    private void creatB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
+    private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
         trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId, userFlowName));
     }
 

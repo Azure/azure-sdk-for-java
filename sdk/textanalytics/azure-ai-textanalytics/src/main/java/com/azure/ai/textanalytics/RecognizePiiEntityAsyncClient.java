@@ -36,7 +36,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -206,11 +206,13 @@ class RecognizePiiEntityAsyncClient {
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
+        // TODO: add PiiEntityCategory class, issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(), options.isIncludeStatistics(),
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
             getNonNullStringIndexType(options.getStringIndexType()),
+            null,
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))
@@ -220,6 +222,6 @@ class RecognizePiiEntityAsyncClient {
                    .doOnError(error -> logger.warning(
                        "Failed to recognize Personally Identifiable Information entities - {}", error))
                    .map(this::toRecognizePiiEntitiesResultCollectionResponse)
-                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExists(throwable));
     }
 }

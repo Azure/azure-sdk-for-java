@@ -25,10 +25,12 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
             .apply(configurer);
+        // @formatter:on
     }
 }

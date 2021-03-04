@@ -19,6 +19,7 @@ public class Constants {
     public static final Set<SimpleGrantedAuthority> DEFAULT_AUTHORITY_SET;
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
+    public static final String DEFAULT_AUTHORITY_ENDPOINT_URI = "/oauth2/authorization/azure";
 
     static {
         Set<SimpleGrantedAuthority> authoritySet = new HashSet<>();

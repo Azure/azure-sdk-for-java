@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.util.Beta;
 
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class CosmosQueryRequestOptions {
     private boolean queryMetricsEnabled;
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
+    private FeedRange feedRange;
+    private String throughputControlGroupName;
 
     /**
      * Instantiates a new query request options.
@@ -53,6 +56,7 @@ public class CosmosQueryRequestOptions {
         this.partitionkey = options.partitionkey;
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
+        this.throughputControlGroupName = options.throughputControlGroupName;
     }
 
     /**
@@ -370,6 +374,35 @@ public class CosmosQueryRequestOptions {
      */
     CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
+        return this;
+    }
+
+    FeedRange getFeedRange() {
+        return feedRange;
+    }
+
+    void setFeedRange(FeedRange feedRange) {
+        this.feedRange = feedRange;
+    }
+
+    /**
+     * Get throughput control group name.
+     * @return The throughput control group name.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosQueryRequestOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
         return this;
     }
 }

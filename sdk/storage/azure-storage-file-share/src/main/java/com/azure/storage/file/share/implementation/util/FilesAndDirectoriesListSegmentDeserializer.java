@@ -60,6 +60,14 @@ import java.util.ArrayList;
  */
 
 public final class FilesAndDirectoriesListSegmentDeserializer extends JsonDeserializer<FilesAndDirectoriesListSegment> {
+    /*
+     * Added as of Jackson 2.12 as empty/missing XML was no longer triggering deserialize.
+     */
+    @Override
+    public FilesAndDirectoriesListSegment getNullValue(DeserializationContext ctxt) {
+        return new FilesAndDirectoriesListSegment();
+    }
+
     @Override
     public FilesAndDirectoriesListSegment deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ArrayList<DirectoryItem> directoryItems = new ArrayList<>();

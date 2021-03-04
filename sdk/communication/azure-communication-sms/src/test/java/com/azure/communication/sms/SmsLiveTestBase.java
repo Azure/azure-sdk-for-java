@@ -5,6 +5,7 @@ package com.azure.communication.sms;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.communication.sms.models.SendSmsResponse;
@@ -45,7 +46,7 @@ public class SmsLiveTestBase extends TestBase {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
-                .accessKey(ACCESSKEY)
+                .credential(new AzureKeyCredential(ACCESSKEY))
                 .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

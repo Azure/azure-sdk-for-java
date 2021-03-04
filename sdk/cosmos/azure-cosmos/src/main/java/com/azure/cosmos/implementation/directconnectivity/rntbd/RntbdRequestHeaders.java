@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
@@ -1136,8 +1137,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                 case EffectivePartitionKey:
                     this.getReadFeedKeyType().setValue(RntbdReadFeedKeyType.EffectivePartitionKey.id());
                     break;
+                case EffectivePartitionKeyRange:
+                    this.getReadFeedKeyType().setValue(RntbdReadFeedKeyType.EffectivePartitionKeyRange.id());
+                    break;
                 default:
-                    assert false;
+                    throw new IllegalStateException(String.format("Invalid ReadFeed key type '%s'.", type));
             }
         }
 
@@ -1158,13 +1162,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         value = headers.get(HttpHeaders.START_EPK);
 
         if (StringUtils.isNotEmpty(value)) {
-            this.getStartEpk().setValue(decoder.decode(value));
+            this.getStartEpk().setValue(value.getBytes(StandardCharsets.UTF_8));
         }
 
         value = headers.get(HttpHeaders.END_EPK);
 
         if (StringUtils.isNotEmpty(value)) {
-            this.getEndEpk().setValue(decoder.decode(value));
+            this.getEndEpk().setValue(value.getBytes(StandardCharsets.UTF_8));
         }
     }
 

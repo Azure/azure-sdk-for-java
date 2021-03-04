@@ -151,10 +151,17 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.QueueMessageItem) {
-        $.QueueMessageItem = $.DequeuedMessageItem;
+    if (!$.QueueMessageItemInternal) {
+        $.QueueMessageItemInternal = $.DequeuedMessageItem;
         delete $.DequeuedMessageItem;
-        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItem");
+        $.QueueMessageItemInternal["x-az-public"] = false
+        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItemInternal");
+    }
+    if (!$.PeekedMessageItemInternal) {
+        $.PeekedMessageItemInternal = $.PeekedMessageItem;
+        delete $.PeekedMessageItem;
+        $.PeekedMessageItemInternal["x-az-public"] = false
+        $.PeekedMessagesList.items.$ref = $.PeekedMessagesList.items.$ref.replace("PeekedMessageItem", "PeekedMessageItemInternal");
     }
     if (!$.SendMessageResult) {
         $.SendMessageResult = $.EnqueuedMessage;

@@ -168,8 +168,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.AesCbcPad.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.AesGcm.java"/>
 
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"

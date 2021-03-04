@@ -11,6 +11,7 @@ import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.servicebus.IMessage;
@@ -50,8 +51,9 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private final Set<String> subscribedQueues = Sets.newConcurrentHashSet();
 
-    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
+                                   ServiceBusMessageConverter messageConverter) {
+        super(clientFactory, messageConverter);
     }
 
     @Override
