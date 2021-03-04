@@ -4,7 +4,6 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -12,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -40,6 +38,7 @@ import java.util.Objects;
 public final class ModelsRepositoryClientBuilder {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
+    private static final String DEFAULT_MODELS_REPOSITORY_ENDPOINT = "https://devicemodels.azure.com";
 
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
@@ -47,8 +46,9 @@ public final class ModelsRepositoryClientBuilder {
 
     private final List<HttpPipelinePolicy> additionalPolicies;
 
-    // mandatory
-    private String endpoint;
+    // Fields with default values.
+    private String repositoryEndpoint = DEFAULT_MODELS_REPOSITORY_ENDPOINT;
+    private DependencyResolutionOptions dependencyResolutionOption = DependencyResolutionOptions.TRY_FROM_EXPANDED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;
@@ -83,13 +83,14 @@ public final class ModelsRepositoryClientBuilder {
     }
 
     private static HttpPipeline buildPipeline(String endpoint,
-                                              HttpLogOptions httpLogOptions,
-                                              ClientOptions clientOptions,
-                                              HttpClient httpClient,
-                                              List<HttpPipelinePolicy> additionalPolicies,
-                                              RetryPolicy retryPolicy,
-                                              Configuration configuration,
-                                              Map<String, String> properties) {
+          HttpLogOptions httpLogOptions,
+          ClientOptions clientOptions,
+          HttpClient httpClient,
+          List<HttpPipelinePolicy> additionalPolicies,
+          RetryPolicy retryPolicy,
+          Configuration configuration,
+          Map<String, String> properties)
+    {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -157,8 +158,6 @@ public final class ModelsRepositoryClientBuilder {
      * @return the created asynchronous ModelsRepositoryAsyncClient
      */
     public ModelsRepositoryAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
-
         Configuration buildConfiguration = this.configuration;
         if (buildConfiguration == null)
         {
@@ -181,7 +180,7 @@ public final class ModelsRepositoryClientBuilder {
 
         if (this.httpPipeline == null) {
             this.httpPipeline = buildPipeline(
-                this.endpoint,
+                this.repositoryEndpoint,
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,
@@ -191,17 +190,33 @@ public final class ModelsRepositoryClientBuilder {
                 this.properties);
         }
 
-        return new ModelsRepositoryAsyncClient(this.endpoint, this.httpPipeline, serviceVersion, this.jsonSerializer);
+        return new ModelsRepositoryAsyncClient(
+            this.repositoryEndpoint,
+            this.httpPipeline,
+            serviceVersion,
+            this.dependencyResolutionOption,
+            this.jsonSerializer);
+    }
+
+    /**
+     * Set the default dependency resolution option that the built client will use. This field will have a default value.
+     *
+     * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
+     * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
+     */
+    public ModelsRepositoryClientBuilder dependencyResolutionOption(DependencyResolutionOptions dependencyResolutionOption) {
+        this.dependencyResolutionOption = dependencyResolutionOption;
+        return this;
     }
 
     /**
      * Set the service endpoint that the built client will communicate with. This field is mandatory to set.
      *
-     * @param endpoint URL of the service.
+     * @param repositoryEndpoint Uri of the service in String format.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public ModelsRepositoryClientBuilder repositoryEndpoint(String repositoryEndpoint) {
+        this.repositoryEndpoint = repositoryEndpoint;
         return this;
     }
 
