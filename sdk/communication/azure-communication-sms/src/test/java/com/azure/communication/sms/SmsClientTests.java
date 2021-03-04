@@ -39,7 +39,7 @@ public class SmsClientTests extends SmsTestBase {
         to.add(SMS_SERVICE_PHONE_NUMBER);
 
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        client = setupAsyncClient(builder, "createSyncClientUsingConnectionString");
+        client = setupSyncClient(builder, "createSyncClientUsingConnectionString");
         assertNotNull(client);
         Iterable<SmsSendResult> response = client.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, null, Context.NONE);
         assertNotNull(response);
@@ -66,12 +66,23 @@ public class SmsClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void builderNotRetryPolicy(HttpClient httpClient) {
+
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        builder.retryPolicy(null);
+        client = setupSyncClient(builder, "builderNotRetryPolicy");
+        assertNotNull(client);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsUsingTokenCredential(HttpClient httpClient) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         to = new ArrayList<>();
         to.add(SMS_SERVICE_PHONE_NUMBER);
         SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
-        client = setupAsyncClient(builder, "sendSmsUsingTokenCredential");
+        client = setupSyncClient(builder, "sendSmsUsingTokenCredential");
         assertNotNull(client);
         Iterable<SmsSendResult> response = client.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, null, Context.NONE);
         assertNotNull(response);
@@ -89,7 +100,7 @@ public class SmsClientTests extends SmsTestBase {
         to.add("+155512345678");
 
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        client = setupAsyncClient(builder, "sendToIncorrectPhoneNumber");
+        client = setupSyncClient(builder, "sendToIncorrectPhoneNumber");
         assertNotNull(client);
         Iterable<SmsSendResult> response = client.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, null, Context.NONE);
         assertNotNull(response);
@@ -108,7 +119,7 @@ public class SmsClientTests extends SmsTestBase {
 
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToSingleUserWithOptions");
+        client = setupSyncClient(builder, "sendToSingleUserWithOptions");
 
         // Action & Assert
         try {
@@ -129,7 +140,7 @@ public class SmsClientTests extends SmsTestBase {
 
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendFromUnauthorizedNumber");
+        client = setupSyncClient(builder, "sendFromUnauthorizedNumber");
 
         // Action & Assert
         try {
@@ -149,7 +160,7 @@ public class SmsClientTests extends SmsTestBase {
         to.add(SMS_SERVICE_PHONE_NUMBER);
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToMultipleUsers");
+        client = setupSyncClient(builder, "sendToMultipleUsers");
         // Action & Assert
         Iterable<SmsSendResult> response = client.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE);
         assertNotNull(response);
@@ -170,7 +181,7 @@ public class SmsClientTests extends SmsTestBase {
         to.add(SMS_SERVICE_PHONE_NUMBER);
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToMultipleUsersWithOptions");
+        client = setupSyncClient(builder, "sendToMultipleUsersWithOptions");
         // Action & Assert
         Iterable<SmsSendResult> response = client.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, options, Context.NONE);
         assertNotNull(response);
@@ -186,7 +197,7 @@ public class SmsClientTests extends SmsTestBase {
     public void sendToSingleUser(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToSingleUser");
+        client = setupSyncClient(builder, "sendToSingleUser");
         // Action & Assert
         SmsSendResult response = client.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE);
         assertNotNull(response);
@@ -203,7 +214,7 @@ public class SmsClientTests extends SmsTestBase {
 
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToSingleUserWithOptions");
+        client = setupSyncClient(builder, "sendToSingleUserWithOptions");
 
         // Action & Assert
         SmsSendResult response1 = client.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
@@ -224,7 +235,7 @@ public class SmsClientTests extends SmsTestBase {
         to.add(SMS_SERVICE_PHONE_NUMBER);
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        client = setupAsyncClient(builder, "sendToSingleUserWithOptions");
+        client = setupSyncClient(builder, "sendToSingleUserWithOptions");
         // Action & Assert
         SmsSendResult response = client.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options, Context.NONE);
         assertNotNull(response);
@@ -233,7 +244,7 @@ public class SmsClientTests extends SmsTestBase {
     }
 
 
-    private SmsClient setupAsyncClient(SmsClientBuilder builder, String testName) {
+    private SmsClient setupSyncClient(SmsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }
 }
