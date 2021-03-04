@@ -114,9 +114,6 @@ public class AppConfigurationPropertySourceTest {
 
     public List<ConfigurationSetting> testItems = new ArrayList<>();
 
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
-
     private AppConfigurationPropertySource propertySource;
 
     private AppConfigurationProperties appConfigurationProperties;

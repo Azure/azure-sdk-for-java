@@ -131,11 +131,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      */
     private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
         List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
-        /*
-         * Generate which contexts(key prefixes) will be used for key-value items search If key prefix is empty, default
-         * context is: application, current application name is: foo, active profile is: dev, profileSeparator is: _
-         * Will generate these contexts: /application/, /application_dev/, /foo/, /foo_dev/
-         */
+        
         List<String> contexts = new ArrayList<>();
         contexts.addAll(generateContexts(this.properties.getDefaultContext(), store));
         contexts.addAll(generateContexts(applicationName, store));
@@ -179,22 +175,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         if (!StringUtils.hasText(applicationName)) {
             return result; // Ignore null or empty application name
         }
-
-        String prefix = configStore.getPrefix();
-
-        String prefixedContext = propWithAppName(prefix, applicationName);
-        result.add(prefixedContext + PATH_SPLITTER);
+        
+        result.add(PATH_SPLITTER + applicationName + PATH_SPLITTER);
 
         return result;
-    }
-
-    private String propWithAppName(String prefix, String applicationName) {
-        if (StringUtils.hasText(prefix)) {
-            return prefix.startsWith(PATH_SPLITTER) ? prefix + PATH_SPLITTER + applicationName
-                : PATH_SPLITTER + prefix + PATH_SPLITTER + applicationName;
-        }
-
-        return PATH_SPLITTER + applicationName;
     }
 
     /**
