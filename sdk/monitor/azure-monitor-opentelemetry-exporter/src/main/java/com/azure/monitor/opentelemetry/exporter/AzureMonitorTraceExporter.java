@@ -122,7 +122,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
      */
     @Override
     public CompletableResultCode export(Collection<SpanData> spans) {
-
+        CompletableResultCode completableResultCode = new CompletableResultCode();
         try {
             List<TelemetryItem> telemetryItems = new ArrayList<>();
             for (SpanData span : spans) {
@@ -131,11 +131,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             }
             client.export(telemetryItems)
                 .subscriberContext(Context.of(Tracer.DISABLE_TRACING_KEY, true))
-                .subscribe();
-            return CompletableResultCode.ofSuccess();
+                .subscribe(ignored -> { }, error -> completableResultCode.fail(), completableResultCode::succeed);
+            return completableResultCode;
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
-            return CompletableResultCode.ofFailure();
+            return completableResultCode.fail();
         }
     }
 
@@ -160,16 +160,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         String instrumentationName = span.getInstrumentationLibraryInfo().getName();
         Matcher matcher = COMPONENT_PATTERN.matcher(instrumentationName);
         String stdComponent = matcher.matches() ? matcher.group(1) : null;
-        if ("jms".equals(stdComponent) && !span.getParentSpanContext().isValid() && kind == SpanKind.CONSUMER) {
-            // no need to capture these, at least is consistent with prior behavior
-            // these tend to be frameworks pulling messages which are then pushed to consumers
-            // where we capture them
-            return;
-        }
         if (kind == SpanKind.INTERNAL) {
             if ("spring-scheduling".equals(stdComponent) && !span.getParentSpanContext().isValid()) {
-                // TODO (srnagar) need semantic convention for determining whether to map INTERNAL to request or dependency
-                //  (or need clarification to use SERVER for this)
+            // if (!span.getParentSpanContext().isValid()) {
+                // TODO (trask) need semantic convention for determining whether to map INTERNAL to request or
+                //  dependency (or need clarification to use SERVER for this)
                 exportRequest(span, telemetryItems);
             } else {
                 exportRemoteDependency(span, true, telemetryItems);
@@ -177,8 +172,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         } else if (kind == SpanKind.CLIENT || kind == SpanKind.PRODUCER) {
             exportRemoteDependency(span, false, telemetryItems);
         } else if (kind == SpanKind.CONSUMER && !span.getParentSpanContext().isRemote()) {
-            // TODO (srnagar) need spec clarification, but it seems polling for messages can be CONSUMER also
-            //  in which case the span will not have a remote parent and should be treated as a dependency instead of a request
             exportRemoteDependency(span, false, telemetryItems);
         } else if (kind == SpanKind.SERVER || kind == SpanKind.CONSUMER) {
             exportRequest(span, telemetryItems);
@@ -199,6 +192,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         } else {
             details.setTypeName(line);
         }
+        // TODO (trask): map OpenTelemetry exception to Application Insights exception better
         details.setStack(errorStack);
         return Collections.singletonList(details);
     }
@@ -305,7 +299,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                     target += ":" + uri.getPort();
                 }
             } catch (URISyntaxException e) {
-                // TODO (srnagar) "log once"
+                // TODO (trask) "log once"
                 logger.error(e.getMessage());
                 logger.verbose(e.getMessage(), e);
             }
@@ -323,7 +317,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         } else {
             // using "Http (tracked component)" is important for dependencies that go cross-component (have an appId in their target field)
             // if you use just HTTP, Breeze will remove appid from the target
-            // TODO (srnagar) remove this once confirmed by zakima that it is no longer needed
+            // TODO (trask) remove this once confirmed by zakima that it is no longer needed
             telemetry.setType("Http (tracked component)");
             telemetry.setTarget(target + " | " + targetAppId);
         }
@@ -413,9 +407,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static int getDefaultPortForDbSystem(String dbSystem) {
         switch (dbSystem) {
-            // TODO (srnagar) replace these with constants from OpenTelemetry API after upgrading to 0.10.0
-            // TODO (srnagar) add these default ports to the OpenTelemetry database semantic conventions spec
-            // TODO (srnagar) need to add more default ports once jdbc instrumentation reports net.peer.*
+            // TODO (trask) add these default ports to the OpenTelemetry database semantic conventions spec
+            // TODO (trask) need to add more default ports once jdbc instrumentation reports net.peer.*
             case "mongodb":
                 return 27017;
             case "cassandra":
@@ -454,7 +447,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         if (source == null) {
             String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
             if (messagingSystem != null) {
-                // TODO (srnagar) should this pass default port for messaging.system?
+                // TODO (trask) should this pass default port for messaging.system?
                 source = nullAwareConcat(getTargetFromPeerAttributes(attributes, 0),
                     attributes.get(SemanticAttributes.MESSAGING_DESTINATION), "/");
                 if (source == null) {
@@ -565,16 +558,10 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
             if (event.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE) != null
                 || event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE) != null) {
-                // TODO (srnagar): Remove this boolean after we can confirm that the exception duplicate
-                //  is a bug from the opentelmetry-java-instrumentation
-                if (!foundException) {
-                    // TODO (srnagar): map OpenTelemetry exception to Application Insights exception better
-                    String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
-                    if (stacktrace != null) {
-                        trackException(stacktrace, span, operationId, span.getSpanId(), samplingPercentage, telemetryItems);
-                    }
+                String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
+                if (stacktrace != null) {
+                    trackException(stacktrace, span, operationId, span.getSpanId(), samplingPercentage, telemetryItems);
                 }
-                foundException = true;
             } else {
                 telemetryItem.setSampleRate(samplingPercentage.floatValue());
                 telemetryItems.add(telemetryItem);
