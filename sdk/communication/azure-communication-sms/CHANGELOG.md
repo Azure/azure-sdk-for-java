@@ -5,11 +5,12 @@
 - Added support for 1:N SMS messaging.
 - Added support for tagging SMS messages.
 - Send method series in SmsClient are idempotent under retry policy.
+- Added `SmsOptions`
 
 ### Breaking Change
 - Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message)` 
 - Replaced `SendSmsResponse` with `SmsSendResult`
-- Added `SmsOptions`
+
 
 ## 1.0.0-beta.4 (Skipped)
 ### Added

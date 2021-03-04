@@ -65,7 +65,6 @@ public class SmsTestBase extends TestBase {
         builder.endpoint(ENDPOINT)
             .credential(azureKeyCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
@@ -159,6 +158,5 @@ public class SmsTestBase extends TestBase {
 
         return content;
     }
-
 
 }

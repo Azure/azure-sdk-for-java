@@ -14,7 +14,6 @@ public enum SmsServiceVersion implements ServiceVersion {
     private final String version;
 
     SmsServiceVersion(String version) {
-
         this.version = version;
     }
 
@@ -23,7 +22,6 @@ public enum SmsServiceVersion implements ServiceVersion {
      */
     @Override
     public String getVersion() {
-
         return this.version;
     }
 
@@ -33,7 +31,6 @@ public enum SmsServiceVersion implements ServiceVersion {
      * @return the latest {@link SmsServiceVersion}
      */
     public static SmsServiceVersion getLatest() {
-
         return V2021_03_07;
     }
 }

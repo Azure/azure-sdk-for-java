@@ -62,14 +62,12 @@ public final class SmsAsyncClient {
         List<String> recipients = new ArrayList<String>();
         recipients.add(to);
         SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
-
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
-
             List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
             if (result.size() == 1) {
                 return Mono.just(result.get(0));
@@ -117,10 +115,8 @@ public final class SmsAsyncClient {
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
-
             List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
             return Mono.just(result);
-
         } catch (NullPointerException ex) {
             return monoError(logger, ex);
         } catch (RuntimeException ex) {
@@ -134,7 +130,6 @@ public final class SmsAsyncClient {
              ) {
             iterableWrapper.add(new SmsSendResult(item));
         }
-
         return iterableWrapper;
     }
 

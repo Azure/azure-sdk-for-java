@@ -212,11 +212,9 @@ public final class SmsClientBuilder {
 
     private AzureCommunicationSMSServiceImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
-
         if (this.pipeline == null) {
             Objects.requireNonNull(httpClient);
         }
-
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
             HttpPipelinePolicy[] customPolicyArray = null;
@@ -284,7 +282,6 @@ public final class SmsClientBuilder {
     private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         policies[1] = new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration);
         policies[2] = new RetryPolicy();
         policies[3] = new CookiePolicy();

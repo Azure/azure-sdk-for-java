@@ -66,7 +66,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToMultipleUsers");
-
         // Action & Assert
         Mono<Iterable<SmsSendResult>> response = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, null);
         StepVerifier.create(response)
@@ -82,7 +81,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToSingleUser");
-
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, null);
         StepVerifier.create(response)
@@ -99,11 +97,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
-
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToSingleUserWithOptions");
-
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response)
@@ -124,7 +120,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToMultipleUsersWithOptions");
-
         // Action & Assert
         Mono<Iterable<SmsSendResult>> response = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, options);
         StepVerifier.create(response)
@@ -140,11 +135,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
-
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToSingleUserWithOptions");
-
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+155512345678", SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response)
@@ -160,11 +153,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
-
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendFromUnauthorizedNumber");
-
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+18007342577", SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response)
@@ -180,11 +171,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
-
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToSingleUserWithOptions");
-
         // Action & Assert
         Mono<SmsSendResult> response1 = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, SMS_SERVICE_PHONE_NUMBER, MESSAGE, options);
         StepVerifier.create(response1)
