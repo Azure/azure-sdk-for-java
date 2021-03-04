@@ -196,12 +196,8 @@ public class BlobClient extends BlobClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        client.upload(data, overwrite);
-        try {
-            StorageImplUtils.blockWithOptionalTimeout(client.upload(data, overwrite), null);
-        } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
-        }
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions),
+            null, Context.NONE);
     }
 
     /**

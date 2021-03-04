@@ -836,10 +836,30 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
+     * <p>This method will be deprecated in the future. Use {@link #downloadFlux()} instead.
+     *
      * @return A reactive response containing the blob data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> download() {
+        return downloadFlux();
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadFlux}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadFlux() {
         try {
             return downloadWithResponse(null, null, null, false)
                 .flatMapMany(BlobDownloadAsyncResponse::getValue);
@@ -882,6 +902,9 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
+     * <p>This method will be deprecated in the future.
+     * Use {@link #downloadFluxWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}  instead.
+     *
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
@@ -891,9 +914,32 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        return downloadFluxWithResponse(range, options, requestConditions, getRangeContentMd5);
+    }
+
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadFluxWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadFluxWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, requestConditions, getRangeContentMd5,
+                downloaFluxWithResponse(range, options, requestConditions, getRangeContentMd5,
                     context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -906,7 +952,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * TODO (kasobol-msft) add sample.
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -921,7 +967,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                downloadWithResponse(null, options, requestConditions, false,
+                downloaFluxWithResponse(null, options, requestConditions, false,
                     context)
                     .flatMap(r ->
                         BinaryData.fromFlux(r.getValue())
@@ -936,7 +982,7 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+    Mono<BlobDownloadAsyncResponse> downloaFluxWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         return downloadHelper(range, options, requestConditions, getRangeContentMd5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
@@ -1171,7 +1217,7 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (range, conditions) -> this.downloadWithResponse(range, downloadRetryOptions, conditions,
+            (range, conditions) -> this.downloaFluxWithResponse(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,

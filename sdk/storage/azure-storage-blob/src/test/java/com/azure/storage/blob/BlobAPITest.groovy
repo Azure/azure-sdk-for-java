@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
+import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -76,6 +77,14 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Upload binary data overwrite fails"() {
+        when:
+        bc.upload(defaultBinaryData)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     def "Upload input stream overwrite"() {
         setup:
         def randomData = getRandomByteArray(Constants.KB)
@@ -88,6 +97,18 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         bc.downloadWithResponse(stream, null, null, null, false, null, null)
         stream.toByteArray() == randomData
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+
+        when:
+        bc.upload(BinaryData.fromBytes(randomData), true)
+
+        then:
+        def blobContent = bc.downloadContent()
+        blobContent.toBytes() == randomData
     }
 
     /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
@@ -176,6 +197,12 @@ class BlobAPITest extends APISpec {
     def "Upload return value"() {
         expect:
         bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+            .getValue().getETag() != null
+    }
+
+    def "Upload return value binary data"() {
+        expect:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData), null, null)
             .getValue().getETag() != null
     }
 
