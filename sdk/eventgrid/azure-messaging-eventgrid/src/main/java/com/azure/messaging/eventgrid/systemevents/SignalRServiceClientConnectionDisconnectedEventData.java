@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SignalRServiceClientConnectionDisconnectedEventData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.SignalRService.ClientConnectionDisconnected event.
+ */
 @Fluent
 public final class SignalRServiceClientConnectionDisconnectedEventData {
     /*

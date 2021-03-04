@@ -27,6 +27,9 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
     # The idle timeout in milliseconds after which the connection will be failed if the peer sends no AMQP frames
     # Default is 1800000
     spring.jms.servicebus.idle-timeout=[idle-timeout]
+   
+    #Fill service bus pricing tier according to the one you created. Supported values are premium, standard and basic.
+    spring.jms.servicebus.pricing-tier=[pricing-tier]
     ```
 
 2. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController] and [QueueReceiveController] .

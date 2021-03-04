@@ -26,14 +26,14 @@ public class PartitionKeyInternalHelper {
         false);
 
     static final int MaxPartitionKeyBinarySize =
-            (1 /*type marker */ +
-                    9 /* hash value*/ +
-                    1 /* type marker*/ + StringPartitionKeyComponent.MAX_STRING_BYTES_TO_APPEND +
-                    1 /*trailing zero*/
-            ) * 3;
+        (1 /*type marker */ +
+            9 /* hash value*/ +
+            1 /* type marker*/ + StringPartitionKeyComponent.MAX_STRING_BYTES_TO_APPEND +
+            1 /*trailing zero*/
+        ) * 3;
     public static final Int128 MaxHashV2Value = new Int128(new byte[] {
-            (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-            (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
+        (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+        (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
 
     static byte[] uIntToBytes(UInt128 unit) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
@@ -109,7 +109,7 @@ public class PartitionKeyInternalHelper {
             int hashAsInt = MurmurHash3_32.hash(byteBuffer.array(), byteBuffer.limit(), 0);
             hash = (double) asUnsignedLong(hashAsInt);
         } catch (IOException e) {
-           throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException(e);
         }
 
         IPartitionKeyComponent[] partitionKeyComponents = new IPartitionKeyComponent[partitionKeyInternal.components.size() + 1];

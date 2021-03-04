@@ -5,7 +5,7 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.samples.models.User;
 
@@ -57,12 +57,13 @@ public class DeserializeEventsFromString {
 
     private static void deserializeData(BinaryData eventData) {
         System.out.println("Deserialize data to a model class:");
-        User dataInModelClass = eventData.toObject(TypeReference.createInstance(User.class));
+        User dataInModelClass = eventData.toObject(User.class);
         System.out.println(dataInModelClass);
         System.out.println();
 
         System.out.println("Deserialize data to a Map:");
-        Map<?, ?> dataMap = eventData.toObject(TypeReference.createInstance(Map.class));
+        Map<String, Object> dataMap = eventData.toObject(new TypeReference<Map<String, Object>>() {
+        });
         System.out.println(dataMap);
         System.out.println();
 

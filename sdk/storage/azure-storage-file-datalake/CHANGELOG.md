@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.5.0-beta.2 (Unreleased)
-
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
 ## 12.5.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 

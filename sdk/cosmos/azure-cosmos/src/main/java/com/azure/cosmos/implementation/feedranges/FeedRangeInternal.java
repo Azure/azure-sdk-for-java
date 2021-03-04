@@ -80,6 +80,92 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
+    // Will return a normalized range with minInclusive and maxExclusive boundaries
+    public Mono<Range<String>> getNormalizedEffectiveRange(
+        IRoutingMapProvider routingMapProvider,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
+    ) {
+        return Mono.zip(
+            this.getEffectiveRange(
+                routingMapProvider,
+                metadataDiagnosticsCtx,
+                collectionResolutionMono),
+            collectionResolutionMono)
+                   .map(tuple -> {
+                       Range<String> effectiveRange = tuple.getT1();
+
+                       if (effectiveRange.isMinInclusive() && !effectiveRange.isMaxInclusive()) {
+                           return effectiveRange;
+                       }
+
+                       Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
+
+                       if (collectionValueHolder.v == null) {
+                           throw new IllegalStateException("Collection should have been resolved.");
+                       }
+
+                       PartitionKeyDefinition pkDefinition =
+                           collectionValueHolder.v.getPartitionKey();
+
+                       PartitionKeyDefinitionVersion effectivePKVersion =
+                           pkDefinition.getVersion() != null
+                               ? pkDefinition.getVersion()
+                               : PartitionKeyDefinitionVersion.V1;
+
+                       String min;
+                       String max;
+
+                       if (effectiveRange.isMinInclusive()) {
+                           min = effectiveRange.getMin();
+                       } else {
+                           min = addToEffectivePartitionKey(effectiveRange.getMin(), -1, effectivePKVersion);
+                       }
+
+                       if (!effectiveRange.isMaxInclusive()) {
+                           max = effectiveRange.getMax();
+                       } else {
+                           max = addToEffectivePartitionKey(effectiveRange.getMax(), 1, effectivePKVersion);
+                       }
+
+                       return new Range<>(min, max, true, false);
+                   });
+    }
+
+    private String addToEffectivePartitionKey(
+        String effectivePartitionKey,
+        int value,
+        PartitionKeyDefinitionVersion version) {
+
+        checkArgument(
+            value == 1 || value == -1,
+            "Argument 'value' has invalid value - only 1 and -1 are allowed");
+
+        byte[] blob = hexBinaryToByteArray(effectivePartitionKey);
+
+        if (value == 1) {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if ((0xff & blob[i]) < 255) {
+                    blob[i] = (byte)((0xff & blob[i]) + 1);
+                    break;
+                } else {
+                    blob[i] = 0;
+                }
+            }
+        } else {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if ((0xff & blob[i]) != 0) {
+                    blob[i] = (byte)((0xff & blob[i]) - 1);
+                    break;
+                } else {
+                    blob[i] = (byte)255;
+                }
+            }
+        }
+
+        return HexConvert.bytesToHex(blob);
+    }
+
     public abstract Mono<List<String>> getPartitionKeyRanges(
         IRoutingMapProvider routingMapProvider,
         RxDocumentServiceRequest request,
@@ -135,7 +221,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         int targetedSplitCount) {
 
         return Mono.zip(
-            this.getEffectiveRange(
+            this.getNormalizedEffectiveRange(
                 routingMapProvider,
                 metadataDiagnosticsCtx,
                 collectionResolutionMono),
@@ -162,8 +248,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
                        PartitionKeyDefinitionVersion effectivePKVersion =
                            pkDefinition.getVersion() != null
-                           ? pkDefinition.getVersion()
-                           : PartitionKeyDefinitionVersion.V1;
+                               ? pkDefinition.getVersion()
+                               : PartitionKeyDefinitionVersion.V1;
                        switch (effectivePKVersion) {
                            case V1:
                                return trySplitWithHashV1(effectiveRange, targetedSplitCount);

@@ -1058,9 +1058,11 @@ public class RxDocumentServiceRequest implements Cloneable {
             return null;
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getThroughputControlGroupName();
+        } else if (options instanceof CosmosQueryRequestOptions) {
+            return ((CosmosQueryRequestOptions) options).getThroughputControlGroupName();
+        } else if (options instanceof CosmosChangeFeedRequestOptions) {
+            return ((CosmosChangeFeedRequestOptions) options).getThroughputControlGroupName();
         } else {
-            // TODO: add for query and changeFeed
-            // TODO: tracked by item https://github.com/Azure/azure-sdk-for-java/issues/18775
             return null;
         }
     }
