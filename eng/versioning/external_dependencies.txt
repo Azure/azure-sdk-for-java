@@ -227,7 +227,7 @@ io.dropwizard.metrics:metrics-graphite;4.1.14
 io.dropwizard.metrics:metrics-jvm;4.1.14
 io.reactivex.rxjava2:rxjava;2.2.20
 net.java.dev.jna:jna-platform;5.6.0
-net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.4
+net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.5
 net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.2
 org.apache.commons:commons-collections4;4.2
 org.apache.commons:commons-text;1.6
