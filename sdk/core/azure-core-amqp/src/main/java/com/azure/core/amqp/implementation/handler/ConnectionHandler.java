@@ -62,7 +62,7 @@ public class ConnectionHandler extends Handler {
 
         this.connectionOptions = connectionOptions;
         this.connectionProperties = new HashMap<>();
-        this.connectionProperties.put(PRODUCT.toString(), connectionOptions.getClientProduct());
+        this.connectionProperties.put(PRODUCT.toString(), connectionOptions.getProduct());
         this.connectionProperties.put(VERSION.toString(), connectionOptions.getClientVersion());
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
@@ -71,7 +71,7 @@ public class ConnectionHandler extends Handler {
         final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
             ? clientOptions.getApplicationId()
             : null;
-        final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getClientProduct(),
+        final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
             connectionOptions.getClientVersion(), null);
 
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);

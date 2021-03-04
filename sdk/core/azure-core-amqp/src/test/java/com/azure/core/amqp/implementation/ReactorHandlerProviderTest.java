@@ -12,10 +12,10 @@ import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
-import com.azure.core.util.Header;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.impl.TransportImpl;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -330,8 +330,7 @@ public class ReactorHandlerProviderTest {
         when(event.getConnection()).thenReturn(connection);
         when(connection.getHostname()).thenReturn(anotherFakeHostname);
 
-        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, connectionOptions);
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
 
         // Act
         connectionHandler.onConnectionBound(event);
@@ -366,8 +365,7 @@ public class ReactorHandlerProviderTest {
         when(event.getConnection()).thenReturn(connection);
         when(connection.getHostname()).thenReturn(anotherFakeHostname);
 
-        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, connectionOptions);
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
 
         // Act
         connectionHandler.onConnectionBound(event);
@@ -401,8 +399,7 @@ public class ReactorHandlerProviderTest {
         when(event.getConnection()).thenReturn(connection);
         when(connection.getHostname()).thenReturn(anotherFakeHostname);
 
-        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, connectionOptions);
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
 
         // Act
         connectionHandler.onConnectionBound(event);

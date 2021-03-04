@@ -14,6 +14,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.scheduler.Scheduler;
+
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
@@ -35,7 +36,7 @@ public class ConnectionOptions {
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final ClientOptions clientOptions;
-    private final String clientProduct;
+    private final String product;
     private final String clientVersion;
     private final SslDomain.VerifyMode verifyMode;
     private final String hostname;
@@ -109,7 +110,7 @@ public class ConnectionOptions {
         this.port = port != -1 ? port : getPort(transport);
         this.proxyOptions = proxyOptions;
 
-        this.clientProduct = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
+        this.product = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
             .filter(e -> NAME_KEY.equals(e.getName()))
             .map(e -> e.getValue())
             .findFirst()
@@ -140,12 +141,12 @@ public class ConnectionOptions {
     }
 
     /**
-     * Gets the product information for this AMQP connection.
+     * Gets the product information for this AMQP connection. (ie. Service Bus or Event Hubs.)
      *
      * @return The product information for this AMQP connection.
      */
-    public String getClientProduct() {
-        return clientProduct;
+    public String getProduct() {
+        return product;
     }
 
     /**

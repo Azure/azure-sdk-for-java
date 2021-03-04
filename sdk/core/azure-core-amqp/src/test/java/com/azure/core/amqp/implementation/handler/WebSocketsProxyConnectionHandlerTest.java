@@ -11,8 +11,8 @@ import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import org.apache.qpid.proton.Proton;
 import com.azure.core.util.Header;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.junit.jupiter.api.AfterEach;
@@ -116,7 +116,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(argThat(u -> u.getHost().equals(HOSTNAME))))
             .thenReturn(Collections.singletonList(PROXY));
 
-        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_CONFIGURATION,
+        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_OPTIONS,
             peerDetails);
 
         // Act and Assert
