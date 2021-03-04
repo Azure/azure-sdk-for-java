@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.sdk.template;
+package com.azure.containers.containerregistry;
 
 /**
- * This is a sample class for template app.
+ * This is a sample class for container registry app.
  */
 public class Hello {
     /**

@@ -9,8 +9,16 @@ trigger:
       - release/*
   paths:
     include:
-      - common/perf-test-core/
-      - sdk/template/
+      - sdk/containerregistry/
+    exclude:
+      - sdk/containerregistry/mgmt-v2016_06_27_preview
+      - sdk/containerregistry/mgmt-v2017_03_01
+      - sdk/containerregistry/mgmt-v2017_06_01_preview
+      - sdk/containerregistry/mgmt-v2017_10_01
+      - sdk/containerregistry/mgmt-v2018_02_01_preview
+      - sdk/containerregistry/mgmt-v2018_09_01
+      - sdk/containerregistry/mgmt-v2019_04_01
+      - sdk/containerregistry/mgmt-v2019_06_01_preview
 
 pr:
   branches:
@@ -22,17 +30,25 @@ pr:
       - release/*
   paths:
     include:
-      - common/perf-test-core/
-      - sdk/template/
+      - sdk/containerregistry/
+    exclude:
+        - sdk/containerregistry/mgmt-v2016_06_27_preview
+        - sdk/containerregistry/mgmt-v2017_03_01
+        - sdk/containerregistry/mgmt-v2017_06_01_preview
+        - sdk/containerregistry/mgmt-v2017_10_01
+        - sdk/containerregistry/mgmt-v2018_02_01_preview
+        - sdk/containerregistry/mgmt-v2018_09_01
+        - sdk/containerregistry/mgmt-v2019_04_01
+        - sdk/containerregistry/mgmt-v2019_06_01_preview
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: template
+    ServiceDirectory: containerregistry
     Artifacts:
-      - name: azure-sdk-template
+      - name: azure-containers-containerregistry
         groupId: com.azure
-        safeName: azuresdktemplate
+        safeName: azurecontainerscontainerregistry
     AdditionalModules:
-      - name: azure-template-perf
+      - name: azure-containerregistry-perf
         groupId: com.azure

@@ -10,11 +10,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-sdk-template</artifactId>
-  <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+  <artifactId>azure-containers-containerregistry</artifactId>
+  <version>1.0.0-beta</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
 
-  <name>Microsoft Azure SDK for Template</name>
-  <description>This package contains Microsoft Azure SDK for Template.</description>
+  <name>Microsoft Azure SDK for Container Registry</name>
+  <description>This package contains Microsoft Azure SDK for Container Registry.</description>
 
   <distributionManagement>
     <site>
@@ -26,6 +26,13 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
+
+  <properties>
+    <!-- Azure Container Registry temporarily skipping code coverage until tests are added -->
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <!--<jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>-->
+  </properties>
 
   <dependencies>
     <dependency>
@@ -52,17 +59,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
