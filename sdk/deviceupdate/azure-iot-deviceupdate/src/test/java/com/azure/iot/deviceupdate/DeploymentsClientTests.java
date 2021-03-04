@@ -13,7 +13,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.models.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;

@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.models.*;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 public class UpdatesClientTests extends TestBase {
     private static final String FILE_NAME = "setup.exe";
