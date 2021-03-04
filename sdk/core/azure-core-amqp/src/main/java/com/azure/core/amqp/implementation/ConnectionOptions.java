@@ -14,14 +14,19 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.scheduler.Scheduler;
-
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an AMQP message broker.
  */
 @Immutable
 public class ConnectionOptions {
+    // These name version keys are used in our properties files to specify client product and version information.
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
+
     private final TokenCredential tokenCredential;
     private final AmqpTransportType transport;
     private final AmqpRetryOptions retryOptions;
@@ -30,6 +35,8 @@ public class ConnectionOptions {
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final ClientOptions clientOptions;
+    private final String clientProduct;
+    private final String clientVersion;
     private final SslDomain.VerifyMode verifyMode;
     private final String hostname;
     private final int port;
@@ -101,6 +108,17 @@ public class ConnectionOptions {
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
         this.port = port != -1 ? port : getPort(transport);
         this.proxyOptions = proxyOptions;
+
+        this.clientProduct = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
+            .filter(e -> NAME_KEY.equals(e.getName()))
+            .map(e -> e.getValue())
+            .findFirst()
+            .orElse(UNKNOWN);
+        this.clientVersion = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
+            .filter(e -> VERSION_KEY.equals(e.getName()))
+            .map(e -> e.getValue())
+            .findFirst()
+            .orElse(UNKNOWN);
     }
 
     /**
@@ -119,6 +137,24 @@ public class ConnectionOptions {
      */
     public ClientOptions getClientOptions() {
         return clientOptions;
+    }
+
+    /**
+     * Gets the product information for this AMQP connection.
+     *
+     * @return The product information for this AMQP connection.
+     */
+    public String getClientProduct() {
+        return clientProduct;
+    }
+
+    /**
+     * Gets the client version for this AMQP connection.
+     *
+     * @return The client version for this AMQP connection.
+     */
+    public String getClientVersion() {
+        return clientVersion;
     }
 
     /**
