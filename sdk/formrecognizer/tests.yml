@@ -22,6 +22,4 @@ stages:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           Location: 'chinaeast2'
       SupportedClouds: 'Public,Canary,UsGov,China'
-      EnvVars:
-        AZURE_TEST_MODE: RECORD
 
