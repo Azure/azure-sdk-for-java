@@ -104,7 +104,7 @@ public class ReadmeSamples {
 
     public void downloadBlobToStream() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            blobClient.download(outputStream);
+            blobClient.downloadStreaming(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -259,6 +259,81 @@ class BlobAPITest extends APISpec {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
+    def "Download all null streaming"() {
+        when:
+        def stream = new ByteArrayOutputStream()
+        bc.setTags(Collections.singletonMap("foo", "bar"))
+        def response = bc.downloadStreamingWithResponse(stream, null, null, null, false, null, null)
+        def body = ByteBuffer.wrap(stream.toByteArray())
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body == defaultData
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getTagCount() == 1
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentRange() == null
+        headers.getContentMd5() != null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+        headers.getBlobSequenceNumber() == null
+        headers.getBlobType() == BlobType.BLOCK_BLOB
+        headers.getCopyCompletionTime() == null
+        headers.getCopyStatusDescription() == null
+        headers.getCopyId() == null
+        headers.getCopyProgress() == null
+        headers.getCopySource() == null
+        headers.getCopyStatus() == null
+        headers.getLeaseDuration() == null
+        headers.getLeaseState() == LeaseStateType.AVAILABLE
+        headers.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        headers.getAcceptRanges() == "bytes"
+        headers.getBlobCommittedBlockCount() == null
+        headers.isServerEncrypted() != null
+        headers.getBlobContentMD5() == null
+//        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
+    }
+
+    def "Download all null binary data"() {
+        when:
+        bc.setTags(Collections.singletonMap("foo", "bar"))
+        def response = bc.downloadContentWithResponse(null, null, null, null)
+        def body = response.getValue()
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body.toBytes() == defaultData.array()
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getTagCount() == 1
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentRange() == null
+        headers.getContentMd5() != null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+        headers.getBlobSequenceNumber() == null
+        headers.getBlobType() == BlobType.BLOCK_BLOB
+        headers.getCopyCompletionTime() == null
+        headers.getCopyStatusDescription() == null
+        headers.getCopyId() == null
+        headers.getCopyProgress() == null
+        headers.getCopySource() == null
+        headers.getCopyStatus() == null
+        headers.getLeaseDuration() == null
+        headers.getLeaseState() == LeaseStateType.AVAILABLE
+        headers.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        headers.getAcceptRanges() == "bytes"
+        headers.getBlobCommittedBlockCount() == null
+        headers.isServerEncrypted() != null
+        headers.getBlobContentMD5() == null
+//        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
+    }
+
     def "Download empty file"() {
         setup:
         def bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
@@ -315,6 +390,24 @@ class BlobAPITest extends APISpec {
         result == defaultData.array()
     }
 
+    def "Download streaming min"() {
+        when:
+        def outStream = new ByteArrayOutputStream()
+        bc.downloadStreaming(outStream)
+        def result = outStream.toByteArray()
+
+        then:
+        result == defaultData.array()
+    }
+
+    def "Download binary data min"() {
+        when:
+        def result = bc.downloadContent()
+
+        then:
+        result.toBytes() == defaultData.array()
+    }
+
     @Unroll
     def "Download range"() {
         setup:
@@ -369,6 +462,72 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Download AC streaming"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        def response = bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
+
+        then:
+        response.getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    }
+
+    @Unroll
+    def "Download AC binary data"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        def response = bc.downloadContentWithResponse(null, bac, null, null)
+
+        then:
+        response.getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    }
+
+    @Unroll
     def "Download AC fail"() {
         setup:
         setupBlobLeaseCondition(bc, leaseID)
@@ -396,9 +555,74 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
+    @Unroll
+    def "Download AC fail streaming"() {
+        setup:
+        setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+    }
+
+    @Unroll
+    def "Download AC fail binary data"() {
+        setup:
+        setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.downloadContentWithResponse(null, bac, null, null).getStatusCode()
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+    }
+
     def "Download md5"() {
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
+        def contentMD5 = response.getDeserializedHeaders().getContentMd5()
+
+        then:
+        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
+    }
+
+    def "Download md5 streaming"() {
+        when:
+        def response = bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
@@ -431,6 +655,38 @@ class BlobAPITest extends APISpec {
         def snapshotStream = new ByteArrayOutputStream()
         bc2.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
+    }
+
+    def "Download snapshot streaming"() {
+        when:
+        def originalStream = new ByteArrayOutputStream()
+        bc.downloadStreaming(originalStream)
+
+        def bc2 = bc.createSnapshot()
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
+            .buildBlockBlobClient()
+            .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true)
+
+        then:
+        def snapshotStream = new ByteArrayOutputStream()
+        bc2.downloadStreaming(snapshotStream)
+        snapshotStream.toByteArray() == originalStream.toByteArray()
+    }
+
+    def "Download snapshot binary data"() {
+        when:
+        def originalContent = bc.downloadContent()
+
+        def bc2 = bc.createSnapshot()
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
+            .buildBlockBlobClient()
+            .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true)
+
+        then:
+        def snapshotContent = bc2.downloadContent()
+        snapshotContent.toBytes() == originalContent.toBytes()
     }
 
     def "Download to file exists"() {
