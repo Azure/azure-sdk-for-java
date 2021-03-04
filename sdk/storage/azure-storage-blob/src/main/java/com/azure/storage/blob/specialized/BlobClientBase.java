@@ -684,7 +684,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloaFluxWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+            .downloadFluxWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -718,7 +718,7 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<BlobDownloadContentResponse> download = client
-            .downloaFluxWithResponse(null, options, requestConditions, false, context)
+            .downloadFluxWithResponse(null, options, requestConditions, false, context)
             .flatMap(r ->
                 BinaryData.fromFlux(r.getValue())
                     .map(data ->

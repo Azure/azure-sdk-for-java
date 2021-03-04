@@ -939,7 +939,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloaFluxWithResponse(range, options, requestConditions, getRangeContentMd5,
+                downloadFluxWithResponse(range, options, requestConditions, getRangeContentMd5,
                     context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -967,7 +967,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                downloaFluxWithResponse(null, options, requestConditions, false,
+                downloadFluxWithResponse(null, options, requestConditions, false,
                     context)
                     .flatMap(r ->
                         BinaryData.fromFlux(r.getValue())
@@ -982,7 +982,7 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloaFluxWithResponse(BlobRange range, DownloadRetryOptions options,
+    Mono<BlobDownloadAsyncResponse> downloadFluxWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         return downloadHelper(range, options, requestConditions, getRangeContentMd5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
@@ -1217,7 +1217,7 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (range, conditions) -> this.downloaFluxWithResponse(range, downloadRetryOptions, conditions,
+            (range, conditions) -> this.downloadFluxWithResponse(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
