@@ -6,9 +6,19 @@ package com.azure.messaging.eventgrid;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedInThreadEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
@@ -76,7 +86,9 @@ import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
@@ -364,6 +376,10 @@ public final class SystemEventNames {
      */
     public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER = "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListener";
 
+    public static final String SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION = "Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications";
+
+    public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION = "Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications";
+
     // Storage events.
     /**
      * indicates an event of blob creation.
@@ -400,6 +416,27 @@ public final class SystemEventNames {
         "Microsoft.Communication.SMSDeliveryReportReceived";
     public static final String COMMUNICATION_SMS_RECEIVED =
         "Microsoft.Communication.SMSReceived";
+
+    public static final String COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD =
+        "Microsoft.Communication.ChatMessageDeletedInThread";
+    public static final String COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD =
+        "Microsoft.Communication.ChatMessageEditedInThread";
+    public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD =
+        "Microsoft.Communication.ChatMessageReceivedInThread";
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD =
+        "Microsoft.Communication.ChatParticipantAddedToThread";
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
+    public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
+        "Microsoft.Communication.ChatParticipantRemovedFromThread";
+    public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
+    public static final String COMMUNICATION_CHAT_THREAD_CREATED =
+        "Microsoft.Communication.ChatThreadCreated";
+    public static final String COMMUNICATION_CHAT_THREAD_DELETED =
+        "Microsoft.Communication.ChatThreadDeleted";
+    public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED =
+        "Microsoft.Communication.ChatThreadPropertiesUpdated";
 
     // Web
     public static final String WEB_APP_UPDATED = "Microsoft.Web.AppUpdated";
@@ -506,6 +543,8 @@ public final class SystemEventNames {
             // ServiceBus events.
             put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS, ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
             put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER, ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
+            put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
+            put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
             //
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
@@ -523,6 +562,16 @@ public final class SystemEventNames {
             put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
             put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
+            put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
+            put(COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
+            put(COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
+            put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
+            put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER, AcsChatParticipantAddedToThreadWithUserEventData.class);
+            put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
+            put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);
+            put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
+            put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
+            put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
 
             // Web events
             put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);
