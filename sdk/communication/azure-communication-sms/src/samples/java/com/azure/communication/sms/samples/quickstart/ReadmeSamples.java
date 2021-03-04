@@ -4,7 +4,6 @@ package com.azure.communication.sms.samples.quickstart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
@@ -24,18 +23,14 @@ public class ReadmeSamples {
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         //Enter your azureKeyCredential
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
-
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         // Create a new SmsClientBuilder to instantiate an SmsClient
         SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
-
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
             .credential(azureKeyCredential)
             .httpClient(httpClient);
-
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
     }
@@ -43,10 +38,8 @@ public class ReadmeSamples {
     public void createSmsClientWithConnectionString() {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         // You can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
-
         SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)
             .httpClient(httpClient)
@@ -55,33 +48,23 @@ public class ReadmeSamples {
 
     public void sendMessageToOneRecipient(SmsClient smsClient) {
         //Send an sms to only one phone number
-
-        // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
-        //additionally you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag"); /* Optional */
-
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         SmsSendResult response = smsClient.send(
             "<from-phone-number>",
             "<to-phone-number>",
             "your message",
             options /* Optional */);
-
         System.out.println("MessageId: " + response.getMessageId());
-
     }
 
     public void sendMessageToMultipleRecipients(SmsClient smsClient) {
         //Send an sms to multiple phone numbers
-
-        // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
-        //addionaly you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag"); /* Optional */
-
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
             "<from-phone-number>",
@@ -89,7 +72,6 @@ public class ReadmeSamples {
             "your message",
             options /* Optional */,
             null);
-
         for (SmsSendResult messageResponseItem : responseMultiplePhones) {
             System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
         }
