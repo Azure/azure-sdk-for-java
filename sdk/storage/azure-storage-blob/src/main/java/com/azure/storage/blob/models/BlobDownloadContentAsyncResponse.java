@@ -7,9 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Flux;
-
-import java.nio.ByteBuffer;
 
 /**
  * This class contains the response information returned from the server when downloading a blob.
