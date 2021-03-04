@@ -341,25 +341,6 @@ public class CosmosContainer {
     }
 
     /**
-     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
-     *
-     * @param <T> the type parameter.
-     * @param querySpec the query spec.
-     * @param options the options.
-     * @param classType the class type.
-     * @param feedRange the feedrange
-     * @return the {@link CosmosPagedIterable}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec,
-                                                 CosmosQueryRequestOptions options,
-                                                 Class<T> classType,
-                                                 FeedRange feedRange) {
-        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType, feedRange));
-    }
-
-
-    /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of

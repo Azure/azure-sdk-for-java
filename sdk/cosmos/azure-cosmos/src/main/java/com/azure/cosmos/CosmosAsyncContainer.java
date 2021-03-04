@@ -464,32 +464,6 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
-    /**
-     * Query for items in the current container using a {@link SqlQuerySpec} and {@link CosmosQueryRequestOptions}.
-     * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
-     * contain one or several feed response of the obtained items. In case of
-     * failure the {@link CosmosPagedFlux} will error.
-     *
-     * @param <T> the type parameter.
-     * @param querySpec the SQL query specification.
-     * @param options the query request options.
-     * @param classType the class type.
-     * @param feedRange the feedrange to query
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
-     * error.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options,
-                                             Class<T> classType, FeedRange feedRange) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
-        ModelBridgeInternal.setFeedRange(options, feedRange);
-        return queryItemsInternal(querySpec, options, classType);
-    }
-
     <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));

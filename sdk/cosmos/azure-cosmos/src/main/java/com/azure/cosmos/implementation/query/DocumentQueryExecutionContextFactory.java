@@ -142,7 +142,7 @@ public class DocumentQueryExecutionContextFactory {
             queryRanges = Collections.singletonList(range);
         }
 
-        FeedRange userProvidedFeedRange = ModelBridgeInternal.getFeedRange(cosmosQueryRequestOptions);
+        FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
         if (userProvidedFeedRange != null) {
            return queryExecutionContext.getTargetRange(collection.getResourceId(),
                                                  FeedRangeInternal.convert(userProvidedFeedRange))
