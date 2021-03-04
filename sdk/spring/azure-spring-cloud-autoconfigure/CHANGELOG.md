@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.2.0 (2021-03-03)
 ### New Features
  - Support `ServiceBusMessageConverter` as a bean to support customize `ObjectMapper`.
 
