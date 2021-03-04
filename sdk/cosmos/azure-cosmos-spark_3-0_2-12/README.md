@@ -33,6 +33,11 @@ Beta version built from `feature/cosmos/spark30` branch are available, you can r
  the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds)
 to use beta version packages.
 
+## Version Compatibility
+
+| Connector     | Spark         | Minimum Java Version | Supported Scala Versions |
+| ------------- | ------------- | -------------------- | -----------------------  |
+| 4.0.0-beta.1  | 3.1.1         |        8             | 2.12                     |
 
 ### General
 

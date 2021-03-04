@@ -5,7 +5,7 @@ Throughout this quick tutorial we rely on
 [Azure Databricks Runtime 8.0 with Spark 3.1.1](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/8.0) and
 JupyterNotebook to show how to use the Cosmos DB Spark Connector.
 
-You can use any other Spark 3.0.x spark offering as well, also you should be able to use any language supported by Spark (PySpark, Scala, Java, etc), or any Spark interface you are familiar with (Jupyter Notebook, Livy, etc).
+You can use any other Spark 3.1.1 spark offering as well, also you should be able to use any language supported by Spark (PySpark, Scala, Java, etc), or any Spark interface you are familiar with (Jupyter Notebook, Livy, etc).
 
 ### Prerequisites
 
