@@ -12,7 +12,7 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - An active Azure account. If you don't have one, you can sign up for a 
   [free account](https://azure.microsoft.com/en-us/try/cosmosdb/).
   Alternatively, you can use the
-  [use Azure Cosmos DB Emulator](local-emulator.md) for development and testing.
+  [use Azure Cosmos DB Emulator](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/local-emulator.md) for development and testing.
 - [Azure Databricks](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/8.0)
   Runtime 8.0 with Spark 3.1.1.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
@@ -48,7 +48,7 @@ cfg = {
 }
 ```
 
-see [General Configuration](./configuration-reference.md#Generic Configuration) for more detail.
+see [General Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#Generic Configuration) for more detail.
 
 You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
 Configure Catalog Api to be used
@@ -72,7 +72,7 @@ spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBL
 ```
 Cosmos Catalog API for creating container supports setting throughput and partition-key-path for the container to be created.
 
-see [Catalog API](./catalog-api.md) for more detail.
+see [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/catalog-api.md) for more detail.
 
 ### Ingest Data to Cosmos DB
 
@@ -89,7 +89,7 @@ spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "
 ```
 Note that `id` is a mandatory field for Cosmos DB.
 
-see [Write Configuration](./configuration-reference.md#write-config) for more detail.
+see [Write Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#write-config) for more detail.
 
 
 ### Query Cosmos DB
@@ -106,12 +106,12 @@ df.filter(col("isAlive") == True)\
  .show()
 ```
 
-see [Query Configuration](./configuration-reference.md#query-config) for more detail.
+see [Query Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#query-config) for more detail.
 
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 
-see [Schema Inference Configuration](./configuration-reference.md#schema-inference-config) for more detail.
+see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#schema-inference-config) for more detail.
 
 
 ### See the Schema of Data Ingested in Cosmos DB Container
@@ -128,5 +128,5 @@ df.printSchema()
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 
-see [Schema Inference Configuration](./configuration-reference.md#schema-inference-config) for more detail.
+see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#schema-inference-config) for more detail.
 
