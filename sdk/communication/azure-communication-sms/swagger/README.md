@@ -45,9 +45,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 
 ```
-
 ### Directive renaming "id" property to "identifier"
-
 ``` yaml
 directive:
     from: swagger-document
@@ -55,4 +53,3 @@ directive:
     transform: >
         $["x-ms-client-name"] = "deliveryReportEnabled";
 ```
-

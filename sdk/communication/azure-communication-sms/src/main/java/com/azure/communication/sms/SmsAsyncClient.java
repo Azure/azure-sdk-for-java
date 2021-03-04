@@ -66,15 +66,15 @@ public final class SmsAsyncClient {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            return responseMono.flatMap(operation -> {
-                List<SmsSendResult> result = convertSmsResults(operation.getValue().getValue());
-                if (result.size() == 1) {
-                    return Mono.just(result.get(0));
-                } else {
-                    return monoError(logger, new NullPointerException("no response"));
-                }
-            });
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
 
+            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
+            if (result.size() == 1) {
+                return Mono.just(result.get(0));
+            } else {
+                return monoError(logger, new NullPointerException("no response"));
+            }
         } catch (NullPointerException ex) {
             return monoError(logger, ex);
         } catch (RuntimeException  ex) {
@@ -108,18 +108,15 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
-
         SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
-
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            SmsSendResponse smsSendResponse;
-            return responseMono.flatMap(operation -> {
-                List<SmsSendResult> result = convertSmsResults(operation.getValue().getValue());
-                return Mono.just(result);
-            });
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
+            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
+            return Mono.just(result);
         } catch (NullPointerException ex) {
             return monoError(logger, ex);
         } catch (RuntimeException ex) {

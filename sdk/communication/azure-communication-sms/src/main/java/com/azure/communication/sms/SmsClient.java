@@ -96,6 +96,4 @@ public final class SmsClient {
     public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message, smsOptions).block();
     }
-
-
 }

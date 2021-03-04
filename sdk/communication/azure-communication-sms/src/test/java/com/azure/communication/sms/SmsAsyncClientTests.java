@@ -48,7 +48,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         to = new ArrayList<>();
         to.add(SMS_SERVICE_PHONE_NUMBER);
-        SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
+        SmsClientBuilder builder = getSmsClientWithToken(httpClient, tokenCredential);
         asyncClient = setupAsyncClient(builder, "sendSmsUsingTokenCredential");
         assertNotNull(asyncClient);
         Mono<Iterable<SmsSendResult>> response = asyncClient.send(SMS_SERVICE_PHONE_NUMBER, to, MESSAGE, null);
@@ -58,6 +58,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
             })
             .verifyComplete();
     }
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendToMultipleUsers(HttpClient httpClient) {
@@ -144,7 +145,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
             .expectErrorMatches(exception ->
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 400
             ).verify();
-
     }
 
     @ParameterizedTest
