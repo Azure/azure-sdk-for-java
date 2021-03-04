@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for PhoneNumberAssignmentType. */
 public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneNumberAssignmentType> {
-    /** Static value user for PhoneNumberAssignmentType. */
-    public static final PhoneNumberAssignmentType USER = fromString("user");
+    /** Static value person for PhoneNumberAssignmentType. */
+    public static final PhoneNumberAssignmentType PERSON = fromString("person");
 
     /** Static value application for PhoneNumberAssignmentType. */
     public static final PhoneNumberAssignmentType APPLICATION = fromString("application");

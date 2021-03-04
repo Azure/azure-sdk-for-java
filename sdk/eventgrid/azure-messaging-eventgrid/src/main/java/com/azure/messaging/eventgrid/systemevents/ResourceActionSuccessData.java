@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceActionSuccessData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionSuccess event. This is
+ * raised when a resource action operation succeeds.
+ */
 @Fluent
 public final class ResourceActionSuccessData {
     /*

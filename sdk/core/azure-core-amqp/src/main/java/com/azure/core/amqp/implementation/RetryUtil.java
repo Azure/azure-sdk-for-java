@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Helper class to help with retry policies.
  */
-public class RetryUtil {
+public final class RetryUtil {
     private static final double JITTER_FACTOR = 0.08;
     // Base sleep wait time.
     private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);

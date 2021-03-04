@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-resources</artifactId>
-  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+  <version>2.3.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Resource Management</name>
@@ -159,7 +159,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.github.spotbugs:spotbugs-annotations:[4.0.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -194,10 +194,6 @@
                 <regex>true</regex>
                 <code>.*</code>
                 <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
-              </item>
-
-              <item>
-                <code>java.method.returnTypeChangedCovariantly</code>
               </item>
             </revapi.ignore>
           </analysisConfiguration>

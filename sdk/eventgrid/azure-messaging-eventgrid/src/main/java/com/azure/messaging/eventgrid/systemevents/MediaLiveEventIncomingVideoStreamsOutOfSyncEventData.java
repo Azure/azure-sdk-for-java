@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaLiveEventIncomingVideoStreamsOutOfSyncEventData model. */
+/** Incoming video stream out of synch event data. */
 @Immutable
 public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
     /*

@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.servicebus.perf.core;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.servicebus.ClientFactory;
@@ -21,10 +19,8 @@ import java.util.concurrent.ExecutionException;
  * @param <TOptions> for performance configuration.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    protected static final String CONTENTS = "T1-Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private final MessagingFactory factory;
@@ -41,18 +37,16 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     public ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
+        if (connectionString == null || connectionString.length() == 0) {
+            throw new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set.");
         }
-        logger.verbose("connectionString : {}", connectionString);
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
-        if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
+        if (queueName == null || queueName.length() == 0) {
+            throw new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICEBUS_QUEUE_NAME + " must be set.");
         }
-        logger.verbose("queueName : {}", queueName);
 
         // Setup the service client
         try {
@@ -60,7 +54,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, queueName);
             this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
         } catch (ServiceBusException | InterruptedException | ExecutionException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 }

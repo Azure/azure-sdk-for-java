@@ -14,12 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -34,11 +32,9 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
  * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id,
- * client-secret, reply-url and sign-up-or-sign-in} property provided.
- * <p>
- * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by
- * specifying {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
+ * The configuration will not be activated if no {@literal azure.activedirectory.b2c.client-id,
+ * client-secret and sign-in-user-flow} property provided.
+ * </p>
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -47,8 +43,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
     prefix = AADB2CProperties.PREFIX,
     value = {
         "client-id",
-        "client-secret",
-        AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
+        "client-secret"
     }
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
@@ -99,10 +94,6 @@ public class AADB2CAutoConfiguration {
      */
     @Configuration
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-    @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX,
-                           value = "oidc-enabled",
-                           havingValue = "true",
-                           matchIfMissing = true)
     public static class AADB2COidcAutoConfiguration {
 
         private final AADB2CProperties properties;
@@ -111,31 +102,26 @@ public class AADB2CAutoConfiguration {
             this.properties = properties;
         }
 
-        private void addB2CClientRegistration(@NonNull List<ClientRegistration> registrations, String userFlow) {
-            if (StringUtils.hasText(userFlow)) {
-                registrations.add(b2cClientRegistration(userFlow));
-            }
-        }
-
         @Bean
         @ConditionalOnMissingBean
         public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
+            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignIn());
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUp());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
-
+            signUpOrSignInRegistrations.add(b2cClientRegistration(properties.getLoginFlow(),
+                properties.getUserFlows().get(properties.getLoginFlow())));
+            for (String clientName : properties.getUserFlows().keySet()) {
+                if (!clientName.equals(properties.getLoginFlow())) {
+                    otherRegistrations.add(b2cClientRegistration(clientName, properties.getUserFlows().get(clientName)));
+                }
+            }
             return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }
 
-        private ClientRegistration b2cClientRegistration(String userFlow) {
+        private ClientRegistration b2cClientRegistration(String clientName, String userFlow) {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
+                                     .clientName(clientName)
                                      .clientId(properties.getClientId())
                                      .clientSecret(properties.getClientSecret())
                                      .clientAuthenticationMethod(ClientAuthenticationMethod.POST)

@@ -15,6 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobHierarchyListSegment> {
+    /*
+     * Added as of Jackson 2.12 as empty/missing XML was no longer triggering deserialize.
+     */
+    @Override
+    public BlobHierarchyListSegment getNullValue(DeserializationContext ctxt) {
+        return new BlobHierarchyListSegment();
+    }
 
     @Override
     public BlobHierarchyListSegment deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {

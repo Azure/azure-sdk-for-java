@@ -11,7 +11,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: azsdk-pool-mms-ubuntu-1804-general
+      vmImage: MMSUbuntu18.04
 
     strategy:
       matrix:

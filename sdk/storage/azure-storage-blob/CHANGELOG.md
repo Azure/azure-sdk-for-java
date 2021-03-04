@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.11.0-beta.2 (Unreleased)
-
+- Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 

@@ -82,17 +82,17 @@ Once you have your access key and topic endpoint, you can create the publisher c
 
 Sync client that works for every Java developer:
 ```java
-EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+EventGridPublisherClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
     .credential(new AzureKeyCredential("<your event grid access key>"))
-    .buildClient();
+    .buildCloudEventPublisherClient();
 ```
 or async client if your technology stack has reactive programming such as project reactor:
 ```java
-EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
+EventGridPublisherAsyncClient<CloudEvent> egAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
     .credential(new AzureKeyCredential("<your event grid access key>"))
-    .buildAsyncClient();
+    .buildCloudEventPublisherAsyncClient();
 ```
 
 ##### Using endpoint and SAS token to create the client
@@ -101,17 +101,17 @@ limited time, you can use it to create the publisher client:
 
 Sync client:
 ```java
-EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+EventGridPublisherAsyncClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
     .credential(new AzureSasCredential("<your sas token for this event grid point>"))
-    .buildClient();
+    .buildCloudEventPublisherClient();
 ```
 Async client:
 ```java
-EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
+EventGridPublisherAsyncClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
     .credential(new AzureSasCredential("<your sas token for this event grid point>"))
-    .buildAsyncClient();
+    .buildCloudEventPublisherAsyncClient();
 ```
 
 #### Create a SAS token for other people to send events for a limited period of time
@@ -123,7 +123,7 @@ Here is sample code to create a shared access signature that expires after 20 mi
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
     
-String sasToken = EventGridSasGenerator
+String sasToken = EventGridPublisherClient
     .generateSas("<your event grid endpoint>", new AzureKeyCredential("<your event grid access key>"), expiration);
 ```
 
@@ -183,7 +183,7 @@ Note: figure out what schema (cloud event, event grid event, or custom event) th
 List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "v1"));
-egClient.sendEventGridEvents(events);
+egClient.sendEvents(events);
 ```
 
 #### Sending `CloudEvent` to a topic that accepts CloudEvent schema
@@ -192,7 +192,7 @@ egClient.sendEventGridEvents(events);
 List<CloudEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
-egClient.sendCloudEvents(events);
+egClient.sendEvents(events);
 ```
 
 #### Sending Custom Events to a topic that accepts custom event schema
@@ -211,7 +211,7 @@ List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
     .setTopic("yourtopic"));  // Set it only when you send to an event grid domain.
-egClient.sendEventGridEvents(events);
+egClient.sendEvents(events);
 ```
 
 If the domain accepts `CloudEvent` schema, the CloudEvent's attribute that is configured to map the `topic` when the 

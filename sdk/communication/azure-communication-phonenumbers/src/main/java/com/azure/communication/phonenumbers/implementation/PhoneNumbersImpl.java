@@ -7,6 +7,7 @@ package com.azure.communication.phonenumbers.implementation;
 import com.azure.communication.phonenumbers.implementation.models.AcquiredPhoneNumbers;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
@@ -15,7 +16,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUp
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -105,7 +105,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/operations/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelOperation(
                 @HostParam("endpoint") String endpoint,
@@ -123,7 +123,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Delete("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(
                 @HostParam("endpoint") String endpoint,
@@ -142,7 +142,7 @@ public final class PhoneNumbersImpl {
                 Context context);
 
         @Patch("/phoneNumbers/{phoneNumber}/capabilities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(
                 @HostParam("endpoint") String endpoint,
@@ -395,7 +395,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
@@ -414,7 +414,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
@@ -429,19 +429,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body) {
+    public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body) {
         return purchasePhoneNumbersWithResponseAsync(body)
-                .flatMap(
-                        (PhoneNumbersPurchasePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -452,19 +445,12 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body, Context context) {
+    public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body, Context context) {
         return purchasePhoneNumbersWithResponseAsync(body, context)
-                .flatMap(
-                        (PhoneNumbersPurchasePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -474,11 +460,10 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearchResult purchasePhoneNumbers(PhoneNumberPurchaseRequest body) {
-        return purchasePhoneNumbersAsync(body).block();
+    public void purchasePhoneNumbers(PhoneNumberPurchaseRequest body) {
+        purchasePhoneNumbersAsync(body).block();
     }
 
     /**
@@ -489,11 +474,10 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearchResult purchasePhoneNumbers(PhoneNumberPurchaseRequest body, Context context) {
-        return purchasePhoneNumbersAsync(body, context).block();
+    public void purchasePhoneNumbers(PhoneNumberPurchaseRequest body, Context context) {
+        purchasePhoneNumbersAsync(body, context).block();
     }
 
     /**

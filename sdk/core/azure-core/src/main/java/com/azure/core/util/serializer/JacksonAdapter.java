@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -100,6 +102,9 @@ public class JacksonAdapter implements SerializerAdapter {
              */
             .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
             .build();
+
+        this.xmlMapper.coercionConfigDefaults()
+            .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
 
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
             .addModule(FlatteningSerializer.getModule(simpleMapper()))
@@ -183,15 +188,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     public String serializeList(List<?> list, CollectionFormat format) {
-        if (list == null) {
-            return null;
-        }
-        List<String> serialized = new ArrayList<>();
-        for (Object element : list) {
-            String raw = serializeRaw(element);
-            serialized.add(raw != null ? raw : "");
-        }
-        return String.join(format.getDelimiter(), serialized);
+        return serializeIterable(list, format);
     }
 
     @Override

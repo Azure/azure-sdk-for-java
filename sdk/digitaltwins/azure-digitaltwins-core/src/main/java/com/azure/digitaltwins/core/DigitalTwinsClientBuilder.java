@@ -163,7 +163,7 @@ public final class DigitalTwinsClientBuilder {
     /**
      * Create a {@link DigitalTwinsAsyncClient} based on the builder settings.
      *
-     * @return the created synchronous DigitalTwinsAsyncClient
+     * @return the created asynchronous DigitalTwinsAsyncClient
      */
     public DigitalTwinsAsyncClient buildAsyncClient() {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");

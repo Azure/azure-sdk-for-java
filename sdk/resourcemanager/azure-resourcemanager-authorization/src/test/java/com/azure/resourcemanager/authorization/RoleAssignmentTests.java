@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
@@ -21,17 +23,34 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 
-        ResourceManagerUtils.sleep(Duration.ofSeconds(15));
+        try {
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
-        RoleAssignment roleAssignment =
+            RoleAssignment roleAssignment =
+                authorizationManager
+                    .roleAssignments()
+                    .define(roleAssignmentName)
+                    .forServicePrincipal(sp)
+                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                    .withSubscriptionScope(resourceManager.subscriptionId())
+                    .create();
+
+            Assertions.assertNotNull(roleAssignment);
+
+            List<RoleAssignment> roleAssignments = authorizationManager.roleAssignments()
+                .listByServicePrincipal(sp.id()).stream().collect(Collectors.toList());
+
+            Assertions.assertEquals(1, roleAssignments.size());
+            RoleAssignment roleAssignment1 = roleAssignments.iterator().next();
+            Assertions.assertEquals(roleAssignment.id(), roleAssignment1.id());
+            Assertions.assertEquals(roleAssignment.scope(), roleAssignment1.scope());
+            Assertions.assertEquals(roleAssignment.roleDefinitionId(), roleAssignment1.roleDefinitionId());
+            Assertions.assertEquals(roleAssignment.principalId(), roleAssignment1.principalId());
+        } finally {
+            authorizationManager.servicePrincipals().deleteById(sp.id());
             authorizationManager
-                .roleAssignments()
-                .define(roleAssignmentName)
-                .forServicePrincipal(sp)
-                .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                .withSubscriptionScope(resourceManager.subscriptionId())
-                .create();
-
-        Assertions.assertNotNull(roleAssignment);
+                .applications()
+                .deleteById(authorizationManager.applications().getByName(sp.applicationId()).id());
+        }
     }
 }

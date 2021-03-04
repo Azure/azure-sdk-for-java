@@ -31,13 +31,13 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingEndpointInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<StreamingEndpointInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, context);
-        return inner.mapPage(inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public StreamingEndpoint get(String resourceGroupName, String accountName, String streamingEndpointName) {

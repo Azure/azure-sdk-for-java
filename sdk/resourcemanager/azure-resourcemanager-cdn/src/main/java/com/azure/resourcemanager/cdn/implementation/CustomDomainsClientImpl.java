@@ -1401,7 +1401,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The JSON object that contains the properties to secure a custom domain.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1469,7 +1471,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The JSON object that contains the properties to secure a custom domain.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1536,7 +1540,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The JSON object that contains the properties to secure a custom domain.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1617,7 +1623,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The JSON object that contains the properties to secure a custom domain.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

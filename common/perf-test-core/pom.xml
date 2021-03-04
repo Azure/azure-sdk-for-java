@@ -37,7 +37,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <failOnError>false</failOnError>
         </configuration>
@@ -51,11 +51,12 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
 
                 <!-- special allowance for perf-test-core as it is not a shipping library: -->
                 <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+
+                <include>io.projectreactor:reactor-core:[3.3.12.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -68,7 +69,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.11.3</version>  <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.12.1</version>  <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.beust</groupId>
@@ -76,9 +77,9 @@
       <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
   </dependencies>
 </project>

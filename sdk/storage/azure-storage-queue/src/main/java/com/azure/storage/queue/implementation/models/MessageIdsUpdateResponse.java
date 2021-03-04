@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the update operation.
- */
-public final class MessageIdsUpdateResponse extends ResponseBase<MessageIdUpdateHeaders, Void> {
+/** Contains all response data for the update operation. */
+public final class MessageIdsUpdateResponse extends ResponseBase<MessageIdsUpdateHeaders, Void> {
     /**
      * Creates an instance of MessageIdsUpdateResponse.
      *
@@ -21,7 +19,8 @@ public final class MessageIdsUpdateResponse extends ResponseBase<MessageIdUpdate
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MessageIdsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, MessageIdUpdateHeaders headers) {
+    public MessageIdsUpdateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, MessageIdsUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

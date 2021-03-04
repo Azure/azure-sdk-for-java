@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -86,14 +86,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithToken(HttpClient httpClient) {
+    public void createUserAndToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "createUserWithTokenSync");
+        client = setupClient(builder, "createUserAndTokenSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        CommunicationUserIdentifierWithTokenResult result = client.createUserWithToken(scopes);
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
@@ -101,15 +101,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithTokenWithResponse(HttpClient httpClient) {
+    public void createUserAndTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "createUserWithTokenWithResponseSync");
+        client = setupClient(builder, "createUserAndTokenWithResponseSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         // Action & Assert
-        Response<CommunicationUserIdentifierWithTokenResult> response = 
-            client.createUserWithTokenWithResponse(scopes, Context.NONE);
-        CommunicationUserIdentifierWithTokenResult result = response.getValue();
+        Response<CommunicationUserIdentifierAndToken> response = 
+            client.createUserAndTokenWithResponse(scopes, Context.NONE);
+        CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
@@ -151,7 +151,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.issueToken(communicationUser, scopes);
+        client.getToken(communicationUser, scopes);
 
         // Action & Assert
         client.revokeTokens(communicationUser);
@@ -165,7 +165,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.issueToken(communicationUser, scopes);
+        client.getToken(communicationUser, scopes);
 
         // Action & Assert
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
@@ -174,15 +174,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void issueToken(HttpClient httpClient) {
+    public void getToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "issueTokenSync");
+        client = setupClient(builder, "getTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        AccessToken issuedToken = client.issueToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, scopes);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());
@@ -191,15 +191,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void issueTokenWithResponse(HttpClient httpClient) {
+    public void getTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "issueTokenWithResponseSync");
+        client = setupClient(builder, "getTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
         AccessToken issuedToken = issuedTokenResponse.getValue();
         assertEquals(200, issuedTokenResponse.getStatusCode(),  "Expect status code to be 200");
         assertNotNull(issuedToken.getToken());
@@ -257,7 +257,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.issueToken(communicationUser, scopes);
+        client.getToken(communicationUser, scopes);
 
         // Action & Assert
         client.revokeTokens(communicationUser);
@@ -271,7 +271,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.issueToken(communicationUser, scopes);
+        client.getToken(communicationUser, scopes);
 
         // Action & Assert
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
@@ -280,15 +280,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void issueTokenUsingManagedIdentity(HttpClient httpClient) {
+    public void getTokenUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "issueTokenUsingManagedIdentitySync");
+        client = setupClient(builder, "getTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        AccessToken issuedToken = client.issueToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, scopes);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());
@@ -297,15 +297,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void issueTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+    public void getTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "issueTokenWithResponseUsingManagedIdentitySync");
+        client = setupClient(builder, "getTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Response<AccessToken> response = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
         AccessToken issuedToken = response.getValue();
         assertEquals(200, response.getStatusCode(),  "Expect status code to be 200");
         assertNotNull(issuedToken.getToken());
