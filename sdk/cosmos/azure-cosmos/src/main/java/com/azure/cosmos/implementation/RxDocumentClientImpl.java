@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.PatchSpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
@@ -1775,7 +1774,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Patch);
         Instant serializationStartTimeUTC = Instant.now();
 
-        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(new PatchSpec(cosmosPatchOperations, options)));
+        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(cosmosPatchOperations, options));
 
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(

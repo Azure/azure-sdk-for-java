@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.PatchSpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.models.PartitionKey;
@@ -74,7 +73,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation(new PatchSpec((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions())));
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions()));
             } else {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
             }
