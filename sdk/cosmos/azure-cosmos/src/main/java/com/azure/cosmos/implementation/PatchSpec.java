@@ -13,12 +13,10 @@ import java.util.ArrayList;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class PatchSpec {
     private CosmosPatchOperations cosmosPatchOperations;
     private RequestOptions requestOptions;
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PatchSpec(CosmosPatchOperations cosmosPatchOperations) {
         checkNotNull(cosmosPatchOperations, "expected non-null patch operations.");
 
@@ -26,7 +24,6 @@ public final class PatchSpec {
         this.requestOptions = null;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PatchSpec(CosmosPatchOperations cosmosPatchOperations, RequestOptions requestOptions) {
         checkNotNull(cosmosPatchOperations, "expected non-null patch operations.");
 
@@ -39,7 +36,6 @@ public final class PatchSpec {
      *
      * @return the CosmosPatchOperations associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations getCosmosPatchOperations() {
         return this.cosmosPatchOperations;
     }
@@ -49,7 +45,6 @@ public final class PatchSpec {
      *
      * @return the RequestOptions associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public RequestOptions getRequestOptions() {
         return this.requestOptions;
     }
