@@ -3,15 +3,12 @@
 
 package com.azure.communication.sms;
 
-
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-
-
 
 /**
  * Client for sending SMS messages with Azure Communication SMS Services.
@@ -24,7 +21,6 @@ public final class SmsClient {
     SmsClient(SmsAsyncClient smsAsyncClient) {
         this.smsAsyncClient = smsAsyncClient;
     }
-
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
@@ -46,7 +42,7 @@ public final class SmsClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     *                   for this message to the Azure Resource Event Grid.
+     * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -63,13 +59,12 @@ public final class SmsClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     *                   for this message to the Azure Resource Event Grid.
+     * for this message to the Azure Resource Event Grid.
      * @param context context to use
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SmsSendResult send(String from, String to, String message,
-                              SmsSendOptions smsOptions, Context context) {
+    public SmsSendResult send(String from, String to, String message, SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message, smsOptions).block();
     }
 
@@ -86,7 +81,6 @@ public final class SmsClient {
         return smsAsyncClient.send(from, to, message).block();
     }
 
-
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
      *
@@ -99,8 +93,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message,
-                                        SmsSendOptions smsOptions, Context context) {
+    public Iterable<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions, Context context) {
         return smsAsyncClient.send(from, to, message,
             smsOptions).block();
     }

@@ -27,7 +27,6 @@ import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 
-
 public class SmsTestBase extends TestBase {
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
@@ -45,9 +44,7 @@ public class SmsTestBase extends TestBase {
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
     protected static final String SMS_SERVICE_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+18335102092");
-
-
+        .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
 
     protected static final String MESSAGE = Configuration.getGlobalConfiguration()
         .get("MESSAGE", "Hello");
@@ -60,6 +57,7 @@ public class SmsTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
+    private static Runnable exceptionThrower;
 
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential(ACCESSKEY);
@@ -161,4 +159,6 @@ public class SmsTestBase extends TestBase {
 
         return content;
     }
+
+
 }

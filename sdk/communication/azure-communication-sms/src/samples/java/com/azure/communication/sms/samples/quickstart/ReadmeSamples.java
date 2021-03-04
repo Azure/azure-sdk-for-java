@@ -3,6 +3,7 @@
 package com.azure.communication.sms.samples.quickstart;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
@@ -20,7 +21,7 @@ public class ReadmeSamples {
 
     public void createSmsClient() {
 
-        // Your can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         //Enter your azureKeyCredential
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
@@ -46,7 +47,7 @@ public class ReadmeSamples {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-        // Your can find your connection string from your resource in the Azure Portal
+        // You can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
         SmsClient smsClient = new SmsClientBuilder()
@@ -62,12 +63,12 @@ public class ReadmeSamples {
         // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
-        //addionaly you can ad a tag you wish to identify the messages for this tag.
+        //additionally you can ad a tag you wish to identify the messages for this tag.
         options.setTag("Tag"); /* Optional */
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         SmsSendResult response = smsClient.send(
-            "<leased-phone-number>",
+            "<from-phone-number>",
             to,
             "your message",
             options /* Optional */);
@@ -78,9 +79,7 @@ public class ReadmeSamples {
 
     public void sendMessageToMultipleRecipients(SmsClient smsClient) {
         //Send an sms to multiple phone numbers
-        List<String> toMultiplePhones = new ArrayList<String>();
-        toMultiplePhones.add("<to-phone-number1>");
-        toMultiplePhones.add("<to-phone-number2>");
+        List<String> toMultiplePhones = new ArrayList<String>(Arrays.asList("<to-phone-number1>", "<to-phone-number2>"));
 
         // to enable a delivery report to the Azure Event Grid
         SmsSendOptions options = new SmsSendOptions();

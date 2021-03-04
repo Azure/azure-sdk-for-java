@@ -3,7 +3,6 @@
 
 package com.azure.communication.sms;
 
-
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
 import com.azure.communication.sms.implementation.models.SendMessageRequest;
@@ -15,12 +14,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
-
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Objects;
 import reactor.core.publisher.Mono;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -64,32 +61,27 @@ public final class SmsAsyncClient {
     public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions smsOptions) {
         List<String> recipients = new ArrayList<String>();
         recipients.add(to);
-
         SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
 
         try {
+            Objects.requireNonNull(from, "'from' cannot be null.");
+            Objects.requireNonNull(to, "'to' cannot be null.");
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
 
-            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
+            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
             if (result.size() == 1) {
                 return Mono.just(result.get(0));
             } else {
                 return monoError(logger, new NullPointerException("no response"));
             }
-
         } catch (NullPointerException ex) {
             return monoError(logger, ex);
-        } catch (RuntimeException ex) {
+        } catch (RuntimeException  ex) {
             return monoError(logger, ex);
         }
-
-
     }
-
-
-
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
@@ -101,8 +93,6 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
-
-
         return send(from, to, message, null);
     }
 
@@ -113,7 +103,7 @@ public final class SmsAsyncClient {
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     *                   for this message to the Azure Resource Event Grid
+     * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -122,6 +112,8 @@ public final class SmsAsyncClient {
         SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
 
         try {
+            Objects.requireNonNull(from, "'from' cannot be null.");
+            Objects.requireNonNull(to, "'to' cannot be null.");
             Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
             Response<SmsSendResponse> response = responseMono.block();
             SmsSendResponse smsSendResponse = response.getValue();
@@ -134,10 +126,7 @@ public final class SmsAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-
-
     }
-
 
     private List<SmsSendResult>  convertSmsResults(Iterable<SmsSendResponseItem> resultsIterable) {
         List <SmsSendResult> iterableWrapper = new ArrayList<>();
@@ -149,23 +138,16 @@ public final class SmsAsyncClient {
         return iterableWrapper;
     }
 
-    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message,
-                                                        SmsSendOptions smsOptions) {
+    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions smsOptions) {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
         for (String s : smsRecipient) {
             recipients.add(new SmsRecipient().setTo(s));
         }
-        request.setFrom(from);
-        request.setSmsRecipients(recipients);
-        request.setMessage(message);
-        request.setSmsSendOptions(smsOptions);
-
+        request.setFrom(from)
+            .setSmsRecipients(recipients)
+            .setMessage(message)
+            .setSmsSendOptions(smsOptions);
         return request;
-
     }
-
-
-
-
 }

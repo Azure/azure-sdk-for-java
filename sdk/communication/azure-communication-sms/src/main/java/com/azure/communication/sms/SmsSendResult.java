@@ -21,8 +21,6 @@ public final class SmsSendResult {
         this.result = item;
     }
 
-
-
     /**
      * Get the to property: The recipient's phone number in E.164 format.
      *
@@ -31,8 +29,6 @@ public final class SmsSendResult {
     public String getTo() {
         return result.getTo();
     }
-
-
 
     /**
      * Get the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
@@ -43,8 +39,6 @@ public final class SmsSendResult {
         return result.getMessageId();
     }
 
-
-
     /**
      * Get the httpStatusCode property: HTTP Status code.
      *
@@ -53,8 +47,6 @@ public final class SmsSendResult {
     public int getHttpStatusCode() {
         return result.getHttpStatusCode();
     }
-
-
 
     /**
      * Get the successful property: Indicates if the message is processed successfully or not.
@@ -65,8 +57,6 @@ public final class SmsSendResult {
         return result.isSuccessful();
     }
 
-
-
     /**
      * Get the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
      *
@@ -75,6 +65,5 @@ public final class SmsSendResult {
     public String getErrorMessage() {
         return result.getErrorMessage();
     }
-
 
 }

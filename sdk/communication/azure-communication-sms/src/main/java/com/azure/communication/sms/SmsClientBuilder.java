@@ -126,7 +126,6 @@ public final class SmsClientBuilder {
         return this;
     }
 
-
     /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
@@ -263,9 +262,6 @@ public final class SmsClientBuilder {
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
-
-
-
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,
                                             HttpPipelinePolicy authorizationPolicy,

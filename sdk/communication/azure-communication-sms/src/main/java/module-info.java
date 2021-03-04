@@ -5,7 +5,6 @@ module com.azure.communication.sms {
 
     requires transitive com.azure.communication.common;
 
-
     // public API surface area
     exports com.azure.communication.sms;
     exports com.azure.communication.sms.models;

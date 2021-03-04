@@ -7,7 +7,7 @@
 - Send method series in SmsClient are idempotent under retry policy.
 
 ### Breaking Change
-- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message)`
+- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message)` 
 - Replaced `SendSmsResponse` with `SmsSendResult`
 - Added `SmsOptions`
 
