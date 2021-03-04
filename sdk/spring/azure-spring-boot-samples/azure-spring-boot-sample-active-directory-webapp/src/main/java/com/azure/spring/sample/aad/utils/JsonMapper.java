@@ -3,7 +3,6 @@
 
 package com.azure.spring.sample.aad.utils;
 
-import com.azure.spring.sample.aad.controller.ClientController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 
 public class JsonMapper {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonMapper.class);
     private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     public static final String toJsonString(OAuth2AuthorizedClient authorizedClient) {

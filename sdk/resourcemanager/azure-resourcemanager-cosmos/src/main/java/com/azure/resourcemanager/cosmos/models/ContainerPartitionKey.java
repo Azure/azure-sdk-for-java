@@ -22,7 +22,9 @@ public final class ContainerPartitionKey {
     private List<String> paths;
 
     /*
-     * Indicates the kind of algorithm used for partitioning
+     * Indicates the kind of algorithm used for partitioning. For MultiHash,
+     * multiple partition keys (upto three maximum) are supported for container
+     * create
      */
     @JsonProperty(value = "kind")
     private PartitionKind kind;
@@ -32,6 +34,12 @@ public final class ContainerPartitionKey {
      */
     @JsonProperty(value = "version")
     private Integer version;
+
+    /*
+     * Indicates if the container is using a system generated partition key
+     */
+    @JsonProperty(value = "systemKey", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean systemKey;
 
     /**
      * Get the paths property: List of paths using which data within the container can be partitioned.
@@ -54,7 +62,8 @@ public final class ContainerPartitionKey {
     }
 
     /**
-     * Get the kind property: Indicates the kind of algorithm used for partitioning.
+     * Get the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
+     * keys (upto three maximum) are supported for container create.
      *
      * @return the kind value.
      */
@@ -63,7 +72,8 @@ public final class ContainerPartitionKey {
     }
 
     /**
-     * Set the kind property: Indicates the kind of algorithm used for partitioning.
+     * Set the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
+     * keys (upto three maximum) are supported for container create.
      *
      * @param kind the kind value to set.
      * @return the ContainerPartitionKey object itself.
@@ -91,6 +101,15 @@ public final class ContainerPartitionKey {
     public ContainerPartitionKey withVersion(Integer version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Get the systemKey property: Indicates if the container is using a system generated partition key.
+     *
+     * @return the systemKey value.
+     */
+    public Boolean systemKey() {
+        return this.systemKey;
     }
 
     /**

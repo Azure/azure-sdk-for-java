@@ -1,13 +1,12 @@
 trigger: none
 
 stages:
-    # When migrating change path to ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
+    # When migrating change path to /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
     parameters:
       # When migrating use ServiceDirectory
       PomFilePath: './storage/data-plane/pom.xml'
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         MICROSOFT_AD_TENANT_ID: $(microsoft-active-directory-tenant-id)
         PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
         PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)

@@ -60,7 +60,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .createAsync();
         StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
-        Assertions.assertEquals(SkuName.STANDARD_GRS, storageAccount.skuType().name());
+        Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccount.skuType().name());
         Assertions.assertTrue(storageAccount.isHnsEnabled());
         // Assertions.assertFalse(storageAccount.isAzureFilesAadIntegrationEnabled());
         // List

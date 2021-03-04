@@ -1,7 +1,11 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
 
+
+## 2.2.0 (2021-02-24)
+
+- Improved performance on `PrivateDnsZone` update
 
 ## 2.1.0 (2020-11-24)
 

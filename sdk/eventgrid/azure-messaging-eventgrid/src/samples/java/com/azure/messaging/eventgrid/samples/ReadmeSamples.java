@@ -6,19 +6,17 @@ package com.azure.messaging.eventgrid.samples;
 import com.azure.core.credential.AzureKeyCredential;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.EventGridSasGenerator;
 import com.azure.messaging.eventgrid.SystemEventNames;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
@@ -36,49 +34,51 @@ public class ReadmeSamples {
 
     private final String endpoint = "endpoint";
     private final String key = "key";
-    private final EventGridPublisherClient egClient = new EventGridPublisherClientBuilder().buildClient();
+    private final EventGridPublisherClient<EventGridEvent> egClient = new EventGridPublisherClientBuilder().buildEventGridEventPublisherClient();
+    private final EventGridPublisherClient<CloudEvent> cloudClient = new EventGridPublisherClientBuilder().buildCloudEventPublisherClient();
     private final String jsonData = "Json encoded event";
 
     public void createPublisherClient() {
-        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<EventGridEvent> egClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
-            .buildClient();
+            .buildEventGridEventPublisherClient();
     }
 
     public void createAsyncPublisherClient() {
-        EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherAsyncClient<EventGridEvent> egAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
-            .buildAsyncClient();
+            .buildEventGridEventPublisherAsyncClient();
     }
 
     public void createPublisherClientWithSAS() {
-        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureSasCredential(key))
-            .buildClient();
+            .buildCloudEventPublisherClient();
     }
 
     public void createAsyncPublisherClientWithSAS() {
-        EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherAsyncClient<CloudEvent> egAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureSasCredential(key))
-            .buildAsyncClient();
+            .buildCloudEventPublisherAsyncClient();
     }
 
     public void sendEventGridEventsToTopic() {
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
-        egClient.sendEventGridEvents(events);
+        egClient.sendEvents(events);
     }
 
     public void sendCloudEventsToTopic() {
         List<CloudEvent> events = new ArrayList<>();
         User user = new User("John", "James");
-        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
-        egClient.sendCloudEvents(events);
+        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
+            BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
+        cloudClient.sendEvents(events);
     }
 
     public void deserializeEventGridEvent() {
@@ -121,7 +121,7 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String sasToken = EventGridSasGenerator
+        String sasToken = EventGridPublisherClient
             .generateSas(endpoint, new AzureKeyCredential(key), expiration);
     }
 
@@ -131,7 +131,7 @@ public class ReadmeSamples {
         events.add(
             new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
                 .setTopic("yourtopic"));
-        egClient.sendEventGridEvents(events);
+        egClient.sendEvents(events);
     }
 
     public void systemEventDataSampleCode() {

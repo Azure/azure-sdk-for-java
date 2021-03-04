@@ -439,7 +439,8 @@ public final class RntbdConstants {
 
         Invalid((byte) 0x00),
         ResourceId((byte) 0x01),
-        EffectivePartitionKey((byte) 0x02);
+        EffectivePartitionKey((byte) 0x02),
+        EffectivePartitionKeyRange((byte) 0x03);
 
         private final byte id;
 

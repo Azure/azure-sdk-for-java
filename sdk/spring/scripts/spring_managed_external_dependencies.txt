@@ -1555,6 +1555,7 @@ org.springframework.boot:spring-boot-autoconfigure-processor;2.3.5.RELEASE
 org.springframework.boot:spring-boot-buildpack-platform;2.3.5.RELEASE
 org.springframework.boot:spring-boot-configuration-metadata;2.3.5.RELEASE
 org.springframework.boot:spring-boot-configuration-processor;2.3.5.RELEASE
+org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
 org.springframework.boot:spring-boot-devtools;2.3.5.RELEASE
 org.springframework.boot:spring-boot-jarmode-layertools;2.3.5.RELEASE
 org.springframework.boot:spring-boot-loader;2.3.5.RELEASE
@@ -1660,6 +1661,7 @@ org.springframework.cloud:spring-cloud-contract-stub-runner;2.2.4.RELEASE
 org.springframework.cloud:spring-cloud-contract-stub-runner-boot;2.2.4.RELEASE
 org.springframework.cloud:spring-cloud-contract-verifier;2.2.4.RELEASE
 org.springframework.cloud:spring-cloud-contract-wiremock;2.2.4.RELEASE
+org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8
 org.springframework.cloud:spring-cloud-function-adapter-aws;3.0.10.RELEASE
 org.springframework.cloud:spring-cloud-function-adapter-azure;3.0.10.RELEASE
 org.springframework.cloud:spring-cloud-function-adapter-gcp;3.0.10.RELEASE

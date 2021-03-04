@@ -11,7 +11,9 @@ import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +49,8 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+    private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
@@ -88,13 +92,13 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            PRODUCT, CLIENT_VERSION, connectionOptions, null));
+            PRODUCT, CLIENT_VERSION, connectionOptions, null, peerDetails));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(null,
-            PRODUCT, CLIENT_VERSION, connectionOptions, PROXY_CONFIGURATION));
+            PRODUCT, CLIENT_VERSION, connectionOptions, PROXY_CONFIGURATION, peerDetails));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            PRODUCT, CLIENT_VERSION, connectionOptions, null));
+            PRODUCT, CLIENT_VERSION, connectionOptions, null, peerDetails));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            PRODUCT, CLIENT_VERSION, connectionOptions, null));
+            PRODUCT, CLIENT_VERSION, connectionOptions, null, peerDetails));
     }
 
     /**
@@ -107,7 +111,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
-            PROXY_CONFIGURATION);
+            PROXY_CONFIGURATION, peerDetails);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -126,7 +130,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
-            ProxyOptions.SYSTEM_DEFAULTS);
+            ProxyOptions.SYSTEM_DEFAULTS, peerDetails);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -149,7 +153,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
-            proxyOptions);
+            proxyOptions, peerDetails);
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());

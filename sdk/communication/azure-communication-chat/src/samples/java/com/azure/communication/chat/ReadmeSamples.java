@@ -71,11 +71,11 @@ public class ReadmeSamples {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
-            .setUser(user1)
+            .setCommunicationIdentifier(user1)
             .setDisplayName("Participant Display Name 1");
 
         ChatParticipant secondParticipant = new ChatParticipant()
-            .setUser(user2)
+            .setCommunicationIdentifier(user2)
             .setDisplayName("Participant Display Name 2");
 
         participants.add(firstParticipant);
@@ -208,7 +208,7 @@ public class ReadmeSamples {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(chatParticipant -> {
-                System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
+                System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
             });
         });
     }
@@ -225,11 +225,11 @@ public class ReadmeSamples {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
-            .setUser(user1)
+            .setCommunicationIdentifier(user1)
             .setDisplayName("Display Name 1");
 
         ChatParticipant secondParticipant = new ChatParticipant()
-            .setUser(user2)
+            .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
 
         participants.add(firstParticipant);

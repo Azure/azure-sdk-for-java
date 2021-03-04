@@ -59,6 +59,12 @@ public final class TasksStateTasks {
     @JsonProperty(value = "keyPhraseExtractionTasks")
     private List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks;
 
+    /*
+     * The entityLinkingTasks property.
+     */
+    @JsonProperty(value = "entityLinkingTasks")
+    private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
+
     /**
      * Get the details property: The details property.
      *
@@ -219,6 +225,26 @@ public final class TasksStateTasks {
     public TasksStateTasks setKeyPhraseExtractionTasks(
             List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
+        return this;
+    }
+
+    /**
+     * Get the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @return the entityLinkingTasks value.
+     */
+    public List<TasksStateTasksEntityLinkingTasksItem> getEntityLinkingTasks() {
+        return this.entityLinkingTasks;
+    }
+
+    /**
+     * Set the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @param entityLinkingTasks the entityLinkingTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
+        this.entityLinkingTasks = entityLinkingTasks;
         return this;
     }
 }

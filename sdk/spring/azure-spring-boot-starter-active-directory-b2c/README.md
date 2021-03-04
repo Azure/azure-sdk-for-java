@@ -12,6 +12,7 @@ while protecting the identities of your customers at the same time.
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ### Include the package
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
@@ -19,7 +20,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -43,7 +44,7 @@ while protecting the identities of your customers at the same time.
 
 1. Select **Azure AD B2C** from the portal menu, click **Applications**, and then click **Add**.
 
-2. Specify your application **Name**, add `https://localhost:8080/home` for the **Reply URL**, record the
+2. Specify your application **Name**, add `http://localhost:8080/login/oauth2/code/` for the **Reply URL**, record the
 **Application ID** as your `${your-client-id}` and then click **Save**.
 
 3. Select **Keys** from your application, click **Generate key** to generate `${your-client-secret}` and then **Save**.
@@ -67,12 +68,11 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
    | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
    | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
+   | `azure.activedirectory.b2c.login-flow` | The key name of sign in user flow. |
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
    | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
-   | `azure.activedirectory.b2c.user-flows.sign-up-or-sign-in` | The name of the **sign up and sign in** user flow. |
-   | `azure.activedirectory.b2c.user-flows.profile-edit` | The name of the **profile editing** user flow. |
-   | `azure.activedirectory.b2c.user-flows.password-reset` | The name of the **password reset** user flow. |
+   | `azure.activedirectory.b2c.user-flows` | A map to list all user flows defined on Azure Portal.  |
+   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
    
 ## Examples
 ### Configure and compile your app
@@ -108,19 +108,18 @@ This starter provides following properties to be customized:
    azure:
      activedirectory:
        b2c:
-         base-uri: ${your-tenant-authorization-server-base-uri}
-         client-id: ${your-client-id}
-         client-secret: ${your-client-secret}
-         logout-success-url: ${you-logout-success-url}
-         user-name-attribute-name: ${your-user-name-attribute-name}
-         user-flows:
-           sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
-           profile-edit: ${your-profile-edit-user-flow}     # optional
-           password-reset: ${your-password-reset-user-flow} # optional
          authenticate-additional-parameters: 
            domain_hint: xxxxxxxxx         # optional
            login_hint: xxxxxxxxx          # optional
            prompt: [login,none,consent]   # optional
+         base-uri: ${your-tenant-authorization-server-base-uri}
+         client-id: ${your-client-id}
+         client-secret: ${your-client-secret}
+         login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
+         logout-success-url: ${you-logout-success-url}
+         user-flows:
+           ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
+         user-name-attribute-name: ${your-user-name-attribute-name}
    ```
 7. Save and close the *application.yml* file.
 
@@ -129,7 +128,7 @@ This starter provides following properties to be customized:
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L18-L50 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2CWebController.java#L18-L36 -->
 ```java
 @Controller
 public class AADB2CWebController {
@@ -138,29 +137,15 @@ public class AADB2CWebController {
         if (token != null) {
             final OAuth2User user = token.getPrincipal();
 
-            model.addAttribute("grant_type", user.getAuthorities());
             model.addAllAttributes(user.getAttributes());
+            model.addAttribute("grant_type", user.getAuthorities());
+            model.addAttribute("name", user.getName());
         }
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = { "/", "/home" })
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
-        return "home";
-    }
-
-    @GetMapping(value = "/greeting")
-    public String greeting(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
-        return "greeting";
-    }
-
-    @GetMapping(value = "/home")
-    public String home(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
         return "home";
     }
 }
@@ -171,7 +156,7 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2COidcLoginConfigSample.java#L17-L34 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L17-L36 -->
 ```java
 @EnableWebSecurity
 public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
@@ -184,15 +169,17 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
             .apply(configurer);
+        // @formatter:on
     }
 }
 ```
-14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
+14. Copy the `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
 `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
 respectively that completed earlier.
 
@@ -210,7 +197,7 @@ respectively that completed earlier.
 3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
-4. Click linke with name of `${your-sign-up-or-in}` user flow, you should be rediected Azure AD B2C to start the authentication process.
+4. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
@@ -249,3 +236,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+

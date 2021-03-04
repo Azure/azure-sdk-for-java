@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementa
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Resource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
@@ -85,6 +86,10 @@ public abstract class TopLevelModifiableResourcesImpl<
 
     @Override
     public PagedFlux<T> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 

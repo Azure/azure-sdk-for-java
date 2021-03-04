@@ -3,8 +3,6 @@
 
 package com.azure.communication.chat.implementation;
 
-import java.util.concurrent.ExecutionException;
-
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -31,12 +29,6 @@ public class CommunicationBearerTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        try {
-            return credential.getToken();
-        } catch (InterruptedException ex) {
-            return Mono.error(ex);
-        } catch (ExecutionException ex) {
-            return Mono.error(ex);
-        }
+        return credential.getToken();
     }
 }

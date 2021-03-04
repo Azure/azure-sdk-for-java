@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -51,10 +51,13 @@ public final class ChatMessage {
     private OffsetDateTime createdOn;
 
     /*
-     * The chat message sender.
+     * Identifies a participant in Azure Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This
+     * model must be interpreted as a union: Apart from rawId, at most one
+     * further property may be set.
      */
-    @JsonProperty(value = "sender")
-    private CommunicationUserIdentifier sender;
+    @JsonProperty(value = "senderCommunicationIdentifier")
+    private CommunicationIdentifier senderCommunicationIdentifier;
 
     /*
      * The timestamp when the chat message was deleted. The timestamp is in
@@ -199,22 +202,26 @@ public final class ChatMessage {
     }
 
     /**
-     * Get the sender property: The chat message sender.
+     * Get the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @return the sender value.
+     * @return the senderCommunicationIdentifier value.
      */
-    public CommunicationUserIdentifier getSender() {
-        return this.sender;
+    public CommunicationIdentifier getSenderCommunicationIdentifier() {
+        return this.senderCommunicationIdentifier;
     }
 
     /**
-     * Set the senderId property: The chat message sender.
+     * Set the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @param sender the sender value to set.
+     * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setSender(CommunicationUserIdentifier sender) {
-        this.sender = sender;
+    public ChatMessage setSenderCommunicationIdentifier(CommunicationIdentifier senderCommunicationIdentifier) {
+        this.senderCommunicationIdentifier = senderCommunicationIdentifier;
         return this;
     }
 

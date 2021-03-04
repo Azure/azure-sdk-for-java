@@ -264,6 +264,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(CosmosPatchItemRequestOptions cosmosPatchItemRequestOptions) {
+        return cosmosPatchItemRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemRequestOptions createCosmosItemRequestOptions(PartitionKey partitionKey) {
         return new CosmosItemRequestOptions(partitionKey);
     }
@@ -830,5 +835,15 @@ public final class ModelBridgeInternal {
 
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setFeedRange(CosmosQueryRequestOptions options, FeedRange feedRange) {
+        options.setFeedRange(feedRange);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static FeedRange getFeedRange(CosmosQueryRequestOptions options) {
+        return options.getFeedRange();
     }
 }
