@@ -19,16 +19,16 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 link the SLF4J API with the logging implementation of your choice. See
 the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
-You need a a Spark 3.0.1 Environment.
+You need a Spark 3.0.1 Environment.
 
 Install Cosmos DB Spark Connector, in your spark Cluster `azure-cosmos-spark_3-0_2-12-4.0.0-beta.1.jar`
 
 [//]: # (//TODO: moderakh add maven coordinates once published)
 
+The getting started guide is based on PySpark however you can use the equivalent scala version as well.
+You can run the following code snippet in an Azure Databricks PySpark notebook.
 
 ### Create Cosmos DB Database and Container
-
-You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
 
 Set Cosmos DB account credentials, and the Cosmos DB Database name and container name.
 ```python
@@ -47,7 +47,9 @@ cfg = {
 
 see [General Configuration](./configuration-reference.md#Generic Configuration) for more detail.
 
-configure Catalog Api to be used
+You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
+
+Configure Catalog Api to be used
 ```python
 # create Cosmos Database and Cosmos Container using Catalog APIs
 spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
@@ -57,7 +59,6 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 
 Create a Cosmos DB database
 ```python
-
 # create a cosmos database
 spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(cosmosDatabaseName))
 ```
@@ -73,7 +74,7 @@ see [Catalog API](./catalog-api.md) for more detail.
 
 ### Ingest Data to Cosmos DB
 
-The name of the Cosmos DB Data Source is "cosmos.items". following shows how you can write an memory dataframe consisting of two items to Cosmos DB.
+The name of the Cosmos DB Data Source is "cosmos.items". following shows how you can write a memory dataframe consisting of two items to Cosmos DB.
 ```python
 spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "Schrodinger cat", 2, False)))\
   .toDF("id","name","age","isAlive") \
@@ -116,5 +117,5 @@ df.printSchema()
 Note when running queries unless if are interested to get back the raw json payload
 we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 
-see [General Configuration](./configuration-reference.md#schema-inference-config) for more detail.
+see [Schema Inference Configuration](./configuration-reference.md#schema-inference-config) for more detail.
 

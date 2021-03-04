@@ -11,13 +11,13 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", REPLAC
 Create a Database
 ```python
 # create a cosmos database
-spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(cosmosDatabaseName))
+spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(REPLACEME))
 ```
 
 Create a Cosmos DB container:
 ```python
-# create a cosmos container
-spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(cosmosDatabaseName, cosmosContainerName))
+# create a cosmos container with the specified partition key path and throughput
+spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(REPLACEME, REPLACEME))
 ```
 
 Supported Configuration in `TBLPROPERTIES`
@@ -25,6 +25,6 @@ Supported Configuration in `TBLPROPERTIES`
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `partitionKeyPath`     | None    | Specifies the Partition Key Path for the new Cosmos DB Container. This is a mandatory option|
-| `manualThroughput`      | None    | Specifies the manual throughput for the new Cosmos DB Container |  |
+| `manualThroughput`     | None    | Specifies the manual throughput for the new Cosmos DB Container |  |
 
 
