@@ -2,11 +2,11 @@
 
 The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub). 
 
-  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk) | [Product documentation](https://docs.microsoft.com/en-us/azure/iot-hub-device-update/understand-device-update)
+  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
 
 ## Getting started
 
-The complete Microsoft Azure SDK can be downloaded from the [Microsoft Azure Downloads](https://azure.microsoft.com/en-us/downloads/?sdk=java) page and ships with support for building deployment packages, integrating with tooling, rich command line tooling, and more.
+The complete Microsoft Azure SDK can be downloaded from the [Microsoft Azure Downloads](https://azure.microsoft.com/downloads/?sdk=java) page and ships with support for building deployment packages, integrating with tooling, rich command line tooling, and more.
 
 For the best development experience, developers should use the official Microsoft NuGet packages for libraries. NuGet packages are regularly updated with new functionality and hotfixes.
 
@@ -31,7 +31,7 @@ For the best development experience, developers should use the official Microsof
 
 ### Authenticate the client
 
-In order to interact with the Device Update for IoT Hub service, you will need to create an instance of a [TokenCredential class](https://docs.microsoft.com/en-us/dotnet/api/azure.core.tokencredential?view=azure-dotnet) and pass it to the constructor of your AzureDeviceUpdateClientBuilder class.
+In order to interact with the Device Update for IoT Hub service, you will need to create an instance of a [TokenCredential class](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) and pass it to the constructor of your AzureDeviceUpdateClientBuilder class.
 
 ## Key concepts
 
@@ -45,7 +45,7 @@ You can learn more about Device Update for IoT Hub by visiting [Device Update fo
 
 ## Examples
 
-You can familiarize yourself with different APIs using [Samples](./src/samples).
+You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples).
 
 ## Troubleshooting
 
@@ -73,13 +73,15 @@ Get started with our [Device Update for IoT Hub samples](./src/samples)
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com.>
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[cla]: https://cla.microsoft.com
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdeviceupdate%2Fazure-iot-deviceupdate%2FREADME.png)
