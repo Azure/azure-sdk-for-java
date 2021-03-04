@@ -106,10 +106,9 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 - `chat` (Chat)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L125 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L124 -->
 ```java
-List<CommunicationTokenScope> scopes =
-    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
 AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
 System.out.println("User token value: " + userToken.getToken());
@@ -134,8 +133,8 @@ Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L138-L139 -->
 ```java
-// revoke tokens issued for the specified user
-communicationIdentityClient.revokeTokens(user);
+    communicationIdentityClient.revokeTokens(user);
+}
 ```
 
 ### Deleting a user
@@ -143,8 +142,8 @@ Use the `deleteUser` function to delete a user.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L148-L149 -->
 ```java
-// delete a previously created user
-communicationIdentityClient.deleteUser(user);
+    communicationIdentityClient.deleteUser(user);
+}
 ```
 
 ## Troubleshooting
@@ -152,10 +151,10 @@ communicationIdentityClient.deleteUser(user);
 All user token service operations will throw an exception on failure.
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L157-L161 -->
 ```java
-try {
-    CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-} catch (RuntimeException ex) {
-    System.out.println(ex.getMessage());
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+    } catch (RuntimeException ex) {
+        System.out.println(ex.getMessage());
+    }
 }
 ```
 
