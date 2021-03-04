@@ -66,6 +66,14 @@ public class SmsClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void builderServiceVersion(HttpClient httpClient) {
+
+        assertNotNull(SmsServiceVersion.getLatest());
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void builderNotRetryPolicy(HttpClient httpClient) {
 
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
