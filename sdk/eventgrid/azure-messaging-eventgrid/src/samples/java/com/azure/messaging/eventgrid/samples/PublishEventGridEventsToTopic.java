@@ -26,7 +26,7 @@ public class PublishEventGridEventsToTopic {
             .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_EVENT_KEY")))
             .buildEventGridEventPublisherClient();
 
-        // Create a CloudEvent with String data
+        // Create a EventGridEvent with String data
         String str = "FirstName: John1, LastName: James";
         EventGridEvent eventJson = new EventGridEvent("com/example/MyApp", "User.Created.Text", BinaryData.fromObject(str), "0.1");
         // Create a CloudEvent with Object data

@@ -33,8 +33,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,8 +55,6 @@ public final class EventGridPublisherAsyncClient<T> {
     private final String hostname;
 
     private final EventGridPublisherClientImpl impl;
-
-    private final EventGridServiceVersion serviceVersion;
 
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
@@ -79,7 +77,6 @@ public final class EventGridPublisherAsyncClient<T> {
 
         // currently the service version is hardcoded into the Impl client, but once another service version gets
         // released we should add this to the impl builder options
-        this.serviceVersion = serviceVersion;
 
         this.hostname = hostname;
         this.eventDataSerializer = eventDataSerializer;
@@ -183,14 +180,17 @@ public final class EventGridPublisherAsyncClient<T> {
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
-     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events) {
+        return withContext(context -> this.sendEventsWithResponse(events, context));
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
         if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
@@ -209,7 +209,7 @@ public final class EventGridPublisherAsyncClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvent(T event) {
-        List<T> events = Arrays.asList(event);
+        List<T> events = Collections.singletonList(event);
         return withContext(context -> sendEvents(events, context));
     }
 

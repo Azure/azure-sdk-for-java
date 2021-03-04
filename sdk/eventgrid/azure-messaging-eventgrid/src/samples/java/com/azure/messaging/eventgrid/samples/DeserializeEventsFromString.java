@@ -67,9 +67,9 @@ public class DeserializeEventsFromString {
         System.out.println(dataMap);
         System.out.println();
 
-        System.out.println("Deserialize data to a String:");
-        String dataString = eventData.toString();
-        System.out.println(dataString);
+        System.out.println("Deserialize data to a String in Json literal:");
+        String dataInJsonString = eventData.toString();
+        System.out.println(dataInJsonString);
         System.out.println();
 
         System.out.println("Deserialize data to byte[]");

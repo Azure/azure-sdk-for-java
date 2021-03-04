@@ -28,6 +28,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
+import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
