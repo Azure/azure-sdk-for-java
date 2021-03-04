@@ -20,10 +20,10 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
-    private Converter<Jwt, Collection<GrantedAuthority>> converter
-        = new JwtGrantedAuthoritiesConverter();
+    private Converter<Jwt, Collection<GrantedAuthority>> converter;
 
     public AADJwtBearerTokenAuthenticationConverter() {
+        this.converter = new AADJwtGrantedAuthoritiesConverter();
     }
 
     public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
@@ -51,10 +51,5 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
         return new BearerTokenAuthentication(principal, accessToken, authorities);
-    }
-
-    public void setJwtGrantedAuthoritiesConverter(
-        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
-        this.converter = jwtGrantedAuthoritiesConverter;
     }
 }
