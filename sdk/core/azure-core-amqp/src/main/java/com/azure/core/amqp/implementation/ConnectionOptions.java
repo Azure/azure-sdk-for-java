@@ -24,9 +24,9 @@ import java.util.stream.StreamSupport;
 @Immutable
 public class ConnectionOptions {
     // These name version keys are used in our properties files to specify client product and version information.
-    private static final String NAME_KEY = "name";
-    private static final String VERSION_KEY = "version";
-    private static final String UNKNOWN = "UNKNOWN";
+    static final String NAME_KEY = "name";
+    static final String VERSION_KEY = "version";
+    static final String UNKNOWN = "UNKNOWN";
 
     private final TokenCredential tokenCredential;
     private final AmqpTransportType transport;
