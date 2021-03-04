@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class PatchUtil {
 
-    public static <T> JsonSerializable serializableBatchPatchOperation(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
+    public static JsonSerializable serializableBatchPatchOperation(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
         return cosmosPatchToJsonSerializable(patchOperations, requestOptions);
     }
 
