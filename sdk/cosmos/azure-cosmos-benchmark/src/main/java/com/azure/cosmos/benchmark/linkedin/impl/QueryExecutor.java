@@ -75,7 +75,7 @@ class QueryExecutor<K, V> {
             .setMaxBufferedItemCount(-1);
         final CollectionKey activeCollection = _dataLocator.getCollection();
 
-        _metrics.logCounterMetric(Constants.CALL_COUNT_TOTAL);
+        _metrics.logCounterMetric(Metrics.MetricType.CALL_COUNT);
         final String query = queryOptions.getDocumentDBQuery();
         long startTime = _clock.millis();
 
