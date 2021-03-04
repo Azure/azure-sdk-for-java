@@ -736,8 +736,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             IDocumentQueryClient queryClient,
             UUID activityId) {
 
-        SqlQuerySpecLogger.getInstance().logQuery(sqlQuery);
-
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery,
@@ -2205,6 +2203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
                                                              CosmosQueryRequestOptions options) {
+        SqlQuerySpecLogger.getInstance().logQuery(querySpec);
         return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
     }
 
