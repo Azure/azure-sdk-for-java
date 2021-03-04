@@ -11,12 +11,7 @@ parameters:
   Condition: succeeded() # If you want to run on failure for the link checker, set it to `Condition: succeededOrFailed()`.
 
 steps:
-  - pwsh: |
-      $setDefaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
-      Write-Host $setDefaultBranch
-      echo "##vso[task.setvariable variable=DefaultBranch]$setDefaultBranch"
-    displayName: "Setup Default Branch"
-    condition: eq(variables['DefaultBranch'], '')
+  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
   - task: PowerShell@2
     displayName: Link verification check
     condition: ${{ parameters.Condition }}
