@@ -226,7 +226,6 @@ public class IdentityClient {
                 tokenCache = new PersistentTokenCacheImpl()
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
-                tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.CONFIDENTIAL);
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
             } catch (Throwable t) {
                 throw logger.logExceptionAsError(new ClientAuthenticationException(
@@ -275,7 +274,6 @@ public class IdentityClient {
                     tokenCache = new PersistentTokenCacheImpl()
                         .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                         .setName(tokenCachePersistenceOptions.getName());
-                    tokenCache.setMsalClientType(PersistentTokenCacheImpl.MsalClientType.PUBLIC);
                     builder.setTokenCacheAccessAspect(tokenCache);
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException(
