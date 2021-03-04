@@ -5,6 +5,7 @@ package com.azure.resourcemanager.search.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.search.fluent.SearchManagementClient;
@@ -131,6 +132,10 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return PagedConverter.mapPage(this.inner().getServices().listByResourceGroupAsync(resourceGroupName),
             this::wrapModel);
     }

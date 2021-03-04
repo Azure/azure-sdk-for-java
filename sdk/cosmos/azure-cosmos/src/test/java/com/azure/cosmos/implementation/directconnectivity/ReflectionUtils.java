@@ -220,14 +220,22 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static ConcurrentHashMap<URI, ThroughputRequestThrottler> getRequestThrottlerMap(GlobalThroughputRequestController requestController) {
-        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMapByRegion");
+    public static ThroughputRequestThrottler getRequestThrottler(GlobalThroughputRequestController requestController) {
+        return get(ThroughputRequestThrottler.class, requestController, "requestThrottler");
     }
 
     @SuppressWarnings("unchecked")
-    public static ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> getRequestThrottlerMap(
+    public static void setRequestThrottler(
+        GlobalThroughputRequestController requestController,
+        ThroughputRequestThrottler throughputRequestThrottler) {
+
+        set(requestController, throughputRequestThrottler, "requestThrottler");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<String, ThroughputRequestThrottler> getRequestThrottler(
         PkRangesThroughputRequestController requestController) {
 
-        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMapByRegion");
+        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMap");
     }
 }

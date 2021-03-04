@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
@@ -46,12 +47,16 @@ public class VirtualNetworkGatewaysImpl
 
     @Override
     public PagedIterable<VirtualNetworkGateway> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
-    public PagedFlux<VirtualNetworkGateway> listByResourceGroupAsync(String groupName) {
-        return wrapPageAsync(this.inner().listByResourceGroupAsync(groupName));
+    public PagedFlux<VirtualNetworkGateway> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override

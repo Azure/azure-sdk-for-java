@@ -20,6 +20,7 @@ public class MetricsImpl implements Metrics {
     private final Meter _successMeter;
     private final Meter _failureMeter;
     private final Timer _latencyTimer;
+    private final Meter _documentsNotFoundMeter;
 
     public MetricsImpl(final MetricRegistry metricsRegistry,
         final Clock clock,
@@ -40,11 +41,18 @@ public class MetricsImpl implements Metrics {
         _failureMeter = metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
         _latencyTimer = metricsRegistry.register(metricPrefix + " Latency",
             new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+        _documentsNotFoundMeter = metricsRegistry.meter(metricPrefix + " Document NotFound Operations");
     }
 
     @Override
-    public void logCounterMetric(String metricName) {
-        // Intentional no-op for for this use-case
+    public void logCounterMetric(final MetricType metricType) {
+        switch (metricType) {
+            case NOT_FOUND:
+                _documentsNotFoundMeter.mark();
+                break;
+            case CALL_COUNT:
+            default:
+        }
     }
 
     @Override

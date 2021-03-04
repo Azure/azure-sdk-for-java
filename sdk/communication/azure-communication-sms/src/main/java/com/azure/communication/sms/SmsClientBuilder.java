@@ -39,7 +39,7 @@ public final class SmsClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(SmsClientBuilder.class);
     private String endpoint;
-    private AzureKeyCredential accessKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
@@ -72,18 +72,6 @@ public final class SmsClientBuilder {
     }
 
     /**
-     * Set accessKeyCredential to use
-     *
-     * @param accessKey access key for initalizing AzureKeyCredential
-     * @return SmsClientBuilder
-     */
-    public SmsClientBuilder accessKey(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new AzureKeyCredential(accessKey);
-        return this;
-    }
-
-    /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
@@ -92,6 +80,18 @@ public final class SmsClientBuilder {
      */
     public SmsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
+     *
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @return The updated {@link SmsClientBuilder} object.
+     * @throws NullPointerException If {@code keyCredential} is null.
+     */
+    public SmsClientBuilder credential(AzureKeyCredential keyCredential)  {
+        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
@@ -108,7 +108,7 @@ public final class SmsClientBuilder {
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -187,15 +187,15 @@ public final class SmsClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");
-        } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));

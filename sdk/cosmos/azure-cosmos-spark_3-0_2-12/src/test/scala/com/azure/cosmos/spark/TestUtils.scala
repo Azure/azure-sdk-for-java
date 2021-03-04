@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, CosmosItemRequestOptions}
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, CosmosItemRequestOptions, ThroughputProperties}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
@@ -52,7 +52,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   //scalastyle:off
   var cosmosClient : CosmosAsyncClient = _
 
-  val databasesToCleanUp = new ListBuffer[String]()
+  private val databasesToCleanUp = new ListBuffer[String]()
 
   override def beforeAll(): Unit = {
     System.out.println("Cosmos Client started!!!!!!")
@@ -64,7 +64,6 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   }
 
   override def afterEach(): Unit = {
-
     try {
       for (dbName <- databasesToCleanUp) {
         try {
@@ -137,7 +136,10 @@ trait CosmosContainer extends CosmosDatabase {
   }
 
   def createContainerCore(): Unit = {
-    cosmosClient.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
+    val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+    cosmosClient
+      .getDatabase(cosmosDatabase)
+      .createContainerIfNotExists(cosmosContainer, "/id", throughputProperties).block()
   }
 
   override def afterAll(): Unit = {
@@ -171,7 +173,12 @@ trait CosmosContainerWithRetention extends CosmosContainer {
       new CosmosContainerProperties(cosmosContainer, "/id")
     properties.setChangeFeedPolicy(
       ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
-    cosmosClient.getDatabase(cosmosDatabase).createContainerIfNotExists(properties).block()
+
+    val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+
+    cosmosClient
+      .getDatabase(cosmosDatabase)
+      .createContainerIfNotExists(properties, throughputProperties).block()
   }
 }
 
@@ -189,6 +196,10 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
       ).blockLast()
     }
   }
+}
+
+private object Defaults {
+  val DefaultContainerThroughput = 20000
 }
 
 object Platform {
