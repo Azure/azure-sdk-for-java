@@ -154,7 +154,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             }
         } else {
             for (int i = blob.length - 1; i >= 0; i--) {
-                if ((0xff & blob[i]) > 0) {
+                if ((0xff & blob[i]) != 0) {
                     blob[i] = (byte)((0xff & blob[i]) - 1);
                     break;
                 } else {
