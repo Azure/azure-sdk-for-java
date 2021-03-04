@@ -32,5 +32,5 @@ steps:
   displayName: "Setup Default Branch"
   condition: eq(variables['DefaultBranch'], '')
 - script: |
-      Write-Host "$(DefaultBranch)"
-    displayName: Display the default branch
+    Write-Host "$(DefaultBranch)"
+  displayName: Display the default branch
