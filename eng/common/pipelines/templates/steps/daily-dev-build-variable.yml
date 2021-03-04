@@ -22,12 +22,3 @@ steps:
     echo "##vso[task.setvariable variable=SetDevVersion]$setDailyDevBuild"
   displayName: "Setup Versioning Properties"
   condition: eq(variables['SetDevVersion'], '')
-- pwsh: |
-    $setDefaultBranch = "master"
-    if (('$(Build.Reason)' -eq 'Schedule') -and ('$(System.TeamProject)' -eq 'internal')) {
-      $setDefaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
-      Write-Host $setDefaultBranch
-    }
-    echo "##vso[task.setvariable variable=DefaultBranch]$setDefaultBranch"
-  displayName: "Setup Default Branch"
-  condition: eq(variables['DefaultBranch'], '')
