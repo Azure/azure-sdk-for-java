@@ -69,7 +69,7 @@ catch (HttpResponseException ex) {
 
 ## Next steps
 
-Get started with our [Device Update for IoT Hub samples](./src/samples)
+Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
 
 ## Contributing
 
