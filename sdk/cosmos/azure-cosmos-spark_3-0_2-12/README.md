@@ -47,7 +47,7 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 ## License
 This project is under MIT license and uses and repackages other third party libraries as an uber jar.
-See [NOTICE.txt](../../../NOTICE.txt).
+See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/NOTICE.txt).
 
 ## Contributing
 
