@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;

@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.CompositeIndexEntity;

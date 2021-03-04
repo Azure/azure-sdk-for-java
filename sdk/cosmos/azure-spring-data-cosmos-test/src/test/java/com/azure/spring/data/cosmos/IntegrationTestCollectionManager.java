@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.data.cosmos.repository.integration;
+package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.spring.data.cosmos.ContainerLock;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.rules.TestRule;
@@ -13,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
