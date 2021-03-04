@@ -20,7 +20,6 @@ public class ReadmeSamples {
 
 
     public void createSmsClient() {
-
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         //Enter your azureKeyCredential
@@ -39,8 +38,6 @@ public class ReadmeSamples {
 
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
-
-
     }
 
     public void createSmsClientWithConnectionString() {
