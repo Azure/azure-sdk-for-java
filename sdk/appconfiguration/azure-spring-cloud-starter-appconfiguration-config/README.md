@@ -74,7 +74,7 @@ spring.cloud.azure.appconfiguration.stores[0].managed-identity.client-id | Clien
 
 Name | Description | Required | Default
 ---|---|---|---
-spring.cloud.azure.appconfiguration.stores[0].monitoring.enable | Whether the configurations and feature flags will be re-loaded if a change is detected.  | No | false
+spring.cloud.azure.appconfiguration.stores[0].monitoring.enabled | Whether the configurations and feature flags will be re-loaded if a change is detected.  | No | false
 spring.cloud.azure.appconfiguration.stores[0].monitoring.cache-expiration | Amount of time, of type Duration, configurations are stored before a check can occur. | No | 30s
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. | Yes (If monitoring enabled) | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label | The label of the key that is being watched for etag changes. | No | \0
@@ -151,7 +151,7 @@ In the console library calling refreshConfiguration on `AzureCloudConfigRefresh`
 
 ##### Push Based Refresh
 
-The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid. When refreshing multiple instances `azure-servicebus-jms-spring-boot-starter` needs to be setup.
+The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid. When needing to refresh multiple application instances `azure-servicebus-jms-spring-boot-starter` needs to be setup to have the refresh triggered in all instances.
 
 ```properties
 management.endpoints.web.exposure.include= appconfiguration-refresh, appconfiguration-refresh-bus
