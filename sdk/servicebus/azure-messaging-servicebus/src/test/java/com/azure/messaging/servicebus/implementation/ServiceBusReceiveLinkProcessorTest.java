@@ -144,6 +144,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
     }
 
@@ -541,6 +542,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0
 
@@ -576,6 +578,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
 
@@ -620,6 +623,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(backpressure + 1)).addCredits(expectedCredits);
         verify(link1).setEmptyCreditListener(any());
     }
@@ -651,7 +655,7 @@ class ServiceBusReceiveLinkProcessorTest {
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
         final String lockToken = "lockToken";
-        final DeliveryState deliveryState =  mock(DeliveryState.class);
+        final DeliveryState deliveryState = mock(DeliveryState.class);
 
         when(link1.getCredits()).thenReturn(0);
         when(link1.updateDisposition(eq(lockToken), eq(deliveryState))).thenReturn(Mono.empty());
