@@ -28,10 +28,10 @@ steps:
         -rootUrl "file://${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}"
         -recursive: ${{ parameters.Recursive }} 
         -ignoreLinksFile ${{ parameters.IgnoreLinksFile }}
-        - ${{ if eq(${{ parameters.BranchReplaceRegex }}, '') }}:
+        - ${{ if eq(eq(variables['Build.Reason'], 'PullRequest')) }}:
           -branchReplaceRegex "(^${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}.*/(?:blob|tree)/)$(DefaultBranch)(/.*)$"
           -branchReplacementName "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
-        - ${{ if ne(${{ parameters.BranchReplaceRegex }}, '') }}:
+        - ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
           -branchReplaceRegex ${{ parameters.BranchReplaceRegex }}
           -branchReplacementName ${{ parameters.BranchReplacementName }}
         -devOpsLogging: $true
