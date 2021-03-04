@@ -26,7 +26,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
@@ -63,8 +62,6 @@ public final class EventGridPublisherClientBuilder {
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
     private ClientOptions clientOptions;
-
-    private ObjectSerializer eventDataSerializer;
 
     private Configuration configuration;
 
@@ -116,7 +113,7 @@ public final class EventGridPublisherClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -170,7 +167,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventClass);
     }
 
     /**
@@ -287,16 +284,6 @@ public final class EventGridPublisherClientBuilder {
      */
     public EventGridPublisherClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /**
-     * Set the serializer that will serialize the data part of the events when the events are sent to the service.
-     * @param eventDataSerializer The data serializer.
-     * @return the builder itself.
-     */
-    public EventGridPublisherClientBuilder serializer(ObjectSerializer eventDataSerializer) {
-        this.eventDataSerializer = eventDataSerializer;
         return this;
     }
 
