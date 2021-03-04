@@ -134,6 +134,17 @@ public class FeedRangeQueryTests extends TestSuiteBase {
 
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    public void queryWithPartitionKeyAndFeedRange() {
+        String query = "select * from root";
+        FeedRange feedRange = FeedRange.forLogicalPartition(new PartitionKey(PK_2));
+        CosmosQueryRequestOptions queryRequestOptions =
+            new CosmosQueryRequestOptions().setFeedRange(feedRange);
+        queryRequestOptions.setPartitionKey(new PartitionKey(PK_1));
+        // This should throw an IllegalArgumentException now
+        createdContainer.queryItems(query, queryRequestOptions, JsonNode.class);
+    }
+
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
         CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
         TestSubscriber<T> testSubscriber = new TestSubscriber<>();
