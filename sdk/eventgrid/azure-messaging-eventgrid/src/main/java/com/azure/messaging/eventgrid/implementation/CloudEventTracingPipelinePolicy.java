@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventgrid;
+package com.azure.messaging.eventgrid.implementation;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -10,7 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.tracing.TracerProxy;
-import com.azure.messaging.eventgrid.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -27,7 +26,7 @@ import com.azure.core.models.CloudEvent;
  *
  * The place holders won't exist in the json string if the {@link TracerProxy#isTracingEnabled()} returns false.
  */
-public class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
+public final class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final HttpRequest request = context.getHttpRequest();

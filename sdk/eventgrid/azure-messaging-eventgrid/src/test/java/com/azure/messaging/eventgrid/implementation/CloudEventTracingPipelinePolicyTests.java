@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventgrid;
+package com.azure.messaging.eventgrid.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.messaging.eventgrid.implementation.Constants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
