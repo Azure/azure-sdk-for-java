@@ -142,12 +142,12 @@ public class DocumentQueryExecutionContextFactory {
             queryRanges = Collections.singletonList(range);
         }
 
-        FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
-        if (userProvidedFeedRange != null) {
-           return queryExecutionContext.getTargetRange(collection.getResourceId(),
-                                                 FeedRangeInternal.convert(userProvidedFeedRange))
-                      . map(range -> Pair.of(Collections.singletonList(range),
-                                              partitionedQueryExecutionInfo.getQueryInfo()));
+        if (cosmosQueryRequestOptions != null && cosmosQueryRequestOptions.getFeedRange() != null) {
+            FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
+            return queryExecutionContext.getTargetRange(collection.getResourceId(),
+                                                        FeedRangeInternal.convert(userProvidedFeedRange))
+                       .map(range -> Pair.of(Collections.singletonList(range),
+                                             partitionedQueryExecutionInfo.getQueryInfo()));
         }
 
         return

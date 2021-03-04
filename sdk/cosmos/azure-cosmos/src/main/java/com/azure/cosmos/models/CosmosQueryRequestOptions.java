@@ -378,7 +378,7 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the {@link FeedRange} if any or null
+     * Gets the {@link FeedRange}
      * @return the {@link FeedRange}
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

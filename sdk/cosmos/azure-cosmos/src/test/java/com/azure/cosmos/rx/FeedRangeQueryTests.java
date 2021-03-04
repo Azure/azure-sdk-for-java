@@ -86,10 +86,10 @@ public class FeedRangeQueryTests extends TestSuiteBase {
             new CosmosQueryRequestOptions().setFeedRange(feedRange);
         List<JsonNode> feedResults = queryAndGetResults(new SqlQuerySpec(query), queryRequestOptions,
                                                         JsonNode.class);
-        List<JsonNode> pk1results =
+        List<JsonNode> pk2results =
             createdDocuments.stream().filter(jsonNode -> PK_2.equals(jsonNode.get("mypk").asText()))
                 .collect(Collectors.toList());
-        List<String> expectedIds = pk1results.stream().map(jsonNode -> jsonNode.get("id").asText())
+        List<String> expectedIds = pk2results.stream().map(jsonNode -> jsonNode.get("id").asText())
                                        .collect(Collectors.toList());
         List<String> actualIds = feedResults.stream().map(jsonNode -> jsonNode.get("id").asText())
                                      .collect(Collectors.toList());
