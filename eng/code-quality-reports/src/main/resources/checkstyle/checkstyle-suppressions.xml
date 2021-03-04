@@ -282,6 +282,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
