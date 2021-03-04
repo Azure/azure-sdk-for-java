@@ -76,16 +76,14 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
-        if (testIterationContext != null) {
-            testContextManager.setTestIteration(testIterationContext.testIteration);
-        }
+        testContextManager.setTestIteration(testIterationContext.testIteration);
         logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
             interceptorManager = new InterceptorManager(testContextManager);
         } catch (UncheckedIOException e) {
             logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
-            Assertions.fail();
+            Assertions.fail(e);
         }
         testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
 
@@ -110,7 +108,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return The TestMode that has been initialized.
      */
-    public TestMode getTestMode() {
+    public static TestMode getTestMode() {
         return testMode;
     }
 
@@ -193,7 +191,14 @@ public abstract class TestBase implements BeforeEachCallback {
                 .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
     }
 
-    private static TestMode initializeTestMode() {
+    /**
+     * Initializes the {@link TestMode} from the environment configuration {@code AZURE_TEST_MODE}.
+     * <p>
+     * If {@code AZURE_TEST_MODE} isn't configured or is invalid then {@link TestMode#PLAYBACK} is returned.
+     *
+     * @return The {@link TestMode} being used for testing.
+     */
+    public static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
 
