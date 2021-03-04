@@ -24,6 +24,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
@@ -45,6 +46,8 @@ import reactor.core.scheduler.Schedulers;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -369,16 +372,11 @@ public final class ServiceBusClientBuilder {
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-                final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-                final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-                final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
-
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-                        clientVersion);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -416,11 +414,42 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+        final ClientOptions options = new ClientOptions();
+        if (clientOptions != null) {
+            options.setApplicationId(clientOptions.getApplicationId())
+                .setHeaders(clientOptions.getHeaders());
+        }
+
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+        final List<Header> headers = new ArrayList<>();
+        boolean foundName = false;
+        boolean foundVersion = false;
+        for (Header header : options.getHeaders()) {
+            if (NAME_KEY.equals(header.getName())) {
+                foundName = true;
+            } else if (VERSION_KEY.equals(header.getName())) {
+                foundVersion = true;
+            }
+
+            headers.add(header);
+        }
+
+        if (!foundName) {
+            headers.add(new Header(NAME_KEY, product));
+        }
+        if (!foundVersion) {
+            headers.add(new Header(VERSION_KEY, clientVersion));
+        }
+
+        options.setHeaders(headers);
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
             proxyOptions, scheduler, options, verificationMode);
