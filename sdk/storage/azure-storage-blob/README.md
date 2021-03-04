@@ -287,7 +287,7 @@ Download a blob to an `OutputStream` using a `BlobClient`.
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L106-L110 -->
 ```java
 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-    blobClient.download(outputStream);
+    blobClient.downloadStreaming(outputStream);
 } catch (IOException e) {
     e.printStackTrace();
 }
