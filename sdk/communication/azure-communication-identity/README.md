@@ -100,20 +100,6 @@ CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
-### Create a new user and token
-Use the `createUserAndToken` function to create a new user and issue a token for it.
-For this option, a list of communication tokens scopes must be defined.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
-```java
-// Define a list of communication token scopes
-List<CommunicationTokenScope> scopes =
-    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
-
-CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
-System.out.println("User id: " + result.getUser().getId());
-System.out.println("User token value: " + result.getUserToken().getToken());
-```
-
 ### Getting a token for an existing user
 Use the `getToken` function to get a token for an existing user. The function
 also takes in a list of `CommunicationIdentityTokenScope`. Scope options include:
@@ -128,6 +114,19 @@ List<CommunicationTokenScope> scopes =
 AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
 System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
+```
+
+### Create a new user and token in a single request
+For convenience, use `createUserAndToken` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
+```java
+// Define a list of communication token scopes
+List<CommunicationTokenScope> scopes =
+    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+
+CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
+System.out.println("User id: " + result.getUser().getId());
+System.out.println("User token value: " + result.getUserToken().getToken());
 ```
 
 ### Revoking all tokens for an existing user

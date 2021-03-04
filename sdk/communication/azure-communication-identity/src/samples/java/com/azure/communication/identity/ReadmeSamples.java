@@ -24,7 +24,7 @@ public class ReadmeSamples {
     public CommunicationIdentityClient createCommunicationIdentityClient() {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
 
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
