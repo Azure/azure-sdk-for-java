@@ -2,6 +2,7 @@
 
 ## 12.11.0-beta.2 (Unreleased)
 - Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
+- Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
 
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
