@@ -21,7 +21,7 @@ public final class BulkItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        setIfMatchETagCore(ifMatchETag);
+        super.setIfMatchETagCore(ifMatchETag);
         return this;
     }
 
@@ -33,7 +33,7 @@ public final class BulkItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        setIfNoneMatchETagCore(ifNoneMatchEtag);
+        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 
@@ -58,7 +58,7 @@ public final class BulkItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
+        super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
     }
 }

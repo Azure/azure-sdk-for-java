@@ -41,7 +41,7 @@ public final class TransactionalBatchPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        setIfMatchETagCore(ifMatchETag);
+        super.setIfMatchETagCore(ifMatchETag);
         return this;
     }
 
@@ -53,7 +53,7 @@ public final class TransactionalBatchPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        setIfNoneMatchETagCore(ifNoneMatchEtag);
+        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 

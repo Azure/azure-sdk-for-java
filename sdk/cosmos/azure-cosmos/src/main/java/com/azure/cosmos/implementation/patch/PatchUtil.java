@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosPatchOperations;
+import com.azure.cosmos.implementation.patch.PatchConstants;
 import com.azure.cosmos.implementation.PatchSpec;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
@@ -13,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.util.List;
 
 public final class PatchUtil {
-    private static final String condition = "condition";
 
     public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
         if (item instanceof PatchSpec) {
@@ -57,13 +57,13 @@ public final class PatchUtil {
             operations.add(operationJsonSerializable.getPropertyBag());
         }
 
-        jsonSerializable.set("operations", operations);
+        jsonSerializable.set(PatchConstants.OPERATIONS, operations);
 
         if(cosmosPatchSpec.getRequestOptions() != null) {
             String filterPredicate = cosmosPatchSpec.getRequestOptions().getFilterPredicate();
             if(filterPredicate != null) {
                 if (!filterPredicate.isEmpty()) {
-                    jsonSerializable.set(condition, filterPredicate);
+                    jsonSerializable.set(PatchConstants.CONDITION, filterPredicate);
                 }
             }
         }

@@ -58,7 +58,7 @@ public final class BulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
+        super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
     }
 
@@ -70,7 +70,7 @@ public final class BulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        setIfNoneMatchETagCore(ifNoneMatchEtag);
+        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
 
@@ -82,7 +82,7 @@ public final class BulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        setIfMatchETagCore(ifMatchETag);
+        super.setIfMatchETagCore(ifMatchETag);
         return this;
     }
 
