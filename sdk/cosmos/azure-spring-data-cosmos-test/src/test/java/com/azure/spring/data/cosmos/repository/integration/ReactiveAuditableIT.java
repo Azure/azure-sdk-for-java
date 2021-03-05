@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReactiveAuditableIT {
 
     @ClassRule
-    public static final IntegrationTestCollectionManager.Reactive collectionManager = new IntegrationTestCollectionManager.Reactive();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;

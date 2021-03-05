@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.SynchronousIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
@@ -41,7 +41,7 @@ public class ContactRepositoryIT {
     private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", 43, true);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
+    public static final SynchronousIntegrationTestCollectionManager collectionManager = new SynchronousIntegrationTestCollectionManager();
 
     @Autowired
     ContactRepository repository;

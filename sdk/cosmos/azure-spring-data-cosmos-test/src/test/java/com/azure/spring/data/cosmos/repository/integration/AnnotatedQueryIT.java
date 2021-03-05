@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.SynchronousIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AnnotatedQueryIT {
 
     @ClassRule
-    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
+    public static final SynchronousIntegrationTestCollectionManager collectionManager = new SynchronousIntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.SynchronousIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -49,7 +49,7 @@ public class CustomerRepositoryIT {
     private static final Customer CUSTOMER_2 = new Customer(CUSTOMER_ID_2, CUSTOMER_LEVEL_1, USER_2);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
+    public static final SynchronousIntegrationTestCollectionManager collectionManager = new SynchronousIntegrationTestCollectionManager();
 
     @Autowired
     private CustomerRepository repository;

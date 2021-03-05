@@ -3,8 +3,6 @@
 package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -16,9 +14,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class IntegrationTestCollectionManager<T> implements TestRule {
+public abstract class AbstractIntegrationTestCollectionManager<T> implements TestRule {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IntegrationTestCollectionManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTestCollectionManager.class);
     private static final Duration LEASE_DURATION = Duration.ofMinutes(5);
 
     protected T template;
@@ -119,57 +117,6 @@ public abstract class IntegrationTestCollectionManager<T> implements TestRule {
             return cosmosEntityInformation.getContainerName();
         }
 
-        public Class getJavaType() {
-            return cosmosEntityInformation.getJavaType();
-        }
-
     }
 
-    public static class Synchronous extends IntegrationTestCollectionManager<CosmosTemplate> {
-
-        @Override
-        public ContainerLock createLock(CosmosEntityInformation entityInfo, Duration leaseDuration) {
-            return new ContainerLock(template, entityInfo.getContainerName(), leaseDuration);
-        }
-
-        @Override
-        public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation entityInfo) {
-            return template.createContainerIfNotExists(entityInfo);
-        }
-
-        @Override
-        public void deleteContainerData(CosmosEntityInformation entityInfo) {
-            template.deleteAll(entityInfo.getContainerName(), entityInfo.getJavaType());
-        }
-
-        @Override
-        public void deleteContainer(CosmosEntityInformation entityInfo) {
-            template.deleteContainer(entityInfo.getContainerName());
-        }
-
-    }
-
-    public static class Reactive extends IntegrationTestCollectionManager<ReactiveCosmosTemplate> {
-
-        @Override
-        public ContainerLock createLock(CosmosEntityInformation entityInfo, Duration leaseDuration) {
-            return new ContainerLock(template, entityInfo.getContainerName(), leaseDuration);
-        }
-
-        @Override
-        public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation entityInfo) {
-            return template.createContainerIfNotExists(entityInfo).block().getProperties();
-        }
-
-        @Override
-        public void deleteContainerData(CosmosEntityInformation entityInfo) {
-            template.deleteAll(entityInfo.getContainerName(), entityInfo.getJavaType()).block();
-        }
-
-        @Override
-        public void deleteContainer(CosmosEntityInformation entityInfo) {
-            template.deleteContainer(entityInfo.getContainerName());
-        }
-
-    }
 }

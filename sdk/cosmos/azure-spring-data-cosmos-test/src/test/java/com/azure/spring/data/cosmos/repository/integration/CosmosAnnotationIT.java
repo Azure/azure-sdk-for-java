@@ -6,7 +6,7 @@ import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.SynchronousIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -43,7 +43,7 @@ public class CosmosAnnotationIT {
         TestConstants.ROLE_NAME);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
+    public static final SynchronousIntegrationTestCollectionManager collectionManager = new SynchronousIntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate cosmosTemplate;
