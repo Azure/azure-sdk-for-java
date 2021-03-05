@@ -64,9 +64,10 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
         ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode) {
+        SslDomain.VerifyMode verifyMode, String product, String clientVersion) {
         this(fullyQualifiedNamespace, tokenCredential, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, clientOptions, verifyMode, fullyQualifiedNamespace, getPort(transport));
+            proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
+            getPort(transport));
     }
 
     /**
@@ -95,7 +96,7 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
         ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode, String hostname, int port) {
+        SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
@@ -110,16 +111,8 @@ public class ConnectionOptions {
         this.port = port != -1 ? port : getPort(transport);
         this.proxyOptions = proxyOptions;
 
-        this.product = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
-            .filter(e -> NAME_KEY.equals(e.getName()))
-            .map(e -> e.getValue())
-            .findFirst()
-            .orElse(UNKNOWN);
-        this.clientVersion = StreamSupport.stream(clientOptions.getHeaders().spliterator(), false)
-            .filter(e -> VERSION_KEY.equals(e.getName()))
-            .map(e -> e.getValue())
-            .findFirst()
-            .orElse(UNKNOWN);
+        this.product = Objects.requireNonNull(product, "'product' cannot be null.");
+        this.clientVersion = Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
     }
 
     /**

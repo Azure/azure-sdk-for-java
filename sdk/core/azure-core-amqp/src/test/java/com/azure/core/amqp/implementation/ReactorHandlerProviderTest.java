@@ -123,8 +123,8 @@ public class ReactorHandlerProviderTest {
     public void connectionHandlerNull() {
         // Arrange
         final ConnectionOptions connectionOptions = new ConnectionOptions("fqdn", tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), null, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+            null, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         // Act
         assertThrows(NullPointerException.class,
@@ -144,11 +144,10 @@ public class ReactorHandlerProviderTest {
     @ParameterizedTest
     public void getsConnectionHandlerAMQP(String hostname, int port, String expectedHostname, int expectedPort) {
         // Act
-
         final ConnectionOptions connectionOptions = new ConnectionOptions(FULLY_QUALIFIED_DOMAIN_NAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, hostname,
-            port);
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, hostname, port);
 
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
 
@@ -167,7 +166,7 @@ public class ReactorHandlerProviderTest {
         // Act
         final ConnectionOptions connectionOptions = new ConnectionOptions(FULLY_QUALIFIED_DOMAIN_NAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
@@ -190,7 +189,7 @@ public class ReactorHandlerProviderTest {
         final String hostname = "foo.eventhubs.azure.com";
         final ConnectionOptions connectionOptions = new ConnectionOptions(hostname, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
@@ -223,8 +222,8 @@ public class ReactorHandlerProviderTest {
 
         final String fullyQualifiedDomainName = "foo.eventhubs.azure.com";
         final ConnectionOptions connectionOptions = new ConnectionOptions(fullyQualifiedDomainName, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), null, scheduler, CLIENT_OPTIONS, VERIFY_MODE, hostname, port);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+            null, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, hostname, port);
 
         when(proxySelector.select(any())).thenAnswer(invocation -> {
             final URI uri = invocation.getArgument(0);
@@ -265,7 +264,7 @@ public class ReactorHandlerProviderTest {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(hostname, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            new AmqpRetryOptions(), configuration, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, connectionOptions);
@@ -318,7 +317,8 @@ public class ReactorHandlerProviderTest {
         final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY, USERNAME, PASSWORD);
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), proxyOptions, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            new AmqpRetryOptions(), proxyOptions, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
+            PRODUCT, CLIENT_VERSION);
 
         final Connection connection = mock(Connection.class);
         when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
@@ -353,7 +353,8 @@ public class ReactorHandlerProviderTest {
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME, customEndpoint.getHost(), customEndpoint.getDefaultPort());
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, PRODUCT, CLIENT_VERSION, customEndpoint.getHost(),
+            customEndpoint.getDefaultPort());
 
         final Connection connection = mock(Connection.class);
         when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
@@ -387,7 +388,8 @@ public class ReactorHandlerProviderTest {
         final String anotherFakeHostname = "hostname.fake";
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, transportType, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, PRODUCT,
+            CLIENT_VERSION);
 
         final Connection connection = mock(Connection.class);
         when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);

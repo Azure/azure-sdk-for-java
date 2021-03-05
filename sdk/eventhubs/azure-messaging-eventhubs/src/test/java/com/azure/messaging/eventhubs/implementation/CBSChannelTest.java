@@ -115,7 +115,7 @@ class CBSChannelTest extends IntegrationTestBase {
         ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic(), clientOptions,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-client-version");
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer);
 
@@ -137,7 +137,8 @@ class CBSChannelTest extends IntegrationTestBase {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             invalidToken, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS,
-            Schedulers.elastic(), clientOptions, SslDomain.VerifyMode.VERIFY_PEER);
+            Schedulers.elastic(), clientOptions, SslDomain.VerifyMode.VERIFY_PEER,
+            "test-product", "test-client-version");
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer);
 

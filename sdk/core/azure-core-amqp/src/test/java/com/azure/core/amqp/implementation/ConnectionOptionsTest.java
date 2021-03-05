@@ -9,15 +9,12 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Header;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -45,14 +42,12 @@ public class ConnectionOptionsTest {
         final String hostname = "host-name.com";
         final SslDomain.VerifyMode verifyMode = SslDomain.VerifyMode.VERIFY_PEER;
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        final ClientOptions clientOptions = new ClientOptions().setHeaders(Arrays.asList(
-                new Header(ConnectionOptions.NAME_KEY, productName),
-                new Header(ConnectionOptions.VERSION_KEY, clientVersion)));
+        final ClientOptions clientOptions = new ClientOptions();
 
         // Act
         final ConnectionOptions actual = new ConnectionOptions(hostname, tokenCredential,
             CbsAuthorizationType.JSON_WEB_TOKEN, AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS,
-            scheduler, clientOptions, verifyMode);
+            scheduler, clientOptions, verifyMode, productName, clientVersion);
 
         // Assert
         assertEquals(hostname, actual.getHostname());
@@ -69,30 +64,5 @@ public class ConnectionOptionsTest {
         assertEquals(CbsAuthorizationType.JSON_WEB_TOKEN, actual.getAuthorizationType());
         assertEquals(retryOptions, actual.getRetry());
         assertEquals(verifyMode, actual.getSslVerifyMode());
-    }
-
-    /**
-     * When there is no "name" or "version" in client options, the default {@link ConnectionOptions#UNKNOWN} is set.
-     */
-    @Test
-    public void defaultSet() {
-        // Arrange
-        final String productName = "test-product";
-        final String clientVersion = "1.5.10";
-
-        final String hostname = "host-name.com";
-        final SslDomain.VerifyMode verifyMode = SslDomain.VerifyMode.VERIFY_PEER;
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        final ClientOptions clientOptions = new ClientOptions().setHeaders(
-            Arrays.asList(new Header("foo", productName), new Header("bar", clientVersion)));
-
-        // Act
-        final ConnectionOptions actual = new ConnectionOptions(hostname, tokenCredential,
-            CbsAuthorizationType.JSON_WEB_TOKEN, AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS,
-            scheduler, clientOptions, verifyMode);
-
-        // Assert
-        assertEquals(ConnectionOptions.UNKNOWN, actual.getProduct());
-        assertEquals(ConnectionOptions.UNKNOWN, actual.getClientVersion());
     }
 }

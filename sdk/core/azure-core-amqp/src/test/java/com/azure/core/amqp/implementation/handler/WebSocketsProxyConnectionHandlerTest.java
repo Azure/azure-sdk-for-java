@@ -51,9 +51,7 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
-    private static final List<Header> HEADER_LIST = Arrays.asList(
-        new Header("name", PRODUCT),
-        new Header("version", CLIENT_VERSION),
+    private static final List<Header> HEADER_LIST = Collections.singletonList(
         new Header("foo-bar", "some-values"));
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
         .setHeaders(HEADER_LIST);
@@ -80,7 +78,7 @@ public class WebSocketsProxyConnectionHandlerTest {
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         this.originalProxySelector = ProxySelector.getDefault();
         this.proxySelector = mock(ProxySelector.class, Mockito.CALLS_REAL_METHODS);

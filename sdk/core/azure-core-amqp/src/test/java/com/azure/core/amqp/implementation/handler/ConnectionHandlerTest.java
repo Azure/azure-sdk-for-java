@@ -32,7 +32,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,9 @@ import static com.azure.core.amqp.implementation.handler.ConnectionHandler.AMQPS
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAMEWORK;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PRODUCT;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.USER_AGENT;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,11 +57,9 @@ public class ConnectionHandlerTest {
     private static final String APPLICATION_ID = "some-random-app-id";
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
-    private static final String PRODUCT = "test";
+    private static final String CLIENT_PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
-    private static final List<Header> HEADER_LIST = Arrays.asList(
-        new Header("name", PRODUCT),
-        new Header("version", CLIENT_VERSION),
+    private static final List<Header> HEADER_LIST = Collections.singletonList(
         new Header("foo-bar", "some-values"));
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
         .setApplicationId(APPLICATION_ID)
@@ -84,7 +84,7 @@ public class ConnectionHandlerTest {
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
         this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
     }
 
@@ -110,10 +110,10 @@ public class ConnectionHandlerTest {
         // Arrange
         final ClientOptions clientOptions = new ClientOptions()
             .setHeaders(HEADER_LIST);
-        final String expected = UserAgentUtil.toUserAgentString(null, PRODUCT, CLIENT_VERSION, null);
+        final String expected = UserAgentUtil.toUserAgentString(null, CLIENT_PRODUCT, CLIENT_VERSION, null);
         final ConnectionOptions options = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
 
         // Act
         final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails);
@@ -126,7 +126,7 @@ public class ConnectionHandlerTest {
     @Test
     void applicationIdSet() {
         // Arrange
-        final String expected = UserAgentUtil.toUserAgentString(CLIENT_OPTIONS.getApplicationId(), PRODUCT,
+        final String expected = UserAgentUtil.toUserAgentString(CLIENT_OPTIONS.getApplicationId(), CLIENT_PRODUCT,
             CLIENT_VERSION, null);
 
         // Act
@@ -137,12 +137,17 @@ public class ConnectionHandlerTest {
         assertEquals(expected, userAgent);
     }
 
+    /**
+     * Verifies that our connection properties are all set.
+     */
     @Test
     void createHandler() {
         // Arrange
         final Map<String, String> expected = new HashMap<>();
         expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
+        expected.put(PRODUCT.toString(), CLIENT_PRODUCT);
+        expected.put(VERSION.toString(), CLIENT_VERSION);
 
         // Assert
         assertEquals(HOSTNAME, handler.getHostname());

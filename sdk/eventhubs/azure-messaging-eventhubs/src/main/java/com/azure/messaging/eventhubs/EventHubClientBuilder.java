@@ -705,35 +705,13 @@ public class EventHubClientBuilder {
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        final List<Header> headers = new ArrayList<>();
-        boolean foundName = false;
-        boolean foundVersion = false;
-        for (Header header : options.getHeaders()) {
-            if (NAME_KEY.equals(header.getName())) {
-                foundName = true;
-            } else if (VERSION_KEY.equals(header.getName())) {
-                foundVersion = true;
-            }
-
-            headers.add(header);
-        }
-
-        if (!foundName) {
-            headers.add(new Header(NAME_KEY, product));
-        }
-        if (!foundVersion) {
-            headers.add(new Header(VERSION_KEY, clientVersion));
-        }
-
-        options.setHeaders(headers);
-
         if (customEndpointAddress == null) {
             return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode);
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion);
         } else {
             return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort());
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion,
+                customEndpointAddress.getHost(), customEndpointAddress.getPort());
         }
     }
 
