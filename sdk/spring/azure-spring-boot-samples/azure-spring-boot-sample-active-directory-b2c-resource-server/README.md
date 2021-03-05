@@ -22,7 +22,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 1. On the **Azure AD B2C** Portal, select the application that requires roles to be added, select **Manifest**.
 2. Find the `appRoles` configuration item, and add the following configuration, then click the **Save** button.
 ```json
-    {
+  {
     "allowedMemberTypes": [
       "Application"
     ],
@@ -31,8 +31,8 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
     "id": "d2bec026-b75f-418d-9493-8462f54f25d9",
     "isEnabled": true, 
     "value": "Test.read"
-    },
-    {
+  },
+  {
     "allowedMemberTypes": [
       "Application"
     ],
@@ -41,7 +41,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
     "id": "1ab4eeda-d07e-4bce-8f77-b0a84c97c34f",
     "isEnabled": true,
     "value": "Test.wirte"
-    }
+  }
 ```
 ![Configuration Application Roles](docs/image-configuration-application-roles.png "Configuration Application Roles")
 3. Find the application permissions need to use.![Selected Application](docs/image-selected-application.png "Selected Application")![Add Application Roles](docs/image-add-application-roles.png "Add Application Roles")
