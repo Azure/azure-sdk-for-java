@@ -145,7 +145,7 @@ com.azure.spring:azure-spring-integration-core;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-integration-eventhubs;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-integration-storage-queue;2.1.0;2.2.0
-com.azure.spring:azure-spring-integration-test;2.1.0;2.2.0
+com.azure.spring:azure-spring-integration-test;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-data-gremlin;2.3.1-beta.1;2.3.1-beta.1
 com.azure.spring:azure-spring-boot-starter-data-gremlin;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
