@@ -321,7 +321,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself
      */
-    EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
+    public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }

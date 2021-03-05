@@ -44,10 +44,23 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
- * to create an instance of this client. This uses Project Reactor (https://projectreactor.io/) to handle asynchronous
- * programming.
+ * to create an instance of this client. It uses <a href="https://projectreactor.io/">Project Reactor</a> to
+ * handle asynchronous programming.
+ *
+ * <p><strong>Create EventGridPublisherAsyncClient for CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCloudEventClient}
+ *
+ * <p><strong>Send CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCloudEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient}
+ *
+ * <p><strong>Send EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent}
+ *
  * @see EventGridEvent
- * @see CloudEvent
+ * @see com.azure.core.models.CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public final class EventGridPublisherAsyncClient<T> {
