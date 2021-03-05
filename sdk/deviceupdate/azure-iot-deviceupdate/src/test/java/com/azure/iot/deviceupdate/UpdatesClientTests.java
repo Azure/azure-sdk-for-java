@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.models.*;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class UpdatesClientTests extends TestBase {
     private static final String FILE_NAME = "setup.exe";
     private static final String DEFAULT_SCOPE = "6ee392c4-d339-4083-b04d-6b7947c6cf78/.default";
@@ -32,6 +30,10 @@ public class UpdatesClientTests extends TestBase {
         TokenCredential credentials;
         HttpClient httpClient;
         HttpPipelinePolicy recordingPolicy = null;
+        HttpPipeline httpPipeline;
+
+        HttpHeaders headers = new HttpHeaders().put("Accept", ContentType.APPLICATION_JSON);
+        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
 
         if (getTestMode() != TestMode.PLAYBACK) {
             // Record & Live
@@ -44,21 +46,8 @@ public class UpdatesClientTests extends TestBase {
             if (getTestMode() == TestMode.RECORD) {
                 recordingPolicy = interceptorManager.getRecordPolicy();
             }
-        }
-        else {
-            // Playback
-            credentials = new DefaultAzureCredentialBuilder().build();
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
-        BearerTokenAuthenticationPolicy bearerTokenAuthenticationPolicy = new BearerTokenAuthenticationPolicy(credentials, DEFAULT_SCOPE);
-
-        HttpHeaders headers = new HttpHeaders().put("Accept", ContentType.APPLICATION_JSON);
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-        HttpPipeline httpPipeline;
-        if (getTestMode() == TestMode.RECORD) {
-            // Record & Live
+            BearerTokenAuthenticationPolicy bearerTokenAuthenticationPolicy =
+                new BearerTokenAuthenticationPolicy(credentials, DEFAULT_SCOPE);
             httpPipeline = new HttpPipelineBuilder()
                 .httpClient(httpClient)
                 .policies(bearerTokenAuthenticationPolicy, addHeadersPolicy, recordingPolicy)
@@ -66,9 +55,10 @@ public class UpdatesClientTests extends TestBase {
         }
         else {
             // Playback
+            httpClient = interceptorManager.getPlaybackClient();
             httpPipeline = new HttpPipelineBuilder()
                 .httpClient(httpClient)
-                .policies(bearerTokenAuthenticationPolicy, addHeadersPolicy)
+                .policies(addHeadersPolicy)
                 .build();
         }
 
