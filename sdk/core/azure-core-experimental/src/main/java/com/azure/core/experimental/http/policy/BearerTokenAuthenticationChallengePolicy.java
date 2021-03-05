@@ -55,7 +55,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @return A {@link Mono} containing {@link TokenRequestContext}
      */
     public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        return Mono.empty();
+        return Mono.just(false);
     }
 
     @Override

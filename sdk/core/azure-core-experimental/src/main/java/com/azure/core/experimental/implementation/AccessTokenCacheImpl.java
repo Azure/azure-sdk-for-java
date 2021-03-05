@@ -73,9 +73,7 @@ public class AccessTokenCacheImpl {
                     Supplier<Mono<AccessToken>> tokenSupplier = () ->
                         tokenCredential.getToken(this.tokenRequestContext);
 
-                    boolean forceRefresh = !(this.tokenRequestContext != null
-                        && this.tokenRequestContext.getClaims().equals(tokenRequestContext.getClaims())
-                        && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
+                    boolean forceRefresh = checkIfWeShouldForceRefresh(tokenRequestContext);
 
                     if (forceRefresh) {
                         this.tokenRequestContext = tokenRequestContext;
@@ -121,6 +119,13 @@ public class AccessTokenCacheImpl {
                 return Mono.error(t);
             }
         };
+    }
+
+    private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
+        return !(this.tokenRequestContext != null
+            && tokenRequestContext.getClaims() != null
+            && this.tokenRequestContext.getClaims().equals(tokenRequestContext.getClaims())
+            && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
     private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
