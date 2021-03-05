@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.resource.server;
+package com.azure.test.aad.resource.server.it;
 
 import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.Before;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.webapi;
+package com.azure.test.aad.webapi.obo;
 
 import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.aad.AADWebApiITHelper;
@@ -71,7 +71,7 @@ public class AADWebApiOboIT {
     }
 
     private void runApp(Consumer<AppRunner> command) {
-        try (AppRunner app = new AppRunner(AADWebApiOboIT.DumbApp.class)) {
+        try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.start();
             command.accept(app);
         }
