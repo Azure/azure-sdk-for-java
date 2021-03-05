@@ -2093,6 +2093,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                               PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
                 PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                     = syncPoller.getFinalResult();
@@ -2171,6 +2172,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                               PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
                 PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                     = syncPoller.getFinalResult();

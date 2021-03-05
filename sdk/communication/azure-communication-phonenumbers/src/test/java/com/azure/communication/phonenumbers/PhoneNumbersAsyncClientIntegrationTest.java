@@ -2,17 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.time.Duration;
-
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -28,6 +17,15 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
@@ -192,35 +190,42 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
 
-        return this.getClientWithConnectionString(httpClient, testName)
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginSearchAvailablePhoneNumbers(
                 COUNTRY_CODE,
                 PhoneNumberType.TOLL_FREE,
                 PhoneNumberAssignmentType.APPLICATION,
                 capabilities,
                 searchOptions
-                ).setPollInterval(Duration.ofSeconds(1));
+                ));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginPurchasePhoneNumbers(searchId).setPollInterval(Duration.ofSeconds(1));
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginPurchasePhoneNumbers(searchId));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginReleasePhoneNumber(phoneNumber).setPollInterval(Duration.ofSeconds(1));
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginReleasePhoneNumber(phoneNumber));
     }
 
     private PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
         capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest).setPollInterval(Duration.ofSeconds(1));
+
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
+    }
+
+    private <T, U> PollerFlux<T, U> setPollInterval(PollerFlux<T, U> pollerFlux) {
+        return interceptorManager.isPlaybackMode()
+            ? pollerFlux.setPollInterval(Duration.ofMillis(1))
+            : pollerFlux.setPollInterval(Duration.ofSeconds(1));
     }
 
     private PhoneNumbersAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {

@@ -5,9 +5,11 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.params.provider.Arguments;
@@ -127,6 +129,13 @@ final class TestUtils {
             errorResponseException.getResponse().getRequest().getBody()))
             .assertNext(bytes -> assertEquals(ENCODED_EMPTY_SPACE, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();
+    }
+
+    static <T, U> SyncPoller<T, U> setSyncPollerPollInterval(SyncPoller<T, U> syncPoller,
+        InterceptorManager interceptorManager) {
+        return interceptorManager.isPlaybackMode()
+            ? syncPoller.setPollInterval(Duration.ofMillis(1))
+            : syncPoller;
     }
 }
 

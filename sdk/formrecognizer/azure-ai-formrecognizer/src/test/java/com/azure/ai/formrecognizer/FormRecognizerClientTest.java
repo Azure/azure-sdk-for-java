@@ -208,7 +208,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl);
+                client.beginRecognizeReceiptsFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);

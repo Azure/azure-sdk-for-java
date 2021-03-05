@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
@@ -28,9 +29,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -42,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -49,8 +49,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NettyAsyncHttpClientTests {
@@ -65,8 +65,8 @@ public class NettyAsyncHttpClientTests {
     static final String EXPECTED_HEADER = "userAgent";
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
-    private static final String SHORT_BODY = "hi there";
-    private static final String LONG_BODY = createLongBody();
+    private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] LONG_BODY = createLongBody();
 
     static final String TEST_HEADER = "testHeader";
 
@@ -129,7 +129,7 @@ public class NettyAsyncHttpClientTests {
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
         StepVerifier.create(response.getBodyAsByteArray())
-            .assertNext(bytes -> assertEquals(SHORT_BODY, new String(bytes, StandardCharsets.UTF_8)))
+            .assertNext(bytes -> assertArrayEquals(SHORT_BODY, bytes))
             .verifyComplete();
 
         // Subscription:2
@@ -143,11 +143,11 @@ public class NettyAsyncHttpClientTests {
     }
 
     @Test
-    public void testDispose() throws InterruptedException {
+    public void testDispose() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
-        response.getBody().subscribe().dispose();
-        // Wait for scheduled connection disposal action to execute on netty event-loop
-        Thread.sleep(5000);
+        StepVerifier.create(response.getBody())
+            .thenCancel()
+            .verify();
         Assertions.assertTrue(response.internConnection().isDisposed());
     }
 
@@ -243,13 +243,13 @@ public class NettyAsyncHttpClientTests {
     public void testConcurrentRequests() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 1GB of data
+        int numberOfRequests = 100; // 100 = 100MB of data
         byte[] expectedDigest = digest();
 
         Mono<Long> numberOfBytesMono;
         numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
-            .runOn(Schedulers.newBoundedElastic(50, 100, "io"))
+            .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
                 .flatMapMany(response -> {
                     MessageDigest md = md5Digest();
@@ -262,7 +262,7 @@ public class NettyAsyncHttpClientTests {
             .reduce(0L, Long::sum);
 
         StepVerifier.create(numberOfBytesMono)
-            .expectNext((long) numberOfRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }
@@ -277,7 +277,7 @@ public class NettyAsyncHttpClientTests {
 
     private static byte[] digest() {
         MessageDigest md = md5Digest();
-        md.update(NettyAsyncHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
+        md.update(NettyAsyncHttpClientTests.LONG_BODY);
         return md.digest();
     }
 
@@ -295,7 +295,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     /**
@@ -312,7 +312,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertNotEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertFalse(Arrays.equals(LONG_BODY, delayWriteStream.aggregateBuffers()));
     }
 
     /**
@@ -328,7 +328,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     @ParameterizedTest
@@ -412,47 +412,37 @@ public class NettyAsyncHttpClientTests {
         }
     }
 
-    private static String createLongBody() {
-        StringBuilder builder = new StringBuilder("abcdefghijk".length() * 1000000);
-        for (int i = 0; i < 1000000; i++) {
-            builder.append("abcdefghijk");
+    private static byte[] createLongBody() {
+        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * 100000];
+
+        for (int i = 0; i < 100000; i++) {
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
-        return builder.toString();
+        return longBody;
     }
 
-    private void checkBodyReceived(String expectedBody, String path) {
+    private void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
             .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
+            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
     private static final class DelayWriteStream {
-        List<ByteBuffer> internalBuffers = new ArrayList<>();
+        private final List<ByteBuffer> internalBuffers = new ArrayList<>();
+        private final AtomicInteger totalStreamSize = new AtomicInteger();
 
         public void write(ByteBuffer buffer) {
             internalBuffers.add(buffer);
+            totalStreamSize.getAndAdd(buffer.remaining());
         }
 
-        public String aggregateAsString() {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            for (ByteBuffer buffer : internalBuffers) {
-                int bufferSize = buffer.remaining();
-                int offset = buffer.position();
-
-                for (int i = 0; i < bufferSize; i++) {
-                    outputStream.write(buffer.get(i + offset));
-                }
-            }
-
-            try {
-                return outputStream.toString("UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                throw new RuntimeException(ex);
-            }
+        public byte[] aggregateBuffers() {
+            return FluxUtil.collectBytesInByteBufferStream(Flux.fromIterable(internalBuffers), totalStreamSize.get())
+                .block();
         }
     }
 }

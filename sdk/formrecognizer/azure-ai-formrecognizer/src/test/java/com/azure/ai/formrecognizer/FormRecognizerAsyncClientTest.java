@@ -751,7 +751,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
                     getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                         useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode))
-                        .getSyncPoller();
+                        .getSyncPoller()
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
