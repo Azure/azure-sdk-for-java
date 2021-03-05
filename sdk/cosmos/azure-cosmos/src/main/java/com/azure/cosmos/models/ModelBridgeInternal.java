@@ -842,13 +842,4 @@ public final class ModelBridgeInternal {
         options.setRequestContinuation(eTag);
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedRange(CosmosQueryRequestOptions options, FeedRange feedRange) {
-        options.setFeedRange(feedRange);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedRange getFeedRange(CosmosQueryRequestOptions options) {
-        return options.getFeedRange();
-    }
 }
