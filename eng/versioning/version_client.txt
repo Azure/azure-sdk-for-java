@@ -142,7 +142,7 @@ com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;2.2.0;2.3.0-b
 com.azure.spring:azure-spring-cloud-stream-binder-test;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-cloud-telemetry;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-integration-core;2.2.0;2.3.0-beta.1
-com.azure.spring:azure-spring-integration-eventhubs;2.1.0;2.2.0
+com.azure.spring:azure-spring-integration-eventhubs;2.2.0;2.3.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;2.1.0;2.2.0
 com.azure.spring:azure-spring-integration-storage-queue;2.1.0;2.2.0
 com.azure.spring:azure-spring-integration-test;2.1.0;2.2.0
