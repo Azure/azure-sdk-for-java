@@ -799,17 +799,14 @@ final class TestUtils {
      */
     static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollection() {
         // Categorized Entities
-        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
-        // https://github.com/Azure/azure-sdk-for-java/issues/17564
-        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
         return new RecognizeEntitiesResultCollection(
-            asList(new RecognizeEntitiesResult("0", null, null,
+            asList(new RecognizeEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
                     new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesList1()), null)),
-                new RecognizeEntitiesResult("1", null, null,
+                new RecognizeEntitiesResult("1",  new TextDocumentStatistics(67, 1), null,
                     new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesForPiiInput()), null))
-            ), "2020-04-01", null);
-            //new TextDocumentBatchStatistics(2, 2, 0, 2)
+            ),
+            "2020-04-01",
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
     /**
@@ -818,20 +815,16 @@ final class TestUtils {
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
-        // PII
-        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
-        // https://github.com/Azure/azure-sdk-for-java/issues/17564
-        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
-        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
         return new RecognizePiiEntitiesResultCollection(
             asList(
-                new RecognizePiiEntitiesResult("0", null, null,
+                new RecognizePiiEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
                     new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
                         "I had a wonderful trip to Seattle last week.", null)),
-                new RecognizePiiEntitiesResult("1", null, null,
+                new RecognizePiiEntitiesResult("1", new TextDocumentStatistics(67, 1), null,
                     new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
                         "********* employee with ssn *********** is using our awesome API's.", null))),
-            "2020-07-01", new TextDocumentBatchStatistics(2, 2, 0, 2)
+            "2020-07-01",
+            new TextDocumentBatchStatistics(2, 2, 0, 2)
         );
     }
 
@@ -841,32 +834,24 @@ final class TestUtils {
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
-        // Key Phrases
-        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
-        // https://github.com/Azure/azure-sdk-for-java/issues/17564
-        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
-        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
         return new ExtractKeyPhrasesResultCollection(
-            asList(new ExtractKeyPhraseResult("0", null,
+            asList(new ExtractKeyPhraseResult("0", new TextDocumentStatistics(44, 1),
                 null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null)),
-                new ExtractKeyPhraseResult("1", null,
+                new ExtractKeyPhraseResult("1", new TextDocumentStatistics(67, 1),
                     null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null))),
-            "2020-07-01",
+            DEFAULT_MODEL_VERSION,
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
     static RecognizeLinkedEntitiesResultCollection getRecognizeLinkedEntitiesResultCollection() {
-        // Categorized Entities
-        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
-        // https://github.com/Azure/azure-sdk-for-java/issues/17564
-        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
         return new RecognizeLinkedEntitiesResultCollection(
-            asList(new RecognizeLinkedEntitiesResult("0", null, null,
+            asList(new RecognizeLinkedEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
                     new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList1()), null)),
-                new RecognizeLinkedEntitiesResult("1", null, null,
+                new RecognizeLinkedEntitiesResult("1", new TextDocumentStatistics(20, 1), null,
                     new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList2()), null))
-            ), DEFAULT_MODEL_VERSION, null);
+            ),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
     static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,

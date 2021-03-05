@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
@@ -44,6 +45,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -849,6 +851,39 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection);
             }
         );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
+            (inputs, options) -> {
+                List<PiiEntityCategory> categories = new ArrayList<>();
+                final RecognizePiiEntitiesResultCollection resultCollection = client.recognizePiiEntitiesBatch(inputs, "en", null);
+                resultCollection.forEach(
+                    result -> result.getEntities().forEach(
+                        piiEntity -> {
+                            final PiiEntityCategory category = piiEntity.getCategory();
+                            if (PiiEntityCategory.ABAROUTING_NUMBER == category
+                                    || PiiEntityCategory.USSOCIAL_SECURITY_NUMBER == category) {
+                                categories.add(category);
+                            }
+                        }));
+                validatePiiEntitiesResultCollection(false, getExpectedBatchPiiEntities(), resultCollection);
+
+                // Override whatever the categoriesFiler has currently
+                final PiiEntityCategory[] piiEntityCategories = categories.toArray(
+                    new PiiEntityCategory[categories.size()]);
+                options.setCategoriesFilter(piiEntityCategories);
+
+                // Use the categories from another endpoint to call.
+                final RecognizePiiEntitiesResultCollection resultCollection2 = client.recognizePiiEntitiesBatch(
+                    inputs, "en", options);
+                validatePiiEntitiesResultCollection(false,
+                            getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection2);
+            });
     }
 
     // Recognize linked entity

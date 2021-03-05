@@ -83,12 +83,17 @@ import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilt
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
-import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollectionResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeBatchActionsAsyncClient {
+    private static final String ENTITY_RECOGNITION_TASKS = "entityRecognitionTasks";
+    private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
+    private static final String KEY_PHRASE_EXTRACTION_TASKS = "keyPhraseExtractionTasks";
+    private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
+
     private static final String REGEX_ACTION_ERROR_TARGET =
         "#/tasks/(keyPhraseExtractionTasks|entityRecognitionPiiTasks|entityRecognitionTasks)/(\\d+)";
 
@@ -410,7 +415,7 @@ class AnalyzeBatchActionsAsyncClient {
                 final EntityLinkingResult results = taskItem.getResults();
                 if (results != null) {
                     RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
-                        toRecognizeLinkedEntitiesResultCollectionResponse(results));
+                        toRecognizeLinkedEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
@@ -425,13 +430,13 @@ class AnalyzeBatchActionsAsyncClient {
                 final String taskName = targetPair[0];
                 final Integer taskIndex = Integer.valueOf(targetPair[1]);
                 final TextAnalyticsActionResult actionResult;
-                if ("entityRecognitionTasks".equals(taskName)) {
+                if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
                     actionResult = recognizeEntitiesActionResults.get(taskIndex);
-                } else if ("entityRecognitionPiiTasks".equals(taskName)) {
+                } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
                     actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
-                } else if ("keyPhraseExtractionTasks".equals(taskName)) {
+                } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
                     actionResult = extractKeyPhrasesActionResults.get(taskIndex);
-                } else if ("entityLinkingTasks".equals(taskName)) {
+                } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
                     actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
@@ -449,6 +454,7 @@ class AnalyzeBatchActionsAsyncClient {
 
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
 
+        // TODO: check with service side to make sure Tasks has statistics, indivisual task already has one but not the batch tasks result.
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {

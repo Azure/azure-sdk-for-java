@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
@@ -40,8 +41,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -879,6 +882,42 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         resultCollection -> validatePiiEntitiesResultCollection(false,
                             getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection))
                     .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
+            (inputs, options) -> {
+                List<PiiEntityCategory> categories = new ArrayList<>();
+                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", null))
+                    .assertNext(
+                        resultCollection -> {
+                            resultCollection.forEach(result -> result.getEntities().forEach(piiEntity -> {
+                                final PiiEntityCategory category = piiEntity.getCategory();
+                                if (PiiEntityCategory.ABAROUTING_NUMBER == category
+                                        || PiiEntityCategory.USSOCIAL_SECURITY_NUMBER == category) {
+                                    categories.add(category);
+                                }
+                            }));
+                            validatePiiEntitiesResultCollection(false,
+                                getExpectedBatchPiiEntities(), resultCollection);
+                        })
+                    .verifyComplete();
+
+                // Override whatever the categoriesFiler has currently
+                final PiiEntityCategory[] piiEntityCategories = categories.toArray(new PiiEntityCategory[categories.size()]);
+                options.setCategoriesFilter(piiEntityCategories);
+
+                // Use the categories from another endpoint to call.
+                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
+                    .assertNext(
+                        resultCollection -> validatePiiEntitiesResultCollection(false,
+                            getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection))
+                    .verifyComplete();
+            });
     }
 
     // Linked Entities
@@ -2254,12 +2293,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeBatchActionsRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> syncPoller =
                 client.beginAnalyzeBatchActions(documents, tasks,
-                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                    new AnalyzeBatchActionsOptions().setIncludeStatistics(true)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false,
+            validateAnalyzeBatchActionsResultList(true,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
                         false, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),

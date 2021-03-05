@@ -54,6 +54,8 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -388,52 +390,65 @@ public final class Utility {
             keyPhraseResult.getStatistics() == null ? null : toBatchStatistics(keyPhraseResult.getStatistics()));
     }
 
-    public static RecognizeLinkedEntitiesResultCollection toRecognizeLinkedEntitiesResultCollectionResponse(
+    public static Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollectionResponse(
+        final Response<EntityLinkingResult> response) {
+        final EntityLinkingResult entityLinkingResult = response.getValue();
+        return new SimpleResponse<>(response,
+            new RecognizeLinkedEntitiesResultCollection(toRecognizeLinkedEntitiesResultCollection(entityLinkingResult),
+                entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics())));
+    }
+
+    public static RecognizeLinkedEntitiesResultCollection toRecognizeLinkedEntitiesResultCollection(
         final EntityLinkingResult entityLinkingResult) {
         // List of documents results
-        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = new ArrayList<>();
-        entityLinkingResult.getDocuments().forEach(
-            documentEntities ->
-                recognizeLinkedEntitiesResults.add(
-                    new RecognizeLinkedEntitiesResult(
-                        documentEntities.getId(),
-                        documentEntities.getStatistics() == null ? null
-                            : toTextDocumentStatistics(documentEntities.getStatistics()),
-                        null,
-                        new LinkedEntityCollection(
-                            new IterableStream<>(documentEntities.getEntities().stream().map(
-                                linkedEntity -> new LinkedEntity(
-                                    linkedEntity.getName(),
-                                    new IterableStream<>(linkedEntity.getMatches().stream().map(match -> {
-                                        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
-                                            match.getText(), match.getConfidenceScore(), match.getOffset());
-                                        LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch, match.getLength());
-                                        return linkedEntityMatch;
-                                    }).collect(Collectors.toList())),
-                                    linkedEntity.getLanguage(),
-                                    linkedEntity.getId(),
-                                    linkedEntity.getUrl(),
-                                    linkedEntity.getDataSource(),
-                                    linkedEntity.getBingId())).collect(Collectors.toList())),
-                            new IterableStream<>(documentEntities.getWarnings().stream().map(
-                                warning -> {
-                                    final WarningCodeValue warningCodeValue = warning.getCode();
-                                    return new TextAnalyticsWarning(
-                                        WarningCode.fromString(warningCodeValue == null ? null
-                                                                   : warningCodeValue.toString()),
-                                        warning.getMessage());
-                                }).collect(Collectors.toList()))
-                        ))));
+        final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults =
+            entityLinkingResult.getDocuments().stream().map(
+                documentLinkedEntities -> new RecognizeLinkedEntitiesResult(
+                    documentLinkedEntities.getId(),
+                    documentLinkedEntities.getStatistics() == null ? null
+                        : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
+                    null,
+                    new LinkedEntityCollection(new IterableStream<>(
+                        documentLinkedEntities.getEntities().stream().map(
+                            linkedEntity -> new LinkedEntity(
+                                linkedEntity.getName(),
+                                new IterableStream<>(
+                                    linkedEntity.getMatches().stream().map(
+                                        match -> {
+                                            final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                                                match.getText(), match.getConfidenceScore(), match.getOffset());
+                                            LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
+                                                match.getLength());
+                                            return linkedEntityMatch;
+                                        }).collect(Collectors.toList())),
+                                linkedEntity.getLanguage(),
+                                linkedEntity.getId(),
+                                linkedEntity.getUrl(),
+                                linkedEntity.getDataSource(),
+                                linkedEntity.getBingId())).collect(Collectors.toList())),
+                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
+                            warning -> {
+                                final WarningCodeValue warningCodeValue = warning.getCode();
+                                return new TextAnalyticsWarning(
+                                    WarningCode.fromString(warningCodeValue == null ? null
+                                                               : warningCodeValue.toString()),
+                                    warning.getMessage());
+                            }).collect(Collectors.toList())
+                        )
+                    )
+                )
+            ).collect(Collectors.toList());
         // Document errors
         for (DocumentError documentError : entityLinkingResult.getErrors()) {
-            recognizeLinkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
 
-        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResults,
-            entityLinkingResult.getModelVersion(),
-            entityLinkingResult.getStatistics() == null ? null
-                : toBatchStatistics(entityLinkingResult.getStatistics()));
+        return new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
 
     /**
