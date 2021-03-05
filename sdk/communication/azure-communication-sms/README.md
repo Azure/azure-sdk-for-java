@@ -21,102 +21,125 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.4</version> 
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
-## Key concepts
-
-There are two different forms of authentication to use the Azure Communication SMS Service.
+## Authenticate the client
 
 ### Azure Active Directory Token Authentication
+A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
-The `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via
-the credential() funtion. Endpoint and httpClient must also be set
-via the endpoint() and httpClient() functions respectively.
-
-`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
+`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-To create a SmsClient
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L22-L35 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L60 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-//Enter your azureKeyCredential
-AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
-// Instantiate the http client
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-// Create a new SmsClientBuilder to instantiate an SmsClient
-SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
-// Set the endpoint, access key, and the HttpClient
-smsClientBuilder.endpoint(endpoint)
-    .credential(azureKeyCredential)
-    .httpClient(httpClient);
-// Build a new SmsClient
-SmsClient smsClient = smsClientBuilder.buildClient();
-```
 
-Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L39-L46 -->
-```java
 // Create an HttpClient builder of your choice and customize it
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+SmsClient smsClient = new SmsClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpClient(httpClient)
+    .buildClient();
+```
+
+### Access Key Authentication
+Identity uses HMAC authentication with the resource access key.
+The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
+
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L18-L29 -->
+```java
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<resource-name>.communication.azure.com";
+AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+SmsClient smsClient = new SmsClientBuilder()
+    .endpoint(endpoint)
+    .credential(azureKeyCredential)
+    .httpClient(httpClient)
+    .buildClient();
+```
+
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L35-L44 -->
+```java
 // You can find your connection string from your resource in the Azure Portal
-String connectionString = "<connection_string>";
+String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
 SmsClient smsClient = new SmsClientBuilder()
     .connectionString(connectionString)
     .httpClient(httpClient)
     .buildClient();
 ```
 
+## Key concepts
+
+There are two different forms of authentication to use the Azure Communication SMS Service.
+
 ## Examples
 
-### Sending a message to a single recipient
-Use the `send` function to send a new message to a phone number.
-Once you send the message, you'll receive a response where you can access several
-properties such as the message id with the `messageResponseItem.getMessageId()` function.
+### Send a 1:1 SMS Message
+Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L60 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L68-L74 -->
 ```java
-//Send an sms to only one phone number
-SmsSendOptions options = new SmsSendOptions();
-options.setDeliveryReportEnabled(true);
-options.setTag("Tag"); /* Optional */
-// Send the message to a list of  phone Numbers and check the response for a messages ids
-SmsSendResult response = smsClient.send(
+SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
     "<to-phone-number>",
-    "your message",
-    options /* Optional */);
-System.out.println("MessageId: " + response.getMessageId());
-```
-### Sending a message to multiple recipients
-Use the `send` function to send a new message to a list of phone numbers.
-Once you send the message, you'll receive a PagedIterable response where you can access several
-properties such as the message id with the `messageResponseItem.getMessageId()` function.
+    "Hi");
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L76 -->
+System.out.println("Message Id: " + sendResult.getMessageId());
+System.out.println("Send Result Successful:" + sendResult.isSuccessful());
+```
+### Send a 1:N SMS Message
+To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
+
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L94 -->
 ```java
-//Send an sms to multiple phone numbers
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
-options.setTag("Tag"); /* Optional */
-// Send the message to a list of  phone Numbers and check the response for a messages ids
-Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
+options.setTag("Tag");
+
+Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
     "<from-phone-number>",
-    new ArrayList<String>(Arrays.asList("<to-phone-number1>", "<to-phone-number2>")),
-    "your message",
+    Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+    "Hi",
     options /* Optional */,
-    null);
-for (SmsSendResult messageResponseItem : responseMultiplePhones) {
-    System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+    Context.NONE).getValue();
+
+for (SmsSendResult result : sendResults) {
+    System.out.println("Message Id: " + result.getMessageId());
+    System.out.println("Send Result Successful:" + result.isSuccessful());
+}
 ```
 
 
 ## Troubleshooting
 
-In progress.
+All SMS service operations will throw an exception on failure.
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L102-L110 -->
+```java
+try {
+    SmsSendResult sendResult = smsClient.send(
+        "<from-phone-number>",
+        "<to-phone-number>",
+        "Hi"
+    );
+} catch (RuntimeException ex) {
+    System.out.println(ex.getMessage());
+}
+```
 
 ## Next steps
 

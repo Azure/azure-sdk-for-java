@@ -17,7 +17,6 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 public class SmsAsyncClientTests extends SmsTestBase {
     private SmsAsyncClient asyncClient;
 
@@ -190,6 +189,33 @@ public class SmsAsyncClientTests extends SmsTestBase {
             })
             .verifyComplete();
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToNullNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
+
+        // Action & Assert
+        String to = null;
+        Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, to, MESSAGE);
+        StepVerifier.create(response).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsFromNullNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
+
+        // Action & Assert
+        String from = null;
+        Mono<SmsSendResult> response = asyncClient.send(from, TO_PHONE_NUMBER, MESSAGE);
+        StepVerifier.create(response).verifyError();
+    }
+
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();

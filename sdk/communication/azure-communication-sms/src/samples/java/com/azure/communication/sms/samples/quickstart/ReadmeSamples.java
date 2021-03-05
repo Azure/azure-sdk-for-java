@@ -11,48 +11,72 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
-    public SmsClient createSmsClientUsingAAD() {
+    public SmsClient createSmsClientUsingAzureKeyCredential() {
         // You can find your endpoint and access key from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        //Enter your azureKeyCredential
-        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
-        // Instantiate the http client
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+
+        // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-        // Create a new SmsClientBuilder to instantiate an SmsClient
-        SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
-        // Set the endpoint, access key, and the HttpClient
-        smsClientBuilder.endpoint(endpoint)
+
+        SmsClient smsClient = new SmsClientBuilder()
+            .endpoint(endpoint)
             .credential(azureKeyCredential)
-            .httpClient(httpClient);
-        // Build a new SmsClient
-        return smsClientBuilder.buildClient();
+            .httpClient(httpClient)
+            .buildClient();
+
+        return smsClient;
     }
 
     public SmsClient createSmsClientWithConnectionString() {
+        // You can find your connection string from your resource in the Azure Portal
+        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-        // You can find your connection string from your resource in the Azure Portal
-        String connectionString = "<connection_string>";
+
         SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)
             .httpClient(httpClient)
             .buildClient();
+
         return smsClient;
     }
 
-    public void sendMessageToOneRecipient(SmsClient smsClient) {
-        // Send the message to a list of  phone Numbers and check the response for a messages ids
-        SmsSendResult response = smsClient.send(
+    public SmsClient createSmsClientWithAAD() {
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        SmsClient smsClient = new SmsClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(httpClient)
+            .buildClient();
+
+        return smsClient;
+    }
+
+    public void sendMessageToOneRecipient() {
+        SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
+        SmsSendResult sendResult = smsClient.send(
             "<from-phone-number>",
             "<to-phone-number>",
             "Hi");
 
-        System.out.println("MessageId: " + response.getMessageId());
+        System.out.println("Message Id: " + sendResult.getMessageId());
+        System.out.println("Send Result Successful:" + sendResult.isSuccessful());
     }
 
-    public void sendMessageToGroupWithOptions(SmsClient smsClient) {
+    public void sendMessageToGroupWithOptions() {
+        SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("Tag");
@@ -65,9 +89,24 @@ public class ReadmeSamples {
             Context.NONE).getValue();
 
         for (SmsSendResult result : sendResults) {
-            System.out.println("Message Id:" + result.getMessageId());
-            System.out.println("Status code:" + result.getHttpStatusCode());
-            System.out.println("Successful:" + result.isSuccessful());
+            System.out.println("Message Id: " + result.getMessageId());
+            System.out.println("Send Result Successful:" + result.isSuccessful());
+        }
+    }
+
+        /**
+     * Sample code for troubleshooting
+     */
+    public void sendSMSTroubleshooting() {
+        SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+        try {
+            SmsSendResult sendResult = smsClient.send(
+                "<from-phone-number>",
+                "<to-phone-number>",
+                "Hi"
+            );
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 }

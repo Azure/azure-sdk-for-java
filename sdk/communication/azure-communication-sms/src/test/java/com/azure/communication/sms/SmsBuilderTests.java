@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.net.MalformedURLException;
@@ -10,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
@@ -91,5 +93,25 @@ public class SmsBuilderTests {
                 .httpClient(new NoOpHttpClient())
                 .httpLogOptions(null);
         });
+    }
+
+    @Test
+    public void nullRetryPolicyTest() {
+        assertThrows(NullPointerException.class, () -> {
+            builder
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .retryPolicy(null);
+        });
+    }
+
+    @Test
+    public void buildPiplineForClient() {
+        SmsAsyncClient smsClient = builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient())
+            .pipeline(new HttpPipelineBuilder().build())
+            .buildAsyncClient();
+        assertNotNull(smsClient);
     }
 }
