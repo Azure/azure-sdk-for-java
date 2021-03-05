@@ -21,7 +21,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
   )
 
   for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId) <- upsertParameterTest) {
-    it should s"support bulkEnabled = ${bulkEnabled} itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in  {
+    it should s"support bulkEnabled = ${bulkEnabled} itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
