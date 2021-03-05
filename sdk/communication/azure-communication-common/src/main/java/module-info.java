@@ -16,6 +16,4 @@ module com.azure.communication.common {
         com.azure.communication.identity,
         com.azure.communication.phonenumbers,
         com.azure.communication.chat;
-
-    opens com.azure.communication.common.implementation;
 }

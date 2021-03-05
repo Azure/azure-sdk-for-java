@@ -3,21 +3,28 @@
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
 
 ### New features
+- Added `normalizedText` property to `HealthcareEntity`.
+- `AnalyzeHealthcareEntitiesResult` now exposes the property `entityRelations`, which is a list of `HealthcareEntityRelation`.
+- Added `HealthcareEntityRelation` class which will determine all the different relations between the entities as `Roles`.
+- Added `HealthcareEntityRelationRole`, which exposes `name` and `entity` of type `String` and `HealthcareEntity` respectively.
 - `beginAnalyzeBatchActions` can now process recognize linked entities actions.
 - `recognizePiiEntities` takes a new option, `categoriesFilter`, that specifies a list of PII categories to return.
 - Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
 
 ### Breaking changes
+- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
 - Renamed classes,
   `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
 - Renamed
   `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
-  `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`,
+  `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`.
+- Removed property, `relatedEntities` from `HealthcareEntity`.
 - Removed constructors, 
   `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
   `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
   `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
-- Removed `PiiEntity` constructor
+  `PiiEntity` constructor
+  
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features
 - Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.

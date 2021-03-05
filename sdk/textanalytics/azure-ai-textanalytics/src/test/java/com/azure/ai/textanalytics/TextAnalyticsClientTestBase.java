@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
@@ -15,6 +16,9 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -609,6 +613,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Healthcare LRO - Cancellation
 
     @Test
@@ -994,6 +1001,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(documents, new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true));
     }
 
+    void analyzeHealthcareEntitiesForAssertionRunner(
+        BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
+        testRunner.accept(asList(
+            "Baby not likely to have Meningitis."),
+            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
+    }
+
     // Healthcare LRO runner- Cancellation
     void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -1205,9 +1219,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateHealthcareEntitiesResult(boolean showStatistics,
         AnalyzeHealthcareEntitiesResultCollection expected, AnalyzeHealthcareEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual,
-            (expectedItem, actualItem) -> validateHealthcareEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+            (expectedItem, actualItem) -> validateHealthcareEntityDocumentResult(expectedItem, actualItem));
     }
 
     /**
@@ -1457,7 +1469,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getOffset(), actual.getOffset());
+        assertEquals(expected.getLength(), actual.getLength());
+        assertEquals(expected.getNormalizedText(), actual.getNormalizedText());
+        assertEquals(expected.getSubcategory(), actual.getSubcategory());
+        validateEntityAssertion(expected.getAssertion(), actual.getAssertion());
         validateEntityDataSourceList(expected.getDataSources(), actual.getDataSources());
+    }
+
+    static void validateEntityAssertion(HealthcareEntityAssertion expected, HealthcareEntityAssertion actual) {
+        if (actual == expected) {
+            return;
+        }
+        assertEquals(expected.getConditionality(), actual.getConditionality());
+        assertEquals(expected.getAssociation(), actual.getAssociation());
+        assertEquals(expected.getCertainty(), actual.getCertainty());
     }
 
     static void validateEntityDataSourceList(IterableStream<EntityDataSource> expected,
@@ -1467,6 +1492,37 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         } else if (expected == null || actual == null) {
             assertTrue(false);
         }
+    }
+
+    static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
+        AnalyzeHealthcareEntitiesResult actual) {
+        validateHealthcareEntityRelations(expected.getEntityRelations().stream().collect(Collectors.toList()),
+            actual.getEntityRelations().stream().collect(Collectors.toList()));
+        validateHealthcareEntities(expected.getEntities().stream().collect(Collectors.toList()),
+            actual.getEntities().stream().collect(Collectors.toList()));
+    }
+
+    static void validateHealthcareEntityRelations(List<HealthcareEntityRelation> expected,
+        List<HealthcareEntityRelation> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateHealthcareEntityRelation(expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateHealthcareEntityRelation(HealthcareEntityRelation expected, HealthcareEntityRelation actual) {
+        final List<HealthcareEntityRelationRole> expectedRoles = expected.getRoles().stream().collect(Collectors.toList());
+        final List<HealthcareEntityRelationRole> actualRoles = actual.getRoles().stream().collect(Collectors.toList());
+        assertEquals(expected.getRelationType(), actual.getRelationType());
+        for (int i = 0; i < expectedRoles.size(); i++) {
+            validateHealthcareEntityRelationRole(expectedRoles.get(i), actualRoles.get(i));
+        }
+    }
+
+    static void validateHealthcareEntityRelationRole(HealthcareEntityRelationRole expected,
+        HealthcareEntityRelationRole actual) {
+        assertEquals(expected.getName(), actual.getName());
+        validateHealthcareEntity(expected.getEntity(), actual.getEntity());
     }
 
     static void validateHealthcareEntities(List<HealthcareEntity> expected, List<HealthcareEntity> actual) {

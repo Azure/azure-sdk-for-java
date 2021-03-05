@@ -3,6 +3,9 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.Association;
+import com.azure.ai.textanalytics.implementation.models.Certainty;
+import com.azure.ai.textanalytics.implementation.models.Conditionality;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
@@ -11,6 +14,7 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
+import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
@@ -19,6 +23,7 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.RelationType;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
@@ -27,10 +32,16 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.EntityCertainty;
+import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -464,86 +475,89 @@ public final class Utility {
         List<AnalyzeHealthcareEntitiesResult> analyzeHealthcareEntitiesResults = new ArrayList<>();
         healthcareResult.getDocuments().forEach(
             documentEntities -> {
-                final List<TextAnalyticsWarning> warnings = Optional.ofNullable(documentEntities.getWarnings())
-                    .map(textAnalyticsWarnings -> textAnalyticsWarnings.stream().map(
-                        textAnalyticsWarning -> new TextAnalyticsWarning(
-                            Optional.ofNullable(textAnalyticsWarning.getCode())
-                                .map(warningCodeValue -> WarningCode.fromString(warningCodeValue.toString()))
-                                .orElse(null),
-                            textAnalyticsWarning.getMessage())
-                        ).collect(Collectors.toList())
-                    ).orElse(new ArrayList<>());
-
-                final List<HealthcareEntity> healthcareEntities = documentEntities.getEntities().stream().map(
-                    entity -> {
-                        final HealthcareEntity healthcareEntity = new HealthcareEntity();
-                        HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
-                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
-                        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
-                            entity.getConfidenceScore());
-                        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
-                        HealthcareEntityPropertiesHelper.setLength(healthcareEntity, entity.getLength());
-                        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
-                            entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
-                                .map(healthcareEntityLink -> {
-                                    final EntityDataSource entityDataSourceOrigin =
-                                        new EntityDataSource();
-                                    EntityDataSourcePropertiesHelper.setName(entityDataSourceOrigin,
-                                        healthcareEntityLink.getDataSource());
-                                    EntityDataSourcePropertiesHelper.setEntityId(
-                                        entityDataSourceOrigin, healthcareEntityLink.getId());
-                                    return entityDataSourceOrigin;
-                                })
-                                .collect(Collectors.toList())));
-                        // TODO: can we keep 'null' value for the map or by default we need to use an empty map
-                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
-                            new HashMap<>());
-                        return healthcareEntity;
-                    }).collect(Collectors.toList());
-
-                Map<HealthcareEntity, Map<HealthcareEntity, HealthcareEntityRelationType>> entityRelationMap =
-                    new HashMap<>();
-                if (!CoreUtils.isNullOrEmpty(documentEntities.getRelations())) {
-                    documentEntities.getRelations().forEach(healthcareRelation -> {
-                        // TODO: bidirectional relation is gone, do it in another PR
-                        // issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
-//                        final HealthcareEntity targetEntity =
-//                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getTarget()));
-//                        final HealthcareEntity sourceEntity =
-//                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getSource()));
-//                        final HealthcareEntityRelationType relationType =
-//                            HealthcareEntityRelationType.fromString(healthcareRelation.getRelationType());
-
-//                        final Map<HealthcareEntity, HealthcareEntityRelationType> targetRelatedEntity =
-//                            entityRelationMap.getOrDefault(targetEntity, new HashMap<>());
-//                        targetRelatedEntity.putIfAbsent(sourceEntity, relationType);
-//                        entityRelationMap.putIfAbsent(targetEntity, targetRelatedEntity);
-//
-//                        if (healthcareRelation.isBidirectional()) {
-//                            final Map<HealthcareEntity, HealthcareEntityRelationType> sourceRelatedEntity =
-//                                entityRelationMap.getOrDefault(sourceEntity, new HashMap<>());
-//                            sourceRelatedEntity.putIfAbsent(targetEntity, relationType);
-//                            entityRelationMap.putIfAbsent(sourceEntity, sourceRelatedEntity);
-//                        }
-                    });
-                }
-                healthcareEntities.forEach(healthcareEntity -> {
-                    if (entityRelationMap.containsKey(healthcareEntity)) {
-                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
-                            entityRelationMap.get(healthcareEntity));
-                    }
-                });
-
                 final AnalyzeHealthcareEntitiesResult analyzeHealthcareEntitiesResult =
                     new AnalyzeHealthcareEntitiesResult(
                         documentEntities.getId(),
                         documentEntities.getStatistics() == null ? null
                             : toTextDocumentStatistics(documentEntities.getStatistics()),
                         null);
-                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(analyzeHealthcareEntitiesResult,
-                    IterableStream.of(healthcareEntities));
+                // Warnings
+                final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+                    textAnalyticsWarning -> new TextAnalyticsWarning(
+                        Optional.ofNullable(textAnalyticsWarning.getCode())
+                            .map(warningCodeValue -> WarningCode.fromString(warningCodeValue.toString()))
+                            .orElse(null),
+                        textAnalyticsWarning.getMessage())
+                ).collect(Collectors.toList());
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setWarnings(analyzeHealthcareEntitiesResult,
                     IterableStream.of(warnings));
+                // Healthcare entities
+                final List<HealthcareEntity> healthcareEntities = documentEntities.getEntities().stream().map(
+                    entity -> {
+                        final HealthcareEntity healthcareEntity = new HealthcareEntity();
+                        HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
+                        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity, entity.getName());
+                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
+                        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
+                            entity.getConfidenceScore());
+                        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
+                        HealthcareEntityPropertiesHelper.setLength(healthcareEntity, entity.getLength());
+                        final List<EntityDataSource> entityDataSources =
+                            Optional.ofNullable(entity.getLinks()).map(
+                                links -> links.stream().map(
+                                    link -> {
+                                        final EntityDataSource dataSource = new EntityDataSource();
+                                        EntityDataSourcePropertiesHelper.setName(dataSource, link.getDataSource());
+                                        EntityDataSourcePropertiesHelper.setEntityId(dataSource, link.getId());
+                                        return dataSource;
+                                    }
+                                ).collect(Collectors.toList()))
+                                .orElse(new ArrayList<>());
+
+                        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
+                            IterableStream.of(entityDataSources));
+
+                        final HealthcareAssertion assertion = entity.getAssertion();
+                        if (assertion != null) {
+                            HealthcareEntityPropertiesHelper.setAssertion(healthcareEntity,
+                                toHealthcareEntityAssertion(assertion));
+                        }
+                        return healthcareEntity;
+                    }).collect(Collectors.toList());
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(healthcareEntities));
+
+                // Healthcare Entity relations
+                final List<HealthcareEntityRelation> healthcareEntityRelations =
+                    documentEntities.getRelations().stream().map(
+                        healthcareRelation -> {
+                            final HealthcareEntityRelation entityRelation = new HealthcareEntityRelation();
+                            // Healthcare relation type
+                            final RelationType relationType = healthcareRelation.getRelationType();
+                            if (relationType != null) {
+                                HealthcareEntityRelationPropertiesHelper.setRelationType(entityRelation,
+                                    HealthcareEntityRelationType.fromString(relationType.toString()));
+                            }
+                            // Healthcare entity relation roles
+                            final List<HealthcareEntityRelationRole> relationRoles =
+                                healthcareRelation.getEntities().stream().map(
+                                    relationEntity -> {
+                                        final HealthcareEntityRelationRole relationRole =
+                                            new HealthcareEntityRelationRole();
+                                        HealthcareEntityRelationRolePropertiesHelper.setName(relationRole,
+                                            relationEntity.getRole());
+                                        HealthcareEntityRelationRolePropertiesHelper.setEntity(relationRole,
+                                            healthcareEntities.get(getHealthcareEntityIndex(relationEntity.getRef())));
+                                        return relationRole;
+                                    }).collect(Collectors.toList());
+                            HealthcareEntityRelationPropertiesHelper.setRoles(entityRelation,
+                                IterableStream.of(relationRoles));
+
+                            return entityRelation;
+                        }).collect(Collectors.toList());
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(healthcareEntityRelations));
+
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
@@ -556,24 +570,84 @@ public final class Utility {
         return IterableStream.of(analyzeHealthcareEntitiesResults);
     }
 
-//    /**
-//     * Helper function that parse healthcare entity index from the given entity reference string.
-//     * The entity reference format is "#/results/documents/0/entities/3".
-//     *
-//     * @param entityReference the given healthcare entity reference string.
-//     *
-//     * @return the healthcare entity index.
-//     */
-//    private static Integer getHealthcareEntityIndex(String entityReference) {
-//        if (!CoreUtils.isNullOrEmpty(entityReference)) {
-//            int lastIndex = entityReference.lastIndexOf('/');
-//            if (lastIndex != -1) {
-//                return Integer.parseInt(entityReference.substring(lastIndex + 1));
-//            }
-//        }
-//        throw LOGGER.logExceptionAsError(
-//            new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
-//    }
+    public static HealthcareEntityAssertion toHealthcareEntityAssertion(HealthcareAssertion healthcareAssertion) {
+        final Association association = healthcareAssertion.getAssociation();
+        final Certainty certainty = healthcareAssertion.getCertainty();
+        final Conditionality conditionality = healthcareAssertion.getConditionality();
+
+        final HealthcareEntityAssertion entityAssertion = new HealthcareEntityAssertion();
+        if (association != null) {
+            HealthcareEntityAssertionPropertiesHelper.setAssociation(entityAssertion,
+                EntityAssociation.fromString(association.toString()));
+        }
+        if (certainty != null) {
+            HealthcareEntityAssertionPropertiesHelper.setCertainty(entityAssertion,
+                toCertainty(certainty));
+        }
+        if (conditionality != null) {
+            HealthcareEntityAssertionPropertiesHelper.setConditionality(entityAssertion,
+                toConditionality(conditionality));
+        }
+        return entityAssertion;
+    }
+
+    private static EntityCertainty toCertainty(Certainty certainty) {
+        EntityCertainty entityCertainty1 = null;
+        switch (certainty) {
+            case POSITIVE:
+                entityCertainty1 = EntityCertainty.POSITIVE;
+                break;
+            case POSITIVE_POSSIBLE:
+                entityCertainty1 = EntityCertainty.POSITIVE_POSSIBLE;
+                break;
+            case NEUTRAL_POSSIBLE:
+                entityCertainty1 = EntityCertainty.NEUTRAL_POSSIBLE;
+                break;
+            case NEGATIVE_POSSIBLE:
+                entityCertainty1 = EntityCertainty.NEGATIVE_POSSIBLE;
+                break;
+            case NEGATIVE:
+                entityCertainty1 = EntityCertainty.NEGATIVE;
+                break;
+            default:
+                break;
+        }
+        return entityCertainty1;
+    }
+
+    private static EntityConditionality toConditionality(Conditionality conditionality) {
+        EntityConditionality conditionality1 = null;
+        switch (conditionality) {
+            case HYPOTHETICAL:
+                conditionality1 = EntityConditionality.HYPOTHETICAL;
+                break;
+            case CONDITIONAL:
+                conditionality1 = EntityConditionality.CONDITIONAL;
+                break;
+            default:
+                break;
+        }
+        return conditionality1;
+    }
+
+    /**
+     * Helper function that parse healthcare entity index from the given entity reference string.
+     * The entity reference format is "#/results/documents/0/entities/3".
+     *
+     * @param entityReference the given healthcare entity reference string.
+     *
+     * @return the healthcare entity index.
+     */
+    private static Integer getHealthcareEntityIndex(String entityReference) {
+        if (!CoreUtils.isNullOrEmpty(entityReference)) {
+            int lastIndex = entityReference.lastIndexOf('/');
+            if (lastIndex != -1) {
+                return Integer.parseInt(entityReference.substring(lastIndex + 1));
+            }
+        }
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
+    }
 
     /**
      * Transfer {@link com.azure.ai.textanalytics.models.StringIndexType} into auto-generated {@link StringIndexType}.

@@ -9,6 +9,8 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
@@ -31,6 +33,8 @@ import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -73,9 +77,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -675,13 +677,18 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, "Age");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 17);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity1, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
+            IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "gentleman");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity2, "Male population group");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, "Gender");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity2, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 9);
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
+            IterableStream.of(Collections.emptyList()));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
             IterableStream.of(Collections.emptyList()));
@@ -690,13 +697,18 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, "ConditionQualifier");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 0.91);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity3, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
+            IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity4, "Angina Pectoris");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, "SymptomOrSign");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.81);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 6);
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
+            IterableStream.of(Collections.emptyList()));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
             IterableStream.of(Collections.emptyList()));
@@ -705,13 +717,9 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, "Time");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity5, false);
-
-        // HealthcareEntityRelation
-        Map<HealthcareEntity, HealthcareEntityRelationType> relationTypeMap = new HashMap<>();
-        relationTypeMap.put(healthcareEntity3, HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
-        relationTypeMap.put(healthcareEntity5, HealthcareEntityRelationType.TIME_OF_CONDITION);
-        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity4, relationTypeMap);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 19);
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
+            IterableStream.of(Collections.emptyList()));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult1 = new AnalyzeHealthcareEntitiesResult(documentId,
@@ -720,6 +728,30 @@ final class TestUtils {
             new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
                 healthcareEntity5)));
 
+        // HealthcareEntityRelations
+        final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
+        final HealthcareEntityRelationRole role1 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Qualifier");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role1, healthcareEntity3);
+        final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Condition");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity4);
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
+            HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
+        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
+            IterableStream.of(asList(role1, role2)));
+
+        final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
+        final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role3, "Time");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role3, healthcareEntity5);
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation2,
+            HealthcareEntityRelationType.TIME_OF_CONDITION);
+        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
+            IterableStream.of(asList(role2, role3)));
+
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult1,
+            IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult1;
     }
 
@@ -736,59 +768,109 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, "Time");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 0.87);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 21);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity1, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
+        // there are too many healthcare entity data sources, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
+            IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, "ConditionQualifier");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 38);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity2, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 7);
+        // there are too many healthcare entity data sources, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
+            IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions in the anterior lateral leads");
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, "ST segment depression (finding)");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, "SymptomOrSign");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 46);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity3, false);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 14);
+        // there are too many healthcare entity data sources, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
+            IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "fatigue");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, "SymptomOrSign");
-        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 1.0);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 108);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "anterior lateral");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, "Direction");
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.6);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 68);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 16);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "wrist pain");
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "fatigue");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity5, "Fatigue");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, "SymptomOrSign");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 120);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity5, false);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 108);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 7);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "anginal equivalent");
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "wrist pain");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity6, "Pain in wrist");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity6, "SymptomOrSign");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity6, 1.0);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity6, 137);
-        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity6, false);
-        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity6, 120);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity6, 10);
+        // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity6,
             IterableStream.of(Collections.emptyList()));
-
-        // HealthcareEntityRelation
-        Map<HealthcareEntity, HealthcareEntityRelationType> relationTypeMap = new HashMap<>();
-        relationTypeMap.put(healthcareEntity1, HealthcareEntityRelationType.TIME_OF_CONDITION);
-        relationTypeMap.put(healthcareEntity2, HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
-        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity3, relationTypeMap);
+        final HealthcareEntity healthcareEntity7 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity7, "anginal equivalent");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity7, "Anginal equivalent");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity7, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity7, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity7, 137);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity7, 18);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity7,
+            IterableStream.of(Collections.emptyList()));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult = new AnalyzeHealthcareEntitiesResult("1",
             textDocumentStatistics, null);
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult,
             new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
-                healthcareEntity5, healthcareEntity6)));
+                healthcareEntity5, healthcareEntity6, healthcareEntity7)));
+
+        // HealthcareEntityRelations
+        final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
+        final HealthcareEntityRelationRole role1 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Time");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role1, healthcareEntity1);
+        final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Condition");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity3);
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
+            HealthcareEntityRelationType.TIME_OF_CONDITION);
+        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
+            IterableStream.of(asList(role1, role2)));
+
+        final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
+        final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role3, "Qualifier");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role3, healthcareEntity2);
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation2,
+            HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
+        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
+            IterableStream.of(asList(role3, role2)));
+
+        final HealthcareEntityRelation healthcareEntityRelation3 = new HealthcareEntityRelation();
+        final HealthcareEntityRelationRole role4 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role4, "Direction");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role4, healthcareEntity4);
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation3,
+            HealthcareEntityRelationType.DIRECTION_OF_CONDITION);
+        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation3,
+            IterableStream.of(asList(role2, role4)));
+
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult,
+            IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2, healthcareEntityRelation3)));
         return healthcareEntitiesResult;
     }
 

@@ -104,9 +104,13 @@ public class DocumentQueryExecutionContextFactory {
             }
         }
 
-        queryExecutionInfoMono = QueryPlanRetriever
-                                     .getQueryPlanThroughGatewayAsync(diagnosticsClientContext, client, query,
-                                                                      resourceLink);
+        queryExecutionInfoMono =
+            QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
+                diagnosticsClientContext,
+                client,
+                query,
+                resourceLink,
+                cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions.getPartitionKey() : null);
 
         return queryExecutionInfoMono.flatMap(
             partitionedQueryExecutionInfo -> {

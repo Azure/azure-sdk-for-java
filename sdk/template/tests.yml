@@ -8,5 +8,3 @@ stages:
         - name: azure-sdk-template
           groupId: com.azure
           safeName: azuresdktemplate
-      EnvVars:
-        AZURE_TEST_MODE: RECORD

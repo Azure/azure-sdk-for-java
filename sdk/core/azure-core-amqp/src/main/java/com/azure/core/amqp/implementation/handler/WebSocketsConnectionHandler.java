@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
 /**
@@ -32,8 +33,8 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param connectionOptions Options used when creating the connection.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String productName, final String clientVersion,
-        final ConnectionOptions connectionOptions) {
-        super(connectionId, productName, clientVersion, connectionOptions);
+        final ConnectionOptions connectionOptions, SslPeerDetails peerDetails) {
+        super(connectionId, productName, clientVersion, connectionOptions, peerDetails);
     }
 
     /**

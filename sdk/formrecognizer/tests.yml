@@ -9,5 +9,3 @@ stages:
         - name: azure-ai-formrecognizer
           groupId: com.azure
           safeName: azureaiformrecognizer
-      EnvVars:
-        AZURE_TEST_MODE: RECORD

@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -96,13 +96,13 @@ public class ReadmeSamples {
      *
      * @return the result with the created user and token
      */
-    public CommunicationUserIdentifierWithTokenResult createNewUserWithToken() {
+    public CommunicationUserIdentifierAndToken createNewUserAndToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         // Define a list of communication token scopes
         List<CommunicationTokenScope> scopes =
             new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-        CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
+        CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
         System.out.println("User id: " + result.getUser().getId());
         System.out.println("User token value: " + result.getUserToken().getToken());
         return result;
