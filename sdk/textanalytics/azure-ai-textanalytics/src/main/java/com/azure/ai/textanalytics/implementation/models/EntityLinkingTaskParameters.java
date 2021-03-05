@@ -20,7 +20,7 @@ public final class EntityLinkingTaskParameters {
      * The stringIndexType property.
      */
     @JsonProperty(value = "stringIndexType")
-    private StringIndexTypeResponse stringIndexType;
+    private StringIndexType stringIndexType;
 
     /**
      * Get the modelVersion property: The model-version property.
@@ -47,7 +47,7 @@ public final class EntityLinkingTaskParameters {
      *
      * @return the stringIndexType value.
      */
-    public StringIndexTypeResponse getStringIndexType() {
+    public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
 
@@ -57,7 +57,7 @@ public final class EntityLinkingTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntityLinkingTaskParameters object itself.
      */
-    public EntityLinkingTaskParameters setStringIndexType(StringIndexTypeResponse stringIndexType) {
+    public EntityLinkingTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

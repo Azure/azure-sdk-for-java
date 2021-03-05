@@ -12,6 +12,8 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import java.time.Duration;
@@ -55,7 +57,9 @@ public class ReactorHandlerProvider {
         Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
 
         if (options.getTransportType() == AmqpTransportType.AMQP) {
-            return new ConnectionHandler(connectionId, productName, clientVersion, options);
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+
+            return new ConnectionHandler(connectionId, productName, clientVersion, options, peerDetails);
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
@@ -81,17 +85,25 @@ public class ReactorHandlerProvider {
             logger.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
                 options.getFullyQualifiedNamespace(), options.getPort(), options.getProxyOptions().getProxyAddress());
 
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+
             return new WebSocketsProxyConnectionHandler(connectionId, productName, clientVersion, options,
-                options.getProxyOptions());
+                options.getProxyOptions(), peerDetails);
         } else if (isSystemProxyConfigured) {
             logger.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
                 options.getFullyQualifiedNamespace(), options.getPort());
 
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+
             return new WebSocketsProxyConnectionHandler(connectionId, productName, clientVersion, options,
-                ProxyOptions.SYSTEM_DEFAULTS);
+                ProxyOptions.SYSTEM_DEFAULTS, peerDetails);
         }
 
-        return new WebSocketsConnectionHandler(connectionId, productName, clientVersion, options);
+        final SslPeerDetails peerDetails = isCustomEndpointConfigured
+            ? Proton.sslPeerDetails(options.getHostname(), options.getPort())
+            : Proton.sslPeerDetails(options.getFullyQualifiedNamespace(), options.getPort());
+
+        return new WebSocketsConnectionHandler(connectionId, productName, clientVersion, options, peerDetails);
     }
 
     /**

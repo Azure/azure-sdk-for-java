@@ -530,6 +530,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.

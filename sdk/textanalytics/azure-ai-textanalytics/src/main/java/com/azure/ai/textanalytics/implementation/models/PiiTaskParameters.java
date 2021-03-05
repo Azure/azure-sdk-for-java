@@ -26,14 +26,14 @@ public final class PiiTaskParameters {
     /*
      * (Optional) describes the PII categories to return
      */
-    @JsonProperty(value = "piiCategories")
+    @JsonProperty(value = "pii-categories")
     private List<PiiCategory> piiCategories;
 
     /*
      * The stringIndexType property.
      */
     @JsonProperty(value = "stringIndexType")
-    private StringIndexTypeResponse stringIndexType;
+    private StringIndexType stringIndexType;
 
     /**
      * Get the domain property: The domain property.
@@ -100,7 +100,7 @@ public final class PiiTaskParameters {
      *
      * @return the stringIndexType value.
      */
-    public StringIndexTypeResponse getStringIndexType() {
+    public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
 
@@ -110,7 +110,7 @@ public final class PiiTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
      */
-    public PiiTaskParameters setStringIndexType(StringIndexTypeResponse stringIndexType) {
+    public PiiTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

@@ -1,6 +1,9 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.3.0-beta.1 (Unreleased)
+
+
+## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - Remove `azure.activedirectory.b2c.oidc-enabled` property.
 - Add `azure.activedirectory.b2c.login-flow` property. 

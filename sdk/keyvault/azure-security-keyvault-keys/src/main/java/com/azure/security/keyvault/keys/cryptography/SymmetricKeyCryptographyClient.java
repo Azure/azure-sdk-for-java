@@ -19,12 +19,10 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     static final int AES_BLOCK_SIZE = 16;
-    static final int GCM_NONCE_SIZE = 12;
 
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
 
@@ -75,9 +73,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
 
         if (iv == null) {
-            if (isGcm(algorithm)) {
-                iv = generateRandomByteArray(GCM_NONCE_SIZE);
-            } else if (isAes(algorithm)) {
+            if (isAes(algorithm)) {
                 iv = generateRandomByteArray(AES_BLOCK_SIZE);
             } else {
                 throw logger.logExceptionAsError(
@@ -101,22 +97,16 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         byte[] cipherText;
-        byte[] authenticationTag;
 
-        if (isGcm(algorithm)) {
-            cipherText = Arrays.copyOfRange(encrypted, 0, encryptOptions.getPlainText().length);
-            authenticationTag = Arrays.copyOfRange(encrypted, encryptOptions.getPlainText().length, encrypted.length);
-        } else if (isAes(algorithm)) {
+        if (isAes(algorithm)) {
             cipherText = encrypted;
-            authenticationTag = null;
         } else {
-            // Should never reach this.
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
-            authenticationTag));
+            null));
     }
 
     @Override
@@ -152,11 +142,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] decrypted;
         byte[] cipherText;
 
-        if (isGcm(algorithm)) {
-            cipherText = new byte[decryptOptions.getCipherText().length + authenticationTag.length];
-            System.arraycopy(decryptOptions.getCipherText(), 0, cipherText, 0, decryptOptions.getCipherText().length);
-            System.arraycopy(authenticationTag, 0, cipherText, decryptOptions.getCipherText().length, authenticationTag.length);
-        } else if (isAes(algorithm)) {
+        if (isAes(algorithm)) {
             cipherText = decryptOptions.getCipherText();
         } else {
             throw logger.logExceptionAsError(
@@ -274,12 +260,6 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         return iv;
-    }
-
-    private boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
-        return (encryptionAlgorithm == EncryptionAlgorithm.A128GCM
-            || encryptionAlgorithm == EncryptionAlgorithm.A192GCM
-            || encryptionAlgorithm == EncryptionAlgorithm.A256GCM);
     }
 
     private boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {

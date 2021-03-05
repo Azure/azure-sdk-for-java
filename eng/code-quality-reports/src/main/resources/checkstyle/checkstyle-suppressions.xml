@@ -9,7 +9,7 @@
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
-  
+
   <!-- Suppress all checkstyle rules for Track 1/management libraries. -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
@@ -168,8 +168,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.AesCbcPad.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.AesGcm.java"/>
 
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -512,6 +510,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-iot-deviceupdate[/\\]src[/\\]"/>
 
   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
