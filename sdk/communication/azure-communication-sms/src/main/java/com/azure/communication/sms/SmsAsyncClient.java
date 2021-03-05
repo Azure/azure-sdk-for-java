@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
+import com.azure.communication.sms.implementation.SmsImpl;
 import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
 import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
@@ -13,9 +14,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -26,16 +30,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SmsClientBuilder.class, isAsync = true)
 public final class SmsAsyncClient {
-    private final AzureCommunicationSMSServiceImpl smsServiceClient;
+    private final SmsImpl smsClient;
     private final ClientLogger logger = new ClientLogger(SmsAsyncClient.class);
 
     SmsAsyncClient(AzureCommunicationSMSServiceImpl smsServiceClient) {
-        this.smsServiceClient = smsServiceClient;
+        smsClient = smsServiceClient.getSms();
     }
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
-     * Phone number has to be in the format 000 - 00 - 00
      *
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
@@ -44,7 +47,9 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResult> send(String from, String to, String message) {
-        return send(from, to, message, null);
+        return sendWithResponse(from, to, message, null, null).flatMap(response -> {
+            return Mono.just(response.getValue());
+        });
     }
 
     /**
@@ -53,30 +58,34 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
+     * @param options set options on the SMS request, like enable delivery report, which sends a report
      *                   for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions smsOptions) {
-        List<String> recipients = new ArrayList<String>();
-        recipients.add(to);
-        SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
+    public Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options) {
+        return sendWithResponse(from, to, message, options, null);
+    }
+
+    Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
-            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            Response<SmsSendResponse> response = responseMono.block();
-            SmsSendResponse smsSendResponse = response.getValue();
-
-            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
-            if (result.size() == 1) {
-                return Mono.just(result.get(0));
-            } else {
-                return monoError(logger, new NullPointerException("no response"));
-            }
-        } catch (NullPointerException ex) {
-            return monoError(logger, ex);
+            List<String> recipients = Arrays.asList(to);
+            SendMessageRequest request = createSendMessageRequest(from, recipients, message, options);
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return smsClient.sendWithResponseAsync(request, contextValue)
+                    .flatMap((Response<SmsSendResponse> response) -> {
+                        List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
+                        if (!smsSendResults.isEmpty()) {
+                            return Mono.just(new SimpleResponse<SmsSendResult>(response, smsSendResults.get(0)));
+                        }
+                        return monoError(logger, new NullPointerException("SmsSendResult is empty."));
+                    });
+            });
         } catch (RuntimeException  ex) {
             return monoError(logger, ex);
         }
@@ -93,7 +102,10 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
-        return send(from, to, message, null);
+        return sendWithResponse(from, to, message, null)
+            .flatMap((Response<Iterable<SmsSendResult>> response) -> {
+                return Mono.just(response.getValue());
+            });
     }
 
     /**
@@ -102,38 +114,44 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
+     * @param options set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
-        SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
+    public Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options) {
+        return sendWithResponse(from, to, message, options, null);
+    }
+
+    Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options, Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
-            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
-            Response<SmsSendResponse> response = responseMono.block();
-            SmsSendResponse smsSendResponse = response.getValue();
-            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
-            return Mono.just(result);
-        } catch (NullPointerException ex) {
-            return monoError(logger, ex);
+            SendMessageRequest request = createSendMessageRequest(from, to, message, options);
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.smsClient.sendWithResponseAsync(request, contextValue)
+                    .flatMap((Response<SmsSendResponse> response) -> {
+                        Iterable<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
+                        return Mono.just(new SimpleResponse<Iterable<SmsSendResult>>(response, smsSendResults));
+                    });
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    private List<SmsSendResult>  convertSmsResults(Iterable<SmsSendResponseItem> resultsIterable) {
-        List <SmsSendResult> iterableWrapper = new ArrayList<>();
-        for (SmsSendResponseItem item : resultsIterable
-             ) {
+    private List<SmsSendResult> convertSmsSendResults(Iterable<SmsSendResponseItem> resultsIterable) {
+        List<SmsSendResult> iterableWrapper = new ArrayList<>();
+        for (SmsSendResponseItem item : resultsIterable) {
             iterableWrapper.add(new SmsSendResult(item));
         }
         return iterableWrapper;
     }
 
-    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions smsOptions) {
+    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions options) {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
         for (String s : smsRecipient) {
@@ -142,7 +160,7 @@ public final class SmsAsyncClient {
         request.setFrom(from)
             .setSmsRecipients(recipients)
             .setMessage(message)
-            .setSmsSendOptions(smsOptions);
+            .setSmsSendOptions(options);
         return request;
     }
 }
