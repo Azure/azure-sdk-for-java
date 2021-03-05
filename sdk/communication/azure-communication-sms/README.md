@@ -49,7 +49,7 @@ SmsClient smsClient = new SmsClientBuilder()
 ```
 
 ### Access Key Authentication
-Identity uses HMAC authentication with the resource access key.
+SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L18-L29 -->
