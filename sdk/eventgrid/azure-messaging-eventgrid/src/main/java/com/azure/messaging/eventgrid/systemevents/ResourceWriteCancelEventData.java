@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is raised
- * when a resource create or update operation fails.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is raised
+ * when a resource create or update operation is canceled.
  */
 @Fluent
-public final class ResourceWriteFailureData {
+public final class ResourceWriteCancelEventData {
     /*
      * The tenant ID of the resource.
      */
@@ -92,9 +92,9 @@ public final class ResourceWriteFailureData {
      * Set the tenantId property: The tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setTenantId(String tenantId) {
+    public ResourceWriteCancelEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -112,9 +112,9 @@ public final class ResourceWriteFailureData {
      * Set the subscriptionId property: The subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setSubscriptionId(String subscriptionId) {
+    public ResourceWriteCancelEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -132,9 +132,9 @@ public final class ResourceWriteFailureData {
      * Set the resourceGroup property: The resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setResourceGroup(String resourceGroup) {
+    public ResourceWriteCancelEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -152,9 +152,9 @@ public final class ResourceWriteFailureData {
      * Set the resourceProvider property: The resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setResourceProvider(String resourceProvider) {
+    public ResourceWriteCancelEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
     }
@@ -172,9 +172,9 @@ public final class ResourceWriteFailureData {
      * Set the resourceUri property: The URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setResourceUri(String resourceUri) {
+    public ResourceWriteCancelEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
     }
@@ -192,9 +192,9 @@ public final class ResourceWriteFailureData {
      * Set the operationName property: The operation that was performed.
      *
      * @param operationName the operationName value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setOperationName(String operationName) {
+    public ResourceWriteCancelEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
     }
@@ -212,9 +212,9 @@ public final class ResourceWriteFailureData {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setStatus(String status) {
+    public ResourceWriteCancelEventData setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -232,9 +232,9 @@ public final class ResourceWriteFailureData {
      * Set the authorization property: The requested authorization for the operation.
      *
      * @param authorization the authorization value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setAuthorization(String authorization) {
+    public ResourceWriteCancelEventData setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -252,9 +252,9 @@ public final class ResourceWriteFailureData {
      * Set the claims property: The properties of the claims.
      *
      * @param claims the claims value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setClaims(String claims) {
+    public ResourceWriteCancelEventData setClaims(String claims) {
         this.claims = claims;
         return this;
     }
@@ -272,9 +272,9 @@ public final class ResourceWriteFailureData {
      * Set the correlationId property: An operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setCorrelationId(String correlationId) {
+    public ResourceWriteCancelEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -292,9 +292,9 @@ public final class ResourceWriteFailureData {
      * Set the httpRequest property: The details of the operation.
      *
      * @param httpRequest the httpRequest value to set.
-     * @return the ResourceWriteFailureData object itself.
+     * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteFailureData setHttpRequest(String httpRequest) {
+    public ResourceWriteCancelEventData setHttpRequest(String httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

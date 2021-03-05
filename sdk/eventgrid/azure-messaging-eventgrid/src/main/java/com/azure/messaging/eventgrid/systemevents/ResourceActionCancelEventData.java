@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Schema of the Data property of an EventGridEvent for an Microsoft.Resources.ResourceDeleteCancel event. This is
- * raised when a resource delete operation is canceled.
+ * Schema of the Data property of an EventGridEvent for an Microsoft.Resources.ResourceActionCancel event. This is
+ * raised when a resource action operation is canceled.
  */
 @Fluent
-public final class ResourceDeleteCancelData {
+public final class ResourceActionCancelEventData {
     /*
      * The tenant ID of the resource.
      */
@@ -92,9 +92,9 @@ public final class ResourceDeleteCancelData {
      * Set the tenantId property: The tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setTenantId(String tenantId) {
+    public ResourceActionCancelEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -112,9 +112,9 @@ public final class ResourceDeleteCancelData {
      * Set the subscriptionId property: The subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setSubscriptionId(String subscriptionId) {
+    public ResourceActionCancelEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -132,9 +132,9 @@ public final class ResourceDeleteCancelData {
      * Set the resourceGroup property: The resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setResourceGroup(String resourceGroup) {
+    public ResourceActionCancelEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -152,9 +152,9 @@ public final class ResourceDeleteCancelData {
      * Set the resourceProvider property: The resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setResourceProvider(String resourceProvider) {
+    public ResourceActionCancelEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
     }
@@ -172,9 +172,9 @@ public final class ResourceDeleteCancelData {
      * Set the resourceUri property: The URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setResourceUri(String resourceUri) {
+    public ResourceActionCancelEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
     }
@@ -192,9 +192,9 @@ public final class ResourceDeleteCancelData {
      * Set the operationName property: The operation that was performed.
      *
      * @param operationName the operationName value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setOperationName(String operationName) {
+    public ResourceActionCancelEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
     }
@@ -212,9 +212,9 @@ public final class ResourceDeleteCancelData {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setStatus(String status) {
+    public ResourceActionCancelEventData setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -232,9 +232,9 @@ public final class ResourceDeleteCancelData {
      * Set the authorization property: The requested authorization for the operation.
      *
      * @param authorization the authorization value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setAuthorization(String authorization) {
+    public ResourceActionCancelEventData setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -252,9 +252,9 @@ public final class ResourceDeleteCancelData {
      * Set the claims property: The properties of the claims.
      *
      * @param claims the claims value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setClaims(String claims) {
+    public ResourceActionCancelEventData setClaims(String claims) {
         this.claims = claims;
         return this;
     }
@@ -272,9 +272,9 @@ public final class ResourceDeleteCancelData {
      * Set the correlationId property: An operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setCorrelationId(String correlationId) {
+    public ResourceActionCancelEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -292,9 +292,9 @@ public final class ResourceDeleteCancelData {
      * Set the httpRequest property: The details of the operation.
      *
      * @param httpRequest the httpRequest value to set.
-     * @return the ResourceDeleteCancelData object itself.
+     * @return the ResourceActionCancelEventData object itself.
      */
-    public ResourceDeleteCancelData setHttpRequest(String httpRequest) {
+    public ResourceActionCancelEventData setHttpRequest(String httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }
