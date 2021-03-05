@@ -901,10 +901,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, true);
 
         StepVerifier.create(receiver.receiveMessages()
-            .flatMap(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            .flatMap(message -> {
+                    logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
+                        message.getSessionId(), message.getLockToken(), message.getLockedUntil());
+                    assertMessageEquals(message, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
-                    return receiver.abandon(receivedMessage)
+                    return receiver.abandon(message)
                         .then(receiver.setSessionState(sessionState))
                         .then(receiver.getSessionState());
                 }
@@ -912,7 +914,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(state -> {
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
