@@ -1515,6 +1515,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if(resourceType.equals(ResourceType.DatabaseAccount)) {
                 return this.firstResourceTokenFromPermissionFeed;
             }
+
             return ResourceTokenAuthorizationHelper.getAuthorizationTokenUsingResourceTokens(resourceTokensMap, requestVerb, resourceName, headers);
         }
     }
