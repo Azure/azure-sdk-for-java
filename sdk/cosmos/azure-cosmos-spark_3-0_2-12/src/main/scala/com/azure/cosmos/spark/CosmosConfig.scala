@@ -13,6 +13,7 @@ import java.net.URL
 import java.util.Locale
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -348,6 +349,13 @@ private case class CosmosChangeFeedConfig
     this.changeFeedMode match {
       case ChangeFeedModes.Incremental => options
       case ChangeFeedModes.FullFidelity => options.fullFidelity()
+    }
+  }
+
+  def toReadLimit(): ReadLimit = {
+    this.maxItemCountPerTrigger match {
+      case Some(maxItemCount) => ReadLimit.maxRows(maxItemCount)
+      case None => ReadLimit.allAvailable()
     }
   }
 }

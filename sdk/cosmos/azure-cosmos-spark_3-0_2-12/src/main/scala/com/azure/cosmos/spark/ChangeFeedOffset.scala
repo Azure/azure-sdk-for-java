@@ -3,13 +3,22 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.ChangeFeedOffset.{IdPropertyName, StatePropertyName, V1Identifier}
+import com.azure.cosmos.spark.ChangeFeedOffset.{IdPropertyName, InputPartitionsPropertyName, StatePropertyName, V1Identifier}
+import com.azure.cosmos.spark.CosmosInputPartition.EndLsnPropertyName
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ArrayNode
 import org.apache.spark.sql.connector.read.streaming.{Offset, PartitionOffset}
+
+import scala.collection.mutable.ArrayBuffer
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 private case class ChangeFeedOffset
 (
-  changeFeedState: String
+  changeFeedState: String,
+  inputPartitions: Option[Array[CosmosInputPartition]]
 ) extends Offset
   with Serializable
   with PartitionOffset
@@ -17,8 +26,15 @@ private case class ChangeFeedOffset
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  @transient private lazy val jsonPersisted =
-    raw"""{"$IdPropertyName":"$V1Identifier","$StatePropertyName":"$changeFeedState"}"""
+  @transient private lazy val jsonPersisted = inputPartitions match {
+    case Some(partitions) => {
+      val partitionsJson = String.join(",", partitions.map(p => raw""""${p.json}"""" ).toList.asJava)
+      raw"""{"$IdPropertyName":"$V1Identifier",""" +
+        raw""""$StatePropertyName":"$changeFeedState", """ +
+        raw""""$InputPartitionsPropertyName":[${partitionsJson}]}"""
+    }
+    case None => raw"""{"$IdPropertyName":"$V1Identifier","$StatePropertyName":"$changeFeedState"}"""
+  }
 
   override def json(): String = jsonPersisted
 }
@@ -26,6 +42,7 @@ private case class ChangeFeedOffset
 private object ChangeFeedOffset {
   private val IdPropertyName: String = "id"
   private val StatePropertyName: String = "state"
+  private val InputPartitionsPropertyName: String = "partitions"
   private val V1Identifier: String = "com.azure.cosmos.spark.changeFeed.offset.v1"
   private val objectMapper = new ObjectMapper()
 
@@ -39,7 +56,19 @@ private object ChangeFeedOffset {
       parsedNode.get(StatePropertyName).isTextual &&
       parsedNode.get(StatePropertyName).asText("") != "") {
 
-      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText)
+      val inputPartitions = if (parsedNode.get(InputPartitionsPropertyName) != null &&
+        parsedNode.get(InputPartitionsPropertyName).isArray) {
+        val arrayNode = parsedNode.get(InputPartitionsPropertyName).asInstanceOf[ArrayNode]
+        val inputPartitions = ArrayBuffer[CosmosInputPartition]()
+        for (i <- 0 to arrayNode.size) {
+          inputPartitions += CosmosInputPartition.fromJson(arrayNode.get(i).asText)
+        }
+        Some(inputPartitions.toArray)
+      } else {
+        None
+      }
+
+      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, inputPartitions)
     } else {
         val message = s"Unable to deserialize offset '$json'."
         throw new IllegalStateException(message)

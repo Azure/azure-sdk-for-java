@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.routing.{PartitionKeyInternalHelper, Range}
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
@@ -48,13 +48,26 @@ private class ChangeFeedMicroBatchStream
   private val client = CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
   private val container = client.getDatabase(containerConfig.database).getContainer(containerConfig.container)
   private val streamId = UUID.randomUUID().toString
+  private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
   override def latestOffset(): Offset = {
     throw new UnsupportedOperationException(
       "latestOffset(Offset, ReadLimit) should be called instead of this method")
   }
 
-  override def planInputPartitions(startOffset: Offset, endOffset: Offset): Array[InputPartition] = ???
+  override def planInputPartitions(startOffset: Offset, endOffset: Offset): Array[InputPartition] = {
+    assertNotNull(startOffset, "startOffset")
+    assertNotNull(endOffset, "endOffset")
+    assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
+    assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
+    val start = startOffset.asInstanceOf[ChangeFeedOffset]
+    val end = endOffset.asInstanceOf[ChangeFeedOffset]
+    assert(
+      end.inputPartitions.isDefined && end.inputPartitions.size > 0,
+      "Argument 'endOffset.inputPartitions' must not be null or empty.")
+
+    end.inputPartitions.get.map(_.asInstanceOf[InputPartition])
+  }
 
   override def createReaderFactory(): PartitionReaderFactory = ???
 
@@ -63,6 +76,7 @@ private class ChangeFeedMicroBatchStream
   }
 
   private def getLatestOffset(startOffset: ChangeFeedOffset, readLimit: ReadLimit, maxStaleness: Duration) = {
+    assertOnSparkDriver()
     assertNotNull(startOffset, "startOffset")
 
     val latestPartitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
@@ -71,49 +85,94 @@ private class ChangeFeedMicroBatchStream
       this.containerConfig,
       Some(maxStaleness)
     )
-      .map(metadata => (metadata.feedRange, metadata.latestLsn))
 
+    val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
+    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
-    val feedRangeToLsnTokens = SparkBridgeImplementationInternal
-      .getOrderedFeedRangeToLsnTokens(startOffset.changeFeedState, latestPartitionMetadata)
+    val orderedMetadataWithStartLsn = this.getOrderedPartitionMetadataWithStartLsn(
+      startOffset.changeFeedState,
+      latestPartitionMetadata)
 
-    val feedRangeToStartTokens = feedRangeToLsnTokens._1
-    val feedRangeToLatestTokens = feedRangeToLsnTokens._1
+    val inputPartitions: Array[CosmosInputPartition] = CosmosPartitionPlanner.createInputPartitions(
+      partitioningConfig,
+      container,
+      orderedMetadataWithStartLsn,
+      defaultMinPartitionCount,
+      defaultMaxPartitionSizeInMB,
+      readLimit
+    )
 
+    val changeFeedStateJson = SparkBridgeImplementationInternal
+      .createChangeFeedStateJson(
+        startOffset.changeFeedState,
+        orderedMetadataWithStartLsn.map(m => (m.feedRange, m.endLsn.getOrElse(m.latestLsn))))
 
-
-
+    val offset = ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
+    this.latestOffsetSnapshot = Some(offset)
+    offset
   }
 
-  private def mergeStartAndLatestTokens
+  def getOrderedPartitionMetadataWithStartLsn
   (
-    startTokens: Array[(Range[String], Long)],
-    latestTokens: Array[(Range[String], Long)]
-  ): Array[(Range[String], Long, Long)] = {
+    stateJson: String,
+    latestPartitionMetadata: Array[PartitionMetadata]
+  ): Array[PartitionMetadata] = {
 
-    val boundaries = mutable.SortedSet[String]()
-    startTokens.foreach(token => {
-      boundaries += token._1.getMin()
-      boundaries += token._1.getMax()
-    })
-    latestTokens.foreach(token => {
-      boundaries += token._1.getMin()
-      boundaries += token._1.getMax()
-    })
+    assert(!Strings.isNullOrWhiteSpace(stateJson), s"Argument 'stateJson' must not be null or empty.")
+    val orderedStartTokens = extractContinuationTokensFromChangeFeedStateJson(stateJson)
 
-    vfgjgfjgj
+    val orderedLatestTokens = latestPartitionMetadata
+      .sortBy(metadata => metadata.feedRange.min)
 
-    val merged = List[(Range[String], Long, Long)]
-    var leftIndex = 0
-    var rightIndex = 0
-    var min: String = PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey
-    var max: String = PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey
-    while (true) {
-
-    }
+    mergeStartAndLatestTokens(orderedStartTokens, orderedLatestTokens)
   }
 
-                                      )
+  private[this] def mergeStartAndLatestTokens
+  (
+    startTokens: Array[(NormalizedRange, Long)],
+    latestTokens: Array[PartitionMetadata]
+  ): Array[PartitionMetadata] = {
+
+    val orderedBoundaries = mutable.SortedSet[String]()
+    startTokens.foreach(token => {
+      orderedBoundaries += token._1.min
+      orderedBoundaries += token._1.max
+    })
+    latestTokens.foreach(metadata => {
+      orderedBoundaries += metadata.feedRange.min
+      orderedBoundaries += metadata.feedRange.max
+    })
+
+    var startTokensIndex = 0
+    var latestTokensIndex = 0
+    orderedBoundaries
+      .foldLeft(None: Option[NormalizedRange])((previous: Option[NormalizedRange], current) => {
+        previous match {
+          case Some(previousRange) =>
+            Some(NormalizedRange(previousRange.max, current))
+          case None => None
+        }
+      })
+      .map(range => {
+        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+          startTokensIndex += 1
+          assert(
+            startTokensIndex < startTokens.length,
+            "No overlapping start token found for range '$range' ")
+        }
+
+        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+          latestTokensIndex += 1
+          assert(
+            latestTokensIndex < latestTokens.length,
+            "No overlapping latest token found for range '$range' ")
+        }
+
+        val startLsn: Long = startTokens(startTokensIndex)._2
+        latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+      })
+      .toArray
+  }
 
   private def parseLsnFromNode(lsnNode: JsonNode) = {
       if (lsnNode != null && lsnNode.isTextual) {
@@ -170,7 +229,7 @@ private class ChangeFeedMicroBatchStream
     }
 
     logInfo(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
-    ChangeFeedOffset(offsetJson)
+    ChangeFeedOffset(offsetJson, None)
   }
 
   override def deserializeOffset(s: String): Offset = {

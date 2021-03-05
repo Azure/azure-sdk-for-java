@@ -25,9 +25,9 @@ private class ChangeFeedBatch
     val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
+    val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
     val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
-
     val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
     CosmosPartitionPlanner.createInputPartitions(
@@ -35,10 +35,10 @@ private class ChangeFeedBatch
       Some(cosmosClientStateHandle),
       containerConfig,
       partitioningConfig,
-      None, // In batch mode always start a new query - without previous continuation state
       defaultMinPartitionCount,
-      defaultMaxPartitionSizeInMB
-    )
+      defaultMaxPartitionSizeInMB,
+      changeFeedConfig.toReadLimit()
+    ).map(_.asInstanceOf[InputPartition])
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
