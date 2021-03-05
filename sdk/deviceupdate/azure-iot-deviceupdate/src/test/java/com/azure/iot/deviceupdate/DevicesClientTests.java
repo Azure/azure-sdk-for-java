@@ -27,6 +27,10 @@ public class DevicesClientTests extends TestBase {
         TokenCredential credentials;
         HttpClient httpClient;
         HttpPipelinePolicy recordingPolicy = null;
+        HttpPipeline httpPipeline;
+
+        HttpHeaders headers = new HttpHeaders().put("Accept", ContentType.APPLICATION_JSON);
+        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
 
         if (getTestMode() != TestMode.PLAYBACK) {
             // Record & Live
@@ -39,20 +43,10 @@ public class DevicesClientTests extends TestBase {
             if (getTestMode() == TestMode.RECORD) {
                 recordingPolicy = interceptorManager.getRecordPolicy();
             }
-        }
-        else {
-            // Playback
-            credentials = new DefaultAzureCredentialBuilder().build();
-            httpClient = interceptorManager.getPlaybackClient();
-        }
 
-        BearerTokenAuthenticationPolicy bearerTokenAuthenticationPolicy = new BearerTokenAuthenticationPolicy(credentials, DEFAULT_SCOPE);
+            BearerTokenAuthenticationPolicy bearerTokenAuthenticationPolicy =
+                new BearerTokenAuthenticationPolicy(credentials, DEFAULT_SCOPE);
 
-        HttpHeaders headers = new HttpHeaders().put("Accept", ContentType.APPLICATION_JSON);
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-        HttpPipeline httpPipeline;
-        if (getTestMode() == TestMode.RECORD) {
             // Record & Live
             httpPipeline = new HttpPipelineBuilder()
                 .httpClient(httpClient)
@@ -61,9 +55,12 @@ public class DevicesClientTests extends TestBase {
         }
         else {
             // Playback
+            credentials = new DefaultAzureCredentialBuilder().build();
+            httpClient = interceptorManager.getPlaybackClient();
+
             httpPipeline = new HttpPipelineBuilder()
                 .httpClient(httpClient)
-                .policies(bearerTokenAuthenticationPolicy, addHeadersPolicy)
+                .policies(addHeadersPolicy)
                 .build();
         }
 
