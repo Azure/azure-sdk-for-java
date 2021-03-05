@@ -77,22 +77,32 @@ import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsO
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionFailureData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessData;
+import com.azure.messaging.eventgrid.systemevents.RedisExportRDBCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.RedisImportRDBCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.RedisScalingCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData;
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionDisconnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
@@ -395,6 +405,14 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_RENAMED = "Microsoft.Storage.BlobRenamed";
 
+    public static final String STORAGE_DIRECTORY_CREATED = "Microsoft.Storage.DirectoryCreated";
+
+    public static final String STORAGE_DIRECTORY_DELETED = "Microsoft.Storage.DirectoryDeleted";
+
+    public static final String STORAGE_DIRECTORY_RENAMED = "Microsoft.Storage.DirectoryRenamed";
+
+    public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
+
     // Communication Services events.
     public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
@@ -472,6 +490,16 @@ public final class SystemEventNames {
     public static final String KEY_VAULT_SECRET_EXPIRED = "Microsoft.KeyVault.SecretExpired";
     public static final String KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED = "Microsoft.KeyVault.VaultAccessPolicyChanged";
 
+    // Redis Cache
+    public static final String REDIS_PATCHING_COMPLETED = "Microsoft.Cache.PatchingCompleted";
+    public static final String REDIS_SCALING_COMPLETED = "Microsoft.Cache.ScalingCompleted";
+    public static final String REDIS_EXPORT_RDB_COMPLETED = "Microsoft.Cache.ExportRDBCompleted";
+    public static final String REDIS_IMPORT_RDB_COMPLETED = "Microsoft.Cache.ImportRDBCompleted";
+
+    // Signal R Service
+    public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED = "Microsoft.SignalRService.ClientConnectionConnected";
+    public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED = "Microsoft.SignalRService.ClientConnectionDisconnected";
+
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
             //
@@ -530,15 +558,15 @@ public final class SystemEventNames {
             put(MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED, MediaLiveEventTrackDiscontinuityDetectedEventData.class);
             //
             // Resource Manager (Azure Subscription/Resource Group) events.
-            put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessData.class);
-            put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureData.class);
-            put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelData.class);
-            put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessData.class);
-            put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureData.class);
-            put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelData.class);
-            put(RESOURCE_ACTION_SUCCESS, ResourceActionSuccessData.class);
-            put(RESOURCE_ACTION_FAILURE, ResourceActionFailureData.class);
-            put(RESOURCE_ACTION_CANCEL, ResourceActionCancelData.class);
+            put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);
+            put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
+            put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
+            put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessEventData.class);
+            put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureEventData.class);
+            put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelEventData.class);
+            put(RESOURCE_ACTION_SUCCESS, ResourceActionSuccessEventData.class);
+            put(RESOURCE_ACTION_FAILURE, ResourceActionFailureEventData.class);
+            put(RESOURCE_ACTION_CANCEL, ResourceActionCancelEventData.class);
             //
             // ServiceBus events.
             put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS, ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
@@ -550,6 +578,10 @@ public final class SystemEventNames {
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
+            put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
+            put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
+            put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
+            put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
 
             // Communication service events.
             put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);
@@ -606,6 +638,16 @@ public final class SystemEventNames {
             put(KEY_VAULT_SECRET_NEAR_EXPIRY, KeyVaultSecretNearExpiryEventData.class);
             put(KEY_VAULT_SECRET_EXPIRED, KeyVaultSecretExpiredEventData.class);
             put(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
+
+            // Redis
+            put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRDBCompletedEventData.class);
+            put(REDIS_PATCHING_COMPLETED, RedisPatchingCompletedEventData.class);
+            put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRDBCompletedEventData.class);
+            put(REDIS_SCALING_COMPLETED, RedisScalingCompletedEventData.class);
+
+            // Signal R Service
+            put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED, SignalRServiceClientConnectionConnectedEventData.class);
+            put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED, SignalRServiceClientConnectionDisconnectedEventData.class);
         }
     };
 
