@@ -73,6 +73,7 @@ private class ChangeFeedTable(val session: SparkSession,
   private val client = CosmosClientCache(
     CosmosClientConfiguration(effectiveUserConfig,
     useEventualConsistency = readConfig.forceEventualConsistency), None)
+  private val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
 
   override def name(): String = tableName
 
@@ -110,8 +111,8 @@ private class ChangeFeedTable(val session: SparkSession,
   : Broadcast[CosmosClientMetadataCachesSnapshot] = {
 
     try {
-      client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
-        UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+        container.readItem(
+            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
         .block()
     } catch {
       case _: CosmosException => None

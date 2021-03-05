@@ -1,0 +1,47 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.spark
+
+import com.azure.cosmos.implementation.TestConfigurations
+
+class SparkE2EThroughputControlSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
+
+    "spark throughput control" can "use user provided schema" taggedAs RequiresCosmosEndpoint in {
+
+        val throughputControlDatabaseId = "testThroughputControlDB"
+        val throughputControlContainerId = "testThroughputControlContainer"
+
+        cosmosClient.createDatabaseIfNotExists(throughputControlDatabaseId).block()
+        val throughputControlDatabase = cosmosClient.getDatabase(throughputControlDatabaseId)
+        throughputControlDatabase.createContainerIfNotExists(throughputControlContainerId, "/groupId").block()
+
+        val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+            "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> cosmosContainer,
+            "spark.cosmos.read.inferSchemaEnabled" -> "true",
+            "spark.cosmos.enableThroughputControl" -> "true",
+            "spark.cosmos.throughputControl.name" -> "sparkTest",
+            "spark.cosmos.throughputControl.targetThroughput" -> "6",
+            "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
+            "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId
+        )
+
+        val newSpark = getSpark()
+
+        // scalastyle:off underscore.import
+        // scalastyle:off import.grouping
+        import spark.implicits._
+        val spark = newSpark
+        // scalastyle:on underscore.import
+        // scalastyle:on import.grouping
+
+        val df = Seq(
+            ("Quark", "Quark", "Red", 1.0 / 2)
+        ).toDF("particle name", "id", "color", "spin")
+
+        df.write.format("cosmos.items").mode("Append").options(cfg).save()
+        spark.read.format("cosmos.items").options(cfg).load()
+    }
+}
