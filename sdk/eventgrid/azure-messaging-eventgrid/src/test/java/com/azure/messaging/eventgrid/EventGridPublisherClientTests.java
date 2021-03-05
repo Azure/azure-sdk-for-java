@@ -134,8 +134,11 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
+        StepVerifier.create(egClient.sendEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+
+        StepVerifier.create(egClient.sendEvents(events))
             .verifyComplete();
     }
 

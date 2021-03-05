@@ -136,7 +136,7 @@ public final class EventGridEvent {
                         if (internalEvent.getData() == null) {
                             nullAttributes.add("'data'");
                         }
-                        if (internalEvent.getData() == null) {
+                        if (internalEvent.getDataVersion() == null) {
                             nullAttributes.add("'dataVersion'");
                         }
                         throw LOGGER.logExceptionAsError(new IllegalArgumentException(
