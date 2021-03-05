@@ -157,14 +157,14 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>cryptography</artifactId>
-      <version>0.1.0</version>
+      <version>0.1.0</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
       <scope>system</scope>
       <systemPath>${basedir}/src/encryptionLib/cryptography-0.1.0.jre8-preview.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>azure-key-vault-keystoreprovider</artifactId>
-      <version>0.1.0</version>
+      <version>0.1.0</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
       <scope>system</scope>
       <systemPath>${basedir}/src/encryptionLib/azure-key-vault-keystoreprovider-0.1.0.jre8-preview.jar</systemPath>
     </dependency>
