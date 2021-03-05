@@ -28,6 +28,8 @@ public class ContainerLockIT {
 
     @Autowired
     private CosmosTemplate template;
+    @Autowired
+    private CosmosTemplate reactiveTemplate;
     private static CosmosTemplate staticTemplate;
 
     private ContainerLock lock;
@@ -39,7 +41,7 @@ public class ContainerLockIT {
         CosmosEntityInformation entityInfo = new CosmosEntityInformation(ContainerLock.LockEntry.class);
         template.createContainerIfNotExists(entityInfo);
         lock = new ContainerLock(template, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
-        otherLock = new ContainerLock(template, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
+        otherLock = new ContainerLock(reactiveTemplate, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
     }
 
     @After
