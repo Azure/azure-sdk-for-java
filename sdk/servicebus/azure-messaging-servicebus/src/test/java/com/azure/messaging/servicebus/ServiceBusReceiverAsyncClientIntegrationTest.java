@@ -901,23 +901,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, true);
 
         StepVerifier.create(receiver.receiveMessages()
-            .take(1)
-            .flatMap(message -> {
-                logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
-                    message.getSessionId(), message.getLockToken(), message.getLockedUntil());
-                receiver.complete(message).block(Duration.ofSeconds(15));
-                messagesPending.decrementAndGet();
-                return receiver.setSessionState(sessionState);
-            }))
-            .expectComplete()
-            .verify();
-
-        StepVerifier.create(receiver.getSessionState())
+            .flatMap(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                    return receiver.abandon(receivedMessage)
+                        .then(receiver.setSessionState(sessionState))
+                        .then(receiver.getSessionState());
+                }
+            ).take(1))
             .assertNext(state -> {
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     /**
