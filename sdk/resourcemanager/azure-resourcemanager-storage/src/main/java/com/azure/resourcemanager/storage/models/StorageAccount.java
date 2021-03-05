@@ -154,6 +154,20 @@ public interface StorageAccount
     boolean isHttpsTrafficOnly();
 
     /**
+     * Checks whether blob public access is allowed.
+     *
+     * @return true if blob public access is allowed, false otherwise
+     */
+    boolean isBlobPublicAccessAllowed();
+
+    /**
+     * Checks whether shared key access is allowed.
+     *
+     * @return true if shared key access is allowed, false otherwise
+     */
+    boolean isSharedKeyAccessAllowed();
+
+    /**
      * Fetch the up-to-date access keys from Azure for this storage account.
      *
      * @return the access keys for this storage account
@@ -362,6 +376,25 @@ public interface StorageAccount
             WithCreate withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
         }
 
+        /** The stage of storage account definition allowing to configure blob access. */
+        interface WithBlobAccess {
+            /**
+             * Disables blob public access.
+             *
+             * Disabling in storage account overrides the public access settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disableBlobPublicAccess();
+
+            /**
+             * Disables shared key access.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disableSharedKeyAccess();
+        }
+
         /** The stage of storage account definition allowing to configure network access settings. */
         interface WithNetworkAccess {
             /**
@@ -483,6 +516,7 @@ public interface StorageAccount
                 DefinitionStages.WithAzureFilesAadIntegration,
                 DefinitionStages.WithLargeFileShares,
                 DefinitionStages.WithHns,
+                DefinitionStages.WithBlobAccess,
                 Resource.DefinitionWithTags<WithCreate> {
         }
 
@@ -631,6 +665,39 @@ public interface StorageAccount
             Update withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
         }
 
+        /** The stage of storage account update allowing to configure blob access. */
+        interface WithBlobAccess {
+            /**
+             * Allows blob public access, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update enableBlobPublicAccess();
+
+            /**
+             * Disables blob public access.
+             *
+             * Disabling in storage account overrides the public access settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableBlobPublicAccess();
+
+            /**
+             * Allows shared key access.
+             *
+             * @return the next stage of storage account update
+             */
+            Update enableSharedKeyAccess();
+
+            /**
+             * Disables shared key access.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableSharedKeyAccess();
+        }
+
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess {
             /**
@@ -768,6 +835,7 @@ public interface StorageAccount
             UpdateStages.WithAccessTraffic,
             UpdateStages.WithNetworkAccess,
             UpdateStages.WithUpgrade,
+            UpdateStages.WithBlobAccess,
             Resource.UpdateWithTags<Update> {
     }
 }

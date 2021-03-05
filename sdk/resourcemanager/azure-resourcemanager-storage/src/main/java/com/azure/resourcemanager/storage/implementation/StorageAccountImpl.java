@@ -201,6 +201,16 @@ class StorageAccountImpl
     }
 
     @Override
+    public boolean isBlobPublicAccessAllowed() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowBlobPublicAccess());
+    }
+
+    @Override
+    public boolean isSharedKeyAccessAllowed() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowSharedKeyAccess());
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
@@ -403,6 +413,46 @@ class StorageAccountImpl
             createParameters.withMinimumTlsVersion(minimalTlsVersion);
         } else {
             updateParameters.withMinimumTlsVersion(minimalTlsVersion);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(true);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(false);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(true);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(false);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(false);
         }
         return this;
     }
