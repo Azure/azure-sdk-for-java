@@ -774,11 +774,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             }).verifyComplete();
 
-
-        receiver.receiveDeferredMessage(received.get().getSequenceNumber())
+        // TODO(Hemant): Identify if this is valid scenario (https://github.com/Azure/azure-sdk-for-java/issues/19673)
+        /*receiver.receiveDeferredMessage(received.get().getSequenceNumber())
             .flatMap(m -> receiver.complete(m))
             .block(TIMEOUT);
         messagesPending.decrementAndGet();
+         */
     }
 
     /**
