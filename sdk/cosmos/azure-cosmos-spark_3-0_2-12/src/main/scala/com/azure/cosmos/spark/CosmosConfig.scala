@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -332,7 +333,24 @@ private case class CosmosChangeFeedConfig
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long]
-)
+) {
+
+  def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
+    val options = this.startFrom match {
+      case ChangeFeedStartFromModes.Now =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange)
+      case ChangeFeedStartFromModes.Beginning =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange)
+      case ChangeFeedStartFromModes.PointInTime =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(this.startFromPointInTime.get, feedRange)
+    }
+
+    this.changeFeedMode match {
+      case ChangeFeedModes.Incremental => options
+      case ChangeFeedModes.FullFidelity => options.fullFidelity()
+    }
+  }
+}
 
 private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental

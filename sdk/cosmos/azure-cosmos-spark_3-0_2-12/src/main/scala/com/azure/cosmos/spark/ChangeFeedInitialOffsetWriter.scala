@@ -13,19 +13,19 @@ private class ChangeFeedInitialOffsetWriter
 (
   sparkSession: SparkSession,
   metadataPath: String
-) extends HDFSMetadataLog[ChangeFeedOffset](sparkSession, metadataPath)
+) extends HDFSMetadataLog[String](sparkSession, metadataPath)
   with CosmosLoggingTrait {
 
   val VERSION = 1
 
-  override def serialize(metadata: ChangeFeedOffset, out: OutputStream): Unit = {
+  override def serialize(offsetJson: String, out: OutputStream): Unit = {
     val writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))
     writer.write(s"v$VERSION\n")
-    writer.write(metadata.json())
+    writer.write(offsetJson)
     writer.flush()
   }
 
-  override def deserialize(in: InputStream): ChangeFeedOffset = {
+  override def deserialize(in: InputStream): String = {
     val content = IOUtils.toString(new InputStreamReader(in, StandardCharsets.UTF_8))
     // HDFSMetadataLog would never create a partial file.
     require(content.nonEmpty)
@@ -36,6 +36,6 @@ private class ChangeFeedInitialOffsetWriter
     }
 
     MetadataVersionUtil.validateVersion(content.substring(0, indexOfNewLine), VERSION)
-    ChangeFeedOffset.fromJson(content.substring(indexOfNewLine + 1))
+    content.substring(indexOfNewLine + 1)
   }
 }

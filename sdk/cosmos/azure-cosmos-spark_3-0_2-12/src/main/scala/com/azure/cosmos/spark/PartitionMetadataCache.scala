@@ -36,9 +36,13 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   // see https://stackoverflow.com/questions/409932/java-timer-vs-executorservice
   private[this] val timer: Timer = new Timer(timerName, true)
   private[this] var testTimerOverride: Option[Timer] = None
-  private[this] val refreshIntervalInMsDefault : Long = 60 * 1000 // refresh cache every minute after initialization
+  private[spark] val refreshIntervalInMsDefault : Long = 5 * 1000 // refresh cache every minute after initialization
   private[this] var refreshIntervalInMsOverride: Option[Long] = None
   private[this] def refreshIntervalInMs : Long= refreshIntervalInMsOverride.getOrElse(refreshIntervalInMsDefault)
+
+  // while retrieved within this interval the last time the data will be updated every
+  // refresh cycle
+  private[this] val hotThresholdIntervalInMsDefault : Long = 60 * 1000 // refresh cache every minute after initialization
 
   // update cached items which haven't been retrieved in the last refreshPeriod only if they
   // have been last updated longer than 15 minutes ago
@@ -274,7 +278,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   private def updateIfNecessary(metadataSnapshot: PartitionMetadata):SMono[Int] = {
     val nowEpochMs = Instant.now.toEpochMilli
-    val hotThreshold = nowEpochMs - refreshIntervalInMs
+    val hotThreshold = nowEpochMs - hotThresholdIntervalInMs
     val staleThreshold = nowEpochMs - staleCachedItemRefreshPeriodInMs
     val ttlThreshold = nowEpochMs - cachedItemTtlInMs
 
@@ -294,6 +298,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
           metadataSnapshot.cosmosContainerConfig.container,
           metadataSnapshot.feedRange
         )
+        metadata.lastRetrieved.set(metadataSnapshot.lastRetrieved.get())
         if (cache.replace(key, metadataSnapshot, metadata)) {
           logTrace(s"Updated partition metadata '$key'")
         } else {

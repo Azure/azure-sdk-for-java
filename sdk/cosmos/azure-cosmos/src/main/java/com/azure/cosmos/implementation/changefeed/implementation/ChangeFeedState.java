@@ -6,10 +6,13 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -87,11 +90,19 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract void populateRequest(RxDocumentServiceRequest request, int maxItemCount);
 
-    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
+    public List<CompositeContinuationToken> extractContinuationTokens() {
+        return extractContinuationTokens(PartitionKeyInternalHelper.FullRange).getLeft();
+    }
+
+    private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokens(
+        Range<String> effectiveRange) {
+
         checkNotNull(effectiveRange);
 
         List<CompositeContinuationToken> extractedContinuationTokens = new ArrayList<>();
         FeedRangeContinuation continuation = this.getContinuation();
+        String min = null;
+        String max = null;
         if (continuation != null) {
             List<CompositeContinuationToken> continuationTokensSnapshot = new ArrayList<>();
             Collections.addAll(continuationTokensSnapshot, continuation.getCurrentContinuationTokens());
@@ -100,7 +111,16 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
             for(int i = 0; i < continuationTokensSnapshot.size(); i++) {
                 if (Range.checkOverlapping(effectiveRange, continuationTokensSnapshot.get(i).getRange())) {
-                    
+                    Range<String> overlappingRange =
+                        getOverlappingRange(effectiveRange, continuationTokensSnapshot.get(i).getRange());
+
+                    extractedContinuationTokens.add(
+                        new CompositeContinuationToken(continuationTokensSnapshot.get(i).getToken(), overlappingRange));
+
+                    if (min == null) {
+                        min = overlappingRange.getMin();
+                    }
+                    max = overlappingRange.getMax();
                 } else {
                     if (extractedContinuationTokens.size() > 0) {
                         break;
@@ -109,7 +129,38 @@ public abstract class ChangeFeedState extends JsonSerializable {
             }
         }
 
-        this.getContinuation().()
+        Range totalRange = new Range<>(
+            min != null ? min : PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+            max != null ? max : PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
+            true,
+            false);
+
+        return Pair.of(extractedContinuationTokens, totalRange);
+    }
+
+
+    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
+        checkNotNull(effectiveRange);
+
+        Pair<List<CompositeContinuationToken>, Range<String>> effectiveTokensAndMinMax =
+            this.extractContinuationTokens(effectiveRange);
+
+        List<CompositeContinuationToken> extractedContinuationTokens = effectiveTokensAndMinMax.getLeft();
+        Range totalRange = effectiveTokensAndMinMax.getRight();
+
+        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
+
+        return new ChangeFeedStateV1(
+            this.getContainerRid(),
+            feedRange,
+            this.getMode(),
+            this.getStartFromSettings(),
+            FeedRangeContinuation.create(
+                this.getContainerRid(),
+                feedRange,
+                extractedContinuationTokens
+            )
+        );
     }
 
     private Range<String> getOverlappingRange(Range<String> left, Range<String> right) {

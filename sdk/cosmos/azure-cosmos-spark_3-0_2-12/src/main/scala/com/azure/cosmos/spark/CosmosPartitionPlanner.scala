@@ -4,22 +4,15 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.{
-  CosmosClientMetadataCachesSnapshot,
-  SparkBridgeImplementationInternal
-}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.FeedRange
-import com.azure.cosmos.spark.CosmosPredicates.{
-  assertNotNull,
-  assertNotNullOrEmpty,
-  assertOnSparkDriver,
-  requireNotNull
-}
+import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.InputPartition
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scala.publisher.SMono.PimpJMono
 
+import java.time.Duration
 import java.util
 
 // scalastyle:off underscore.import
@@ -281,10 +274,11 @@ private object CosmosPartitionPlanner {
     container.getFeedRanges.asScala
   }
 
-  private[this] def getPartitionMetadata(
+  def getPartitionMetadata(
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-      cosmosContainerConfig: CosmosContainerConfig
+      cosmosContainerConfig: CosmosContainerConfig,
+      maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
     this
@@ -300,7 +294,8 @@ private object CosmosPartitionPlanner {
                 cosmosClientConfig,
                 cosmosClientStateHandle,
                 cosmosContainerConfig,
-                f.toString
+                f.toString,
+                maxStaleness
             ))
           .collectSeq()
       })

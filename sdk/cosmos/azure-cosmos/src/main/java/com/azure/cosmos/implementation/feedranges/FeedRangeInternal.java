@@ -80,94 +80,70 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
+    public static Range<String> normalizeRange(Range<String> range) {
+        if (range.isMinInclusive() && !range.isMaxInclusive()) {
+            return range;
+        }
+
+        String min;
+        String max;
+
+        if (range.isMinInclusive()) {
+            min = range.getMin();
+        } else {
+            min = addToEffectivePartitionKey(range.getMin(), -1);
+        }
+
+        if (!range.isMaxInclusive()) {
+            max = range.getMax();
+        } else {
+            max = addToEffectivePartitionKey(range.getMax(), 1);
+        }
+
+        return new Range<>(min, max, true, false);
+    }
+
     // Will return a normalized range with minInclusive and maxExclusive boundaries
     public Mono<Range<String>> getNormalizedEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
     ) {
-        return Mono.zip(
-            this.getEffectiveRange(
-                routingMapProvider,
-                metadataDiagnosticsCtx,
-                collectionResolutionMono),
-            collectionResolutionMono)
-            .map(tuple -> {
-                Range<String> effectiveRange = tuple.getT1();
-
-                if (effectiveRange.isMinInclusive() && !effectiveRange.isMaxInclusive()) {
-                    return effectiveRange;
-                }
-
-                Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
-
-                if (collectionValueHolder.v == null) {
-                    throw new IllegalStateException("Collection should have been resolved.");
-                }
-
-                PartitionKeyDefinition pkDefinition =
-                    collectionValueHolder.v.getPartitionKey();
-
-                PartitionKeyDefinitionVersion effectivePKVersion =
-                    pkDefinition.getVersion() != null
-                        ? pkDefinition.getVersion()
-                        : PartitionKeyDefinitionVersion.V1;
-
-                String min;
-                String max;
-
-                if (effectiveRange.isMinInclusive()) {
-                    min = effectiveRange.getMin();
-                } else {
-                    min = addToEffectivePartitionKey(effectiveRange.getMin(), -1, effectivePKVersion);
-                }
-
-                if (!effectiveRange.isMaxInclusive()) {
-                    max = effectiveRange.getMax();
-                } else {
-                    max = addToEffectivePartitionKey(effectiveRange.getMax(), 1, effectivePKVersion);
-                }
-
-                return new Range<>(min, max, true, false);
-            });
+        return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+                   .map(effectiveRange -> normalizeRange(effectiveRange));
     }
 
-    private String addToEffectivePartitionKey(
+    private static String addToEffectivePartitionKey(
         String effectivePartitionKey,
-        int value,
-        PartitionKeyDefinitionVersion version) {
+        int value) {
 
-        switch (version) {
-            case V1:
-                return addToEffectivePartitionKeyV1(effectivePartitionKey, value);
+        checkArgument(
+            value == 1 || value == -1,
+            "Argument 'value' has invalid value - only 1 and -1 are allowed");
 
-            case V2:
-                return addToEffectivePartitionKeyV2(effectivePartitionKey, value);
+        byte[] blob = hexBinaryToByteArray(effectivePartitionKey);
 
-            default:
-                throw new IllegalStateException(
-                    String.format(
-                        "Unsupported hash version %s.",
-                        version));
+        if (value == 1) {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if ((0xff & blob[i]) < 255) {
+                    blob[i] = (byte)((0xff & blob[i]) + 1);
+                    break;
+                } else {
+                    blob[i] = 0;
+                }
+            }
+        } else {
+            for (int i = blob.length - 1; i >= 0; i--) {
+                if ((0xff & blob[i]) != 0) {
+                    blob[i] = (byte)((0xff & blob[i]) - 1);
+                    break;
+                } else {
+                    blob[i] = (byte)255;
+                }
+            }
         }
-    }
 
-    private String addToEffectivePartitionKeyV1(String effectivePartitionKey, int value) {
-        long binaryEffectivePartitionKey = fromHexEncodedBinaryString(effectivePartitionKey);
-        binaryEffectivePartitionKey += value;
-
-        return PartitionKeyInternalHelper.toHexEncodedBinaryString(
-            new NumberPartitionKeyComponent[] {
-                new NumberPartitionKeyComponent(binaryEffectivePartitionKey)
-            });
-    }
-
-    private String addToEffectivePartitionKeyV2(String effectivePartitionKey, int value) {
-        Int128 binaryEffectivePartitionKey = Int128.add(
-            new Int128(hexBinaryToByteArray(effectivePartitionKey)),
-            new Int128(value));
-
-        return HexConvert.bytesToHex(binaryEffectivePartitionKey.bytes());
+        return HexConvert.bytesToHex(blob);
     }
 
     public abstract Mono<List<String>> getPartitionKeyRanges(
