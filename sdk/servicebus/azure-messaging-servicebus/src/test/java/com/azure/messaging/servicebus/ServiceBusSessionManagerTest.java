@@ -424,8 +424,10 @@ class ServiceBusSessionManagerTest {
             tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
+        final String sessionId2 = "session-2";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
+        final String linkName2 = "my-link-name2";
         final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
@@ -435,6 +437,7 @@ class ServiceBusSessionManagerTest {
         when(receivedMessage.getSessionId()).thenReturn(sessionId);
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
+        // Setting up first link
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
@@ -453,9 +456,14 @@ class ServiceBusSessionManagerTest {
             })
             .then(() -> {
                 try {
+                    // Setting up second link which will be requested after first one timeout.
+                    when(amqpReceiveLink.getLinkName()).thenReturn(linkName2);
+                    when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId2));
+
                     TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds() + 1);
                     assertNull(sessionManager.getLinkName(sessionId));
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException e) {
+                }
 
             })
             .thenCancel()

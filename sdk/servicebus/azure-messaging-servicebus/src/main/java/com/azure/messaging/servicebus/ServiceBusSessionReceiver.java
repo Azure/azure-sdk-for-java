@@ -216,9 +216,9 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     }
 
     /**
-     * Indicate is this session receiver is disposed off.
+     * Indicate is this session receiver's Idle timeout has reached.
      *
-     * @return if this receiver is disposed.
+     * @return if this receiver's idle timeout occurred.
      */
     boolean isIdleTimeoutReached() {
         return this.idleTimeoutReached;

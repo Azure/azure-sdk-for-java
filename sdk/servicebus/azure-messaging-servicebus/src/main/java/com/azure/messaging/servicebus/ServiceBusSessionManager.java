@@ -305,7 +305,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 final String sessionId = sessionReceiver.getSessionId();
-                logger.verbose("Closing session receiver for session id [{}] isIdleTimeoutReached [{}].", sessionId, sessionReceiver.isIdleTimeoutReached());
+                logger.verbose("Closing session receiver for session id [{}].", sessionId);
                 availableSchedulers.push(scheduler);
                 if (sessionReceiver.isIdleTimeoutReached() && sessionId != null) {
                     sessionReceivers.remove(sessionId);
