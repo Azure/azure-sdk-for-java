@@ -10,10 +10,10 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 ### Prerequisites
 
 - An active Azure account. If you don't have one, you can sign up for a 
-  [free account](https://azure.microsoft.com/en-us/try/cosmosdb/).
+  [free account](https://azure.microsoft.com/try/cosmosdb/).
   Alternatively, you can use the
   [use Azure Cosmos DB Emulator](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/local-emulator.md) for development and testing.
-- [Azure Databricks](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/8.0)
+- [Azure Databricks](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0)
   Runtime 8.0 with Spark 3.1.1.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
@@ -48,7 +48,7 @@ cfg = {
 }
 ```
 
-see [General Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#Generic Configuration) for more detail.
+see [General Configuration](https://github.com/Azure/azure-sdk-for-java/blob/04ef1f8dad965461a9adabe694ca704e0d01fa30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md#Generic-Configuration) for more detail.
 
 You can use the new Catalog API to create a Cosmos DB Database and Container through Spark.
 Configure Catalog Api to be used
