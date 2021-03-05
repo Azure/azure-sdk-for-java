@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos;
 
-import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
@@ -25,13 +24,13 @@ public class ContainerLock {
     }
 
     public void acquire(Duration tryForDuration) {
-        Stopwatch stopwatch = Stopwatch.createStarted();
+        long started = System.currentTimeMillis();
         LockEntry entry = new LockEntry(OffsetDateTime.now().plus(leaseDuration));
         while (acquiredLock == null) {
             try {
                 acquiredLock = template.insert(containerName, entry);
             } catch (Exception ex) {
-                if (!tryForDuration.minus(stopwatch.elapsed()).isNegative()) {
+                if (shouldKeepTryingToAcquire(started, tryForDuration)) {
                     sleep(500);
                     releaseIfLeaseExpired();
                 } else {
@@ -39,6 +38,11 @@ public class ContainerLock {
                 }
             }
         }
+    }
+
+    private boolean shouldKeepTryingToAcquire(long started, Duration tryForDuration) {
+        long elapsedDuration = System.currentTimeMillis() - started;
+        return elapsedDuration <= tryForDuration.toMillis();
     }
 
     private void sleep(long millis) {
