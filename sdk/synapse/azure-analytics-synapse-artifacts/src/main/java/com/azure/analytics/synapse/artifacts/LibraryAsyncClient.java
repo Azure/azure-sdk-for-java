@@ -176,79 +176,96 @@ public final class LibraryAsyncClient {
     }
 
     /**
-     * Creates a library with the library name. Use query param 'comp=appendblock' to append the data to the library
-     * resource created using the create operation.
+     * Creates a library with the library name.
      *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
-     * @param content Library file chunk. Use this content in with append operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LibraryResourceInfo>> createWithResponse(String libraryName) {
+        return this.serviceClient.createWithResponseAsync(libraryName);
+    }
+
+    /**
+     * Creates a library with the library name.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LibraryResourceInfo> create(String libraryName) {
+        return this.serviceClient.createAsync(libraryName);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
      * @param contentLength The contentLength parameter.
-     * @param comp If this param is specified with value appendblock, the api will append the data chunk provided in
-     *     body to the library created.
      * @param xMsBlobConditionAppendpos Set this header to a byte offset at which the block is expected to be appended.
      *     The request succeeds only if the current offset matches this value. Otherwise, the request fails with the
      *     AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LibraryResourceInfo>> createOrAppendWithResponse(
-            String libraryName,
-            Flux<ByteBuffer> content,
-            long contentLength,
-            String comp,
-            Long xMsBlobConditionAppendpos) {
-        return this.serviceClient.createOrAppendWithResponseAsync(
-                libraryName, content, contentLength, comp, xMsBlobConditionAppendpos);
+    public Mono<Response<Void>> appendWithResponse(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long xMsBlobConditionAppendpos) {
+        return this.serviceClient.appendWithResponseAsync(
+                libraryName, content, contentLength, xMsBlobConditionAppendpos);
     }
 
     /**
-     * Creates a library with the library name. Use query param 'comp=appendblock' to append the data to the library
-     * resource created using the create operation.
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
      *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
-     * @param content Library file chunk. Use this content in with append operation.
+     * @param content Library file chunk.
      * @param contentLength The contentLength parameter.
-     * @param comp If this param is specified with value appendblock, the api will append the data chunk provided in
-     *     body to the library created.
      * @param xMsBlobConditionAppendpos Set this header to a byte offset at which the block is expected to be appended.
      *     The request succeeds only if the current offset matches this value. Otherwise, the request fails with the
      *     AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LibraryResourceInfo> createOrAppend(
-            String libraryName,
-            Flux<ByteBuffer> content,
-            long contentLength,
-            String comp,
-            Long xMsBlobConditionAppendpos) {
-        return this.serviceClient.createOrAppendAsync(
-                libraryName, content, contentLength, comp, xMsBlobConditionAppendpos);
+    public Mono<Void> append(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long xMsBlobConditionAppendpos) {
+        return this.serviceClient.appendAsync(libraryName, content, contentLength, xMsBlobConditionAppendpos);
     }
 
     /**
-     * Creates a library with the library name. Use query param 'comp=appendblock' to append the data to the library
-     * resource created using the create operation.
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
      *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
-     * @param content Library file chunk. Use this content in with append operation.
+     * @param content Library file chunk.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LibraryResourceInfo> createOrAppend(String libraryName, Flux<ByteBuffer> content, long contentLength) {
-        return this.serviceClient.createOrAppendAsync(libraryName, content, contentLength);
+    public Mono<Void> append(String libraryName, Flux<ByteBuffer> content, long contentLength) {
+        return this.serviceClient.appendAsync(libraryName, content, contentLength);
     }
 
     /**
