@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -84,6 +85,16 @@ public class BlobClientJavaDocCodeSnippets {
         client.download(new ByteArrayOutputStream());
         System.out.println("Download completed.");
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
+    }
+
+    /**
+     * Code snippets for {@link BlobClient#downloadContent()}
+     */
+    public void downloadContent() {
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadContent
+        BinaryData data = client.downloadContent();
+        System.out.printf("Downloaded %s", data.toString());
+        // END: com.azure.storage.blob.BlobClient.downloadContent
     }
 
     /**
