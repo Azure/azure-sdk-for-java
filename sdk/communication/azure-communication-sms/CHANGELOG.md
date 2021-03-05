@@ -1,6 +1,6 @@
 # Release History
 ## 1.0.0-beta.5 (Unreleased)
-###Added
+### Added
 - Support for creating SmsClient with TokenCredential.
 - Added support for 1:N SMS messaging.
 - Added support for tagging SMS messages.
@@ -8,9 +8,8 @@
 - Added `SmsOptions`
 
 ### Breaking Change
-- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message)` 
+- Updated `public Mono<SendSmsResponse> send(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(PhoneNumberIdentifier from, String to, String message)`
 - Replaced `SendSmsResponse` with `SmsSendResult`
-
 
 ## 1.0.0-beta.4 (Skipped)
 ### Added
@@ -21,7 +20,7 @@
 - Support directly passing connection string to the SmsClientBuilder using connectionString().
 
 ### Breaking Change
-- Removed credential(CommunicationClientCredential credential) and replaced with 
+- Removed credential(CommunicationClientCredential credential) and replaced with
 accessKey(String accessKey) within CommunicationIdentityClientBuilder.
 
 ## 1.0.0-beta.2 (2020-10-06)
