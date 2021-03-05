@@ -36,7 +36,7 @@ the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
-are needed to create a DefaultAzureCredential object
+are needed to create a DefaultAzureCredential object.
 
 To create a SmsClient
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L22-L35 -->
