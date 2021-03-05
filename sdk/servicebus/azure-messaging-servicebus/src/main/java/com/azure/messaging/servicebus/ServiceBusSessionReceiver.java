@@ -128,10 +128,8 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                 .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
-
                     this.idleTimeoutReached =  true;
                     cancelReceiveProcessor.onComplete();
-                    System.out.println(" !!! Receiver's complete.");
                 }));
         }
 
