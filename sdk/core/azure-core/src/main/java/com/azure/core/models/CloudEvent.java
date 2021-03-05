@@ -278,7 +278,8 @@ public final class CloudEvent {
             if (skipValidation) {
                 return events;
             }
-            for (CloudEvent event : events) {
+            for (int i = 0; i < events.size(); i++) {
+                CloudEvent event = events.get(i);
                 if (event.getId() == null || event.getSource() == null || event.getType() == null) {
                     List<String> nullAttributes = new ArrayList<String>();
                     if (event.getId() == null) {
@@ -293,6 +294,7 @@ public final class CloudEvent {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
                             + " This Json string doesn't have " + String.join(",", nullAttributes)
+                            + " for the object at index " + i
                             + ". Please make sure the input Json string has the required attributes"
                             + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
                 }

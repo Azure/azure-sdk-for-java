@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Represents the EventGrid event conforming to the <a href="https://docs.microsoft.com/en-us/azure/event-grid/event-schema">
@@ -119,35 +118,39 @@ public final class EventGridEvent {
      */
     public static List<EventGridEvent> fromString(String eventGridJsonString) {
         try {
-            return SERIALIZER.deserialize(
-                new ByteArrayInputStream(eventGridJsonString.getBytes(StandardCharsets.UTF_8)),
-                DESERIALIZER_TYPE_REFERENCE)
-                .stream()
-                .map(internalEvent -> {
-                    if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
-                        || internalEvent.getData() == null || internalEvent.getDataVersion() == null) {
-                        List<String> nullAttributes = new ArrayList<String>();
-                        if (internalEvent.getSubject() == null) {
-                            nullAttributes.add("'subject'");
-                        }
-                        if (internalEvent.getEventType() == null) {
-                            nullAttributes.add("'eventType'");
-                        }
-                        if (internalEvent.getData() == null) {
-                            nullAttributes.add("'data'");
-                        }
-                        if (internalEvent.getDataVersion() == null) {
-                            nullAttributes.add("'dataVersion'");
-                        }
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "'subject', 'eventType', 'data' and 'dataVersion' are mandatory attributes for an "
-                                + "EventGridEvent. This Json string has null values for "
-                                + String.join(",", nullAttributes)
-                                + ". Please make sure the input Json string has the required attributes"));
+            List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> internalEvents =
+                SERIALIZER.deserialize(new ByteArrayInputStream(eventGridJsonString.getBytes(StandardCharsets.UTF_8)),
+                DESERIALIZER_TYPE_REFERENCE);
+
+            List<EventGridEvent> events = new ArrayList<EventGridEvent>();
+            for (int i = 0; i < internalEvents.size(); i++) {
+                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent =
+                    internalEvents.get(i);
+                if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
+                    || internalEvent.getData() == null || internalEvent.getDataVersion() == null) {
+                    List<String> nullAttributes = new ArrayList<String>();
+                    if (internalEvent.getSubject() == null) {
+                        nullAttributes.add("'subject'");
                     }
-                    return new EventGridEvent(internalEvent);
-                })
-                .collect(Collectors.toList());
+                    if (internalEvent.getEventType() == null) {
+                        nullAttributes.add("'eventType'");
+                    }
+                    if (internalEvent.getData() == null) {
+                        nullAttributes.add("'data'");
+                    }
+                    if (internalEvent.getDataVersion() == null) {
+                        nullAttributes.add("'dataVersion'");
+                    }
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "'subject', 'eventType', 'data' and 'dataVersion' are mandatory attributes for an "
+                            + "EventGridEvent. This Json string doesn't have "
+                            + String.join(",", nullAttributes)
+                            + " for the object at index " + i
+                            + ". Please make sure the input Json string has the required attributes"));
+                }
+                events.add(new EventGridEvent(internalEvent));
+            }
+            return events;
         } catch (UncheckedIOException uncheckedIOException) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
                 uncheckedIOException.getCause()));
