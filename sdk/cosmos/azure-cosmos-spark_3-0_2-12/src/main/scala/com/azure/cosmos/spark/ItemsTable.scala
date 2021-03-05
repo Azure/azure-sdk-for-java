@@ -38,7 +38,8 @@ private object ItemsTable {
  * @param userConfig         The effective user configuration
  * @param userProvidedSchema The user provided schema - can be null/none
  */
-private class ItemsTable(val transforms: Array[Transform],
+private class ItemsTable(val sparkSession: SparkSession,
+                         val transforms: Array[Transform],
                          val databaseName: Option[String],
                          val containerName: Option[String],
                          val userConfig: util.Map[String, String],
@@ -66,15 +67,14 @@ private class ItemsTable(val transforms: Array[Transform],
   override def name(): String = tableName
 
   override def capabilities(): util.Set[TableCapability] = Set(
-    // ACCEPT_ANY_SCHEMA is needed because of this bug https://github.com/apache/spark/pull/30273
-    // It was fixed in Spark 3.1.0 but Databricks currently only supports 3.0.1
     TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
     TableCapability.BATCH_READ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     // TODO moderakh how options and userConfig should be merged? is there any difference?
-    ItemsScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
+    ItemsScanBuilder(sparkSession,
+      new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
       schema(),
       containerStateHandle)
   }
@@ -113,8 +113,6 @@ private class ItemsTable(val transforms: Array[Transform],
 
     val state = new CosmosClientMetadataCachesSnapshot()
     state.serialize(client)
-
-    val sparkSession = SparkSession.active
     sparkSession.sparkContext.broadcast(state)
   }
 }

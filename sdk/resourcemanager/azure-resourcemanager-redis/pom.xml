@@ -167,9 +167,6 @@
                   <code>java.method.addedToInterface</code>
                 </item>
                 <item>
-                  <code>java.method.returnTypeChangedCovariantly</code>
-                </item>
-                <item>
                   <regex>true</regex>
                   <code>.*</code>
                   <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>

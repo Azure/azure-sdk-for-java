@@ -15,18 +15,18 @@ import com.azure.core.util.Configuration;
  */
 public class SampleEnvironment {
 
-    private final String accountId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_ID");
-    private final String accountDomain = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_DOMAIN");
-    private final String accountKey = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_KEY");
-    private final String storageAccountName = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_STORAGE_ACCOUNT_NAME");
-    private final String storageAccountKey = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_STORAGE_ACCOUNT_KEY");
-    private final String blobContainerName = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_BLOB_CONTAINER_NAME");
-    private final String blobContainerSasToken = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_SAS_TOKEN");
-    private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_SERVICE_ENDPOINT");
+    private final String accountId = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_ID");
+    private final String accountDomain = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_DOMAIN");
+    private final String accountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_KEY");
+    private final String storageAccountName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_NAME");
+    private final String storageAccountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_KEY");
+    private final String blobContainerName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_BLOB_CONTAINER_NAME");
+    private final String blobContainerSasToken = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SAS_TOKEN");
+    private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SERVICE_ENDPOINT");
 
-    private final String tenantId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_TENANT_ID");
-    private final String clientId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_CLIENT_ID");
-    private final String clientSecret = Configuration.getGlobalConfiguration().get("MIXEDREALITY_CLIENT_SECRET");
+    private final String tenantId = Configuration.getGlobalConfiguration().get("REMOTERENDERING_TENANT_ID");
+    private final String clientId = Configuration.getGlobalConfiguration().get("REMOTERENDERING_CLIENT_ID");
+    private final String clientSecret = Configuration.getGlobalConfiguration().get("REMOTERENDERING_CLIENT_SECRET");
 
     /**
      * Get the accounId used in samples.

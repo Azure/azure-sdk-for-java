@@ -1,46 +1,42 @@
 # Azure Cosmos DB OLTP Spark connector client library for Java
 
-**Azure Cosmos DB OLTP Spark connector ** provides Apache Spark support for Azure Cosmos DB using 
+**Azure Cosmos DB OLTP Spark connector preview** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows 
 developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
-## Getting started
-TBD
+**NOTE this is a Preview build.
+This build has not been load or performance tested yet - and at this point is not recommended
+being used in production scenarios.**
 
-### Prerequisites
+If you have any feedback or ideas on how to improve your experience please let us know here:
+https://github.com/Azure/azure-sdk-for-java/issues/new
 
-- Java Development Kit 11
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. 
-Alternatively, you can use the [Azure Cosmos DB Emulator][local_emulator] for development and testing. 
-As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, 
-[explained here][local_emulator_export_ssl_certificates]
-- (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a 
-specific logging framework with SLF4J.
-- (Optional) Maven
+## Documentation
 
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will 
-link the SLF4J API with the logging implementation of your choice. See 
-the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
+- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/quick-start.md)
+- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/catalog-api.md)
+- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md)
 
-## Key concepts
+[//]: # (//TODO: moderakh add more sections)
+[//]: # (//TODO: moderakh Enable Client Logging)
+[//]: # (//TODO: moderakh Examples)
+[//]: # (//TODO: moderakh Next steps)
+[//]: # (//TODO: moderakh Key concepts)
+[//]: # (//TODO: moderakh Azure Cosmos DB Partition)
+[//]: # (//TODO: moderakh Troubleshooting)
 
-TBD
+## Version Compatibility
 
-### Azure Cosmos DB Partition
-- Azure-spring-data-cosmos supports [Azure Cosmos DB partition][azure_cosmos_db_partition].
-- To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`.
-- When you perform CRUD operation, specify your partition value.
-- For more sample on partition CRUD, please refer [test here][address_repository_it_test]
+| Connector     | Spark         | Minimum Java Version | Supported Scala Versions |
+| ------------- | ------------- | -------------------- | -----------------------  |
+| 4.0.0-beta.1  | 3.1.1         |        8             | 2.12                     |
 
 ## Beta version package
 
-Beta version built from `master` branch are available, you can refer to
+Beta version built from `feature/cosmos/spark30` branch are available, you can refer to
  the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds)
 to use beta version packages.
-
-## Troubleshooting
 
 ### General
 
@@ -48,14 +44,9 @@ If you encounter any bug, please file an issue [here](https://github.com/Azure/a
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
-### Enable Client Logging
-TBD
-
-## Examples
-TBD
-
-## Next steps
-TBD
+## License
+This project is under MIT license and uses and repackages other third party libraries as an uber jar.
+See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/NOTICE.txt).
 
 ## Contributing
 
@@ -88,3 +79,5 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
 [sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+
+

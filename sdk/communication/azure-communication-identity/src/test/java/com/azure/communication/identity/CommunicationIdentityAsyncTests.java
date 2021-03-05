@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -102,15 +102,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithToken(HttpClient httpClient) {
+    public void createUserAndToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserWithToken");
+        asyncClient = setupAsyncClient(builder, "createUserAndToken");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierWithTokenResult> createUserWithToken = asyncClient.createUserWithToken(scopes);
-        StepVerifier.create(createUserWithToken)
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
+        StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertNotNull(result.getUserToken());
                 assertNotNull(result.getUser());
@@ -120,16 +120,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithTokenWithResponse(HttpClient httpClient) {
+    public void createUserAndTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserWithTokenWithResponse");
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponse");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierWithTokenResult>> createUserWithToken = 
-            asyncClient.createUserWithTokenWithResponse(scopes);
-        StepVerifier.create(createUserWithToken)
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = 
+            asyncClient.createUserAndTokenWithResponse(scopes);
+        StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertEquals(201, result.getStatusCode());
                 assertNotNull(result.getValue().getUserToken());
@@ -140,27 +140,27 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithTokenNullScopes(HttpClient httpClient) {
+    public void createUserAndTokenNullScopes(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserWithTokenNullScopes");
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenNullScopes");
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.createUserWithToken(null))
+            asyncClient.createUserAndToken(null))
             .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithTokenWithResponseNullScopes(HttpClient httpClient) {
+    public void createUserAndTokenWithResponseNullScopes(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserWithTokenWithResponseNullScopes");
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseNullScopes");
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.createUserWithTokenWithResponse(null))
+            asyncClient.createUserAndTokenWithResponse(null))
             .verifyError(NullPointerException.class);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -86,14 +86,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithToken(HttpClient httpClient) {
+    public void createUserAndToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "createUserWithTokenSync");
+        client = setupClient(builder, "createUserAndTokenSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        CommunicationUserIdentifierWithTokenResult result = client.createUserWithToken(scopes);
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
@@ -101,15 +101,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithTokenWithResponse(HttpClient httpClient) {
+    public void createUserAndTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        client = setupClient(builder, "createUserWithTokenWithResponseSync");
+        client = setupClient(builder, "createUserAndTokenWithResponseSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         // Action & Assert
-        Response<CommunicationUserIdentifierWithTokenResult> response = 
-            client.createUserWithTokenWithResponse(scopes, Context.NONE);
-        CommunicationUserIdentifierWithTokenResult result = response.getValue();
+        Response<CommunicationUserIdentifierAndToken> response = 
+            client.createUserAndTokenWithResponse(scopes, Context.NONE);
+        CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());

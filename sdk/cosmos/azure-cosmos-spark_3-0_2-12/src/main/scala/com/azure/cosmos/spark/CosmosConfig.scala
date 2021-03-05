@@ -218,33 +218,37 @@ private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
                                                inferSchemaQuery: Option[String])
 
 private object CosmosSchemaInferenceConfig {
-    private val DefaultSampleSize: Int = 1000
+  private val DefaultSampleSize: Int = 1000
 
-    private val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
-        mandatory = false,
-        parseFromStringFunction = size => size.toInt,
-        helpMessage = "Sampling size to use when inferring schema")
+  private val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
+    mandatory = false,
+    defaultValue = Some(DefaultSampleSize),
+    parseFromStringFunction = size => size.toInt,
+    helpMessage = "Sampling size to use when inferring schema")
 
-    private val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
-        mandatory = false,
-        parseFromStringFunction = enabled => enabled.toBoolean,
-        helpMessage = "Whether schema inference is enabled or should return raw json")
+  private val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
+    mandatory = false,
+    defaultValue = Some(true),
+    parseFromStringFunction = enabled => enabled.toBoolean,
+    helpMessage = "Whether schema inference is enabled or should return raw json")
 
-    private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
-        mandatory = false,
-        parseFromStringFunction = query => query,
-        helpMessage = "When schema inference is enabled, used as custom query to infer it")
+  private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
+    mandatory = false,
+    parseFromStringFunction = query => query,
+    helpMessage = "When schema inference is enabled, used as custom query to infer it")
 
-    def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
-        val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
-        val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
-        val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)
+  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+    val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
+    val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
+    val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)
 
-        CosmosSchemaInferenceConfig(
-            samplingSize.getOrElse(DefaultSampleSize),
-            enabled.getOrElse(false),
-            query)
-    }
+    assert(samplingSize.isDefined)
+    assert(enabled.isDefined)
+    CosmosSchemaInferenceConfig(
+      samplingSize.get,
+      enabled.get,
+      query)
+  }
 }
 
 private object PartitioningStrategies extends Enumeration {

@@ -56,6 +56,9 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+- name: TestMode
+  type: string
+  default: 'LIVE'
 - name: TestStepMavenInputs
   type: object
   default:
@@ -128,6 +131,7 @@ stages:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              TestMode: ${{ parameters.TestMode }}
               TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}

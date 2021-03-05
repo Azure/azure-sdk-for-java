@@ -5,7 +5,7 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 

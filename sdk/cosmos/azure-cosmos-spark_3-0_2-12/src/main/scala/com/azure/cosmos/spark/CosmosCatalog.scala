@@ -4,27 +4,11 @@
 package com.azure.cosmos.spark
 
 import java.util
-
 import com.azure.cosmos.models.{CosmosContainerProperties, ThroughputProperties}
-import com.azure.cosmos.{
-  CosmosAsyncClient,
-  CosmosClientBuilder,
-  CosmosException
-}
-import org.apache.spark.sql.catalyst.analysis.{
-  NamespaceAlreadyExistsException,
-  NoSuchNamespaceException,
-  NoSuchTableException
-}
-import org.apache.spark.sql.connector.catalog.{
-  CatalogPlugin,
-  Identifier,
-  NamespaceChange,
-  SupportsNamespaces,
-  Table,
-  TableCatalog,
-  TableChange
-}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
+import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
@@ -50,6 +34,7 @@ class CosmosCatalog
     with TableCatalog
     with CosmosLoggingTrait {
 
+  private lazy val sparkSession = SparkSession.active
   private var catalogName: String = _
   private var client: CosmosAsyncClient = _
   private var tableOptions: Map[String, String] = _
@@ -233,6 +218,7 @@ class CosmosCatalog
     val containerName = toCosmosContainerName(ident.name())
     getContainerMetadata(ident, databaseName, containerName) // validates that table exists
     new ItemsTable(
+      sparkSession,
       Array[Transform](),
       Some(databaseName),
       Some(containerName),
@@ -287,6 +273,7 @@ class CosmosCatalog
     }
 
     new ItemsTable(
+      sparkSession,
       partitions,
       Some(databaseName),
       Some(containerName),

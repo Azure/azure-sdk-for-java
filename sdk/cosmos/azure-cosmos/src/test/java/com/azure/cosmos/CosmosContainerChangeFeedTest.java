@@ -281,7 +281,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
             assertThat(effectiveRange).isNotNull();
 
-            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
+            FeedRange feedRange = new FeedRangeEpkImpl(effectiveRange);
 
             CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromBeginning(feedRange);

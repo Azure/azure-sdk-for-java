@@ -3,18 +3,19 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
-import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
+import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
@@ -29,11 +30,10 @@ import java.util.Objects;
  * {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
 public final class AzureMonitorExporterBuilder {
-    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
-    private String endpoint;
     private String connectionString;
     private AzureMonitorExporterServiceVersion serviceVersion;
 
@@ -53,10 +53,8 @@ public final class AzureMonitorExporterBuilder {
      */
     AzureMonitorExporterBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
         try {
             URL url = new URL(endpoint);
-            this.endpoint = endpoint;
             restServiceClientBuilder.host(url.getProtocol() + "://" + url.getHost());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
@@ -137,6 +135,18 @@ public final class AzureMonitorExporterBuilder {
      */
     public AzureMonitorExporterBuilder configuration(Configuration configuration) {
         restServiceClientBuilder.configuration(configuration);
+        return this;
+    }
+
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
+        restServiceClientBuilder.clientOptions(clientOptions);
         return this;
     }
 
