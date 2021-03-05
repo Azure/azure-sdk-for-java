@@ -2203,6 +2203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
                                                              CosmosQueryRequestOptions options) {
+        SqlQuerySpecLogger.getInstance().logQuery(querySpec);
         return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
     }
 
