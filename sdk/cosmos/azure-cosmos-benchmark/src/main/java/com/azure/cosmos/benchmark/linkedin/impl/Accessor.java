@@ -4,7 +4,9 @@
 package com.azure.cosmos.benchmark.linkedin.impl;
 
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.AccessorException;
+import com.azure.cosmos.benchmark.linkedin.impl.models.BatchGetResult;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
+import com.azure.cosmos.benchmark.linkedin.impl.models.QueryOptions;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
 
 
@@ -27,4 +29,14 @@ public interface Accessor<K, V> {
      * @throws AccessorException when the underlying data store throws an exception for any reason.
      */
     Result<K, V> get(final K key, final GetRequestOptions requestOptions) throws AccessorException;
+
+    /**
+     * Retrieves the entity from the data source using SQL expression, using the query options provided.
+     *
+     * @param queryOptions The SQL query, and related options for executing this query
+     * @return A BatchGetResult containing the results [if present] and metadata about the operation
+     * @throws AccessorException when the underlying data store throws an exception for any reason.
+     */
+    BatchGetResult<K, V> query(final QueryOptions queryOptions)
+        throws AccessorException;
 }
