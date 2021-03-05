@@ -149,16 +149,22 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
             .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        }
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
         return builder;
     }
 
@@ -166,14 +172,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion) {
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .serviceVersion(serviceVersion);
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        }
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }
