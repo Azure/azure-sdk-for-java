@@ -42,6 +42,8 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
+    private boolean idleTimeoutReached;
+
     /**
      * Creates a receiver for the first available session.
      *
@@ -126,8 +128,10 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                 .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
-                    this.close();
+
+                    this.idleTimeoutReached =  true;
                     cancelReceiveProcessor.onComplete();
+                    System.out.println(" !!! Receiver's complete.");
                 }));
         }
 
@@ -216,7 +220,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
      *
      * @return if this receiver is disposed.
      */
-    boolean isDisposed() {
-        return isDisposed.get();
+    boolean isIdleTimeoutReached() {
+        return this.idleTimeoutReached;
     }
 }
